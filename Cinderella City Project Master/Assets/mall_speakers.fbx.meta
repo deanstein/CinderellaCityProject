@@ -1,0 +1,439 @@
+fileFormatVersion: 2
+guid: 6f853368cb0888043a108d684b91f873
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: MeshChunk
+    100004: MeshChunk 1
+    100006: MeshChunk 2
+    100008: MeshChunk 3
+    100010: MeshChunk 4
+    100012: MeshChunk 5
+    100014: MeshChunk 6
+    100016: MeshChunk 7
+    100018: Node-0-1401
+    100020: Node-0-2095
+    100022: Node-0-2789
+    100024: Node-0-707
+    100026: Instance-2852-0
+    100028: Instance-2852-1
+    100030: Instance-2852-6
+    100032: Instance-2852-8
+    100034: Node-2851-693
+    100036: Node-2851-693 1
+    100038: Node-2851-693 2
+    100040: Node-2851-693 3
+    100042: Instance-2852-11
+    100044: Instance-2852-12
+    100046: Instance-2852-13
+    100048: Instance-2852-14
+    100050: Instance-2852-15
+    100052: Instance-2852-21
+    100054: Instance-2852-22
+    100056: Instance-2852-23
+    100058: Instance-2852-24
+    100060: Instance-2852-27
+    100062: Instance-2852-28
+    100064: Instance-2852-29
+    100066: Instance-2852-31
+    100068: Instance-2852-32
+    100070: Instance-2852-33
+    100072: Instance-2852-34
+    100074: MeshChunk 10
+    100076: MeshChunk 11
+    100078: MeshChunk 12
+    100080: MeshChunk 13
+    100082: MeshChunk 14
+    100084: MeshChunk 15
+    100086: MeshChunk 16
+    100088: MeshChunk 17
+    100090: MeshChunk 18
+    100092: MeshChunk 19
+    100094: MeshChunk 20
+    100096: MeshChunk 21
+    100098: MeshChunk 22
+    100100: MeshChunk 23
+    100102: MeshChunk 24
+    100104: MeshChunk 25
+    100106: MeshChunk 26
+    100108: MeshChunk 27
+    100110: MeshChunk 28
+    100112: MeshChunk 29
+    100114: MeshChunk 30
+    100116: MeshChunk 31
+    100118: MeshChunk 32
+    100120: MeshChunk 33
+    100122: MeshChunk 34
+    100124: MeshChunk 35
+    100126: MeshChunk 36
+    100128: MeshChunk 37
+    100130: MeshChunk 38
+    100132: MeshChunk 39
+    100134: MeshChunk 8
+    100136: MeshChunk 9
+    100138: Node-2851-693 10
+    100140: Node-2851-693 11
+    100142: Node-2851-693 12
+    100144: Node-2851-693 13
+    100146: Node-2851-693 14
+    100148: Node-2851-693 15
+    100150: Node-2851-693 16
+    100152: Node-2851-693 17
+    100154: Node-2851-693 18
+    100156: Node-2851-693 19
+    100158: Node-2851-693 4
+    100160: Node-2851-693 5
+    100162: Node-2851-693 6
+    100164: Node-2851-693 7
+    100166: Node-2851-693 8
+    100168: Node-2851-693 9
+    100170: Instance-2852-48
+    100172: Instance-2852-49
+    100174: Instance-2852-50
+    100176: Instance-2852-51
+    100178: Instance-2852-52
+    100180: MeshChunk 40
+    100182: MeshChunk 41
+    100184: MeshChunk 42
+    100186: MeshChunk 43
+    100188: MeshChunk 44
+    100190: MeshChunk 45
+    100192: MeshChunk 46
+    100194: MeshChunk 47
+    100196: MeshChunk 48
+    100198: MeshChunk 49
+    100200: Node-2851-693 20
+    100202: Node-2851-693 21
+    100204: Node-2851-693 22
+    100206: Node-2851-693 23
+    100208: Node-2851-693 24
+    400000: //RootNode
+    400002: MeshChunk
+    400004: MeshChunk 1
+    400006: MeshChunk 2
+    400008: MeshChunk 3
+    400010: MeshChunk 4
+    400012: MeshChunk 5
+    400014: MeshChunk 6
+    400016: MeshChunk 7
+    400018: Node-0-1401
+    400020: Node-0-2095
+    400022: Node-0-2789
+    400024: Node-0-707
+    400026: Instance-2852-0
+    400028: Instance-2852-1
+    400030: Instance-2852-6
+    400032: Instance-2852-8
+    400034: Node-2851-693
+    400036: Node-2851-693 1
+    400038: Node-2851-693 2
+    400040: Node-2851-693 3
+    400042: Instance-2852-11
+    400044: Instance-2852-12
+    400046: Instance-2852-13
+    400048: Instance-2852-14
+    400050: Instance-2852-15
+    400052: Instance-2852-21
+    400054: Instance-2852-22
+    400056: Instance-2852-23
+    400058: Instance-2852-24
+    400060: Instance-2852-27
+    400062: Instance-2852-28
+    400064: Instance-2852-29
+    400066: Instance-2852-31
+    400068: Instance-2852-32
+    400070: Instance-2852-33
+    400072: Instance-2852-34
+    400074: MeshChunk 10
+    400076: MeshChunk 11
+    400078: MeshChunk 12
+    400080: MeshChunk 13
+    400082: MeshChunk 14
+    400084: MeshChunk 15
+    400086: MeshChunk 16
+    400088: MeshChunk 17
+    400090: MeshChunk 18
+    400092: MeshChunk 19
+    400094: MeshChunk 20
+    400096: MeshChunk 21
+    400098: MeshChunk 22
+    400100: MeshChunk 23
+    400102: MeshChunk 24
+    400104: MeshChunk 25
+    400106: MeshChunk 26
+    400108: MeshChunk 27
+    400110: MeshChunk 28
+    400112: MeshChunk 29
+    400114: MeshChunk 30
+    400116: MeshChunk 31
+    400118: MeshChunk 32
+    400120: MeshChunk 33
+    400122: MeshChunk 34
+    400124: MeshChunk 35
+    400126: MeshChunk 36
+    400128: MeshChunk 37
+    400130: MeshChunk 38
+    400132: MeshChunk 39
+    400134: MeshChunk 8
+    400136: MeshChunk 9
+    400138: Node-2851-693 10
+    400140: Node-2851-693 11
+    400142: Node-2851-693 12
+    400144: Node-2851-693 13
+    400146: Node-2851-693 14
+    400148: Node-2851-693 15
+    400150: Node-2851-693 16
+    400152: Node-2851-693 17
+    400154: Node-2851-693 18
+    400156: Node-2851-693 19
+    400158: Node-2851-693 4
+    400160: Node-2851-693 5
+    400162: Node-2851-693 6
+    400164: Node-2851-693 7
+    400166: Node-2851-693 8
+    400168: Node-2851-693 9
+    400170: Instance-2852-48
+    400172: Instance-2852-49
+    400174: Instance-2852-50
+    400176: Instance-2852-51
+    400178: Instance-2852-52
+    400180: MeshChunk 40
+    400182: MeshChunk 41
+    400184: MeshChunk 42
+    400186: MeshChunk 43
+    400188: MeshChunk 44
+    400190: MeshChunk 45
+    400192: MeshChunk 46
+    400194: MeshChunk 47
+    400196: MeshChunk 48
+    400198: MeshChunk 49
+    400200: Node-2851-693 20
+    400202: Node-2851-693 21
+    400204: Node-2851-693 22
+    400206: Node-2851-693 23
+    400208: Node-2851-693 24
+    2100000: mall - ceiling fixture metal
+    2100002: mall - speaker
+    2300000: MeshChunk
+    2300002: MeshChunk 1
+    2300004: MeshChunk 2
+    2300006: MeshChunk 3
+    2300008: MeshChunk 4
+    2300010: MeshChunk 5
+    2300012: MeshChunk 6
+    2300014: MeshChunk 7
+    2300016: MeshChunk 10
+    2300018: MeshChunk 11
+    2300020: MeshChunk 12
+    2300022: MeshChunk 13
+    2300024: MeshChunk 14
+    2300026: MeshChunk 15
+    2300028: MeshChunk 16
+    2300030: MeshChunk 17
+    2300032: MeshChunk 18
+    2300034: MeshChunk 19
+    2300036: MeshChunk 20
+    2300038: MeshChunk 21
+    2300040: MeshChunk 22
+    2300042: MeshChunk 23
+    2300044: MeshChunk 24
+    2300046: MeshChunk 25
+    2300048: MeshChunk 26
+    2300050: MeshChunk 27
+    2300052: MeshChunk 28
+    2300054: MeshChunk 29
+    2300056: MeshChunk 30
+    2300058: MeshChunk 31
+    2300060: MeshChunk 32
+    2300062: MeshChunk 33
+    2300064: MeshChunk 34
+    2300066: MeshChunk 35
+    2300068: MeshChunk 36
+    2300070: MeshChunk 37
+    2300072: MeshChunk 38
+    2300074: MeshChunk 39
+    2300076: MeshChunk 8
+    2300078: MeshChunk 9
+    2300080: MeshChunk 40
+    2300082: MeshChunk 41
+    2300084: MeshChunk 42
+    2300086: MeshChunk 43
+    2300088: MeshChunk 44
+    2300090: MeshChunk 45
+    2300092: MeshChunk 46
+    2300094: MeshChunk 47
+    2300096: MeshChunk 48
+    2300098: MeshChunk 49
+    3300000: MeshChunk
+    3300002: MeshChunk 1
+    3300004: MeshChunk 2
+    3300006: MeshChunk 3
+    3300008: MeshChunk 4
+    3300010: MeshChunk 5
+    3300012: MeshChunk 6
+    3300014: MeshChunk 7
+    3300016: MeshChunk 10
+    3300018: MeshChunk 11
+    3300020: MeshChunk 12
+    3300022: MeshChunk 13
+    3300024: MeshChunk 14
+    3300026: MeshChunk 15
+    3300028: MeshChunk 16
+    3300030: MeshChunk 17
+    3300032: MeshChunk 18
+    3300034: MeshChunk 19
+    3300036: MeshChunk 20
+    3300038: MeshChunk 21
+    3300040: MeshChunk 22
+    3300042: MeshChunk 23
+    3300044: MeshChunk 24
+    3300046: MeshChunk 25
+    3300048: MeshChunk 26
+    3300050: MeshChunk 27
+    3300052: MeshChunk 28
+    3300054: MeshChunk 29
+    3300056: MeshChunk 30
+    3300058: MeshChunk 31
+    3300060: MeshChunk 32
+    3300062: MeshChunk 33
+    3300064: MeshChunk 34
+    3300066: MeshChunk 35
+    3300068: MeshChunk 36
+    3300070: MeshChunk 37
+    3300072: MeshChunk 38
+    3300074: MeshChunk 39
+    3300076: MeshChunk 8
+    3300078: MeshChunk 9
+    3300080: MeshChunk 40
+    3300082: MeshChunk 41
+    3300084: MeshChunk 42
+    3300086: MeshChunk 43
+    3300088: MeshChunk 44
+    3300090: MeshChunk 45
+    3300092: MeshChunk 46
+    3300094: MeshChunk 47
+    3300096: MeshChunk 48
+    3300098: MeshChunk 49
+    4300000: MeshChunk
+    4300002: MeshChunk
+    4300004: MeshChunk
+    4300006: MeshChunk
+    4300008: MeshChunk
+    4300010: MeshChunk
+    4300012: MeshChunk
+    4300014: MeshChunk
+    4300016: MeshChunk
+    4300018: MeshChunk
+    4300020: MeshChunk
+    4300022: MeshChunk
+    4300024: MeshChunk
+    4300026: MeshChunk
+    4300028: MeshChunk
+    4300030: MeshChunk
+    4300032: MeshChunk
+    4300034: MeshChunk
+    4300036: MeshChunk
+    4300038: MeshChunk
+    4300040: MeshChunk
+    4300042: MeshChunk
+    4300044: MeshChunk
+    4300046: MeshChunk
+    4300048: MeshChunk
+    4300050: MeshChunk
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - ceiling fixture metal
+    second: {fileID: 2100000, guid: 2cb29bcc236f17e4cbccf3d88bbcdc59, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - speaker
+    second: {fileID: 2100000, guid: b52b1ae3cab8b8647ae40a11fd9bd2f5, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: 0-8
+    second: {fileID: 2800000, guid: 05c8e97f75a2f3641b45e48a07898211, type: 3}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 100
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
