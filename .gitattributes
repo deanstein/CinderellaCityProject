@@ -8,6 +8,7 @@
 *.dll filter=lfs diff=lfs merge=lfs -text
 *.exe filter=lfs diff=lfs merge=lfs -text
 *.zip filter=lfs diff=lfs merge=lfs -text
+*.axm filter=lfs diff=lfs merge=lfs -text
 
 *.sln eol=crlf
 *.csproj eol=crlf
