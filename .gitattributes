@@ -12,4 +12,4 @@
 *.sln eol=crlf
 *.csproj eol=crlf
 *.asset eol=lf
-EXEs/**/* filter=lfs diff=lfs merge=lfs -text
+Cinderella[[:space:]]City[[:space:]]Project[[:space:]]Master/EXEs/**/* filter=lfs diff=lfs merge=lfs -text
