@@ -8274,52 +8274,52 @@ ModelImporter:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: 0-15
-    second: {fileID: 2800000, guid: 4c22a046f4269664d8ce20744fc1b781, type: 3}
+    second: {fileID: 2800000, guid: d2b3eb77e88ffbe4c8cd73d5dd65fd33, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: 0-2
-    second: {fileID: 2800000, guid: 627e3f7fd68b17b46b27ed14a12b230f, type: 3}
+    second: {fileID: 2800000, guid: cdb36a0edd65ec94e90d6e951c6cb636, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: 0-21
-    second: {fileID: 2800000, guid: c825ecee197eef746aa227a030945b65, type: 3}
+    second: {fileID: 2800000, guid: 41978d07b9ab3794fa97c71d5b44e8b5, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: 0-22
-    second: {fileID: 2800000, guid: 0b652a16548a7694bb399e5ae52f298c, type: 3}
+    second: {fileID: 2800000, guid: 28641b0d07ac01f44a17b4090bebe02e, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: 0-3061
-    second: {fileID: 2800000, guid: be105dac73b9fee43ba09185ccc80240, type: 3}
+    second: {fileID: 2800000, guid: 850dd14682c0598499aaf2326f4347ed, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: 0-58
-    second: {fileID: 2800000, guid: e1133e47103e92842bf1f5095021fea5, type: 3}
+    second: {fileID: 2800000, guid: 1da34c9f846e39f40acff67585c2619c, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: 0-61
-    second: {fileID: 2800000, guid: 5dc0eec2ee9c8dd4fa37527c2fd59912, type: 3}
+    second: {fileID: 2800000, guid: 630e80cb5c1bb6943b39f18282d4a9b4, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: 0-74
-    second: {fileID: 2800000, guid: 4fa5fbe6b441fbd448848241c7bd87b6, type: 3}
+    second: {fileID: 2800000, guid: cde2ab1d1e62d6345a51d706888714d5, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: 0-8
-    second: {fileID: 2800000, guid: 91b7d1c96426a004e852339ec54cd558, type: 3}
+    second: {fileID: 2800000, guid: e0d1341ce053d0c47915d790ebd1c7c3, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: step text1-jpg-0-5328
-    second: {fileID: 2800000, guid: a5ed4715e2936d044857cf1c36137e01, type: 3}
+    second: {fileID: 2800000, guid: 9dc65d13e32e2844796afefa998030c4, type: 3}
   materials:
     importMaterials: 1
     materialName: 0
@@ -8365,8 +8365,8 @@ ModelImporter:
     weldVertices: 1
     preserveHierarchy: 0
     indexFormat: 0
-    secondaryUVAngleDistortion: 4
-    secondaryUVAreaDistortion: 4
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 64
     useFileScale: 1
@@ -8391,7 +8391,6 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1

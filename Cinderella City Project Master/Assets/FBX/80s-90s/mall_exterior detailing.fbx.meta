@@ -15159,67 +15159,67 @@ ModelImporter:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: 0-113
-    second: {fileID: 2800000, guid: 568d20615f5fa2b408c6000852f5a19f, type: 3}
+    second: {fileID: 2800000, guid: 7c8d0850b0e9060409a02d477142fd95, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: 0-114
-    second: {fileID: 2800000, guid: 376c4b2148e3c7f45aa0e18b0145d2de, type: 3}
+    second: {fileID: 2800000, guid: 39df701344099c84c9f4c7c1310bcd1b, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: 0-121
-    second: {fileID: 2800000, guid: ef8580d239ec78a4699ef7b283d44197, type: 3}
+    second: {fileID: 2800000, guid: 4d53626802f73c84691c7b5f2b6c7d19, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: 0-167
-    second: {fileID: 2800000, guid: 661253691c28f1b45a0ff8e999f06d3e, type: 3}
+    second: {fileID: 2800000, guid: 77163ee4290cb1240b9db4cf02bd1ede, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: 0-172
-    second: {fileID: 2800000, guid: 34cc45a3d09169b48a6d8c37edaff074, type: 3}
+    second: {fileID: 2800000, guid: 9a450684a2a4a124f9469bdf34731f67, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: 0-178602
-    second: {fileID: 2800000, guid: 8e793124083b0384ca13c8607b18941b, type: 3}
+    second: {fileID: 2800000, guid: 4c37dbbec830b6746ba07928a76e7378, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: 0-202391
-    second: {fileID: 2800000, guid: f9631791eeedb494cbc5ac276391a020, type: 3}
+    second: {fileID: 2800000, guid: 802921c7d9ed3174a99170dce0d51f23, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: 0-48
-    second: {fileID: 2800000, guid: 4dd9312511496d347b1e075f12da5ad4, type: 3}
+    second: {fileID: 2800000, guid: 2a2c48edf683b7e47b2642e872e3da49, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: 0-49
-    second: {fileID: 2800000, guid: a53d6b2e0ff299940a2e87795eeeb82b, type: 3}
+    second: {fileID: 2800000, guid: 788e9b29378e27c459ffb5b4f3c0d7b4, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: 0-5
-    second: {fileID: 2800000, guid: c9da63e43a7b9bf47a813bc49b4b018d, type: 3}
+    second: {fileID: 2800000, guid: 0a03faba06420f04d820a6d4c2352643, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: 0-6
-    second: {fileID: 2800000, guid: 5ca6cb570fe6a7b4492af2aed059dfc0, type: 3}
+    second: {fileID: 2800000, guid: 05c08336a36b3b64f8a38926051424ee, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: 0-97
-    second: {fileID: 2800000, guid: 4ebc1d8253c5f08459ecf5e185e9cf59, type: 3}
+    second: {fileID: 2800000, guid: 7c70afb339deb824e92be096a134a473, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: 0-98
-    second: {fileID: 2800000, guid: 720053f611617f84fb13d514cd1ea646, type: 3}
+    second: {fileID: 2800000, guid: d5966a0318ae03748be8b624980960e5, type: 3}
   materials:
     importMaterials: 1
     materialName: 0
@@ -15265,8 +15265,8 @@ ModelImporter:
     weldVertices: 1
     preserveHierarchy: 0
     indexFormat: 0
-    secondaryUVAngleDistortion: 4
-    secondaryUVAreaDistortion: 4
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 64
     useFileScale: 1
@@ -15291,7 +15291,6 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
