@@ -1,0 +1,16 @@
+{
+  "fbxFileNames": 
+    [
+    "material update test.fbx",
+    "some other name.fbx"
+    ],
+  "testFBXProperties":
+    {
+        "fbxProperty1": "test property"
+    },
+  "anotherFBXProperties":
+    {
+        "fbxProperty1": "test property"
+    }
+ }
+ 
