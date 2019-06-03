@@ -155,6 +155,19 @@ public class AssetImportUpdate : AssetPostprocessor {
         return gameObjectMaxHeight;
     }
 
+    // define how to scale one GameObject to match tdhe height of another
+    public static void ScaleToMatchHeight(GameObject gameObjectToScale, GameObject gameObjectToMatch)
+    {
+        // get the height of the object to be replaced
+        float targetHeight = GetMaxHeightOfGameObject(gameObjectToMatch);
+        float currentHeight = GetMaxHeightOfGameObject(gameObjectToScale);
+        float scaleFactor = (targetHeight / currentHeight) * ((gameObjectToScale.transform.localScale.x + gameObjectToScale.transform.localScale.y + gameObjectToScale.transform.localScale.z) / 3);
+
+        // scale the prefab to match the height of its replacement
+        gameObjectToScale.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
+        Debug.Log("<b>Scaled </b>" + gameObjectToScale + " <b>to match</b> " + gameObjectToMatch + " <b>(" + scaleFactor + " scale factor)</b>");
+    }
+
     // define how to replace proxy objects with their Unity equivalents
     public static void ReplaceProxiesByAsset(string assetName)
     {
@@ -163,7 +176,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         var transformByAsset = gameObjectByAsset.transform;
 
         // identify the path of the prefab to replace this object
-        string birchPath = "Assets/TreesVariety/birch/birch 1.prefab";
+        string birchPath = "Assets/TreesVariety/birch/birch 2.prefab";
 
         // get all objects tagged already and delete them
         GameObject[] replacementsToDelete = GameObject.FindGameObjectsWithTag("DeleteMe");
@@ -196,15 +209,7 @@ public class AssetImportUpdate : AssetPostprocessor {
                     instancedPrefab.transform.parent = gameObjectToBeReplaced.transform.parent;
                     instancedPrefab.transform.SetPositionAndRotation(gameObjectToBeReplaced.transform.localPosition, Quaternion.Euler(new Vector3(0, 0, 0)));
                     instancedPrefab.transform.localScale = gameObjectToBeReplaced.transform.localScale;
-
-                    // get the height of the object to be replaced
-                    float targetHeight = GetMaxHeightOfGameObject(gameObjectToBeReplaced);
-                    float currentHeight = GetMaxHeightOfGameObject(instancedPrefab);
-                    float scaleFactor = (targetHeight / currentHeight) * ((gameObjectToBeReplaced.transform.localScale.x + gameObjectToBeReplaced.transform.localScale.y + gameObjectToBeReplaced.transform.localScale.z) / 3);
-
-                    // scale the prefab to match the height of its replacement
-                    instancedPrefab.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
-                    Debug.Log("<b>Scaled </b>" + instancedPrefab + " <b>to match</b> " + gameObjectToBeReplaced + " <b>(" + scaleFactor + " scale factor)</b>");
+                    ScaleToMatchHeight(instancedPrefab, gameObjectToBeReplaced); // further scale the new object to match the proxy's height
 
                     // run TagHelper to create the tag if it doesn't exist yet
                     TagHelper.AddTag("DeleteMe");
