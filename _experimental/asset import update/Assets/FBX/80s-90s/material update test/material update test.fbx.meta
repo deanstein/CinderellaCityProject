@@ -1,0 +1,313 @@
+fileFormatVersion: 2
+guid: ff54dd1109eccd546994843bb8064828
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Instance-0-212
+    100002: //RootNode
+    100004: MeshChunk
+    100006: MeshChunk 1
+    100008: MeshChunk 2
+    100010: MeshChunk 3
+    100012: MeshChunk 4
+    100014: Node-0-150
+    100016: Node-7-61
+    100018: MeshChunk 5
+    100020: Instance-0-0
+    100022: MeshChunk 6
+    100024: MeshChunk 7
+    100026: Node-4233-7
+    100028: Node-4234-7
+    100030: Node-4235-7
+    100032: Node-4236-7
+    100034: MeshChunk 10
+    100036: MeshChunk 11
+    100038: MeshChunk 8
+    100040: MeshChunk 9
+    100042: Node-0-69
+    100044: Node-4238-7
+    100046: Node-4239-7
+    100048: Node-4240-7
+    100050: Node-4241-7
+    100052: Node-4242-7
+    100054: Instance-0-81
+    100056: Instance-0-90
+    100058: MeshChunk 12
+    100060: MeshChunk 13
+    100062: Node-1-496
+    100064: Node-1-496 1
+    100066: deciduous tree-dec tree lg-0-81
+    100068: deciduous tree-dec tree lg-0-90
+    100070: REPLACE - deciduous tree-dec tree lg-0-81
+    100072: REPLACE - deciduous tree-dec tree lg-0-90
+    100074: MeshChunk 14
+    100076: Node-4237-7
+    400000: Instance-0-212
+    400002: //RootNode
+    400004: MeshChunk
+    400006: MeshChunk 1
+    400008: MeshChunk 2
+    400010: MeshChunk 3
+    400012: MeshChunk 4
+    400014: Node-0-150
+    400016: Node-7-61
+    400018: MeshChunk 5
+    400020: Instance-0-0
+    400022: MeshChunk 6
+    400024: MeshChunk 7
+    400026: Node-4233-7
+    400028: Node-4234-7
+    400030: Node-4235-7
+    400032: Node-4236-7
+    400034: MeshChunk 10
+    400036: MeshChunk 11
+    400038: MeshChunk 8
+    400040: MeshChunk 9
+    400042: Node-0-69
+    400044: Node-4238-7
+    400046: Node-4239-7
+    400048: Node-4240-7
+    400050: Node-4241-7
+    400052: Node-4242-7
+    400054: Instance-0-81
+    400056: Instance-0-90
+    400058: MeshChunk 12
+    400060: MeshChunk 13
+    400062: Node-1-496
+    400064: Node-1-496 1
+    400066: deciduous tree-dec tree lg-0-81
+    400068: deciduous tree-dec tree lg-0-90
+    400070: REPLACE - deciduous tree-dec tree lg-0-81
+    400072: REPLACE - deciduous tree-dec tree lg-0-90
+    400074: MeshChunk 14
+    400076: Node-4237-7
+    2100000: mosaic
+    2100002: DefaultMaterial
+    2100004: reflective
+    2100006: LIGHT - yellow
+    2300000: MeshChunk
+    2300002: MeshChunk 1
+    2300004: MeshChunk 2
+    2300006: MeshChunk 3
+    2300008: MeshChunk 4
+    2300010: MeshChunk 5
+    2300012: MeshChunk 6
+    2300014: MeshChunk 7
+    2300016: MeshChunk 10
+    2300018: MeshChunk 11
+    2300020: MeshChunk 8
+    2300022: MeshChunk 9
+    2300024: MeshChunk 12
+    2300026: MeshChunk 13
+    2300028: MeshChunk 14
+    3300000: MeshChunk
+    3300002: MeshChunk 1
+    3300004: MeshChunk 2
+    3300006: MeshChunk 3
+    3300008: MeshChunk 4
+    3300010: MeshChunk 5
+    3300012: MeshChunk 6
+    3300014: MeshChunk 7
+    3300016: MeshChunk 10
+    3300018: MeshChunk 11
+    3300020: MeshChunk 8
+    3300022: MeshChunk 9
+    3300024: MeshChunk 12
+    3300026: MeshChunk 13
+    3300028: MeshChunk 14
+    4300000: MeshChunk
+    4300002: MeshChunk
+    4300004: MeshChunk
+    4300006: MeshChunk
+    4300008: MeshChunk
+    4300010: MeshChunk
+    4300012: MeshChunk
+    4300014: MeshChunk
+    4300016: MeshChunk
+    4300018: MeshChunk
+    4300020: MeshChunk
+    4300022: MeshChunk
+    4300024: MeshChunk
+    4300026: MeshChunk
+    4300028: MeshChunk
+    6400000: MeshChunk
+    6400002: MeshChunk 1
+    6400004: MeshChunk 2
+    6400006: MeshChunk 3
+    6400008: MeshChunk 4
+    6400010: MeshChunk 5
+    6400012: MeshChunk 6
+    6400014: MeshChunk 7
+    6400016: MeshChunk 10
+    6400018: MeshChunk 11
+    6400020: MeshChunk 8
+    6400022: MeshChunk 9
+    6400024: MeshChunk 12
+    6400026: MeshChunk 13
+    6400028: MeshChunk 14
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: American Cherry
+    second: {fileID: 2100000, guid: 5f8cc4208a621cb47ac83dd779bcd729, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: DefaultMaterial
+    second: {fileID: 2100000, guid: b545a655d42aa6e45bba2c96f3d63dd6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - emission test
+    second: {fileID: 2100000, guid: 1ab2550f0c7096a498ca8e50d94356b2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - fluorescent panel
+    second: {fileID: 2100000, guid: ae73d7681fedf7346bf60c976ebe94d2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - green
+    second: {fileID: 2100000, guid: ac383d121d3b6564d87bc623dbbc2626, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - green fluor
+    second: {fileID: 2100000, guid: 34b373edb7917174d957294d21174028, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - high intensity white
+    second: {fileID: 2100000, guid: 2b6cbfd6c30ac7f43b5533ebae545d0d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - store - franz hummels
+    second: {fileID: 2100000, guid: 477caa24b3c8ad34caead44f8f32cfbc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - store rtc sign
+    second: {fileID: 2100000, guid: 5d7dc03bf7a530c44ba56ff8dd39e28a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - yellow
+    second: {fileID: 2100000, guid: 6e0c38cf8663a9b469bdfe112da4ac10, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: bricks
+    second: {fileID: 2100000, guid: 9111efa20bccb704ab66ab2c0e45be1f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: delete test
+    second: {fileID: 2100000, guid: c896a475197f92c4db1de2249d355024, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mosaic
+    second: {fileID: 2100000, guid: 0b106a31ac474464b9a15365a2dfb5b2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: reflective
+    second: {fileID: 2100000, guid: 8ba0b333a63b93c4fb3a1a87ca76909d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - black
+    second: {fileID: 2100000, guid: a0773d014a025a843b2d8d162f03d33d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tree_green
+    second: {fileID: 2100000, guid: 786af1d48df299045bffda5db66342b7, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 1
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 1
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 1
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 4
+    secondaryUVAreaDistortion: 4
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 64
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
