@@ -1,0 +1,1840 @@
+fileFormatVersion: 2
+guid: 6f881769b4581944bb59dc8609e7cf75
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Instance-0-11
+    100004: Instance-0-499
+    100006: Instance-0-501
+    100008: Instance-0-502
+    100010: Instance-0-503
+    100012: Instance-0-504
+    100014: Instance-1314-5692
+    100016: Instance-1314-8375
+    100018: Instance-2037-59
+    100020: Instance-2037-59 1
+    100022: Instance-2037-59 2
+    100024: Instance-2037-59 3
+    100026: Instance-2037-60
+    100028: Instance-2037-60 1
+    100030: Instance-2037-60 2
+    100032: Instance-2037-60 3
+    100034: Instance-2039-0
+    100036: Instance-2039-0 1
+    100038: Instance-2039-1
+    100040: Instance-2039-1 1
+    100042: Instance-2039-2
+    100044: Instance-2039-2 1
+    100046: Instance-2039-3
+    100048: Instance-2039-3 1
+    100050: Instance-2039-4
+    100052: Instance-2039-4 1
+    100054: Instance-2257-14105
+    100056: Instance-2257-6
+    100058: Instance-2257-9
+    100060: Instance-2264-0
+    100062: Instance-2264-1
+    100064: Instance-2264-2
+    100066: Instance-2265-2
+    100068: Instance-2265-3
+    100070: Instance-2266-2
+    100072: Instance-2266-3
+    100074: Instance-2267-0
+    100076: Instance-2267-0 1
+    100078: Instance-2267-1
+    100080: Instance-2267-1 1
+    100082: Instance-2267-2
+    100084: Instance-2267-2 1
+    100086: Instance-2267-3
+    100088: Instance-2267-3 1
+    100090: Instance-2267-4
+    100092: Instance-2267-4 1
+    100094: Instance-2270-59
+    100096: Instance-2270-59 1
+    100098: Instance-2270-59 2
+    100100: Instance-2270-59 3
+    100102: Instance-2270-60
+    100104: Instance-2270-60 1
+    100106: Instance-2270-60 2
+    100108: Instance-2270-60 3
+    100110: Instance-2272-0
+    100112: Instance-2272-1
+    100114: Instance-2272-2
+    100116: Instance-2273-14105
+    100118: Instance-2273-6
+    100120: Instance-2273-9
+    100122: Instance-2279-5692
+    100124: Instance-2279-8375
+    100126: MeshChunk
+    100128: MeshChunk 1
+    100130: MeshChunk 10
+    100132: MeshChunk 100
+    100134: MeshChunk 101
+    100136: MeshChunk 102
+    100138: MeshChunk 103
+    100140: MeshChunk 104
+    100142: MeshChunk 105
+    100144: MeshChunk 106
+    100146: MeshChunk 107
+    100148: MeshChunk 108
+    100150: MeshChunk 109
+    100152: MeshChunk 11
+    100154: MeshChunk 110
+    100156: MeshChunk 111
+    100158: MeshChunk 112
+    100160: MeshChunk 113
+    100162: MeshChunk 114
+    100164: MeshChunk 115
+    100166: MeshChunk 116
+    100168: MeshChunk 117
+    100170: MeshChunk 118
+    100172: MeshChunk 119
+    100174: MeshChunk 12
+    100176: MeshChunk 120
+    100178: MeshChunk 121
+    100180: MeshChunk 122
+    100182: MeshChunk 123
+    100184: MeshChunk 124
+    100186: MeshChunk 125
+    100188: MeshChunk 126
+    100190: MeshChunk 127
+    100192: MeshChunk 128
+    100194: MeshChunk 129
+    100196: MeshChunk 13
+    100198: MeshChunk 130
+    100200: MeshChunk 131
+    100202: MeshChunk 132
+    100204: MeshChunk 133
+    100206: MeshChunk 134
+    100208: MeshChunk 135
+    100210: MeshChunk 136
+    100212: MeshChunk 137
+    100214: MeshChunk 138
+    100216: MeshChunk 139
+    100218: MeshChunk 14
+    100220: MeshChunk 140
+    100222: MeshChunk 141
+    100224: MeshChunk 142
+    100226: MeshChunk 143
+    100228: MeshChunk 144
+    100230: MeshChunk 145
+    100232: MeshChunk 146
+    100234: MeshChunk 147
+    100236: MeshChunk 148
+    100238: MeshChunk 149
+    100240: MeshChunk 15
+    100242: MeshChunk 150
+    100244: MeshChunk 151
+    100246: MeshChunk 152
+    100248: MeshChunk 153
+    100250: MeshChunk 154
+    100252: MeshChunk 155
+    100254: MeshChunk 156
+    100256: MeshChunk 157
+    100258: MeshChunk 158
+    100260: MeshChunk 159
+    100262: MeshChunk 16
+    100264: MeshChunk 160
+    100266: MeshChunk 161
+    100268: MeshChunk 162
+    100270: MeshChunk 163
+    100272: MeshChunk 164
+    100274: MeshChunk 165
+    100276: MeshChunk 166
+    100278: MeshChunk 167
+    100280: MeshChunk 168
+    100282: MeshChunk 169
+    100284: MeshChunk 17
+    100286: MeshChunk 170
+    100288: MeshChunk 171
+    100290: MeshChunk 172
+    100292: MeshChunk 173
+    100294: MeshChunk 174
+    100296: MeshChunk 175
+    100298: MeshChunk 176
+    100300: MeshChunk 177
+    100302: MeshChunk 178
+    100304: MeshChunk 179
+    100306: MeshChunk 18
+    100308: MeshChunk 180
+    100310: MeshChunk 181
+    100312: MeshChunk 182
+    100314: MeshChunk 183
+    100316: MeshChunk 184
+    100318: MeshChunk 185
+    100320: MeshChunk 186
+    100322: MeshChunk 187
+    100324: MeshChunk 188
+    100326: MeshChunk 189
+    100328: MeshChunk 19
+    100330: MeshChunk 190
+    100332: MeshChunk 191
+    100334: MeshChunk 192
+    100336: MeshChunk 193
+    100338: MeshChunk 194
+    100340: MeshChunk 195
+    100342: MeshChunk 196
+    100344: MeshChunk 197
+    100346: MeshChunk 198
+    100348: MeshChunk 199
+    100350: MeshChunk 2
+    100352: MeshChunk 20
+    100354: MeshChunk 200
+    100356: MeshChunk 201
+    100358: MeshChunk 202
+    100360: MeshChunk 203
+    100362: MeshChunk 204
+    100364: MeshChunk 205
+    100366: MeshChunk 206
+    100368: MeshChunk 207
+    100370: MeshChunk 208
+    100372: MeshChunk 209
+    100374: MeshChunk 21
+    100376: MeshChunk 210
+    100378: MeshChunk 211
+    100380: MeshChunk 212
+    100382: MeshChunk 213
+    100384: MeshChunk 214
+    100386: MeshChunk 215
+    100388: MeshChunk 216
+    100390: MeshChunk 217
+    100392: MeshChunk 218
+    100394: MeshChunk 219
+    100396: MeshChunk 22
+    100398: MeshChunk 220
+    100400: MeshChunk 221
+    100402: MeshChunk 222
+    100404: MeshChunk 223
+    100406: MeshChunk 224
+    100408: MeshChunk 225
+    100410: MeshChunk 226
+    100412: MeshChunk 227
+    100414: MeshChunk 228
+    100416: MeshChunk 229
+    100418: MeshChunk 23
+    100420: MeshChunk 230
+    100422: MeshChunk 231
+    100424: MeshChunk 232
+    100426: MeshChunk 233
+    100428: MeshChunk 24
+    100430: MeshChunk 25
+    100432: MeshChunk 26
+    100434: MeshChunk 27
+    100436: MeshChunk 28
+    100438: MeshChunk 29
+    100440: MeshChunk 3
+    100442: MeshChunk 30
+    100444: MeshChunk 31
+    100446: MeshChunk 32
+    100448: MeshChunk 33
+    100450: MeshChunk 34
+    100452: MeshChunk 35
+    100454: MeshChunk 36
+    100456: MeshChunk 37
+    100458: MeshChunk 38
+    100460: MeshChunk 39
+    100462: MeshChunk 4
+    100464: MeshChunk 40
+    100466: MeshChunk 41
+    100468: MeshChunk 42
+    100470: MeshChunk 43
+    100472: MeshChunk 44
+    100474: MeshChunk 45
+    100476: MeshChunk 46
+    100478: MeshChunk 47
+    100480: MeshChunk 48
+    100482: MeshChunk 49
+    100484: MeshChunk 5
+    100486: MeshChunk 50
+    100488: MeshChunk 51
+    100490: MeshChunk 52
+    100492: MeshChunk 53
+    100494: MeshChunk 54
+    100496: MeshChunk 55
+    100498: MeshChunk 56
+    100500: MeshChunk 57
+    100502: MeshChunk 58
+    100504: MeshChunk 59
+    100506: MeshChunk 6
+    100508: MeshChunk 60
+    100510: MeshChunk 61
+    100512: MeshChunk 62
+    100514: MeshChunk 63
+    100516: MeshChunk 64
+    100518: MeshChunk 65
+    100520: MeshChunk 66
+    100522: MeshChunk 67
+    100524: MeshChunk 68
+    100526: MeshChunk 69
+    100528: MeshChunk 7
+    100530: MeshChunk 70
+    100532: MeshChunk 71
+    100534: MeshChunk 72
+    100536: MeshChunk 73
+    100538: MeshChunk 74
+    100540: MeshChunk 75
+    100542: MeshChunk 76
+    100544: MeshChunk 77
+    100546: MeshChunk 78
+    100548: MeshChunk 79
+    100550: MeshChunk 8
+    100552: MeshChunk 80
+    100554: MeshChunk 81
+    100556: MeshChunk 82
+    100558: MeshChunk 83
+    100560: MeshChunk 84
+    100562: MeshChunk 85
+    100564: MeshChunk 86
+    100566: MeshChunk 87
+    100568: MeshChunk 88
+    100570: MeshChunk 89
+    100572: MeshChunk 9
+    100574: MeshChunk 90
+    100576: MeshChunk 91
+    100578: MeshChunk 92
+    100580: MeshChunk 93
+    100582: MeshChunk 94
+    100584: MeshChunk 95
+    100586: MeshChunk 96
+    100588: MeshChunk 97
+    100590: MeshChunk 98
+    100592: MeshChunk 99
+    100594: Node-1314-132
+    100596: Node-1322-14
+    100598: Node-2035-58
+    100600: Node-2035-58 1
+    100602: Node-2036-58
+    100604: Node-2036-58 1
+    100606: Node-2036-58 2
+    100608: Node-2036-58 3
+    100610: Node-2037-58
+    100612: Node-2037-58 1
+    100614: Node-2037-58 2
+    100616: Node-2037-58 3
+    100618: Node-2038-58
+    100620: Node-2038-58 1
+    100622: Node-2038-58 2
+    100624: Node-2038-58 3
+    100626: Node-2038-58 4
+    100628: Node-2038-58 5
+    100630: Node-2038-58 6
+    100632: Node-2038-58 7
+    100634: Node-2044-58
+    100636: Node-2262-65
+    100638: Node-2265-471
+    100640: Node-2265-472
+    100642: Node-2266-471
+    100644: Node-2266-472
+    100646: Node-2268-58
+    100648: Node-2268-58 1
+    100650: Node-2269-58
+    100652: Node-2269-58 1
+    100654: Node-2269-58 2
+    100656: Node-2269-58 3
+    100658: Node-2270-58
+    100660: Node-2270-58 1
+    100662: Node-2270-58 2
+    100664: Node-2270-58 3
+    100666: Node-2271-58
+    100668: Node-2271-58 1
+    100670: Node-2271-58 2
+    100672: Node-2271-58 3
+    100674: Node-2271-58 4
+    100676: Node-2271-58 5
+    100678: Node-2271-58 6
+    100680: Node-2271-58 7
+    100682: Node-2279-132
+    100684: Node-2280-14
+    100686: Node-2281-58
+    100688: Node-2283-100671
+    100690: Node-2283-102
+    100692: Node-2283-102370
+    100694: Node-2283-102675
+    100696: Node-2283-103199
+    100698: Node-2283-103919
+    100700: Node-2283-103933
+    100702: Node-2283-1084
+    100704: Node-2283-110070
+    100706: Node-2283-111773
+    100708: Node-2283-112450
+    100710: Node-2283-114571
+    100712: Node-2283-114625
+    100714: Node-2283-115436
+    100716: Node-2283-117514
+    100718: Node-2283-118239
+    100720: Node-2283-119033
+    100722: Node-2283-120820
+    100724: Node-2283-124330
+    100726: Node-2283-126845
+    100728: Node-2283-127290
+    100730: Node-2283-127610
+    100732: Node-2283-128109
+    100734: Node-2283-128638
+    100736: Node-2283-129175
+    100738: Node-2283-130022
+    100740: Node-2283-130994
+    100742: Node-2283-132283
+    100744: Node-2283-135107
+    100746: Node-2283-138421
+    100748: Node-2283-138605
+    100750: Node-2283-13911
+    100752: Node-2283-141371
+    100754: Node-2283-141555
+    100756: Node-2283-147560
+    100758: Node-2283-14870
+    100760: Node-2283-150881
+    100762: Node-2283-151388
+    100764: Node-2283-151677
+    100766: Node-2283-152106
+    100768: Node-2283-160928
+    100770: Node-2283-1614
+    100772: Node-2283-163156
+    100774: Node-2283-16646
+    100776: Node-2283-167389
+    100778: Node-2283-167926
+    100780: Node-2283-17106
+    100782: Node-2283-17522
+    100784: Node-2283-17657
+    100786: Node-2283-18
+    100788: Node-2283-18043
+    100790: Node-2283-18234
+    100792: Node-2283-1871
+    100794: Node-2283-18774
+    100796: Node-2283-19378
+    100798: Node-2283-20355
+    100800: Node-2283-20853
+    100802: Node-2283-21635
+    100804: Node-2283-24
+    100806: Node-2283-25
+    100808: Node-2283-25725
+    100810: Node-2283-26197
+    100812: Node-2283-26332
+    100814: Node-2283-274
+    100816: Node-2283-28488
+    100818: Node-2283-29493
+    100820: Node-2283-29872
+    100822: Node-2283-30452
+    100824: Node-2283-31
+    100826: Node-2283-32955
+    100828: Node-2283-33104
+    100830: Node-2283-33311
+    100832: Node-2283-33401
+    100834: Node-2283-33895
+    100836: Node-2283-34428
+    100838: Node-2283-3467
+    100840: Node-2283-35980
+    100842: Node-2283-36689
+    100844: Node-2283-38006
+    100846: Node-2283-38692
+    100848: Node-2283-40602
+    100850: Node-2283-41704
+    100852: Node-2283-43909
+    100854: Node-2283-4447
+    100856: Node-2283-45742
+    100858: Node-2283-46004
+    100860: Node-2283-47637
+    100862: Node-2283-4805
+    100864: Node-2283-48512
+    100866: Node-2283-48538
+    100868: Node-2283-49963
+    100870: Node-2283-50181
+    100872: Node-2283-50770
+    100874: Node-2283-50850
+    100876: Node-2283-51460
+    100878: Node-2283-51980
+    100880: Node-2283-52813
+    100882: Node-2283-53304
+    100884: Node-2283-54135
+    100886: Node-2283-54946
+    100888: Node-2283-56435
+    100890: Node-2283-58769
+    100892: Node-2283-59136
+    100894: Node-2283-5982
+    100896: Node-2283-62842
+    100898: Node-2283-63734
+    100900: Node-2283-66292
+    100902: Node-2283-66554
+    100904: Node-2283-67904
+    100906: Node-2283-68759
+    100908: Node-2283-73953
+    100910: Node-2283-74931
+    100912: Node-2283-74966
+    100914: Node-2283-75884
+    100916: Node-2283-75974
+    100918: Node-2283-77154
+    100920: Node-2283-78735
+    100922: Node-2283-79
+    100924: Node-2283-8099
+    100926: Node-2283-81029
+    100928: Node-2283-81208
+    100930: Node-2283-83056
+    100932: Node-2283-8542
+    100934: Node-2283-87289
+    100936: Node-2283-87826
+    100938: Node-2283-89164
+    100940: Node-2283-99061
+    400000: //RootNode
+    400002: Instance-0-11
+    400004: Instance-0-499
+    400006: Instance-0-501
+    400008: Instance-0-502
+    400010: Instance-0-503
+    400012: Instance-0-504
+    400014: Instance-1314-5692
+    400016: Instance-1314-8375
+    400018: Instance-2037-59
+    400020: Instance-2037-59 1
+    400022: Instance-2037-59 2
+    400024: Instance-2037-59 3
+    400026: Instance-2037-60
+    400028: Instance-2037-60 1
+    400030: Instance-2037-60 2
+    400032: Instance-2037-60 3
+    400034: Instance-2039-0
+    400036: Instance-2039-0 1
+    400038: Instance-2039-1
+    400040: Instance-2039-1 1
+    400042: Instance-2039-2
+    400044: Instance-2039-2 1
+    400046: Instance-2039-3
+    400048: Instance-2039-3 1
+    400050: Instance-2039-4
+    400052: Instance-2039-4 1
+    400054: Instance-2257-14105
+    400056: Instance-2257-6
+    400058: Instance-2257-9
+    400060: Instance-2264-0
+    400062: Instance-2264-1
+    400064: Instance-2264-2
+    400066: Instance-2265-2
+    400068: Instance-2265-3
+    400070: Instance-2266-2
+    400072: Instance-2266-3
+    400074: Instance-2267-0
+    400076: Instance-2267-0 1
+    400078: Instance-2267-1
+    400080: Instance-2267-1 1
+    400082: Instance-2267-2
+    400084: Instance-2267-2 1
+    400086: Instance-2267-3
+    400088: Instance-2267-3 1
+    400090: Instance-2267-4
+    400092: Instance-2267-4 1
+    400094: Instance-2270-59
+    400096: Instance-2270-59 1
+    400098: Instance-2270-59 2
+    400100: Instance-2270-59 3
+    400102: Instance-2270-60
+    400104: Instance-2270-60 1
+    400106: Instance-2270-60 2
+    400108: Instance-2270-60 3
+    400110: Instance-2272-0
+    400112: Instance-2272-1
+    400114: Instance-2272-2
+    400116: Instance-2273-14105
+    400118: Instance-2273-6
+    400120: Instance-2273-9
+    400122: Instance-2279-5692
+    400124: Instance-2279-8375
+    400126: MeshChunk
+    400128: MeshChunk 1
+    400130: MeshChunk 10
+    400132: MeshChunk 100
+    400134: MeshChunk 101
+    400136: MeshChunk 102
+    400138: MeshChunk 103
+    400140: MeshChunk 104
+    400142: MeshChunk 105
+    400144: MeshChunk 106
+    400146: MeshChunk 107
+    400148: MeshChunk 108
+    400150: MeshChunk 109
+    400152: MeshChunk 11
+    400154: MeshChunk 110
+    400156: MeshChunk 111
+    400158: MeshChunk 112
+    400160: MeshChunk 113
+    400162: MeshChunk 114
+    400164: MeshChunk 115
+    400166: MeshChunk 116
+    400168: MeshChunk 117
+    400170: MeshChunk 118
+    400172: MeshChunk 119
+    400174: MeshChunk 12
+    400176: MeshChunk 120
+    400178: MeshChunk 121
+    400180: MeshChunk 122
+    400182: MeshChunk 123
+    400184: MeshChunk 124
+    400186: MeshChunk 125
+    400188: MeshChunk 126
+    400190: MeshChunk 127
+    400192: MeshChunk 128
+    400194: MeshChunk 129
+    400196: MeshChunk 13
+    400198: MeshChunk 130
+    400200: MeshChunk 131
+    400202: MeshChunk 132
+    400204: MeshChunk 133
+    400206: MeshChunk 134
+    400208: MeshChunk 135
+    400210: MeshChunk 136
+    400212: MeshChunk 137
+    400214: MeshChunk 138
+    400216: MeshChunk 139
+    400218: MeshChunk 14
+    400220: MeshChunk 140
+    400222: MeshChunk 141
+    400224: MeshChunk 142
+    400226: MeshChunk 143
+    400228: MeshChunk 144
+    400230: MeshChunk 145
+    400232: MeshChunk 146
+    400234: MeshChunk 147
+    400236: MeshChunk 148
+    400238: MeshChunk 149
+    400240: MeshChunk 15
+    400242: MeshChunk 150
+    400244: MeshChunk 151
+    400246: MeshChunk 152
+    400248: MeshChunk 153
+    400250: MeshChunk 154
+    400252: MeshChunk 155
+    400254: MeshChunk 156
+    400256: MeshChunk 157
+    400258: MeshChunk 158
+    400260: MeshChunk 159
+    400262: MeshChunk 16
+    400264: MeshChunk 160
+    400266: MeshChunk 161
+    400268: MeshChunk 162
+    400270: MeshChunk 163
+    400272: MeshChunk 164
+    400274: MeshChunk 165
+    400276: MeshChunk 166
+    400278: MeshChunk 167
+    400280: MeshChunk 168
+    400282: MeshChunk 169
+    400284: MeshChunk 17
+    400286: MeshChunk 170
+    400288: MeshChunk 171
+    400290: MeshChunk 172
+    400292: MeshChunk 173
+    400294: MeshChunk 174
+    400296: MeshChunk 175
+    400298: MeshChunk 176
+    400300: MeshChunk 177
+    400302: MeshChunk 178
+    400304: MeshChunk 179
+    400306: MeshChunk 18
+    400308: MeshChunk 180
+    400310: MeshChunk 181
+    400312: MeshChunk 182
+    400314: MeshChunk 183
+    400316: MeshChunk 184
+    400318: MeshChunk 185
+    400320: MeshChunk 186
+    400322: MeshChunk 187
+    400324: MeshChunk 188
+    400326: MeshChunk 189
+    400328: MeshChunk 19
+    400330: MeshChunk 190
+    400332: MeshChunk 191
+    400334: MeshChunk 192
+    400336: MeshChunk 193
+    400338: MeshChunk 194
+    400340: MeshChunk 195
+    400342: MeshChunk 196
+    400344: MeshChunk 197
+    400346: MeshChunk 198
+    400348: MeshChunk 199
+    400350: MeshChunk 2
+    400352: MeshChunk 20
+    400354: MeshChunk 200
+    400356: MeshChunk 201
+    400358: MeshChunk 202
+    400360: MeshChunk 203
+    400362: MeshChunk 204
+    400364: MeshChunk 205
+    400366: MeshChunk 206
+    400368: MeshChunk 207
+    400370: MeshChunk 208
+    400372: MeshChunk 209
+    400374: MeshChunk 21
+    400376: MeshChunk 210
+    400378: MeshChunk 211
+    400380: MeshChunk 212
+    400382: MeshChunk 213
+    400384: MeshChunk 214
+    400386: MeshChunk 215
+    400388: MeshChunk 216
+    400390: MeshChunk 217
+    400392: MeshChunk 218
+    400394: MeshChunk 219
+    400396: MeshChunk 22
+    400398: MeshChunk 220
+    400400: MeshChunk 221
+    400402: MeshChunk 222
+    400404: MeshChunk 223
+    400406: MeshChunk 224
+    400408: MeshChunk 225
+    400410: MeshChunk 226
+    400412: MeshChunk 227
+    400414: MeshChunk 228
+    400416: MeshChunk 229
+    400418: MeshChunk 23
+    400420: MeshChunk 230
+    400422: MeshChunk 231
+    400424: MeshChunk 232
+    400426: MeshChunk 233
+    400428: MeshChunk 24
+    400430: MeshChunk 25
+    400432: MeshChunk 26
+    400434: MeshChunk 27
+    400436: MeshChunk 28
+    400438: MeshChunk 29
+    400440: MeshChunk 3
+    400442: MeshChunk 30
+    400444: MeshChunk 31
+    400446: MeshChunk 32
+    400448: MeshChunk 33
+    400450: MeshChunk 34
+    400452: MeshChunk 35
+    400454: MeshChunk 36
+    400456: MeshChunk 37
+    400458: MeshChunk 38
+    400460: MeshChunk 39
+    400462: MeshChunk 4
+    400464: MeshChunk 40
+    400466: MeshChunk 41
+    400468: MeshChunk 42
+    400470: MeshChunk 43
+    400472: MeshChunk 44
+    400474: MeshChunk 45
+    400476: MeshChunk 46
+    400478: MeshChunk 47
+    400480: MeshChunk 48
+    400482: MeshChunk 49
+    400484: MeshChunk 5
+    400486: MeshChunk 50
+    400488: MeshChunk 51
+    400490: MeshChunk 52
+    400492: MeshChunk 53
+    400494: MeshChunk 54
+    400496: MeshChunk 55
+    400498: MeshChunk 56
+    400500: MeshChunk 57
+    400502: MeshChunk 58
+    400504: MeshChunk 59
+    400506: MeshChunk 6
+    400508: MeshChunk 60
+    400510: MeshChunk 61
+    400512: MeshChunk 62
+    400514: MeshChunk 63
+    400516: MeshChunk 64
+    400518: MeshChunk 65
+    400520: MeshChunk 66
+    400522: MeshChunk 67
+    400524: MeshChunk 68
+    400526: MeshChunk 69
+    400528: MeshChunk 7
+    400530: MeshChunk 70
+    400532: MeshChunk 71
+    400534: MeshChunk 72
+    400536: MeshChunk 73
+    400538: MeshChunk 74
+    400540: MeshChunk 75
+    400542: MeshChunk 76
+    400544: MeshChunk 77
+    400546: MeshChunk 78
+    400548: MeshChunk 79
+    400550: MeshChunk 8
+    400552: MeshChunk 80
+    400554: MeshChunk 81
+    400556: MeshChunk 82
+    400558: MeshChunk 83
+    400560: MeshChunk 84
+    400562: MeshChunk 85
+    400564: MeshChunk 86
+    400566: MeshChunk 87
+    400568: MeshChunk 88
+    400570: MeshChunk 89
+    400572: MeshChunk 9
+    400574: MeshChunk 90
+    400576: MeshChunk 91
+    400578: MeshChunk 92
+    400580: MeshChunk 93
+    400582: MeshChunk 94
+    400584: MeshChunk 95
+    400586: MeshChunk 96
+    400588: MeshChunk 97
+    400590: MeshChunk 98
+    400592: MeshChunk 99
+    400594: Node-1314-132
+    400596: Node-1322-14
+    400598: Node-2035-58
+    400600: Node-2035-58 1
+    400602: Node-2036-58
+    400604: Node-2036-58 1
+    400606: Node-2036-58 2
+    400608: Node-2036-58 3
+    400610: Node-2037-58
+    400612: Node-2037-58 1
+    400614: Node-2037-58 2
+    400616: Node-2037-58 3
+    400618: Node-2038-58
+    400620: Node-2038-58 1
+    400622: Node-2038-58 2
+    400624: Node-2038-58 3
+    400626: Node-2038-58 4
+    400628: Node-2038-58 5
+    400630: Node-2038-58 6
+    400632: Node-2038-58 7
+    400634: Node-2044-58
+    400636: Node-2262-65
+    400638: Node-2265-471
+    400640: Node-2265-472
+    400642: Node-2266-471
+    400644: Node-2266-472
+    400646: Node-2268-58
+    400648: Node-2268-58 1
+    400650: Node-2269-58
+    400652: Node-2269-58 1
+    400654: Node-2269-58 2
+    400656: Node-2269-58 3
+    400658: Node-2270-58
+    400660: Node-2270-58 1
+    400662: Node-2270-58 2
+    400664: Node-2270-58 3
+    400666: Node-2271-58
+    400668: Node-2271-58 1
+    400670: Node-2271-58 2
+    400672: Node-2271-58 3
+    400674: Node-2271-58 4
+    400676: Node-2271-58 5
+    400678: Node-2271-58 6
+    400680: Node-2271-58 7
+    400682: Node-2279-132
+    400684: Node-2280-14
+    400686: Node-2281-58
+    400688: Node-2283-100671
+    400690: Node-2283-102
+    400692: Node-2283-102370
+    400694: Node-2283-102675
+    400696: Node-2283-103199
+    400698: Node-2283-103919
+    400700: Node-2283-103933
+    400702: Node-2283-1084
+    400704: Node-2283-110070
+    400706: Node-2283-111773
+    400708: Node-2283-112450
+    400710: Node-2283-114571
+    400712: Node-2283-114625
+    400714: Node-2283-115436
+    400716: Node-2283-117514
+    400718: Node-2283-118239
+    400720: Node-2283-119033
+    400722: Node-2283-120820
+    400724: Node-2283-124330
+    400726: Node-2283-126845
+    400728: Node-2283-127290
+    400730: Node-2283-127610
+    400732: Node-2283-128109
+    400734: Node-2283-128638
+    400736: Node-2283-129175
+    400738: Node-2283-130022
+    400740: Node-2283-130994
+    400742: Node-2283-132283
+    400744: Node-2283-135107
+    400746: Node-2283-138421
+    400748: Node-2283-138605
+    400750: Node-2283-13911
+    400752: Node-2283-141371
+    400754: Node-2283-141555
+    400756: Node-2283-147560
+    400758: Node-2283-14870
+    400760: Node-2283-150881
+    400762: Node-2283-151388
+    400764: Node-2283-151677
+    400766: Node-2283-152106
+    400768: Node-2283-160928
+    400770: Node-2283-1614
+    400772: Node-2283-163156
+    400774: Node-2283-16646
+    400776: Node-2283-167389
+    400778: Node-2283-167926
+    400780: Node-2283-17106
+    400782: Node-2283-17522
+    400784: Node-2283-17657
+    400786: Node-2283-18
+    400788: Node-2283-18043
+    400790: Node-2283-18234
+    400792: Node-2283-1871
+    400794: Node-2283-18774
+    400796: Node-2283-19378
+    400798: Node-2283-20355
+    400800: Node-2283-20853
+    400802: Node-2283-21635
+    400804: Node-2283-24
+    400806: Node-2283-25
+    400808: Node-2283-25725
+    400810: Node-2283-26197
+    400812: Node-2283-26332
+    400814: Node-2283-274
+    400816: Node-2283-28488
+    400818: Node-2283-29493
+    400820: Node-2283-29872
+    400822: Node-2283-30452
+    400824: Node-2283-31
+    400826: Node-2283-32955
+    400828: Node-2283-33104
+    400830: Node-2283-33311
+    400832: Node-2283-33401
+    400834: Node-2283-33895
+    400836: Node-2283-34428
+    400838: Node-2283-3467
+    400840: Node-2283-35980
+    400842: Node-2283-36689
+    400844: Node-2283-38006
+    400846: Node-2283-38692
+    400848: Node-2283-40602
+    400850: Node-2283-41704
+    400852: Node-2283-43909
+    400854: Node-2283-4447
+    400856: Node-2283-45742
+    400858: Node-2283-46004
+    400860: Node-2283-47637
+    400862: Node-2283-4805
+    400864: Node-2283-48512
+    400866: Node-2283-48538
+    400868: Node-2283-49963
+    400870: Node-2283-50181
+    400872: Node-2283-50770
+    400874: Node-2283-50850
+    400876: Node-2283-51460
+    400878: Node-2283-51980
+    400880: Node-2283-52813
+    400882: Node-2283-53304
+    400884: Node-2283-54135
+    400886: Node-2283-54946
+    400888: Node-2283-56435
+    400890: Node-2283-58769
+    400892: Node-2283-59136
+    400894: Node-2283-5982
+    400896: Node-2283-62842
+    400898: Node-2283-63734
+    400900: Node-2283-66292
+    400902: Node-2283-66554
+    400904: Node-2283-67904
+    400906: Node-2283-68759
+    400908: Node-2283-73953
+    400910: Node-2283-74931
+    400912: Node-2283-74966
+    400914: Node-2283-75884
+    400916: Node-2283-75974
+    400918: Node-2283-77154
+    400920: Node-2283-78735
+    400922: Node-2283-79
+    400924: Node-2283-8099
+    400926: Node-2283-81029
+    400928: Node-2283-81208
+    400930: Node-2283-83056
+    400932: Node-2283-8542
+    400934: Node-2283-87289
+    400936: Node-2283-87826
+    400938: Node-2283-89164
+    400940: Node-2283-99061
+    2100000: store - light grey
+    2100002: store - rotated wood
+    2100004: drywall
+    2100006: DefaultMaterial
+    2100008: LIGHT - store - white
+    2100010: store - dark grey
+    2100012: LIGHT - wards red
+    2100014: store - black
+    2100016: LIGHT - store - footlocker
+    2100018: mall - brick
+    2100020: concrete - painted 80s
+    2100022: store - stacked brick
+    2300000: MeshChunk
+    2300002: MeshChunk 1
+    2300004: MeshChunk 10
+    2300006: MeshChunk 100
+    2300008: MeshChunk 101
+    2300010: MeshChunk 102
+    2300012: MeshChunk 103
+    2300014: MeshChunk 104
+    2300016: MeshChunk 105
+    2300018: MeshChunk 106
+    2300020: MeshChunk 107
+    2300022: MeshChunk 108
+    2300024: MeshChunk 109
+    2300026: MeshChunk 11
+    2300028: MeshChunk 110
+    2300030: MeshChunk 111
+    2300032: MeshChunk 112
+    2300034: MeshChunk 113
+    2300036: MeshChunk 114
+    2300038: MeshChunk 115
+    2300040: MeshChunk 116
+    2300042: MeshChunk 117
+    2300044: MeshChunk 118
+    2300046: MeshChunk 119
+    2300048: MeshChunk 12
+    2300050: MeshChunk 120
+    2300052: MeshChunk 121
+    2300054: MeshChunk 122
+    2300056: MeshChunk 123
+    2300058: MeshChunk 124
+    2300060: MeshChunk 125
+    2300062: MeshChunk 126
+    2300064: MeshChunk 127
+    2300066: MeshChunk 128
+    2300068: MeshChunk 129
+    2300070: MeshChunk 13
+    2300072: MeshChunk 130
+    2300074: MeshChunk 131
+    2300076: MeshChunk 132
+    2300078: MeshChunk 133
+    2300080: MeshChunk 134
+    2300082: MeshChunk 135
+    2300084: MeshChunk 136
+    2300086: MeshChunk 137
+    2300088: MeshChunk 138
+    2300090: MeshChunk 139
+    2300092: MeshChunk 14
+    2300094: MeshChunk 140
+    2300096: MeshChunk 141
+    2300098: MeshChunk 142
+    2300100: MeshChunk 143
+    2300102: MeshChunk 144
+    2300104: MeshChunk 145
+    2300106: MeshChunk 146
+    2300108: MeshChunk 147
+    2300110: MeshChunk 148
+    2300112: MeshChunk 149
+    2300114: MeshChunk 15
+    2300116: MeshChunk 150
+    2300118: MeshChunk 151
+    2300120: MeshChunk 152
+    2300122: MeshChunk 153
+    2300124: MeshChunk 154
+    2300126: MeshChunk 155
+    2300128: MeshChunk 156
+    2300130: MeshChunk 157
+    2300132: MeshChunk 158
+    2300134: MeshChunk 159
+    2300136: MeshChunk 16
+    2300138: MeshChunk 160
+    2300140: MeshChunk 161
+    2300142: MeshChunk 162
+    2300144: MeshChunk 163
+    2300146: MeshChunk 164
+    2300148: MeshChunk 165
+    2300150: MeshChunk 166
+    2300152: MeshChunk 167
+    2300154: MeshChunk 168
+    2300156: MeshChunk 169
+    2300158: MeshChunk 17
+    2300160: MeshChunk 170
+    2300162: MeshChunk 171
+    2300164: MeshChunk 172
+    2300166: MeshChunk 173
+    2300168: MeshChunk 174
+    2300170: MeshChunk 175
+    2300172: MeshChunk 176
+    2300174: MeshChunk 177
+    2300176: MeshChunk 178
+    2300178: MeshChunk 179
+    2300180: MeshChunk 18
+    2300182: MeshChunk 180
+    2300184: MeshChunk 181
+    2300186: MeshChunk 182
+    2300188: MeshChunk 183
+    2300190: MeshChunk 184
+    2300192: MeshChunk 185
+    2300194: MeshChunk 186
+    2300196: MeshChunk 187
+    2300198: MeshChunk 188
+    2300200: MeshChunk 189
+    2300202: MeshChunk 19
+    2300204: MeshChunk 190
+    2300206: MeshChunk 191
+    2300208: MeshChunk 192
+    2300210: MeshChunk 193
+    2300212: MeshChunk 194
+    2300214: MeshChunk 195
+    2300216: MeshChunk 196
+    2300218: MeshChunk 197
+    2300220: MeshChunk 198
+    2300222: MeshChunk 199
+    2300224: MeshChunk 2
+    2300226: MeshChunk 20
+    2300228: MeshChunk 200
+    2300230: MeshChunk 201
+    2300232: MeshChunk 202
+    2300234: MeshChunk 203
+    2300236: MeshChunk 204
+    2300238: MeshChunk 205
+    2300240: MeshChunk 206
+    2300242: MeshChunk 207
+    2300244: MeshChunk 208
+    2300246: MeshChunk 209
+    2300248: MeshChunk 21
+    2300250: MeshChunk 210
+    2300252: MeshChunk 211
+    2300254: MeshChunk 212
+    2300256: MeshChunk 213
+    2300258: MeshChunk 214
+    2300260: MeshChunk 215
+    2300262: MeshChunk 216
+    2300264: MeshChunk 217
+    2300266: MeshChunk 218
+    2300268: MeshChunk 219
+    2300270: MeshChunk 22
+    2300272: MeshChunk 220
+    2300274: MeshChunk 221
+    2300276: MeshChunk 222
+    2300278: MeshChunk 223
+    2300280: MeshChunk 224
+    2300282: MeshChunk 225
+    2300284: MeshChunk 226
+    2300286: MeshChunk 227
+    2300288: MeshChunk 228
+    2300290: MeshChunk 229
+    2300292: MeshChunk 23
+    2300294: MeshChunk 230
+    2300296: MeshChunk 231
+    2300298: MeshChunk 232
+    2300300: MeshChunk 233
+    2300302: MeshChunk 24
+    2300304: MeshChunk 25
+    2300306: MeshChunk 26
+    2300308: MeshChunk 27
+    2300310: MeshChunk 28
+    2300312: MeshChunk 29
+    2300314: MeshChunk 3
+    2300316: MeshChunk 30
+    2300318: MeshChunk 31
+    2300320: MeshChunk 32
+    2300322: MeshChunk 33
+    2300324: MeshChunk 34
+    2300326: MeshChunk 35
+    2300328: MeshChunk 36
+    2300330: MeshChunk 37
+    2300332: MeshChunk 38
+    2300334: MeshChunk 39
+    2300336: MeshChunk 4
+    2300338: MeshChunk 40
+    2300340: MeshChunk 41
+    2300342: MeshChunk 42
+    2300344: MeshChunk 43
+    2300346: MeshChunk 44
+    2300348: MeshChunk 45
+    2300350: MeshChunk 46
+    2300352: MeshChunk 47
+    2300354: MeshChunk 48
+    2300356: MeshChunk 49
+    2300358: MeshChunk 5
+    2300360: MeshChunk 50
+    2300362: MeshChunk 51
+    2300364: MeshChunk 52
+    2300366: MeshChunk 53
+    2300368: MeshChunk 54
+    2300370: MeshChunk 55
+    2300372: MeshChunk 56
+    2300374: MeshChunk 57
+    2300376: MeshChunk 58
+    2300378: MeshChunk 59
+    2300380: MeshChunk 6
+    2300382: MeshChunk 60
+    2300384: MeshChunk 61
+    2300386: MeshChunk 62
+    2300388: MeshChunk 63
+    2300390: MeshChunk 64
+    2300392: MeshChunk 65
+    2300394: MeshChunk 66
+    2300396: MeshChunk 67
+    2300398: MeshChunk 68
+    2300400: MeshChunk 69
+    2300402: MeshChunk 7
+    2300404: MeshChunk 70
+    2300406: MeshChunk 71
+    2300408: MeshChunk 72
+    2300410: MeshChunk 73
+    2300412: MeshChunk 74
+    2300414: MeshChunk 75
+    2300416: MeshChunk 76
+    2300418: MeshChunk 77
+    2300420: MeshChunk 78
+    2300422: MeshChunk 79
+    2300424: MeshChunk 8
+    2300426: MeshChunk 80
+    2300428: MeshChunk 81
+    2300430: MeshChunk 82
+    2300432: MeshChunk 83
+    2300434: MeshChunk 84
+    2300436: MeshChunk 85
+    2300438: MeshChunk 86
+    2300440: MeshChunk 87
+    2300442: MeshChunk 88
+    2300444: MeshChunk 89
+    2300446: MeshChunk 9
+    2300448: MeshChunk 90
+    2300450: MeshChunk 91
+    2300452: MeshChunk 92
+    2300454: MeshChunk 93
+    2300456: MeshChunk 94
+    2300458: MeshChunk 95
+    2300460: MeshChunk 96
+    2300462: MeshChunk 97
+    2300464: MeshChunk 98
+    2300466: MeshChunk 99
+    3300000: MeshChunk
+    3300002: MeshChunk 1
+    3300004: MeshChunk 10
+    3300006: MeshChunk 100
+    3300008: MeshChunk 101
+    3300010: MeshChunk 102
+    3300012: MeshChunk 103
+    3300014: MeshChunk 104
+    3300016: MeshChunk 105
+    3300018: MeshChunk 106
+    3300020: MeshChunk 107
+    3300022: MeshChunk 108
+    3300024: MeshChunk 109
+    3300026: MeshChunk 11
+    3300028: MeshChunk 110
+    3300030: MeshChunk 111
+    3300032: MeshChunk 112
+    3300034: MeshChunk 113
+    3300036: MeshChunk 114
+    3300038: MeshChunk 115
+    3300040: MeshChunk 116
+    3300042: MeshChunk 117
+    3300044: MeshChunk 118
+    3300046: MeshChunk 119
+    3300048: MeshChunk 12
+    3300050: MeshChunk 120
+    3300052: MeshChunk 121
+    3300054: MeshChunk 122
+    3300056: MeshChunk 123
+    3300058: MeshChunk 124
+    3300060: MeshChunk 125
+    3300062: MeshChunk 126
+    3300064: MeshChunk 127
+    3300066: MeshChunk 128
+    3300068: MeshChunk 129
+    3300070: MeshChunk 13
+    3300072: MeshChunk 130
+    3300074: MeshChunk 131
+    3300076: MeshChunk 132
+    3300078: MeshChunk 133
+    3300080: MeshChunk 134
+    3300082: MeshChunk 135
+    3300084: MeshChunk 136
+    3300086: MeshChunk 137
+    3300088: MeshChunk 138
+    3300090: MeshChunk 139
+    3300092: MeshChunk 14
+    3300094: MeshChunk 140
+    3300096: MeshChunk 141
+    3300098: MeshChunk 142
+    3300100: MeshChunk 143
+    3300102: MeshChunk 144
+    3300104: MeshChunk 145
+    3300106: MeshChunk 146
+    3300108: MeshChunk 147
+    3300110: MeshChunk 148
+    3300112: MeshChunk 149
+    3300114: MeshChunk 15
+    3300116: MeshChunk 150
+    3300118: MeshChunk 151
+    3300120: MeshChunk 152
+    3300122: MeshChunk 153
+    3300124: MeshChunk 154
+    3300126: MeshChunk 155
+    3300128: MeshChunk 156
+    3300130: MeshChunk 157
+    3300132: MeshChunk 158
+    3300134: MeshChunk 159
+    3300136: MeshChunk 16
+    3300138: MeshChunk 160
+    3300140: MeshChunk 161
+    3300142: MeshChunk 162
+    3300144: MeshChunk 163
+    3300146: MeshChunk 164
+    3300148: MeshChunk 165
+    3300150: MeshChunk 166
+    3300152: MeshChunk 167
+    3300154: MeshChunk 168
+    3300156: MeshChunk 169
+    3300158: MeshChunk 17
+    3300160: MeshChunk 170
+    3300162: MeshChunk 171
+    3300164: MeshChunk 172
+    3300166: MeshChunk 173
+    3300168: MeshChunk 174
+    3300170: MeshChunk 175
+    3300172: MeshChunk 176
+    3300174: MeshChunk 177
+    3300176: MeshChunk 178
+    3300178: MeshChunk 179
+    3300180: MeshChunk 18
+    3300182: MeshChunk 180
+    3300184: MeshChunk 181
+    3300186: MeshChunk 182
+    3300188: MeshChunk 183
+    3300190: MeshChunk 184
+    3300192: MeshChunk 185
+    3300194: MeshChunk 186
+    3300196: MeshChunk 187
+    3300198: MeshChunk 188
+    3300200: MeshChunk 189
+    3300202: MeshChunk 19
+    3300204: MeshChunk 190
+    3300206: MeshChunk 191
+    3300208: MeshChunk 192
+    3300210: MeshChunk 193
+    3300212: MeshChunk 194
+    3300214: MeshChunk 195
+    3300216: MeshChunk 196
+    3300218: MeshChunk 197
+    3300220: MeshChunk 198
+    3300222: MeshChunk 199
+    3300224: MeshChunk 2
+    3300226: MeshChunk 20
+    3300228: MeshChunk 200
+    3300230: MeshChunk 201
+    3300232: MeshChunk 202
+    3300234: MeshChunk 203
+    3300236: MeshChunk 204
+    3300238: MeshChunk 205
+    3300240: MeshChunk 206
+    3300242: MeshChunk 207
+    3300244: MeshChunk 208
+    3300246: MeshChunk 209
+    3300248: MeshChunk 21
+    3300250: MeshChunk 210
+    3300252: MeshChunk 211
+    3300254: MeshChunk 212
+    3300256: MeshChunk 213
+    3300258: MeshChunk 214
+    3300260: MeshChunk 215
+    3300262: MeshChunk 216
+    3300264: MeshChunk 217
+    3300266: MeshChunk 218
+    3300268: MeshChunk 219
+    3300270: MeshChunk 22
+    3300272: MeshChunk 220
+    3300274: MeshChunk 221
+    3300276: MeshChunk 222
+    3300278: MeshChunk 223
+    3300280: MeshChunk 224
+    3300282: MeshChunk 225
+    3300284: MeshChunk 226
+    3300286: MeshChunk 227
+    3300288: MeshChunk 228
+    3300290: MeshChunk 229
+    3300292: MeshChunk 23
+    3300294: MeshChunk 230
+    3300296: MeshChunk 231
+    3300298: MeshChunk 232
+    3300300: MeshChunk 233
+    3300302: MeshChunk 24
+    3300304: MeshChunk 25
+    3300306: MeshChunk 26
+    3300308: MeshChunk 27
+    3300310: MeshChunk 28
+    3300312: MeshChunk 29
+    3300314: MeshChunk 3
+    3300316: MeshChunk 30
+    3300318: MeshChunk 31
+    3300320: MeshChunk 32
+    3300322: MeshChunk 33
+    3300324: MeshChunk 34
+    3300326: MeshChunk 35
+    3300328: MeshChunk 36
+    3300330: MeshChunk 37
+    3300332: MeshChunk 38
+    3300334: MeshChunk 39
+    3300336: MeshChunk 4
+    3300338: MeshChunk 40
+    3300340: MeshChunk 41
+    3300342: MeshChunk 42
+    3300344: MeshChunk 43
+    3300346: MeshChunk 44
+    3300348: MeshChunk 45
+    3300350: MeshChunk 46
+    3300352: MeshChunk 47
+    3300354: MeshChunk 48
+    3300356: MeshChunk 49
+    3300358: MeshChunk 5
+    3300360: MeshChunk 50
+    3300362: MeshChunk 51
+    3300364: MeshChunk 52
+    3300366: MeshChunk 53
+    3300368: MeshChunk 54
+    3300370: MeshChunk 55
+    3300372: MeshChunk 56
+    3300374: MeshChunk 57
+    3300376: MeshChunk 58
+    3300378: MeshChunk 59
+    3300380: MeshChunk 6
+    3300382: MeshChunk 60
+    3300384: MeshChunk 61
+    3300386: MeshChunk 62
+    3300388: MeshChunk 63
+    3300390: MeshChunk 64
+    3300392: MeshChunk 65
+    3300394: MeshChunk 66
+    3300396: MeshChunk 67
+    3300398: MeshChunk 68
+    3300400: MeshChunk 69
+    3300402: MeshChunk 7
+    3300404: MeshChunk 70
+    3300406: MeshChunk 71
+    3300408: MeshChunk 72
+    3300410: MeshChunk 73
+    3300412: MeshChunk 74
+    3300414: MeshChunk 75
+    3300416: MeshChunk 76
+    3300418: MeshChunk 77
+    3300420: MeshChunk 78
+    3300422: MeshChunk 79
+    3300424: MeshChunk 8
+    3300426: MeshChunk 80
+    3300428: MeshChunk 81
+    3300430: MeshChunk 82
+    3300432: MeshChunk 83
+    3300434: MeshChunk 84
+    3300436: MeshChunk 85
+    3300438: MeshChunk 86
+    3300440: MeshChunk 87
+    3300442: MeshChunk 88
+    3300444: MeshChunk 89
+    3300446: MeshChunk 9
+    3300448: MeshChunk 90
+    3300450: MeshChunk 91
+    3300452: MeshChunk 92
+    3300454: MeshChunk 93
+    3300456: MeshChunk 94
+    3300458: MeshChunk 95
+    3300460: MeshChunk 96
+    3300462: MeshChunk 97
+    3300464: MeshChunk 98
+    3300466: MeshChunk 99
+    4300000: MeshChunk
+    4300002: MeshChunk
+    4300004: MeshChunk
+    4300006: MeshChunk
+    4300008: MeshChunk
+    4300010: MeshChunk
+    4300012: MeshChunk
+    4300014: MeshChunk
+    4300016: MeshChunk
+    4300018: MeshChunk
+    4300020: MeshChunk
+    4300022: MeshChunk
+    4300024: MeshChunk
+    4300026: MeshChunk
+    4300028: MeshChunk
+    4300030: MeshChunk
+    4300032: MeshChunk
+    4300034: MeshChunk
+    4300036: MeshChunk
+    4300038: MeshChunk
+    4300040: MeshChunk
+    4300042: MeshChunk
+    4300044: MeshChunk
+    4300046: MeshChunk
+    4300048: MeshChunk
+    4300050: MeshChunk
+    4300052: MeshChunk
+    4300054: MeshChunk
+    4300056: MeshChunk
+    4300058: MeshChunk
+    4300060: MeshChunk
+    4300062: MeshChunk
+    4300064: MeshChunk
+    4300066: MeshChunk
+    4300068: MeshChunk
+    4300070: MeshChunk
+    4300072: MeshChunk
+    4300074: MeshChunk
+    4300076: MeshChunk
+    4300078: MeshChunk
+    4300080: MeshChunk
+    4300082: MeshChunk
+    4300084: MeshChunk
+    4300086: MeshChunk
+    4300088: MeshChunk
+    4300090: MeshChunk
+    4300092: MeshChunk
+    4300094: MeshChunk
+    4300096: MeshChunk
+    4300098: MeshChunk
+    4300100: MeshChunk
+    4300102: MeshChunk
+    4300104: MeshChunk
+    4300106: MeshChunk
+    4300108: MeshChunk
+    4300110: MeshChunk
+    4300112: MeshChunk
+    4300114: MeshChunk
+    4300116: MeshChunk
+    4300118: MeshChunk
+    4300120: MeshChunk
+    4300122: MeshChunk
+    4300124: MeshChunk
+    4300126: MeshChunk
+    4300128: MeshChunk
+    4300130: MeshChunk
+    4300132: MeshChunk
+    4300134: MeshChunk
+    4300136: MeshChunk
+    4300138: MeshChunk
+    4300140: MeshChunk
+    4300142: MeshChunk
+    4300144: MeshChunk
+    4300146: MeshChunk
+    4300148: MeshChunk
+    4300150: MeshChunk
+    4300152: MeshChunk
+    4300154: MeshChunk
+    4300156: MeshChunk
+    4300158: MeshChunk
+    4300160: MeshChunk
+    4300162: MeshChunk
+    4300164: MeshChunk
+    4300166: MeshChunk
+    4300168: MeshChunk
+    4300170: MeshChunk
+    4300172: MeshChunk
+    4300174: MeshChunk
+    4300176: MeshChunk
+    4300178: MeshChunk
+    4300180: MeshChunk
+    4300182: MeshChunk
+    4300184: MeshChunk
+    4300186: MeshChunk
+    4300188: MeshChunk
+    4300190: MeshChunk
+    4300192: MeshChunk
+    4300194: MeshChunk
+    4300196: MeshChunk
+    4300198: MeshChunk
+    4300200: MeshChunk
+    4300202: MeshChunk
+    4300204: MeshChunk
+    4300206: MeshChunk
+    4300208: MeshChunk
+    4300210: MeshChunk
+    4300212: MeshChunk
+    4300214: MeshChunk
+    4300216: MeshChunk
+    4300218: MeshChunk
+    4300220: MeshChunk
+    4300222: MeshChunk
+    4300224: MeshChunk
+    4300226: MeshChunk
+    4300228: MeshChunk
+    4300230: MeshChunk
+    4300232: MeshChunk
+    4300234: MeshChunk
+    4300236: MeshChunk
+    4300238: MeshChunk
+    4300240: MeshChunk
+    4300242: MeshChunk
+    4300244: MeshChunk
+    4300246: MeshChunk
+    4300248: MeshChunk
+    4300250: MeshChunk
+    4300252: MeshChunk
+    4300254: MeshChunk
+    4300256: MeshChunk
+    4300258: MeshChunk
+    4300260: MeshChunk
+    4300262: MeshChunk
+    4300264: MeshChunk
+    4300266: MeshChunk
+    4300268: MeshChunk
+    4300270: MeshChunk
+    4300272: MeshChunk
+    4300274: MeshChunk
+    4300276: MeshChunk
+    4300278: MeshChunk
+    4300280: MeshChunk
+    4300282: MeshChunk
+    4300284: MeshChunk
+    4300286: MeshChunk
+    4300288: MeshChunk
+    4300290: MeshChunk
+    4300292: MeshChunk
+    4300294: MeshChunk
+    4300296: MeshChunk
+    4300298: MeshChunk
+    4300300: MeshChunk
+    4300302: MeshChunk
+    4300304: MeshChunk
+    4300306: MeshChunk
+    4300308: MeshChunk
+    4300310: MeshChunk
+    4300312: MeshChunk
+    4300314: MeshChunk
+    4300316: MeshChunk
+    4300318: MeshChunk
+    4300320: MeshChunk
+    4300322: MeshChunk
+    4300324: MeshChunk
+    4300326: MeshChunk
+    4300328: MeshChunk
+    4300330: MeshChunk
+    4300332: MeshChunk
+    4300334: MeshChunk
+    4300336: MeshChunk
+    4300338: MeshChunk
+    4300340: MeshChunk
+    4300342: MeshChunk
+    4300344: MeshChunk
+    4300346: MeshChunk
+    4300348: MeshChunk
+    4300350: MeshChunk
+    4300352: MeshChunk
+    4300354: MeshChunk
+    4300356: MeshChunk
+    4300358: MeshChunk
+    4300360: MeshChunk
+    4300362: MeshChunk
+    4300364: MeshChunk
+    4300366: MeshChunk
+    4300368: MeshChunk
+    4300370: MeshChunk
+    4300372: MeshChunk
+    4300374: MeshChunk
+    4300376: MeshChunk
+    4300378: MeshChunk
+    4300380: MeshChunk
+    4300382: MeshChunk
+    4300384: MeshChunk
+    4300386: MeshChunk
+    4300388: MeshChunk
+    4300390: MeshChunk
+    4300392: MeshChunk
+    4300394: MeshChunk
+    4300396: MeshChunk
+    4300398: MeshChunk
+    4300400: MeshChunk
+    4300402: MeshChunk
+    4300404: MeshChunk
+    4300406: MeshChunk
+    4300408: MeshChunk
+    4300410: MeshChunk
+    4300412: MeshChunk
+    4300414: MeshChunk
+    4300416: MeshChunk
+    4300418: MeshChunk
+    4300420: MeshChunk
+    4300422: MeshChunk
+    4300424: MeshChunk
+    4300426: MeshChunk
+    4300428: MeshChunk
+    4300430: MeshChunk
+    4300432: MeshChunk
+    4300434: MeshChunk
+    4300436: MeshChunk
+    4300438: MeshChunk
+    4300440: MeshChunk
+    4300442: MeshChunk
+    4300444: MeshChunk
+    4300446: MeshChunk
+    4300448: MeshChunk
+    4300450: MeshChunk
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: DefaultMaterial
+    second: {fileID: 2100000, guid: ce89ebfb84442574b89077f987d81442, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - store - footlocker
+    second: {fileID: 2100000, guid: fa36bbd1cf3e91448ac959ef247589fe, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - store - white
+    second: {fileID: 2100000, guid: 57eb39e7c3faff54b8db081013bd0e48, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - wards red
+    second: {fileID: 2100000, guid: 97d484ef0cca03345a0714dbf35c5af0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: concrete - painted 80s
+    second: {fileID: 2100000, guid: ef586daeedab19941a680823c44c929c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: drywall
+    second: {fileID: 2100000, guid: a77a2abc36af4ff44a23b9ee57600460, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - brick
+    second: {fileID: 2100000, guid: c05579d1efb47a54ca9e1d6d423fa4ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - black
+    second: {fileID: 2100000, guid: ea287539999c2054da38e56ce5caf047, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - dark grey
+    second: {fileID: 2100000, guid: 38a67613e4cf3a347b7f93dbb1156bcb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - light grey
+    second: {fileID: 2100000, guid: 25463e333ad07d04abe1b2c7918eac1f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - rotated wood
+    second: {fileID: 2100000, guid: e140015cbf667b540a7dfb01c7daa2b9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - stacked brick
+    second: {fileID: 2100000, guid: 629c0b67f9a746a4e8e7060e598417d8, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: 1314-4503
+    second: {fileID: 2800000, guid: 024c6a07a3cfb4244ba932449fcad3af, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: 1314-8561
+    second: {fileID: 2800000, guid: 2c068b7d90a4c93479d486e8a3eddb98, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: 1314-8562
+    second: {fileID: 2800000, guid: a4d4222eb3a6177449560c0a0c110195, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: 1314-8563
+    second: {fileID: 2800000, guid: 3dd132f2d5196b3479dca7776e2aea7f, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: 2036-211
+    second: {fileID: 2800000, guid: c2af0135b494ac04289630447bf00bb7, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: 2265-348
+    second: {fileID: 2800000, guid: 29f37efd8e12bb948ba81e6c8369fedf, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: 2265-349
+    second: {fileID: 2800000, guid: 50d5eec886cdc96498784e09948365ff, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: 2265-96
+    second: {fileID: 2800000, guid: d1a6c2bbd54e52a44a430a0d83b0f02e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: 2265-97
+    second: {fileID: 2800000, guid: ea87404c4381f4a45acfa16de032a09f, type: 3}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 100
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 1
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
