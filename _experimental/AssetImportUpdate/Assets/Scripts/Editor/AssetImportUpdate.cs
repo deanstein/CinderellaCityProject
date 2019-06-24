@@ -554,7 +554,10 @@ public class AssetImportUpdate : AssetPostprocessor {
             doHideProxyObjects = true;
         }
 
-        if (assetFilePath.Contains("anchor_broadway.fbx"))
+        if (assetFilePath.Contains("anchor_broadway.fbx")
+            || assetFilePath.Contains("anchor_jcp.fbx")
+            || assetFilePath.Contains("anchor_joslins.fbx")
+            || assetFilePath.Contains("anchor_mgwards.fbx"))
         {
             // pre-processor option flags
             doSetGlobalScale = true; // always true
@@ -570,7 +573,8 @@ public class AssetImportUpdate : AssetPostprocessor {
             doHideProxyObjects = false;
         }
 
-        if (assetFilePath.Contains("mall_doors windows exterior.fbx"))
+        if (assetFilePath.Contains("mall_doors windows exterior.fbx")
+            || assetFilePath.Contains("mall_doors windows interior.fbx"))
         {
             // pre-processor option flags
             doSetGlobalScale = true; // always true
@@ -586,17 +590,17 @@ public class AssetImportUpdate : AssetPostprocessor {
             doHideProxyObjects = false;
         }
 
-        if (assetFilePath.Contains("mall_doors windows interior.fbx"))
+        if (assetFilePath.Contains("mall_doors windows solid.fbx"))
         {
             // pre-processor option flags
             doSetGlobalScale = true; // always true
             doInstantiateAndPlaceInCurrentScene = true;
-            doSetColliderActive = false;
-            doSetUVActiveAndConfigure = false;
+            doSetColliderActive = true;
+            doSetUVActiveAndConfigure = true;
             doDeleteReimportMaterialsTextures = true;
 
             // post-processor option flags
-            doSetStatic = false;
+            doSetStatic = true;
             doSetMaterialEmission = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
@@ -618,7 +622,12 @@ public class AssetImportUpdate : AssetPostprocessor {
             doHideProxyObjects = false;
         }
 
-            if (assetFilePath.Contains("mall_floor ceiling vertical.fbx"))
+        if (assetFilePath.Contains("mall_floor ceiling vertical.fbx")
+            || assetFilePath.Contains("mall_common interior detailing.fbx")
+            || assetFilePath.Contains("mall_exterior detailing.fbx")
+            || assetFilePath.Contains("mall_exterior walls.fbx")
+            || assetFilePath.Contains("store_interior detailing 01 lower.fbx")
+            || assetFilePath.Contains("store_interiordetailing 02 mall.fbx"))
         {
             // pre-processor option flags
             doSetGlobalScale = true; // always true
@@ -650,7 +659,8 @@ public class AssetImportUpdate : AssetPostprocessor {
             doHideProxyObjects = false;
         }
 
-        if (assetFilePath.Contains("mall_lights.fbx"))
+        if (assetFilePath.Contains("mall_lights.fbx")
+            || assetFilePath.Contains("mall_signage.fbx"))
         {
             // pre-processor option flags
             doSetGlobalScale = true; // always true
@@ -666,7 +676,25 @@ public class AssetImportUpdate : AssetPostprocessor {
             doHideProxyObjects = false;
         }
 
-        if (assetFilePath.Contains("mall_proxy people.fbx"))
+        if (assetFilePath.Contains("mall_speakers.fbx")
+            || assetFilePath.Contains("store_speakers.fbx"))
+        {
+            // pre-processor option flags
+            doSetGlobalScale = true; // always true
+            doInstantiateAndPlaceInCurrentScene = true;
+            doSetColliderActive = false;
+            doSetUVActiveAndConfigure = true;
+            doDeleteReimportMaterialsTextures = true;
+
+            // post-processor option flags
+            doSetStatic = true;
+            doSetMaterialEmission = false;
+            doInstantiateProxyReplacements = false;
+            doHideProxyObjects = false;
+        }
+
+        if (assetFilePath.Contains("mall_proxy people.fbx")
+            || assetFilePath.Contains("mall_proxy trees.fbx"))
         {
             // pre-processor option flags
             doSetGlobalScale = true; // always true
@@ -680,38 +708,6 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetMaterialEmission = false;
             doInstantiateProxyReplacements = true;
             doHideProxyObjects = true;
-        }
-
-        if (assetFilePath.Contains("mall_proxy trees.fbx"))
-        {
-            // pre-processor option flags
-            doSetGlobalScale = true; // always true
-            doInstantiateAndPlaceInCurrentScene = true;
-            doSetColliderActive = true;
-            doSetUVActiveAndConfigure = false;
-            doDeleteReimportMaterialsTextures = true;
-
-            // post-processor option flags
-            doSetStatic = false;
-            doSetMaterialEmission = false;
-            doInstantiateProxyReplacements = true;
-            doHideProxyObjects = true;
-        }
-
-        if (assetFilePath.Contains("mall_signage.fbx"))
-        {
-            // pre-processor option flags
-            doSetGlobalScale = true; // always true
-            doInstantiateAndPlaceInCurrentScene = true;
-            doSetColliderActive = true;
-            doSetUVActiveAndConfigure = true;
-            doDeleteReimportMaterialsTextures = true;
-
-            // post-processor option flags
-            doSetStatic = true;
-            doSetMaterialEmission = true;
-            doInstantiateProxyReplacements = false;
-            doHideProxyObjects = false;
         }
 
         //
