@@ -1,150 +1,434 @@
 fileFormatVersion: 2
 guid: ff54dd1109eccd546994843bb8064828
 ModelImporter:
-  serializedVersion: 23
-  fileIDToRecycleName:
-    100000: Instance-0-212
-    100002: //RootNode
-    100004: MeshChunk
-    100006: MeshChunk 1
-    100008: MeshChunk 2
-    100010: MeshChunk 3
-    100012: MeshChunk 4
-    100014: Node-0-150
-    100016: Node-7-61
-    100018: MeshChunk 5
-    100020: Instance-0-0
-    100022: MeshChunk 6
-    100024: MeshChunk 7
-    100026: Node-4233-7
-    100028: Node-4234-7
-    100030: Node-4235-7
-    100032: Node-4236-7
-    100034: MeshChunk 10
-    100036: MeshChunk 11
-    100038: MeshChunk 8
-    100040: MeshChunk 9
-    100042: Node-0-69
-    100044: Node-4238-7
-    100046: Node-4239-7
-    100048: Node-4240-7
-    100050: Node-4241-7
-    100052: Node-4242-7
-    100054: Instance-0-81
-    100056: Instance-0-90
-    100058: MeshChunk 12
-    100060: MeshChunk 13
-    100062: Node-1-496
-    100064: Node-1-496 1
-    100066: deciduous tree-dec tree lg-0-81
-    100068: deciduous tree-dec tree lg-0-90
-    100070: REPLACE - deciduous tree-dec tree lg-0-81
-    100072: REPLACE - deciduous tree-dec tree lg-0-90
-    100074: MeshChunk 14
-    100076: Node-4237-7
-    400000: Instance-0-212
-    400002: //RootNode
-    400004: MeshChunk
-    400006: MeshChunk 1
-    400008: MeshChunk 2
-    400010: MeshChunk 3
-    400012: MeshChunk 4
-    400014: Node-0-150
-    400016: Node-7-61
-    400018: MeshChunk 5
-    400020: Instance-0-0
-    400022: MeshChunk 6
-    400024: MeshChunk 7
-    400026: Node-4233-7
-    400028: Node-4234-7
-    400030: Node-4235-7
-    400032: Node-4236-7
-    400034: MeshChunk 10
-    400036: MeshChunk 11
-    400038: MeshChunk 8
-    400040: MeshChunk 9
-    400042: Node-0-69
-    400044: Node-4238-7
-    400046: Node-4239-7
-    400048: Node-4240-7
-    400050: Node-4241-7
-    400052: Node-4242-7
-    400054: Instance-0-81
-    400056: Instance-0-90
-    400058: MeshChunk 12
-    400060: MeshChunk 13
-    400062: Node-1-496
-    400064: Node-1-496 1
-    400066: deciduous tree-dec tree lg-0-81
-    400068: deciduous tree-dec tree lg-0-90
-    400070: REPLACE - deciduous tree-dec tree lg-0-81
-    400072: REPLACE - deciduous tree-dec tree lg-0-90
-    400074: MeshChunk 14
-    400076: Node-4237-7
-    2100000: mosaic
-    2100002: DefaultMaterial
-    2100004: reflective
-    2100006: LIGHT - yellow
-    2300000: MeshChunk
-    2300002: MeshChunk 1
-    2300004: MeshChunk 2
-    2300006: MeshChunk 3
-    2300008: MeshChunk 4
-    2300010: MeshChunk 5
-    2300012: MeshChunk 6
-    2300014: MeshChunk 7
-    2300016: MeshChunk 10
-    2300018: MeshChunk 11
-    2300020: MeshChunk 8
-    2300022: MeshChunk 9
-    2300024: MeshChunk 12
-    2300026: MeshChunk 13
-    2300028: MeshChunk 14
-    3300000: MeshChunk
-    3300002: MeshChunk 1
-    3300004: MeshChunk 2
-    3300006: MeshChunk 3
-    3300008: MeshChunk 4
-    3300010: MeshChunk 5
-    3300012: MeshChunk 6
-    3300014: MeshChunk 7
-    3300016: MeshChunk 10
-    3300018: MeshChunk 11
-    3300020: MeshChunk 8
-    3300022: MeshChunk 9
-    3300024: MeshChunk 12
-    3300026: MeshChunk 13
-    3300028: MeshChunk 14
-    4300000: MeshChunk
-    4300002: MeshChunk
-    4300004: MeshChunk
-    4300006: MeshChunk
-    4300008: MeshChunk
-    4300010: MeshChunk
-    4300012: MeshChunk
-    4300014: MeshChunk
-    4300016: MeshChunk
-    4300018: MeshChunk
-    4300020: MeshChunk
-    4300022: MeshChunk
-    4300024: MeshChunk
-    4300026: MeshChunk
-    4300028: MeshChunk
-    6400000: MeshChunk
-    6400002: MeshChunk 1
-    6400004: MeshChunk 2
-    6400006: MeshChunk 3
-    6400008: MeshChunk 4
-    6400010: MeshChunk 5
-    6400012: MeshChunk 6
-    6400014: MeshChunk 7
-    6400016: MeshChunk 10
-    6400018: MeshChunk 11
-    6400020: MeshChunk 8
-    6400022: MeshChunk 9
-    6400024: MeshChunk 12
-    6400026: MeshChunk 13
-    6400028: MeshChunk 14
+  serializedVersion: 25
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: Instance-0-212
+  - first:
+      1: 100002
+    second: //RootNode
+  - first:
+      1: 100004
+    second: MeshChunk
+  - first:
+      1: 100006
+    second: MeshChunk 1
+  - first:
+      1: 100008
+    second: MeshChunk 2
+  - first:
+      1: 100010
+    second: MeshChunk 3
+  - first:
+      1: 100012
+    second: MeshChunk 4
+  - first:
+      1: 100014
+    second: Node-0-150
+  - first:
+      1: 100016
+    second: Node-7-61
+  - first:
+      1: 100018
+    second: MeshChunk 5
+  - first:
+      1: 100020
+    second: Instance-0-0
+  - first:
+      1: 100022
+    second: MeshChunk 6
+  - first:
+      1: 100024
+    second: MeshChunk 7
+  - first:
+      1: 100026
+    second: Node-4233-7
+  - first:
+      1: 100028
+    second: Node-4234-7
+  - first:
+      1: 100030
+    second: Node-4235-7
+  - first:
+      1: 100032
+    second: Node-4236-7
+  - first:
+      1: 100034
+    second: MeshChunk 10
+  - first:
+      1: 100036
+    second: MeshChunk 11
+  - first:
+      1: 100038
+    second: MeshChunk 8
+  - first:
+      1: 100040
+    second: MeshChunk 9
+  - first:
+      1: 100042
+    second: Node-0-69
+  - first:
+      1: 100044
+    second: Node-4238-7
+  - first:
+      1: 100046
+    second: Node-4239-7
+  - first:
+      1: 100048
+    second: Node-4240-7
+  - first:
+      1: 100050
+    second: Node-4241-7
+  - first:
+      1: 100052
+    second: Node-4242-7
+  - first:
+      1: 100054
+    second: Instance-0-81
+  - first:
+      1: 100056
+    second: Instance-0-90
+  - first:
+      1: 100058
+    second: MeshChunk 12
+  - first:
+      1: 100060
+    second: MeshChunk 13
+  - first:
+      1: 100062
+    second: Node-1-496
+  - first:
+      1: 100064
+    second: Node-1-496 1
+  - first:
+      1: 100066
+    second: deciduous tree-dec tree lg-0-81
+  - first:
+      1: 100068
+    second: deciduous tree-dec tree lg-0-90
+  - first:
+      1: 100070
+    second: REPLACE - deciduous tree-dec tree lg-0-81
+  - first:
+      1: 100072
+    second: REPLACE - deciduous tree-dec tree lg-0-90
+  - first:
+      1: 100074
+    second: MeshChunk 14
+  - first:
+      1: 100076
+    second: Node-4237-7
+  - first:
+      4: 400000
+    second: Instance-0-212
+  - first:
+      4: 400002
+    second: //RootNode
+  - first:
+      4: 400004
+    second: MeshChunk
+  - first:
+      4: 400006
+    second: MeshChunk 1
+  - first:
+      4: 400008
+    second: MeshChunk 2
+  - first:
+      4: 400010
+    second: MeshChunk 3
+  - first:
+      4: 400012
+    second: MeshChunk 4
+  - first:
+      4: 400014
+    second: Node-0-150
+  - first:
+      4: 400016
+    second: Node-7-61
+  - first:
+      4: 400018
+    second: MeshChunk 5
+  - first:
+      4: 400020
+    second: Instance-0-0
+  - first:
+      4: 400022
+    second: MeshChunk 6
+  - first:
+      4: 400024
+    second: MeshChunk 7
+  - first:
+      4: 400026
+    second: Node-4233-7
+  - first:
+      4: 400028
+    second: Node-4234-7
+  - first:
+      4: 400030
+    second: Node-4235-7
+  - first:
+      4: 400032
+    second: Node-4236-7
+  - first:
+      4: 400034
+    second: MeshChunk 10
+  - first:
+      4: 400036
+    second: MeshChunk 11
+  - first:
+      4: 400038
+    second: MeshChunk 8
+  - first:
+      4: 400040
+    second: MeshChunk 9
+  - first:
+      4: 400042
+    second: Node-0-69
+  - first:
+      4: 400044
+    second: Node-4238-7
+  - first:
+      4: 400046
+    second: Node-4239-7
+  - first:
+      4: 400048
+    second: Node-4240-7
+  - first:
+      4: 400050
+    second: Node-4241-7
+  - first:
+      4: 400052
+    second: Node-4242-7
+  - first:
+      4: 400054
+    second: Instance-0-81
+  - first:
+      4: 400056
+    second: Instance-0-90
+  - first:
+      4: 400058
+    second: MeshChunk 12
+  - first:
+      4: 400060
+    second: MeshChunk 13
+  - first:
+      4: 400062
+    second: Node-1-496
+  - first:
+      4: 400064
+    second: Node-1-496 1
+  - first:
+      4: 400066
+    second: deciduous tree-dec tree lg-0-81
+  - first:
+      4: 400068
+    second: deciduous tree-dec tree lg-0-90
+  - first:
+      4: 400070
+    second: REPLACE - deciduous tree-dec tree lg-0-81
+  - first:
+      4: 400072
+    second: REPLACE - deciduous tree-dec tree lg-0-90
+  - first:
+      4: 400074
+    second: MeshChunk 14
+  - first:
+      4: 400076
+    second: Node-4237-7
+  - first:
+      21: 2100000
+    second: mosaic
+  - first:
+      21: 2100002
+    second: DefaultMaterial
+  - first:
+      21: 2100004
+    second: reflective
+  - first:
+      21: 2100006
+    second: LIGHT - yellow
+  - first:
+      23: 2300000
+    second: MeshChunk
+  - first:
+      23: 2300002
+    second: MeshChunk 1
+  - first:
+      23: 2300004
+    second: MeshChunk 2
+  - first:
+      23: 2300006
+    second: MeshChunk 3
+  - first:
+      23: 2300008
+    second: MeshChunk 4
+  - first:
+      23: 2300010
+    second: MeshChunk 5
+  - first:
+      23: 2300012
+    second: MeshChunk 6
+  - first:
+      23: 2300014
+    second: MeshChunk 7
+  - first:
+      23: 2300016
+    second: MeshChunk 10
+  - first:
+      23: 2300018
+    second: MeshChunk 11
+  - first:
+      23: 2300020
+    second: MeshChunk 8
+  - first:
+      23: 2300022
+    second: MeshChunk 9
+  - first:
+      23: 2300024
+    second: MeshChunk 12
+  - first:
+      23: 2300026
+    second: MeshChunk 13
+  - first:
+      23: 2300028
+    second: MeshChunk 14
+  - first:
+      33: 3300000
+    second: MeshChunk
+  - first:
+      33: 3300002
+    second: MeshChunk 1
+  - first:
+      33: 3300004
+    second: MeshChunk 2
+  - first:
+      33: 3300006
+    second: MeshChunk 3
+  - first:
+      33: 3300008
+    second: MeshChunk 4
+  - first:
+      33: 3300010
+    second: MeshChunk 5
+  - first:
+      33: 3300012
+    second: MeshChunk 6
+  - first:
+      33: 3300014
+    second: MeshChunk 7
+  - first:
+      33: 3300016
+    second: MeshChunk 10
+  - first:
+      33: 3300018
+    second: MeshChunk 11
+  - first:
+      33: 3300020
+    second: MeshChunk 8
+  - first:
+      33: 3300022
+    second: MeshChunk 9
+  - first:
+      33: 3300024
+    second: MeshChunk 12
+  - first:
+      33: 3300026
+    second: MeshChunk 13
+  - first:
+      33: 3300028
+    second: MeshChunk 14
+  - first:
+      43: 4300000
+    second: MeshChunk
+  - first:
+      43: 4300002
+    second: MeshChunk
+  - first:
+      43: 4300004
+    second: MeshChunk
+  - first:
+      43: 4300006
+    second: MeshChunk
+  - first:
+      43: 4300008
+    second: MeshChunk
+  - first:
+      43: 4300010
+    second: MeshChunk
+  - first:
+      43: 4300012
+    second: MeshChunk
+  - first:
+      43: 4300014
+    second: MeshChunk
+  - first:
+      43: 4300016
+    second: MeshChunk
+  - first:
+      43: 4300018
+    second: MeshChunk
+  - first:
+      43: 4300020
+    second: MeshChunk
+  - first:
+      43: 4300022
+    second: MeshChunk
+  - first:
+      43: 4300024
+    second: MeshChunk
+  - first:
+      43: 4300026
+    second: MeshChunk
+  - first:
+      43: 4300028
+    second: MeshChunk
+  - first:
+      64: 6400000
+    second: MeshChunk
+  - first:
+      64: 6400002
+    second: MeshChunk 1
+  - first:
+      64: 6400004
+    second: MeshChunk 2
+  - first:
+      64: 6400006
+    second: MeshChunk 3
+  - first:
+      64: 6400008
+    second: MeshChunk 4
+  - first:
+      64: 6400010
+    second: MeshChunk 5
+  - first:
+      64: 6400012
+    second: MeshChunk 6
+  - first:
+      64: 6400014
+    second: MeshChunk 7
+  - first:
+      64: 6400016
+    second: MeshChunk 10
+  - first:
+      64: 6400018
+    second: MeshChunk 11
+  - first:
+      64: 6400020
+    second: MeshChunk 8
+  - first:
+      64: 6400022
+    second: MeshChunk 9
+  - first:
+      64: 6400024
+    second: MeshChunk 12
+  - first:
+      64: 6400026
+    second: MeshChunk 13
+  - first:
+      64: 6400028
+    second: MeshChunk 14
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -229,7 +513,7 @@ ModelImporter:
   materials:
     importMaterials: 1
     materialName: 1
-    materialSearch: 1
+    materialSearch: 0
     materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
@@ -267,18 +551,19 @@ ModelImporter:
     swapUVChannels: 0
     generateSecondaryUV: 1
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 4
     secondaryUVAreaDistortion: 4
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 64
     useFileScale: 1
-    previousCalculatedGlobalScale: 1
-    hasPreviousCalculatedGlobalScale: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -287,10 +572,11 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -300,6 +586,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0

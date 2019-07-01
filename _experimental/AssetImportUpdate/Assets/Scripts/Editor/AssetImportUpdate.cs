@@ -32,7 +32,12 @@ public class AssetImportUpdate : AssetPostprocessor {
     // post processing should happen always, but can be optionally skipped
     static bool postProcessingRequired = true;
 
+    // instantiate proxy strings
+    static string proxyType;
+    static string replacementObjectPath;
+
     // post-processing seems to repeat itself a lot, so set a max and keep track of how many times
+    // note that if an object was just instantiated in the scene, this max hit value gets incremented by 1
     static int globalMaxPostProcessingHits = 2;
     static List<bool> postProcessingHits = new List<bool>();
 
@@ -51,6 +56,7 @@ public class AssetImportUpdate : AssetPostprocessor {
     // post-processor option flags
     static bool doSetStatic;
     static bool doSetMaterialEmission;
+    static bool doSetMaterialSmoothnessMetallic;
     static bool doInstantiateProxyReplacements;
     static bool doHideProxyObjects;
 
@@ -117,11 +123,13 @@ public class AssetImportUpdate : AssetPostprocessor {
         prefab.name = gameObjectFromAsset.name;
         Debug.Log("This object was instantiated in the model hierarchy.");
 
+        // allow additional post processing hits since this model was just instantiated
+        globalMaxPostProcessingHits = globalMaxPostProcessingHits + 2;
     }
 
     // define how to delete and reimport materials and textures
     public void DeleteReimportMaterialsTextures(string assetFilePath)
-    { 
+    {
         // initialize ModelImporter
         ModelImporter importer = assetImporter as ModelImporter;
 
@@ -129,15 +137,17 @@ public class AssetImportUpdate : AssetPostprocessor {
         bool reimportRequired = false;
 
         // get the material and texture dependencies and delete them
-        var prefab = AssetDatabase.LoadMainAssetAtPath(assetFilePath);
-        foreach (var dependency in EditorUtility.CollectDependencies(new[] { prefab }))
+        //var prefab = AssetDatabase.LoadMainAssetAtPath(assetFilePath);
+        //foreach (var dependency in EditorUtility.CollectDependencies(new[] { prefab }))
+        foreach (var dependencyPath in AssetDatabase.GetDependencies(globalAssetFilePath, false))
         {
-            var dependencyPath = AssetDatabase.GetAssetPath(dependency);
+            //var dependencyPath = AssetDatabase.GetAssetPath(dependency);
             var dependencyPathString = dependencyPath.ToString();
             //Debug.Log("Dependency path: " + dependencyPathString);
 
             // if there are materials or textures detected in the path, delete them
-            if (dependencyPathString.Contains(".mat") || (dependencyPathString.Contains(".jpg") || (dependencyPathString.Contains(".jpeg") || (dependencyPathString.Contains(".png")))))
+            // note that we also check that the path includes the file name to avoid other assets from being affected
+            if ((dependencyPathString.Contains(".mat") || dependencyPathString.Contains(".jpg") || dependencyPathString.Contains(".jpeg") || dependencyPathString.Contains(".png")) && dependencyPathString.Contains(globalAssetFileName))
             {
                 UnityEngine.Windows.File.Delete(dependencyPathString);
                 UnityEngine.Windows.File.Delete(dependencyPathString + ".meta");
@@ -145,7 +155,7 @@ public class AssetImportUpdate : AssetPostprocessor {
                 reimportRequired = true;
                 prevTime = Time.time;
             }
-            
+
             if (string.IsNullOrEmpty(dependencyPath)) continue;
         }
 
@@ -165,9 +175,10 @@ public class AssetImportUpdate : AssetPostprocessor {
         // and name them based on incoming names
         importer.materialLocation = ModelImporterMaterialLocation.External;
         importer.materialName = ModelImporterMaterialName.BasedOnMaterialName;
+        importer.materialSearch = ModelImporterMaterialSearch.Local;
 
         // Materials are automatically stored in a Materials folder (Unity default behavior)
-        
+
         // Textures are automatically stored in an ".fbm" folder (Unity default behavior)
         // However, for clean organization, we want to store textures in a "Textures" folder
         // the old .FBM folder will be deleted in the post-processor
@@ -240,6 +251,31 @@ public class AssetImportUpdate : AssetPostprocessor {
         Debug.Log("<b>Set custom emission color on Material: </b>" + mat);
     }
 
+    // define how to set material smoothness
+    public static void SetMaterialSmoothness(string materialFilePath, float smoothness)
+    {
+        // get the material at this path
+        Material mat = (Material)AssetDatabase.LoadAssetAtPath(materialFilePath, typeof(Material));
+
+        // set its smoothness to albedo
+        mat.SetInt("_SmoothnessTextureChannel", 1);
+
+        // set it to the given smoothness (glossiness) value
+        mat.SetFloat("_GlossMapScale", smoothness);
+
+        Debug.Log("<b>Set smoothness on Material: </b>" + mat);
+    }
+
+    // define how to set material metallic
+    public static void SetMaterialMetallic(string materialFilePath, float metallic)
+    {
+        // get the material at this path
+        Material mat = (Material)AssetDatabase.LoadAssetAtPath(materialFilePath, typeof(Material));
+
+        mat.SetFloat("_Metallic", metallic);
+
+        Debug.Log("<b>Set metallic on Material: </b>" + mat);
+    }
 
     // define how to clean up an automatically-created .fbm folder
     public static void CleanUpFBMDirectory(string assetFileDirectory, string assetFileName)
@@ -369,13 +405,11 @@ public class AssetImportUpdate : AssetPostprocessor {
 
             if (dependencyPathString.Contains("fluorescent panel"))
             {
-                SetCustomMaterialEmissionColor(dependencyPathString, 255, 255, 251);
                 SetCustomMaterialEmissionIntensity(dependencyPathString, 2.0F);
             }
 
             if (dependencyPathString.Contains("green fluor"))
             {
-                SetCustomMaterialEmissionColor(dependencyPathString, 253, 255, 240);
                 SetCustomMaterialEmissionIntensity(dependencyPathString, 2.5F);
             }
 
@@ -386,8 +420,76 @@ public class AssetImportUpdate : AssetPostprocessor {
 
             if (dependencyPathString.Contains("high intensity green"))
             {
-                SetCustomMaterialEmissionColor(dependencyPathString, 253, 255, 240);
                 SetCustomMaterialEmissionIntensity(dependencyPathString, 3.0F);
+            }
+
+            if (string.IsNullOrEmpty(dependencyPath)) continue;
+        }
+    }
+
+    // define how to look for materials with certain names and configure their smoothness
+    public static void SetMaterialSmoothnessMetallicByName()
+    {
+        // define the asset that was changed as the prefab
+        var prefab = AssetDatabase.LoadMainAssetAtPath(globalAssetFilePath);
+
+        // make changes to this prefab's dependencies (materials)
+        foreach (var dependency in EditorUtility.CollectDependencies(new[] { prefab }))
+        {
+            var dependencyPath = AssetDatabase.GetAssetPath(dependency);
+            var dependencyPathString = dependencyPath.ToString();
+            //Debug.Log("Dependency path: " + dependencyPathString);
+
+            //
+            // apply general rules
+            //
+
+            if (dependencyPathString.Contains("drywall"))
+            {
+                SetMaterialSmoothness(dependencyPathString, 0.1F);
+            }
+
+            if (dependencyPathString.Contains("glass")
+                || dependencyPathString.Contains("mirror"))
+            {
+                SetMaterialSmoothness(dependencyPathString, 1.0F);
+            }
+
+            if (dependencyPathString.Contains("metal"))
+            {
+                SetMaterialSmoothness(dependencyPathString, 0.5F);
+            }
+
+            //
+            // look for certain materials and set their smoothness and metallic values
+            //
+
+            if (dependencyPathString.Contains("mall - parquet floor"))
+            {
+                SetMaterialSmoothness(dependencyPathString, 0.6F);
+                SetMaterialMetallic(dependencyPathString, 0.3F);
+            }
+
+            if (dependencyPathString.Contains("mall - polished concrete")
+                || dependencyPathString.Contains("mall - polished concrete cinder alley"))
+            {
+                SetMaterialSmoothness(dependencyPathString, 0.45F);
+            }
+
+            if (dependencyPathString.Contains("mall - shamrock floor brick"))
+            {
+                SetMaterialSmoothness(dependencyPathString, 0.35F);
+                SetMaterialMetallic(dependencyPathString, 0.14F);
+            }
+
+            if (dependencyPathString.Contains("mall - shamrock planter brick"))
+            {
+                SetMaterialSmoothness(dependencyPathString, 0.164F);
+            }
+
+            if (dependencyPathString.Contains("mall - stair terrazzo"))
+            {
+                SetMaterialSmoothness(dependencyPathString, 0.4F);
             }
 
             if (string.IsNullOrEmpty(dependencyPath)) continue;
@@ -397,34 +499,69 @@ public class AssetImportUpdate : AssetPostprocessor {
     // define how to instantiate proxy replacement objects
     public static void InstantiateProxyReplacements(string assetName)
     {
+        if (assetName.Contains("material update test"))
+        {
+            proxyType = "Trees";
+            Debug.Log("Proxy type: " + proxyType);
+        }
+
+        if (assetName.Contains("proxy trees"))
+        {
+            proxyType = "Trees";
+            Debug.Log("Proxy type: " + proxyType);
+        }
+
+        if (assetName.Contains("proxy people"))
+        {
+            proxyType = "People";
+            Debug.Log("Proxy type: " + proxyType);
+        }
+
+        // define the tag that will be used to hide the proxies
+        string deleteReplacementTag = "DeleteReplacement" + proxyType;
+
         // find the associated GameObject by this asset's name
         GameObject gameObjectByAsset = GameObject.Find(assetName);
         var transformByAsset = gameObjectByAsset.transform;
 
-        // identify the path of the prefab to replace this object
-        string birchPath = "Assets/TreesVariety/birch/birch 5.prefab";
+        // run TagHelper to create the hide proxy tag if it doesn't exist yet
+        TagHelper.AddTag(deleteReplacementTag);
 
         // get all objects tagged already and delete them
-        GameObject[] replacementsToDelete = GameObject.FindGameObjectsWithTag("DeleteMe");
+        GameObject[] replacementsToDelete = GameObject.FindGameObjectsWithTag(deleteReplacementTag);
         for (int i = 0; i < replacementsToDelete.Length; i++)
         {
             Debug.Log("<b>Deleted an object with delete tag: </b>" + replacementsToDelete[i].name);
             UnityEngine.Object.DestroyImmediate(replacementsToDelete[i].gameObject);
         }
 
+        Transform[] allChildren = gameObjectByAsset.GetComponentsInChildren<Transform>();
+
         // for each of this asset's children, look for any whose name indicates they are proxies to be replaced
-        foreach (Transform child in transformByAsset)
+        foreach (Transform child in allChildren)
         {
             if (child.name.Contains("REPLACE"))
             {
                 GameObject gameObjectToBeReplaced = child.gameObject;
                 Debug.Log("Found a proxy gameObject to be replaced: " + gameObjectToBeReplaced);
 
+                if (child.name.Contains("tree-center-court"))
+                {
+                    // identify the path of the prefab to replace this object
+                    replacementObjectPath = "Assets/TreesVariety/birch/birch 2.prefab";
+                }
+
+                if (child.name.Contains("tree-shamrock-planter"))
+                {
+                    // identify the path of the prefab to replace this object
+                    replacementObjectPath = "Assets/TreesVariety/birch/birch 5.prefab";
+                }
+
                 // ensure the object we want to replace is visible, so we can measure it
                 ToggleVisibility.ToggleGameObjectOn(gameObjectToBeReplaced);
 
                 // create a new gameObject for the new asset
-                GameObject newObject = (GameObject)AssetDatabase.LoadAssetAtPath(birchPath, typeof(GameObject));
+                GameObject newObject = (GameObject)AssetDatabase.LoadAssetAtPath(replacementObjectPath, typeof(GameObject));
 
                 // create an instance from the prefab
                 var instancedPrefab = PrefabUtility.InstantiatePrefab(newObject as GameObject) as GameObject;
@@ -443,11 +580,8 @@ public class AssetImportUpdate : AssetPostprocessor {
                     // ensure the new prefab rotates about the traditional Z (up) axis to match its proxy 
                     instancedPrefab.transform.localEulerAngles = new Vector3(0, gameObjectToBeReplaced.transform.localEulerAngles.y, 0);
 
-                    // run TagHelper to create the tag if it doesn't exist yet
-                    TagHelper.AddTag("DeleteMe");
-
                     // tag this instanced prefab as a delete candidate for the next import
-                    instancedPrefab.gameObject.tag = "DeleteMe";
+                    instancedPrefab.gameObject.tag = deleteReplacementTag;
 
                     // set the prefab as static
                     GameObject GO = GameObject.Find(instancedPrefab.name);
@@ -550,8 +684,26 @@ public class AssetImportUpdate : AssetPostprocessor {
             // post-processor option flags
             doSetStatic = true;
             doSetMaterialEmission = true;
+            doSetMaterialSmoothnessMetallic = true;
             doInstantiateProxyReplacements = true;
             doHideProxyObjects = true;
+        }
+
+        if (assetFilePath.Contains("material update test 2.fbx"))
+        {
+            // pre-processor option flags
+            doSetGlobalScale = true; // always true
+            doInstantiateAndPlaceInCurrentScene = true;
+            doSetColliderActive = true;
+            doSetUVActiveAndConfigure = true;
+            doDeleteReimportMaterialsTextures = true;
+
+            // post-processor option flags
+            doSetStatic = true;
+            doSetMaterialEmission = true;
+            doSetMaterialSmoothnessMetallic = true;
+            doInstantiateProxyReplacements = false;
+            doHideProxyObjects = false;
         }
 
         if (assetFilePath.Contains("anchor-broadway.fbx")
@@ -569,6 +721,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             // post-processor option flags
             doSetStatic = true;
             doSetMaterialEmission = false;
+            doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
         }
@@ -586,6 +739,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             // post-processor option flags
             doSetStatic = false;
             doSetMaterialEmission = false;
+            doSetMaterialSmoothnessMetallic = true;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
         }
@@ -602,6 +756,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             // post-processor option flags
             doSetStatic = true;
             doSetMaterialEmission = false;
+            doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
         }
@@ -618,14 +773,19 @@ public class AssetImportUpdate : AssetPostprocessor {
             // post-processor option flags
             doSetStatic = true;
             doSetMaterialEmission = false;
+            doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
         }
 
         if (assetFilePath.Contains("mall-floor-ceiling-vertical-faceted.fbx")
             || assetFilePath.Contains("mall-interior-detailing-faceted.fbx")
+            || assetFilePath.Contains("mall-interior-detailing-faceted-L1.fbx")
+            || assetFilePath.Contains("mall-interior-detailing-faceted-L2.fbx")
+            || assetFilePath.Contains("mall-interior-detailing-faceted-L3.fbx")
             || assetFilePath.Contains("mall-exterior-detailing-faceted.fbx")
             || assetFilePath.Contains("mall-exterior-walls.fbx")
+            || assetFilePath.Contains("store-interior-detailing.fbx")
             || assetFilePath.Contains("store-interior-detailing-L1.fbx")
             || assetFilePath.Contains("store-interior-detailing-L2.fbx"))
         {
@@ -639,6 +799,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             // post-processor option flags
             doSetStatic = true;
             doSetMaterialEmission = false;
+            doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
         }
@@ -655,6 +816,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             // post-processor option flags
             doSetStatic = false;
             doSetMaterialEmission = false;
+            doSetMaterialSmoothnessMetallic = true;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
         }
@@ -672,6 +834,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             // post-processor option flags
             doSetStatic = true;
             doSetMaterialEmission = true;
+            doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
         }
@@ -689,6 +852,24 @@ public class AssetImportUpdate : AssetPostprocessor {
             // post-processor option flags
             doSetStatic = true;
             doSetMaterialEmission = false;
+            doSetMaterialSmoothnessMetallic = false;
+            doInstantiateProxyReplacements = false;
+            doHideProxyObjects = false;
+        }
+
+        if (assetFilePath.Contains("mall-structure.fbx"))
+        {
+            // pre-processor option flags
+            doSetGlobalScale = true; // always true
+            doInstantiateAndPlaceInCurrentScene = true;
+            doSetColliderActive = true;
+            doSetUVActiveAndConfigure = false;
+            doDeleteReimportMaterialsTextures = true;
+
+            // post-processor option flags
+            doSetStatic = false;
+            doSetMaterialEmission = false;
+            doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
         }
@@ -706,6 +887,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             // post-processor option flags
             doSetStatic = false;
             doSetMaterialEmission = false;
+            doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = true;
             doHideProxyObjects = true;
         }
@@ -784,6 +966,11 @@ public class AssetImportUpdate : AssetPostprocessor {
         if (doSetMaterialEmission)
         {
             SetMaterialEmissionByName();
+        }
+
+        if (doSetMaterialEmission)
+        {
+            SetMaterialSmoothnessMetallicByName();
         }
 
         if (doInstantiateProxyReplacements)
