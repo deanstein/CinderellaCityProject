@@ -257,11 +257,32 @@ public class AssetImportUpdate : AssetPostprocessor {
         // get the material at this path
         Material mat = (Material)AssetDatabase.LoadAssetAtPath(materialFilePath, typeof(Material));
 
-        // set its smoothness to albedo
+        // enable the keyword so the canvas updates with new gloss values
+        mat.EnableKeyword("_METALLICGLOSSMAP");
+
+        // set its smoothness channel to albedo
         mat.SetInt("_SmoothnessTextureChannel", 1);
 
         // set it to the given smoothness (glossiness) value
         mat.SetFloat("_GlossMapScale", smoothness);
+
+        // apparently once _METALLICGLOSSMAP is enabled, we have to provide a gloss map
+        // if the Material has a texture, assign that as the gloss map
+        if (mat.GetTexture("_MainTex"))
+        {
+            // set the emission map to the material's texture
+            Texture texture = mat.GetTexture("_MainTex");
+            mat.SetTexture("_MetallicGlossMap", texture);
+            //Debug.Log("This Material had a texture, and that is now set as the gloss map: " + materialFilePath);
+        }
+        // otherwise, use a black texture as the gloss map - this basically means no metallic
+        else
+        {
+            string blackTexturePath = "Assets/Graphics/black.jpg";
+            Texture blackTexture = (Texture)AssetDatabase.LoadAssetAtPath(blackTexturePath, typeof(Texture));
+            mat.SetTexture("_MetallicGlossMap", blackTexture);
+            //Debug.Log("This Material didn't have a texture, so its gloss map is black: " + materialFilePath);
+        }
 
         Debug.Log("<b>Set smoothness on Material: </b>" + mat);
     }
@@ -458,6 +479,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             if (dependencyPathString.Contains("metal"))
             {
                 SetMaterialSmoothness(dependencyPathString, 0.5F);
+                SetMaterialMetallic(dependencyPathString, 0.5F);
             }
 
             //
@@ -492,7 +514,7 @@ public class AssetImportUpdate : AssetPostprocessor {
                 SetMaterialSmoothness(dependencyPathString, 0.4F);
             }
 
-            if (string.IsNullOrEmpty(dependencyPath)) continue;
+            if (string.IsNullOrEmpty(dependencyPathString)) continue;
         }
     }
 
@@ -799,7 +821,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             // post-processor option flags
             doSetStatic = true;
             doSetMaterialEmission = false;
-            doSetMaterialSmoothnessMetallic = false;
+            doSetMaterialSmoothnessMetallic = true;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
         }
@@ -968,7 +990,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             SetMaterialEmissionByName();
         }
 
-        if (doSetMaterialEmission)
+        if (doSetMaterialSmoothnessMetallic)
         {
             SetMaterialSmoothnessMetallicByName();
         }
