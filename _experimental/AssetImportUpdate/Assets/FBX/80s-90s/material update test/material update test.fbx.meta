@@ -1,440 +1,9 @@
 fileFormatVersion: 2
 guid: ff54dd1109eccd546994843bb8064828
 ModelImporter:
-  serializedVersion: 25
-  internalIDToNameTable:
-  - first:
-      1: 100000
-    second: Instance-0-212
-  - first:
-      1: 100002
-    second: //RootNode
-  - first:
-      1: 100004
-    second: MeshChunk
-  - first:
-      1: 100006
-    second: MeshChunk 1
-  - first:
-      1: 100008
-    second: MeshChunk 2
-  - first:
-      1: 100010
-    second: MeshChunk 3
-  - first:
-      1: 100012
-    second: MeshChunk 4
-  - first:
-      1: 100014
-    second: Node-0-150
-  - first:
-      1: 100016
-    second: Node-7-61
-  - first:
-      1: 100018
-    second: MeshChunk 5
-  - first:
-      1: 100020
-    second: Instance-0-0
-  - first:
-      1: 100022
-    second: MeshChunk 6
-  - first:
-      1: 100024
-    second: MeshChunk 7
-  - first:
-      1: 100026
-    second: Node-4233-7
-  - first:
-      1: 100028
-    second: Node-4234-7
-  - first:
-      1: 100030
-    second: Node-4235-7
-  - first:
-      1: 100032
-    second: Node-4236-7
-  - first:
-      1: 100034
-    second: MeshChunk 10
-  - first:
-      1: 100036
-    second: MeshChunk 11
-  - first:
-      1: 100038
-    second: MeshChunk 8
-  - first:
-      1: 100040
-    second: MeshChunk 9
-  - first:
-      1: 100042
-    second: Node-0-69
-  - first:
-      1: 100044
-    second: Node-4238-7
-  - first:
-      1: 100046
-    second: Node-4239-7
-  - first:
-      1: 100048
-    second: Node-4240-7
-  - first:
-      1: 100050
-    second: Node-4241-7
-  - first:
-      1: 100052
-    second: Node-4242-7
-  - first:
-      1: 100054
-    second: Instance-0-81
-  - first:
-      1: 100056
-    second: Instance-0-90
-  - first:
-      1: 100058
-    second: MeshChunk 12
-  - first:
-      1: 100060
-    second: MeshChunk 13
-  - first:
-      1: 100062
-    second: Node-1-496
-  - first:
-      1: 100064
-    second: Node-1-496 1
-  - first:
-      1: 100066
-    second: deciduous tree-dec tree lg-0-81
-  - first:
-      1: 100068
-    second: deciduous tree-dec tree lg-0-90
-  - first:
-      1: 100070
-    second: REPLACE - deciduous tree-dec tree lg-0-81
-  - first:
-      1: 100072
-    second: REPLACE - deciduous tree-dec tree lg-0-90
-  - first:
-      1: 100074
-    second: MeshChunk 14
-  - first:
-      1: 100076
-    second: Node-4237-7
-  - first:
-      4: 400000
-    second: Instance-0-212
-  - first:
-      4: 400002
-    second: //RootNode
-  - first:
-      4: 400004
-    second: MeshChunk
-  - first:
-      4: 400006
-    second: MeshChunk 1
-  - first:
-      4: 400008
-    second: MeshChunk 2
-  - first:
-      4: 400010
-    second: MeshChunk 3
-  - first:
-      4: 400012
-    second: MeshChunk 4
-  - first:
-      4: 400014
-    second: Node-0-150
-  - first:
-      4: 400016
-    second: Node-7-61
-  - first:
-      4: 400018
-    second: MeshChunk 5
-  - first:
-      4: 400020
-    second: Instance-0-0
-  - first:
-      4: 400022
-    second: MeshChunk 6
-  - first:
-      4: 400024
-    second: MeshChunk 7
-  - first:
-      4: 400026
-    second: Node-4233-7
-  - first:
-      4: 400028
-    second: Node-4234-7
-  - first:
-      4: 400030
-    second: Node-4235-7
-  - first:
-      4: 400032
-    second: Node-4236-7
-  - first:
-      4: 400034
-    second: MeshChunk 10
-  - first:
-      4: 400036
-    second: MeshChunk 11
-  - first:
-      4: 400038
-    second: MeshChunk 8
-  - first:
-      4: 400040
-    second: MeshChunk 9
-  - first:
-      4: 400042
-    second: Node-0-69
-  - first:
-      4: 400044
-    second: Node-4238-7
-  - first:
-      4: 400046
-    second: Node-4239-7
-  - first:
-      4: 400048
-    second: Node-4240-7
-  - first:
-      4: 400050
-    second: Node-4241-7
-  - first:
-      4: 400052
-    second: Node-4242-7
-  - first:
-      4: 400054
-    second: Instance-0-81
-  - first:
-      4: 400056
-    second: Instance-0-90
-  - first:
-      4: 400058
-    second: MeshChunk 12
-  - first:
-      4: 400060
-    second: MeshChunk 13
-  - first:
-      4: 400062
-    second: Node-1-496
-  - first:
-      4: 400064
-    second: Node-1-496 1
-  - first:
-      4: 400066
-    second: deciduous tree-dec tree lg-0-81
-  - first:
-      4: 400068
-    second: deciduous tree-dec tree lg-0-90
-  - first:
-      4: 400070
-    second: REPLACE - deciduous tree-dec tree lg-0-81
-  - first:
-      4: 400072
-    second: REPLACE - deciduous tree-dec tree lg-0-90
-  - first:
-      4: 400074
-    second: MeshChunk 14
-  - first:
-      4: 400076
-    second: Node-4237-7
-  - first:
-      21: 2100000
-    second: mosaic
-  - first:
-      21: 2100002
-    second: DefaultMaterial
-  - first:
-      21: 2100004
-    second: reflective
-  - first:
-      21: 2100006
-    second: LIGHT - yellow
-  - first:
-      23: 2300000
-    second: MeshChunk
-  - first:
-      23: 2300002
-    second: MeshChunk 1
-  - first:
-      23: 2300004
-    second: MeshChunk 2
-  - first:
-      23: 2300006
-    second: MeshChunk 3
-  - first:
-      23: 2300008
-    second: MeshChunk 4
-  - first:
-      23: 2300010
-    second: MeshChunk 5
-  - first:
-      23: 2300012
-    second: MeshChunk 6
-  - first:
-      23: 2300014
-    second: MeshChunk 7
-  - first:
-      23: 2300016
-    second: MeshChunk 10
-  - first:
-      23: 2300018
-    second: MeshChunk 11
-  - first:
-      23: 2300020
-    second: MeshChunk 8
-  - first:
-      23: 2300022
-    second: MeshChunk 9
-  - first:
-      23: 2300024
-    second: MeshChunk 12
-  - first:
-      23: 2300026
-    second: MeshChunk 13
-  - first:
-      23: 2300028
-    second: MeshChunk 14
-  - first:
-      33: 3300000
-    second: MeshChunk
-  - first:
-      33: 3300002
-    second: MeshChunk 1
-  - first:
-      33: 3300004
-    second: MeshChunk 2
-  - first:
-      33: 3300006
-    second: MeshChunk 3
-  - first:
-      33: 3300008
-    second: MeshChunk 4
-  - first:
-      33: 3300010
-    second: MeshChunk 5
-  - first:
-      33: 3300012
-    second: MeshChunk 6
-  - first:
-      33: 3300014
-    second: MeshChunk 7
-  - first:
-      33: 3300016
-    second: MeshChunk 10
-  - first:
-      33: 3300018
-    second: MeshChunk 11
-  - first:
-      33: 3300020
-    second: MeshChunk 8
-  - first:
-      33: 3300022
-    second: MeshChunk 9
-  - first:
-      33: 3300024
-    second: MeshChunk 12
-  - first:
-      33: 3300026
-    second: MeshChunk 13
-  - first:
-      33: 3300028
-    second: MeshChunk 14
-  - first:
-      43: 4300000
-    second: MeshChunk
-  - first:
-      43: 4300002
-    second: MeshChunk
-  - first:
-      43: 4300004
-    second: MeshChunk
-  - first:
-      43: 4300006
-    second: MeshChunk
-  - first:
-      43: 4300008
-    second: MeshChunk
-  - first:
-      43: 4300010
-    second: MeshChunk
-  - first:
-      43: 4300012
-    second: MeshChunk
-  - first:
-      43: 4300014
-    second: MeshChunk
-  - first:
-      43: 4300016
-    second: MeshChunk
-  - first:
-      43: 4300018
-    second: MeshChunk
-  - first:
-      43: 4300020
-    second: MeshChunk
-  - first:
-      43: 4300022
-    second: MeshChunk
-  - first:
-      43: 4300024
-    second: MeshChunk
-  - first:
-      43: 4300026
-    second: MeshChunk
-  - first:
-      43: 4300028
-    second: MeshChunk
-  - first:
-      64: 6400000
-    second: MeshChunk
-  - first:
-      64: 6400002
-    second: MeshChunk 1
-  - first:
-      64: 6400004
-    second: MeshChunk 2
-  - first:
-      64: 6400006
-    second: MeshChunk 3
-  - first:
-      64: 6400008
-    second: MeshChunk 4
-  - first:
-      64: 6400010
-    second: MeshChunk 5
-  - first:
-      64: 6400012
-    second: MeshChunk 6
-  - first:
-      64: 6400014
-    second: MeshChunk 7
-  - first:
-      64: 6400016
-    second: MeshChunk 10
-  - first:
-      64: 6400018
-    second: MeshChunk 11
-  - first:
-      64: 6400020
-    second: MeshChunk 8
-  - first:
-      64: 6400022
-    second: MeshChunk 9
-  - first:
-      64: 6400024
-    second: MeshChunk 12
-  - first:
-      64: 6400026
-    second: MeshChunk 13
-  - first:
-      64: 6400028
-    second: MeshChunk 14
+  serializedVersion: 26
+  internalIDToNameTable: []
   externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: American Cherry
-    second: {fileID: 2100000, guid: 5f8cc4208a621cb47ac83dd779bcd729, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -453,18 +22,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: LIGHT - green
-    second: {fileID: 2100000, guid: ac383d121d3b6564d87bc623dbbc2626, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
       name: LIGHT - green fluor
     second: {fileID: 2100000, guid: 34b373edb7917174d957294d21174028, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: LIGHT - high intensity white
-    second: {fileID: 2100000, guid: 2b6cbfd6c30ac7f43b5533ebae545d0d, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -488,18 +47,33 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: delete test
-    second: {fileID: 2100000, guid: c896a475197f92c4db1de2249d355024, type: 2}
+      name: bricks metal
+    second: {fileID: 2100000, guid: 001b5c7e6f7708f409b6443c230b460e, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: mosaic
-    second: {fileID: 2100000, guid: 0b106a31ac474464b9a15365a2dfb5b2, type: 2}
+      name: drywall
+    second: {fileID: 2100000, guid: 099664556cd4cad45a8476a337658862, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: reflective
-    second: {fileID: 2100000, guid: 8ba0b333a63b93c4fb3a1a87ca76909d, type: 2}
+      name: glass
+    second: {fileID: 2100000, guid: a77920cf0def83845b959550e9b19b4c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - floor trim
+    second: {fileID: 2100000, guid: eedbce0b91c0a704ba35f18ee7322714, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - parquet floor
+    second: {fileID: 2100000, guid: 25dbc7fea1f1bf7459da3cf4e7bdd4ed, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - shamrock planter brick
+    second: {fileID: 2100000, guid: 391c81ce97b620a4189a39717435867a, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -537,13 +111,14 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
     addColliders: 1
     useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
@@ -592,7 +167,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
