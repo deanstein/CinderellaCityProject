@@ -29,8 +29,11 @@ public class AssetImportUpdate : AssetPostprocessor {
     // in some cases, we need to stop processing from happening if it's already been done
     static float prevTime;
 
-    // post processing should happen always, but can be optionally skipped
-    static bool postProcessingRequired = true;
+    // post-processing should only happen after pre-processing
+    static bool postProcessingRequired = false;
+
+    // proxy replacement post-processing is needed only until replacements are valid and in the model
+    static bool proxyReplacementProcessingRequired = true;
 
     // instantiate proxy strings
     static string proxyType;
@@ -94,6 +97,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         mi.secondaryUVPackMargin = 64;
         mi.secondaryUVAngleDistortion = 4;
         mi.secondaryUVAreaDistortion = 4;
+        mi.importNormals = ModelImporterNormals.Calculate;
     }
 
     // define how to instantiate the asset (typically an FBX file) in the scene
@@ -251,9 +255,60 @@ public class AssetImportUpdate : AssetPostprocessor {
         Debug.Log("<b>Set custom emission color on Material: </b>" + mat);
     }
 
+    // define how to create a greyscale new texture given a scale factor from 0 (black) to 1 (white)
+    public static string CreateGreyscaleTexture(float scale)
+    {
+        // name the metallic map based on its rgb values
+        string fileName = "metallicMap-" + scale + "-" + scale + "-" + scale + ".png";
+
+        // define the path where this texture will be stored
+        string filePath = globalAssetFileDirectory + "Textures/" + fileName;
+
+        // only make a new texture if it doesn't exist yet
+        // note that this texture does not get cleaned up in DeleteReimportMaterialsTextures
+        // so it's likely already made and can be reusedused
+        if (!AssetDatabase.LoadAssetAtPath(filePath, typeof(Texture)))
+        {
+            //Debug.Log("No MetallicGlossMap detected. Creating one.");
+            // since the texture is just one color, we don't need a high resolution
+            int sizeX = 100;
+            int sizeY = 100;
+
+            // convert the given scale factor to a color
+            Color color = new Color(scale, scale, scale);
+
+            // create a blank texture at the given size
+            Texture2D newTexture = new Texture2D(sizeX, sizeY);
+
+            // fill each pixel the given color
+            for (int y = 0; y < sizeY; y++)
+            {
+                for (int x = 0; x < sizeX; x++)
+                {
+                    newTexture.SetPixel(x, y, color);
+                }
+            }
+
+            // write the texture to the file system
+            UnityEngine.Windows.File.WriteAllBytes(filePath, (byte[])newTexture.EncodeToPNG());
+
+            newTexture.Apply();
+        }
+        else
+        {
+            //Debug.Log("MetallicGlossMap texture already exists.");
+        }
+
+        return filePath;
+        //return newTexture;
+    }
+
+
     // define how to set material smoothness
     public static void SetMaterialSmoothness(string materialFilePath, float smoothness)
     {
+        Debug.Log("<b>Set smoothness on Material: </b>" + materialFilePath);
+
         // get the material at this path
         Material mat = (Material)AssetDatabase.LoadAssetAtPath(materialFilePath, typeof(Material));
 
@@ -266,25 +321,17 @@ public class AssetImportUpdate : AssetPostprocessor {
         // set it to the given smoothness (glossiness) value
         mat.SetFloat("_GlossMapScale", smoothness);
 
-        // apparently once _METALLICGLOSSMAP is enabled, we have to provide a gloss map
-        // if the Material has a texture, assign that as the gloss map
-        if (mat.GetTexture("_MainTex"))
-        {
-            // set the emission map to the material's texture
-            Texture texture = mat.GetTexture("_MainTex");
-            mat.SetTexture("_MetallicGlossMap", texture);
-            //Debug.Log("This Material had a texture, and that is now set as the gloss map: " + materialFilePath);
-        }
-        // otherwise, use a black texture as the gloss map - this basically means no metallic
-        else
-        {
-            string blackTexturePath = "Assets/Graphics/black.jpg";
-            Texture blackTexture = (Texture)AssetDatabase.LoadAssetAtPath(blackTexturePath, typeof(Texture));
-            mat.SetTexture("_MetallicGlossMap", blackTexture);
-            //Debug.Log("This Material didn't have a texture, so its gloss map is black: " + materialFilePath);
-        }
+        // once _METALLICGLOSSMAP keyword is enabled, we have to provide a gloss map
+        // otherwise metallic gets set to 100% visually in the scene
+        // all materials with gloss need get a black (0) gloss map generated for them to negate the metallic effect
+        // Materials may get Metallic set to a non-0 value in a separate function
 
-        Debug.Log("<b>Set smoothness on Material: </b>" + mat);
+        // create the black texture
+        string metallicGlossTexturePath = CreateGreyscaleTexture(0.0f);
+        Texture blackTexture = (Texture)AssetDatabase.LoadAssetAtPath(metallicGlossTexturePath, typeof(Texture));
+
+        // set the MetallicGlossMap as the black texture
+        mat.SetTexture("_MetallicGlossMap", blackTexture);
     }
 
     // define how to set material metallic
@@ -293,7 +340,12 @@ public class AssetImportUpdate : AssetPostprocessor {
         // get the material at this path
         Material mat = (Material)AssetDatabase.LoadAssetAtPath(materialFilePath, typeof(Material));
 
-        mat.SetFloat("_Metallic", metallic);
+        // create a greyscale texture based on the specified metallic value
+        string metallicGlossTexturePath = CreateGreyscaleTexture(metallic);
+        Texture metallicGlossTexture = (Texture)AssetDatabase.LoadAssetAtPath(metallicGlossTexturePath, typeof(Texture));
+
+        // set the MetallicGlossMap as the black texture
+        mat.SetTexture("_MetallicGlossMap", metallicGlossTexture);
 
         Debug.Log("<b>Set metallic on Material: </b>" + mat);
     }
@@ -311,29 +363,56 @@ public class AssetImportUpdate : AssetPostprocessor {
     }
 
     // define how to get the max height of a gameObject
-    public static float GetMaxHeightOfGameObject(GameObject gameObjectToMeasure)
+    public static float GetMaxGOBoundingBoxDimension(GameObject gameObjectToMeasure)
     {
         // create an array of MeshChunks found within this GameObject so we can get the bounding box size
         MeshRenderer[] gameObjectMeshRendererArray = gameObjectToMeasure.GetComponentsInChildren<MeshRenderer>();
+        //Mesh mesh = gameObjectToMeasure.GetComponent(MeshRenderer);
+
+        //float width = GetComponent(MeshFilter).mesh.bounds.extents.x;
 
         // create a list to contain heights
-        List<float> gameObjectHeightsList = new List<float>();
+        List<float> gameObjectMaxDimList = new List<float>();
 
         // for each MeshRenderer found, get the height and add it to the list
         for (int i = 0; i < gameObjectMeshRendererArray.Length; i++)
         {
-            //Debug.Log("Found a MeshChunk to get bounds info from: " + gameObjectMeshRendererArray[i]);
+            Debug.Log("Found a MeshChunk to get bounds info from: " + gameObjectMeshRendererArray[i]);
+
+            // assume this mesh is valid, and doesn't need to be processed again
+            proxyReplacementProcessingRequired = false;
 
             Bounds bounds = gameObjectMeshRendererArray[i].bounds;
+
             //Debug.Log("Bounds: " + bounds);
-            float height = bounds.extents.y;
+            float dimX = bounds.extents.x;
+            float dimY = bounds.extents.y;
+            float dimZ = bounds.extents.z;
+            Debug.Log("Mesh dimensions for " + gameObjectMeshRendererArray[i] + dimX + "," + dimY + "," +  dimZ);
+
+            List<float> XYZList = new List<float>();
+            XYZList.Add(dimX);
+            XYZList.Add(dimY);
+            XYZList.Add(dimZ);
+
+            float maxXYZ = XYZList.Max();
+            Debug.Log("Max XYZ dimension for " + gameObjectMeshRendererArray[i] + ": " + maxXYZ);
 
             // add this height to the list of heights
-            gameObjectHeightsList.Add(height);
+            gameObjectMaxDimList.Add(maxXYZ);
+            //Debug.Log(gameObjectHeightsList);
         }
 
-        float gameObjectMaxHeight = gameObjectHeightsList.Max();
+        float gameObjectMaxHeight = gameObjectMaxDimList.Max();
         //Debug.Log("Max height of " + gameObjectToMeasure + ": " + gameObjectMaxHeight);
+
+        // if the bounding box is zero, this might not be ready for measuring yet
+        // so set the flag to try proxy replacement again
+        if (gameObjectMaxHeight == 0)
+        {
+            Debug.Log("This object couldn't be measured (0 bounding box) and should be tried again next time.");
+            proxyReplacementProcessingRequired = true;
+        }
         return gameObjectMaxHeight;
     }
 
@@ -341,8 +420,9 @@ public class AssetImportUpdate : AssetPostprocessor {
     public static void ScaleToMatchHeight(GameObject gameObjectToScale, GameObject gameObjectToMatch)
     {
         // get the height of the object to be replaced
-        float targetHeight = GetMaxHeightOfGameObject(gameObjectToMatch);
-        float currentHeight = GetMaxHeightOfGameObject(gameObjectToScale);
+        float targetHeight = GetMaxGOBoundingBoxDimension(gameObjectToMatch);
+        float currentHeight = GetMaxGOBoundingBoxDimension(gameObjectToScale);
+
         float scaleFactor = (targetHeight / currentHeight) * ((gameObjectToScale.transform.localScale.x + gameObjectToScale.transform.localScale.y + gameObjectToScale.transform.localScale.z) / 3);
 
         // scale the prefab to match the height of its replacement
@@ -444,6 +524,11 @@ public class AssetImportUpdate : AssetPostprocessor {
                 SetCustomMaterialEmissionIntensity(dependencyPathString, 3.0F);
             }
 
+            if (dependencyPathString.Contains("low intensity white"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, 1.0F);
+            }
+
             if (string.IsNullOrEmpty(dependencyPath)) continue;
         }
     }
@@ -467,7 +552,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
             if (dependencyPathString.Contains("drywall"))
             {
-                SetMaterialSmoothness(dependencyPathString, 0.1F);
+                SetMaterialSmoothness(dependencyPathString, 0.05F);
             }
 
             if (dependencyPathString.Contains("glass")
@@ -476,7 +561,7 @@ public class AssetImportUpdate : AssetPostprocessor {
                 SetMaterialSmoothness(dependencyPathString, 1.0F);
             }
 
-            if (dependencyPathString.Contains("metal"))
+            if (dependencyPathString.Contains("metal") && dependencyPathString.Contains(".mat"))
             {
                 SetMaterialSmoothness(dependencyPathString, 0.5F);
                 SetMaterialMetallic(dependencyPathString, 0.5F);
@@ -489,7 +574,6 @@ public class AssetImportUpdate : AssetPostprocessor {
             if (dependencyPathString.Contains("mall - parquet floor"))
             {
                 SetMaterialSmoothness(dependencyPathString, 0.6F);
-                SetMaterialMetallic(dependencyPathString, 0.3F);
             }
 
             if (dependencyPathString.Contains("mall - polished concrete")
@@ -506,12 +590,17 @@ public class AssetImportUpdate : AssetPostprocessor {
 
             if (dependencyPathString.Contains("mall - shamrock planter brick"))
             {
-                SetMaterialSmoothness(dependencyPathString, 0.164F);
+                SetMaterialSmoothness(dependencyPathString, 0.05F);
             }
 
             if (dependencyPathString.Contains("mall - stair terrazzo"))
             {
-                SetMaterialSmoothness(dependencyPathString, 0.4F);
+                SetMaterialSmoothness(dependencyPathString, 0.3F);
+            }
+
+            if (dependencyPathString.Contains("food court tile"))
+            {
+                SetMaterialSmoothness(dependencyPathString, 0.3F);
             }
 
             if (string.IsNullOrEmpty(dependencyPathString)) continue;
@@ -521,19 +610,26 @@ public class AssetImportUpdate : AssetPostprocessor {
     // define how to instantiate proxy replacement objects
     public static void InstantiateProxyReplacements(string assetName)
     {
+        // don't do anything if this isn't required
+        if (proxyReplacementProcessingRequired == false)
+        {
+            Debug.Log("ProxyReplacementProcessing was not required.");
+            return;
+        }
+
         if (assetName.Contains("material update test"))
         {
             proxyType = "Trees";
             Debug.Log("Proxy type: " + proxyType);
         }
 
-        if (assetName.Contains("proxy trees"))
+        if (assetName.Contains("proxy-trees"))
         {
             proxyType = "Trees";
             Debug.Log("Proxy type: " + proxyType);
         }
 
-        if (assetName.Contains("proxy people"))
+        if (assetName.Contains("proxy-people"))
         {
             proxyType = "People";
             Debug.Log("Proxy type: " + proxyType);
@@ -570,10 +666,16 @@ public class AssetImportUpdate : AssetPostprocessor {
                 if (child.name.Contains("tree-center-court"))
                 {
                     // identify the path of the prefab to replace this object
+                    replacementObjectPath = "Assets/TreesVariety/oak/oak 3.prefab";
+                }
+
+                if (child.name.Contains("tree-center-court-small"))
+                {
+                    // identify the path of the prefab to replace this object
                     replacementObjectPath = "Assets/TreesVariety/birch/birch 2.prefab";
                 }
 
-                if (child.name.Contains("tree-shamrock-planter"))
+                if (child.name.Contains("tree-shamrock"))
                 {
                     // identify the path of the prefab to replace this object
                     replacementObjectPath = "Assets/TreesVariety/birch/birch 5.prefab";
@@ -632,6 +734,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             {
                 GameObject gameObjectToBeReplaced = child.gameObject;
                 //Debug.Log("Found a proxy gameObject to be hide: " + gameObjectToBeReplaced);
+
                 // turn off the visibility of the object to be replaced
                 ToggleVisibility.ToggleGameObjectOff(gameObjectToBeReplaced);
             }
@@ -800,6 +903,23 @@ public class AssetImportUpdate : AssetPostprocessor {
             doHideProxyObjects = false;
         }
 
+        if (assetFilePath.Contains("mall-furniture.fbx"))
+        {
+            // pre-processor option flags
+            doSetGlobalScale = true; // always true
+            doInstantiateAndPlaceInCurrentScene = true;
+            doSetColliderActive = true;
+            doSetUVActiveAndConfigure = true;
+            doDeleteReimportMaterialsTextures = true;
+
+            // post-processor option flags
+            doSetStatic = true;
+            doSetMaterialEmission = false;
+            doSetMaterialSmoothnessMetallic = false;
+            doInstantiateProxyReplacements = false;
+            doHideProxyObjects = false;
+        }
+
         if (assetFilePath.Contains("mall-floor-ceiling-vertical-faceted.fbx")
             || assetFilePath.Contains("mall-interior-detailing-faceted.fbx")
             || assetFilePath.Contains("mall-interior-detailing-faceted-L1.fbx")
@@ -861,6 +981,23 @@ public class AssetImportUpdate : AssetPostprocessor {
             doHideProxyObjects = false;
         }
 
+        if (assetFilePath.Contains("mall-site.fbx"))
+        {
+            // pre-processor option flags
+            doSetGlobalScale = true; // always true
+            doInstantiateAndPlaceInCurrentScene = true;
+            doSetColliderActive = true;
+            doSetUVActiveAndConfigure = true;
+            doDeleteReimportMaterialsTextures = true;
+
+            // post-processor option flags
+            doSetStatic = true;
+            doSetMaterialEmission = false;
+            doSetMaterialSmoothnessMetallic = false;
+            doInstantiateProxyReplacements = false;
+            doHideProxyObjects = false;
+        }
+
         if (assetFilePath.Contains("mall-speakers.fbx")
             || assetFilePath.Contains("store-speakers.fbx"))
         {
@@ -897,7 +1034,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
 
         if (assetFilePath.Contains("proxy-people.fbx")
-            || assetFilePath.Contains("mall-proxy-trees.fbx"))
+            || assetFilePath.Contains("proxy-trees.fbx"))
         {
             // pre-processor option flags
             doSetGlobalScale = true; // always true
@@ -907,7 +1044,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doDeleteReimportMaterialsTextures = true;
 
             // post-processor option flags
-            doSetStatic = false;
+            doSetStatic = true;
             doSetMaterialEmission = false;
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = true;
@@ -943,7 +1080,9 @@ public class AssetImportUpdate : AssetPostprocessor {
             DeleteReimportMaterialsTextures(globalAssetFilePath);
         }
 
-        Debug.Log("END PreProcessing");
+        // since pre-processing is done, mark post-processing as required
+        postProcessingRequired = true;
+        proxyReplacementProcessingRequired = true;
     }
 
     // runs after pre-processing the model
@@ -959,13 +1098,13 @@ public class AssetImportUpdate : AssetPostprocessor {
         // if post processing isn't required, skip
         if (!postProcessingRequired)
         {
-            Debug.Log("Skipping PostProcessing (disabled for this file)");
+            Debug.Log("Skipping PostProcessing (not required)");
             return;
         }
 
         // it seems that a few post processing hits are needed to fully post-process everything
         // any further is probably not necessary
-        if (postProcessingHits.Count >= globalMaxPostProcessingHits)
+        if (!postProcessingRequired || postProcessingHits.Count >= globalMaxPostProcessingHits)
         {
             Debug.Log("Skipping PostProcessing (max allowed reached)");
             return;
