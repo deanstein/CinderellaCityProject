@@ -529,6 +529,11 @@ public class AssetImportUpdate : AssetPostprocessor {
                 SetCustomMaterialEmissionIntensity(dependencyPathString, 1.0F);
             }
 
+            if (dependencyPathString.Contains("incandescent"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, 1.5F);
+            }
+
             if (string.IsNullOrEmpty(dependencyPath)) continue;
         }
     }
@@ -573,7 +578,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
             if (dependencyPathString.Contains("mall - parquet floor"))
             {
-                SetMaterialSmoothness(dependencyPathString, 0.6F);
+                SetMaterialSmoothness(dependencyPathString, 0.5F);
             }
 
             if (dependencyPathString.Contains("mall - polished concrete")
@@ -590,17 +595,22 @@ public class AssetImportUpdate : AssetPostprocessor {
 
             if (dependencyPathString.Contains("mall - shamrock planter brick"))
             {
-                SetMaterialSmoothness(dependencyPathString, 0.05F);
+                SetMaterialSmoothness(dependencyPathString, 0.075F);
             }
 
             if (dependencyPathString.Contains("mall - stair terrazzo"))
             {
-                SetMaterialSmoothness(dependencyPathString, 0.3F);
+                SetMaterialSmoothness(dependencyPathString, 0.2F);
             }
 
             if (dependencyPathString.Contains("food court tile"))
             {
-                SetMaterialSmoothness(dependencyPathString, 0.3F);
+                SetMaterialSmoothness(dependencyPathString, 0.2F);
+            }
+
+            if (dependencyPathString.Contains("mall - food court ceiling"))
+            {
+                SetMaterialSmoothness(dependencyPathString, 0.6F);
             }
 
             if (string.IsNullOrEmpty(dependencyPathString)) continue;
@@ -617,7 +627,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             return;
         }
 
-        if (assetName.Contains("material update test"))
+        if (assetName.Contains("cc-microcosm"))
         {
             proxyType = "Trees";
             Debug.Log("Proxy type: " + proxyType);
@@ -797,7 +807,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // each file should state its preference for all available pre- and post-processor flags as defined above
         //
 
-        if (assetFilePath.Contains("material update test.fbx"))
+        if (assetFilePath.Contains("cc-microcosm.fbx"))
         {
             // pre-processor option flags
             doSetGlobalScale = true; // always true
@@ -814,7 +824,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doHideProxyObjects = true;
         }
 
-        if (assetFilePath.Contains("material update test 2.fbx"))
+        if (assetFilePath.Contains("cc-microcosm-2.fbx"))
         {
             // pre-processor option flags
             doSetGlobalScale = true; // always true
