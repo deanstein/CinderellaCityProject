@@ -581,10 +581,15 @@ public class AssetImportUpdate : AssetPostprocessor {
                 SetMaterialSmoothness(dependencyPathString, 0.5F);
             }
 
-            if (dependencyPathString.Contains("mall - polished concrete")
-                || dependencyPathString.Contains("mall - polished concrete cinder alley"))
+            if (dependencyPathString.Contains("mall - polished concrete"))
             {
                 SetMaterialSmoothness(dependencyPathString, 0.45F);
+            }
+
+            if (dependencyPathString.Contains("mall - polished concrete cinder alley")
+                || dependencyPathString.Contains("mall - cinder alley scored concrete"))
+            {
+                SetMaterialSmoothness(dependencyPathString, 0.35F);
             }
 
             if (dependencyPathString.Contains("mall - shamrock floor brick"))
@@ -643,6 +648,9 @@ public class AssetImportUpdate : AssetPostprocessor {
         {
             proxyType = "People";
             Debug.Log("Proxy type: " + proxyType);
+
+            // people aren't ready yet
+            return;
         }
 
         // define the tag that will be used to hide the proxies
@@ -930,7 +938,9 @@ public class AssetImportUpdate : AssetPostprocessor {
             doHideProxyObjects = false;
         }
 
-        if (assetFilePath.Contains("mall-floor-ceiling-vertical-faceted.fbx")
+        if (assetFilePath.Contains("mall-floor-ceiling-vertical.fbx")
+            || assetFilePath.Contains("mall-floor-ceiling-vertical-faceted.fbx")
+            || assetFilePath.Contains("mall-interior-detailing.fbx")
             || assetFilePath.Contains("mall-interior-detailing-faceted.fbx")
             || assetFilePath.Contains("mall-interior-detailing-faceted-L1.fbx")
             || assetFilePath.Contains("mall-interior-detailing-faceted-L2.fbx")
@@ -991,7 +1001,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doHideProxyObjects = false;
         }
 
-        if (assetFilePath.Contains("mall-site.fbx"))
+        if (assetFilePath.Contains("site.fbx"))
         {
             // pre-processor option flags
             doSetGlobalScale = true; // always true
@@ -1036,7 +1046,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doDeleteReimportMaterialsTextures = true;
 
             // post-processor option flags
-            doSetStatic = false;
+            doSetStatic = true;
             doSetMaterialEmission = false;
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
