@@ -1,0 +1,314 @@
+fileFormatVersion: 2
+guid: f2440090117d23842803f6f0fda725f3
+ModelImporter:
+  serializedVersion: 25
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _Charcoal_
+    second: {fileID: 2100000, guid: 99143a41673d97b4880b7fbbf76816fe, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: acoustic tile
+    second: {fileID: 2100000, guid: 050e7571909a7564e8a6d571a77c3428, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: acoustic tile - 2x2
+    second: {fileID: 2100000, guid: 086b6104c3342b247a025f2f0af3bc5a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: acoustic tile - lines
+    second: {fileID: 2100000, guid: 972c7c22c0f0a4f479ade8fbc087795e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: acoustic tile - rotated
+    second: {fileID: 2100000, guid: 6e18c75f20662a14d8271131c0aa1a6f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: concrete - sidewalk
+    second: {fileID: 2100000, guid: 04fcb54600b2a5d47b1fe36f7da061c4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: concrete interior
+    second: {fileID: 2100000, guid: df0e3089923de854cadfdd69164ecedb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: drywall
+    second: {fileID: 2100000, guid: af0b1b038a54fe944b767575a8de09a4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: drywall 1
+    second: {fileID: 2100000, guid: 2f4b868612c8eb945b5fb69fef057f28, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: escalator - step text 1
+    second: {fileID: 2100000, guid: f9a705f83a016314ba91b4b3f02baeb2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: escalator - step text 2
+    second: {fileID: 2100000, guid: 312e8a086463e414382f00e100bf3c2e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: escalator - step text 3
+    second: {fileID: 2100000, guid: 52a378a37dfc57148873fb8b4d627b25, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - bench brick color
+    second: {fileID: 2100000, guid: c2ec1bf46aa14284d8047837514402f5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - carpet rose
+    second: {fileID: 2100000, guid: 09bec1d07f06d6d429a607a8aa04a1fd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - cinder alley scored floor
+    second: {fileID: 2100000, guid: db4f831fd45d29e438b6cdcefa49a294, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - cinder alley white concrete
+    second: {fileID: 2100000, guid: 704c7a30c90abba4491fdac24a22ba07, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - expansion joint
+    second: {fileID: 2100000, guid: a9968182a032b9745ac1896e90ab3ab9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - floor brick rotated
+    second: {fileID: 2100000, guid: f742190e225aa7d46ac8ac0a04501430, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - floor trim
+    second: {fileID: 2100000, guid: 3ea28bc558d7e494da80a318df227284, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - food court ceiling
+    second: {fileID: 2100000, guid: d0552d0b561066c419ebbc9a269ec497, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - food court tile
+    second: {fileID: 2100000, guid: c84b29d1cf01d96449d4a4c03df18420, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - gas lamp glass
+    second: {fileID: 2100000, guid: 8a4cd8ae19549dc45b5908936cdd20fa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - gas lamp metal
+    second: {fileID: 2100000, guid: 5a2facc108cdb364f8d8dbf0689709ce, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - parquet floor
+    second: {fileID: 2100000, guid: 17133a49f7400a54c86d5f903588f99d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - polished concrete
+    second: {fileID: 2100000, guid: b48098b296a962b41a1f0d90077dbb7b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - polished concrete (cinder alley)
+    second: {fileID: 2100000, guid: cefd4e240b0831d40a8063d0dee18f26, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - polished concrete cinder alley
+    second: {fileID: 2100000, guid: 91295fdf11b1bad40b39e64b7b5107c5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - shamrock floor brick
+    second: {fileID: 2100000, guid: b4a871abdb6f20a4685fc68d94ddaa72, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - shamrock planter brick
+    second: {fileID: 2100000, guid: c63ce2edece65e24bb0bb19b32a8e12c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - stair terrazo
+    second: {fileID: 2100000, guid: b3129c422bfd9c34497095da257c2201, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - stair terrazzo
+    second: {fileID: 2100000, guid: 32eb31bfd9f1d9444ac78e1f2ce1f918, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - stucco
+    second: {fileID: 2100000, guid: c402b7d5f0a54234d852026a9cded800, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - under stair gravel
+    second: {fileID: 2100000, guid: 0bec0ba86d6893741b97eb2e767c162f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: roof - gravel
+    second: {fileID: 2100000, guid: 5c98843f70bb1ff48bd5fdcf09c810a3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: soffit
+    second: {fileID: 2100000, guid: 0c88303836dfda544a4bcf04a0771337, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: soil - interior
+    second: {fileID: 2100000, guid: d93b20a0f4428db439a5213bf8302b85, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - black
+    second: {fileID: 2100000, guid: f260f6195835aa84c9e142c1c48f12cf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - cinder alley brick 1
+    second: {fileID: 2100000, guid: cbf7c3219be1a0a4a93b0c0ac478c5e2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - generic floor concrete
+    second: {fileID: 2100000, guid: d5aabda812e4b0247831b0feddabe632, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - light grey
+    second: {fileID: 2100000, guid: 1366a31ce314ef345a87244be446824a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - metal ceiling 1
+    second: {fileID: 2100000, guid: 62d9be0205a85bf4680c6f3677d66f16, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - mirror
+    second: {fileID: 2100000, guid: 159de3d72a4560c4082887339bd2baa9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - white floor concrete
+    second: {fileID: 2100000, guid: 7126a31ada9adfd4a8eaa3ed487c8856, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: white
+    second: {fileID: 2100000, guid: df41368ae91fc7540b833e86cb4ffebe, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 1
+    materialSearch: 0
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 1
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 1
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 4
+    secondaryUVAreaDistortion: 4
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 64
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 1
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,224 @@
+fileFormatVersion: 2
+guid: c69c6cb419bbece48abbb500c5a4f3f1
+ModelImporter:
+  serializedVersion: 25
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 60s silver
+    second: {fileID: 2100000, guid: ccf31d74c607700489eaa23d1dc3584a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 80s glass
+    second: {fileID: 2100000, guid: bf1a37937547a0a468bc1d2c913eebc4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _Charcoal_
+    second: {fileID: 2100000, guid: 49fd50ef3f1965a41a8308c937442556, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: acoustic tile - rotated
+    second: {fileID: 2100000, guid: 7ffc3792181bc444abf462055a2efa91, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: anchor - anchor rough accent
+    second: {fileID: 2100000, guid: 2bbbd0910f17c9049baa91276104a034, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: anchor - smooth accent
+    second: {fileID: 2100000, guid: d833ee5e64626914398f636b94719b46, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: concrete - columns
+    second: {fileID: 2100000, guid: b4d2a97a4a4f0ea439ea575058f0459e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: concrete - painted 80s
+    second: {fileID: 2100000, guid: b4b3c24ee71f1cf4f972147aefa7d299, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: concrete interior
+    second: {fileID: 2100000, guid: 3e06d3961a07f2f40bcdca1c38721fb8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: darker drywall
+    second: {fileID: 2100000, guid: e8e48ede36625e44ea8ad39a658fbc13, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: drywall
+    second: {fileID: 2100000, guid: e1dad28354fe3b34f9bb8f4a1aecb03c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: escalator - step text 1
+    second: {fileID: 2100000, guid: dc620aa2f81928249b2e43d09ca7a3f3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: escalator - step text 2
+    second: {fileID: 2100000, guid: d4106f59fedca324daf9f32f94c89942, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: escalator - step text 3
+    second: {fileID: 2100000, guid: 91b653c37319f1c459b6c824601dc890, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - 80s metal trim
+    second: {fileID: 2100000, guid: 2718dcca8134ce4469bc1e89e9c50a52, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - CMU
+    second: {fileID: 2100000, guid: 792caf84ca3a8c94a969e9943548523d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - brick
+    second: {fileID: 2100000, guid: bc18c325e2903634088b21c457ff90b5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - brick - whitewash
+    second: {fileID: 2100000, guid: 84833adac68580448b1ab7efd799ecaa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - floor brick rotated
+    second: {fileID: 2100000, guid: 32eb77e5e5e564c44a09029abbd45f30, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - floor trim
+    second: {fileID: 2100000, guid: b0a67ace96d3d404baf7fa6d50ccb7c1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - stucco
+    second: {fileID: 2100000, guid: 27a2953b3bdc90c4a835fe2bebc6a8cb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: roof - gravel
+    second: {fileID: 2100000, guid: 13908d57a1a0ea74cb17dc9216713aa1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - dark brown
+    second: {fileID: 2100000, guid: c3f2227dfecd3ad4dbe396108e7adeb7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - generic floor concrete
+    second: {fileID: 2100000, guid: 4689c51ba17d8a049b7422dfc0cc7447, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - stacked brick
+    second: {fileID: 2100000, guid: d0a2cdb800d7e0e4c8eb24d336c7c2ff, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: white
+    second: {fileID: 2100000, guid: 5af10597249573649a135f4a23a12a63, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 1
+    materialSearch: 0
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 1
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 1
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 4
+    secondaryUVAreaDistortion: 4
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 64
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
