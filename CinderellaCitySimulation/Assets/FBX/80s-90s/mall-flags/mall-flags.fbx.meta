@@ -1,0 +1,249 @@
+fileFormatVersion: 2
+guid: 801f2f1e4f2e1f54a968a839f19f9729
+ModelImporter:
+  serializedVersion: 25
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: DefaultMaterial
+    second: {fileID: 2100000, guid: 95ab392b730a0d641881f9e2c5e00e71, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: clear
+    second: {fileID: 2100000, guid: 0499d77e446e2ab4c8e989572f884a1d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - ceiling fixture metal
+    second: {fileID: 2100000, guid: 0fc7ba03b7032e74fa2a098ed77dba97, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - flag C blue
+    second: {fileID: 2100000, guid: 21548a6a523904a40adf3efec02063de, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - flag C purple
+    second: {fileID: 2100000, guid: 9b1266e8803a2d74dbf682529539ec3d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - flag bird blue
+    second: {fileID: 2100000, guid: 24d646cf08a97ea47810e71ea1be64ac, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - flag bird pink
+    second: {fileID: 2100000, guid: b5cf568865145a54986d7a38b2d6df88, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - flag circle blue
+    second: {fileID: 2100000, guid: 7ac5b7cac7785a641b0c6a29fb635cdd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - flag circle green
+    second: {fileID: 2100000, guid: 41e87bbdb88e4d046b630ab3a52bd6cc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - flag geometric blue
+    second: {fileID: 2100000, guid: ea1dcc27cb2453a44a80959638395a7c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - flag geometric green
+    second: {fileID: 2100000, guid: fb13896efd1d61b4c960c91b8c9bb5a9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - flag geometric red
+    second: {fileID: 2100000, guid: 039b1dec056675e44bde3d873dcbed59, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - flag half sun blue
+    second: {fileID: 2100000, guid: c36736ab0d9fa5145a4d39d2d181465a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - flag half sun green
+    second: {fileID: 2100000, guid: c0124e4bea98d8e499e04ec6e45cb3c9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - flag half sun red
+    second: {fileID: 2100000, guid: 2b3d0f971853e9f4e9e9e919eb69053d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - flag leaves blue
+    second: {fileID: 2100000, guid: bfe25c9b30d5e5843b3a0b690075f73f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - flag leaves green
+    second: {fileID: 2100000, guid: ce5afde70058f5c47817779716c9ad06, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - flag leaves red
+    second: {fileID: 2100000, guid: fc6e1efcb0d94a5479fddb86ff2a679b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - flag light orange
+    second: {fileID: 2100000, guid: 5888f5323fa3937468a08ec586494734, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - flag light yellow
+    second: {fileID: 2100000, guid: 11e2b717457005341ac3bc7aef2b8ae9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - flag orange 1
+    second: {fileID: 2100000, guid: 59223534c813e754f9e2bd07022ac7d9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - flag red 1
+    second: {fileID: 2100000, guid: 88a1ed38f585e0849939836357ab2d02, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - flag sun blue
+    second: {fileID: 2100000, guid: eae28da9fa0834b4eb9b70c3b8746e26, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - flag sun pink
+    second: {fileID: 2100000, guid: 833afa0a9c066d64186ec5f80c790d79, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - flag sun red
+    second: {fileID: 2100000, guid: 4f69c27c953e3b04ba7c6e92afa70105, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - flag target blue
+    second: {fileID: 2100000, guid: b1a8ac0b8825500478604d08a0304ab8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - flag target pink
+    second: {fileID: 2100000, guid: d80299f9d08b4e14ebdce5d942dbd7d0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - flag target red
+    second: {fileID: 2100000, guid: fcc78ed5572afb948822a2560f6dc752, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - flag white
+    second: {fileID: 2100000, guid: 490f79ef80566c4429ff27795f8b4c5f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - ying yang
+    second: {fileID: 2100000, guid: a9d6484088e900a4b9c57d431c4a65ec, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - dark grey
+    second: {fileID: 2100000, guid: 3a96fe456e3dac547b983bd21cceeaf2, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 1
+    materialSearch: 0
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 1
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 4
+    secondaryUVAreaDistortion: 4
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 64
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

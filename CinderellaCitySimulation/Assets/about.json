@@ -1,0 +1,116 @@
+{
+  "AppVersion": "0.3.0.201907",
+  "VersionSyntax": "release.logicUpdate.assetUpdate.yearMonth",
+  "VersionHistory": 
+  [
+    {
+      "0.3.0.201907": 
+      [
+        {
+          "logicUpdates": [
+            "Added new AssetImportPipeline.cs editor script to automate the import of FBX assets",
+            "Added ToggleVisibility.cs editor script to control visibility of objects",
+            "Added TagHelper.cs editor script to assist in creating tags if they're not available yet",
+            "Added LightingSettingsHelper.cs editor script for future lighting settings work (not currently used)"
+          ],
+          "assetUpdates": [
+            "Deleted and reimported all assets using the new AssetImportPipeline",
+            "Major model updates to Shamrock Mall, Food Court, Gold Mall, and Cinder Alley",
+            "Added trees in Center Court and Shamrock Mall",
+            "Changed lightmap settings for better results",
+            "Changed post-processing settings for better results",
+            "Known issue: speakers have been temporarily removed"
+          ]
+        }
+      ],
+      "0.2.3.201906": 
+      [
+        {
+          "logicUpdates": [
+            "Added in-progress FullScreenSprite.cs and BackgroundSpriteTransform.cs code for title screen",
+            "Added in-progress LoadNewScene.cs code for loading new scenes",
+            "Updated project and scripts to Unity 2019"
+          ],
+          "assetUpdates": [
+            "Updated to PostProcessingEffects 2.0",
+            "Experimented with lightmap settings, then tried to restore them to previous quality"
+          ]
+        }
+      ],
+      "0.1.2.201811": [
+        {
+          "logicUpdates": [
+            "Add ability to toggle visibility of 2D people with 'p' shortcut"
+          ],
+          "assetUpdates": [
+            "Major update to FBX files, including new storefronts and signage in Rose Mall, Shamrock Mall, and basement areas between Food Court and Shamrock\/Cinder Alley",
+            "Overhaul of Unity lighting to address unexpected black surfaces and improve overall lightmapping",
+            "Added postprocessing in Unity to cover floor reflections, light blooms, anti-aliasing, and ambient occlusion"
+          ]
+        }
+      ],
+      "0.0.1.201806": [
+        {
+          "logicUpdates": [
+            
+          ],
+          "assetUpdates": [
+            "Initial Unity signage and lighting test",
+            "Includes initial submission of all mall FBX files",
+            "Includes lights, signage, and speakers in and around Blue Mall"
+          ]
+        }
+      ]
+    }
+  ],
+  "Creativity Credits": [
+    {
+      "Designer and Creator": [
+        {
+          "Name": "Josh Goldstein",
+          "Website": "https:\/\/www.jdeangoldstein.com"
+        }
+      ],
+      "Atmospheric Sound Artist": [
+        {
+          "Name": "Shane Wirkes",
+          "Website": "https:\/\/bdalton.bandcamp.com"
+        }
+      ],
+      "Store Music Artist": [
+        {
+          "Name": "Maureen McCabe",
+          "Website": "https:\/\/dead-mall.bandcamp.com\/"
+        }
+      ]
+    }
+  ],
+  "Software": [
+    {
+      "3D Modeling": [
+        {
+          "Name": "Autodesk FormIt",
+          "Website": "https:\/\/formit.autodesk.com"
+        }
+      ],
+      "Game Engine": [
+        {
+          "Name": "Unity",
+          "Website": "https:\/\/www.unity3d.com"
+        }
+      ],
+      "Raster Manipulation": [
+        {
+          "Name": "Adobe Photoshop",
+          "Website": "https:\/\/photoshop.adobe.com\/"
+        }
+      ],
+      "Vector Manipulation": [
+        {
+          "Name": "Adobe Illustrator",
+          "Website": "https:\/\/illustrator.adobe.com\/"
+        }
+      ]
+    }
+  ]
+}
