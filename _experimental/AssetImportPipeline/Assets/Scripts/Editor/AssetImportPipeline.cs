@@ -526,7 +526,12 @@ public class AssetImportUpdate : AssetPostprocessor {
 
             if (dependencyPathString.Contains("low intensity white"))
             {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 1.0F);
+                SetCustomMaterialEmissionIntensity(dependencyPathString, 0.50F);
+            }
+
+            if (dependencyPathString.Contains("very low intensity white"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, 0.20F);
             }
 
             if (dependencyPathString.Contains("incandescent"))
@@ -945,6 +950,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             || assetFilePath.Contains("mall-interior-detailing-faceted-L1.fbx")
             || assetFilePath.Contains("mall-interior-detailing-faceted-L2.fbx")
             || assetFilePath.Contains("mall-interior-detailing-faceted-L3.fbx")
+            || assetFilePath.Contains("mall-exterior-detailing.fbx")
             || assetFilePath.Contains("mall-exterior-detailing-faceted.fbx")
             || assetFilePath.Contains("mall-exterior-walls.fbx")
             || assetFilePath.Contains("store-interior-detailing.fbx")
