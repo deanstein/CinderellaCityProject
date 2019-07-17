@@ -1,10 +1,12 @@
 fileFormatVersion: 2
 guid: 2cf32a45b08802144a178a4c1005ae74
-timeCreated: 1462791110
-licenseType: Store
 MonoImporter:
+  externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - cloud_1: {fileID: 120048, guid: b9e1d81342220764293959ffb27c5dde, type: 3}
+  - cloud_2: {instanceID: 0}
+  - cloud_3: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
