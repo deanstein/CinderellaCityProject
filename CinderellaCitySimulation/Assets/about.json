@@ -1,9 +1,31 @@
 {
-  "AppVersion": "0.3.0.201907",
+  "AppVersion": "0.3.1.201907",
   "VersionSyntax": "release.logicUpdate.assetUpdate.yearMonth",
   "VersionHistory": 
   [
     {
+    "0.3.1.201907": 
+      [
+        {
+          "logicUpdates": [
+            ""
+          ],
+          "assetUpdates": [
+            "Lighting fixes in exterior detailing, exterior walls models",
+            "Fixed an issue where cylindrical surfaces were rendering with pinstriping (MipMaps option in CubeMap)",
+            "Added new storefronts in Shamrock Mall",
+            "General updates to mall floor/ceiling vert, store detailing, mall structure, mall lights, mall signage models",
+            "Fixed issues with mall signage colors and applications",
+            "Added Joslins and Orange Julius signage",
+            "Added lighting to Gold Mall's smaller hallways",
+            "Switched sun to Sun+ from TreesVariety",
+            "Switched direct filtering to A-Trous",
+            "Switched sun to hard shadows",
+            "Known issue: speakers have been temporarily removed",
+            "Known issue: context site model will not render (Unity crashes)"
+          ]
+        }
+      ],
       "0.3.0.201907": 
       [
         {
@@ -14,12 +36,13 @@
             "Added LightingSettingsHelper.cs editor script for future lighting settings work (not currently used)"
           ],
           "assetUpdates": [
-            "Deleted and reimported all assets using the new AssetImportPipeline",
+            "Deleted and reimported all assets using the new AssetImportPipeline, and at a new scale (1.0)",
             "Major model updates to Shamrock Mall, Food Court, Gold Mall, and Cinder Alley",
             "Added trees in Center Court and Shamrock Mall",
             "Changed lightmap settings for better results",
             "Changed post-processing settings for better results",
-            "Known issue: speakers have been temporarily removed"
+            "Known issue: speakers have been temporarily removed",
+            "Known issue: context site model will not render correct lighting (Unity crashes)"
           ]
         }
       ],

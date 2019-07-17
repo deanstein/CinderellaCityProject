@@ -27,6 +27,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: darker drywall
+    second: {fileID: 2100000, guid: 9c35e28ff0772604b898f723b0e438cb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: drywall
     second: {fileID: 2100000, guid: 9e3f246b4192c5848abded2bd1753aad, type: 2}
   - first:
@@ -92,6 +97,16 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - shamrock floor brick
+    second: {fileID: 2100000, guid: 31a6c6d89eabc6a44ab5f95eeff32268, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: silver metallic
+    second: {fileID: 2100000, guid: bd459f888c7d5a94881df5d1c9b64370, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: stoer - dark red tile
     second: {fileID: 2100000, guid: 12895ace4989f064d95f29286a22e6c7, type: 2}
   - first:
@@ -109,6 +124,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: store - black
     second: {fileID: 2100000, guid: 335c38a7d707f454caf93d8bc42d6571, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - black glossy
+    second: {fileID: 2100000, guid: 3991423991ba13e4d8e47dcc80f133e5, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -490,7 +510,7 @@ ModelImporter:
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
-    normalImportMode: 0
+    normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0

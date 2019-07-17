@@ -7,6 +7,16 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: 80s glass
+    second: {fileID: 2100000, guid: c36b7d618afcd444284b5f0ef9a25b0d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: DefaultMaterial
+    second: {fileID: 2100000, guid: 5335bc8f186db7b44b33a08529ec9b08, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: concrete - painted 80s
     second: {fileID: 2100000, guid: 2c76be0b7cee405449f56c4d36765006, type: 2}
   - first:
@@ -39,6 +49,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: mall - stucco
     second: {fileID: 2100000, guid: 61dd29d6ca45b0e4787107e6bfb50150, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: silver metallic
+    second: {fileID: 2100000, guid: 3777ce13ddc744a448c423197752cfbb, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -120,7 +135,7 @@ ModelImporter:
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
-    normalImportMode: 0
+    normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
