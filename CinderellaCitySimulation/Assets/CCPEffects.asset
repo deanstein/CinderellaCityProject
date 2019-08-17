@@ -77,7 +77,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adb84e30e02715445aeb9959894e3b4d, type: 3}
   m_Name: ColorGrading
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   enabled:
     overrideState: 1
     value: 1
@@ -130,7 +130,7 @@ MonoBehaviour:
     value: 0
   saturation:
     overrideState: 1
-    value: 0
+    value: 30
   brightness:
     overrideState: 0
     value: 0
@@ -139,7 +139,7 @@ MonoBehaviour:
     value: 0.38
   contrast:
     overrideState: 1
-    value: 1
+    value: 0
   mixerRedOutRedIn:
     overrideState: 0
     value: 100
@@ -1395,6 +1395,7 @@ MonoBehaviour:
   - {fileID: -7177235786542874889}
   - {fileID: -3244033513056113289}
   - {fileID: -2917488271276996023}
+  - {fileID: 2139458815346263425}
 --- !u!114 &114223775226253414
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -1507,8 +1508,8 @@ MonoBehaviour:
     overrideState: 1
     value: 1
   clamp:
-    overrideState: 1
-    value: 65472
+    overrideState: 0
+    value: 1
   diffusion:
     overrideState: 1
     value: 7
@@ -1527,4 +1528,30 @@ MonoBehaviour:
     defaultState: 1
   dirtIntensity:
     overrideState: 1
+    value: 0
+--- !u!114 &2139458815346263425
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6050e2d5de785ce4d931e4dbdbf2d755, type: 3}
+  m_Name: ChromaticAberration
+  m_EditorClassIdentifier: 
+  active: 0
+  enabled:
+    overrideState: 1
+    value: 1
+  spectralLut:
+    overrideState: 0
+    value: {fileID: 0}
+    defaultState: 1
+  intensity:
+    overrideState: 0
+    value: 0
+  fastMode:
+    overrideState: 0
     value: 0

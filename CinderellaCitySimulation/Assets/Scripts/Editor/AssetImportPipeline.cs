@@ -49,14 +49,15 @@ public class AssetImportUpdate : AssetPostprocessor {
     // all option flags should default to false, except global scale
     //
 
-    // pre-processor option flags
+    // master pre-processor option flags
     static bool doSetGlobalScale;
     static bool doInstantiateAndPlaceInCurrentScene;
     static bool doSetColliderActive;
     static bool doSetUVActiveAndConfigure;
     static bool doDeleteReimportMaterialsTextures;
+    static bool doAddBehaviorComponents;
 
-    // post-processor option flags
+    // master post-processor option flags
     static bool doSetStatic;
     static bool doSetMaterialEmission;
     static bool doSetMaterialSmoothnessMetallic;
@@ -430,6 +431,142 @@ public class AssetImportUpdate : AssetPostprocessor {
         Debug.Log("<b>Scaled </b>" + gameObjectToScale + " <b>to match</b> " + gameObjectToMatch + " <b>(" + scaleFactor + " scale factor)</b>");
     }
 
+
+    // define how to create a component attached to a GameObject, or delete it and create a new one if component already exists
+    public static void RemoveComponentIfExisting(GameObject gameObjectForComponent, string componentType)
+    {
+        // if this object already has a component of this type, delete it
+        if (gameObjectForComponent.GetComponent(componentType) as Component)
+        {
+            Debug.Log("<b>Deleted</b> existing behavior component " + componentType + " on " + gameObjectForComponent + ".");
+            Component componentToDelete = gameObjectForComponent.GetComponent(componentType) as Component;
+            //AudioSource audioSourceToDelete = gameObjectForComponent.gameObject.GetComponent<AudioSource>();
+
+            // delete the existing component
+            UnityEngine.Object.DestroyImmediate(componentToDelete);
+        }
+    }
+
+    // define how to apply components (behaviors and scripts) to an asset's GameObject in the scene
+    public static void AddUnityEngineComponentsByName(String assetName, String componentType)
+    {
+        // find the associated GameObject by this asset's name, and all of its children objects
+        GameObject gameObjectByAsset = GameObject.Find(assetName);
+        Transform[] allChildren = gameObjectByAsset.GetComponentsInChildren<Transform>();
+
+        // generic components have a specific type
+        Type unityEngineComponentType = Type.GetType("UnityEngine." + componentType + ", UnityEngine");
+
+        // first, remove the component if it exists already
+        RemoveComponentIfExisting(gameObjectByAsset, componentType);
+
+        //
+        // apply components only to the parent objects
+        //
+
+        /*
+        // if the name and type match, add the component
+        if (gameObjectByAsset.name.Contains("people"))
+        {
+            Debug.Log("<b>Added</b> " + componentType + " behavior component to " + assetName);
+        }
+        */
+
+        // 
+        // apply components to all the children 
+        //
+
+        foreach (Transform child in allChildren)
+        {
+            // first, remove the component if it exists already
+            RemoveComponentIfExisting(child.gameObject, componentType);
+
+            // if the name and type match, add the component
+            if (child.name.Contains("speaker-") && componentType.Contains("AudioSource"))
+            {
+                child.gameObject.AddComponent(unityEngineComponentType);
+
+                // get the audio source for this GameObject
+                AudioSource audioSourceComponent = child.gameObject.GetComponent<AudioSource>();
+                //Debug.Log("This audio source: " + audioSourceComponent);
+
+                Debug.Log("<b>Added</b> " + componentType + " behavior component to " + child.name);
+            }
+        }
+    }
+
+    // define how to add a scriptable component to a game object
+    public static void AddCustomScriptComponentsByName(String assetName, String componentType)
+    {
+        // custom scripts get a specific type
+        Type customScriptComponentType = Type.GetType(componentType + ", Assembly-CSharp");
+
+        // find the associated GameObject by this asset's name, and all of its children objects
+        GameObject gameObjectByAsset = GameObject.Find(assetName);
+        Transform[] allChildren = gameObjectByAsset.GetComponentsInChildren<Transform>();
+
+        //
+        // apply components only to the parent objects
+        //
+
+        // first, remove the component if it exists already
+        RemoveComponentIfExisting(gameObjectByAsset, componentType);
+
+        // if the name and type match, add the component
+        if ((assetName.Contains("proxy-people")) && componentType.Contains("ToggleVisibilityByShortcut"))
+        {
+            gameObjectByAsset.AddComponent(customScriptComponentType);
+            ToggleVisibilityByShortcut ToggleVisibilityScript = gameObjectByAsset.AddComponent<ToggleVisibilityByShortcut>();
+            ToggleVisibilityScript.objectType = "people";
+            ToggleVisibilityScript.shortcut = "p";
+            Debug.Log("<b>Added</b> " + componentType + " behavior component to " + assetName);
+        }
+
+        // 
+        // apply components to all the children 
+        //
+
+        foreach (Transform child in allChildren)
+        {
+            // first, remove the component if it exists already
+            RemoveComponentIfExisting(child.gameObject, componentType);
+
+            // if the name and type match, add the component
+            if (child.name.Contains("speaker-") && componentType.Contains("PlayAudioSequencesByName"))
+            {
+                child.gameObject.AddComponent(customScriptComponentType);
+                Debug.Log("<b>Added</b> " + componentType + " behavior component to " + child.name);
+            }
+        }
+    }
+
+    // define how to add certain behavior components to certain GameObjects as defined by their host file name
+    public static void AddBehaviorComponents(string fileName)
+    {
+        Debug.Log("Adding behavior components...");
+
+        // these are the Unity Engine components that will be added to specific GameObjects
+        // <!!!> when adding here, remember to also add this behavior and the compatible asset inside the function in the for loop <!!!>
+        string[] unityEngineComponentsArray = { "AudioSource" };
+
+        // for each of the Unity Engine components, apply them to this asset
+        for (var i = 0; i < unityEngineComponentsArray.Length; i++)
+        {
+            AddUnityEngineComponentsByName(fileName, unityEngineComponentsArray[i]);
+        }
+
+        // these are the custom script components that will be added to specific GameObjects
+        // <!!!> when adding here, remember to also add this behavior and the compatible asset inside the function in the for loop <!!!>
+        string[] customScriptComponentsArray = { "PlayAudioSequencesByName", "ToggleVisibilityByShortcut" };
+
+        // for each of the custom components, apply them to this asset
+        for (var i = 0; i < customScriptComponentsArray.Length; i++)
+        {
+            AddCustomScriptComponentsByName(fileName, customScriptComponentsArray[i]);
+        }
+    }
+
+
     //
     // ><><><><><><><><><><><><>
     //
@@ -504,6 +641,11 @@ public class AssetImportUpdate : AssetPostprocessor {
                 SetCustomMaterialEmissionIntensity(dependencyPathString, 1.0F);
             }
 
+            if (dependencyPathString.Contains("wayfinding directory"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, 1.0F);
+            }
+
             if (dependencyPathString.Contains("fluorescent panel"))
             {
                 SetCustomMaterialEmissionIntensity(dependencyPathString, 2.0F);
@@ -524,19 +666,47 @@ public class AssetImportUpdate : AssetPostprocessor {
                 SetCustomMaterialEmissionIntensity(dependencyPathString, 3.0F);
             }
 
-            if (dependencyPathString.Contains("low intensity white"))
+            if (dependencyPathString.Contains("low intensity yellow"))
             {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 0.50F);
+                SetCustomMaterialEmissionIntensity(dependencyPathString, 1.0F);
             }
 
             if (dependencyPathString.Contains("very low intensity white"))
             {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 0.20F);
+                SetCustomMaterialEmissionIntensity(dependencyPathString, -1.0F);
             }
 
-            if (dependencyPathString.Contains("incandescent"))
+            if (dependencyPathString.Contains("americana shop"))
             {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 1.5F);
+                SetCustomMaterialEmissionIntensity(dependencyPathString, -1.0F);
+            }
+
+            if (dependencyPathString.Contains("store yellowing"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, -0.50F);
+            }
+
+            if (dependencyPathString.Contains("food court high intensity"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, 3.25F);
+            }
+
+            if (dependencyPathString.Contains("food court incandescent"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, 2.0F);
+            }
+
+            if (dependencyPathString.Contains("cinder alley incandescent"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, 2.0F);
+            }
+
+            // temporarily reducing the brightness of these until all signage brightness can be adjusted to affset albedo boost,
+            // or if using Baked Lightmap instead of Shadowmask, which will make things brighter without an albedo boost override
+            if (dependencyPathString.Contains("store rtc sign") ||
+                dependencyPathString.Contains("store fl runner"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, -1.0F);
             }
 
             if (string.IsNullOrEmpty(dependencyPath)) continue;
@@ -828,6 +998,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetColliderActive = true;
             doSetUVActiveAndConfigure = true;
             doDeleteReimportMaterialsTextures = true;
+            doAddBehaviorComponents = false;
 
             // post-processor option flags
             doSetStatic = true;
@@ -845,6 +1016,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetColliderActive = true;
             doSetUVActiveAndConfigure = true;
             doDeleteReimportMaterialsTextures = true;
+            doAddBehaviorComponents = false;
 
             // post-processor option flags
             doSetStatic = true;
@@ -865,6 +1037,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetColliderActive = true;
             doSetUVActiveAndConfigure = true;
             doDeleteReimportMaterialsTextures = true;
+            doAddBehaviorComponents = false;
 
             // post-processor option flags
             doSetStatic = true;
@@ -883,6 +1056,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetColliderActive = false;
             doSetUVActiveAndConfigure = false;
             doDeleteReimportMaterialsTextures = true;
+            doAddBehaviorComponents = false;
 
             // post-processor option flags
             doSetStatic = false;
@@ -900,6 +1074,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetColliderActive = true;
             doSetUVActiveAndConfigure = true;
             doDeleteReimportMaterialsTextures = true;
+            doAddBehaviorComponents = false;
 
             // post-processor option flags
             doSetStatic = true;
@@ -917,6 +1092,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetColliderActive = false;
             doSetUVActiveAndConfigure = true;
             doDeleteReimportMaterialsTextures = true;
+            doAddBehaviorComponents = false;
 
             // post-processor option flags
             doSetStatic = true;
@@ -934,6 +1110,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetColliderActive = true;
             doSetUVActiveAndConfigure = true;
             doDeleteReimportMaterialsTextures = true;
+            doAddBehaviorComponents = false;
 
             // post-processor option flags
             doSetStatic = true;
@@ -963,6 +1140,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetColliderActive = true;
             doSetUVActiveAndConfigure = true;
             doDeleteReimportMaterialsTextures = true;
+            doAddBehaviorComponents = false;
 
             // post-processor option flags
             doSetStatic = true;
@@ -980,6 +1158,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetColliderActive = true;
             doSetUVActiveAndConfigure = false;
             doDeleteReimportMaterialsTextures = true;
+            doAddBehaviorComponents = false;
 
             // post-processor option flags
             doSetStatic = false;
@@ -989,8 +1168,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doHideProxyObjects = false;
         }
 
-        if (assetFilePath.Contains("mall-lights.fbx")
-            || assetFilePath.Contains("mall-signage.fbx"))
+        if (assetFilePath.Contains("mall-wayfinding"))
         {
             // pre-processor option flags
             doSetGlobalScale = true; // always true
@@ -998,45 +1176,31 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetColliderActive = true;
             doSetUVActiveAndConfigure = true;
             doDeleteReimportMaterialsTextures = true;
+            doAddBehaviorComponents = false;
+
+            // post-processor option flags
+            doSetStatic = false;
+            doSetMaterialEmission = true;
+            doSetMaterialSmoothnessMetallic = true;
+            doInstantiateProxyReplacements = false;
+            doHideProxyObjects = false;
+        }
+
+        if (assetFilePath.Contains("mall-lights.fbx")
+            || assetFilePath.Contains("mall-signage.fbx")
+            || assetFilePath.Contains("site-lights.fbx"))
+        {
+            // pre-processor option flags
+            doSetGlobalScale = true; // always true
+            doInstantiateAndPlaceInCurrentScene = true;
+            doSetColliderActive = true;
+            doSetUVActiveAndConfigure = true;
+            doDeleteReimportMaterialsTextures = true;
+            doAddBehaviorComponents = false;
 
             // post-processor option flags
             doSetStatic = true;
             doSetMaterialEmission = true;
-            doSetMaterialSmoothnessMetallic = false;
-            doInstantiateProxyReplacements = false;
-            doHideProxyObjects = false;
-        }
-
-        if (assetFilePath.Contains("site.fbx"))
-        {
-            // pre-processor option flags
-            doSetGlobalScale = true; // always true
-            doInstantiateAndPlaceInCurrentScene = true;
-            doSetColliderActive = true;
-            doSetUVActiveAndConfigure = true;
-            doDeleteReimportMaterialsTextures = true;
-
-            // post-processor option flags
-            doSetStatic = true;
-            doSetMaterialEmission = false;
-            doSetMaterialSmoothnessMetallic = false;
-            doInstantiateProxyReplacements = false;
-            doHideProxyObjects = false;
-        }
-
-        if (assetFilePath.Contains("mall-speakers.fbx")
-            || assetFilePath.Contains("store-speakers.fbx"))
-        {
-            // pre-processor option flags
-            doSetGlobalScale = true; // always true
-            doInstantiateAndPlaceInCurrentScene = true;
-            doSetColliderActive = false;
-            doSetUVActiveAndConfigure = true;
-            doDeleteReimportMaterialsTextures = true;
-
-            // post-processor option flags
-            doSetStatic = true;
-            doSetMaterialEmission = false;
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
@@ -1050,6 +1214,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetColliderActive = true;
             doSetUVActiveAndConfigure = false;
             doDeleteReimportMaterialsTextures = true;
+            doAddBehaviorComponents = false;
 
             // post-processor option flags
             doSetStatic = true;
@@ -1068,6 +1233,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetColliderActive = false;
             doSetUVActiveAndConfigure = false;
             doDeleteReimportMaterialsTextures = true;
+            doAddBehaviorComponents = true;
 
             // post-processor option flags
             doSetStatic = true;
@@ -1075,6 +1241,42 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = true;
             doHideProxyObjects = true;
+        }
+
+        if (assetFilePath.Contains("site.fbx"))
+        {
+            // pre-processor option flags
+            doSetGlobalScale = true; // always true
+            doInstantiateAndPlaceInCurrentScene = true;
+            doSetColliderActive = true;
+            doSetUVActiveAndConfigure = true;
+            doDeleteReimportMaterialsTextures = true;
+            doAddBehaviorComponents = false;
+
+            // post-processor option flags
+            doSetStatic = true;
+            doSetMaterialEmission = false;
+            doSetMaterialSmoothnessMetallic = false;
+            doInstantiateProxyReplacements = false;
+            doHideProxyObjects = false;
+        }
+
+        if (assetFilePath.Contains("speakers.fbx"))
+        {
+            // pre-processor option flags
+            doSetGlobalScale = true; // always true
+            doInstantiateAndPlaceInCurrentScene = true;
+            doSetColliderActive = false;
+            doSetUVActiveAndConfigure = false;
+            doDeleteReimportMaterialsTextures = true;
+            doAddBehaviorComponents = true;
+
+            // post-processor option flags
+            doSetStatic = false;
+            doSetMaterialEmission = false;
+            doSetMaterialSmoothnessMetallic = false;
+            doInstantiateProxyReplacements = false;
+            doHideProxyObjects = false;
         }
 
         //
@@ -1104,6 +1306,11 @@ public class AssetImportUpdate : AssetPostprocessor {
         if (doDeleteReimportMaterialsTextures)
         {
             DeleteReimportMaterialsTextures(globalAssetFilePath);
+        }
+
+        if (doAddBehaviorComponents)
+        {
+            AddBehaviorComponents(globalAssetFileName);
         }
 
         // since pre-processing is done, mark post-processing as required

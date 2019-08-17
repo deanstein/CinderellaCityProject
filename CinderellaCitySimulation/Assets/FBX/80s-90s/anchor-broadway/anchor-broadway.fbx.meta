@@ -92,6 +92,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: silver metallic
+    second: {fileID: 2100000, guid: 0a2da27fb449e644093703e3dc4d75ff, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: store - generic floor concrete
     second: {fileID: 2100000, guid: cb075bf8ce561344fba53ef3b8d54259, type: 2}
   - first:
@@ -160,7 +165,7 @@ ModelImporter:
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
-    normalImportMode: 0
+    normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
