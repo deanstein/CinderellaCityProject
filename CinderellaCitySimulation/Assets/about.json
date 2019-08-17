@@ -1,9 +1,44 @@
 {
-  "AppVersion": "0.3.1.201907",
+  "AppVersion": "0.4.0.201908",
   "VersionSyntax": "release.logicUpdate.assetUpdate.yearMonth",
   "VersionHistory": 
   [
     {
+	"0.4.0.201908": 
+      [
+        {
+            "logicUpdates": [
+                "Added the ability to attach Unity behavior components like AudioSource to GameObjects",
+                "Added the ability to attach custom scripted behavior components like PlayAudioSequencesByName to GameObjects",
+                "Added PlayAudioSequencesByName script, created new audio sequences from music clips and applied them to speaker models",
+                "Renamed TogglePeople to ToggleVisibilityWithShortcut, and it's now automatically applied to proxy-people.fbx"
+            ],
+            "assetUpdates": [
+                "Added 701 Offices, Americana Shop, American Waterbed, Bermans, B. Dalton, Brooks, Co. 6, Cristy, DEB, Dairy Queen, Chick-Fil-A, Corn Dog, Jarman, J. Brannam, Lee's Hallmark, Lerner Shops, Mastercuts, Naturalizer Shoes, nina B, Payless Shoes, Paul Wu's, Sbarro, Sportsfan, Stuarts, Tandy Leather, Thom McAn, Ups N Downs, Waldenbooks, Zales, Zeezos signage to the model",
+                "Updated Cinder Alley landmark wayfinding with better vector graphics, added Cinder Alley east wall wayfinding",
+                "Updated Foot Locker logo with more accurate linework",
+                "Added Joslins signage variations to Cinder Alley",
+                "Added Broadway Southwest signage variation to Shamrock Mall",
+                "Added mall colored wayfinding signage",
+                "Added 3-sided mall directories",
+                "Added more lights to Cinder Alley near JC Penney",
+                "Added site lighting, including above- and below-grade parking fixtures",
+                "Added vacant storefronts to Shamrock Mall and Cinder Alley",
+                "Added starter storefronts to Cinder Alley",
+                "Fixed and detailed east Cinder Alley stair near Joslins",
+                "Added perimeter string lights and corner ceiling lights in food court",
+                "Switched Broadway signage model back to side-lit",
+                "Watertight fixes in some models",
+                "Added new music by Betamaxx, more tracks by DeadMall, and organized all audio files per-era",
+                "Updated speaker model naming and organization for new AudioSource code",
+                "Added speakers in Rose and Gold Malls, reorganized and moved existing speakers in Blue Mall",
+                "Restored old speaker types",
+                "Added support for new speaker types, including ambient sounds",
+                "Fixed issues with handrails, including filling in corners at Blue Mall",
+                "Known issue: context site model will not render (Unity crashes)"
+            ]
+        }
+      ],
     "0.3.1.201907": 
       [
         {
