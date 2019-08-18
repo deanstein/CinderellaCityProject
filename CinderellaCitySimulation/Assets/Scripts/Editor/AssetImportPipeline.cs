@@ -901,8 +901,8 @@ public class AssetImportUpdate : AssetPostprocessor {
                     instancedPrefab.gameObject.tag = deleteReplacementTag;
 
                     // set the prefab as static
-                    GameObject GO = GameObject.Find(instancedPrefab.name);
-                    SetAssetAsStaticGameObject(GO.name);
+                    //GameObject GO = GameObject.Find(instancedPrefab.name);
+                    //SetAssetAsStaticGameObject(GO.name);
                 }
                 else
                 {
