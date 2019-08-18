@@ -21,8 +21,8 @@ public class PlayAudioSequencesByName : MonoBehaviour {
 
         // set volumes based on type
         float mallAmbientChatterSpeakerVolume = 0.15F;
-        float mallMusicSpeakerVolume = 0.25F;
-        float storeMusicSpeakerVolume = 0.25F;
+        float mallMusicSpeakerVolume = 0.2F;
+        float storeMusicSpeakerVolume = 0.2F;
 
         // set max distances based on type
         float mallAmbientChatterSpeakerMaxDistance = 500F;
@@ -36,7 +36,7 @@ public class PlayAudioSequencesByName : MonoBehaviour {
 
         // mall
         string[] mallAmbientChatter80s90sAudioClips = { "80s-90s/Ambient/BDalton/CinCityAmbience" };
-        string[] mallMusic80s90sAudioClips = { "80s-90s/Music/Betamaxx/6. woolworth", "80s-90s/Music/Betamaxx/1. grand opening", "80s-90s/Music/Betamaxx/8. mall walking", "80s-90s/Music/BDalton/nick", "80s-90s/Music/Betamaxx/7. crystal fountain", "80s-90s/Music/BDalton/uhh" };
+        string[] mallMusic80s90sAudioClips = { "80s-90s/Music/Betamaxx/8. mall walking", "80s-90s/Music/Betamaxx/12. casual menswear", "80s-90s/Music/Betamaxx/6. woolworth", "80s-90s/Music/Betamaxx/1. grand opening", "80s-90s/Music/Betamaxx/7. crystal fountain", "80s-90s/Music/BDalton/nick" };
 
         // stores
         string[] storeMusicGeneric80s90sAudioClips = { "80s-90s/Music/Betamaxx/9. a'gaci", "80s-90s/Music/Betamaxx/10. lazarus", "80s-90s/Music/Betamaxx/5. kauffmans" };
