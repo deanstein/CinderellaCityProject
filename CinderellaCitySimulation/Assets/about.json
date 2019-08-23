@@ -35,7 +35,8 @@
                 "Restored old speaker types",
                 "Added support for new speaker types, including ambient sounds",
                 "Fixed issues with handrails, including filling in corners at Blue Mall",
-                "Known issue: context site model will not render (Unity crashes)"
+                "Fixed an issue where context site model will not render (Unity crashed)",
+                "Known issue: bright blooms of white or pink light may be visible in some seams"
             ]
         }
       ],
