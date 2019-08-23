@@ -1279,6 +1279,25 @@ public class AssetImportUpdate : AssetPostprocessor {
             doHideProxyObjects = false;
         }
 
+        // these are temporary fixes
+        if (assetFilePath.Contains("temp-rose-mall-fix.fbx"))
+        {
+            // pre-processor option flags
+            doSetGlobalScale = true; // always true
+            doInstantiateAndPlaceInCurrentScene = true;
+            doSetColliderActive = false;
+            doSetUVActiveAndConfigure = false;
+            doDeleteReimportMaterialsTextures = true;
+            doAddBehaviorComponents = false;
+
+            // post-processor option flags
+            doSetStatic = false;
+            doSetMaterialEmission = false;
+            doSetMaterialSmoothnessMetallic = false;
+            doInstantiateProxyReplacements = false;
+            doHideProxyObjects = false;
+        }
+
         //
         // now execute all AssetImportUpdate PreProcessor option flags marked as true
         //
