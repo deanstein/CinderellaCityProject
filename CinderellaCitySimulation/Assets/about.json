@@ -1,125 +1,136 @@
 {
-  "AppVersion": "0.4.0.201908",
-  "VersionSyntax": "release.logicUpdate.assetUpdate.yearMonth",
+  "AppVersion": "0.4.1.201909",
+  "VersionSyntax": "release.majorUpdate.minorUpdate.yearMonth",
   "VersionHistory": 
   [
     {
-	"0.4.0.201908": 
-      [
-        {
-            "logicUpdates": [
-                "Added the ability to attach Unity behavior components like AudioSource to GameObjects",
-                "Added the ability to attach custom scripted behavior components like PlayAudioSequencesByName to GameObjects",
-                "Added PlayAudioSequencesByName script, created new audio sequences from music clips and applied them to speaker models",
-                "Renamed TogglePeople to ToggleVisibilityWithShortcut, and it's now automatically applied to proxy-people.fbx"
-            ],
-            "assetUpdates": [
-                "Added 701 Offices, Americana Shop, American Waterbed, Bermans, B. Dalton, Brooks, Co. 6, Cristy, DEB, Dairy Queen, Chick-Fil-A, Corn Dog, Jarman, J. Brannam, Lee's Hallmark, Lerner Shops, Mastercuts, Naturalizer Shoes, nina B, Payless Shoes, Paul Wu's, Sbarro, Sportsfan, Stuarts, Tandy Leather, Thom McAn, Ups N Downs, Waldenbooks, Zales, Zeezos signage to the model",
-                "Updated Cinder Alley landmark wayfinding with better vector graphics, added Cinder Alley east wall wayfinding",
-                "Updated Foot Locker logo with more accurate linework",
-                "Added Joslins signage variations to Cinder Alley",
-                "Added Broadway Southwest signage variation to Shamrock Mall",
-                "Added mall colored wayfinding signage",
-                "Added 3-sided mall directories",
-                "Added more lights to Cinder Alley near JC Penney",
-                "Added site lighting, including above- and below-grade parking fixtures",
-                "Added vacant storefronts to Shamrock Mall and Cinder Alley",
-                "Added starter storefronts to Cinder Alley",
-                "Fixed and detailed east Cinder Alley stair near Joslins",
-                "Added perimeter string lights and corner ceiling lights in food court",
-                "Switched Broadway signage model back to side-lit",
-                "Watertight fixes in some models",
-                "Added new music by Betamaxx, more tracks by DeadMall, and organized all audio files per-era",
-                "Updated speaker model naming and organization for new AudioSource code",
-                "Added speakers in Rose and Gold Malls, reorganized and moved existing speakers in Blue Mall",
-                "Restored old speaker types",
-                "Added support for new speaker types, including ambient sounds",
-                "Fixed issues with handrails, including filling in corners at Blue Mall",
-                "Fixed an issue where context site model will not render (Unity crashed)",
-                "Known issue: bright blooms of white or pink light may be visible in some seams"
-            ]
-        }
-      ],
-    "0.3.1.201907": 
-      [
-        {
-          "logicUpdates": [
-            ""
-          ],
-          "assetUpdates": [
-            "Lighting fixes in exterior detailing, exterior walls models",
-            "Fixed an issue where cylindrical surfaces were rendering with pinstriping (MipMaps option in CubeMap)",
-            "Added new storefronts in Shamrock Mall",
-            "General updates to mall floor/ceiling vert, store detailing, mall structure, mall lights, mall signage models",
-            "Fixed issues with mall signage colors and applications",
-            "Added Joslins and Orange Julius signage",
-            "Added lighting to Gold Mall's smaller hallways",
-            "Switched sun to Sun+ from TreesVariety",
-            "Switched direct filtering to A-Trous",
-            "Switched sun to hard shadows",
-            "Known issue: speakers have been temporarily removed",
-            "Known issue: context site model will not render (Unity crashes)"
-          ]
-        }
-      ],
-      "0.3.0.201907": 
-      [
-        {
-          "logicUpdates": [
-            "Added new AssetImportPipeline.cs editor script to automate the import of FBX assets",
-            "Added ToggleVisibility.cs editor script to control visibility of objects",
-            "Added TagHelper.cs editor script to assist in creating tags if they're not available yet",
-            "Added LightingSettingsHelper.cs editor script for future lighting settings work (not currently used)"
-          ],
-          "assetUpdates": [
-            "Deleted and reimported all assets using the new AssetImportPipeline, and at a new scale (1.0)",
-            "Major model updates to Shamrock Mall, Food Court, Gold Mall, and Cinder Alley",
-            "Added trees in Center Court and Shamrock Mall",
-            "Changed lightmap settings for better results",
-            "Changed post-processing settings for better results",
-            "Known issue: speakers have been temporarily removed",
-            "Known issue: context site model will not render correct lighting (Unity crashes)"
-          ]
-        }
-      ],
-      "0.2.3.201906": 
-      [
-        {
-          "logicUpdates": [
-            "Added in-progress FullScreenSprite.cs and BackgroundSpriteTransform.cs code for title screen",
-            "Added in-progress LoadNewScene.cs code for loading new scenes",
-            "Updated project and scripts to Unity 2019"
-          ],
-          "assetUpdates": [
-            "Updated to PostProcessingEffects 2.0",
-            "Experimented with lightmap settings, then tried to restore them to previous quality"
-          ]
-        }
-      ],
-      "0.1.2.201811": [
-        {
-          "logicUpdates": [
-            "Add ability to toggle visibility of 2D people with 'p' shortcut"
-          ],
-          "assetUpdates": [
-            "Major update to FBX files, including new storefronts and signage in Rose Mall, Shamrock Mall, and basement areas between Food Court and Shamrock\/Cinder Alley",
-            "Overhaul of Unity lighting to address unexpected black surfaces and improve overall lightmapping",
-            "Added postprocessing in Unity to cover floor reflections, light blooms, anti-aliasing, and ambient occlusion"
-          ]
-        }
-      ],
-      "0.0.1.201806": [
-        {
-          "logicUpdates": [
-            
-          ],
-          "assetUpdates": [
-            "Initial Unity signage and lighting test",
-            "Includes initial submission of all mall FBX files",
-            "Includes lights, signage, and speakers in and around Blue Mall"
-          ]
-        }
-      ]
+        "0.4.1.201909": [
+            {
+                "logicUpdates": [
+                    "Added master/slave system support for all AudioSources to improve performance",
+                    "Added support for synchronizing playback between AudioSources at a certain time interval",
+                    "Set all AudioSources to bypass effects, reverb zones, and listener effects, which could potentially improve performance"
+
+                ],
+                "assetUpdates": [
+                    "Changed import settings on audio clips to reduce quality and improve performance",
+                    "Updated order of mall 80s/90s common audio clip sequence",
+                    "Reduced walk speed to 1.7 from 2"
+                ]
+            }
+        ],
+        "0.4.0.201908": [
+            {
+                "logicUpdates": [
+                    "Added the ability to attach Unity behavior components like AudioSource to GameObjects",
+                    "Added the ability to attach custom scripted behavior components like PlayAudioSequencesByName to GameObjects",
+                    "Added PlayAudioSequencesByName script, created new audio sequences from music clips and applied them to speaker models",
+                    "Renamed TogglePeople to ToggleVisibilityWithShortcut, and it's now automatically applied to proxy-people.fbx"
+                ],
+                "assetUpdates": [
+                    "Added 701 Offices, Americana Shop, American Waterbed, Bermans, B. Dalton, Brooks, Co. 6, Cristy, DEB, Dairy Queen, Chick-Fil-A, Corn Dog, Jarman, J. Brannam, Lee's Hallmark, Lerner Shops, Mastercuts, Naturalizer Shoes, nina B, Payless Shoes, Paul Wu's, Sbarro, Sportsfan, Stuarts, Tandy Leather, Thom McAn, Ups N Downs, Waldenbooks, Zales, Zeezos signage to the model",
+                    "Updated Cinder Alley landmark wayfinding with better vector graphics, added Cinder Alley east wall wayfinding",
+                    "Updated Foot Locker logo with more accurate linework",
+                    "Added Joslins signage variations to Cinder Alley",
+                    "Added Broadway Southwest signage variation to Shamrock Mall",
+                    "Added mall colored wayfinding signage",
+                    "Added 3-sided mall directories",
+                    "Added more lights to Cinder Alley near JC Penney",
+                    "Added site lighting, including above- and below-grade parking fixtures",
+                    "Added vacant storefronts to Shamrock Mall and Cinder Alley",
+                    "Added starter storefronts to Cinder Alley",
+                    "Fixed and detailed east Cinder Alley stair near Joslins",
+                    "Added perimeter string lights and corner ceiling lights in food court",
+                    "Switched Broadway signage model back to side-lit",
+                    "Watertight fixes in some models",
+                    "Added new music by Betamaxx, more tracks by DeadMall, and organized all audio files per-era",
+                    "Updated speaker model naming and organization for new AudioSource code",
+                    "Added speakers in Rose and Gold Malls, reorganized and moved existing speakers in Blue Mall",
+                    "Restored old speaker types",
+                    "Added support for new speaker types, including ambient sounds",
+                    "Fixed issues with handrails, including filling in corners at Blue Mall",
+                    "Fixed an issue where context site model will not render (Unity crashed)",
+                    "Known issue: bright blooms of white or pink light may be visible in some seams"
+                ]
+            }
+        ],
+        "0.3.1.201907": [
+            {
+                "logicUpdates": [
+                    ""
+                ],
+                "assetUpdates": [
+                    "Lighting fixes in exterior detailing, exterior walls models",
+                    "Fixed an issue where cylindrical surfaces were rendering with pinstriping (MipMaps option in CubeMap)",
+                    "Added new storefronts in Shamrock Mall",
+                    "General updates to mall floor/ceiling vert, store detailing, mall structure, mall lights, mall signage models",
+                    "Fixed issues with mall signage colors and applications",
+                    "Added Joslins and Orange Julius signage",
+                    "Added lighting to Gold Mall's smaller hallways",
+                    "Switched sun to Sun+ from TreesVariety",
+                    "Switched direct filtering to A-Trous",
+                    "Switched sun to hard shadows",
+                    "Known issue: speakers have been temporarily removed",
+                    "Known issue: context site model will not render (Unity crashes)"
+                ]
+            }
+        ],
+        "0.3.0.201907": [
+            {
+                "logicUpdates": [
+                    "Added new AssetImportPipeline.cs editor script to automate the import of FBX assets",
+                    "Added ToggleVisibility.cs editor script to control visibility of objects",
+                    "Added TagHelper.cs editor script to assist in creating tags if they're not available yet",
+                    "Added LightingSettingsHelper.cs editor script for future lighting settings work (not currently used)"
+                ],
+                "assetUpdates": [
+                    "Deleted and reimported all assets using the new AssetImportPipeline, and at a new scale (1.0)",
+                    "Major model updates to Shamrock Mall, Food Court, Gold Mall, and Cinder Alley",
+                    "Added trees in Center Court and Shamrock Mall",
+                    "Changed lightmap settings for better results",
+                    "Changed post-processing settings for better results",
+                    "Known issue: speakers have been temporarily removed",
+                    "Known issue: context site model will not render correct lighting (Unity crashes)"
+                ]
+            }
+        ],
+        "0.2.3.201906": [
+            {
+                "logicUpdates": [
+                    "Added in-progress FullScreenSprite.cs and BackgroundSpriteTransform.cs code for title screen",
+                    "Added in-progress LoadNewScene.cs code for loading new scenes",
+                    "Updated project and scripts to Unity 2019"
+                ],
+                "assetUpdates": [
+                    "Updated to PostProcessingEffects 2.0",
+                    "Experimented with lightmap settings, then tried to restore them to previous quality"
+                ]
+            }
+        ],
+        "0.1.2.201811": [
+            {
+                "logicUpdates": [
+                    "Add ability to toggle visibility of 2D people with 'p' shortcut"
+                ],
+                "assetUpdates": [
+                    "Major update to FBX files, including new storefronts and signage in Rose Mall, Shamrock Mall, and basement areas between Food Court and Shamrock\/Cinder Alley",
+                    "Overhaul of Unity lighting to address unexpected black surfaces and improve overall lightmapping",
+                    "Added postprocessing in Unity to cover floor reflections, light blooms, anti-aliasing, and ambient occlusion"
+                ]
+            }
+        ],
+        "0.0.1.201806": [
+            {
+                "logicUpdates": [
+
+                ],
+                "assetUpdates": [
+                    "Initial Unity signage and lighting test",
+                    "Includes initial submission of all mall FBX files",
+                    "Includes lights, signage, and speakers in and around Blue Mall"
+                ]
+            }
+        ]
     }
   ],
   "Creativity Credits": [
