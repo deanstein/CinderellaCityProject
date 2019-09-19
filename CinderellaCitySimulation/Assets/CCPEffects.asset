@@ -1519,13 +1519,13 @@ MonoBehaviour:
     value: 7
   maximumIterationCount:
     overrideState: 1
-    value: 150
+    value: 65
   resolution:
     overrideState: 1
     value: 2
   thickness:
     overrideState: 1
-    value: 9
+    value: 30
   maximumMarchDistance:
     overrideState: 1
     value: 350
