@@ -12,7 +12,7 @@ public class GlobalVariables
     public static string speakerType;
 
     // max amount of sync discrepancy a slave speaker can have with its master, in seconds
-    public static float maxSlaveTimeDelta = 0.1f;
+    public static float maxSlaveTimeDelta = 0.05f;
 
     // valid speaker names and properties to key off of for initialization and update
     // these names are based on FormIt object names found in the associated FBX file
@@ -24,12 +24,12 @@ public class GlobalVariables
     public const string mallMusic80s90sPartialName = "mall-music-80s90s";
     public static int mallMusic80s90sSpeakerCount = 0;
     public static AudioSource mallMusic80s90sMasterAudioSource;
-    public static string[] mallMusic80s90sAudioClips = { "80s-90s/Music/Betamaxx/6. woolworth", "80s-90s/Music/Betamaxx/8. mall walking", "80s-90s/Music/Betamaxx/12. casual menswear", "80s-90s/Music/Betamaxx/1. grand opening", "80s-90s/Music/Betamaxx/7. crystal fountain", "80s-90s/Music/Betamaxx/11. retail dystopia", "80s-90s/Music/BDalton/nick" };
+    public static string[] mallMusic80s90sAudioClips = { "80s-90s/Music/Betamaxx/6. woolworth", "80s-90s/Music/Betamaxx/8. mall walking",  "80s-90s/Music/Betamaxx/12. casual menswear", "80s-90s/Music/Betamaxx/1. grand opening", "80s-90s/Music/Betamaxx/7. crystal fountain", "80s-90s/Music/Betamaxx/11. retail dystopia", "80s-90s/Music/BDalton/nick" };
 
     public const string storeMusicGeneric80s90sPartialName = "store-music-generic-80s90s";
     public static int storeMusicGeneric80s90sSpeakerCount = 0;
     public static AudioSource storeMusicGeneric80s90sMasterAudioSource;
-    public static string[] storeMusicGeneric80s90sAudioClips = { "80s-90s/Music/Betamaxx/9. a'gaci", "80s-90s/Music/Betamaxx/10. lazarus", "80s-90s/Music/Betamaxx/5. kauffmans" };
+    public static string[] storeMusicGeneric80s90sAudioClips = { "80s-90s/Music/Betamaxx/9. a'gaci", "14. smoking section" };
 
     public static string[] storeMusicConsumerBeauty80s90sAudioClips = { "80s-90s/Music/DeadMall/05 Thunderhead" };
 

@@ -1516,16 +1516,16 @@ MonoBehaviour:
     value: 1
   preset:
     overrideState: 1
-    value: 6
+    value: 7
   maximumIterationCount:
     overrideState: 1
-    value: 176
+    value: 150
   resolution:
     overrideState: 1
     value: 2
   thickness:
     overrideState: 1
-    value: 24.2
+    value: 9
   maximumMarchDistance:
     overrideState: 1
     value: 350

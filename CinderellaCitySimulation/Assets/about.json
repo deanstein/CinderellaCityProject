@@ -8,13 +8,13 @@
             {
                 "logicUpdates": [
                     "Added master/slave system support for all AudioSources to improve performance",
-                    "Added support for synchronizing playback between AudioSources at a certain time interval",
+                    "Added support for synchronizing playback between master and slave AudioSources at a certain time interval",
                     "Set all AudioSources to bypass effects, reverb zones, and listener effects, which could potentially improve performance"
 
                 ],
                 "assetUpdates": [
                     "Changed import settings on audio clips to reduce quality and improve performance",
-                    "Updated order of mall 80s/90s common audio clip sequence",
+                    "Adjusted screen space reflection settings for better performance (custom vs. 'overkill')",
                     "Reduced walk speed to 1.7 from 2"
                 ]
             }
