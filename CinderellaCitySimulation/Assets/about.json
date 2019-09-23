@@ -6,28 +6,30 @@
     {
         "0.4.1.201909": [
             {
-                "logicUpdates": [
+                "Logic Updates": [
                     "Added master/slave system support for all AudioSources to improve performance",
                     "Added support for synchronizing playback between master and slave AudioSources at a certain time interval",
                     "Set all AudioSources to bypass effects, reverb zones, and listener effects, which could potentially improve performance"
 
                 ],
-                "assetUpdates": [
+                "Asset Updates": [
                     "Changed import settings on audio clips to reduce quality and improve performance",
                     "Adjusted screen space reflection settings for better performance (custom vs. 'overkill')",
-                    "Reduced walk speed to 1.7 from 2"
+                    "Reduced walk speed to 1.7 from 2",
+                    "Added motion blur post-processing effect",
+                    "Added new cubemap generated from in-model"
                 ]
             }
         ],
         "0.4.0.201908": [
             {
-                "logicUpdates": [
+                "Logic Updates": [
                     "Added the ability to attach Unity behavior components like AudioSource to GameObjects",
                     "Added the ability to attach custom scripted behavior components like PlayAudioSequencesByName to GameObjects",
                     "Added PlayAudioSequencesByName script, created new audio sequences from music clips and applied them to speaker models",
                     "Renamed TogglePeople to ToggleVisibilityWithShortcut, and it's now automatically applied to proxy-people.fbx"
                 ],
-                "assetUpdates": [
+                "Asset Updates": [
                     "Added 701 Offices, Americana Shop, American Waterbed, Bermans, B. Dalton, Brooks, Co. 6, Cristy, DEB, Dairy Queen, Chick-Fil-A, Corn Dog, Jarman, J. Brannam, Lee's Hallmark, Lerner Shops, Mastercuts, Naturalizer Shoes, nina B, Payless Shoes, Paul Wu's, Sbarro, Sportsfan, Stuarts, Tandy Leather, Thom McAn, Ups N Downs, Waldenbooks, Zales, Zeezos signage to the model",
                     "Updated Cinder Alley landmark wayfinding with better vector graphics, added Cinder Alley east wall wayfinding",
                     "Updated Foot Locker logo with more accurate linework",
@@ -56,10 +58,10 @@
         ],
         "0.3.1.201907": [
             {
-                "logicUpdates": [
+                "Logic Updates": [
                     ""
                 ],
-                "assetUpdates": [
+                "AssetUpdates": [
                     "Lighting fixes in exterior detailing, exterior walls models",
                     "Fixed an issue where cylindrical surfaces were rendering with pinstriping (MipMaps option in CubeMap)",
                     "Added new storefronts in Shamrock Mall",
@@ -77,13 +79,13 @@
         ],
         "0.3.0.201907": [
             {
-                "logicUpdates": [
+                "Logic Updates": [
                     "Added new AssetImportPipeline.cs editor script to automate the import of FBX assets",
                     "Added ToggleVisibility.cs editor script to control visibility of objects",
                     "Added TagHelper.cs editor script to assist in creating tags if they're not available yet",
                     "Added LightingSettingsHelper.cs editor script for future lighting settings work (not currently used)"
                 ],
-                "assetUpdates": [
+                "Asset Updates": [
                     "Deleted and reimported all assets using the new AssetImportPipeline, and at a new scale (1.0)",
                     "Major model updates to Shamrock Mall, Food Court, Gold Mall, and Cinder Alley",
                     "Added trees in Center Court and Shamrock Mall",
@@ -96,12 +98,12 @@
         ],
         "0.2.3.201906": [
             {
-                "logicUpdates": [
+                "Logic Updates": [
                     "Added in-progress FullScreenSprite.cs and BackgroundSpriteTransform.cs code for title screen",
                     "Added in-progress LoadNewScene.cs code for loading new scenes",
                     "Updated project and scripts to Unity 2019"
                 ],
-                "assetUpdates": [
+                "Asset Updates": [
                     "Updated to PostProcessingEffects 2.0",
                     "Experimented with lightmap settings, then tried to restore them to previous quality"
                 ]
@@ -109,10 +111,10 @@
         ],
         "0.1.2.201811": [
             {
-                "logicUpdates": [
+                "Logic Updates": [
                     "Add ability to toggle visibility of 2D people with 'p' shortcut"
                 ],
-                "assetUpdates": [
+                "Asset Updates": [
                     "Major update to FBX files, including new storefronts and signage in Rose Mall, Shamrock Mall, and basement areas between Food Court and Shamrock\/Cinder Alley",
                     "Overhaul of Unity lighting to address unexpected black surfaces and improve overall lightmapping",
                     "Added postprocessing in Unity to cover floor reflections, light blooms, anti-aliasing, and ambient occlusion"
@@ -121,10 +123,10 @@
         ],
         "0.0.1.201806": [
             {
-                "logicUpdates": [
+                "Logic Updates": [
 
                 ],
-                "assetUpdates": [
+                "Asset Updates": [
                     "Initial Unity signage and lighting test",
                     "Includes initial submission of all mall FBX files",
                     "Includes lights, signage, and speakers in and around Blue Mall"
