@@ -1,9 +1,21 @@
 {
-  "AppVersion": "0.4.1.201909",
+  "AppVersion": "0.5.0.201911",
   "VersionSyntax": "release.majorUpdate.minorUpdate.yearMonth",
   "VersionHistory": 
   [
     {
+        "0.5.0.201911": [
+            {
+                "Logic Updates": [
+                    "Added support for setting clip import settings in AssetimportUpdate",
+                    "Added support for setting texture-to-sprite import settings in AssetImportUpdate",
+                    "Added scripts and classes for UI menu layout functionality, including CreateMenuUIByType and TransformScreenSpaceObject"
+                ],
+                "Asset Updates": [
+                    ""
+                ]
+            }
+        ],
         "0.4.1.201909": [
             {
                 "Logic Updates": [

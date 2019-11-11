@@ -231,6 +231,21 @@ public class PlayAudioSequencesByName : MonoBehaviour {
     IEnumerator playMasterClipSequenceInOrder(AudioSource masterAudioSource, string[] clipNames)
     {
         // for each clip in the array, play it, and wait until the end to play the next
+        int counter = 0;
+        while (true)
+        {
+            masterAudioSource = this.GetComponent<AudioSource>();
+            masterAudioSource.clip = (AudioClip)Resources.Load(clipNames[counter]);
+            masterAudioSource.Play();
+            Debug.Log("Playing master music " + masterAudioSource.clip.name + " on " + masterAudioSource);
+
+            counter = (counter + 1) % clipNames.Length;
+
+            yield return new WaitForSeconds(masterAudioSource.clip.length);
+        }
+
+        /*
+        // for each clip in the array, play it, and wait until the end to play the next
         for (var i = 0; i < clipNames.Length; i++)
         {
             masterAudioSource = this.GetComponent<AudioSource>();
@@ -238,7 +253,7 @@ public class PlayAudioSequencesByName : MonoBehaviour {
             masterAudioSource.Play();
             Debug.Log("Playing master music " + masterAudioSource.clip.name + " on " + masterAudioSource);
 
-            // if we're at the end of the list, reset to return to the beginning
+            // if we're at the end of the list, reset the counter to return to the beginning
             if (i == clipNames.Length - 1)
             {
                 i = 0;
@@ -246,12 +261,29 @@ public class PlayAudioSequencesByName : MonoBehaviour {
 
             yield return new WaitForSeconds(masterAudioSource.clip.length);
         }
+        */
     }
 
     // play slave speaker sequences
     IEnumerator playSlaveClipSequence(AudioSource audioSourceComponent, string[] clipNames, AudioSource masterAudioSource)
     {
         //Debug.Log("Master audio clip: " + masterAudioClip);
+
+        // for each clip in the array, play it, and wait until the end to play the next
+        int counter = 0;
+        while (true)
+        {
+            masterAudioSource = this.GetComponent<AudioSource>();
+            masterAudioSource.clip = (AudioClip)Resources.Load(clipNames[counter]);
+            masterAudioSource.Play();
+            Debug.Log("Playing master music " + masterAudioSource.clip.name + " on " + masterAudioSource);
+
+            counter = (counter + 1) % clipNames.Length;
+
+            yield return new WaitForSeconds(masterAudioSource.clip.length);
+        }
+        
+        /*
         // for each clip in the array, play it, and wait until the end to play the next
         for (var i = 0; i < clipNames.Length; i++)
         {
@@ -267,6 +299,7 @@ public class PlayAudioSequencesByName : MonoBehaviour {
 
             yield return new WaitForSeconds(masterAudioSource.clip.length);
         }
+        */
     }
 
     // synchronize two AudioSources

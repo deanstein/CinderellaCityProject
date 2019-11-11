@@ -50,14 +50,20 @@ public class AssetImportUpdate : AssetPostprocessor {
     //
 
     // master pre-processor option flags
+    // ... for models
     static bool doSetGlobalScale;
     static bool doInstantiateAndPlaceInCurrentScene;
     static bool doSetColliderActive;
     static bool doSetUVActiveAndConfigure;
     static bool doDeleteReimportMaterialsTextures;
     static bool doAddBehaviorComponents;
+    // ... for audio clips
+    static bool doSetClipImportSettings;
+    // ... for textures and images
+    static bool doSetTextureToSpriteImportSettings;
 
     // master post-processor option flags
+    // ... for models
     static bool doSetStatic;
     static bool doSetMaterialEmission;
     static bool doSetMaterialSmoothnessMetallic;
@@ -99,6 +105,29 @@ public class AssetImportUpdate : AssetPostprocessor {
         mi.secondaryUVAngleDistortion = 4;
         mi.secondaryUVAreaDistortion = 4;
         mi.importNormals = ModelImporterNormals.Calculate;
+    }
+
+    // define how to set audio clip import settings
+    void SetClipImportSettings(AudioImporter ai)
+    {
+        ai.forceToMono = true;
+        ai.loadInBackground = true;
+        ai.preloadAudioData = true;
+
+        //create a temp variable that contains everything we could apply to the imported AudioClip (possible changes: .compressionFormat, .conversionMode, .loadType, .quality, .sampleRateOverride, .sampleRateSetting)
+        AudioImporterSampleSettings aiSampleSettings = ai.defaultSampleSettings;
+        aiSampleSettings.loadType = AudioClipLoadType.CompressedInMemory;
+        aiSampleSettings.compressionFormat = AudioCompressionFormat.Vorbis;
+        aiSampleSettings.quality = 70f;
+
+        // apply the settings
+        ai.defaultSampleSettings = aiSampleSettings;
+    }
+
+    // define how to set texture-to-sprite import settings
+    void SetTextureToSpriteImportSettings(TextureImporter ti)
+    {
+        ti.textureType = TextureImporterType.Sprite;
     }
 
     // define how to instantiate the asset (typically an FBX file) in the scene
@@ -540,7 +569,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
     }
 
-    // define how to add certain behavior components to certain GameObjects as defined by their host file name
+    // add certain behavior components to certain GameObjects as defined by their host file name
     public static void AddBehaviorComponents(string fileName)
     {
         Debug.Log("Adding behavior components...");
@@ -934,9 +963,136 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
     }
 
-    // runs when an asset is updated
-    void OnPreprocessModel() {
+    // runs when a texture/image asset is updated
+    void OnPreprocessTexture()
+    {
+        // check if the pre-processor just ran, and if so, skip pre-processing
+        //Debug.Log("Current time: " + Time.time);
+        //Debug.Log("Previous time: " + prevTime);
+        if (Time.time == prevTime)
+        {
+            //Debug.Log("Skipping pre-processing the model again.");
+            return;
+        }
 
+        ClearConsole();
+        Debug.Log("START Texture PreProcessing...");
+
+        postProcessingHits.Clear();
+
+        // get the file path of the asset that just got updated
+        TextureImporter textureImporter = assetImporter as TextureImporter;
+        String assetFilePath = textureImporter.assetPath.ToLower();
+        Debug.Log(assetFilePath);
+
+        // make the asset path available globally
+        globalAssetFilePath = assetFilePath;
+
+        // get the file name + extension
+        String assetFileNameAndExtension = Path.GetFileName(assetFilePath);
+        globalAssetFileNameAndExtension = assetFileNameAndExtension;
+
+        // get the file name only
+        String assetFileName = assetFileNameAndExtension.Substring(0, assetFileNameAndExtension.Length - 4);
+        globalAssetFileName = assetFileName;
+
+        // get the file's directory only
+        String assetFileDirectory = assetFilePath.Substring(0, assetFilePath.Length - assetFileNameAndExtension.Length);
+        globalAssetFileDirectory = assetFileDirectory;
+
+        //
+        // whitelist of files to get modifications
+        // only files explicitly mentioned below will get changed
+        // each file should state its preference for all available pre- and post-processor flags as defined above
+        //
+
+        // all items in the Sprites folder should be converted to a sprite
+        if (assetFilePath.Contains("sprites"))
+        {
+            // pre-processor option flags
+            doSetTextureToSpriteImportSettings = true;
+
+            // post-processor option flags
+        }
+
+        //
+        // now execute all AssetImportUpdate PreProcessor option flags marked as true
+        //
+
+        if (doSetTextureToSpriteImportSettings)
+        {
+            SetTextureToSpriteImportSettings(textureImporter);
+        }
+    }
+
+    // runs when an audio asset is updated
+    void OnPreprocessAudio()
+    {
+        // check if the pre-processor just ran, and if so, skip pre-processing
+        //Debug.Log("Current time: " + Time.time);
+        //Debug.Log("Previous time: " + prevTime);
+        if (Time.time == prevTime)
+        {
+            //Debug.Log("Skipping pre-processing the model again.");
+            return;
+        }
+
+        ClearConsole();
+        Debug.Log("START Audio PreProcessing...");
+
+        postProcessingHits.Clear();
+
+        // get the file path of the asset that just got updated
+        AudioImporter audioImporter = assetImporter as AudioImporter;
+        String assetFilePath = audioImporter.assetPath.ToLower();
+        Debug.Log(assetFilePath);
+
+        // make the asset path available globally
+        globalAssetFilePath = assetFilePath;
+
+        // get the file name + extension
+        String assetFileNameAndExtension = Path.GetFileName(assetFilePath);
+        globalAssetFileNameAndExtension = assetFileNameAndExtension;
+
+        // get the file name only
+        String assetFileName = assetFileNameAndExtension.Substring(0, assetFileNameAndExtension.Length - 4);
+        globalAssetFileName = assetFileName;
+
+        // get the file's directory only
+        String assetFileDirectory = assetFilePath.Substring(0, assetFilePath.Length - assetFileNameAndExtension.Length);
+        globalAssetFileDirectory = assetFileDirectory;
+
+        //
+        // whitelist of files to get modifications
+        // only files explicitly mentioned below will get changed
+        // each file should state its preference for all available pre- and post-processor flags as defined above
+        //
+
+        // all audio assets need to be compressed for performance
+        if (assetFilePath.Contains(".m4a")
+            || (assetFilePath.Contains(".mp3"))
+            || (assetFilePath.Contains(".wav")))
+        {
+            // pre-processor option flags
+            doSetClipImportSettings = true;
+
+            // post-processor option flags
+        }
+
+        //
+        // now execute all AssetImportUpdate PreProcessor option flags marked as true
+        //
+
+        if (doSetClipImportSettings)
+        {
+            SetClipImportSettings(audioImporter);
+        }
+
+    }
+
+    // runs when a model asset is updated
+    void OnPreprocessModel()
+    {
         // check if the pre-processor just ran, and if so, skip pre-processing
         //Debug.Log("Current time: " + Time.time);
         //Debug.Log("Previous time: " + prevTime);
@@ -948,14 +1104,14 @@ public class AssetImportUpdate : AssetPostprocessor {
 
 
         ClearConsole();
-        Debug.Log("START PreProcessing...");
+        Debug.Log("START Model PreProcessing...");
 
         postProcessingHits.Clear();
 
         // get the file path of the asset that just got updated
-        ModelImporter importer = assetImporter as ModelImporter;
-        String assetFilePath = importer.assetPath.ToLower();
-        //Debug.Log(assetFilePath);
+        ModelImporter modelImporter = assetImporter as ModelImporter;
+        String assetFilePath = modelImporter.assetPath.ToLower();
+        Debug.Log(assetFilePath);
 
         // make the asset path available globally
         globalAssetFilePath = assetFilePath;
@@ -1279,7 +1435,9 @@ public class AssetImportUpdate : AssetPostprocessor {
             doHideProxyObjects = false;
         }
 
+        //
         // these are temporary fixes
+        //
         if (assetFilePath.Contains("temp-rose-mall-fix.fbx"))
         {
             // pre-processor option flags
@@ -1304,7 +1462,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         if (doSetGlobalScale)
         {
-            SetGlobalScale(importer);
+            SetGlobalScale(modelImporter);
         }
 
         if (doInstantiateAndPlaceInCurrentScene)
@@ -1314,12 +1472,12 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         if (doSetColliderActive)
         {
-            SetColliderActive(importer);
+            SetColliderActive(modelImporter);
         }
 
         if (doSetUVActiveAndConfigure)
         {
-            SetUVActiveAndConfigure(importer);
+            SetUVActiveAndConfigure(modelImporter);
         }
 
         if (doDeleteReimportMaterialsTextures)
