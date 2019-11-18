@@ -45,6 +45,7 @@ public class GlobalVariables
 
 }
 
+// this script needs to be attached to an object that should be playing a sequence of audio tracks
 public class PlayAudioSequencesByName : MonoBehaviour {
 
     private float nextSyncTime = 0.0f;
@@ -243,25 +244,6 @@ public class PlayAudioSequencesByName : MonoBehaviour {
 
             yield return new WaitForSeconds(masterAudioSource.clip.length);
         }
-
-        /*
-        // for each clip in the array, play it, and wait until the end to play the next
-        for (var i = 0; i < clipNames.Length; i++)
-        {
-            masterAudioSource = this.GetComponent<AudioSource>();
-            masterAudioSource.clip = (AudioClip)Resources.Load(clipNames[i]);
-            masterAudioSource.Play();
-            Debug.Log("Playing master music " + masterAudioSource.clip.name + " on " + masterAudioSource);
-
-            // if we're at the end of the list, reset the counter to return to the beginning
-            if (i == clipNames.Length - 1)
-            {
-                i = 0;
-            }
-
-            yield return new WaitForSeconds(masterAudioSource.clip.length);
-        }
-        */
     }
 
     // play slave speaker sequences
@@ -282,24 +264,6 @@ public class PlayAudioSequencesByName : MonoBehaviour {
 
             yield return new WaitForSeconds(masterAudioSource.clip.length);
         }
-        
-        /*
-        // for each clip in the array, play it, and wait until the end to play the next
-        for (var i = 0; i < clipNames.Length; i++)
-        {
-            audioSourceComponent.clip = masterAudioSource.clip; 
-            audioSourceComponent.Play();
-            Debug.Log("Playing slave music " + masterAudioSource.clip.name);
-
-            // if we're at the end of the list, reset to return to the beginning
-            if (i == clipNames.Length - 1)
-            {
-                i = 0;
-            }
-
-            yield return new WaitForSeconds(masterAudioSource.clip.length);
-        }
-        */
     }
 
     // synchronize two AudioSources

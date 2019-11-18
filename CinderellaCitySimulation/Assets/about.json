@@ -9,10 +9,10 @@
                 "Logic Updates": [
                     "Added support for setting clip import settings in AssetimportUpdate",
                     "Added support for setting texture-to-sprite import settings in AssetImportUpdate",
-                    "Added scripts and classes for UI menu layout functionality, including CreateMenuUIByType and TransformScreenSpaceObject"
+                    "Added classes and member functions for UI menu layout functionality, including CreateScreenSpaceLayoutByName, CreateScreenSpaceUIElements, TransformScreenSpaceObject, and AnimateScreenSpaceObject"
                 ],
                 "Asset Updates": [
-                    ""
+                    "Added Main Menu and Pause Menu scenes"
                 ]
             }
         ],
