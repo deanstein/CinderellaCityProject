@@ -11,11 +11,6 @@ public class ToggleVisibilityByShortcut : MonoBehaviour {
     // used for console debugging
     public string objectState;
 
-    // Use this for initialization
-    void Start () {
-
-    }
-
     // Update is called once per frame
     void Update()
     {

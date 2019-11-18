@@ -165,6 +165,32 @@ public static class TransformScreenSpaceObject
         rectTransform.position = newObjectPosition;
     }
 
+    public static void PositionObjectByWidthRatioFromNeighborRight(GameObject screenSpaceObject, GameObject neighborObject, float bufferProportion)
+    {
+        RectTransform rectTransform = screenSpaceObject.GetComponent<RectTransform>();
+        float objectWidth = rectTransform.rect.width * rectTransform.localScale.x;
+        //Debug.Log("Object width: " + objectWidth + " and scale: " + rectTransform.localScale.x);
+
+        float screenSpaceObjectPosX = rectTransform.position.x;
+        float screenSpaceObjectPosY = rectTransform.position.y;
+
+        float screenSpaceObjectLeftX = screenSpaceObjectPosX - (objectWidth / 2);
+        float neighborObjectRightX = GetObjectRightEdgePositionX(neighborObject);
+
+        float objectBuffer = neighborObjectRightX - screenSpaceObjectLeftX;
+        //Debug.Log("Current buffer: " + objectBuffer);
+
+        float requestedBuffer = cameraWidth * bufferProportion;
+
+        // determine the delta: the number of pixels to move up or down (if negative) to achieve the requested buffer
+        float bufferDelta = objectBuffer + requestedBuffer;
+        //Debug.Log("Buffer delta: " + bufferDelta);
+
+        // move the object as required
+        Vector3 newObjectPosition = new Vector3(screenSpaceObjectPosX + bufferDelta, screenSpaceObjectPosY, 0);
+        rectTransform.position = newObjectPosition;
+    }
+
     public static void PositionObjectByHeightRatioFromNeighborBottom(GameObject screenSpaceObject, GameObject neighborObject, float bufferProportion)
     {
         RectTransform rectTransform = screenSpaceObject.GetComponent<RectTransform>();
@@ -206,6 +232,18 @@ public static class TransformScreenSpaceObject
 
         // move the object so it's centered
         Vector3 newObjectPosition = new Vector3(newPositionX, newPositionY, 0);
+
+        RectTransform rectTransform = screenSpaceObject.GetComponent<RectTransform>();
+        rectTransform.position = newObjectPosition;
+    }
+
+    public static void PositionObjectAtVerticalCenterlineOfNeighbor(GameObject screenSpaceObject, GameObject neighborObject)
+    {
+        // get the neighbor's position
+        Vector3 neighborPosition = neighborObject.transform.position;
+
+        // move the object so it's centered relative to the neighbor
+        Vector3 newObjectPosition = new Vector3(neighborPosition.x, screenSpaceObject.transform.position.y, 0);
 
         RectTransform rectTransform = screenSpaceObject.GetComponent<RectTransform>();
         rectTransform.position = newObjectPosition;
@@ -396,29 +434,29 @@ public static class TransformScreenSpaceObject
         float objectWidth = rectTransform.rect.width;
         float objectHeight = rectTransform.rect.height;
 
-        //Debug.Log("Image resolution: " + imageWidth + ", " + imageHeight);
+        // get the ratio of the object's width and height
+        float objectWidthHeightRatio = objectWidth / objectHeight;
 
-        // define the two possible camera-to-sprite ratios: by width or by height
+        // get the ratio of the camera's width and height
+        float cameraWidthHeightRatio = cameraWidth / cameraHeight;
+
+        // define the two possible scaling factors
         float cameraToObjectWidthRatio = cameraWidth / objectWidth;
         float cameraToObjectHeightRatio = cameraHeight / objectHeight;
 
         // get the current image scale
         Vector2 scale = rectTransform.localScale;
 
-        // scale differently depending on whether the object is landscape or horizontal
-        if (objectWidth >= objectHeight)
-        { // Landscape (or equal)
-            //Debug.Log("Landscape-oriented object detected");
+        // scale differently depending on how the object width/heigh ratio compares to the camera ratio
+        if (objectWidthHeightRatio >= cameraWidthHeightRatio)
+        { // Image is wider than the camera
 
-            //Debug.Log("Camera-to-object height ratio: " + cameraToImageHeightRatio);
             scale *= cameraToObjectHeightRatio;
             //Debug.Log("New scale factor: " + scale);
         }
         else
-        { // Portrait
-            //Debug.Log("Portrait-oriented object detected");
+        { // Image is taller than the camera
 
-            //Debug.Log("Camera-to-image height ratio: " + cameraToImageWidthRatio);
             scale *= cameraToObjectWidthRatio;
             //Debug.Log("New scale factor: " + scale);
         }

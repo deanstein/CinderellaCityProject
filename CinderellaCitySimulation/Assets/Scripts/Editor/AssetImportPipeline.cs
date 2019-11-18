@@ -1006,8 +1006,8 @@ public class AssetImportUpdate : AssetPostprocessor {
         // each file should state its preference for all available pre- and post-processor flags as defined above
         //
 
-        // all items in the Sprites folder should be converted to a sprite
-        if (assetFilePath.Contains("sprites"))
+        // all items in the UI folder should be converted to a sprite
+        if (assetFilePath.Contains("resources/ui"))
         {
             // pre-processor option flags
             doSetTextureToSpriteImportSettings = true;
