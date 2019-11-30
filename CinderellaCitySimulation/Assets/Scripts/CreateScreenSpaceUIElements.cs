@@ -125,16 +125,16 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         for (var i = 0; i < timePeriodNames.Length; i++)
         {
             // combine the place name and time period strings
-            string combinedPlaceTimeNameSpaceless = placeNameSpaceless + timePeriodNames[i];
+            string combinedPlaceTimeNameSpacelessDashed = placeNameSpaceless + "-" + timePeriodNames[i];
 
             // create the button
-            GameObject timePeriodButton = new GameObject(combinedPlaceTimeNameSpaceless + "Button");
+            GameObject timePeriodButton = new GameObject(combinedPlaceTimeNameSpacelessDashed + "Button");
             timePeriodButton.AddComponent<Image>();
 
             // set the image
             // note this requires a valid image in the Resources folder path below, with a file name that matches combinedPlaceTimeNameSpaceless
             Image timePeriodButtonImage = timePeriodButton.GetComponent<Image>();
-            timePeriodButtonImage.sprite = (Sprite)Resources.Load("UI/MainMenu-" + combinedPlaceTimeNameSpaceless, typeof(Sprite));
+            timePeriodButtonImage.sprite = (Sprite)Resources.Load("UI/Camera-Thumbnail-" + combinedPlaceTimeNameSpacelessDashed, typeof(Sprite));
             timePeriodButtonImage.preserveAspect = true;
             timePeriodButtonImage.SetNativeSize();
 
@@ -236,9 +236,10 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
         GameObject RoseMallThumbnailColumn = CreatePlaceTimeThumbnailColumn(timePlacePickerContainer, introMessageLabel, BlueMallThumbnailColumn.transform.GetChild(0).gameObject, "Rose Mall", availableTimePeriods);
 
+        GameObject GoldMallThumbnailColumn = CreatePlaceTimeThumbnailColumn(timePlacePickerContainer, introMessageLabel, RoseMallThumbnailColumn.transform.GetChild(0).gameObject, "Gold Mall", availableTimePeriods);
+
         // resize the container to align with the last thumbnail in the column
         int thumbnailCount = BlueMallThumbnailColumn.transform.childCount - 1; // exclude the label
-        Debug.Log(thumbnailCount);
         TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(timePlacePickerContainer, BlueMallThumbnailColumn.transform.GetChild(thumbnailCount - 1).gameObject, 0.05f);
 
         // set the parent/child hierarchy
