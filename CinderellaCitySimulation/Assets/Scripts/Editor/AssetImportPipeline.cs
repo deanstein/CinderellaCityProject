@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering.PostProcessing;
 
 public class AssetImportUpdate : AssetPostprocessor {
 
@@ -21,7 +22,7 @@ public class AssetImportUpdate : AssetPostprocessor {
     static String globalAssetTexturesDirectory;
 
     // get the current scene
-    Scene currentScene = SceneManager.GetActiveScene();
+    static Scene currentScene = SceneManager.GetActiveScene();
 
     // all incoming models are scaled to this value
     static float globalScale = 1.0f;
@@ -848,6 +849,12 @@ public class AssetImportUpdate : AssetPostprocessor {
             Debug.Log("Proxy type: " + proxyType);
         }
 
+        if (assetName.Contains("cameras"))
+        {
+            proxyType = "Cameras";
+            Debug.Log("Proxy type: " + proxyType);
+        }
+
         if (assetName.Contains("proxy-people"))
         {
             proxyType = "People";
@@ -928,10 +935,6 @@ public class AssetImportUpdate : AssetPostprocessor {
 
                     // tag this instanced prefab as a delete candidate for the next import
                     instancedPrefab.gameObject.tag = deleteReplacementTag;
-
-                    // set the prefab as static
-                    //GameObject GO = GameObject.Find(instancedPrefab.name);
-                    //SetAssetAsStaticGameObject(GO.name);
                 }
                 else
                 {
@@ -939,7 +942,68 @@ public class AssetImportUpdate : AssetPostprocessor {
                 }
 
             }
+
+            else if (child.name.Contains("Camera-Thumbnail"))
+            {
+                // need to manipulate the default FormIt Group/Instance name to remove the digits at the end
+                Debug.Log("Current Scene: " + currentScene.name);
+
+                // first, remove the characters after the last hyphen
+                string tempName = child.name.Remove(child.name.LastIndexOf("-"), child.name.Length - child.name.LastIndexOf("-"));
+                // then remove the characters after the last hyphen again
+                string cameraName = tempName.Remove(tempName.LastIndexOf("-"), tempName.Length - tempName.LastIndexOf("-"));
+
+                // create a new object to host the camera
+                // include the name of the current scene (assumes reimporting into the correct scene)
+                GameObject cameraObject = new GameObject(cameraName + "-" + currentScene.name);
+
+                //var existingCamera = Camera.main.GetComponent<Camera>();
+                //var camera = CopyComponent<Camera>(existingCamera, camera);
+
+                // create a camera
+                var camera = cameraObject.AddComponent<Camera>();
+
+                // configure the camera to work with PostProcessing
+                camera.renderingPath = RenderingPath.DeferredShading;
+                camera.allowMSAA = false;
+                camera.useOcclusionCulling = false;
+
+                // make the camera a sibling of the original camera geometry
+                cameraObject.transform.parent = child.transform.parent;
+
+                // match the position and rotation
+                cameraObject.transform.SetPositionAndRotation(child.transform.localPosition, child.transform.localRotation);
+
+                // tag this camera object as a delete candidate for the next import
+                cameraObject.tag = deleteReplacementTag;
+
+                // make the camera look at the plane
+                // this assumes the only child of the camera is a plane (a FormIt Group with LCS at the center of the plane)
+                cameraObject.transform.LookAt(child.GetChild(0).transform.position);
+
+                // add the script to take a screenshot of this camera when the game starts, so we can have an updated thumbnail in the UI
+                cameraObject.AddComponent<RenderCameraToImage>();
+
+                // copy the PostProcessing effects from the Main Camera
+                PostProcessVolume existingVolume = Camera.main.GetComponent<PostProcessVolume>();
+                PostProcessLayer existingLayer = Camera.main.GetComponent<PostProcessLayer>();
+                CopyComponent<PostProcessVolume>(existingVolume, cameraObject);
+                CopyComponent<PostProcessLayer>(existingLayer, cameraObject);
+            }
         }
+    }
+
+    // copies a component and all its settings from one GameObject to another
+    static T CopyComponent<T>(T original, GameObject destination) where T : Component
+    {
+        System.Type type = original.GetType();
+        Component copy = destination.AddComponent(type);
+        System.Reflection.FieldInfo[] fields = type.GetFields();
+        foreach (System.Reflection.FieldInfo field in fields)
+        {
+            field.SetValue(copy, field.GetValue(original));
+        }
+        return copy as T;
     }
 
     // define how to turn off the visibility of proxy assets
@@ -952,7 +1016,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // for each of this asset's children, look for any whose name indicates they are proxies to be replaced
         foreach (Transform child in transformByAsset)
         {
-            if (child.name.Contains("REPLACE"))
+            if (child.name.Contains("REPLACE") || (child.name.Contains("Camera")))
             {
                 GameObject gameObjectToBeReplaced = child.gameObject;
                 //Debug.Log("Found a proxy gameObject to be hide: " + gameObjectToBeReplaced);
@@ -1378,6 +1442,24 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
+        }
+
+        if (assetFilePath.Contains("proxy-cameras.fbx"))
+        {
+            // pre-processor option flags
+            doSetGlobalScale = true; // always true
+            doInstantiateAndPlaceInCurrentScene = true;
+            doSetColliderActive = false;
+            doSetUVActiveAndConfigure = false;
+            doDeleteReimportMaterialsTextures = false;
+            doAddBehaviorComponents = false;
+
+            // post-processor option flags
+            doSetStatic = false;
+            doSetMaterialEmission = false;
+            doSetMaterialSmoothnessMetallic = false;
+            doInstantiateProxyReplacements = true;
+            doHideProxyObjects = true;
         }
 
         if (assetFilePath.Contains("proxy-people.fbx")

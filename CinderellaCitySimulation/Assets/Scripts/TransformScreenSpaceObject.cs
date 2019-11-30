@@ -12,7 +12,6 @@ public static class TransformScreenSpaceObject
     public static float cameraMidPointX = cameraWidth / 2;
     public static float cameraMidPointY = cameraHeight / 2;
 
-
     public static float GetObjectTopEdgePositionY(GameObject screenSpaceObject)
     {
         RectTransform rectTransform = screenSpaceObject.GetComponent<RectTransform>();
