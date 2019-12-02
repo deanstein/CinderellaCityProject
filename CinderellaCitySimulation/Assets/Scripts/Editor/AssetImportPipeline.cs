@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using System;
 using UnityEngine.Windows;
 using System.IO;
@@ -9,6 +10,8 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine.SceneManagement;
 using UnityEngine.Rendering.PostProcessing;
+
+[InitializeOnLoad]
 
 public class AssetImportUpdate : AssetPostprocessor {
 
@@ -21,8 +24,11 @@ public class AssetImportUpdate : AssetPostprocessor {
     static String globalAssetFileDirectory;
     static String globalAssetTexturesDirectory;
 
+    // some functions may write to other folders in the project
+    static String projectUIPath = "Assets/Resources/UI/";
+
     // get the current scene
-    static Scene currentScene = SceneManager.GetActiveScene();
+    static Scene currentScene = EditorSceneManager.GetActiveScene();
 
     // all incoming models are scaled to this value
     static float globalScale = 1.0f;
@@ -74,6 +80,18 @@ public class AssetImportUpdate : AssetPostprocessor {
     //
     // end master list
     //
+
+    // set up callbacks
+    public AssetImportUpdate()
+    {
+        EditorSceneManager.activeSceneChangedInEditMode += sceneChangedInEditModeCallback;
+    }
+    // for some reason, we need to subscribe to this message and update the currentScene name when a different scene is opened in the Editor
+    private void sceneChangedInEditModeCallback(Scene previousScene, Scene newScene)
+    {
+        currentScene = newScene;
+        Debug.Log("Opened a different Scene in the Editor: " + newScene.name);
+    }
 
     // define how to clear the console
     public static void ClearConsole()
@@ -869,6 +887,14 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         // find the associated GameObject by this asset's name
         GameObject gameObjectByAsset = GameObject.Find(assetName);
+        
+        // we might get here, if so we need to return to prevent an error
+        if (!gameObjectByAsset)
+        {
+            Debug.Log("Couldn't find the GameObject by name: " + assetName);
+            return;
+        }
+
         var transformByAsset = gameObjectByAsset.transform;
 
         // run TagHelper to create the hide proxy tag if it doesn't exist yet
@@ -946,7 +972,6 @@ public class AssetImportUpdate : AssetPostprocessor {
             else if (child.name.Contains("Camera-Thumbnail"))
             {
                 // need to manipulate the default FormIt Group/Instance name to remove the digits at the end
-                Debug.Log("Current Scene: " + currentScene.name);
 
                 // first, remove the characters after the last hyphen
                 string tempName = child.name.Remove(child.name.LastIndexOf("-"), child.name.Length - child.name.LastIndexOf("-"));
@@ -970,7 +995,6 @@ public class AssetImportUpdate : AssetPostprocessor {
 
                 // make the camera a sibling of the original camera geometry
                 cameraObject.transform.parent = child.transform.parent;
-
                 // match the position and rotation
                 cameraObject.transform.SetPositionAndRotation(child.transform.localPosition, child.transform.localRotation);
 
@@ -981,14 +1005,18 @@ public class AssetImportUpdate : AssetPostprocessor {
                 // this assumes the only child of the camera is a plane (a FormIt Group with LCS at the center of the plane)
                 cameraObject.transform.LookAt(child.GetChild(0).transform.position);
 
-                // add the script to take a screenshot of this camera when the game starts, so we can have an updated thumbnail in the UI
-                cameraObject.AddComponent<RenderCameraToImage>();
-
                 // copy the PostProcessing effects from the Main Camera
                 PostProcessVolume existingVolume = Camera.main.GetComponent<PostProcessVolume>();
                 PostProcessLayer existingLayer = Camera.main.GetComponent<PostProcessLayer>();
                 CopyComponent<PostProcessVolume>(existingVolume, cameraObject);
                 CopyComponent<PostProcessLayer>(existingLayer, cameraObject);
+
+                // this script writes a new image from the camera's view, from the Editor
+                // it will run once, then self-destruct
+                RenderCameraToImageSelfDestruct rt = cameraObject.AddComponent<RenderCameraToImageSelfDestruct>();
+
+                // specify the path for the camera capture
+                rt.path = projectUIPath;
             }
         }
     }
@@ -1039,6 +1067,14 @@ public class AssetImportUpdate : AssetPostprocessor {
             return;
         }
 
+        // it seems that a few post processing hits are needed to fully post-process everything
+        // any further is probably not necessary
+        if (!postProcessingRequired || postProcessingHits.Count >= globalMaxPostProcessingHits)
+        {
+            Debug.Log("Skipping texture pre-processing (max allowed reached)");
+            return;
+        }
+
         ClearConsole();
         Debug.Log("START Texture PreProcessing...");
 
@@ -1047,7 +1083,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // get the file path of the asset that just got updated
         TextureImporter textureImporter = assetImporter as TextureImporter;
         String assetFilePath = textureImporter.assetPath.ToLower();
-        Debug.Log(assetFilePath);
+        Debug.Log("Modified file: " + assetFilePath);
 
         // make the asset path available globally
         globalAssetFilePath = assetFilePath;
@@ -1175,7 +1211,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // get the file path of the asset that just got updated
         ModelImporter modelImporter = assetImporter as ModelImporter;
         String assetFilePath = modelImporter.assetPath.ToLower();
-        Debug.Log(assetFilePath);
+        Debug.Log("Modified file: " + assetFilePath);
 
         // make the asset path available globally
         globalAssetFilePath = assetFilePath;
