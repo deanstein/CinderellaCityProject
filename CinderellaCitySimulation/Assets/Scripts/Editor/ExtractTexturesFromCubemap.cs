@@ -18,12 +18,10 @@ public class CubeSplitter : EditorWindow
 
         window.maxSize = new Vector2(512, 155);
         window.minSize = window.maxSize;
-        window.title = ("Cube Splitter!");
+        //window.title = ("Cube Splitter!"); // obsolete, don't want to spend the time fixing
         window.Show();
 
     }
-
-
 
     void OnGUI()
     {
