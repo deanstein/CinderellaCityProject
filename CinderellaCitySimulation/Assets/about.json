@@ -1,20 +1,23 @@
 {
-  "AppVersion": "0.5.0.201911",
+  "AppVersion": "0.5.0.201912",
   "VersionHistory": 
   [
     {
-        "0.5.0.201911": [
+        "0.5.0.201912": [
             {
                 "Logic Updates": [
-                    "Added classes and member functions for UI menu layout functionality, including CreateScreenSpaceLayoutByName, CreateScreenSpaceUIElements, TransformScreenSpaceObject, and AnimateScreenSpaceObject",
-                    "Added support for setting audio clip import settings in AssetimportUpdate",
+                    "Added support for toggling the visibility of entire scenes on/off",
+                    "Added support for loading all scenes asynchronously in a new Loading Screen scene",
+                    "Added support for UI menu layout functionality, including creating, transforming, and animating screen-space layouts",
+                    "Added support for setting audio clip import settings in AssetImportUpdate",
                     "Added support for setting texture-to-sprite import settings in AssetImportUpdate",
-                    "Added support for proxy cameras in AssetImportUpdate", 
-                    "Added support for exporting the viewport capture of a Camera for UI thumbnails"
+                    "Added support for proxy cameras in AssetImportUpdate",
+                    "Added support for exporting the viewport capture of a Camera to the file system for UI thumbnails"
 
                 ],
                 "Asset Updates": [
-                    "Added 60s-70s, Main Menu, Pause Menu, and Experimental scenes",
+                    "Added 60s70s, Loading Screen, Main Menu, Pause Menu, and Experimental scenes",
+                    "Reorganized Scene object hierarchy to contain one parent object for toggling visibility of all its children (all scene objects)",
                     "Updated to Unity 2019.1.9f1"
                 ]
             }

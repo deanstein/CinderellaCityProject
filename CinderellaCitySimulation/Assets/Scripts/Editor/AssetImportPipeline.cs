@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine.SceneManagement;
 using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.Rendering;
 
 [InitializeOnLoad]
 
@@ -1016,7 +1017,7 @@ public class AssetImportUpdate : AssetPostprocessor {
                 RenderCameraToImageSelfDestruct rt = cameraObject.AddComponent<RenderCameraToImageSelfDestruct>();
 
                 // specify the path for the camera capture
-                rt.path = projectUIPath;
+                rt.filePath = projectUIPath;
             }
         }
     }
@@ -1039,20 +1040,24 @@ public class AssetImportUpdate : AssetPostprocessor {
     {
         // find the associated GameObject by this asset's name
         GameObject gameObjectByAsset = GameObject.Find(assetName);
-        var transformByAsset = gameObjectByAsset.transform;
-
-        // for each of this asset's children, look for any whose name indicates they are proxies to be replaced
-        foreach (Transform child in transformByAsset)
+        if (gameObjectByAsset)
         {
-            if (child.name.Contains("REPLACE") || (child.name.Contains("Camera")))
-            {
-                GameObject gameObjectToBeReplaced = child.gameObject;
-                //Debug.Log("Found a proxy gameObject to be hide: " + gameObjectToBeReplaced);
+            var transformByAsset = gameObjectByAsset.transform;
 
-                // turn off the visibility of the object to be replaced
-                ToggleVisibility.ToggleGameObjectOff(gameObjectToBeReplaced);
+            // for each of this asset's children, look for any whose name indicates they are proxies to be replaced
+            foreach (Transform child in transformByAsset)
+            {
+                if (child.name.Contains("REPLACE") || (child.name.Contains("Camera")))
+                {
+                    GameObject gameObjectToBeReplaced = child.gameObject;
+                    //Debug.Log("Found a proxy gameObject to be hide: " + gameObjectToBeReplaced);
+
+                    // turn off the visibility of the object to be replaced
+                    ToggleVisibility.ToggleGameObjectOff(gameObjectToBeReplaced);
+                }
             }
         }
+      
     }
 
     // runs when a texture/image asset is updated

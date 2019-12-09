@@ -12,18 +12,24 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     {
         
     }
+
     // define what clicking the buttons does
     public static void TaskOnClick()
     {
-        //SceneManager.LoadScene("80s-90s");
+        ToggleVisibilityByScene.ToggleSceneObjectsOn("60s70s");
+        ToggleVisibilityByScene.ToggleSceneObjectsOff("MainMenu");
+        //SceneManager.LoadScene("60s70s");
         Debug.Log("You clicked the button!");
     }
 
-    public static GameObject CreateMenuCanvas(string name)
+    public static GameObject CreateMenuCanvas(GameObject parent, string name)
     {
+        // create the menu object, and make sure its parent is the scene container object
         GameObject menu = new GameObject(name);
         menu.AddComponent<Canvas>();
+        menu.transform.SetParent(parent.transform);
 
+        // create the menu's canvas
         Canvas menuCanvas = menu.GetComponent<Canvas>();
         menuCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
         menu.AddComponent<CanvasScaler>();
@@ -45,7 +51,6 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // this script will sequence, transform, and animate the background images as required
         AnimateScreenSpaceObject AnimateScreenSpaceObjectScript =fullScreenBackgroundImage.AddComponent<AnimateScreenSpaceObject>();
         AnimateScreenSpaceObjectScript.mainMenuBackgroundSlideShowSequence = slideshowSequence;
-
 
         return fullScreenBackgroundImage;
     }
