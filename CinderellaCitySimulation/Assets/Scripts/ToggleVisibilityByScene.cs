@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public class GlobalSceneVariables
+{
+    // when a scene change is requested, record the referring scene globally so we can switch back to it
+    public static string referringScene;
+}
+
 public class ToggleVisibilityByScene : MonoBehaviour {
 
     public static void ToggleSceneObjectsOn(string sceneName)
     {
-        Debug.Log("Toggling scene visibility ON for: " + sceneName + "...");
+        //Debug.Log("Toggling Scene object visibility ON for: " + sceneName + "...");
 
         // each Scene should have a GameObject that contains all of the Scene objects
         // this container should be named after the Scene + "Container"
@@ -30,7 +36,7 @@ public class ToggleVisibilityByScene : MonoBehaviour {
 
     public static void ToggleSceneObjectsOff(string sceneName)
     {
-        Debug.Log("Toggling scene visibility OFF for: " + sceneName + "...");
+        //Debug.Log("Toggling Scene object visibility OFF for: " + sceneName + "...");
 
         // each Scene should have a GameObject that contains all of the Scene objects
         // this container should be named after the Scene + "Container"
@@ -49,6 +55,26 @@ public class ToggleVisibilityByScene : MonoBehaviour {
                 //Debug.Log("Toggled visibility OFF for: " + child.gameObject.name);
             }
         }
+    }
+
+    public static void ToggleFromSceneToScene(string fromScene, string toScene, bool makeActive)
+    {
+        Debug.Log("Toggling from Scene " + "<b>" + fromScene + "</b>" + " to Scene " + "<b>" + toScene + "</b>");
+
+        // toggle the toScene first, to avoid any gaps in playback
+        ToggleSceneObjectsOn(toScene);
+
+        // now toggle the fromScene scene off
+        ToggleSceneObjectsOff(fromScene);
+
+        // if requested, make the toScene the active Scene
+        if (makeActive)
+        {
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(toScene));
+        }
+
+        // mark the referring scene globally, for other scripts to access
+        GlobalSceneVariables.referringScene = fromScene;
     }
 }
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ToggleVisibilityByShortcut : MonoBehaviour {
 
@@ -14,15 +15,48 @@ public class ToggleVisibilityByShortcut : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        // identify the shortcuts to listen for, and define what they do
+
+        /// UI visiblity shortcuts ///
+
+        // pause menu
+        // only accessible from specific scenes
+        if (Input.GetKeyDown(KeyCode.Escape) &&
+            (SceneManager.GetActiveScene().name.Contains("60s70s")
+            || SceneManager.GetActiveScene().name.Contains("80s90s")
+            || SceneManager.GetActiveScene().name.Contains("AltFuture")))
+        {
+            ToggleVisibilityByScene.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "PauseMenu", true);
+        }
+        // if we're already in the pause menu, return to the previous scene (referring scene)
+        else if (Input.GetKeyDown(KeyCode.Escape)
+            && SceneManager.GetActiveScene().name.Contains("PauseMenu"))
+        {
+            ToggleVisibilityByScene.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, GlobalSceneVariables.referringScene, true);
+
+        }
+
+        /// object visibility shortcuts ///
+
+        // people
+        if (Input.GetKeyDown("p") && objectType.Contains("people"))
+        {
+            ToggleObjectChildrenVisibility(this.gameObject);
+        }
+
+    }
+
+    void ToggleObjectChildrenVisibility(GameObject parent)
+    {
         // loop through all children of this GameObject and make them active or inactive
-        foreach (Transform child in this.transform)
+        foreach (Transform child in parent.transform)
         {
             // If key is pressed and children are on, turn them off
             if ((Input.GetKeyDown(shortcut)) && (child.gameObject.activeSelf))
             {
                 child.gameObject.SetActive(false);
                 objectState = "OFF";
-                
+
             }
             // If key is pressed and children are off, turn them on
             else if ((Input.GetKeyDown(shortcut)) && (!child.gameObject.activeSelf))
@@ -33,10 +67,10 @@ public class ToggleVisibilityByShortcut : MonoBehaviour {
         }
 
         // Output the object type and the new state
-        if (Input.GetKeyDown(shortcut)) {
+        if (Input.GetKeyDown(shortcut))
+        {
             Debug.Log("Turning visibility of " + objectType + " to: " + objectState);
         }
-
     }
 }
 
