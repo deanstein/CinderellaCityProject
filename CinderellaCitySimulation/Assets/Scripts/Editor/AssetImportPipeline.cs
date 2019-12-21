@@ -1072,14 +1072,6 @@ public class AssetImportUpdate : AssetPostprocessor {
             return;
         }
 
-        // it seems that a few post processing hits are needed to fully post-process everything
-        // any further is probably not necessary
-        if (!postProcessingRequired || postProcessingHits.Count >= globalMaxPostProcessingHits)
-        {
-            Debug.Log("Skipping texture pre-processing (max allowed reached)");
-            return;
-        }
-
         ClearConsole();
         Debug.Log("START Texture PreProcessing...");
 

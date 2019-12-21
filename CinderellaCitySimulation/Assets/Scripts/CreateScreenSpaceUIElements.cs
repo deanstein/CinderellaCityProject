@@ -8,17 +8,52 @@ using UnityEngine.SceneManagement;
 
 public class CreateScreenSpaceUIElements : MonoBehaviour
 {
-    private void Update()
+    // define the available time periods
+    // this determines how many rows to make for time and place pickers
+    public static string[] availableTimePeriods = { "60s70s", "80s90s" };
+
+    /// colors ///
+
+    // all button colors
+    public static Color32 buttonColor = new Color32(20, 20, 20, 220);
+
+    // all nav and container colors
+    public static Color32 containerColor = new Color32(50, 50, 50, 100);
+
+    /// sizes ///
+
+    // fonts and text sizes (pixels)
+    public static string labelFont = "AvenirNextLTPro-Demi";
+
+    public static int menuTitleLabelSize = 30;
+    public static int timePlaceLabelSize = 50;
+    public static int menuTextButtonLabelSize = 35;
+
+    // button sizes (ratio relative to screen size)
+    public static float menuButtonScreenWidthRatio = 0.15f;
+    public static float menuButtonTopBottomPaddingScreenHeightRatio = 0.01f;
+
+    /// spacings ///
+
+    public static float textButtonBottomMarginScreenHeightRatio = 0.005f;
+    public static float textButtonLeftMarginScreenWidthRatio = 0.01f;
+    
+    // remove spaces and punctuation from a string
+    public static string CleanString(string messyString)
     {
-        
+        // remove spaces
+        string cleanString = messyString.Replace(" ", "");
+
+        // remove colons
+        cleanString = cleanString.Replace(":", "");
+
+        return cleanString;
     }
 
     // define what clicking the buttons does
     public static void TaskOnClick()
     {
-        ToggleVisibilityByScene.ToggleSceneObjectsOn("60s70s");
-        ToggleVisibilityByScene.ToggleSceneObjectsOff("MainMenu");
-        //SceneManager.LoadScene("60s70s");
+        ToggleVisibilityByScene.ToggleFromSceneToScene("MainMenu", "60s70s", true);
         Debug.Log("You clicked the button!");
     }
 
@@ -38,10 +73,10 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         return menu;
     }
 
-    public static GameObject CreateFullScreenBackgroundImageSlideshow(GameObject parent, string name, string[] slideshowSequence)
+    public static GameObject CreateFullScreenBackgroundImageSlideshow(GameObject parent, string[] slideshowSequence)
     {
         // create the background object
-        GameObject fullScreenBackgroundImage = new GameObject(name);
+        GameObject fullScreenBackgroundImage = new GameObject("BackgroundSlideShow");
         fullScreenBackgroundImage.AddComponent<Image>();
 
         // set the image
@@ -55,7 +90,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         return fullScreenBackgroundImage;
     }
 
-    public static GameObject CreateLogoHeader(GameObject parent, string name, Color32 containerColor)
+    public static GameObject CreateLogoHeader(GameObject parent)
     {
         // create the container object
         GameObject logoContainer = new GameObject("LogoHeader");
@@ -94,25 +129,39 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         return logoContainer;
     }
 
-    // create an array of gameobjects to be filled out by the following thumbnails
+    public static GameObject CreateMenuTitleBar(GameObject parent, GameObject topAlignmentObject)
+    {
+        // create the container object
+        GameObject titleContainer = new GameObject("MenuTitleBar");
+        titleContainer.AddComponent<CanvasRenderer>();
+        Image logoContainerColor = titleContainer.AddComponent<Image>();
+        logoContainerColor.color = containerColor;
+
+        // position the time and place container
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(titleContainer, topAlignmentObject, 0.05f);
+
+        // resize the time and place container
+        TransformScreenSpaceObject.ResizeObjectWidthToMatchCamera(titleContainer);
+        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromCameraLeft(titleContainer, 0.1f);
+        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromCameraBottom(titleContainer, 0.1f);
+
+        return titleContainer;
+    }
 
     // create the stacked thumbnails for a place, across time periods
     public static GameObject CreatePlaceTimeThumbnailColumn(GameObject parent, GameObject topAlignmentObject, GameObject leftAlignmentObject, string placeName, string[] timePeriodNames)
     {
-        // remove the spaces from the name
-        string placeNameSpaceless = placeName.Replace(" ", "");
-
         // make an object to hold the thumbnails
-        GameObject thumbnailColumn = new GameObject(placeNameSpaceless + "ThumbnailColumn");
+        GameObject thumbnailColumn = new GameObject(CleanString(placeName) + "ThumbnailColumn");
         thumbnailColumn.transform.SetParent(parent.transform);
 
         // location text
-        GameObject placeLabel = new GameObject(placeNameSpaceless + "Label");
+        GameObject placeLabel = new GameObject(CleanString(placeName) + "Label");
 
         Text placeLabelText = placeLabel.AddComponent<Text>();
-        placeLabelText.font = (Font)Resources.Load("AvenirNextLTPro-Demi");
+        placeLabelText.font = (Font)Resources.Load(labelFont);
         placeLabelText.text = placeName;
-        placeLabelText.fontSize = 50;
+        placeLabelText.fontSize = timePlaceLabelSize;
         placeLabelText.alignment = TextAnchor.MiddleCenter;
 
         // get the text's dimensions to match only the space it needs, before any transforms
@@ -126,11 +175,10 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         List<GameObject> thumbnailObjects = new List<GameObject>();
 
         // for each image name provided, make a new thumbnail button
-        //foreach (string timePeriod in timePeriodNames)
         for (var i = 0; i < timePeriodNames.Length; i++)
         {
             // combine the place name and time period strings
-            string combinedPlaceTimeNameSpacelessDashed = placeNameSpaceless + "-" + timePeriodNames[i];
+            string combinedPlaceTimeNameSpacelessDashed = CleanString(placeName) + "-" + timePeriodNames[i];
 
             // create the button
             GameObject timePeriodButton = new GameObject(combinedPlaceTimeNameSpacelessDashed + "Button");
@@ -182,11 +230,8 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     }
 
     // create the time and place picker interface
-    public static GameObject CreateTimeAndPlacePicker(GameObject parent, GameObject topNeighbor, Color32 containerColor)
+    public static GameObject CreateMainMenuCentralNav(GameObject parent, GameObject topNeighbor)
     {
-        // define the available time periods for each place
-        string[] availableTimePeriods = { "60s70s", "80s90s" };
-
         // create the time and place picker container
         GameObject timePlacePickerContainer = new GameObject("TimeAndPlacePicker");
         timePlacePickerContainer.AddComponent<CanvasRenderer>();
@@ -207,7 +252,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // add the intro message
         GameObject introMessageLabel = new GameObject("IntroMessageLabel");
         Text introMessageLabelText = introMessageLabel.AddComponent<Text>();
-        introMessageLabelText.font = (Font)Resources.Load("AvenirNextLTPro-Demi");
+        introMessageLabelText.font = (Font)Resources.Load(labelFont);
         introMessageLabelText.text = "Choose a time and place:";
         introMessageLabelText.fontSize = 20;
         introMessageLabelText.alignment = TextAnchor.UpperLeft;
@@ -224,9 +269,9 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         GameObject timePeriodLabel1 = new GameObject("1960s70sLabel");
 
         Text timePeriodLabel1Text = timePeriodLabel1.AddComponent<Text>();
-        timePeriodLabel1Text.font = (Font)Resources.Load("AvenirNextLTPro-Demi");
+        timePeriodLabel1Text.font = (Font)Resources.Load(labelFont);
         timePeriodLabel1Text.text = "1960s-70s";
-        timePeriodLabel1Text.fontSize = 50;
+        timePeriodLabel1Text.fontSize = timePlaceLabelSize;
         timePeriodLabel1Text.alignment = TextAnchor.MiddleCenter;
 
         // get the text's dimensions to match only the space it needs, before any transforms
@@ -253,6 +298,131 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         timePeriodLabel1.transform.SetParent(timePlacePickerContainer.transform);
 
         return timePlacePickerContainer;
+    }
+
+    // define what clicking the buttons does
+    public static void GoToMainMenu()
+    {
+        ToggleVisibilityByScene.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "MainMenu", true);
+    }
+
+    public static GameObject CreateTextButton(string text, GameObject parent, Color32 color)
+    {
+        // create the text label
+        GameObject buttonTextObject = new GameObject(CleanString(text) + "ButtonText");
+        Text buttonText = buttonTextObject.AddComponent<Text>();
+        buttonText.font = (Font)Resources.Load(labelFont);
+        buttonText.text = text;
+        buttonText.fontSize = menuTextButtonLabelSize;
+        buttonText.alignment = TextAnchor.MiddleCenter;
+
+        Vector2 textSize = TransformScreenSpaceObject.ResizeTextExtentsToFitContents(buttonText);
+
+        // create the button
+        GameObject buttonContainer = new GameObject(CleanString(text) + "Button");
+        buttonContainer.AddComponent<CanvasRenderer>();
+        buttonContainer.AddComponent<RectTransform>();
+        
+        // resize the button background to encapsulate the text, plus padding
+        RectTransform buttonRect = buttonContainer.GetComponent<RectTransform>();
+        buttonRect.sizeDelta = new Vector2(Mathf.Round((menuButtonScreenWidthRatio * Screen.width)), Mathf.Round(textSize.y + (2 * (menuButtonTopBottomPaddingScreenHeightRatio * Screen.height))));
+
+        // set the color of the button
+        Image buttonContainerColor = buttonContainer.AddComponent<Image>();
+        buttonContainerColor.color = color;
+
+        // configure the button
+        Button button = buttonContainer.AddComponent<Button>();
+        buttonContainer.GetComponent<Button>().onClick.AddListener(GoToMainMenu);
+
+        // set the parent/child hierarchy
+        buttonContainer.transform.SetParent(parent.transform);
+        buttonTextObject.transform.SetParent(buttonContainer.transform);
+
+        // move the button
+        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(buttonContainer);
+
+        return buttonContainer;
+    }
+
+    public static GameObject CreatePauseMenuCentralNav(GameObject parent, GameObject topNeighbor)
+    {
+        string menuTitle = "Pause";
+        // create the time and place picker container
+        GameObject navContainer = new GameObject("PauseMenuNav");
+        navContainer.AddComponent<CanvasRenderer>();
+
+        // set the color of the time and place container
+        Image navContainerColor = navContainer.AddComponent<Image>();
+        navContainerColor.color = containerColor;
+
+        // position the time and place container
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(navContainer, topNeighbor, 0.05f);
+
+        // resize the time and place container
+        TransformScreenSpaceObject.ResizeObjectWidthToMatchCamera(navContainer);
+        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromCameraLeft(navContainer, 0.1f);
+        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromCameraBottom(navContainer, 0.1f);
+        //TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromNeighborLeft(thumbnailContainer, CCPLogoContainer, 0.0f);
+
+        // add the intro message
+        GameObject menuNameLabel = new GameObject("MenuNameLabel");
+        Text introMessageLabelText = menuNameLabel.AddComponent<Text>();
+        introMessageLabelText.font = (Font)Resources.Load(labelFont);
+        introMessageLabelText.text = menuTitle;
+        introMessageLabelText.fontSize = 20;
+        introMessageLabelText.alignment = TextAnchor.UpperLeft;
+
+        // resize the text's bounding box, before any transforms
+        TransformScreenSpaceObject.ResizeTextExtentsToFitContents(introMessageLabelText);
+
+        // position the intro message
+        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(menuNameLabel);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(menuNameLabel, navContainer, -0.02f);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(menuNameLabel, navContainer, -0.02f);
+
+        // create the time periods labels
+        GameObject timePeriodLabel1 = new GameObject("1960s70sLabel");
+
+        Text timePeriodLabel1Text = timePeriodLabel1.AddComponent<Text>();
+        timePeriodLabel1Text.font = (Font)Resources.Load(labelFont);
+        timePeriodLabel1Text.text = "1960s-70s";
+        timePeriodLabel1Text.fontSize = timePlaceLabelSize;
+        timePeriodLabel1Text.alignment = TextAnchor.MiddleCenter;
+
+        // get the text's dimensions to match only the space it needs, before any transforms
+        TransformScreenSpaceObject.ResizeTextExtentsToFitContents(timePeriodLabel1Text);
+
+        // position the time period label
+        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(timePeriodLabel1);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(timePeriodLabel1, navContainer, -0.02f);
+
+        // create the time travel thumbnail container
+        GameObject timeTravelThumbnailColumn = CreatePlaceTimeThumbnailColumn(navContainer, menuNameLabel, timePeriodLabel1, "Time Travel:", availableTimePeriods);
+
+        /// buttons ///
+
+        // define a gameObject to align the buttons to
+        GameObject buttonAlignmentObject = timeTravelThumbnailColumn.transform.GetChild(0).gameObject;
+
+        // create the main menu button
+        GameObject mainMenuButton = CreateTextButton("Main Menu", navContainer, buttonColor);
+        // align and position the main menu button
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(mainMenuButton, buttonAlignmentObject, 0.0f);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(mainMenuButton, buttonAlignmentObject, textButtonLeftMarginScreenWidthRatio);
+
+        // exit button
+        GameObject exitButton = CreateTextButton("Exit", navContainer, buttonColor);
+        // align and position the exit button
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(exitButton, mainMenuButton, textButtonBottomMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(exitButton, buttonAlignmentObject, textButtonLeftMarginScreenWidthRatio);
+
+        // set the parent/child hierarchy
+        navContainer.transform.SetParent(parent.transform);
+        menuNameLabel.transform.SetParent(navContainer.transform);
+        timePeriodLabel1.transform.SetParent(navContainer.transform);
+
+        return navContainer;
     }
 }
 

@@ -391,7 +391,7 @@ public static class TransformScreenSpaceObject
         screenSpaceObjectRectTransform.position = newObjectPosition;
     }
 
-    public static void ResizeTextExtentsToFitContents(Text text)
+    public static Vector2 ResizeTextExtentsToFitContents(Text text)
     {
         RectTransform introMessageRectTransform = text.GetComponent<RectTransform>();
 
@@ -400,11 +400,11 @@ public static class TransformScreenSpaceObject
 
         introMessageRectTransform.sizeDelta = new Vector2(textWidth, textHeight);
 
-        //Debug.Log("Intro message sizeDelta: " + introMessageRectTransform.sizeDelta);
-        //Debug.Log("Intro message width height: " + introMessageRectTransform.rect.width + " " + introMessageRectTransform.rect.height);
-        //Debug.Log("Layout utility height: " + LayoutUtility.GetPreferredHeight(introMessageRectTransform));
+        Vector2 finalSize = new Vector2(LayoutUtility.GetPreferredWidth(introMessageRectTransform), LayoutUtility.GetPreferredHeight(introMessageRectTransform));
 
-        introMessageRectTransform.sizeDelta = new Vector2(LayoutUtility.GetPreferredWidth(introMessageRectTransform), LayoutUtility.GetPreferredHeight(introMessageRectTransform));
+        introMessageRectTransform.sizeDelta = finalSize;
+
+        return finalSize;
     }
 
     public static void ScaleObjectByCameraHeightProportion(GameObject screenSpaceObject, float heightProportion)
