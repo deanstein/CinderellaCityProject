@@ -236,10 +236,30 @@ public static class TransformScreenSpaceObject
         rectTransform.position = newObjectPosition;
     }
 
-    public static void PositionObjectAtVerticalCenterlineOfNeighbor(GameObject screenSpaceObject, GameObject neighborObject)
+    public static void PositionObjectAtHorizontalCenterlineOfNeighbor(GameObject screenSpaceObject, GameObject alignmentObject)
     {
         // get the neighbor's position
-        Vector3 neighborPosition = neighborObject.transform.position;
+        Vector3 neighborPosition = alignmentObject.transform.position;
+
+        // move the object so it's centered relative to the neighbor
+        Vector3 newObjectPosition = new Vector3(screenSpaceObject.transform.position.x, neighborPosition.y, 0);
+
+        RectTransform rectTransform = screenSpaceObject.GetComponent<RectTransform>();
+        rectTransform.position = newObjectPosition;
+    }
+
+    public static void PositionMultiObjectsAtHorizontalCenterlinesOfNeighbors(List<GameObject> screenSpaceObjects, List<GameObject> alignmentObjects)
+    {
+        for (var i = 0; i < screenSpaceObjects.Count; i++)
+        {
+            PositionObjectAtHorizontalCenterlineOfNeighbor(screenSpaceObjects[i], alignmentObjects[i]);
+        }
+    }
+
+    public static void PositionObjectAtVerticalCenterlineOfNeighbor(GameObject screenSpaceObject, GameObject alignmentObject)
+    {
+        // get the neighbor's position
+        Vector3 neighborPosition = alignmentObject.transform.position;
 
         // move the object so it's centered relative to the neighbor
         Vector3 newObjectPosition = new Vector3(neighborPosition.x, screenSpaceObject.transform.position.y, 0);

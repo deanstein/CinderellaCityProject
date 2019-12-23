@@ -26,8 +26,8 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
             var eventSystem = new GameObject("EventSystem", typeof(EventSystem), typeof(StandaloneInputModule));
         }
 
-        // this menu launcher object should have a parent that contains all objects in the Scene
-        GameObject sceneContainer = this.transform.parent.gameObject;
+        // menu UI will be nested under the launcher object
+        GameObject launcher = this.transform.gameObject;
 
         // build the menu based on the name of the object this script is attached to
         string name = this.name;
@@ -41,13 +41,16 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
             //LoadSceneByName LoadSceneByNameScript = mainMenu.AddComponent<LoadSceneByName>();
 
             // main menu canvas
-            GameObject loadingScreen = CreateScreenSpaceUIElements.CreateMenuCanvas(sceneContainer, "LoadingScreen");
+            GameObject loadingScreen = CreateScreenSpaceUIElements.CreateMenuCanvas(launcher, "LoadingScreen");
 
             // background image slideshow
             GameObject backgroundSlideShow = CreateScreenSpaceUIElements.CreateFullScreenBackgroundImageSlideshow(loadingScreen, loadingScreenBackgroundSlideShowSequence);
 
             // project logo and container
             GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(loadingScreen);
+
+            // create the title bar container
+            GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(loadingScreen, logoHeader, "Loading...");
         }
 
         // the main menu
@@ -56,7 +59,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
             Debug.Log("Building the Main Menu...");
 
             // main menu canvas
-            GameObject mainMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(sceneContainer, "MainMenu");
+            GameObject mainMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(launcher, "MainMenu");
 
             // background image slideshow
             GameObject backgroundSlideShow = CreateScreenSpaceUIElements.CreateFullScreenBackgroundImageSlideshow(mainMenu, mainMenuBackgroundSlideShowSequence);
@@ -64,8 +67,11 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
             // project logo and container
             GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(mainMenu);
 
+            // create the title bar container
+            GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(mainMenu, logoHeader, "Choose a time and place:");
+
             // time & place picker and container
-            GameObject mainMenuCentralNav = CreateScreenSpaceUIElements.CreateMainMenuCentralNav(mainMenu, logoHeader);
+            GameObject mainMenuCentralNav = CreateScreenSpaceUIElements.CreateMainMenuCentralNav(mainMenu, titleBarContainer);
         }
 
         // pause menu
@@ -74,7 +80,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
             Debug.Log("Building the Pause Menu...");
 
             // pause menu canvas
-            GameObject pauseMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(sceneContainer, "PauseMenu");
+            GameObject pauseMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(launcher, "PauseMenu");
 
             // background image slideshow
             GameObject backgroundSlideShow = CreateScreenSpaceUIElements.CreateFullScreenBackgroundImageSlideshow(pauseMenu, pauseMenuBackgroundSlideShowSequence);
@@ -82,8 +88,11 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
             // project logo and container
             GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(pauseMenu);
 
+            // create the title bar container
+            GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(pauseMenu, logoHeader, "Pause");
+
             // time travel column and pause menu buttons
-            GameObject pauseMenuCentralNav = CreateScreenSpaceUIElements.CreatePauseMenuCentralNav(pauseMenu, logoHeader);
+            GameObject pauseMenuCentralNav = CreateScreenSpaceUIElements.CreatePauseMenuCentralNav(pauseMenu, titleBarContainer);
         }
 
         // otherwise, no UI will be built because the name wasn't found or recognized
