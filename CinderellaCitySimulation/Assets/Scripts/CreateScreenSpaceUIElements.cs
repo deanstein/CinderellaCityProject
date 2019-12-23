@@ -10,7 +10,11 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 {
     // define the available time periods
     // this determines how many rows to make for time and place pickers
-    public static string[] availableTimePeriods = { "60s70s", "80s90s" };
+    public static string[] availableTimePeriods = { "1960s-70s", "1980s-90s" };
+
+    // this is a single stack of place/time thumbnails for aligning time labels to
+    public static List<GameObject> placeThumbnailsForAlignment = new List<GameObject>();
+    public static List<GameObject> timeLabelsForAlignment = new List<GameObject>();
 
     /// colors ///
 
@@ -26,7 +30,10 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     public static string labelFont = "AvenirNextLTPro-Demi";
 
     public static int menuTitleLabelSize = 30;
-    public static int timePlaceLabelSize = 50;
+
+    public static int placeLabelSize = 50;
+    public static int timeLabelSize = 50;
+
     public static int menuTextButtonLabelSize = 35;
 
     // button sizes (ratio relative to screen size)
@@ -35,10 +42,50 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
     /// spacings ///
 
+    public static float projectLogoHeightScreenHeightRatio = 0.15f;
+    public static float projectLogoLeftMarginScreenWidthRatio = 0.1f;
+    public static float projectLogoTopMarginScreenHeightRatio = 0.1f;
+    public static float projectLogoContainerTopPaddingScreenHeightRatio = 0.03f;
+    public static float projectLogoContainerBottomPaddingScreenHeightRatio = 0.03f;
+    public static float projectLogoContainerRightPaddingScreenWidthRatio = 0.03f;
+
+    public static float menuTitleTopMarginScreenHeightRatio = -0.02f;
+    public static float menuTitleBottomMarginScreenHeightRatio = 0.02f;
+    public static float menuTitleLeftMarginScreenWidthRatio = -0.02f;
+
+    public static float logoHeaderBottomMarginScreenHeightRatio = 0.05f;
+
+    public static float placeLabelTopMarginScreenHeightRatio = -0.02f;
+    public static float placeLabelBottomMarginScreenHeightRatio = 0.01f;
+
+    public static float timeLabelLeftMarginScreenWidthRatio = -0.02f;
+
+    public static float timePlaceThumbnailHeightScreenHeightRatio = 0.2f;
+    public static float timePlaceThumbnailBottomMarginScreenHeightRatio = 0.01f;
+
+    public static float navContainerTopMarginScreenHeightRatio = 0.01f;
+    public static float navContainerLeftMarginScreenWidthRatio = 0.1f;
+    public static float navContainerBottomMarginScreenHeightRatio = 0.1f;
+
+    public static float thumbnailStackBottomMarginScreenHeightRatio = 0.02f;
+
     public static float textButtonBottomMarginScreenHeightRatio = 0.005f;
     public static float textButtonLeftMarginScreenWidthRatio = 0.01f;
-    
-    // remove spaces and punctuation from a string
+
+    // create an empty list of GameObjects that need to be dynamically added to their parent
+    // this list will be emptied and populated in UI constructors that make nested sets of objects
+    public static List<GameObject> orphanedThumbnailStacks = new List<GameObject>();
+
+    // assigns a list of orphaned objects to a parent
+    public static void AssignOrphanedObjectListToParent(List<GameObject> orphanObjects, GameObject parent)
+    {
+        foreach (GameObject orphan in orphanObjects)
+        {
+            orphan.transform.SetParent(parent.transform);
+        }
+    }
+
+    // remove spaces, punctuation, and other characters from a string
     public static string CleanString(string messyString)
     {
         // remove spaces
@@ -46,6 +93,12 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
         // remove colons
         cleanString = cleanString.Replace(":", "");
+
+        // remove dashed
+        cleanString = cleanString.Replace("-", "");
+
+        // remove the "19" if used in year syntax
+        cleanString = cleanString.Replace("19", "");
 
         return cleanString;
     }
@@ -109,18 +162,18 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         logoImage.SetNativeSize();
 
         // adjust the scale of the logo
-        TransformScreenSpaceObject.ScaleObjectByCameraHeightProportion(logo, 0.15f);
+        TransformScreenSpaceObject.ScaleObjectByCameraHeightProportion(logo, projectLogoHeightScreenHeightRatio);
 
         // position the logo
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromCameraTop(logo, 0.1f);
-        TransformScreenSpaceObject.PositionObjectByWidthRatioFromCameraLeft(logo, 0.1f);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromCameraTop(logo, projectLogoTopMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromCameraLeft(logo, projectLogoLeftMarginScreenWidthRatio);
 
         // position the logo container
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(logoContainer, logo, 0.03f);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(logoContainer, logo, projectLogoContainerTopPaddingScreenHeightRatio);
 
         // resize the logo container
-        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(logoContainer, logo, 0.03f);
-        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromNeighborRight(logoContainer, logo, 0.03f);
+        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(logoContainer, logo, projectLogoContainerBottomPaddingScreenHeightRatio);
+        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromNeighborRight(logoContainer, logo, projectLogoContainerRightPaddingScreenWidthRatio);
 
         // set the parent/child hierarchy
         logoContainer.transform.SetParent(parent.transform);
@@ -129,175 +182,64 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         return logoContainer;
     }
 
-    public static GameObject CreateMenuTitleBar(GameObject parent, GameObject topAlignmentObject)
+    public static GameObject CreateMenuTitleBar(GameObject parent, GameObject topAlignmentObject, string titleString)
     {
-        // create the container object
-        GameObject titleContainer = new GameObject("MenuTitleBar");
+        // create the title container object
+        GameObject titleContainer = new GameObject("TitleContainer");
         titleContainer.AddComponent<CanvasRenderer>();
         Image logoContainerColor = titleContainer.AddComponent<Image>();
         logoContainerColor.color = containerColor;
 
-        // position the time and place container
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(titleContainer, topAlignmentObject, 0.05f);
+        // position the title container
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(titleContainer, topAlignmentObject, logoHeaderBottomMarginScreenHeightRatio);
 
-        // resize the time and place container
+        // resize the title container
         TransformScreenSpaceObject.ResizeObjectWidthToMatchCamera(titleContainer);
-        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromCameraLeft(titleContainer, 0.1f);
-        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromCameraBottom(titleContainer, 0.1f);
+        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromCameraLeft(titleContainer, navContainerLeftMarginScreenWidthRatio);
 
-        return titleContainer;
-    }
-
-    // create the stacked thumbnails for a place, across time periods
-    public static GameObject CreatePlaceTimeThumbnailColumn(GameObject parent, GameObject topAlignmentObject, GameObject leftAlignmentObject, string placeName, string[] timePeriodNames)
-    {
-        // make an object to hold the thumbnails
-        GameObject thumbnailColumn = new GameObject(CleanString(placeName) + "ThumbnailColumn");
-        thumbnailColumn.transform.SetParent(parent.transform);
-
-        // location text
-        GameObject placeLabel = new GameObject(CleanString(placeName) + "Label");
-
-        Text placeLabelText = placeLabel.AddComponent<Text>();
-        placeLabelText.font = (Font)Resources.Load(labelFont);
-        placeLabelText.text = placeName;
-        placeLabelText.fontSize = timePlaceLabelSize;
-        placeLabelText.alignment = TextAnchor.MiddleCenter;
-
-        // get the text's dimensions to match only the space it needs, before any transforms
-        TransformScreenSpaceObject.ResizeTextExtentsToFitContents(placeLabelText);
-
-        // position the label
-        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(placeLabel);
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(placeLabel, topAlignmentObject, 0.03f);
-
-        // create an empty list to be filled out by each of the thumbnail objects
-        List<GameObject> thumbnailObjects = new List<GameObject>();
-
-        // for each image name provided, make a new thumbnail button
-        for (var i = 0; i < timePeriodNames.Length; i++)
-        {
-            // combine the place name and time period strings
-            string combinedPlaceTimeNameSpacelessDashed = CleanString(placeName) + "-" + timePeriodNames[i];
-
-            // create the button
-            GameObject timePeriodButton = new GameObject(combinedPlaceTimeNameSpacelessDashed + "Button");
-            timePeriodButton.AddComponent<Image>();
-
-            // set the image
-            // note this requires a valid image in the Resources folder path below, with a file name that matches combinedPlaceTimeNameSpaceless
-            Image timePeriodButtonImage = timePeriodButton.GetComponent<Image>();
-            timePeriodButtonImage.sprite = (Sprite)Resources.Load("UI/Camera-Thumbnail-" + combinedPlaceTimeNameSpacelessDashed, typeof(Sprite));
-            timePeriodButtonImage.preserveAspect = true;
-            timePeriodButtonImage.SetNativeSize();
-
-            // scale the button to be a proportion of the camera height
-            TransformScreenSpaceObject.ScaleObjectByCameraHeightProportion(timePeriodButton, 0.2f);
-
-            // position the button
-            TransformScreenSpaceObject.PositionObjectAtCenterofCamera(timePeriodButton);
-            TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(timePeriodButton, leftAlignmentObject, 0.02f);
-
-            // if this is the first item, position it below the place label
-            if (i == 0)
-            {
-                TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(timePeriodButton, placeLabel, 0.02f);
-            }
-            // otherwise, position it below the previous thumbnail
-            else
-            {
-                TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(timePeriodButton, thumbnailObjects[i - 1], 0.01f);
-            }
-
-            // add this new thumbnail button to the list for tracking
-            thumbnailObjects.Add(timePeriodButton);
-
-            // add the button property
-            timePeriodButton.AddComponent<Button>();
-            timePeriodButton.GetComponent<Button>().onClick.AddListener(TaskOnClick);
-
-            // set the parent/child hierarchy
-            timePeriodButton.transform.SetParent(thumbnailColumn.transform);
-        }
-
-        // position the place label centered at the first thumbnail
-        TransformScreenSpaceObject.PositionObjectAtVerticalCenterlineOfNeighbor(placeLabel, thumbnailObjects[0]);
-
-        // set the parent/child hierarchy
-        placeLabel.transform.SetParent(thumbnailColumn.transform);
-
-        return thumbnailColumn;
-    }
-
-    // create the time and place picker interface
-    public static GameObject CreateMainMenuCentralNav(GameObject parent, GameObject topNeighbor)
-    {
-        // create the time and place picker container
-        GameObject timePlacePickerContainer = new GameObject("TimeAndPlacePicker");
-        timePlacePickerContainer.AddComponent<CanvasRenderer>();
-
-        // set the color of the time and place container
-        Image timePlacePickerContainerColor = timePlacePickerContainer.AddComponent<Image>();
-        timePlacePickerContainerColor.color = containerColor;
-
-        // position the time and place container
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(timePlacePickerContainer, topNeighbor, 0.05f);
-
-        // resize the time and place container
-        TransformScreenSpaceObject.ResizeObjectWidthToMatchCamera(timePlacePickerContainer);
-        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromCameraLeft(timePlacePickerContainer, 0.1f);
-        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromCameraBottom(timePlacePickerContainer, 0.1f);
-        //TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromNeighborLeft(thumbnailContainer, CCPLogoContainer, 0.0f);
-
-        // add the intro message
-        GameObject introMessageLabel = new GameObject("IntroMessageLabel");
-        Text introMessageLabelText = introMessageLabel.AddComponent<Text>();
+        // add the title text
+        GameObject titleLabel = new GameObject("TitleLabel");
+        Text introMessageLabelText = titleLabel.AddComponent<Text>();
         introMessageLabelText.font = (Font)Resources.Load(labelFont);
-        introMessageLabelText.text = "Choose a time and place:";
-        introMessageLabelText.fontSize = 20;
+        introMessageLabelText.text = titleString;
+        introMessageLabelText.fontSize = menuTitleLabelSize;
         introMessageLabelText.alignment = TextAnchor.UpperLeft;
 
         // resize the text's bounding box needs, before any transforms
         TransformScreenSpaceObject.ResizeTextExtentsToFitContents(introMessageLabelText);
 
-        // position the intro message
-        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(introMessageLabel);
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(introMessageLabel, timePlacePickerContainer, -0.02f);
-        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(introMessageLabel, timePlacePickerContainer, -0.02f);
+        // position the title text
+        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(titleLabel);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(titleLabel, titleContainer, menuTitleTopMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(titleLabel, titleContainer, menuTitleLeftMarginScreenWidthRatio);
+        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(titleContainer, titleLabel, menuTitleBottomMarginScreenHeightRatio);
 
-        // create the time periods labels
-        GameObject timePeriodLabel1 = new GameObject("1960s70sLabel");
+        // set parent/child hierarchy
+        titleContainer.transform.SetParent(parent.transform);
+        titleLabel.transform.SetParent(titleContainer.transform);
 
-        Text timePeriodLabel1Text = timePeriodLabel1.AddComponent<Text>();
-        timePeriodLabel1Text.font = (Font)Resources.Load(labelFont);
-        timePeriodLabel1Text.text = "1960s-70s";
-        timePeriodLabel1Text.fontSize = timePlaceLabelSize;
-        timePeriodLabel1Text.alignment = TextAnchor.MiddleCenter;
+        return titleContainer;
+    }
 
-        // get the text's dimensions to match only the space it needs, before any transforms
-        TransformScreenSpaceObject.ResizeTextExtentsToFitContents(timePeriodLabel1Text);
+    public static GameObject CreateCentralNavContainer(GameObject parent, GameObject topAlignmentObject)
+    {
+        // create the central nav container
+        GameObject centralNavContainer = new GameObject("CentralNavContainer");
+        centralNavContainer.AddComponent<CanvasRenderer>();
 
-        // position the time period label
-        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(timePeriodLabel1);
-        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(timePeriodLabel1, timePlacePickerContainer, -0.02f);
+        // set the color of the central nav container
+        Image centralNavContainerColor = centralNavContainer.AddComponent<Image>();
+        centralNavContainerColor.color = containerColor;
 
-        // create each place thumbnail and their respective available time periods
-        GameObject BlueMallThumbnailColumn = CreatePlaceTimeThumbnailColumn(timePlacePickerContainer, introMessageLabel, timePeriodLabel1, "Blue Mall", availableTimePeriods);
+        // position the central nav container
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(centralNavContainer, topAlignmentObject, navContainerTopMarginScreenHeightRatio);
 
-        GameObject RoseMallThumbnailColumn = CreatePlaceTimeThumbnailColumn(timePlacePickerContainer, introMessageLabel, BlueMallThumbnailColumn.transform.GetChild(0).gameObject, "Rose Mall", availableTimePeriods);
+        // resize the central nav container
+        TransformScreenSpaceObject.ResizeObjectWidthToMatchCamera(centralNavContainer);
+        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromCameraLeft(centralNavContainer, navContainerLeftMarginScreenWidthRatio);
+        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromCameraBottom(centralNavContainer, navContainerBottomMarginScreenHeightRatio);
 
-        GameObject GoldMallThumbnailColumn = CreatePlaceTimeThumbnailColumn(timePlacePickerContainer, introMessageLabel, RoseMallThumbnailColumn.transform.GetChild(0).gameObject, "Gold Mall", availableTimePeriods);
-
-        // resize the container to align with the last thumbnail in the column
-        int thumbnailCount = BlueMallThumbnailColumn.transform.childCount - 1; // exclude the label
-        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(timePlacePickerContainer, BlueMallThumbnailColumn.transform.GetChild(thumbnailCount - 1).gameObject, 0.05f);
-
-        // set the parent/child hierarchy
-        timePlacePickerContainer.transform.SetParent(parent.transform);
-        introMessageLabel.transform.SetParent(timePlacePickerContainer.transform);
-        timePeriodLabel1.transform.SetParent(timePlacePickerContainer.transform);
-
-        return timePlacePickerContainer;
+        return centralNavContainer;
     }
 
     // define what clicking the buttons does
@@ -322,7 +264,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         GameObject buttonContainer = new GameObject(CleanString(text) + "Button");
         buttonContainer.AddComponent<CanvasRenderer>();
         buttonContainer.AddComponent<RectTransform>();
-        
+
         // resize the button background to encapsulate the text, plus padding
         RectTransform buttonRect = buttonContainer.GetComponent<RectTransform>();
         buttonRect.sizeDelta = new Vector2(Mathf.Round((menuButtonScreenWidthRatio * Screen.width)), Mathf.Round(textSize.y + (2 * (menuButtonTopBottomPaddingScreenHeightRatio * Screen.height))));
@@ -345,84 +287,219 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         return buttonContainer;
     }
 
+    // create the time label stack
+    public static GameObject CreateTimeLabelStack(GameObject parent, GameObject leftAlignmentObject, string[] availableTimePeriods)
+    {
+        // create a container object
+        GameObject timeLabelStackContainer = new GameObject("TimePeriodLabelStack");
+
+        foreach (string timePeriod in availableTimePeriods)
+        {
+            // create the time periods labels
+            GameObject timePeriodLabel = new GameObject(timePeriod + "Label");
+
+            Text timePeriodLabelText = timePeriodLabel.AddComponent<Text>();
+            timePeriodLabelText.font = (Font)Resources.Load(labelFont);
+            timePeriodLabelText.text = timePeriod;
+            timePeriodLabelText.fontSize = timeLabelSize;
+            timePeriodLabelText.alignment = TextAnchor.MiddleCenter;
+
+            // get the text's dimensions to match only the space it needs, before any transforms
+            TransformScreenSpaceObject.ResizeTextExtentsToFitContents(timePeriodLabelText);
+
+            // position the time period label
+            // note this only positions it horizontally
+            // vertical positioning happens later, after the thumbnails are built
+            TransformScreenSpaceObject.PositionObjectAtCenterofCamera(timePeriodLabel);
+            TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(timePeriodLabel, leftAlignmentObject, timeLabelLeftMarginScreenWidthRatio);
+
+            // add this label to the list of labels for alignment
+            timeLabelsForAlignment.Add(timePeriodLabel);
+
+            // set the parent/child hierarchy
+            timePeriodLabel.transform.SetParent(timeLabelStackContainer.transform);
+        }
+
+        return timeLabelStackContainer;
+    }
+
+    // create the stacked thumbnails for a place, across time periods
+    public static GameObject CreatePlaceTimeThumbnailStack(GameObject parent, GameObject topAlignmentObject, GameObject leftAlignmentObject, string placeName, string[] timePeriodNames)
+    {
+        // clear the list of thumbnail objects from the last stack created
+        // this list will be used to set parents and as alignment guides for other objects
+        placeThumbnailsForAlignment.Clear();
+
+        // make an object to hold the thumbnails
+        GameObject thumbnailStack = new GameObject(CleanString(placeName) + "ThumbnailStack");
+
+        // location text
+        GameObject placeLabel = new GameObject(CleanString(placeName) + "Label");
+        Text placeLabelText = placeLabel.AddComponent<Text>();
+        placeLabelText.font = (Font)Resources.Load(labelFont);
+        placeLabelText.text = placeName;
+        placeLabelText.fontSize = placeLabelSize;
+        placeLabelText.alignment = TextAnchor.MiddleCenter;
+
+        // adjust the text's rectTransform to ensure objects aligning to it fit closely
+        RectTransform placeLabelRectTransform = placeLabel.GetComponent<RectTransform>();
+        Vector2 sizeVector = TransformScreenSpaceObject.ResizeTextExtentsToFitContents(placeLabelText);
+        placeLabelRectTransform.sizeDelta = sizeVector;
+        placeLabelText.alignByGeometry = true;
+
+        // position the location text
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(placeLabel, topAlignmentObject, placeLabelTopMarginScreenHeightRatio);
+
+        // for each image name provided, make a new thumbnail button
+        for (var i = 0; i < timePeriodNames.Length; i++)
+        {
+            // combine the place name and time period strings
+            string combinedPlaceTimeNameSpacelessDashed = CleanString(placeName) + "-" + CleanString(timePeriodNames[i]);
+
+            Debug.Log(combinedPlaceTimeNameSpacelessDashed);
+
+            // create the button
+            GameObject timePeriodButton = new GameObject(combinedPlaceTimeNameSpacelessDashed + "Button");
+            timePeriodButton.AddComponent<Image>();
+
+            // set the image
+            // note this requires a valid image in the Resources folder path below, with a file name that matches combinedPlaceTimeNameSpaceless
+            Image timePeriodButtonImage = timePeriodButton.GetComponent<Image>();
+            timePeriodButtonImage.sprite = (Sprite)Resources.Load("UI/Camera-Thumbnail-" + combinedPlaceTimeNameSpacelessDashed, typeof(Sprite));
+            timePeriodButtonImage.preserveAspect = true;
+            timePeriodButtonImage.SetNativeSize();
+
+            // scale the button to be a proportion of the camera height
+            TransformScreenSpaceObject.ScaleObjectByCameraHeightProportion(timePeriodButton, 0.2f);
+
+            // position the button
+            TransformScreenSpaceObject.PositionObjectAtCenterofCamera(timePeriodButton);
+            TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(timePeriodButton, leftAlignmentObject, 0.02f);
+
+            // if this is the first item, position it below the place label
+            if (i == 0)
+            {
+                TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(timePeriodButton, placeLabel, placeLabelBottomMarginScreenHeightRatio);
+            }
+            // otherwise, position it below the previous thumbnail
+            else
+            {
+                TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(timePeriodButton, placeThumbnailsForAlignment[i - 1], timePlaceThumbnailBottomMarginScreenHeightRatio);
+            }
+
+            // add this new thumbnail button to the list for tracking
+            placeThumbnailsForAlignment.Add(timePeriodButton);
+
+            // add the button property
+            timePeriodButton.AddComponent<Button>();
+            timePeriodButton.GetComponent<Button>().onClick.AddListener(TaskOnClick);
+
+            // set the parent/child hierarchy
+            timePeriodButton.transform.SetParent(thumbnailStack.transform);
+        }
+
+        // position the place label centered at the first thumbnail
+        TransformScreenSpaceObject.PositionObjectAtVerticalCenterlineOfNeighbor(placeLabel, placeThumbnailsForAlignment[0]);
+
+        // set the parent/child hierarchy
+        placeLabel.transform.SetParent(thumbnailStack.transform);
+
+        // due to a problem with parent transforms, 
+        // we can't set the parent/child hierarchy of the entire stack yet
+        // instead, add this stack to the orphaned object list, and we'll assign its parent later
+        orphanedThumbnailStacks.Add(thumbnailStack);
+
+        return thumbnailStack;
+    }
+
+    // create the main menu central navigation
+    public static GameObject CreateMainMenuCentralNav(GameObject parent, GameObject topNeighbor)
+    {
+        // this will generate gameobjects in an orphaned state initially
+        // so clear the orphans list first
+        orphanedThumbnailStacks.Clear();
+        timeLabelsForAlignment.Clear();
+
+        // create the central nav container
+        GameObject centralNavContainer = CreateCentralNavContainer(parent, topNeighbor);
+
+        // create the time label stack
+        GameObject timeLabelStack = CreateTimeLabelStack(centralNavContainer, centralNavContainer, availableTimePeriods);
+
+        // use the first time label for aligning other objects horizontally
+        GameObject timeLabelForAlignment = timeLabelStack.transform.GetChild(0).gameObject;
+
+        // create each place thumbnail stack, and their associated place labels
+        GameObject blueMallThumbnailStack = CreatePlaceTimeThumbnailStack(centralNavContainer, centralNavContainer, timeLabelForAlignment, "Blue Mall", availableTimePeriods);
+
+        GameObject roseMallThumbnailStack = CreatePlaceTimeThumbnailStack(centralNavContainer, centralNavContainer, blueMallThumbnailStack.transform.GetChild(0).gameObject, "Rose Mall", availableTimePeriods);
+
+        GameObject goldMallThumbnailStack = CreatePlaceTimeThumbnailStack(centralNavContainer, centralNavContainer, roseMallThumbnailStack.transform.GetChild(0).gameObject, "Gold Mall", availableTimePeriods);
+
+        // resize the container to align with the last thumbnail in the column
+        int thumbnailCount = blueMallThumbnailStack.transform.childCount - 1; // exclude the label
+        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(centralNavContainer, blueMallThumbnailStack.transform.GetChild(thumbnailCount - 1).gameObject, thumbnailStackBottomMarginScreenHeightRatio);
+
+        // position the time labels to align horizontally with the place thumbnails
+        TransformScreenSpaceObject.PositionMultiObjectsAtHorizontalCenterlinesOfNeighbors(timeLabelsForAlignment, placeThumbnailsForAlignment);
+
+        // set the parent/child hierarchy
+        centralNavContainer.transform.SetParent(parent.transform);
+        timeLabelStack.transform.SetParent(centralNavContainer.transform);
+        AssignOrphanedObjectListToParent(orphanedThumbnailStacks, centralNavContainer);
+
+        return centralNavContainer;
+    }
+
     public static GameObject CreatePauseMenuCentralNav(GameObject parent, GameObject topNeighbor)
     {
-        string menuTitle = "Pause";
-        // create the time and place picker container
-        GameObject navContainer = new GameObject("PauseMenuNav");
-        navContainer.AddComponent<CanvasRenderer>();
+        // this will generate gameobjects in an orphaned state initially
+        // so clear the orphans list first
+        orphanedThumbnailStacks.Clear();
+        timeLabelsForAlignment.Clear();
 
-        // set the color of the time and place container
-        Image navContainerColor = navContainer.AddComponent<Image>();
-        navContainerColor.color = containerColor;
+        // create the central nav container
+        GameObject centralNavContainer = CreateCentralNavContainer(parent, topNeighbor);
 
-        // position the time and place container
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(navContainer, topNeighbor, 0.05f);
+        // create the time label stack
+        GameObject timeLabelStack = CreateTimeLabelStack(centralNavContainer, centralNavContainer, availableTimePeriods);
 
-        // resize the time and place container
-        TransformScreenSpaceObject.ResizeObjectWidthToMatchCamera(navContainer);
-        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromCameraLeft(navContainer, 0.1f);
-        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromCameraBottom(navContainer, 0.1f);
-        //TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromNeighborLeft(thumbnailContainer, CCPLogoContainer, 0.0f);
-
-        // add the intro message
-        GameObject menuNameLabel = new GameObject("MenuNameLabel");
-        Text introMessageLabelText = menuNameLabel.AddComponent<Text>();
-        introMessageLabelText.font = (Font)Resources.Load(labelFont);
-        introMessageLabelText.text = menuTitle;
-        introMessageLabelText.fontSize = 20;
-        introMessageLabelText.alignment = TextAnchor.UpperLeft;
-
-        // resize the text's bounding box, before any transforms
-        TransformScreenSpaceObject.ResizeTextExtentsToFitContents(introMessageLabelText);
-
-        // position the intro message
-        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(menuNameLabel);
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(menuNameLabel, navContainer, -0.02f);
-        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(menuNameLabel, navContainer, -0.02f);
-
-        // create the time periods labels
-        GameObject timePeriodLabel1 = new GameObject("1960s70sLabel");
-
-        Text timePeriodLabel1Text = timePeriodLabel1.AddComponent<Text>();
-        timePeriodLabel1Text.font = (Font)Resources.Load(labelFont);
-        timePeriodLabel1Text.text = "1960s-70s";
-        timePeriodLabel1Text.fontSize = timePlaceLabelSize;
-        timePeriodLabel1Text.alignment = TextAnchor.MiddleCenter;
-
-        // get the text's dimensions to match only the space it needs, before any transforms
-        TransformScreenSpaceObject.ResizeTextExtentsToFitContents(timePeriodLabel1Text);
-
-        // position the time period label
-        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(timePeriodLabel1);
-        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(timePeriodLabel1, navContainer, -0.02f);
+        // use the first time label for aligning other objects horizontally
+        GameObject timeLabelForAlignment = timeLabelStack.transform.GetChild(0).gameObject;
 
         // create the time travel thumbnail container
-        GameObject timeTravelThumbnailColumn = CreatePlaceTimeThumbnailColumn(navContainer, menuNameLabel, timePeriodLabel1, "Time Travel:", availableTimePeriods);
+        GameObject timeTravelThumbnailStack = CreatePlaceTimeThumbnailStack(centralNavContainer, centralNavContainer, timeLabelForAlignment, "Time Travel:", availableTimePeriods);
+
+        // resize the container to align with the last thumbnail in the column
+        int thumbnailCount = timeTravelThumbnailStack.transform.childCount - 1; // exclude the label
+        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(centralNavContainer, timeTravelThumbnailStack.transform.GetChild(thumbnailCount - 1).gameObject, thumbnailStackBottomMarginScreenHeightRatio);
+
+        // position the time labels to align horizontally with the place thumbnails
+        TransformScreenSpaceObject.PositionMultiObjectsAtHorizontalCenterlinesOfNeighbors(timeLabelsForAlignment, placeThumbnailsForAlignment);
 
         /// buttons ///
 
         // define a gameObject to align the buttons to
-        GameObject buttonAlignmentObject = timeTravelThumbnailColumn.transform.GetChild(0).gameObject;
+        GameObject buttonAlignmentObject = timeTravelThumbnailStack.transform.GetChild(0).gameObject;
 
         // create the main menu button
-        GameObject mainMenuButton = CreateTextButton("Main Menu", navContainer, buttonColor);
+        GameObject mainMenuButton = CreateTextButton("Main Menu", centralNavContainer, buttonColor);
         // align and position the main menu button
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(mainMenuButton, buttonAlignmentObject, 0.0f);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(mainMenuButton, buttonAlignmentObject, textButtonLeftMarginScreenWidthRatio);
 
         // exit button
-        GameObject exitButton = CreateTextButton("Exit", navContainer, buttonColor);
+        GameObject exitButton = CreateTextButton("Exit", centralNavContainer, buttonColor);
         // align and position the exit button
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(exitButton, mainMenuButton, textButtonBottomMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(exitButton, buttonAlignmentObject, textButtonLeftMarginScreenWidthRatio);
 
         // set the parent/child hierarchy
-        navContainer.transform.SetParent(parent.transform);
-        menuNameLabel.transform.SetParent(navContainer.transform);
-        timePeriodLabel1.transform.SetParent(navContainer.transform);
+        centralNavContainer.transform.SetParent(parent.transform);
+        timeLabelStack.transform.SetParent(centralNavContainer.transform);
+        AssignOrphanedObjectListToParent(orphanedThumbnailStacks, centralNavContainer);
 
-        return navContainer;
+        return centralNavContainer;
     }
 }
 
