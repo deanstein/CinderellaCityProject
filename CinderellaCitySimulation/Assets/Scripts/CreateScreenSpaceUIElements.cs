@@ -103,11 +103,23 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         return cleanString;
     }
 
-    // define what clicking the buttons does
-    public static void TaskOnClick()
+    // define what clicking the buttons does, based on the name of the button
+    public static void TaskOnClickByName(string buttonName)
     {
-        ToggleVisibilityByScene.ToggleFromSceneToScene("MainMenu", "60s70s", true);
-        Debug.Log("You clicked the button!");
+        switch (buttonName)
+        {
+            case string name when name.Contains("MainMenu"):
+                ToggleVisibilityByScene.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "MainMenu", true);
+                return;
+            case string name when name.Contains("Exit"):
+                Application.Quit();
+                return;
+            case string name when name.Contains("60s70s"):
+                ToggleVisibilityByScene.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "60s70s", true);
+                return;
+            default:
+                return;
+        }
     }
 
     public static GameObject CreateMenuCanvas(GameObject parent, string name)
@@ -242,12 +254,6 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         return centralNavContainer;
     }
 
-    // define what clicking the buttons does
-    public static void GoToMainMenu()
-    {
-        ToggleVisibilityByScene.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "MainMenu", true);
-    }
-
     public static GameObject CreateTextButton(string text, GameObject parent, Color32 color)
     {
         // create the text label
@@ -275,7 +281,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
         // configure the button
         Button button = buttonContainer.AddComponent<Button>();
-        buttonContainer.GetComponent<Button>().onClick.AddListener(GoToMainMenu);
+        buttonContainer.GetComponent<Button>().onClick.AddListener(() => { TaskOnClickByName(buttonContainer.name); }); ;
 
         // set the parent/child hierarchy
         buttonContainer.transform.SetParent(parent.transform);
@@ -392,10 +398,10 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
             // add the button property
             timePeriodButton.AddComponent<Button>();
-            timePeriodButton.GetComponent<Button>().onClick.AddListener(TaskOnClick);
+            timePeriodButton.GetComponent<Button>().onClick.AddListener(() => { TaskOnClickByName(timePeriodButton.name); }); ;
 
-            // set the parent/child hierarchy
-            timePeriodButton.transform.SetParent(thumbnailStack.transform);
+        // set the parent/child hierarchy
+        timePeriodButton.transform.SetParent(thumbnailStack.transform);
         }
 
         // position the place label centered at the first thumbnail
@@ -415,8 +421,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     // create the main menu central navigation
     public static GameObject CreateMainMenuCentralNav(GameObject parent, GameObject topNeighbor)
     {
-        // this will generate gameobjects in an orphaned state initially
-        // so clear the orphans list first
+        // clear lists
         orphanedThumbnailStacks.Clear();
         timeLabelsForAlignment.Clear();
 
@@ -453,8 +458,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
     public static GameObject CreatePauseMenuCentralNav(GameObject parent, GameObject topNeighbor)
     {
-        // this will generate gameobjects in an orphaned state initially
-        // so clear the orphans list first
+        // clear lists
         orphanedThumbnailStacks.Clear();
         timeLabelsForAlignment.Clear();
 

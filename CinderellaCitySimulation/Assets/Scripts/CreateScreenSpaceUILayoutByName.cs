@@ -10,7 +10,7 @@ using UnityEngine.EventSystems;
 public class CreateScreenSpaceUILayoutByName : MonoBehaviour
 {
     // this script needs to be attached to a "launcher" - an empty gameobject in the appropriate scene
-    // then, the correct menu layout, or layout combinations, is built based on the gameobject's name
+    // then, the correct menu layout or layout combinations will be built based on the launcher's name
 
     // define the background image sequence for each menu or screen
     string[] loadingScreenBackgroundSlideShowSequence = { "UI/LoadingScreenBackground1", "UI/LoadingScreenBackground2" };
