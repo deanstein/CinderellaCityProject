@@ -108,14 +108,35 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     {
         switch (buttonName)
         {
+            // handle buttons that lead to menus and exit
             case string name when name.Contains("MainMenu"):
                 ToggleVisibilityByScene.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "MainMenu", true);
                 return;
             case string name when name.Contains("Exit"):
                 Application.Quit();
                 return;
-            case string name when name.Contains("60s70s"):
-                ToggleVisibilityByScene.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "60s70s", true);
+
+            // handle buttons that request a time and place
+            // key off their names to determine which scene and whether to relocate the player
+            case string name when name.Contains("60s70s") || name.Contains("80s90s"):
+                // buttons need to be named with hyphens delimiting important info
+                string[] nameSplitByDelimiter = name.Split('-');
+                // the place needs to be 1st
+                string location = nameSplitByDelimiter[0];
+                // the time period needs to be 2nd
+                string timePeriod = nameSplitByDelimiter[1];
+                // if the button name indicates a time traveler, don't specify an FPSController location (uses the current FPS location)
+                if(name.Contains("TimeTravel"))
+                {
+                    // switch to the correct scene based on the time period and location in the button name
+                    ToggleVisibilityByScene.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, timePeriod, true);
+                }
+                // otherwise, this request includes a specific location in its name, so relocate the player there
+                else
+                {
+                    // switch to the correct scene based on the time period and location in the button name
+                    ToggleVisibilityByScene.ToggleFromSceneToSceneRelocatePlayer(SceneManager.GetActiveScene().name, timePeriod, true, location);
+                }
                 return;
             default:
                 return;
@@ -365,7 +386,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
             Debug.Log(combinedPlaceTimeNameSpacelessDashed);
 
             // create the button
-            GameObject timePeriodButton = new GameObject(combinedPlaceTimeNameSpacelessDashed + "Button");
+            GameObject timePeriodButton = new GameObject(combinedPlaceTimeNameSpacelessDashed + "-Button");
             timePeriodButton.AddComponent<Image>();
 
             // set the image

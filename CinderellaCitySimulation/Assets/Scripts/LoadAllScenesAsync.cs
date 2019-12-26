@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class LoadAllScenesAsync : MonoBehaviour {
 
     // all scene names to load before moving on
-    string[] loadSceneNames = { "MainMenu", "PauseMenu", "60s70s" };
+    string[] loadSceneNames = { "MainMenu", "PauseMenu", "60s70s", "80s90s" };
 
     // the name of the scene to set active after all are loaded
     string setActiveSceneName = "MainMenu";
