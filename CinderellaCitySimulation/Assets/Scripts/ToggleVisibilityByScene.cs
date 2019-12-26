@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class GlobalSceneVariables
 {
@@ -75,6 +76,30 @@ public class ToggleVisibilityByScene : MonoBehaviour {
 
         // mark the referring scene globally, for other scripts to access
         GlobalSceneVariables.referringScene = fromScene;
+    }
+
+    public static void ToggleFromSceneToSceneRelocatePlayer(string fromScene, string toScene, bool makeActive, string cameraPartialName)
+    {
+        // first, switch to the requested scene
+        ToggleFromSceneToScene(fromScene, toScene, makeActive);
+        
+        // get all the cameras in the new scene
+        Camera[] cameras = GameObject.FindObjectsOfType<Camera>();
+
+        foreach (Camera camera in cameras)
+        {
+            if (camera.name.Contains(cameraPartialName))
+            {
+                Debug.Log("Found a matching camera: " + camera.name);
+
+                // get the current first person character and its character
+                GameObject activeFPSController = ManageFPSControllers.FPSControllerGlobals.activeFPSController;
+
+                activeFPSController.transform.position = camera.transform.position;
+                activeFPSController.transform.rotation = Quaternion.LookRotation(camera.transform.forward, Vector3.up);
+                activeFPSController.transform.GetComponent<FirstPersonController>().MouseReset();
+            }
+        }
     }
 }
 
