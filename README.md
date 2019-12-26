@@ -56,12 +56,12 @@ Scene structure example:
 		Geometry group 2 (GameObject)
 		Geometry group ... (GameObject)
 
-###Manually-Applied Script Components (one-time setup)
+### Manually-Applied Script Components (one-time setup)
 AssetImportPipeline automatically adds scriptable components to GameObjects that are imported from FBX (speakers, people...), but all Scenes must also have manually-generated GameObjects and/or scripts present to enable certain behaviors and communication between Scenes.
 
 The following Scenes require manually-generated GameObjects and Scriptable Components as outlined below (one-time setup only):
 
-####Asynchronous Scene Loading (LoadingScreen)
+#### Asynchronous Scene Loading (LoadingScreen)
 The LoadingScreen is responsible for asynchronously loading all required Scenes in the game, including the 3D geometric and 2D UI scenes, so that switching between Scenes is seamless.
 
  - LoadingScreen (Scene)
@@ -74,7 +74,7 @@ The LoadingScreen is responsible for asynchronously loading all required Scenes 
 				- **LoadAllScenesAsync** (Script Component)
 - Responsible for asynchronously loading all specified scenes
 
-####First-Person Scenes (60s70s, 80s90s, AltFuture)
+#### First-Person Scenes (60s70s, 80s90s, AltFuture)
 In scenes with an FPSController and FirstPersonCharacter (60s70s, 80s90s, AltFuture), we need to add custom script components to some GameObjects to control behaviors related to UI and the FPSController:
 
  - 60s70s (Scene)
@@ -93,7 +93,7 @@ In scenes with an FPSController and FirstPersonCharacter (60s70s, 80s90s, AltFut
 				- Responsible for watching for keyboard events and toggling between Scenes
 
 
-####UI + Menu Scenes (MainMenu, PauseMenu)
+#### UI + Menu Scenes (MainMenu, PauseMenu)
 In scenes that exclusively generate and display UI elements, we need to add custom script components to some GameObjects to control behaviors related to UI:
 
  - MainMenu (Scene)
