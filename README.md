@@ -53,8 +53,8 @@ Scene structure example:
 		- FPSController (GameObject)
 		- UILauncher (GameObject)
 		- Geometry group 1 (GameObject)
-		Geometry group 2 (GameObject)
-		Geometry group ... (GameObject)
+		- Geometry group 2 (GameObject)
+		- Geometry group ... (GameObject)
 
 ### Manually-Applied Script Components (one-time setup)
 AssetImportPipeline automatically adds scriptable components to GameObjects that are imported from FBX (speakers, people...), but all Scenes must also have manually-generated GameObjects and/or scripts present to enable certain behaviors and communication between Scenes.
@@ -72,7 +72,18 @@ The LoadingScreen is responsible for asynchronously loading all required Scenes 
 				- **CreateScreenSpaceUILayoutByName** (Script Component)
 					- Responsible for identifying which UI components to build based on the Scene name
 				- **LoadAllScenesAsync** (Script Component)
-- Responsible for asynchronously loading all specified scenes
+					- Responsible for asynchronously loading all specified scenes
+
+#### UI + Menu Scenes (MainMenu, PauseMenu)
+In scenes that exclusively generate and display UI elements, we need to add custom script components to some GameObjects to control behaviors related to UI:
+
+ - MainMenu (Scene)
+ 	- MainMenuContainer (GameObject)
+		- **MainMenuLauncher** (GameObject)
+			- Holds scripts for generating UI (as children of the launcher), and for toggling between scenes
+			- Requires Scripts:
+				- **CreateScreenSpaceUILayoutByName** (Script Component)
+					- Responsible for identifying which UI components to build based on the Scene name
 
 #### First-Person Scenes (60s70s, 80s90s, AltFuture)
 In scenes with an FPSController and FirstPersonCharacter (60s70s, 80s90s, AltFuture), we need to add custom script components to some GameObjects to control behaviors related to UI and the FPSController:
@@ -92,17 +103,6 @@ In scenes with an FPSController and FirstPersonCharacter (60s70s, 80s90s, AltFut
 			- **ToggleVisibilityByShortcut** (Script Component)
 				- Responsible for watching for keyboard events and toggling between Scenes
 
-
-#### UI + Menu Scenes (MainMenu, PauseMenu)
-In scenes that exclusively generate and display UI elements, we need to add custom script components to some GameObjects to control behaviors related to UI:
-
- - MainMenu (Scene)
- 	- MainMenuContainer (GameObject)
-		- **MainMenuLauncher** (GameObject)
-			- Holds scripts for generating UI (as children of the launcher), and for toggling between scenes
-			- Requires Scripts:
-				- **CreateScreenSpaceUILayoutByName** (Script Component)
-					- Responsible for identifying which UI components to build based on the Scene name
 
 
 
