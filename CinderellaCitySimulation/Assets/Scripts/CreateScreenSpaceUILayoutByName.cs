@@ -50,7 +50,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
             GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(loadingScreen);
 
             // create the title bar container
-            GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(loadingScreen, logoHeader, "Loading...");
+            GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(loadingScreen, logoHeader, "Building Cinderella City...");
         }
 
         // the main menu

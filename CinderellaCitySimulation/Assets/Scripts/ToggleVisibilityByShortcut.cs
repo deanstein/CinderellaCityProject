@@ -17,22 +17,24 @@ public class ToggleVisibilityByShortcut : MonoBehaviour {
     {
         // identify the shortcuts to listen for, and define what they do
 
+        /// time travel shortcuts ///
+        
+
+
         /// UI visiblity shortcuts ///
 
         // pause menu
         // only accessible from specific scenes
         if (Input.GetKeyDown(KeyCode.Escape) &&
-            (SceneManager.GetActiveScene().name.Contains("60s70s")
-            || SceneManager.GetActiveScene().name.Contains("80s90s")
-            || SceneManager.GetActiveScene().name.Contains("AltFuture")))
+            StringUtils.TestIfAnyListItemContainedInString(GlobalSceneVariables.availableTimePeriodSceneNames, SceneManager.GetActiveScene().name))
         {
-            ToggleVisibilityByScene.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "PauseMenu", true);
+            ToggleVisibilityByScene.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "PauseMenu");
         }
         // if we're already in the pause menu, return to the previous scene (referring scene)
         else if (Input.GetKeyDown(KeyCode.Escape)
             && SceneManager.GetActiveScene().name.Contains("PauseMenu"))
         {
-            ToggleVisibilityByScene.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, GlobalSceneVariables.referringScene, true);
+            ToggleVisibilityByScene.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, GlobalSceneVariables.referringScene);
 
         }
 
