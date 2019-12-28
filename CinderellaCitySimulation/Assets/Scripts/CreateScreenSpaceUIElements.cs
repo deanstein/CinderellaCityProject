@@ -6,12 +6,57 @@ using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(UnityEngine.UI.Button))]
 
+public class StringUtils
+{
+    // remove spaces, punctuation, and other characters from a string
+    public static string CleanString(string messyString)
+    {
+        // remove spaces
+        string cleanString = messyString.Replace(" ", "");
+
+        // remove colons
+        cleanString = cleanString.Replace(":", "");
+
+        // remove dashed
+        cleanString = cleanString.Replace("-", "");
+
+        // remove the "19" if used in year syntax
+        cleanString = cleanString.Replace("19", "");
+
+        return cleanString;
+    }
+
+    // converts an array of friendly UI names into Scene names
+    public static List<string> ConvertFriendlyNamesToSceneNames(List<string> friendlyNames)
+    {
+        List<string> convertedNames = new List<string>();
+
+        foreach (string friendlyName in friendlyNames)
+        {
+            string convertedName = CleanString(friendlyName);
+            convertedNames.Add(convertedName);
+        }
+
+        return convertedNames;
+    }
+
+    // return true if this string is found at all in the given array
+    public static bool TestIfAnyListItemContainedInString(List<string> listOfStringsToSearchFor, string stringToSearchIn)
+    {
+        foreach (string searchForString in listOfStringsToSearchFor)
+        {
+            if (stringToSearchIn.Contains(searchForString))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+
 public class CreateScreenSpaceUIElements : MonoBehaviour
 {
-    // define the available time periods
-    // this determines how many rows to make for time and place pickers
-    public static string[] availableTimePeriods = { "1960s-70s", "1980s-90s" };
-
     // this is a single stack of place/time thumbnails for aligning time labels to
     public static List<GameObject> placeThumbnailsForAlignment = new List<GameObject>();
     public static List<GameObject> timeLabelsForAlignment = new List<GameObject>();
@@ -85,24 +130,6 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         }
     }
 
-    // remove spaces, punctuation, and other characters from a string
-    public static string CleanString(string messyString)
-    {
-        // remove spaces
-        string cleanString = messyString.Replace(" ", "");
-
-        // remove colons
-        cleanString = cleanString.Replace(":", "");
-
-        // remove dashed
-        cleanString = cleanString.Replace("-", "");
-
-        // remove the "19" if used in year syntax
-        cleanString = cleanString.Replace("19", "");
-
-        return cleanString;
-    }
-
     // define what clicking the buttons does, based on the name of the button
     public static void TaskOnClickByName(string buttonName)
     {
@@ -110,32 +137,32 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         {
             // handle buttons that lead to menus and exit
             case string name when name.Contains("MainMenu"):
-                ToggleVisibilityByScene.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "MainMenu", true);
+                ToggleVisibilityByScene.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "MainMenu");
                 return;
             case string name when name.Contains("Exit"):
                 Application.Quit();
                 return;
 
             // handle buttons that request a time and place
-            // key off their names to determine which scene and whether to relocate the player
-            case string name when name.Contains("60s70s") || name.Contains("80s90s"):
+            // check if the button name contains an available time period (scene name)
+            case string name when StringUtils.TestIfAnyListItemContainedInString(GlobalSceneVariables.availableTimePeriodSceneNames, name):
                 // buttons need to be named with hyphens delimiting important info
                 string[] nameSplitByDelimiter = name.Split('-');
                 // the place needs to be 1st
-                string location = nameSplitByDelimiter[0];
+                string playerPosition = nameSplitByDelimiter[0];
                 // the time period needs to be 2nd
                 string timePeriod = nameSplitByDelimiter[1];
                 // if the button name indicates a time traveler, don't specify an FPSController location (uses the current FPS location)
-                if(name.Contains("TimeTravel"))
+                if (name.Contains("TimeTravel"))
                 {
                     // switch to the correct scene based on the time period and location in the button name
-                    ToggleVisibilityByScene.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, timePeriod, true);
+                    ToggleVisibilityByScene.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, timePeriod);
                 }
                 // otherwise, this request includes a specific location in its name, so relocate the player there
                 else
                 {
                     // switch to the correct scene based on the time period and location in the button name
-                    ToggleVisibilityByScene.ToggleFromSceneToSceneRelocatePlayer(SceneManager.GetActiveScene().name, timePeriod, true, location);
+                    ToggleVisibilityByScene.ToggleFromSceneToSceneRelocatePlayer(SceneManager.GetActiveScene().name, timePeriod, playerPosition);
                 }
                 return;
             default:
@@ -278,7 +305,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     public static GameObject CreateTextButton(string text, GameObject parent, Color32 color)
     {
         // create the text label
-        GameObject buttonTextObject = new GameObject(CleanString(text) + "ButtonText");
+        GameObject buttonTextObject = new GameObject(StringUtils.CleanString(text) + "ButtonText");
         Text buttonText = buttonTextObject.AddComponent<Text>();
         buttonText.font = (Font)Resources.Load(labelFont);
         buttonText.text = text;
@@ -288,7 +315,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         Vector2 textSize = TransformScreenSpaceObject.ResizeTextExtentsToFitContents(buttonText);
 
         // create the button
-        GameObject buttonContainer = new GameObject(CleanString(text) + "Button");
+        GameObject buttonContainer = new GameObject(StringUtils.CleanString(text) + "Button");
         buttonContainer.AddComponent<CanvasRenderer>();
         buttonContainer.AddComponent<RectTransform>();
 
@@ -315,12 +342,12 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     }
 
     // create the time label stack
-    public static GameObject CreateTimeLabelStack(GameObject parent, GameObject leftAlignmentObject, string[] availableTimePeriods)
+    public static GameObject CreateTimeLabelStack(GameObject parent, GameObject leftAlignmentObject, string[] availableTimePeriodFriendlyNames)
     {
         // create a container object
         GameObject timeLabelStackContainer = new GameObject("TimePeriodLabelStack");
 
-        foreach (string timePeriod in availableTimePeriods)
+        foreach (string timePeriod in availableTimePeriodFriendlyNames)
         {
             // create the time periods labels
             GameObject timePeriodLabel = new GameObject(timePeriod + "Label");
@@ -358,10 +385,10 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         placeThumbnailsForAlignment.Clear();
 
         // make an object to hold the thumbnails
-        GameObject thumbnailStack = new GameObject(CleanString(placeName) + "ThumbnailStack");
+        GameObject thumbnailStack = new GameObject(StringUtils.CleanString(placeName) + "ThumbnailStack");
 
         // location text
-        GameObject placeLabel = new GameObject(CleanString(placeName) + "Label");
+        GameObject placeLabel = new GameObject(StringUtils.CleanString(placeName) + "Label");
         Text placeLabelText = placeLabel.AddComponent<Text>();
         placeLabelText.font = (Font)Resources.Load(labelFont);
         placeLabelText.text = placeName;
@@ -381,7 +408,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         for (var i = 0; i < timePeriodNames.Length; i++)
         {
             // combine the place name and time period strings
-            string combinedPlaceTimeNameSpacelessDashed = CleanString(placeName) + "-" + CleanString(timePeriodNames[i]);
+            string combinedPlaceTimeNameSpacelessDashed = StringUtils.CleanString(placeName) + "-" + GlobalSceneVariables.availableTimePeriodSceneNames[i];
 
             Debug.Log(combinedPlaceTimeNameSpacelessDashed);
 
@@ -450,17 +477,17 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         GameObject centralNavContainer = CreateCentralNavContainer(parent, topNeighbor);
 
         // create the time label stack
-        GameObject timeLabelStack = CreateTimeLabelStack(centralNavContainer, centralNavContainer, availableTimePeriods);
+        GameObject timeLabelStack = CreateTimeLabelStack(centralNavContainer, centralNavContainer, GlobalSceneVariables.availableTimePeriodFriendlyNames);
 
         // use the first time label for aligning other objects horizontally
         GameObject timeLabelForAlignment = timeLabelStack.transform.GetChild(0).gameObject;
 
         // create each place thumbnail stack, and their associated place labels
-        GameObject blueMallThumbnailStack = CreatePlaceTimeThumbnailStack(centralNavContainer, centralNavContainer, timeLabelForAlignment, "Blue Mall", availableTimePeriods);
+        GameObject blueMallThumbnailStack = CreatePlaceTimeThumbnailStack(centralNavContainer, centralNavContainer, timeLabelForAlignment, "Blue Mall", GlobalSceneVariables.availableTimePeriodFriendlyNames);
 
-        GameObject roseMallThumbnailStack = CreatePlaceTimeThumbnailStack(centralNavContainer, centralNavContainer, blueMallThumbnailStack.transform.GetChild(0).gameObject, "Rose Mall", availableTimePeriods);
+        GameObject roseMallThumbnailStack = CreatePlaceTimeThumbnailStack(centralNavContainer, centralNavContainer, blueMallThumbnailStack.transform.GetChild(0).gameObject, "Rose Mall", GlobalSceneVariables.availableTimePeriodFriendlyNames);
 
-        GameObject goldMallThumbnailStack = CreatePlaceTimeThumbnailStack(centralNavContainer, centralNavContainer, roseMallThumbnailStack.transform.GetChild(0).gameObject, "Gold Mall", availableTimePeriods);
+        GameObject goldMallThumbnailStack = CreatePlaceTimeThumbnailStack(centralNavContainer, centralNavContainer, roseMallThumbnailStack.transform.GetChild(0).gameObject, "Gold Mall", GlobalSceneVariables.availableTimePeriodFriendlyNames);
 
         // resize the container to align with the last thumbnail in the column
         int thumbnailCount = blueMallThumbnailStack.transform.childCount - 1; // exclude the label
@@ -487,13 +514,13 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         GameObject centralNavContainer = CreateCentralNavContainer(parent, topNeighbor);
 
         // create the time label stack
-        GameObject timeLabelStack = CreateTimeLabelStack(centralNavContainer, centralNavContainer, availableTimePeriods);
+        GameObject timeLabelStack = CreateTimeLabelStack(centralNavContainer, centralNavContainer, GlobalSceneVariables.availableTimePeriodFriendlyNames);
 
         // use the first time label for aligning other objects horizontally
         GameObject timeLabelForAlignment = timeLabelStack.transform.GetChild(0).gameObject;
 
         // create the time travel thumbnail container
-        GameObject timeTravelThumbnailStack = CreatePlaceTimeThumbnailStack(centralNavContainer, centralNavContainer, timeLabelForAlignment, "Time Travel:", availableTimePeriods);
+        GameObject timeTravelThumbnailStack = CreatePlaceTimeThumbnailStack(centralNavContainer, centralNavContainer, timeLabelForAlignment, "Time Travel:", GlobalSceneVariables.availableTimePeriodFriendlyNames);
 
         // resize the container to align with the last thumbnail in the column
         int thumbnailCount = timeTravelThumbnailStack.transform.childCount - 1; // exclude the label
