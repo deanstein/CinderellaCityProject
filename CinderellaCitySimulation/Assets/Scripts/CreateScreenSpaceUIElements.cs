@@ -162,7 +162,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
                 else
                 {
                     // switch to the correct scene based on the time period and location in the button name
-                    ToggleVisibilityByScene.ToggleFromSceneToSceneRelocatePlayer(SceneManager.GetActiveScene().name, timePeriod, playerPosition);
+                    ToggleVisibilityByScene.ToggleFromSceneToSceneRelocatePlayerToCamera(SceneManager.GetActiveScene().name, timePeriod, playerPosition);
                 }
                 return;
             default:

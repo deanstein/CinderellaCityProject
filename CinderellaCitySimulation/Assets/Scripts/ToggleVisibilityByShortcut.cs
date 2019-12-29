@@ -18,13 +18,39 @@ public class ToggleVisibilityByShortcut : MonoBehaviour {
         // identify the shortcuts to listen for, and define what they do
 
         /// time travel shortcuts ///
-        
 
+        // time travel requested - previous time period
+        if (Input.GetKeyDown("q") &&
+    StringUtils.TestIfAnyListItemContainedInString(GlobalSceneVariables.availableTimePeriodSceneNames, SceneManager.GetActiveScene().name))
+        {
+            // get the previous time period scene name
+            string previousTimePeriodSceneName = ManageAvailableScenes.GetNextSequentialTimePeriodSceneName("previous");
+            // then toggle to it from the active scene
+            ToggleVisibilityByScene.ToggleFromSceneToSceneRelocatePlayerToFPSController(SceneManager.GetActiveScene().name, previousTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.outgoingFPSControllerTransform);
+        }
+
+        // time travel requested - next time period
+        if (Input.GetKeyDown("e") &&
+            StringUtils.TestIfAnyListItemContainedInString(GlobalSceneVariables.availableTimePeriodSceneNames, SceneManager.GetActiveScene().name))
+        {
+            // get the next time period scene name
+            string nextTimePeriodSceneName = ManageAvailableScenes.GetNextSequentialTimePeriodSceneName("next");
+            // then toggle to it from the active scene
+            ToggleVisibilityByScene.ToggleFromSceneToSceneRelocatePlayerToFPSController(SceneManager.GetActiveScene().name, nextTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.outgoingFPSControllerTransform);
+        }
 
         /// UI visiblity shortcuts ///
 
+        // main menu
+        // only accessible from time period scenes
+        if (Input.GetKeyDown("m") &&
+            StringUtils.TestIfAnyListItemContainedInString(GlobalSceneVariables.availableTimePeriodSceneNames, SceneManager.GetActiveScene().name))
+        {
+            ToggleVisibilityByScene.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "MainMenu");
+        }
+
         // pause menu
-        // only accessible from specific scenes
+        // only accessible from time period scenes
         if (Input.GetKeyDown(KeyCode.Escape) &&
             StringUtils.TestIfAnyListItemContainedInString(GlobalSceneVariables.availableTimePeriodSceneNames, SceneManager.GetActiveScene().name))
         {
