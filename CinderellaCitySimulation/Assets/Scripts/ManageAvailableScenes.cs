@@ -20,3 +20,76 @@ public class GlobalSceneVariables
     public static List<string> availableTimePeriodSceneNames = StringUtils.ConvertFriendlyNamesToSceneNames(new List<string>(availableTimePeriodFriendlyNames));
 }
 
+public static class ManageAvailableScenes
+{
+    // gets the next or previous time period scene name to switch to while in-game
+    public static string GetNextSequentialTimePeriodSceneName(string previousOrNext)
+    {
+        // allow defaulting to the other end of index once at index bounds
+        bool allowLooping = true;
+
+        // first, figure out which time period index the current scene is
+        int currentTimePeriodSceneIndex = GlobalSceneVariables.availableTimePeriodSceneNames.IndexOf(SceneManager.GetActiveScene().name);
+
+        // if the current scene doesn't match any in the list, return with an error
+        if (currentTimePeriodSceneIndex == -1)
+        {
+            Debug.Log("Error: failed to determine the next time period, because the current time period is unknown.");
+            return "null";
+        }
+
+        // if the next time period is requested
+        if (previousOrNext.Contains("previous"))
+        {
+            // increment the time period index
+            int newTimePeriodSceneIndex = currentTimePeriodSceneIndex - 1;
+
+            // if we're outside the length of the list, either go to the end of the index or do nothing
+            if (newTimePeriodSceneIndex < 0)
+            {
+                if (allowLooping)
+                {
+                    newTimePeriodSceneIndex = (GlobalSceneVariables.availableTimePeriodSceneNames.Count - 1);
+                }
+                else
+                {
+                    return "null";
+                }
+            }
+
+            // get the equivalent scene name from the available time periods
+            var prevTimePeriodSceneName = GlobalSceneVariables.availableTimePeriodSceneNames[newTimePeriodSceneIndex];
+            return prevTimePeriodSceneName;
+        }
+
+        // if the next time period is requested
+        if (previousOrNext.Contains("next"))
+        {
+            // increment the time period index
+            int newTimePeriodSceneIndex = currentTimePeriodSceneIndex + 1;
+
+            // if we're outside the length of the list, either go to the beginning of the index or do nothing
+            if (newTimePeriodSceneIndex > (GlobalSceneVariables.availableTimePeriodSceneNames.Count - 1))
+            {
+                if (allowLooping)
+                {
+                    newTimePeriodSceneIndex = 0;
+                }
+                else
+                {
+                    return "null";
+                }
+            }
+
+            // get the equivalent scene name from the available time periods
+            string nextTimePeriodSceneName = GlobalSceneVariables.availableTimePeriodSceneNames[newTimePeriodSceneIndex];
+            return nextTimePeriodSceneName;
+        }
+
+        else
+        {
+            return "null";
+        }
+    }
+}
+

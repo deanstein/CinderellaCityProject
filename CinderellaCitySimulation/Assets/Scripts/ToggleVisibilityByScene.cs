@@ -69,7 +69,7 @@ public class ToggleVisibilityByScene : MonoBehaviour {
         GlobalSceneVariables.referringScene = fromScene;
     }
 
-    public static void ToggleFromSceneToSceneRelocatePlayer(string fromScene, string toScene, string cameraPartialName)
+    public static void ToggleFromSceneToSceneRelocatePlayerToCamera(string fromScene, string toScene, string cameraPartialName)
     {
         // first, switch to the requested scene
         ToggleFromSceneToScene(fromScene, toScene);
@@ -77,5 +77,15 @@ public class ToggleVisibilityByScene : MonoBehaviour {
         // also relocate and align the FPS controller to the requested camera partial name
         ManageFPSControllers.RelocateAlignFPSControllerToCamera(cameraPartialName);
     }
+
+    public static void ToggleFromSceneToSceneRelocatePlayerToFPSController(string fromScene, string toScene, Transform FPSControllerTransformToMatch)
+    {
+        // first, switch to the requested scene
+        ToggleFromSceneToScene(fromScene, toScene);
+
+        // then relocate and align the current FPSController to the referring FPSController
+        ManageFPSControllers.RelocateAlignFPSControllerToFPSController(FPSControllerTransformToMatch);
+    }
+
 }
 

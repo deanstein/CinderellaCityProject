@@ -24,7 +24,7 @@ public class GlobalVariables
     public const string mallMusic80s90sPartialName = "mall-music-80s90s";
     public static int mallMusic80s90sSpeakerCount = 0;
     public static AudioSource mallMusic80s90sMasterAudioSource;
-    public static string[] mallMusic80s90sAudioClips = { "80s-90s/Music/Betamaxx/6. woolworth", "80s-90s/Music/Betamaxx/8. mall walking",  "80s-90s/Music/Betamaxx/12. casual menswear", "80s-90s/Music/Betamaxx/1. grand opening", "80s-90s/Music/Betamaxx/7. crystal fountain", "80s-90s/Music/Betamaxx/11. retail dystopia", "80s-90s/Music/BDalton/nick" };
+    public static string[] mallMusic80s90sAudioClips = { "80s-90s/Music/Betamaxx/6. woolworth", "80s-90s/Music/Betamaxx/8. mall walking", "80s-90s/Music/Betamaxx/12. casual menswear", "80s-90s/Music/Betamaxx/1. grand opening", "80s-90s/Music/Betamaxx/7. crystal fountain", "80s-90s/Music/Betamaxx/11. retail dystopia", "80s-90s/Music/BDalton/nick" };
 
     public const string storeMusicGeneric80s90sPartialName = "store-music-generic-80s90s";
     public static int storeMusicGeneric80s90sSpeakerCount = 0;
@@ -45,8 +45,8 @@ public class GlobalVariables
 
 }
 
-// this script needs to be attached to an object that should be playing a sequence of audio tracks
-public class PlayAudioSequencesByName : MonoBehaviour {
+public class PlayAudioSequencesByName : MonoBehaviour
+{
 
     private float nextSyncTime = 0.0f;
     public float audioSourceSyncPeriod = 1.0f;
@@ -156,10 +156,8 @@ public class PlayAudioSequencesByName : MonoBehaviour {
             PlayMasterOrSlaveSequences(ref speakerCount, ref masterAudioSource, clipSequence);
 
             /*
-
             // increment the speaker count
             GlobalVariables.mallMusic80s90sSpeakerCount++;
-
             // if the speaker count is only 1, this is the master speaker
             if (GlobalVariables.mallMusic80s90sSpeakerCount == 1)
             {
@@ -232,15 +230,18 @@ public class PlayAudioSequencesByName : MonoBehaviour {
     IEnumerator playMasterClipSequenceInOrder(AudioSource masterAudioSource, string[] clipNames)
     {
         // for each clip in the array, play it, and wait until the end to play the next
-        int counter = 0;
-        while (true)
+        for (var i = 0; i < clipNames.Length; i++)
         {
             masterAudioSource = this.GetComponent<AudioSource>();
-            masterAudioSource.clip = (AudioClip)Resources.Load(clipNames[counter]);
+            masterAudioSource.clip = (AudioClip)Resources.Load(clipNames[i]);
             masterAudioSource.Play();
             Debug.Log("Playing master music " + masterAudioSource.clip.name + " on " + masterAudioSource);
 
-            counter = (counter + 1) % clipNames.Length;
+            // if we're at the end of the list, reset to return to the beginning
+            if (i == clipNames.Length - 1)
+            {
+                i = 0;
+            }
 
             yield return new WaitForSeconds(masterAudioSource.clip.length);
         }
@@ -250,17 +251,18 @@ public class PlayAudioSequencesByName : MonoBehaviour {
     IEnumerator playSlaveClipSequence(AudioSource audioSourceComponent, string[] clipNames, AudioSource masterAudioSource)
     {
         //Debug.Log("Master audio clip: " + masterAudioClip);
-
         // for each clip in the array, play it, and wait until the end to play the next
-        int counter = 0;
-        while (true)
+        for (var i = 0; i < clipNames.Length; i++)
         {
-            masterAudioSource = this.GetComponent<AudioSource>();
-            masterAudioSource.clip = (AudioClip)Resources.Load(clipNames[counter]);
-            masterAudioSource.Play();
-            Debug.Log("Playing master music " + masterAudioSource.clip.name + " on " + masterAudioSource);
+            audioSourceComponent.clip = masterAudioSource.clip;
+            audioSourceComponent.Play();
+            Debug.Log("Playing slave music " + masterAudioSource.clip.name);
 
-            counter = (counter + 1) % clipNames.Length;
+            // if we're at the end of the list, reset to return to the beginning
+            if (i == clipNames.Length - 1)
+            {
+                i = 0;
+            }
 
             yield return new WaitForSeconds(masterAudioSource.clip.length);
         }
@@ -295,10 +297,9 @@ public class PlayAudioSequencesByName : MonoBehaviour {
         // runs only if it's time to sync
         if (Time.time > nextSyncTime)
         {
-            StartCoroutine(syncAudioSources(associateMasterAudioSourceByName(this.name), this.GetComponent<AudioSource>()));   
+            StartCoroutine(syncAudioSources(associateMasterAudioSourceByName(this.name), this.GetComponent<AudioSource>()));
 
             nextSyncTime += audioSourceSyncPeriod;
         }
     }
 }
-
