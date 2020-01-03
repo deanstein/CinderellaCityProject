@@ -4,20 +4,27 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class AnimateScreenSpaceObject : MonoBehaviour
+// animates screen-space objects
+// uses auto-resuming coroutines
+public class AnimateScreenSpaceObject : AutoResumeCoroutines
 {
-    // the background slideshow sequence is passed in from the calling script
+    // the background slideshow image sequence is passed in from the calling script
     public string[] mainMenuBackgroundSlideShowSequence;
 
-    // define the speed of the image movement in x, y, z
-    public Vector3 backgroundImageSlideshowSpeed = new Vector3(5, 0, 0);
+    /// define screen space object animation speeds
+
+    // speed of background image movement in x, y, z
+    public Vector3 backgroundImageMovementSpeed = new Vector3(5, 0, 0);
+
+    // amount of background image scaling
+    public float backgroundImageScalingSpeed = 1.0003f;
 
     private void Start()
     {
         // the main menu
         if (this.name.Contains("BackgroundSlideShow"))
         {
-            StartCoroutine(PlayFullScreenSpriteSequence(this.GetComponent<Image>(), mainMenuBackgroundSlideShowSequence, 5));
+            StartAutoResumeCoroutine(PlayFullScreenSpriteSequence(this.GetComponent<Image>(), mainMenuBackgroundSlideShowSequence, 5));
         }
     }
 
@@ -25,19 +32,19 @@ public class AnimateScreenSpaceObject : MonoBehaviour
     {
         if (this.name.Contains("BackgroundSlideShow"))
         {
-            moveObjectContinuously(this.gameObject, backgroundImageSlideshowSpeed);
-            scaleObjectContinuously(this.gameObject, 1.0003f);
+            MoveObjectContinuously(this.gameObject, backgroundImageMovementSpeed);
+            ScaleObjectContinuously(this.gameObject, backgroundImageScalingSpeed);
         }
     }
 
     // move the screenspace object continuously
-    public static void moveObjectContinuously(GameObject gameObject, Vector3 vector)
+    public static void MoveObjectContinuously(GameObject gameObject, Vector3 vector)
     {
         gameObject.transform.localPosition += vector * Time.deltaTime;
     }
 
     // scale the screenspace object continuously
-    public static void scaleObjectContinuously(GameObject gameObject, float scaleFactor)
+    public static void ScaleObjectContinuously(GameObject gameObject, float scaleFactor)
     {
         Vector3 currentScale = gameObject.GetComponent<Image>().rectTransform.localScale;
         Vector3 newScale = new Vector3(currentScale.x * scaleFactor, currentScale.y * scaleFactor, currentScale.z * scaleFactor);
@@ -46,7 +53,7 @@ public class AnimateScreenSpaceObject : MonoBehaviour
     }
 
     // play a sequence of sprites on an image component, switching images periodically
-    IEnumerator PlayFullScreenSpriteSequence(Image imageComponent, string[] imageSequence, float displayTime)
+    public IEnumerator PlayFullScreenSpriteSequence(Image imageComponent, string[] imageSequence, float displayTime)
     {
         // for each image in the array, display it for a certain amount of time, then show the next one
         Debug.Log("Playing image sequence...");

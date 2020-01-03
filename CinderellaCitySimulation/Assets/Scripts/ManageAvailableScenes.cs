@@ -23,7 +23,7 @@ public class GlobalSceneVariables
 public static class ManageAvailableScenes
 {
     // gets the next or previous time period scene name to switch to while in-game
-    public static string GetNextSequentialTimePeriodSceneName(string previousOrNext)
+    public static string GetNextTimePeriodSceneName(string previousOrNext)
     {
         // allow defaulting to the other end of index once at index bounds
         bool allowLooping = true;
