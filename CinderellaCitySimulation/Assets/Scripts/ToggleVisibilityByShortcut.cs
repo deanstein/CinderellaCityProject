@@ -24,7 +24,7 @@ public class ToggleVisibilityByShortcut : MonoBehaviour {
     StringUtils.TestIfAnyListItemContainedInString(GlobalSceneVariables.availableTimePeriodSceneNames, SceneManager.GetActiveScene().name))
         {
             // get the previous time period scene name
-            string previousTimePeriodSceneName = ManageAvailableScenes.GetNextSequentialTimePeriodSceneName("previous");
+            string previousTimePeriodSceneName = ManageAvailableScenes.GetNextTimePeriodSceneName("previous");
             // then toggle to it from the active scene
             ToggleVisibilityByScene.ToggleFromSceneToSceneRelocatePlayerToFPSController(SceneManager.GetActiveScene().name, previousTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.outgoingFPSControllerTransform);
         }
@@ -34,7 +34,7 @@ public class ToggleVisibilityByShortcut : MonoBehaviour {
             StringUtils.TestIfAnyListItemContainedInString(GlobalSceneVariables.availableTimePeriodSceneNames, SceneManager.GetActiveScene().name))
         {
             // get the next time period scene name
-            string nextTimePeriodSceneName = ManageAvailableScenes.GetNextSequentialTimePeriodSceneName("next");
+            string nextTimePeriodSceneName = ManageAvailableScenes.GetNextTimePeriodSceneName("next");
             // then toggle to it from the active scene
             ToggleVisibilityByScene.ToggleFromSceneToSceneRelocatePlayerToFPSController(SceneManager.GetActiveScene().name, nextTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.outgoingFPSControllerTransform);
         }

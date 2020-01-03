@@ -25,6 +25,11 @@ public class AssetImportUpdate : AssetPostprocessor {
     static String globalAssetFileDirectory;
     static String globalAssetTexturesDirectory;
 
+    // if the model just updated isn't already in the scene, we need to keep track of it
+    // in order to maintain parent/child hierarchy in the post-processor
+    static GameObject newlyInstantiatedPrefab;
+    static bool newlyInstantiated;
+
     // some functions may write to other folders in the project
     static String projectUIPath = "Assets/Resources/UI/";
 
@@ -85,10 +90,10 @@ public class AssetImportUpdate : AssetPostprocessor {
     // set up callbacks
     public AssetImportUpdate()
     {
-        EditorSceneManager.activeSceneChangedInEditMode += sceneChangedInEditModeCallback;
+        EditorSceneManager.activeSceneChangedInEditMode += SceneChangedInEditModeCallback;
     }
     // for some reason, we need to subscribe to this message and update the currentScene name when a different scene is opened in the Editor
-    private void sceneChangedInEditModeCallback(Scene previousScene, Scene newScene)
+    private void SceneChangedInEditModeCallback(Scene previousScene, Scene newScene)
     {
         currentScene = newScene;
         Debug.Log("Opened a different Scene in the Editor: " + newScene.name);
@@ -173,12 +178,27 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
 
         // otherwise, instantiate as a prefab with the name of the file
-        GameObject prefab = PrefabUtility.InstantiatePrefab(gameObjectFromAsset, scene) as GameObject;
-        prefab.name = gameObjectFromAsset.name;
+        newlyInstantiatedPrefab = PrefabUtility.InstantiatePrefab(gameObjectFromAsset, scene) as GameObject;
+        newlyInstantiatedPrefab.name = gameObjectFromAsset.name;
         Debug.Log("This object was instantiated in the model hierarchy.");
+
+        // set the flag that an object was just instantiated so we can fix parent/child hierarchy in post-processor
+        newlyInstantiated = true;
 
         // allow additional post processing hits since this model was just instantiated
         globalMaxPostProcessingHits = globalMaxPostProcessingHits + 2;
+    }
+
+    // sets an object as a child of the scene container
+    // needs to happen in post-processor
+    static void SetObjectAsChildOfSceneContainer(GameObject prefab)
+    {
+        // place the object in the scene's container (used to disable all scene objects)
+        GameObject[] rootObjects = SceneManager.GetActiveScene().GetRootGameObjects();
+        // this assumes there's only 1 object in the scene: a container for all objects
+        GameObject sceneContainer = rootObjects[0];
+
+        prefab.transform.SetParent(sceneContainer.transform);
     }
 
     // define how to delete and reimport materials and textures
@@ -1532,7 +1552,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doHideProxyObjects = false;
         }
 
-        if (assetFilePath.Contains("speakers.fbx"))
+        if (assetFilePath.Contains("speakers.fbx") || assetFilePath.Contains("speakers-simple.fbx"))
         {
             // pre-processor option flags
             doSetGlobalScale = true; // always true
@@ -1667,6 +1687,13 @@ public class AssetImportUpdate : AssetPostprocessor {
         if (doHideProxyObjects)
         {
             HideProxyObjects(globalAssetFileName);
+        }
+
+        // newly-instantiated objects need to be set as a child of the scene container
+        // NOTE: this assumes each scene only has 1 top-level object: a "Container" that holds all Scene objects
+        if (newlyInstantiated)
+        {
+            SetObjectAsChildOfSceneContainer(newlyInstantiatedPrefab);
         }
 
         Debug.Log("END PostProcessing");
