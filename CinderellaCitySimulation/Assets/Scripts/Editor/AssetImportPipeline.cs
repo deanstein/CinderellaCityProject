@@ -516,104 +516,98 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
     }
 
-    // define how to apply components (behaviors and scripts) to an asset's GameObject in the scene
-    public static void AddUnityEngineComponentsByName(String assetName, String componentType)
+    // adds Unity Engine components to a GameObject
+    public static void AddUnityEngineComponentToGameObject(GameObject gameObjectForComponent, string componentName)
     {
-        // find the associated GameObject by this asset's name, and all of its children objects
-        GameObject gameObjectByAsset = GameObject.Find(assetName);
-        Transform[] allChildren = gameObjectByAsset.GetComponentsInChildren<Transform>();
-
-        // generic components have a specific type
-        Type unityEngineComponentType = Type.GetType("UnityEngine." + componentType + ", UnityEngine");
+        // define the generic Unity Engine component type
+        Type unityEngineComponentType = Type.GetType("UnityEngine." + componentName + ", UnityEngine");
 
         // first, remove the component if it exists already
-        RemoveComponentIfExisting(gameObjectByAsset, componentType);
+        RemoveComponentIfExisting(gameObjectForComponent, componentName);
 
-        //
-        // apply components only to the parent objects
-        //
+        // now add the component
+        gameObjectForComponent.AddComponent(unityEngineComponentType);
 
-        /*
-        // if the name and type match, add the component
-        if (gameObjectByAsset.name.Contains("people"))
+        Debug.Log("<b>Added</b> " + componentName + " component to " + gameObjectForComponent);
+    }
+
+    // adds Unity Engine components to a GameObject's children
+    public static void AddUnityEngineComponentToGameObjectChildren(GameObject parentGameObject, string componentName)
+    {
+        foreach (Transform childTransform in parentGameObject.transform)
         {
-            Debug.Log("<b>Added</b> " + componentType + " behavior component to " + assetName);
-        }
-        */
-
-        // 
-        // apply components to all the children 
-        //
-
-        foreach (Transform child in allChildren)
-        {
-            // first, remove the component if it exists already
-            RemoveComponentIfExisting(child.gameObject, componentType);
-
-            // if the name and type match, add the component
-            if (child.name.Contains("speaker-") && componentType.Contains("AudioSource"))
-            {
-                child.gameObject.AddComponent(unityEngineComponentType);
-
-                // get the audio source for this GameObject
-                AudioSource audioSourceComponent = child.gameObject.GetComponent<AudioSource>();
-                //Debug.Log("This audio source: " + audioSourceComponent);
-
-                Debug.Log("<b>Added</b> " + componentType + " behavior component to " + child.name);
-            }
+            AddUnityEngineComponentToGameObject(childTransform.gameObject, componentName);
         }
     }
 
-    // define how to add a scriptable component to a game object
-    public static void AddCustomScriptComponentsByName(String assetName, String componentType)
+    // adds custom components to a GameObject
+    public static void AddCustomScriptComponentToGameObject(GameObject gameObjectForComponent, string scriptName)
     {
-        // custom scripts get a specific type
-        Type customScriptComponentType = Type.GetType(componentType + ", Assembly-CSharp");
-
-        // find the associated GameObject by this asset's name, and all of its children objects
-        GameObject gameObjectByAsset = GameObject.Find(assetName);
-        Transform[] allChildren = gameObjectByAsset.GetComponentsInChildren<Transform>();
-
-        //
-        // apply components only to the parent objects
-        //
+        // define the type of script based on the name
+        Type customScriptComponentType = Type.GetType(scriptName + ", Assembly-CSharp");
 
         // first, remove the component if it exists already
-        RemoveComponentIfExisting(gameObjectByAsset, componentType);
+        RemoveComponentIfExisting(gameObjectForComponent, scriptName);
 
-        // if the name and type match, add the component
-        if ((assetName.Contains("proxy-people")) && componentType.Contains("ToggleVisibilityByShortcut"))
+        // now add the component
+        Component customScriptComponent = gameObjectForComponent.AddComponent(customScriptComponentType);
+
+        Debug.Log("<b>Added</b> " + scriptName + " component to " + gameObjectForComponent);
+    }
+
+    // adds custom components to a GameObject's children
+    public static void AddCustomScriptComponentToGameObjectChildren(GameObject parentGameObject, string scriptName)
+    {
+        foreach (Transform childTransform in parentGameObject.transform)
         {
-            gameObjectByAsset.AddComponent(customScriptComponentType);
-            ToggleVisibilityByShortcut ToggleVisibilityScript = gameObjectByAsset.AddComponent<ToggleVisibilityByShortcut>();
-            ToggleVisibilityScript.objectType = "people";
-            ToggleVisibilityScript.shortcut = "p";
-            Debug.Log("<b>Added</b> " + componentType + " behavior component to " + assetName);
-        }
-
-        // 
-        // apply components to all the children 
-        //
-
-        foreach (Transform child in allChildren)
-        {
-            // first, remove the component if it exists already
-            RemoveComponentIfExisting(child.gameObject, componentType);
-
-            // if the name and type match, add the component
-            if (child.name.Contains("speaker-") && componentType.Contains("PlayAudioSequencesByName"))
-            {
-                child.gameObject.AddComponent(customScriptComponentType);
-                Debug.Log("<b>Added</b> " + componentType + " behavior component to " + child.name);
-            }
+            AddCustomScriptComponentToGameObject(childTransform.gameObject, scriptName);
         }
     }
 
     // add certain behavior components to certain GameObjects as defined by their host file name
-    public static void AddBehaviorComponents(string fileName)
+    public static void AddBehaviorComponentsByName(string assetName)
     {
         Debug.Log("Adding behavior components...");
 
+        // find the associated GameObject by this asset's name, and all of its children objects
+        GameObject gameObjectByAssetName = GameObject.Find(assetName);
+
+        //
+        // set rules based on name
+        // 
+
+        // speakers
+        if (assetName.Contains("speakers"))
+        {
+            // add components to the parent gameObject
+
+            // add components to children gameObjects
+            AddUnityEngineComponentToGameObjectChildren(gameObjectByAssetName, "AudioSource");
+            AddCustomScriptComponentToGameObjectChildren(gameObjectByAssetName, "PlayAudioSequencesByName");
+            AddCustomScriptComponentToGameObjectChildren(gameObjectByAssetName, "ToggleComponentByProximityToPlayer");
+            foreach (Transform child in gameObjectByAssetName.transform)
+            {
+                ToggleComponentByProximityToPlayer ToggleComponentByProximityScript = child.GetComponent<ToggleComponentByProximityToPlayer>();
+                ToggleComponentByProximityScript.toggleComponentTypes = new string[] { "AudioSource", "PlayAudioSequencesByName" };
+            }
+        }
+
+        // proxy people
+        if (assetName.Contains("proxy-people"))
+        {
+            // add components to the parent gameObject
+            AddCustomScriptComponentToGameObject(gameObjectByAssetName, "ToggleVisibilityByShortcut");
+            ToggleVisibilityByShortcut ToggleVisibilityScript = gameObjectByAssetName.GetComponent<ToggleVisibilityByShortcut>();
+            ToggleVisibilityScript.objectType = "people";
+            ToggleVisibilityScript.shortcut = "p";
+
+            // add components to children gameObjects
+
+        }
+
+        ///
+
+        /*
         // these are the Unity Engine components that will be added to specific GameObjects
         // <!!!> when adding here, remember to also add this behavior and the compatible asset inside the function in the for loop <!!!>
         string[] unityEngineComponentsArray = { "AudioSource" };
@@ -633,6 +627,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         {
             AddCustomScriptComponentsByName(fileName, customScriptComponentsArray[i]);
         }
+        */
     }
 
 
@@ -1188,7 +1183,8 @@ public class AssetImportUpdate : AssetPostprocessor {
         // all audio assets need to be compressed for performance
         if (assetFilePath.Contains(".m4a")
             || (assetFilePath.Contains(".mp3"))
-            || (assetFilePath.Contains(".wav")))
+            || (assetFilePath.Contains(".wav"))
+            || (assetFilePath.Contains(".ogg")))
         {
             // pre-processor option flags
             doSetClipImportSettings = true;
@@ -1622,12 +1618,16 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         if (doAddBehaviorComponents)
         {
-            AddBehaviorComponents(globalAssetFileName);
+            AddBehaviorComponentsByName(globalAssetFileName);
         }
 
         // since pre-processing is done, mark post-processing as required
         postProcessingRequired = true;
         proxyReplacementProcessingRequired = true;
+
+        // mark the scene as dirty, in case something changed that needs to be saved
+        // TODO: create a flag that's set to true when something is really changed, so we only mark dirty when necessary
+        EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
     }
 
     // runs after pre-processing the model
