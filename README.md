@@ -1,7 +1,7 @@
 # The Cinderella City Project
 The Cinderella City Project is digitally rebuilding a historic shopping center for a virtual retail history experience. The real Cinderella City Mall existed in Englewood, Colorado from 1968 to 1998.
 
-- [Read about the project and donate on Ko-Fi](www.ko-fi.com/cinderellacityproject)
+- [Read about the project and donate on Ko-Fi](https://www.ko-fi.com/cinderellacityproject)
 - [Check out photos and videos on Instagram](https://instagram.com/cinderellacityproject)
 
 ## Cinderella City Simulation
