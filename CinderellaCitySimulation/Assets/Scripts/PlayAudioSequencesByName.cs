@@ -34,9 +34,9 @@ public class AudioSourceGlobals
     public static SpeakerParams MallMusic80s90sParams = new SpeakerParams();
 
     // stores
-    public static SpeakerParams StoreMusicGeneric80s90sParams = new SpeakerParams();
     public static SpeakerParams StoreMusicConsumerBeauty80s90sParams = new SpeakerParams();
     public static SpeakerParams StoreMusicDolcis80s90sParams = new SpeakerParams();
+    public static SpeakerParams StoreMusicGeneric80s90sParams = new SpeakerParams();
     public static SpeakerParams StoreMusicMusicland80s90sParams = new SpeakerParams();
 }
 
@@ -66,12 +66,12 @@ public class PlayAudioSequencesByName : MonoBehaviour
                 return AudioSourceGlobals.MallChatter80s90sParams;
             case string partialName when partialName.Contains("mall-music-80s90s"):
                 return AudioSourceGlobals.MallMusic80s90sParams;
-            case string partialName when partialName.Contains("store-music-generic-80s90s"):
-                return AudioSourceGlobals.StoreMusicGeneric80s90sParams;
             case string partialName when partialName.Contains("store-music-consumer-beauty-80s90s"):
                 return AudioSourceGlobals.StoreMusicConsumerBeauty80s90sParams;
             case string partialName when partialName.Contains("store-music-dolcis-80s90s"):
                 return AudioSourceGlobals.StoreMusicDolcis80s90sParams;
+            case string partialName when partialName.Contains("store-music-generic-80s90s"):
+                return AudioSourceGlobals.StoreMusicGeneric80s90sParams;
             case string partialName when partialName.Contains("store-music-musicland-80s90s"):
                 return AudioSourceGlobals.StoreMusicMusicland80s90sParams;
             default:
@@ -111,11 +111,6 @@ public class PlayAudioSequencesByName : MonoBehaviour
         AudioSourceGlobals.MallMusic80s90sParams.speakerVolume = 0.2f;
         AudioSourceGlobals.MallMusic80s90sParams.clipSequence = new string[] { "80s-90s/Music/Betamaxx/6. woolworth", "80s-90s/Music/Betamaxx/8. mall walking", "80s-90s/Music/Betamaxx/12. casual menswear", "80s-90s/Music/Betamaxx/1. grand opening", "80s-90s/Music/Betamaxx/7. crystal fountain", "80s-90s/Music/Betamaxx/11. retail dystopia", "80s-90s/Music/BDalton/nick" };
 
-        // store - generic
-        AudioSourceGlobals.StoreMusicGeneric80s90sParams.maxDistance = 15f;
-        AudioSourceGlobals.StoreMusicGeneric80s90sParams.speakerVolume = 0.2f;
-        AudioSourceGlobals.StoreMusicGeneric80s90sParams.clipSequence = new string[] { "80s-90s/Music/Betamaxx/9. a'gaci", "80s-90s/Music/Betamaxx/14. smoking section" };
-
         // store - consumer beauty
         AudioSourceGlobals.StoreMusicConsumerBeauty80s90sParams.maxDistance = 15f;
         AudioSourceGlobals.StoreMusicConsumerBeauty80s90sParams.speakerVolume = 0.2f;
@@ -125,6 +120,11 @@ public class PlayAudioSequencesByName : MonoBehaviour
         AudioSourceGlobals.StoreMusicDolcis80s90sParams.maxDistance = 15f;
         AudioSourceGlobals.StoreMusicDolcis80s90sParams.speakerVolume = 0.2f;
         AudioSourceGlobals.StoreMusicDolcis80s90sParams.clipSequence = new string[] { "80s-90s/Music/Betamaxx/5. kauffmans", "80s-90s/Music/Betamaxx/10. lazarus" };
+
+        // store - generic
+        AudioSourceGlobals.StoreMusicGeneric80s90sParams.maxDistance = 15f;
+        AudioSourceGlobals.StoreMusicGeneric80s90sParams.speakerVolume = 0.2f;
+        AudioSourceGlobals.StoreMusicGeneric80s90sParams.clipSequence = new string[] { "80s-90s/Music/Betamaxx/9. a'gaci", "80s-90s/Music/Betamaxx/14. smoking section" };
 
         // store - musicland
         AudioSourceGlobals.StoreMusicMusicland80s90sParams.maxDistance = 15f;
@@ -204,22 +204,20 @@ public class PlayAudioSequencesByName : MonoBehaviour
 
             float remainingClipTime;
 
-            Debug.Log("Test: Did I need fast forwarding?" + needsFastForwarding);
-
             // fast forward time if the flag is set
             if (needsFastForwarding)
             {
                 // calculate how much time is left in the clip to accurately set the WaitForSeconds
                 remainingClipTime = FastForwardMasterAudioSourceToMatchGameTime(masterAudioSource);
                 needsFastForwarding = false;
-                Debug.Log("Clip was set to fast forward.");
+                //Debug.Log("Clip was set to fast forward.");
             }
             // otherwise the remaining clip time is just the clip's length
             else
             {
                 remainingClipTime = masterAudioSource.clip.length;
                 needsFastForwarding = false;
-                Debug.Log("Clip was NOT set to fast forward.");
+                //Debug.Log("Clip was NOT set to fast forward.");
             }
 
             // if we're at the end of the list, reset to return to the beginning
@@ -321,7 +319,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // sync only if it's time to sync, and if this is a slave and there's a master to sync to
+        // sync only if it's time to sync, and if there is a valid master and slave to sync between
         if (Time.time > masterSlaveInitialSyncTime && AssociateSpeakerParamsByName(this.name).masterAudioSource != thisAudioSourceComponent && (AssociateSpeakerParamsByName(this.name).masterAudioSource && thisAudioSourceComponent))
         {
             StartCoroutine(SyncAudioSources(AssociateSpeakerParamsByName(this.name).masterAudioSource, thisAudioSourceComponent));
@@ -329,15 +327,24 @@ public class PlayAudioSequencesByName : MonoBehaviour
             masterSlaveInitialSyncTime += masterSlaveSyncPeriod;
         }
 
-        // if this is a master, and it has active slaves, it cannot be disabled
+        // if this is a master, check if it has active slaves
+        // if so, we cannot disable it when it gets out of range, so except it from the proximity script
         if (AssociateSpeakerParamsByName(this.name).masterAudioSource == thisAudioSourceComponent && AssociateSpeakerParamsByName(this.name).activeSlaveCount > 0)
         {
             thisToggleComponentByProximityScript.isExcepted = true;
         }
-        // otherwise, allow it to be disabled
-        else
+        // if no active slaves, allow it to be disabled when it gets out of range
+        else if (AssociateSpeakerParamsByName(this.name).masterAudioSource == thisAudioSourceComponent && AssociateSpeakerParamsByName(this.name).activeSlaveCount == 0)
         {
             thisToggleComponentByProximityScript.isExcepted = false;
+
+            // clean up master AudioSources that once had slaves but are now out-of-range
+            // note that due to latency, we add a buffer (10) so that the distance calculation doesn't accidentally shut down newly-started master AudioSources
+            if (Vector3.Distance(this.gameObject.transform.position, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransformPosition) > AssociateSpeakerParamsByName(this.name).maxDistance + 10 && this.GetComponent<AudioSource>().enabled)
+            {
+                thisToggleComponentByProximityScript.OnTriggerExit(ManageFPSControllers.FPSControllerGlobals.activeFPSController.GetComponent<Collider>());
+                AssociateSpeakerParamsByName(this.name).masterAudioSource = null;
+            }
         }
     }
 }

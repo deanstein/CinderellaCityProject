@@ -42,6 +42,18 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_Jumping;
         private AudioSource m_AudioSource;
 
+        private void OnEnable()
+        {
+            // set the cursor lock to true when a scene with this FPSController is running
+            m_MouseLook.SetCursorLock(true);
+        }
+
+        private void OnDisable()
+        {
+            // unlock the cursor when this scene is disabled in case a menu is pulled up next
+            m_MouseLook.SetCursorLock(false);
+        }
+
         // Use this for initialization
         private void Start()
         {

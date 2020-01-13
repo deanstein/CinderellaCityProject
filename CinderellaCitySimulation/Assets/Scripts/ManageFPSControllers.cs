@@ -11,6 +11,7 @@ public class ManageFPSControllers : MonoBehaviour {
     {
         // the globally-available current FPSController
         public static GameObject activeFPSController;
+        public static Vector3 activeFPSControllerTransformPosition;
 
         // the outgoing FPS controller transform that must be stored and used later for the new FPSController to match
         public static Transform outgoingFPSControllerTransform;
@@ -20,6 +21,13 @@ public class ManageFPSControllers : MonoBehaviour {
     public void SetActiveFPSController()
     {
         FPSControllerGlobals.activeFPSController = this.gameObject;
+    }
+
+    // set the active controller's transform position
+    public void SetActiveFPSControllerPosition()
+    {
+        // record the position of the active FPSController for other scripts to access
+        FPSControllerGlobals.activeFPSControllerTransformPosition = this.transform.position;
     }
 
     // set the referring controller to this object
@@ -49,6 +57,7 @@ public class ManageFPSControllers : MonoBehaviour {
 
                 // reset the FPSController mouse to avoid incorrect rotation due to interference
                 activeFPSController.transform.GetComponent<FirstPersonController>().MouseReset();
+
             }
         }
     }
@@ -73,7 +82,14 @@ public class ManageFPSControllers : MonoBehaviour {
 
     private void OnDisable()
     {
+        // set the outgoing FPSController transform in order to match for the next FPSController
         SetOutgoingFPSControllerTransform();
+    }
+
+    private void Update()
+    {
+        // record the active FPSController position globally for other scripts to access
+        SetActiveFPSControllerPosition();
     }
 }
 
