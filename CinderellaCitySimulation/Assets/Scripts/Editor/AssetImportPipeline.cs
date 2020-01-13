@@ -1029,10 +1029,13 @@ public class AssetImportUpdate : AssetPostprocessor {
 
                 // this script writes a new image from the camera's view, from the Editor
                 // it will run once, then self-destruct
-                RenderCameraToImageSelfDestruct rt = cameraObject.AddComponent<RenderCameraToImageSelfDestruct>();
+                RenderCameraToImageSelfDestruct renderCameraScript = cameraObject.AddComponent<RenderCameraToImageSelfDestruct>();
 
                 // specify the path for the camera capture
-                rt.filePath = projectUIPath;
+                renderCameraScript.filePath = projectUIPath;
+
+                // disable the camera to prevent performance issues
+                camera.enabled = false;
             }
         }
     }

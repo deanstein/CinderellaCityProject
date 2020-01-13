@@ -13,9 +13,6 @@ public class ToggleComponentByProximityToPlayer : MonoBehaviour {
     // may be set by other scripts to except this object temporarily from having its scripts disabled
     public bool isExcepted = false;
 
-    // this is the FPSController that we measure against to determine proximity
-    public GameObject activeFPSController;
-
     // the maximum distance this object can be from the FPSController before the specified component is disabled
     public float maxDistance = 20f;
 
@@ -32,20 +29,18 @@ public class ToggleComponentByProximityToPlayer : MonoBehaviour {
         }
     }
 
-    private void OnEnable()
+    private void Start()
     {
-        // set the current active FPS controller by getting it from the FPSController manager
-        activeFPSController = ManageFPSControllers.FPSControllerGlobals.activeFPSController;
+        // add a sphere collider
+        SphereCollider sphereCollider = this.gameObject.AddComponent<SphereCollider>();
+        sphereCollider.radius = maxDistance;
+        sphereCollider.isTrigger = true;
     }
 
-    // Update is called once per frame
-    void Update()
+    // when the FPSController is within the sphere collider (within range)
+    public void OnTriggerEnter(Collider other)
     {
-        // calculate the distance from this object to the FPSController
-        float distanceToFPSController = Vector3.Distance(this.gameObject.transform.position, activeFPSController.gameObject.transform.position);
-
-        // if we're within the max distance, ensure the specified components are enabled
-        if (!isExcepted && (distanceToFPSController < maxDistance))
+        if (!isExcepted && other.gameObject.name.Contains("FPSController"))
         {
             foreach (string componentType in toggleComponentTypes)
             {
@@ -56,9 +51,12 @@ public class ToggleComponentByProximityToPlayer : MonoBehaviour {
                 }
             }
         }
+    }
 
-        // otherwise, disable the specified components
-        else if (!isExcepted && (distanceToFPSController > maxDistance))
+    // when the FPSController is exiting the sphere collider (out of range)
+    public void OnTriggerExit(Collider other)
+    {
+        if (!isExcepted && other.gameObject.name.Contains("FPSController"))
         {
             foreach (string componentType in toggleComponentTypes)
             {
