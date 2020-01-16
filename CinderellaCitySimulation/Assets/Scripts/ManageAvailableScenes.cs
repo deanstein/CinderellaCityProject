@@ -4,10 +4,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityStandardAssets.Characters.FirstPerson;
 
-public class GlobalSceneVariables
+public class SceneGlobals
 {
-    // when a scene change is requested, record the referring scene globally so we can switch back to it
+    // when a scene change is requested, record the outgoing and upcoming scenes for other scripts to access
     public static string referringScene;
+    public static string upcomingScene;
 
     // list the friendly names of available time periods, in chronologial order (used for UI labels)
     // TODO: add Alt Future when available
@@ -29,7 +30,7 @@ public static class ManageAvailableScenes
         bool allowLooping = true;
 
         // first, figure out which time period index the current scene is
-        int currentTimePeriodSceneIndex = GlobalSceneVariables.availableTimePeriodSceneNames.IndexOf(SceneManager.GetActiveScene().name);
+        int currentTimePeriodSceneIndex = SceneGlobals.availableTimePeriodSceneNames.IndexOf(SceneManager.GetActiveScene().name);
 
         // if the current scene doesn't match any in the list, return with an error
         if (currentTimePeriodSceneIndex == -1)
@@ -49,7 +50,7 @@ public static class ManageAvailableScenes
             {
                 if (allowLooping)
                 {
-                    newTimePeriodSceneIndex = (GlobalSceneVariables.availableTimePeriodSceneNames.Count - 1);
+                    newTimePeriodSceneIndex = (SceneGlobals.availableTimePeriodSceneNames.Count - 1);
                 }
                 else
                 {
@@ -58,7 +59,7 @@ public static class ManageAvailableScenes
             }
 
             // get the equivalent scene name from the available time periods
-            var prevTimePeriodSceneName = GlobalSceneVariables.availableTimePeriodSceneNames[newTimePeriodSceneIndex];
+            var prevTimePeriodSceneName = SceneGlobals.availableTimePeriodSceneNames[newTimePeriodSceneIndex];
             return prevTimePeriodSceneName;
         }
 
@@ -69,7 +70,7 @@ public static class ManageAvailableScenes
             int newTimePeriodSceneIndex = currentTimePeriodSceneIndex + 1;
 
             // if we're outside the length of the list, either go to the beginning of the index or do nothing
-            if (newTimePeriodSceneIndex > (GlobalSceneVariables.availableTimePeriodSceneNames.Count - 1))
+            if (newTimePeriodSceneIndex > (SceneGlobals.availableTimePeriodSceneNames.Count - 1))
             {
                 if (allowLooping)
                 {
@@ -82,7 +83,7 @@ public static class ManageAvailableScenes
             }
 
             // get the equivalent scene name from the available time periods
-            string nextTimePeriodSceneName = GlobalSceneVariables.availableTimePeriodSceneNames[newTimePeriodSceneIndex];
+            string nextTimePeriodSceneName = SceneGlobals.availableTimePeriodSceneNames[newTimePeriodSceneIndex];
             return nextTimePeriodSceneName;
         }
 
