@@ -52,8 +52,15 @@ public class ManageFPSControllers : MonoBehaviour {
                 // also set this as the outgoing FPSController's transform (required to simulate switching to this scene from in-game as a "time traveler"
                 FPSControllerGlobals.outgoingFPSControllerTransform = activeFPSController.transform;
 
+                // need to make sure the camera transform doesn't include a rotation up or down (causes FPSCharacter to tilt)
+                Vector3 currentCameraForward = camera.transform.forward;
+                Vector3 newCameraForward = new Vector3(currentCameraForward.x, 0, currentCameraForward.z);
+
                 // match the FPSController's position and rotation to the camera
-                activeFPSController.transform.SetPositionAndRotation(camera.transform.position, Quaternion.LookRotation(camera.transform.forward, Vector3.up));
+                activeFPSController.transform.SetPositionAndRotation(camera.transform.position, Quaternion.LookRotation(newCameraForward, Vector3.up));
+
+                // match the CharacterController's camera separately
+                activeFPSController.transform.GetChild(0).GetComponent<Camera>().transform.forward = currentCameraForward;
 
                 // reset the FPSController mouse to avoid incorrect rotation due to interference
                 activeFPSController.transform.GetComponent<FirstPersonController>().MouseReset();
@@ -62,13 +69,16 @@ public class ManageFPSControllers : MonoBehaviour {
         }
     }
 
-    public static void RelocateAlignFPSControllerToFPSController(Transform referringControllerTransform)
+    public static void RelocateAlignFPSControllerToFPSController(Transform FPSControllerTransformToMatch)
     {
         // get the current FPSController
         GameObject activeFPSController = FPSControllerGlobals.activeFPSController;
 
         // match the FPSController's position and rotation to the referring controller's position and rotation
-        activeFPSController.transform.SetPositionAndRotation(referringControllerTransform.position, referringControllerTransform.rotation);
+        activeFPSController.transform.SetPositionAndRotation(FPSControllerTransformToMatch.position, FPSControllerTransformToMatch.rotation);
+
+        // match the CharacterController's camera separately
+        activeFPSController.transform.GetChild(0).GetComponent<Camera>().transform.forward = FPSControllerTransformToMatch.transform.GetChild(0).gameObject.GetComponent<Camera>().transform.forward;
 
         // reset the FPSController mouse to avoid incorrect rotation due to interference
         activeFPSController.transform.GetComponent<FirstPersonController>().MouseReset();
@@ -78,12 +88,25 @@ public class ManageFPSControllers : MonoBehaviour {
     {
         // set the active controller to this object
         SetActiveFPSController();
+
+        // lock the cursor so it doesn't display on-screen
+        FPSControllerGlobals.activeFPSController.transform.GetComponent<FirstPersonController>().m_MouseLook.SetCursorLock(true);
     }
 
     private void OnDisable()
     {
         // set the outgoing FPSController transform in order to match for the next FPSController
         SetOutgoingFPSControllerTransform();
+
+        // unlock the cursor only when the upcoming scene is a menu (not a time period scene)
+        if (SceneGlobals.availableTimePeriodSceneNames.IndexOf(SceneGlobals.upcomingScene) == -1)
+        {
+            FPSControllerGlobals.activeFPSController.transform.GetComponent<FirstPersonController>().m_MouseLook.SetCursorLock(false);
+        }
+        else
+        {
+            FPSControllerGlobals.activeFPSController.transform.GetComponent<FirstPersonController>().m_MouseLook.SetCursorLock(true);
+        }
     }
 
     private void Update()

@@ -117,11 +117,12 @@ public class ToggleVisibilityByScene : MonoBehaviour {
         // make the toScene active
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(toScene));
 
+        // mark the referring and upcoming scenes globally, for other scripts to access
+        SceneGlobals.referringScene = fromScene;
+        SceneGlobals.upcomingScene = toScene;
+
         // now toggle the fromScene scene off
         ToggleSceneObjectsOff(fromScene);
-
-        // mark the referring scene globally, for other scripts to access
-        GlobalSceneVariables.referringScene = fromScene;
     }
 
     public static void ToggleFromSceneToSceneRelocatePlayerToCamera(string fromScene, string toScene, string cameraPartialName)
