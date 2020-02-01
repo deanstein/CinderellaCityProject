@@ -1,24 +1,26 @@
 {
-  "AppVersion": "0.5.0.201912",
+  "AppVersion": "0.5.0.202001",
   "VersionHistory": 
   [
     {
-        "0.5.0.201912": [
+        "0.5.0.202001": [
             {
                 "Logic Updates": [
-                    "Added support for toggling the visibility of entire scenes on/off",
-                    "Added support for loading all scenes asynchronously in a new Loading Screen scene",
+                    "Added support for 'time traveling': toggling the visibility of entire scenes via shortcut or menu",
+                    "Added support for loading all scenes asynchronously in a new Loading Screen",
                     "Added support for UI menu layout functionality, including creating, transforming, and animating screen-space layouts",
+                    "Added support for exporting the viewport capture of a Camera to the file system for UI thumbnails",
+                    "Added support for proxy cameras in AssetImportUpdate",
                     "Added support for setting audio clip import settings in AssetImportUpdate",
                     "Added support for setting texture-to-sprite import settings in AssetImportUpdate",
-                    "Added support for proxy cameras in AssetImportUpdate",
-                    "Added support for exporting the viewport capture of a Camera to the file system for UI thumbnails"
-
+                    "Improved performance of speakers by using SphereColliders to keep them disabled until the player is nearby",
+                    "Refactored PlayAudioSequencesByName for simplicity and performance"
                 ],
                 "Asset Updates": [
                     "Added 60s70s, Loading Screen, Main Menu, Pause Menu, and Experimental scenes",
                     "Reorganized Scene object hierarchy to contain one parent object for toggling visibility of all its children (all scene objects)",
-                    "Updated to Unity 2019.1.9f1"
+                    "Updated to Unity 2019.1.9f1",
+                    "Added README"
                 ]
             }
         ],

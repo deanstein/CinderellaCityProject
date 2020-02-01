@@ -13,8 +13,13 @@ public class ManageFPSControllers : MonoBehaviour {
         public static GameObject activeFPSController;
         public static Vector3 activeFPSControllerTransformPosition;
 
-        // the outgoing FPS controller transform that must be stored and used later for the new FPSController to match
+        public static bool renderOutgoingCamera = false;
+
+        // the outgoing FPSController transform that must be stored and used later for the new FPSController to match
         public static Transform outgoingFPSControllerTransform;
+
+        // the outgoing FPSController image, which will be used for the Pause Menu UI
+        public Texture2D outgoingFPSControllerCameraTexture;
     }
 
     // set the active controller to this object

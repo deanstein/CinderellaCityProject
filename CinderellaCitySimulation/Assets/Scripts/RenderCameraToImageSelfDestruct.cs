@@ -8,11 +8,31 @@ using UnityEngine.Rendering;
 public class RenderCameraToImageSelfDestruct : MonoBehaviour
 {
     // attach this script to a camera to write an image of the camera's view to the local file system
-    // to initiate, reimport an asset in the Editor (will not work in Play mode)
-    // this script runs immediately, then self-destructs (it only needs to run once)
+    // to initiate, reimport an asset in the Editor, or enable the flag to run in game mode
+    // this script runs on OnPostREnder, then self-destructs (it only needs to run once)
 
-    // path of the resulting image is passed in from AssetImportPipeline
+    // defaults to false, so will only run in Editor
+    // however some scripts may call this to execute once, while the game is running
+    public bool runInGameMode = false;
+
+    // if specified by another script, we'll write this camera's texture to a file
     public string filePath;
+
+    // write the camera's view to a global texture, depending on which FPSController this is
+    public static void AssignCameraTextureToVariableByName()
+    {
+
+        // use the name of the active FPSController to determine which variable to write the texture to
+        switch (ManageFPSControllers.FPSControllerGlobals.activeFPSController.name)
+        {
+            case string FPSControllerName when FPSControllerName.Contains("60s70s"):
+                UIGlobals.FPSController60s70sCameraTexture = UIGlobals.outgoingFPSControllerCameraTexture;
+                return;
+            case string FPSControllerName when FPSControllerName.Contains("80s90s"):
+                UIGlobals.FPSController80s90sCameraTexture = UIGlobals.outgoingFPSControllerCameraTexture;
+                return;
+        }
+    }
 
     private void Start()
     {
@@ -26,16 +46,12 @@ public class RenderCameraToImageSelfDestruct : MonoBehaviour
 
     void OnPostRender()
     {
-        // only execute if we're *not* in Play mode
-        if (!Application.isPlaying)
+        // only execute if we're *not* in Play mode, or if the override is true
+        if (!Application.isPlaying || runInGameMode)
         {
             // define the width and height of the image that will be created from this camera
             int width = Screen.width;
             int height = Screen.height;
-
-            // the full path of the file to be created
-            // ensure this extension matches the encoding below
-            string fullPath = filePath + this.name + ".png";
 
             // create a new texture with the width and height of the camera
             Texture2D texture = new Texture2D(width, height, TextureFormat.RGB24, false);
@@ -46,12 +62,29 @@ public class RenderCameraToImageSelfDestruct : MonoBehaviour
 
             // create the texture bytes
             var Bytes = texture.EncodeToPNG();
-            DestroyImmediate(texture);
 
-            // write bytes to file system
-            File.WriteAllBytes(fullPath, Bytes);
+            //DestroyImmediate(texture);
 
-            Debug.Log("<b>Rendered a camera to an image:</b> " + fullPath);
+            // if a file path is specified, write the image there
+            if (filePath != null)
+            {
+                // the full path of the file to be created
+                // ensure this extension matches the encoding below
+                string fullPath = filePath + this.name + ".png";
+
+                // write bytes to file system
+                File.WriteAllBytes(fullPath, Bytes);
+
+                Debug.Log("<b>Rendered a camera to an image:</b> " + fullPath);
+            }
+            //otherwise store the texture globally for other scripts to access
+            else
+            {
+                // capture the image as a texture
+                UIGlobals.outgoingFPSControllerCameraTexture = texture;
+                // assign the texture by name
+                AssignCameraTextureToVariableByName();
+            }
 
             // must delete this script component so it doesn't run every frame
             DestroyImmediate(GetComponent<RenderCameraToImageSelfDestruct>());

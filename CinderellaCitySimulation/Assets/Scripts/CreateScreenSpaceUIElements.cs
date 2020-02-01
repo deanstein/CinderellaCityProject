@@ -1,10 +1,27 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+
+using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEditor;
 
 [RequireComponent(typeof(UnityEngine.UI.Button))]
+
+// holds values other scripts need to access
+public class UIGlobals
+{
+    // all UI sprites stored in a file live here
+    public static string projectUIPath = "Assets/Resources/UI/";
+
+    // is used to determine when to generate time-travel specific thumbnails
+    public static bool isTimeTravelThumbnail;
+
+    // define the various camera textures
+    // these are written to from FPSController cameras during game play
+    public static Texture2D outgoingFPSControllerCameraTexture = new Texture2D(Screen.width, Screen.height);
+    public static Texture2D FPSController60s70sCameraTexture = new Texture2D(Screen.width, Screen.height);
+    public static Texture2D FPSController80s90sCameraTexture = new Texture2D(Screen.width, Screen.height);
+}
 
 public class StringUtils
 {
@@ -130,12 +147,44 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         }
     }
 
+    // determine which camera texture to read to or write from, depending on the requesting UI object's name
+    public static Texture2D AssociateCameraTextureByName(GameObject imageHostObject)
+    {
+        switch (imageHostObject.name)
+        {
+            case string imageHostName when imageHostName.Contains("PauseMenu"):
+                return UIGlobals.outgoingFPSControllerCameraTexture;
+            case string imageHostName when imageHostName.Contains("60s70s"):
+                return UIGlobals.FPSController60s70sCameraTexture;
+            case string imageHostName when imageHostName.Contains("80s90s"):
+                return UIGlobals.FPSController80s90sCameraTexture;
+            default:
+                return null;
+        }
+    }
+
+    public static void CaptureActiveFPSControllerCamera()
+    {
+        // get the camera from the active FPSController
+        Camera FPSCamera = ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.GetChild(0).gameObject.GetComponent<Camera>();
+
+        // attach and kick off the render script
+        RenderCameraToImageSelfDestruct renderCameraScript = FPSCamera.gameObject.AddComponent<RenderCameraToImageSelfDestruct>();
+        // set the override to true, so this will run once in game mode
+        renderCameraScript.runInGameMode = true;
+        // render the camera
+        FPSCamera.Render();
+    }
+
     // define what clicking the buttons does, based on the name of the button
     public static void TaskOnClickByName(string buttonName)
     {
         switch (buttonName)
         {
             // handle buttons that lead to menus and exit
+            case string name when name.Contains("Resume"):
+                ToggleVisibilityByScene.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, SceneGlobals.referringScene);
+                return;
             case string name when name.Contains("MainMenu"):
                 ToggleVisibilityByScene.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "MainMenu");
                 return;
@@ -152,11 +201,12 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
                 string playerPosition = nameSplitByDelimiter[0];
                 // the time period needs to be 2nd
                 string timePeriod = nameSplitByDelimiter[1];
+
                 // if the button name indicates a time traveler, don't specify an FPSController location (uses the current FPS location)
                 if (name.Contains("TimeTravel"))
                 {
                     // switch to the correct scene based on the time period and location in the button name
-                    ToggleVisibilityByScene.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, timePeriod);
+                    ToggleVisibilityByScene.ToggleFromSceneToSceneRelocatePlayerToFPSController(SceneManager.GetActiveScene().name, timePeriod, ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform);
                 }
                 // otherwise, this request includes a specific location in its name, so relocate the player there
                 else
@@ -186,21 +236,56 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         return menu;
     }
 
-    public static GameObject CreateFullScreenBackgroundImageSlideshow(GameObject parent, string[] slideshowSequence)
+    public static GameObject CreateFullScreenImageFromCameraTexture(GameObject parent, bool refreshOnEnable)
     {
         // create the background object
-        GameObject fullScreenBackgroundImage = new GameObject("BackgroundSlideShow");
-        fullScreenBackgroundImage.AddComponent<Image>();
+        GameObject fullScreenBackground = new GameObject(parent.name + "BackgroundImage");
+        fullScreenBackground.AddComponent<Image>();
+
+        // create and configure the image
+        Image fullScreenBackgroundImage = fullScreenBackground.GetComponent<Image>();
+        fullScreenBackgroundImage.transform.SetParent(parent.transform);
+        fullScreenBackgroundImage.preserveAspect = true;
+        fullScreenBackgroundImage.SetNativeSize();
+
+        // determine the texture we should use based on the object's name
+        Texture2D backgroundTexture = AssociateCameraTextureByName(fullScreenBackground);
+
+        // set the sprite to the given texture
+        fullScreenBackgroundImage.sprite = Sprite.Create(backgroundTexture, new Rect(0.0f, 0.0f, backgroundTexture.width, backgroundTexture.height), new Vector2(0.5f, 0.5f), 100.0f);
+
+        // reset the scale before centering and full-screening
+        fullScreenBackgroundImage.rectTransform.localScale = new Vector3(1, 1, 1);
+
+        // center and full-screen the image
+        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(fullScreenBackgroundImage.gameObject);
+        TransformScreenSpaceObject.ScaleObjectToFillCamera(fullScreenBackgroundImage.gameObject);
+
+        // if enabled, add the script to refresh the image sprite when the object is re-enabled
+        // this allows for using an image that's generated/updated during gameplay
+        if (refreshOnEnable)
+        {
+            fullScreenBackground.AddComponent<RefreshImageSprite>();
+        }
+
+        return fullScreenBackground;
+    }
+
+    public static GameObject CreateFullScreenImageSlideshow(GameObject parent, string[] imageSequence)
+    {
+        // create the background object
+        GameObject fullScreenBackgroundSlideShow = new GameObject("BackgroundSlideShow");
+        fullScreenBackgroundSlideShow.AddComponent<Image>();
 
         // set the image
-        Image mainMenuBackgroundImage = fullScreenBackgroundImage.GetComponent<Image>();
-        mainMenuBackgroundImage.transform.SetParent(parent.transform);
+        Image fullScreenBackgroundSlideShowImage = fullScreenBackgroundSlideShow.GetComponent<Image>();
+        fullScreenBackgroundSlideShowImage.transform.SetParent(parent.transform);
 
         // this script will sequence, transform, and animate the background images as required
-        AnimateScreenSpaceObject AnimateScreenSpaceObjectScript =fullScreenBackgroundImage.AddComponent<AnimateScreenSpaceObject>();
-        AnimateScreenSpaceObjectScript.mainMenuBackgroundSlideShowSequence = slideshowSequence;
+        AnimateScreenSpaceObject AnimateScreenSpaceObjectScript = fullScreenBackgroundSlideShow.AddComponent<AnimateScreenSpaceObject>();
+        AnimateScreenSpaceObjectScript.mainMenuBackgroundSlideShowSequence = imageSequence;
 
-        return fullScreenBackgroundImage;
+        return fullScreenBackgroundSlideShow;
     }
 
     public static GameObject CreateLogoHeader(GameObject parent)
@@ -380,9 +465,18 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     // create the stacked thumbnails for a place, across time periods
     public static GameObject CreatePlaceTimeThumbnailStack(GameObject parent, GameObject topAlignmentObject, GameObject leftAlignmentObject, string placeName, string[] timePeriodNames)
     {
-        // clear the list of thumbnail objects from the last stack created
+        // clear the list of thumbnail objects from the previous stack created
         // this list will be used to set parents and as alignment guides for other objects
         placeThumbnailsForAlignment.Clear();
+
+        // we'll need to generate the thumbnails differently if this stack is intended for "time traveling"
+        // NOTE: this requires a match with the user-facing thumbnail stack title UI
+
+        // set the flag if generating a time travel thumbnail
+        if (placeName.Contains("Time Travel"))
+        {
+            UIGlobals.isTimeTravelThumbnail = true;
+        }
 
         // make an object to hold the thumbnails
         GameObject thumbnailStack = new GameObject(StringUtils.CleanString(placeName) + "ThumbnailStack");
@@ -410,8 +504,6 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
             // combine the place name and time period strings
             string combinedPlaceTimeNameSpacelessDashed = StringUtils.CleanString(placeName) + "-" + SceneGlobals.availableTimePeriodSceneNames[i];
 
-            Debug.Log(combinedPlaceTimeNameSpacelessDashed);
-
             // create the button
             GameObject timePeriodButton = new GameObject(combinedPlaceTimeNameSpacelessDashed + "-Button");
             timePeriodButton.AddComponent<Image>();
@@ -419,7 +511,26 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
             // set the image
             // note this requires a valid image in the Resources folder path below, with a file name that matches combinedPlaceTimeNameSpaceless
             Image timePeriodButtonImage = timePeriodButton.GetComponent<Image>();
-            timePeriodButtonImage.sprite = (Sprite)Resources.Load("UI/Camera-Thumbnail-" + combinedPlaceTimeNameSpacelessDashed, typeof(Sprite));
+
+
+            // need to set the sprite differently depending on whether this is a time travel thumbnail, or standard time/place thumbnail
+
+            // time travel sprites need to get a public texture generated by the FPSCameras
+            if (UIGlobals.isTimeTravelThumbnail)
+            {
+                Texture2D timeTravelCameraTexture = AssociateCameraTextureByName(timePeriodButton);
+
+                timePeriodButtonImage.sprite = Sprite.Create(timeTravelCameraTexture, new Rect(0.0f, 0.0f, timeTravelCameraTexture.width, timeTravelCameraTexture.height), new Vector2(0.5f, 0.5f), 100.0f);
+
+                // also attach the script to force update the sprite when the Pause Menu is called
+                timePeriodButton.AddComponent<RefreshImageSprite>();
+            }
+            // otherwise, standard time periods look for their sprite in the file system
+            else
+            {
+                timePeriodButtonImage.sprite = (Sprite)Resources.Load("UI/Camera-Thumbnail-" + combinedPlaceTimeNameSpacelessDashed, typeof(Sprite));
+            }
+
             timePeriodButtonImage.preserveAspect = true;
             timePeriodButtonImage.SetNativeSize();
 

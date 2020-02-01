@@ -12,7 +12,7 @@ public class ToggleVisibilityByShortcut : MonoBehaviour {
     // used for console debugging
     public string objectState;
 
-    // Update is called once per frame
+     // Update is called once per frame
     void Update()
     {
         // identify the shortcuts to listen for, and define what they do
@@ -54,6 +54,12 @@ public class ToggleVisibilityByShortcut : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Escape) &&
             StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNames, SceneManager.GetActiveScene().name))
         {
+            // 
+            // before pausing, we need to capture a screenshot from the active FPSController
+            // this also updates global texture variables as necessary based on the active FPSController name
+            //
+            CreateScreenSpaceUIElements.CaptureActiveFPSControllerCamera();
+
             ToggleVisibilityByScene.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "PauseMenu");
         }
         // if we're already in the pause menu, return to the previous scene (referring scene)
@@ -61,7 +67,6 @@ public class ToggleVisibilityByShortcut : MonoBehaviour {
             && SceneManager.GetActiveScene().name.Contains("PauseMenu"))
         {
             ToggleVisibilityByScene.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, SceneGlobals.referringScene);
-
         }
 
         /// object visibility shortcuts ///
