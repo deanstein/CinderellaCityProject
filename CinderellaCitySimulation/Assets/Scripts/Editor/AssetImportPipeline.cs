@@ -1,16 +1,16 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
-using UnityEditor.SceneManagement;
-using System;
-using UnityEngine.Windows;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using UnityEngine.SceneManagement;
+
+using UnityEditor;
 using UnityEngine.Rendering.PostProcessing;
-using UnityEngine.Rendering;
+using UnityEditor.SceneManagement;
+
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 [InitializeOnLoad]
 
@@ -29,9 +29,6 @@ public class AssetImportUpdate : AssetPostprocessor {
     // in order to maintain parent/child hierarchy in the post-processor
     static GameObject newlyInstantiatedPrefab;
     static bool newlyInstantiated;
-
-    // some functions may write to other folders in the project
-    static String projectUIPath = "Assets/Resources/UI/";
 
     // get the current scene
     static Scene currentScene = EditorSceneManager.GetActiveScene();
@@ -1032,7 +1029,7 @@ public class AssetImportUpdate : AssetPostprocessor {
                 RenderCameraToImageSelfDestruct renderCameraScript = cameraObject.AddComponent<RenderCameraToImageSelfDestruct>();
 
                 // specify the path for the camera capture
-                renderCameraScript.filePath = projectUIPath;
+                renderCameraScript.filePath = UIGlobals.projectUIPath;
 
                 // disable the camera to prevent performance issues
                 camera.enabled = false;

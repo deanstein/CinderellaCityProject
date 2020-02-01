@@ -15,7 +15,6 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
     // define the background image sequence for each menu or screen
     string[] loadingScreenBackgroundSlideShowSequence = { "UI/LoadingScreenBackground1", "UI/LoadingScreenBackground2" };
     string[] mainMenuBackgroundSlideShowSequence = { "UI/MainMenuBackground1", "UI/MainMenuBackground2" };
-    string[] pauseMenuBackgroundSlideShowSequence = { "UI/PauseMenuBackground1", "UI/PauseMenuBackground2" };
 
     void Start()
     {
@@ -44,7 +43,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
             GameObject loadingScreen = CreateScreenSpaceUIElements.CreateMenuCanvas(launcher, "LoadingScreen");
 
             // background image slideshow
-            GameObject backgroundSlideShow = CreateScreenSpaceUIElements.CreateFullScreenBackgroundImageSlideshow(loadingScreen, loadingScreenBackgroundSlideShowSequence);
+            GameObject backgroundSlideShow = CreateScreenSpaceUIElements.CreateFullScreenImageSlideshow(loadingScreen, loadingScreenBackgroundSlideShowSequence);
 
             // project logo and container
             GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(loadingScreen);
@@ -62,7 +61,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
             GameObject mainMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(launcher, "MainMenu");
 
             // background image slideshow
-            GameObject backgroundSlideShow = CreateScreenSpaceUIElements.CreateFullScreenBackgroundImageSlideshow(mainMenu, mainMenuBackgroundSlideShowSequence);
+            GameObject backgroundSlideShow = CreateScreenSpaceUIElements.CreateFullScreenImageSlideshow(mainMenu, mainMenuBackgroundSlideShowSequence);
 
             // project logo and container
             GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(mainMenu);
@@ -82,8 +81,8 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
             // pause menu canvas
             GameObject pauseMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(launcher, "PauseMenu");
 
-            // background image slideshow
-            GameObject backgroundSlideShow = CreateScreenSpaceUIElements.CreateFullScreenBackgroundImageSlideshow(pauseMenu, pauseMenuBackgroundSlideShowSequence);
+            // background image
+            GameObject backgroundImage = CreateScreenSpaceUIElements.CreateFullScreenImageFromCameraTexture(pauseMenu, true);
 
             // project logo and container
             GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(pauseMenu);
