@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using UnityEditor;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(UnityEngine.UI.Button))]
 
@@ -16,9 +14,15 @@ public class UIGlobals
     // is used to determine when to generate time-travel specific thumbnails
     public static bool isTimeTravelThumbnail;
 
+    // keep track of the UI elements that get dynamically updated when Pause is ivoked
+    public static GameObject pauseMenuBackgroundImage;
+    public static List<GameObject> timeTravelThumbnails = new List<GameObject>();
+
     // define the various camera textures
-    // these are written to from FPSController cameras during game play
+    // this is always written when an FPSController is disabled
     public static Texture2D outgoingFPSControllerCameraTexture = new Texture2D(Screen.width, Screen.height);
+    // these are the various textures that are used in the UI
+    public static Texture2D pauseMenuBackgroundCameraTexture = new Texture2D(Screen.width, Screen.height);
     public static Texture2D FPSController60s70sCameraTexture = new Texture2D(Screen.width, Screen.height);
     public static Texture2D FPSController80s90sCameraTexture = new Texture2D(Screen.width, Screen.height);
 }
@@ -147,10 +151,26 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         }
     }
 
-    // determine which camera texture to read to or write from, depending on the requesting UI object's name
-    public static Texture2D AssociateCameraTextureByName(GameObject imageHostObject)
+    // write a camera's view to a global texture, depending on which FPSController this is
+    public static void AssignCameraTextureToVariableByName()
     {
-        switch (imageHostObject.name)
+
+        // use the name of the active FPSController to determine which variable to write the texture to
+        switch (ManageFPSControllers.FPSControllerGlobals.activeFPSController.name)
+        {
+            case string FPSControllerName when FPSControllerName.Contains("60s70s"):
+                UIGlobals.FPSController60s70sCameraTexture = UIGlobals.outgoingFPSControllerCameraTexture;
+                return;
+            case string FPSControllerName when FPSControllerName.Contains("80s90s"):
+                UIGlobals.FPSController80s90sCameraTexture = UIGlobals.outgoingFPSControllerCameraTexture;
+                return;
+        }
+    }
+
+    // determine which camera texture to read to or write from, depending on the requesting UI object's name
+    public static Texture2D AssociateCameraTextureByName(string name)
+    {
+        switch (name)
         {
             case string imageHostName when imageHostName.Contains("PauseMenu"):
                 return UIGlobals.outgoingFPSControllerCameraTexture;
@@ -163,6 +183,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         }
     }
 
+    // takes the active FPSController, adds the render camera to image script, and renders the camera
     public static void CaptureActiveFPSControllerCamera()
     {
         // get the camera from the active FPSController
@@ -174,6 +195,51 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         renderCameraScript.runInGameMode = true;
         // render the camera
         FPSCamera.Render();
+    }
+
+    // captures FPSCharacter cameras, then refreshes their global textures, so the pause menu can be updated
+    public static void CaptureDisabledSceneFPSCameras()
+    {
+        // define the time periods that are considered disabled at this time
+        ManageAvailableScenes.GetDisabledTimePeriodSceneNames(SceneGlobals.referringScene);
+
+        // for each inactive time period, enable it without scripts, take a screenshot, and update textures
+        foreach (string disabledSceneName in ManageAvailableScenes.GetDisabledTimePeriodSceneNames(SceneGlobals.referringScene))
+        {
+            // toggle the scene, but ignore scriptHost objects - so no scripts or behaviors enable
+            // should improve performance
+            ToggleVisibilityByScene.ToggleSceneObjectsOnExceptScriptHosts(disabledSceneName);
+
+            ManageFPSControllers.RelocateAlignFPSControllerToFPSController(ManageFPSControllers.FPSControllerGlobals.outgoingFPSControllerTransform);
+
+            // capture the current camera
+            // this will also update the global variable with the texture, depending on the scene name
+            CaptureActiveFPSControllerCamera();
+
+            // turn everything off again
+            ToggleVisibilityByScene.ToggleSceneObjectsOff(disabledSceneName);
+
+            // return the script hosts to their on state
+            ToggleVisibilityByScene.ToggleScriptHostObjectListOn();
+        }
+    }
+
+    // rebuilds the sprite on this gameObject's image component
+    public static void RefreshObjectImageSprite(GameObject imageObject)
+    {
+        Texture2D thumbnailTexture = AssociateCameraTextureByName(imageObject.name);
+        Sprite updatedThumbnailSprite = Sprite.Create(thumbnailTexture, new Rect(0.0f, 0.0f, thumbnailTexture.width, thumbnailTexture.height), new Vector2(0.5f, 0.5f), 100.0f);
+        imageObject.GetComponent<Image>().sprite = updatedThumbnailSprite;
+    }
+
+    // forces a refresh of the time period selection thumbnails, in the Pause Menu
+    // this rebuilds a sprite based on a texture, and sets it as the thumbnail image object's sprite
+    public static void RefreshThumbnailSprites()
+    {
+        foreach (GameObject thumbnail in UIGlobals.timeTravelThumbnails)
+        {
+            RefreshObjectImageSprite(thumbnail);
+        }
     }
 
     // define what clicking the buttons does, based on the name of the button
@@ -249,7 +315,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         fullScreenBackgroundImage.SetNativeSize();
 
         // determine the texture we should use based on the object's name
-        Texture2D backgroundTexture = AssociateCameraTextureByName(fullScreenBackground);
+        Texture2D backgroundTexture = AssociateCameraTextureByName(fullScreenBackground.name);
 
         // set the sprite to the given texture
         fullScreenBackgroundImage.sprite = Sprite.Create(backgroundTexture, new Rect(0.0f, 0.0f, backgroundTexture.width, backgroundTexture.height), new Vector2(0.5f, 0.5f), 100.0f);
@@ -265,7 +331,11 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // this allows for using an image that's generated/updated during gameplay
         if (refreshOnEnable)
         {
-            fullScreenBackground.AddComponent<RefreshImageSprite>();
+            RefreshImageSprite refreshImageScript = fullScreenBackground.AddComponent<RefreshImageSprite>();
+            refreshImageScript.refreshOnEnable = true;
+
+            // set this image to the global image that needs updating
+            UIGlobals.pauseMenuBackgroundImage = fullScreenBackground;
         }
 
         return fullScreenBackground;
@@ -518,12 +588,15 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
             // time travel sprites need to get a public texture generated by the FPSCameras
             if (UIGlobals.isTimeTravelThumbnail)
             {
-                Texture2D timeTravelCameraTexture = AssociateCameraTextureByName(timePeriodButton);
+                Texture2D timeTravelCameraTexture = AssociateCameraTextureByName(timePeriodButton.name);
 
                 timePeriodButtonImage.sprite = Sprite.Create(timeTravelCameraTexture, new Rect(0.0f, 0.0f, timeTravelCameraTexture.width, timeTravelCameraTexture.height), new Vector2(0.5f, 0.5f), 100.0f);
 
                 // also attach the script to force update the sprite when the Pause Menu is called
                 timePeriodButton.AddComponent<RefreshImageSprite>();
+
+                // add this to the global list of time travel thumbnails, so we can update it later
+                UIGlobals.timeTravelThumbnails.Add(timePeriodButton);
             }
             // otherwise, standard time periods look for their sprite in the file system
             else

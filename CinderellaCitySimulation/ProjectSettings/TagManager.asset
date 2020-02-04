@@ -4,10 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - ScriptHostSpeakers
   - DeleteReplacementCameras
   - DeleteReplacementTrees
-  - speakers
-  - people
   layers:
   - Default
   - TransparentFX

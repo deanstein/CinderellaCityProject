@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,61 +6,41 @@ using UnityEngine.SceneManagement;
 
 public class ToggleVisibilityByScene : MonoBehaviour {
 
-    public static void ToggleSceneObjectComponentsOnExcept(string sceneName)
+    // toggles all scene objects on, except those tagged with any sort of script host tag
+    public static void ToggleSceneObjectsOnExceptScriptHosts(string sceneName)
     {
-        //Debug.Log("Toggling Scene object visibility ON for: " + sceneName + "...");
+        // first, turn all the script hosts off
+        ToggleScriptHostObjectListOff();
 
-        // each Scene should have a GameObject that contains all of the Scene objects
-        // this container should be named after the Scene + "Container"
-        string sceneContainerName = sceneName + "Container";
+        // turn everything else on
+        ToggleSceneObjectsOn(sceneName);
+    }
 
-        // find the Scene's container GameObject by name
-        GameObject sceneContainerObject = GameObject.Find(sceneContainerName);
-
-        // loop through all children of the scene's container object and make their components inactive if they're not already
-        foreach (Transform child in sceneContainerObject.transform)
+    public static void ToggleScriptHostObjectListOn()
+    {
+        // disable the script host objects for each of the host types given
+        foreach (GameObject[] scriptHostObjectArray in ManageTags.TagGlobals.scriptHostObjects)
         {
-            // get all components of this child object
-            Component[] childComponents = child.GetComponents(typeof(Behaviour));
-
-            foreach (Behaviour childComponent in childComponents)
+            foreach (GameObject scriptHostObject in scriptHostObjectArray)
             {
-                if (!childComponent.enabled)
-                {
-                    childComponent.enabled = true;
-                }
+                scriptHostObject.SetActive(true);
             }
         }
     }
 
-    public static void ToggleSceneObjectComponentsOffExcept(string sceneName)
+    public static void ToggleScriptHostObjectListOff()
     {
-        //Debug.Log("Toggling Scene object visibility OFF for: " + sceneName + "...");
-
-        // each Scene should have a GameObject that contains all of the Scene objects
-        // this container should be named after the Scene + "Container"
-        string sceneContainerName = sceneName + "Container";
-
-        // find the Scene's container GameObject by name
-        GameObject sceneContainerObject = GameObject.Find(sceneContainerName);
-
-        // loop through all children of the scene's container object and make their components inactive if they're not already
-        foreach (Transform child in sceneContainerObject.transform)
+        // disable the script host objects for each of the host types given
+        foreach (GameObject[] scriptHostObjectArray in ManageTags.TagGlobals.scriptHostObjects)
         {
-            // get all components of this child object
-            Component[] childComponents = child.GetComponents(typeof(Behaviour));
-
-            foreach (Behaviour childComponent in childComponents)
+            foreach (GameObject scriptHostObject in scriptHostObjectArray)
             {
-                if (childComponent.enabled)
-                {
-                    childComponent.enabled = false;
-                    Debug.Log(childComponent.enabled);
-                }
+                scriptHostObject.SetActive(false);
             }
         }
     }
 
+    // toggles all scene objects on
     public static void ToggleSceneObjectsOn(string sceneName)
     {
         //Debug.Log("Toggling Scene object visibility ON for: " + sceneName + "...");
@@ -84,6 +64,7 @@ public class ToggleVisibilityByScene : MonoBehaviour {
         }
     }
 
+    // toggles all scene objects off
     public static void ToggleSceneObjectsOff(string sceneName)
     {
         //Debug.Log("Toggling Scene object visibility OFF for: " + sceneName + "...");
@@ -107,6 +88,7 @@ public class ToggleVisibilityByScene : MonoBehaviour {
         }
     }
 
+    // toggles the "fromScene" off, and toggles the "toScene" on
     public static void ToggleFromSceneToScene(string fromScene, string toScene)
     {
         Debug.Log("Toggling from Scene " + "<b>" + fromScene + "</b>" + " to Scene " + "<b>" + toScene + "</b>");
@@ -125,6 +107,7 @@ public class ToggleVisibilityByScene : MonoBehaviour {
         ToggleSceneObjectsOff(fromScene);
     }
 
+    // toggles scenes, and also relocates the FPSCharacter to match a Camera position
     public static void ToggleFromSceneToSceneRelocatePlayerToCamera(string fromScene, string toScene, string cameraPartialName)
     {
         // first, switch to the requested scene
@@ -134,6 +117,7 @@ public class ToggleVisibilityByScene : MonoBehaviour {
         ManageFPSControllers.RelocateAlignFPSControllerToCamera(cameraPartialName);
     }
 
+    // toggles scenes, and also relocates the FPSCharacter to match another FPSCharacter
     public static void ToggleFromSceneToSceneRelocatePlayerToFPSController(string fromScene, string toScene, Transform FPSControllerTransformToMatch)
     {
         // first, switch to the requested scene
@@ -141,6 +125,22 @@ public class ToggleVisibilityByScene : MonoBehaviour {
 
         // then relocate and align the current FPSController to the referring FPSController
         ManageFPSControllers.RelocateAlignFPSControllerToFPSController(FPSControllerTransformToMatch);
+    }
+
+    // toggles given scenes on in the background, captures the FPSCharacter camera, then toggles the scenes off
+    public static void ToggleBackgroundScenesForCameraCapture(string[] scenes)
+    {
+        // toggle each of the given scenes on
+        foreach (string scene in scenes)
+        {
+            ToggleSceneObjectsOn(scene);
+
+            // relocate and align the current FPSController to the referring FPSController
+            ManageFPSControllers.RelocateAlignFPSControllerToFPSController(ManageFPSControllers.FPSControllerGlobals.outgoingFPSControllerTransform);
+
+            // capture the current FPSController camera
+            CreateScreenSpaceUIElements.CaptureActiveFPSControllerCamera();
+        }
     }
 
 }

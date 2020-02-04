@@ -5,7 +5,7 @@ using UnityEngine;
 
 // this script needs to be attached to an object that plays a series of AudioClips
 // NOTE: this script assumes AudioClips have the proper import settings applied (Load in Background, Compressed in Memory, etc) which should be handled by AssetImportPipeline
-// if not, the game may stutter or hang when invoking "Resources.Load()" on an AudioClip
+// if not, the game may stutter or hang at startup when invoking "Resources.Load()" on an AudioClip
 
 // the object this script is attached to should have these components
 [RequireComponent(typeof(AudioSource))]
@@ -148,7 +148,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
 
            StartCoroutine(PlayMasterClipSequenceInOrder(AssociateSpeakerParamsByName(this.name).clipSequence));
 
-            needsFastForwarding = false;
+           needsFastForwarding = false;
         }
         // otherwise, this must be a slave AudioSource
         else
