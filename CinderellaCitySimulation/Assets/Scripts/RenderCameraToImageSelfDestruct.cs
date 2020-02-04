@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 
 [ExecuteInEditMode]
 
@@ -17,22 +18,6 @@ public class RenderCameraToImageSelfDestruct : MonoBehaviour
 
     // if specified by another script, we'll write this camera's texture to a file
     public string filePath;
-
-    // write the camera's view to a global texture, depending on which FPSController this is
-    public static void AssignCameraTextureToVariableByName()
-    {
-
-        // use the name of the active FPSController to determine which variable to write the texture to
-        switch (ManageFPSControllers.FPSControllerGlobals.activeFPSController.name)
-        {
-            case string FPSControllerName when FPSControllerName.Contains("60s70s"):
-                UIGlobals.FPSController60s70sCameraTexture = UIGlobals.outgoingFPSControllerCameraTexture;
-                return;
-            case string FPSControllerName when FPSControllerName.Contains("80s90s"):
-                UIGlobals.FPSController80s90sCameraTexture = UIGlobals.outgoingFPSControllerCameraTexture;
-                return;
-        }
-    }
 
     private void Start()
     {
@@ -54,10 +39,10 @@ public class RenderCameraToImageSelfDestruct : MonoBehaviour
             int height = Screen.height;
 
             // create a new texture with the width and height of the camera
-            Texture2D texture = new Texture2D(width, height, TextureFormat.RGB24, false);
+            Texture2D texture = new Texture2D(width, height, TextureFormat.RGB24, true);
 
             // read the pixels in the Rect starting at 0,0 and ending at the screen's width and height
-            texture.ReadPixels(new Rect(0, 0, width, height), 0, 0, true);
+            texture.ReadPixels(new Rect(0, 0, width, height), 0, 0, false);
             texture.Apply();
 
             // create the texture bytes
@@ -83,7 +68,9 @@ public class RenderCameraToImageSelfDestruct : MonoBehaviour
                 // capture the image as a texture
                 UIGlobals.outgoingFPSControllerCameraTexture = texture;
                 // assign the texture by name
-                AssignCameraTextureToVariableByName();
+                CreateScreenSpaceUIElements.AssignCameraTextureToVariableByName();
+
+                Debug.Log("<b>Rendered a camera to an internal variable.</b> ");
             }
 
             // must delete this script component so it doesn't run every frame

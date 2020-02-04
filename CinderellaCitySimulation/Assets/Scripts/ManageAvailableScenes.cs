@@ -19,10 +19,32 @@ public class SceneGlobals
     // for example: "1980s-1990s" becomes "80s90s"
     // IMPORTANT: Unity Scene names must match the strings in this list exactly
     public static List<string> availableTimePeriodSceneNames = StringUtils.ConvertFriendlyNamesToSceneNames(new List<string>(availableTimePeriodFriendlyNames));
+
+    // based on the current scene, these are the time period scenes that are disabled
+    // used to generate thumbnails for disabled scenes for the Pause Menu
+    public static List<string> disabledTimePeriodSceneNames = new List<string>();
 }
 
 public static class ManageAvailableScenes
 {
+    // gets the other (disabled) time period scene names, given the current scene name
+    public static List<string> GetDisabledTimePeriodSceneNames(string currentSceneName)
+    {
+        // first, clear the list of disabled time periods - it's stale now
+        SceneGlobals.disabledTimePeriodSceneNames.Clear();
+
+        // iterate through the list and add any scenes that don't match the current scene
+        foreach (string timePeriodScenName in SceneGlobals.availableTimePeriodSceneNames)
+        {
+            if (timePeriodScenName != currentSceneName)
+            {
+                SceneGlobals.disabledTimePeriodSceneNames.Add(timePeriodScenName);
+            }
+        }
+
+        return SceneGlobals.disabledTimePeriodSceneNames;
+    }
+
     // gets the next or previous time period scene name to switch to while in-game
     public static string GetNextTimePeriodSceneName(string previousOrNext)
     {

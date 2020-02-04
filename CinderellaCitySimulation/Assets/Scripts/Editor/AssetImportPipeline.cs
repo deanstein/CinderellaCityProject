@@ -568,6 +568,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         // find the associated GameObject by this asset's name, and all of its children objects
         GameObject gameObjectByAssetName = GameObject.Find(assetName);
+        //PrefabUtility.UnpackPrefabInstance(gameObjectByAssetName, PrefabUnpackMode.OutermostRoot, InteractionMode.AutomatedAction);
 
         //
         // set rules based on name
@@ -579,13 +580,30 @@ public class AssetImportUpdate : AssetPostprocessor {
             // add components to the parent gameObject
 
             // add components to children gameObjects
-            AddUnityEngineComponentToGameObjectChildren(gameObjectByAssetName, "AudioSource");
-            AddCustomScriptComponentToGameObjectChildren(gameObjectByAssetName, "PlayAudioSequencesByName");
-            AddCustomScriptComponentToGameObjectChildren(gameObjectByAssetName, "ToggleComponentByProximityToPlayer");
+
+            // first delete the existing script host objects
+            string speakerScriptHostDeleteTag = TagHelper.GetOrCreateTagByScriptHostType("Speakers");
+            ManageTags.DeleteObjectsByTag(speakerScriptHostDeleteTag);
+
             foreach (Transform child in gameObjectByAssetName.transform)
             {
-                ToggleComponentByProximityToPlayer ToggleComponentByProximityScript = child.GetComponent<ToggleComponentByProximityToPlayer>();
+                // first, create a host gameobject for all scripts and interactive elements
+                GameObject scriptHostObject = new GameObject(child.name + "-ScriptHost");
+                // set the script host to nest under the original speaker
+                scriptHostObject.transform.parent = child.transform;
+                // move the script host to the same position in space - critical for proximity-based scripts!
+                scriptHostObject.transform.position = child.transform.position;
+
+                // add the required scripts and behaviors
+                AddUnityEngineComponentToGameObject(scriptHostObject, "AudioSource");
+                AddCustomScriptComponentToGameObject(scriptHostObject, "PlayAudioSequencesByName");
+                AddCustomScriptComponentToGameObject(scriptHostObject, "ToggleComponentByProximityToPlayer");
+
+                ToggleComponentByProximityToPlayer ToggleComponentByProximityScript = scriptHostObject.GetComponent<ToggleComponentByProximityToPlayer>();
                 ToggleComponentByProximityScript.toggleComponentTypes = new string[] { "AudioSource", "PlayAudioSequencesByName" };
+
+                // mark this object as a delete candidate
+                scriptHostObject.tag = speakerScriptHostDeleteTag;
             }
         }
 
@@ -601,30 +619,6 @@ public class AssetImportUpdate : AssetPostprocessor {
             // add components to children gameObjects
 
         }
-
-        ///
-
-        /*
-        // these are the Unity Engine components that will be added to specific GameObjects
-        // <!!!> when adding here, remember to also add this behavior and the compatible asset inside the function in the for loop <!!!>
-        string[] unityEngineComponentsArray = { "AudioSource" };
-
-        // for each of the Unity Engine components, apply them to this asset
-        for (var i = 0; i < unityEngineComponentsArray.Length; i++)
-        {
-            AddUnityEngineComponentsByName(fileName, unityEngineComponentsArray[i]);
-        }
-
-        // these are the custom script components that will be added to specific GameObjects
-        // <!!!> when adding here, remember to also add this behavior and the compatible asset inside the function in the for loop <!!!>
-        string[] customScriptComponentsArray = { "PlayAudioSequencesByName", "ToggleVisibilityByShortcut" };
-
-        // for each of the custom components, apply them to this asset
-        for (var i = 0; i < customScriptComponentsArray.Length; i++)
-        {
-            AddCustomScriptComponentsByName(fileName, customScriptComponentsArray[i]);
-        }
-        */
     }
 
 
@@ -868,12 +862,6 @@ public class AssetImportUpdate : AssetPostprocessor {
             return;
         }
 
-        if (assetName.Contains("cc-microcosm"))
-        {
-            proxyType = "Trees";
-            Debug.Log("Proxy type: " + proxyType);
-        }
-
         if (assetName.Contains("proxy-trees"))
         {
             proxyType = "Trees";
@@ -895,9 +883,6 @@ public class AssetImportUpdate : AssetPostprocessor {
             return;
         }
 
-        // define the tag that will be used to hide the proxies
-        string deleteReplacementTag = "DeleteReplacement" + proxyType;
-
         // find the associated GameObject by this asset's name
         GameObject gameObjectByAsset = GameObject.Find(assetName);
         
@@ -910,16 +895,9 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         var transformByAsset = gameObjectByAsset.transform;
 
-        // run TagHelper to create the hide proxy tag if it doesn't exist yet
-        TagHelper.AddTag(deleteReplacementTag);
-
-        // get all objects tagged already and delete them
-        GameObject[] replacementsToDelete = GameObject.FindGameObjectsWithTag(deleteReplacementTag);
-        for (int i = 0; i < replacementsToDelete.Length; i++)
-        {
-            Debug.Log("<b>Deleted an object with delete tag: </b>" + replacementsToDelete[i].name);
-            UnityEngine.Object.DestroyImmediate(replacementsToDelete[i].gameObject);
-        }
+        // define the delete tag to look for, based on the proxyType, then delete existing proxy replacements
+        string proxyReplacementDeleteTag = TagHelper.GetOrCreateTagByProxyType(proxyType);
+        ManageTags.DeleteObjectsByTag(proxyReplacementDeleteTag);
 
         Transform[] allChildren = gameObjectByAsset.GetComponentsInChildren<Transform>();
 
@@ -973,7 +951,7 @@ public class AssetImportUpdate : AssetPostprocessor {
                     instancedPrefab.transform.localEulerAngles = new Vector3(0, gameObjectToBeReplaced.transform.localEulerAngles.y, 0);
 
                     // tag this instanced prefab as a delete candidate for the next import
-                    instancedPrefab.gameObject.tag = deleteReplacementTag;
+                    instancedPrefab.gameObject.tag = proxyReplacementDeleteTag;
                 }
                 else
                 {
@@ -1012,7 +990,7 @@ public class AssetImportUpdate : AssetPostprocessor {
                 cameraObject.transform.SetPositionAndRotation(child.transform.localPosition, child.transform.localRotation);
 
                 // tag this camera object as a delete candidate for the next import
-                cameraObject.tag = deleteReplacementTag;
+                cameraObject.tag = proxyReplacementDeleteTag;
 
                 // make the camera look at the plane
                 // this assumes the only child of the camera is a plane (a FormIt Group with LCS at the center of the plane)

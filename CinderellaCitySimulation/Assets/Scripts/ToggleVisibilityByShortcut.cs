@@ -54,13 +54,18 @@ public class ToggleVisibilityByShortcut : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Escape) &&
             StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNames, SceneManager.GetActiveScene().name))
         {
-            // 
             // before pausing, we need to capture a screenshot from the active FPSController
-            // this also updates global texture variables as necessary based on the active FPSController name
-            //
+            // then update the pause menu background image
             CreateScreenSpaceUIElements.CaptureActiveFPSControllerCamera();
+            CreateScreenSpaceUIElements.RefreshObjectImageSprite(UIGlobals.pauseMenuBackgroundImage);
 
+            // toggle to Pause
             ToggleVisibilityByScene.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "PauseMenu");
+
+            // now capture a screenshot from the inactive scenes' FPSControllers
+            // then update the thumbnail sprites
+            CreateScreenSpaceUIElements.CaptureDisabledSceneFPSCameras();
+            CreateScreenSpaceUIElements.RefreshThumbnailSprites();
         }
         // if we're already in the pause menu, return to the previous scene (referring scene)
         else if (Input.GetKeyDown(KeyCode.Escape)
