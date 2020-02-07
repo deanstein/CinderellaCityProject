@@ -10,6 +10,7 @@
                     "Added support for loading all scenes asynchronously in a new Loading Screen",
                     "Added support for UI menu layout functionality, including creating, transforming, and animating screen-space layouts",
                     "Added support for exporting the viewport capture of a Camera to the file system for UI thumbnails",
+                    "Added support for exporting the viewport capture of an inactive Camera for updating 'time travel' UI thumbnails",
                     "Added support for proxy cameras in AssetImportUpdate",
                     "Added support for setting audio clip import settings in AssetImportUpdate",
                     "Added support for setting texture-to-sprite import settings in AssetImportUpdate",

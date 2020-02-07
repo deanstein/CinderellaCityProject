@@ -206,8 +206,13 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // for each inactive time period, enable it without scripts, take a screenshot, and update textures
         foreach (string disabledSceneName in ManageAvailableScenes.GetDisabledTimePeriodSceneNames(SceneGlobals.referringScene))
         {
+            // temporarily set all FPSControllers to skip recording themselves as the outgoing controller
+            foreach (GameObject FPSController in ManageFPSControllers.FPSControllerGlobals.allFPSControllers)
+            {
+                FPSController.GetComponent<ManageFPSControllers>().recordOutgoingFPSController = false;
+            }
+
             // toggle the scene, but ignore scriptHost objects - so no scripts or behaviors enable
-            // should improve performance
             ToggleVisibilityByScene.ToggleSceneObjectsOnExceptScriptHosts(disabledSceneName);
 
             ManageFPSControllers.RelocateAlignFPSControllerToFPSController(ManageFPSControllers.FPSControllerGlobals.outgoingFPSControllerTransform);
@@ -221,6 +226,12 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
             // return the script hosts to their on state
             ToggleVisibilityByScene.ToggleScriptHostObjectListOn();
+
+            // allow the FPSControllers to record themselves again, for general gameplay
+            foreach (GameObject FPSController in ManageFPSControllers.FPSControllerGlobals.allFPSControllers)
+            {
+                FPSController.GetComponent<ManageFPSControllers>().recordOutgoingFPSController = true;
+            }
         }
     }
 

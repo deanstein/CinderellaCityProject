@@ -86,12 +86,13 @@ In scenes that exclusively generate and display UI elements, we need to add cust
 					- Responsible for identifying which UI components to build based on the Scene name
 
 #### First-Person Scenes (60s70s, 80s90s, AltFuture)
-In scenes with an FPSController and FirstPersonCharacter (60s70s, 80s90s, AltFuture), we need to add custom script components to some GameObjects to control behaviors related to UI and the FPSController:
+In scenes with an FPSController and FirstPersonCharacter (60s70s, 80s90s, AltFuture), we need to add custom script components to some GameObjects to control behaviors related to UI and the FPSController. Note that the FPSController needs to be renamed with a prefix of the era it's in.
 
  - 60s70s (Scene)
  	- 60s70sContainer (GameObject)
-		- **FPSController** (GameObject)
+		- **60s70sFPSController** (GameObject)
 			- Unity Standard Asset, Responsible for the player's camera and movement in space, modified slightly from default
+			- Requires Specific Name: '(EraName)FPSController'
 			- Requires Scripts:
 				- **ManageFPSControllers** (Script Component)
 					- Responsible for keeping track of the current FPSController
