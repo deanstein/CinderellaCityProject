@@ -340,7 +340,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
 
             // clean up master AudioSources that once had slaves but are now out-of-range
             // note that due to latency, we add a buffer (10) so that the distance calculation doesn't accidentally shut down newly-started master AudioSources
-            if (Vector3.Distance(this.gameObject.transform.position, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransformPosition) > AssociateSpeakerParamsByName(this.name).maxDistance + 10 && this.GetComponent<AudioSource>().enabled)
+            if (Vector3.Distance(this.gameObject.transform.position, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position) > AssociateSpeakerParamsByName(this.name).maxDistance + 10 && this.GetComponent<AudioSource>().enabled)
             {
                 thisToggleComponentByProximityScript.OnTriggerExit(ManageFPSControllers.FPSControllerGlobals.activeFPSController.GetComponent<Collider>());
                 AssociateSpeakerParamsByName(this.name).masterAudioSource = null;

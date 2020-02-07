@@ -6,41 +6,58 @@ using UnityStandardAssets.Characters.FirstPerson;
 
 public class ManageFPSControllers : MonoBehaviour {
 
-    // this script needs to be attached to all FPSController objects
+    // this flag controls whether this FPSController will be recorded when disabled
+    // will be set to false when this FPSController is enabled specifically for an inactive camera capture
+    public bool recordOutgoingFPSController = true;
+
+    // this script needs to be attached to each FPSController in each scene
     public class FPSControllerGlobals
     {
-        // the globally-available current FPSController
-        public static GameObject activeFPSController;
-        public static Vector3 activeFPSControllerTransformPosition;
+        // all FPSControllers
+        public static List<GameObject> allFPSControllers = new List<GameObject>();
 
-        public static bool renderOutgoingCamera = false;
+        // the current FPSController
+        public static GameObject activeFPSController;
+        public static Transform activeFPSControllerTransform;
+        public static Vector3 activeFPSControllerCameraForward;
 
         // the outgoing FPSController transform that must be stored and used later for the new FPSController to match
         public static Transform outgoingFPSControllerTransform;
-
         // the outgoing FPSController image, which will be used for the Pause Menu UI
         public Texture2D outgoingFPSControllerCameraTexture;
     }
 
-    // set the active controller to this object
-    public void SetActiveFPSController()
+    // add this FPSController to the list of available FPSControllers, if it doesn't exist already
+    public void AddToAvailableControllers()
+    {
+        if (!FPSControllerGlobals.allFPSControllers.Contains(this.gameObject))
+        {
+            FPSControllerGlobals.allFPSControllers.Add(this.gameObject);
+        }
+    }
+
+    // update the active controller to this object
+    public void UpdateActiveFPSController()
     {
         FPSControllerGlobals.activeFPSController = this.gameObject;
     }
 
-    // set the active controller's transform position
-    public void SetActiveFPSControllerPosition()
+    // update the active controller's transform position
+    public void UpdateActiveFPSControllerPosition()
     {
         // record the position of the active FPSController for other scripts to access
-        FPSControllerGlobals.activeFPSControllerTransformPosition = this.transform.position;
+        FPSControllerGlobals.activeFPSControllerTransform = this.transform;
+        // record the forward vector of the active FPSController camera for other scripts to access
+        FPSControllerGlobals.activeFPSControllerCameraForward = this.transform.GetChild(0).GetComponent<Camera>().transform.forward;
     }
 
-    // set the referring controller to this object
-    public void SetOutgoingFPSControllerTransform()
+    // update the referring controller to this object
+    public void UpdateOutgoingFPSControllerTransform()
     {
         FPSControllerGlobals.outgoingFPSControllerTransform = FPSControllerGlobals.activeFPSController.transform;
     }
 
+    // reposition and realign this FPSController to match another camera in the scene
     public static void RelocateAlignFPSControllerToCamera(string cameraPartialName)
     {
         // get all the cameras in the  scene
@@ -69,11 +86,11 @@ public class ManageFPSControllers : MonoBehaviour {
 
                 // reset the FPSController mouse to avoid incorrect rotation due to interference
                 activeFPSController.transform.GetComponent<FirstPersonController>().MouseReset();
-
             }
         }
     }
 
+    // reposition and realign this FPSController to match the given one
     public static void RelocateAlignFPSControllerToFPSController(Transform FPSControllerTransformToMatch)
     {
         // get the current FPSController
@@ -89,35 +106,55 @@ public class ManageFPSControllers : MonoBehaviour {
         activeFPSController.transform.GetComponent<FirstPersonController>().MouseReset();
     }
 
+    // enables the mouse lock on all FPSControllers
+    public static void EnableMouseLockOnAllFPSControllers()
+    {
+        foreach(GameObject FPSController in FPSControllerGlobals.allFPSControllers)
+        {
+            FPSController.transform.GetComponent<FirstPersonController>().m_MouseLook.SetCursorLock(true);
+        }
+    }
+
     private void OnEnable()
     {
-        // set the active controller to this object
-        SetActiveFPSController();
+        // update the active controller as this object
+        UpdateActiveFPSController();
+
+        // match position and camera
+        if (FPSControllerGlobals.activeFPSControllerTransform)
+        {
+            this.transform.position = FPSControllerGlobals.activeFPSControllerTransform.position;
+            this.transform.rotation = FPSControllerGlobals.activeFPSControllerTransform.rotation;
+            this.transform.GetChild(0).GetComponent<Camera>().transform.forward = FPSControllerGlobals.activeFPSControllerCameraForward;
+        }
+
+        // add this FPSController to the list of available controllers
+        AddToAvailableControllers();
 
         // lock the cursor so it doesn't display on-screen
-        FPSControllerGlobals.activeFPSController.transform.GetComponent<FirstPersonController>().m_MouseLook.SetCursorLock(true);
+        // need to do this on every FPSController - even disabled FPSControllers can keep the cursor visible
+        EnableMouseLockOnAllFPSControllers();
     }
 
     private void OnDisable()
     {
-        // set the outgoing FPSController transform in order to match for the next FPSController
-        SetOutgoingFPSControllerTransform();
+        if (recordOutgoingFPSController)
+        {
+            // set the outgoing FPSController transform in order to match for the next FPSController
+            UpdateOutgoingFPSControllerTransform();
 
-        // unlock the cursor only when the upcoming scene is a menu (not a time period scene)
-        if (SceneGlobals.availableTimePeriodSceneNames.IndexOf(SceneGlobals.upcomingScene) == -1)
-        {
-            FPSControllerGlobals.activeFPSController.transform.GetComponent<FirstPersonController>().m_MouseLook.SetCursorLock(false);
-        }
-        else
-        {
-            FPSControllerGlobals.activeFPSController.transform.GetComponent<FirstPersonController>().m_MouseLook.SetCursorLock(true);
+            // unlock the cursor only when the upcoming scene is a menu (not a time period scene)
+            if (SceneGlobals.availableTimePeriodSceneNames.IndexOf(SceneGlobals.upcomingScene) == -1)
+            {
+                FPSControllerGlobals.activeFPSController.transform.GetComponent<FirstPersonController>().m_MouseLook.SetCursorLock(false);
+            }
         }
     }
 
     private void Update()
     {
         // record the active FPSController position globally for other scripts to access
-        SetActiveFPSControllerPosition();
+        UpdateActiveFPSControllerPosition();
     }
 }
 
