@@ -6,10 +6,6 @@ using UnityStandardAssets.Characters.FirstPerson;
 
 public class ManageFPSControllers : MonoBehaviour {
 
-    // this flag controls whether this FPSController will be recorded when disabled
-    // will be set to false when this FPSController is enabled specifically for an inactive camera capture
-    public bool recordOutgoingFPSController = true;
-
     // this script needs to be attached to each FPSController in each scene
     public class FPSControllerGlobals
     {
@@ -21,9 +17,6 @@ public class ManageFPSControllers : MonoBehaviour {
         public static Transform activeFPSControllerTransform;
         public static Vector3 activeFPSControllerCameraForward;
 
-        // the outgoing FPSController transform that must be stored and used later for the new FPSController to match
-        public static Transform outgoingFPSControllerTransform;
-        // the outgoing FPSController image, which will be used for the Pause Menu UI
         public Texture2D outgoingFPSControllerCameraTexture;
     }
 
@@ -43,18 +36,12 @@ public class ManageFPSControllers : MonoBehaviour {
     }
 
     // update the active controller's transform position
-    public void UpdateActiveFPSControllerPosition()
+    public void UpdateActiveFPSControllerPositionAndCamera()
     {
         // record the position of the active FPSController for other scripts to access
         FPSControllerGlobals.activeFPSControllerTransform = this.transform;
         // record the forward vector of the active FPSController camera for other scripts to access
         FPSControllerGlobals.activeFPSControllerCameraForward = this.transform.GetChild(0).GetComponent<Camera>().transform.forward;
-    }
-
-    // update the referring controller to this object
-    public void UpdateOutgoingFPSControllerTransform()
-    {
-        FPSControllerGlobals.outgoingFPSControllerTransform = FPSControllerGlobals.activeFPSController.transform;
     }
 
     // reposition and realign this FPSController to match another camera in the scene
@@ -71,8 +58,6 @@ public class ManageFPSControllers : MonoBehaviour {
 
                 // get the current FPSController
                 GameObject activeFPSController = FPSControllerGlobals.activeFPSController;
-                // also set this as the outgoing FPSController's transform (required to simulate switching to this scene from in-game as a "time traveler"
-                FPSControllerGlobals.outgoingFPSControllerTransform = activeFPSController.transform;
 
                 // need to make sure the camera transform doesn't include a rotation up or down (causes FPSCharacter to tilt)
                 Vector3 currentCameraForward = camera.transform.forward;
@@ -138,23 +123,17 @@ public class ManageFPSControllers : MonoBehaviour {
 
     private void OnDisable()
     {
-        if (recordOutgoingFPSController)
+        // unlock the cursor only when the upcoming scene is a menu (not a time period scene)
+        if (SceneGlobals.availableTimePeriodSceneNames.IndexOf(SceneGlobals.upcomingScene) == -1)
         {
-            // set the outgoing FPSController transform in order to match for the next FPSController
-            UpdateOutgoingFPSControllerTransform();
-
-            // unlock the cursor only when the upcoming scene is a menu (not a time period scene)
-            if (SceneGlobals.availableTimePeriodSceneNames.IndexOf(SceneGlobals.upcomingScene) == -1)
-            {
-                FPSControllerGlobals.activeFPSController.transform.GetComponent<FirstPersonController>().m_MouseLook.SetCursorLock(false);
-            }
+            FPSControllerGlobals.activeFPSController.transform.GetComponent<FirstPersonController>().m_MouseLook.SetCursorLock(false);
         }
     }
 
     private void Update()
     {
         // record the active FPSController position globally for other scripts to access
-        UpdateActiveFPSControllerPosition();
+        UpdateActiveFPSControllerPositionAndCamera();
     }
 }
 
