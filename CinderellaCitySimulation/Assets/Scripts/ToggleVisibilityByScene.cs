@@ -136,7 +136,7 @@ public class ToggleVisibilityByScene : MonoBehaviour {
             ToggleSceneObjectsOn(scene);
 
             // relocate and align the current FPSController to the referring FPSController
-            ManageFPSControllers.RelocateAlignFPSControllerToFPSController(ManageFPSControllers.FPSControllerGlobals.outgoingFPSControllerTransform);
+            ManageFPSControllers.RelocateAlignFPSControllerToFPSController(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform);
 
             // capture the current FPSController camera
             CreateScreenSpaceUIElements.CaptureActiveFPSControllerCamera();
