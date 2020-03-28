@@ -9,7 +9,7 @@
                     ""
                 ],
                 "Asset Updates": [
-                    "Imported some people from Citizens PRO 2019",
+                    "Imported select people from Citizens PRO 2019",
                     "Upgraded PostProcessing to 2.3"
                 ]
             }
@@ -17,10 +17,12 @@
         "0.5.1.202002": [
             {
                 "Logic Updates": [
-                    "Simplified time travel/active FPSController code"
+                    "Simplified time travel/active FPSController management code"
                 ],
                 "Asset Updates": [
-                    ""
+                    "Added mall structure FBX to 60s70s scene",
+                    "Manually matched environment lighting ambient color from 80s90s scene, for 60s70s and PauseMenu scenes, for better lighting continuity",
+                    "Updated Main Menu thumbnails for 60s70s scene"
                 ]
             }
         ],
