@@ -29,11 +29,25 @@ public class AudioSourceGlobals
     // initialize speaker parameter sets
     //
 
-    // mall
+    // default speaker settings
+    public static float defaultSpeakerVolumeChatter = 0.15f;
+    public static float defaultSpeakerMaxDistanceMallChatter = 500f;
+
+    public static float defaultSpeakerVolumeMallCommon = 0.2f;
+    public static float defaultSpeakerMaxDistanceMallCommon = 20f;
+
+    public static float defaultSpeakerVolumeStore = 0.2f;
+    public static float defaultSpeakerMaxDistanceStore = 15f;
+
+    // mall - 60s70s
+    public static SpeakerParams MallChatter60s70sParams = new SpeakerParams();
+    public static SpeakerParams MallMusic60s70sParams = new SpeakerParams();
+
+    // mall - 80s90s
     public static SpeakerParams MallChatter80s90sParams = new SpeakerParams();
     public static SpeakerParams MallMusic80s90sParams = new SpeakerParams();
 
-    // stores
+    // stores - 80s90s
     public static SpeakerParams StoreMusicConsumerBeauty80s90sParams = new SpeakerParams();
     public static SpeakerParams StoreMusicDolcis80s90sParams = new SpeakerParams();
     public static SpeakerParams StoreMusicGeneric80s90sParams = new SpeakerParams();
@@ -62,12 +76,21 @@ public class PlayAudioSequencesByName : MonoBehaviour
     {
         switch (name)
         {
+            // mall - 60s70s
+            case string partialName when partialName.Contains("mall-ambient-chatter-60s70s"):
+                return AudioSourceGlobals.MallChatter60s70sParams;
+            case string partialName when partialName.Contains("mall-music-60s70s"):
+                return AudioSourceGlobals.MallMusic60s70sParams;
+
+            // mall - 80s90s
             case string partialName when partialName.Contains("mall-ambient-chatter-80s90s"):
                 return AudioSourceGlobals.MallChatter80s90sParams;
             case string partialName when partialName.Contains("mall-music-80s90s"):
                 return AudioSourceGlobals.MallMusic80s90sParams;
             case string partialName when partialName.Contains("store-music-consumer-beauty-80s90s"):
                 return AudioSourceGlobals.StoreMusicConsumerBeauty80s90sParams;
+
+            // stores - 80s90s
             case string partialName when partialName.Contains("store-music-dolcis-80s90s"):
                 return AudioSourceGlobals.StoreMusicDolcis80s90sParams;
             case string partialName when partialName.Contains("store-music-generic-80s90s"):
@@ -99,36 +122,54 @@ public class PlayAudioSequencesByName : MonoBehaviour
 
         // 
         // assign AudioSource data per type
+        // most audio source distances and volumes are assigned to defaults, but can be overridden here
+        // primarily, this is used for differentiating audio sequences (playlists) between speakers
         //
 
-        // mall - ambient chatter
-        AudioSourceGlobals.MallChatter80s90sParams.maxDistance = 500f;
-        AudioSourceGlobals.MallChatter80s90sParams.speakerVolume = 0.15f;
+        /// mall - 60s70s ///
+
+        // ambient chatter
+        AudioSourceGlobals.MallChatter60s70sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallChatter;
+        AudioSourceGlobals.MallChatter60s70sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeChatter;
+        AudioSourceGlobals.MallChatter60s70sParams.clipSequence = new string[] { "80s-90s/Ambient/BDalton/CinCityAmbience" };
+
+        // common area music
+        AudioSourceGlobals.MallMusic60s70sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallCommon;
+        AudioSourceGlobals.MallMusic60s70sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallCommon;
+        AudioSourceGlobals.MallMusic60s70sParams.clipSequence = new string[] { "60s-70s/Music/FWIENZY/FWIENZY - Corporate Eutopia", "60s-70s/Music/FWIENZY/FWIENZY - Late Night Sax", "60s-70s/Music/FWIENZY/FWIENZY - Paradise Plaza" };
+
+        /// mall - 80s90s ///
+
+        // ambient chatter
+        AudioSourceGlobals.MallChatter80s90sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallChatter;
+        AudioSourceGlobals.MallChatter80s90sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeChatter;
         AudioSourceGlobals.MallChatter80s90sParams.clipSequence = new string[] { "80s-90s/Ambient/BDalton/CinCityAmbience" };
 
-        // mall - common area music
-        AudioSourceGlobals.MallMusic80s90sParams.maxDistance = 20f;
-        AudioSourceGlobals.MallMusic80s90sParams.speakerVolume = 0.2f;
+        // common area music
+        AudioSourceGlobals.MallMusic80s90sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallCommon;
+        AudioSourceGlobals.MallMusic80s90sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallCommon;
         AudioSourceGlobals.MallMusic80s90sParams.clipSequence = new string[] { "80s-90s/Music/Betamaxx/6. woolworth", "80s-90s/Music/Betamaxx/8. mall walking", "80s-90s/Music/Betamaxx/12. casual menswear", "80s-90s/Music/Betamaxx/1. grand opening", "80s-90s/Music/Betamaxx/7. crystal fountain", "80s-90s/Music/Betamaxx/11. retail dystopia", "80s-90s/Music/BDalton/nick" };
 
+        /// stores - 80s90s ///
+        
         // store - consumer beauty
-        AudioSourceGlobals.StoreMusicConsumerBeauty80s90sParams.maxDistance = 15f;
-        AudioSourceGlobals.StoreMusicConsumerBeauty80s90sParams.speakerVolume = 0.2f;
+        AudioSourceGlobals.StoreMusicConsumerBeauty80s90sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore;
+        AudioSourceGlobals.StoreMusicConsumerBeauty80s90sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore;
         AudioSourceGlobals.StoreMusicConsumerBeauty80s90sParams.clipSequence = new string[] { "80s-90s/Music/DeadMall/05 Thunderhead" };
 
         // store - dolcis
-        AudioSourceGlobals.StoreMusicDolcis80s90sParams.maxDistance = 15f;
-        AudioSourceGlobals.StoreMusicDolcis80s90sParams.speakerVolume = 0.2f;
+        AudioSourceGlobals.StoreMusicDolcis80s90sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore;
+        AudioSourceGlobals.StoreMusicDolcis80s90sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore;
         AudioSourceGlobals.StoreMusicDolcis80s90sParams.clipSequence = new string[] { "80s-90s/Music/Betamaxx/5. kauffmans", "80s-90s/Music/Betamaxx/10. lazarus" };
 
         // store - generic
-        AudioSourceGlobals.StoreMusicGeneric80s90sParams.maxDistance = 15f;
-        AudioSourceGlobals.StoreMusicGeneric80s90sParams.speakerVolume = 0.2f;
+        AudioSourceGlobals.StoreMusicGeneric80s90sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore;
+        AudioSourceGlobals.StoreMusicGeneric80s90sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore;
         AudioSourceGlobals.StoreMusicGeneric80s90sParams.clipSequence = new string[] { "80s-90s/Music/Betamaxx/9. a'gaci", "80s-90s/Music/Betamaxx/14. smoking section" };
 
         // store - musicland
-        AudioSourceGlobals.StoreMusicMusicland80s90sParams.maxDistance = 15f;
-        AudioSourceGlobals.StoreMusicMusicland80s90sParams.speakerVolume = 0.2f;
+        AudioSourceGlobals.StoreMusicMusicland80s90sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore;
+        AudioSourceGlobals.StoreMusicMusicland80s90sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore;
         AudioSourceGlobals.StoreMusicMusicland80s90sParams.clipSequence = new string[] { "80s-90s/Music/DeadMall/01 Wheels", "80s-90s/Music/DeadMall/09 Pressure" };        
     }
 
