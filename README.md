@@ -1,5 +1,5 @@
 # The Cinderella City Project
-The Cinderella City Project is digitally rebuilding a historic shopping center for a virtual retail history experience. The real Cinderella City Mall existed in Englewood, Colorado from 1968 to 1998.
+The Cinderella City Project is dedicated to digitally rebuilding a historic shopping center for a virtual retail history experience. The real Cinderella City Mall existed in Englewood, Colorado from 1968 to 1998.
 
 - [Read about the project and donate on Ko-Fi](https://www.ko-fi.com/cinderellacityproject)
 - [Check out photos and videos on Instagram](https://instagram.com/cinderellacityproject)
@@ -32,9 +32,75 @@ Each FBX file needs to be stored in a folder with a matching name, which allows 
 - Assets/FBX/60s70s/mall-floor-ceiling-vertical/mall-floor-ceiling-vertical.fbx
 - Assets/FBX/6070s/proxy-people/proxy-people.fbx
 
+### Scripts
+
+The following scripts are critical to the behavior and processes underpinning the Cinderella City simulation:
+
+- **Editor Scripts**  // these only run in the Unity Editor environment
+	- AssetImportPipeline.cs
+		- Responsible for applying settings and modifications to imported files (FBX models, audio files, images/graphics...)
+		- Runs automatically when a whitelisted file type is imported (or re-imported) in the Unity Editor
+		- Outlined in more detail below
+	- CopyLightingSettings.cs
+		- Adds menu items in Window -> Rendering, which allow for copying the Lighting Settings from one Scene, and pasting them into another Scene
+		- Downloaded from a 3rd party on the Unity forums (attribution in code)
+	- ExtractTexturesFromCubeMap.cs
+		- Adds a menu option in Window -> CubeSplitter, which allows for extracting the texture files from a CubeMap for editing
+		- Downloaded from a 3rd party on the Unity forums (attribution in code)
+	- LightingSettingsHelper.cs
+		- Not currently used; contains API examples for accessing and modifying a Scene's Lighting Settings via script (probably should be removed)
+	- RenderCubeMapWizard.cs
+		- Adds a menu option in GameObject -> Render to Cubemap, which creates a Cubemap from the position of an object in space
+		- Each FPS Character Scene should have a "CubemapPosition" object, which needs to be selected when running "Render to Cubemap" - temporary cameras are added to this object in order to generate the Cubemap
+		- Downloaded from a 3rd party on the Unity forums (attribution in code)
+	- TagHelper.cs
+		- Responsible for creating new Tags in the project, if they don't already exist
+		- Downloaded from a 3rd party on the Unity forums (attribution in code)
+	- ToggleVisibility.cs
+		- Responsible for toggling the visibility of objects on or off, from the Editor
+	
+- **In-Game Scripts**  // these run while the game is playing
+	- AnimateScreenSpaceObject.cs
+		- Responsible for movement of any screen-space object (UI)
+	- AutoResumeCoroutines.cs
+		- Responsible for auto-resuming coroutines that have been suspended, like when a Scene is made inactive
+	- CreateScreenSpaceUIElements.cs
+		- Responsible for building and positioning any screen-space object (UI)
+	- CreateScreenSpaceUILayoutByName.cs
+		- Responsible for creating bespoke UI layouts, depending on the name of its host object (for example, different menus have different layouts or UI elements)
+	- LoadAllScenesAsync.cs
+		- Used only on the Loading Screen, and responsible for loading all game Scenes into memory, before proceeding with showing the Main Menu
+		- Allows for seamless switching between eras
+	- ManageAvailableScenes.cs
+		- Responsible for creating and maintaining lists of Scenes, including any active Scenes, inactive Scenes, and the order of "era switching" (which era comes previously or next)
+	- ManageFPSControllers.cs
+		- Responsible for managing the location, rotation, and behavior of FPS Controllers (player) in Scenes
+	- ManageSunSettings.cs
+		- Responsible for adjusting the Sun position and properties of the Pause Menu, in order to generate accurate screenshots of disabled Scenes for "time traveling" thumbnails
+	- ManageTags.cs
+		- Responsible for defining consistent Tag names, as well as finding and operating on objects with specific Tags
+	- PlayAudioSequencesByName.cs
+		- Responsible for playing a specific sequence of audio tracks, depending on the name of the host object (typically a speaker, mechanical device, or NPC)
+	- RefreshImageSprite.cs
+		- Responsible for "refreshing" an image sprite - that is, rebuild its pixels from the definition on-disk or in-memory
+	- RenderCameraToImageSelfDestruct.cs
+		- Responsible for rendering a camera's view to an image, either on-disk or in-memory
+		- Will self-destruct (delete itself or its own component) after running once, because it must run on PreRender(), which happens every frame - it only needs to run in one frame, anything further will cause performance issues
+	- ToggleComponentByProximityToPlayer.cs
+		- Responsible for enabling/disabling GameObject Components (AudioSources, scripts...) based on their proximity to the FPS Controller (player)
+	- ToggleVisibilityByScene.cs
+		- Responsible for toggling geometry on/off depending on what Scene is incoming and outgoing (typically between menus and FPS Controller scenes)
+	- ToggleVisibilityByShortcut.cs
+		- Responsible for toggling geometry on/off by keyboard shortcut, including for time-traveling
+	- TransformScreenSpaceObject.cs
+		- Responsible for positioning screen space objects (UI) based on the available screen real estate and proportions
+
 ### AssetImportPipeline
 
-To automate the import process of these FBX files, and to clean up stale data on import, the AssetImportPipeline code looks for 3D models and other files that are imported into the Unity projet, and automatically executes crucial steps in the current scene. **It is critical that the current scene open in the Editor is the scene intended as a destination for files updated in the Assets folder.**
+To automate the import process of importing various file types, and to clean up stale data on import, the AssetImportPipeline code looks for 3D models and other files that are imported into the Unity project, and automatically executes crucial steps in the current scene. 
+
+**It is critical that the current scene open in the Editor is the scene intended as a destination for files updated in the Assets folder.**
+
 - Any files intended for import need to be whitelisted, so only the ones we explicitly care about get sent through the AssetImportPipeline
 - Whitelisted FBX files will be automatically placed in the game scene, if they aren't there already, using a global scale defined by us, and global positioning as defined in the FBX file
 - Whitelisted FBX files will extract all textures and materials to subfolders inside the current folder, and will delete existing textures and materials inside the current scene
@@ -49,7 +115,7 @@ Each scene needs to have one "Container" object that contains all objects in the
 Scene structure example:
 - **60s70s** (Scene)
 	- **60s70sContainer** (GameObject) // used for toggling scenes on or off by disabling all children
-		- Main Camera (GameObject)
+		- Sun (GameObject)
 		- FPSController (GameObject)
 		- UILauncher (GameObject)
 		- Geometry group 1 (GameObject)
@@ -61,7 +127,7 @@ AssetImportPipeline automatically adds scriptable components to GameObjects that
 
 The following Scenes require manually-generated GameObjects and Scriptable Components as outlined below (one-time setup only):
 
-#### Asynchronous Scene Loading (LoadingScreen)
+#### Asynchronous Scene Loading (Affects scenes: LoadingScreen)
 The LoadingScreen is responsible for asynchronously loading all required Scenes in the game, including the 3D geometric and 2D UI scenes, so that switching between Scenes is seamless.
 
  - LoadingScreen (Scene)
@@ -74,22 +140,31 @@ The LoadingScreen is responsible for asynchronously loading all required Scenes 
 				- **LoadAllScenesAsync** (Script Component)
 					- Responsible for asynchronously loading all specified scenes
 
-#### UI + Menu Scenes (MainMenu, PauseMenu)
+#### UI + Menu Scenes (Affects scenes: MainMenu, PauseMenu)
 In scenes that exclusively generate and display UI elements, we need to add custom script components to some GameObjects to control behaviors related to UI:
 
  - MainMenu (Scene)
  	- MainMenuContainer (GameObject)
+	 	- **Sun** (GameObject) (PauseMenu only)
+		 	- Used for matching the Sun settings of other scenes, for the purposes of accurate inactive scene screenshots
+			 - Requires Scripts:
+			 	- **ManageSunSettings** (ScriptComponent)
+				 	- Responsible for collecting Sun settings for FPSController scenes, and applying them to PauseMenu for accurate inactive screenshots
 		- **MainMenuLauncher** (GameObject)
 			- Holds scripts for generating UI (as children of the launcher), and for toggling between scenes
 			- Requires Scripts:
 				- **CreateScreenSpaceUILayoutByName** (Script Component)
 					- Responsible for identifying which UI components to build based on the Scene name
 
-#### First-Person Scenes (60s70s, 80s90s, AltFuture)
+#### First-Person Scenes (Affects scenes: 60s70s, 80s90s, AltFuture)
 In scenes with an FPSController and FirstPersonCharacter (60s70s, 80s90s, AltFuture), we need to add custom script components to some GameObjects to control behaviors related to UI and the FPSController. Note that the FPSController needs to be renamed with a prefix of the era it's in.
 
  - 60s70s (Scene)
  	- 60s70sContainer (GameObject)
+		- **Sun** (GameObject)
+			 - Requires Scripts:
+			 	- **ManageSunSettings** (ScriptComponent)
+				 	- Responsible for collecting Sun settings for FPSController scenes, and applying them to PauseMenu for accurate inactive screenshots
 		- **60s70sFPSController** (GameObject)
 			- Unity Standard Asset, Responsible for the player's camera and movement in space, modified slightly from default
 			- Requires Specific Name: '(EraName)FPSController'
@@ -98,11 +173,11 @@ In scenes with an FPSController and FirstPersonCharacter (60s70s, 80s90s, AltFut
 					- Responsible for keeping track of the current FPSController
 		- **UILauncher** (GameObject)
 			- Holds scripts for generating UI (as children of the launcher), and for toggling between scenes
-			- Requires Scripts:
-			- [not used yet] **CreateScreenSpaceUILayoutByName** (Script Component)
-				- Responsible for identifying which UI components to build based on the Scene name
-			- **ToggleVisibilityByShortcut** (Script Component)
-				- Responsible for watching for keyboard events and toggling between Scenes
+				- Requires Scripts:
+				- **ToggleVisibilityByShortcut** (Script Component)
+					- Responsible for watching for keyboard events and toggling between Scenes
+		- **CubeMapRenderPosition** (GameObject)
+			- Represents a position in space from which to execute CubeMap updates, for use in glassy reflections
 
 
 

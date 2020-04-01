@@ -211,6 +211,11 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
             ManageFPSControllers.RelocateAlignFPSControllerToFPSController(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform);
 
+            // inherit the sun settings of the disabled scene, in order to generate an accurate screenshot
+            Light sunToInherit = ManageSunSettings.GetSunBySceneName(disabledSceneName);
+            Light sunToOverwrite = ManageSunSettings.GetSunBySceneName(SceneManager.GetActiveScene().name);
+            ManageSunSettings.InheritSunSettingsBySceneName(disabledSceneName, sunToInherit, sunToOverwrite);
+
             // capture the current camera
             // this will also update the global variable with the texture, depending on the scene name
             CaptureActiveFPSControllerCamera();

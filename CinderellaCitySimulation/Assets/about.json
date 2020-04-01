@@ -1,5 +1,5 @@
 {
-  "AppVersion": "0.5.0.202002",
+  "AppVersion": "0.5.2.202003",
   "VersionHistory": 
   [
     {
@@ -14,7 +14,20 @@
                 ]
             }
         ],
-        "0.5.1.202002": [
+        "0.5.2.202003": [
+          {
+              "Logic Updates": [
+                  "Added support for distinct audio sequences for 60s70s and 80s90s eras",
+                  "Added ManageSunSettings script, which properly synchronizes Sun positions and properties for Pause Menu, to create accurate screenshots of disabled Scenes",
+                  "Added CopyLightingSettings Editor script, which creates new menu items for copy/pasting lighting settings and sun objects between scenes"
+              ],
+              "Asset Updates": [
+                  "Added FWIENZY music assets for both 60s70s and 80s90s eras",
+                  "Used CopyLightingSettings to copy lighting settings from 80s90s to 60s70s and PauseMenu"
+              ]
+          }
+      ],
+        "0.5.1.202003": [
             {
                 "Logic Updates": [
                     "Simplified time travel/active FPSController management code"
