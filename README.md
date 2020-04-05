@@ -47,8 +47,6 @@ The following scripts are critical to the behavior and processes underpinning th
 	- ExtractTexturesFromCubeMap.cs
 		- Adds a menu option in Window -> CubeSplitter, which allows for extracting the texture files from a CubeMap for editing
 		- Downloaded from a 3rd party on the Unity forums (attribution in code)
-	- LightingSettingsHelper.cs
-		- Not currently used; contains API examples for accessing and modifying a Scene's Lighting Settings via script (probably should be removed)
 	- RenderCubeMapWizard.cs
 		- Adds a menu option in GameObject -> Render to Cubemap, which creates a Cubemap from the position of an object in space
 		- Each FPS Character Scene should have a "CubemapPosition" object, which needs to be selected when running "Render to Cubemap" - temporary cameras are added to this object in order to generate the Cubemap
@@ -73,6 +71,8 @@ The following scripts are critical to the behavior and processes underpinning th
 		- Allows for seamless switching between eras
 	- ManageAvailableScenes.cs
 		- Responsible for creating and maintaining lists of Scenes, including any active Scenes, inactive Scenes, and the order of "era switching" (which era comes previously or next)
+	- ManageCameraEffects.cs
+		- Responsible for managing active and available camera effects, like PostProcessProfiles
 	- ManageFPSControllers.cs
 		- Responsible for managing the location, rotation, and behavior of FPS Controllers (player) in Scenes
 	- ManageSunSettings.cs
@@ -171,11 +171,16 @@ In scenes with an FPSController and FirstPersonCharacter (60s70s, 80s90s, AltFut
 			- Requires Scripts:
 				- **ManageFPSControllers** (Script Component)
 					- Responsible for keeping track of the current FPSController
+			- **FPSCharacter** (GameObject)
+				- Unity Standard Asset, Responsible for the player's camera
+				- Requires Scripts:
+					- **ToggleCameraEffectsByShortcut** (Script Component)
+						- Responsible for watching for keyboard events and toggling scene effects
 		- **UILauncher** (GameObject)
 			- Holds scripts for generating UI (as children of the launcher), and for toggling between scenes
 				- Requires Scripts:
 				- **ToggleVisibilityByShortcut** (Script Component)
-					- Responsible for watching for keyboard events and toggling between Scenes
+					- Responsible for watching for keyboard events and toggling between Scenes (including menus)
 		- **CubeMapRenderPosition** (GameObject)
 			- Represents a position in space from which to execute CubeMap updates, for use in glassy reflections
 

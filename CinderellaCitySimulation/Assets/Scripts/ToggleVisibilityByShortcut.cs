@@ -77,7 +77,7 @@ public class ToggleVisibilityByShortcut : MonoBehaviour {
         /// object visibility shortcuts ///
 
         // people
-        if (Input.GetKeyDown("p") && objectType.Contains("people"))
+        if (Input.GetKeyDown("p") && this.name.Contains("people"))
         {
             ToggleObjectChildrenVisibility(this.gameObject);
         }
