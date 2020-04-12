@@ -18,12 +18,13 @@
           {
               "Logic Updates": [
                   "Added support for toggling camera effects via shortcut, via new ManageCameraEffects and ToggleCameraEffectsByShortcut scripts",
+                  "Added support for camera effect transitions when time-traveling",
                   "Added support for distinct audio sequences for 60s70s and 80s90s eras",
                   "Added ManageSunSettings script, which properly synchronizes Sun positions and properties for Pause Menu, to create accurate screenshots of disabled Scenes",
                   "Added CopyLightingSettings Editor script, which creates new menu items for copy/pasting lighting settings and sun objects between scenes"
               ],
               "Asset Updates": [
-                  "Added and reorganized camera effects: 60s70s, 80s90s, B&W, Dark, Sepia, and Vaporwave",  
+                  "Added and reorganized camera effects: 60s70s, 80s90s, B&W, Dark, FlashBlack, FlashWhite, Sepia, and Vaporwave",  
                   "Added FWIENZY music assets for both 60s70s and 80s90s eras",
                   "Used CopyLightingSettings to copy lighting settings from 80s90s to 60s70s and PauseMenu"
               ]

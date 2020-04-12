@@ -21,12 +21,16 @@ public class ToggleVisibilityByShortcut : MonoBehaviour {
 
         // time travel requested - previous time period
         if (Input.GetKeyDown("q") &&
-    StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNames, SceneManager.GetActiveScene().name))
+            StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNames, SceneManager.GetActiveScene().name))
         {
             // get the previous time period scene name
             string previousTimePeriodSceneName = ManageAvailableScenes.GetNextTimePeriodSceneName("previous");
-            // then toggle to it from the active scene
-            ToggleVisibilityByScene.ToggleFromSceneToSceneRelocatePlayerToFPSController(SceneManager.GetActiveScene().name, previousTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform);
+
+            // toggle to the previous scene with a camera effect transition
+            StartCoroutine(ToggleVisibilityByScene.ToggleFromSceneToSceneWithTransition(SceneManager.GetActiveScene().name, previousTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform, 
+                ManageCameraEffects.CameraEffectGlobals.activePostProcessingHost, "FlashWhite", 0.4f));
+
+            // TODO: add a reverse transition in the new scene
         }
 
         // time travel requested - next time period
@@ -35,8 +39,14 @@ public class ToggleVisibilityByShortcut : MonoBehaviour {
         {
             // get the next time period scene name
             string nextTimePeriodSceneName = ManageAvailableScenes.GetNextTimePeriodSceneName("next");
-            // then toggle to it from the active scene
-            ToggleVisibilityByScene.ToggleFromSceneToSceneRelocatePlayerToFPSController(SceneManager.GetActiveScene().name, nextTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform);
+
+            // then toggle to the next scene with a camera effect transition
+            StartCoroutine(ToggleVisibilityByScene.ToggleFromSceneToSceneWithTransition(SceneManager.GetActiveScene().name, nextTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform, ManageCameraEffects.CameraEffectGlobals.activePostProcessingHost, "FlashWhite", 0.4f));
+
+            // TODO: add a reverse transition in the new scene
+            /*
+            StartCoroutine(ToggleCameraEffectsByShortcut.ToggleCameraEffectWithTransition(ManageCameraEffects.CameraEffectGlobals.activePostProcessingHost, ManageCameraEffects.GetDefaultPostProcessProfileBySceneName(nextTimePeriodSceneName), "FlashWhite", 0.4f));
+            */
         }
 
         /// UI visiblity shortcuts ///
