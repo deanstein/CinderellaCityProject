@@ -27,7 +27,7 @@ MonoBehaviour:
     value: 0
   keyValue:
     overrideState: 1
-    value: 2
+    value: 0
   eyeAdaptation:
     overrideState: 0
     value: 0
@@ -1480,7 +1480,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e6292b2c06870d4495f009f912b9600, type: 3}
-  m_Name: Flash
+  m_Name: FlashBlack
   m_EditorClassIdentifier: 
   settings:
   - {fileID: 114860537506451402}
@@ -1616,7 +1616,7 @@ MonoBehaviour:
     value: 0
   color:
     overrideState: 1
-    value: {r: 1, g: 1, b: 1, a: 1}
+    value: {r: 0, g: 0, b: 0, a: 1}
   fastMode:
     overrideState: 1
     value: 1

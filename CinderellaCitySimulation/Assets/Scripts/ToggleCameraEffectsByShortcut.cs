@@ -6,38 +6,41 @@ using UnityEngine.Rendering.PostProcessing;
 
 public class ToggleCameraEffectsByShortcut : MonoBehaviour {
 
-    private void Awake()
+    public static IEnumerator ToggleCameraEffectWithTransition(GameObject postProcessHost, string profileName, string transitionProfileName, float transitionTime)
     {
-        // when this object is awoken, update the globally-available Post Process host
-        ManageCameraEffects.CameraEffectGlobals.activePostProcessingHost = this.gameObject;
+        // first, toggle the flash transition
+        ManageCameraEffects.SetPostProcessTransitionProfile(postProcessHost, transitionProfileName);
 
-        // on awake, set the flash profile, then reset it to the original
-        // TODO: why doesn't this work?
-        //StartCoroutine(ManageCameraEffects.SetFlashThenTargetProfile(this.gameObject, 0.5f));
+        // wait for the transition time
+        yield return new WaitForSeconds(transitionTime);
+
+        // set the requested camera effect profile
+        ManageCameraEffects.SetPostProcessProfile(postProcessHost, profileName);
     }
 
     // Update is called once per frame
     void Update()
     {
-              
-        // determine which effects belong to which shortcut
+        // update the globally-available Post Process host
+        ManageCameraEffects.CameraEffectGlobals.activePostProcessingHost = this.gameObject;
+
+        // define which effects belong to which shortcut
         if (Input.GetKeyDown("1"))
         {
-            StartCoroutine(ManageCameraEffects.SetPostProcessProfile(this.gameObject, "Vaporwave", 0.5f));
+            StartCoroutine(ToggleCameraEffectWithTransition(this.gameObject, "Vaporwave", "FlashBlack", 0.4f));
         }
         else if (Input.GetKeyDown("2"))
         {
-            StartCoroutine(ManageCameraEffects.SetPostProcessProfile(this.gameObject, "B&W", 0.5f));
+            StartCoroutine(ToggleCameraEffectWithTransition(this.gameObject, "B&W", "FlashBlack", 0.4f));
         }
         else if (Input.GetKeyDown("3"))
         {
-            StartCoroutine(ManageCameraEffects.SetPostProcessProfile(this.gameObject, "Sepia", 0.5f));
+            StartCoroutine(ToggleCameraEffectWithTransition(this.gameObject, "Sepia", "FlashBlack", 0.4f));
         }
         else if (Input.GetKeyDown("4"))
         {
-            StartCoroutine(ManageCameraEffects.SetPostProcessProfile(this.gameObject, "Dark", 0.5f));
+            StartCoroutine(ToggleCameraEffectWithTransition(this.gameObject, "Dark", "FlashBlack", 0.4f));
         }
-
     }
 }
 

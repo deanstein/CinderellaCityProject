@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering.PostProcessing;
 
 
 public class ToggleVisibilityByScene : MonoBehaviour {
@@ -117,7 +118,7 @@ public class ToggleVisibilityByScene : MonoBehaviour {
         ManageFPSControllers.RelocateAlignFPSControllerToCamera(cameraPartialName);
     }
 
-    // toggles scenes, and also relocates the FPSCharacter to match another FPSCharacter
+    // toggles scenes, and also relocates the FPSCharacter to match another FPSCharacter (time-traveling)
     public static void ToggleFromSceneToSceneRelocatePlayerToFPSController(string fromScene, string toScene, Transform FPSControllerTransformToMatch)
     {
         // first, switch to the requested scene
@@ -125,6 +126,25 @@ public class ToggleVisibilityByScene : MonoBehaviour {
 
         // then relocate and align the current FPSController to the referring FPSController
         ManageFPSControllers.RelocateAlignFPSControllerToFPSController(FPSControllerTransformToMatch);
+    }
+
+    // toggles scenes and relocates player to another FPSCharacter (time-traveling), with a camera effect transition
+    public static IEnumerator ToggleFromSceneToSceneWithTransition(string fromScene, string toScene, Transform FPSControllerTransformToMatch, GameObject postProcessHost, string transitionProfileName, float transitionTime)
+    {
+        // get the PostProcessing Host's current profile so we can return to it
+        string currentProfileName = postProcessHost.GetComponent<PostProcessVolume>().profile.name;
+
+        // first, toggle the flash transition
+        ManageCameraEffects.SetPostProcessTransitionProfile(postProcessHost, transitionProfileName);
+
+        // wait for the transition time
+        yield return new WaitForSeconds(transitionTime);
+
+        // reset the profile to the original
+        ManageCameraEffects.SetPostProcessProfile(postProcessHost, currentProfileName);
+
+        // toggle to the requested scene
+        ToggleFromSceneToSceneRelocatePlayerToFPSController(fromScene, toScene, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform);
     }
 
     // toggles given scenes on in the background, captures the FPSCharacter camera, then toggles the scenes off

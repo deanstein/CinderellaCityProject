@@ -23,28 +23,12 @@ public class ManageCameraEffects : MonoBehaviour
     }
 
     // sets a post processing effects profile on this gameObject's child by the given name, with the given transition time
-    public static IEnumerator SetPostProcessProfile(GameObject postProcessVolumeHost, string profileName, float transitionTime)
+    public static void SetPostProcessProfile(GameObject postProcessVolumeHost, string profileName)
     {
         // set this object as the globally-available postProcessingHost
         CameraEffectGlobals.activePostProcessingHost = postProcessVolumeHost;
-       //get the post processing volume from the given object
+        //get the post processing volume from the given object
         PostProcessVolume postProcessVolume = postProcessVolumeHost.GetComponent<PostProcessVolume>();
-
-        // get the current color grading settings
-        PostProcessEffectSettings colorGradingSettings = postProcessVolume.profile.GetSetting<ColorGrading>();
-
-        // get the flash transition profile
-        PostProcessProfile flashProfile = Resources.Load(CameraEffectGlobals.effectsPath + "Flash") as PostProcessProfile;
-
-        // for continuity, remove any color grading settings from Flash, and replace them with the outgoing profile's settings
-        flashProfile.RemoveSettings<ColorGrading>();
-        flashProfile.AddSettings(colorGradingSettings);
-
-        // set the profile as the flash transition
-        postProcessVolume.profile = flashProfile;
-
-        // wait for the transition time
-        yield return new WaitForSeconds(transitionTime);
 
         // only set the requested effect if no effect is active,
         // or if the requested effect is different than the active effect
@@ -66,33 +50,36 @@ public class ManageCameraEffects : MonoBehaviour
         else if (CameraEffectGlobals.activeCameraEffect == profileName)
         {
             // find the default profile for this scene
-            PostProcessProfile defaultProfile = Resources.Load(CameraEffectGlobals.effectsPath + GetDefaultPostProcessProfileByCurrentScene()) as PostProcessProfile;
+            PostProcessProfile defaultProfile = Resources.Load(CameraEffectGlobals.effectsPath + GetDefaultPostProcessProfileBySceneName(SceneManager.GetActiveScene().name)) as PostProcessProfile;
 
             // set the default profile as the current profile
             postProcessVolume.profile = defaultProfile;
 
             // indicate that an effect is no longer active
-            CameraEffectGlobals.activeCameraEffect = GetDefaultPostProcessProfileByCurrentScene();
+            CameraEffectGlobals.activeCameraEffect = GetDefaultPostProcessProfileBySceneName(SceneManager.GetActiveScene().name);
         }
     }
 
-    public static IEnumerator SetFlashThenTargetProfile(GameObject postProcessVolumeHost, float transitionTime)
+    public static void SetPostProcessTransitionProfile(GameObject postProcessVolumeHost, string profileName)
     {
         PostProcessVolume currentVolume = postProcessVolumeHost.GetComponent<PostProcessVolume>();
-        PostProcessProfile currentProfile = currentVolume.profile;
-        PostProcessProfile flashProfile = Resources.Load(CameraEffectGlobals.effectsPath + "Flash") as PostProcessProfile;
+
+        // get the transition profile
+        PostProcessProfile flashProfile = Resources.Load(CameraEffectGlobals.effectsPath + profileName) as PostProcessProfile;
+
+        // get the current color grading settings
+        PostProcessEffectSettings colorGradingSettings = currentVolume.profile.GetSetting<ColorGrading>();
+
+        // for continuity, remove any color grading settings from Flash, and replace them with the outgoing profile's settings
+        flashProfile.RemoveSettings<ColorGrading>();
+        flashProfile.AddSettings(colorGradingSettings);
 
         // set the flash profile
         currentVolume.profile = flashProfile;
-
-        // wait for the transition time
-        yield return new WaitForSeconds(transitionTime);
-
-        // TODO: why doesn't this work?
-        // now set the original profile
-        currentVolume.profile = currentProfile;
     }
 
+    // optional TODO: ensure custom camera effects match when time traveling?
+    /*
     // matches the current camera to the active Post Process profile, for continuity when switching scenes
     public static void MatchActivePostProcessProfile(GameObject postProcessHost)
     {
@@ -104,17 +91,17 @@ public class ManageCameraEffects : MonoBehaviour
             //SetPostProcessProfile(postProcessHost, CameraEffectGlobals.activeCameraEffect);
         }
     }
+    */
 
-    public static string GetDefaultPostProcessProfileByCurrentScene()
+    public static string GetDefaultPostProcessProfileBySceneName(string sceneName)
     {
-        string name = SceneManager.GetActiveScene().name;
-        switch (name)
+        switch (sceneName)
         {
-            case string sceneName when sceneName.Contains("60s70s"):
+            case string name when sceneName.Contains("60s70s"):
                 return "60s70s";
-            case string sceneName when sceneName.Contains("80s90s"):
+            case string name when sceneName.Contains("80s90s"):
                 return "80s90s";
-            case string sceneName when sceneName.Contains("AltFuture"):
+            case string name when sceneName.Contains("AltFuture"):
                 return "AltFuture";
             default:
                 return null;

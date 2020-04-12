@@ -166,7 +166,7 @@ In scenes with an FPSController and FirstPersonCharacter (60s70s, 80s90s, AltFut
 			 	- **ManageSunSettings** (ScriptComponent)
 				 	- Responsible for collecting Sun settings for FPSController scenes, and applying them to PauseMenu for accurate inactive screenshots
 		- **60s70sFPSController** (GameObject)
-			- Unity Standard Asset, Responsible for the player's camera and movement in space, modified slightly from default
+			- Unity Standard Asset, Responsible for the player's movement in space, modified slightly from default
 			- Requires Specific Name: '(EraName)FPSController'
 			- Requires Scripts:
 				- **ManageFPSControllers** (Script Component)
