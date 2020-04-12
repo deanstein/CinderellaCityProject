@@ -9,8 +9,7 @@
                     ""
                 ],
                 "Asset Updates": [
-                    "Imported select people from Citizens PRO 2019",
-                    "Upgraded PostProcessing to 2.3"
+                    "Imported select people from Citizens PRO 2019"
                 ]
             }
         ],
@@ -21,12 +20,14 @@
                   "Added support for camera effect transitions when time-traveling",
                   "Added support for distinct audio sequences for 60s70s and 80s90s eras",
                   "Added ManageSunSettings script, which properly synchronizes Sun positions and properties for Pause Menu, to create accurate screenshots of disabled Scenes",
-                  "Added CopyLightingSettings Editor script, which creates new menu items for copy/pasting lighting settings and sun objects between scenes"
+                  "Added CopyLightingSettings Editor script, which creates new menu items for copy/pasting lighting settings and sun objects between scenes",
+                  "Changed transition style of lighting change to FlashBlack, and set time-traveling to FlashWhite"
               ],
               "Asset Updates": [
                   "Added and reorganized camera effects: 60s70s, 80s90s, B&W, Dark, FlashBlack, FlashWhite, Sepia, and Vaporwave",  
                   "Added FWIENZY music assets for both 60s70s and 80s90s eras",
-                  "Used CopyLightingSettings to copy lighting settings from 80s90s to 60s70s and PauseMenu"
+                  "Used CopyLightingSettings to copy lighting settings from 80s90s to 60s70s and PauseMenu",
+                  "Upgraded PostProcessing to 2.3"
               ]
           }
       ],
