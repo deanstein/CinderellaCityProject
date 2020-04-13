@@ -155,12 +155,12 @@ public static class TransformScreenSpaceObject
 
         float requestedBuffer = cameraWidth * bufferProportion;
 
-        // determine the delta: the number of pixels to move up or down (if negative) to achieve the requested buffer
-        float bufferDelta = Mathf.Abs(objectBuffer - requestedBuffer);
+        // determine the delta: the number of pixels to move left or right (if negative) to achieve the requested buffer
+        float bufferDelta = objectBuffer - requestedBuffer;
         //Debug.Log("Buffer delta: " + bufferDelta);
 
         // move the object as required
-        Vector3 newObjectPosition = new Vector3(screenSpaceObjectPosX - bufferDelta, screenSpaceObjectPosY, 0);
+        Vector3 newObjectPosition = new Vector3(screenSpaceObjectPosX + bufferDelta, screenSpaceObjectPosY, 0);
         rectTransform.position = newObjectPosition;
     }
 
@@ -364,12 +364,13 @@ public static class TransformScreenSpaceObject
         RectTransform screenSpaceObjectRectTransform = screenSpaceObject.GetComponent<RectTransform>();
 
         float screenSpaceObjectHeight = screenSpaceObjectRectTransform.rect.height;
+        //Debug.Log("Screen space object height: " + screenSpaceObjectHeight);
 
         float screenSpaceObjectBottomEdgePositionY = GetObjectBottomEdgePositionY(screenSpaceObject);
         //Debug.Log("Screen space object bottom edge position Y: " + screenSpaceObjectBottomEdgePositionY);
 
         float neighborObjectBottomEdgePositionY = GetObjectBottomEdgePositionY(neighborObject);
-        //Debug.Log("Alignment object bottom edge position Y: " + alignmentObjectBottomEdgePositionY);
+        //Debug.Log("Alignment object bottom edge position Y: " + neighborObjectBottomEdgePositionY);
 
         float newScreenSpaceObjectBottomEdgePositionY = neighborObjectBottomEdgePositionY - (cameraHeight * bufferProportion);
         //Debug.Log("New screen space object bottom edge position Y: " + newScreenSpaceObjectBottomEdgePositionY);
@@ -378,6 +379,7 @@ public static class TransformScreenSpaceObject
         //Debug.Log("New screen space object height: " + newScreenSpaceObjectHeight);
 
         float screenSpaceObjectHeightDelta = newScreenSpaceObjectHeight - screenSpaceObjectHeight;
+        //Debug.Log("Screen space object height delta: " + screenSpaceObjectHeightDelta);
         screenSpaceObjectRectTransform.sizeDelta = new Vector2(screenSpaceObjectRectTransform.rect.width, newScreenSpaceObjectHeight);
 
         // the resize happened from the center, so adjust the position to compensate

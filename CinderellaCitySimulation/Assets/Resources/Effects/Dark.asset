@@ -27,7 +27,7 @@ MonoBehaviour:
     value: 0
   keyValue:
     overrideState: 1
-    value: 0.2
+    value: 0.15
   eyeAdaptation:
     overrideState: 0
     value: 0
@@ -1552,11 +1552,11 @@ MonoBehaviour:
     overrideState: 1
     value: 1
   intensity:
-    overrideState: 1
-    value: 9.53
+    overrideState: 0
+    value: 9.17
   threshold:
     overrideState: 1
-    value: 0.74
+    value: 0.72
   softKnee:
     overrideState: 1
     value: 1
@@ -1581,7 +1581,7 @@ MonoBehaviour:
     defaultState: 1
   dirtIntensity:
     overrideState: 1
-    value: 1.36
+    value: 2
 --- !u!114 &926652676128350346
 MonoBehaviour:
   m_ObjectHideFlags: 3

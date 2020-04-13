@@ -61,6 +61,27 @@ public class StringUtils
         return convertedNames;
     }
 
+    // gets the index of a friendly name given a scene name
+    public static string ConvertSceneNameToFriendlyName(string sceneName)
+    {
+        // get the index of the scene we're in
+        int sceneIndex = SceneGlobals.availableTimePeriodSceneNames.IndexOf(sceneName);
+
+        Debug.Log("Scene index: " + sceneIndex);
+
+        if (sceneIndex != -1)
+        {
+            // now get the associated friendly name
+            string friendlyName = SceneGlobals.availableTimePeriodFriendlyNames[sceneIndex];
+
+            return friendlyName;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     // return true if this string is found at all in the given array
     public static bool TestIfAnyListItemContainedInString(List<string> listOfStringsToSearchFor, string stringToSearchIn)
     {
@@ -84,11 +105,20 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
     /// colors ///
 
+    // text white
+    public static Color32 typicalTextColor = new Color32(255, 255, 255, 255);
+
+    // text grey
+    public static Color32 subtleTextColor = new Color32(150, 150, 150, 255);
+
     // all button colors
     public static Color32 buttonColor = new Color32(20, 20, 20, 220);
 
     // all nav and container colors
     public static Color32 containerColor = new Color32(50, 50, 50, 100);
+
+    // clear color
+    public static Color32 clearColor = new Color32(255, 255, 255, 0);
 
     /// sizes ///
 
@@ -96,6 +126,8 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     public static string labelFont = "AvenirNextLTPro-Demi";
 
     public static int menuTitleLabelSize = 30;
+    public static int HUDTimePeriodLabelSize = 40;
+    public static int versionLabelSize = 15;
 
     public static int placeLabelSize = 50;
     public static int timeLabelSize = 50;
@@ -135,8 +167,16 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
     public static float thumbnailStackBottomMarginScreenHeightRatio = 0.02f;
 
-    public static float textButtonBottomMarginScreenHeightRatio = 0.005f;
+    public static float textButtonBottomMarginScreenHeightRatio = 0.015f;
     public static float textButtonLeftMarginScreenWidthRatio = 0.01f;
+
+    public static float HUDBottomBarTopMarginScreenHeightRatio = 0.9f;
+    public static float HUDBottomBarBottomMarginScreenHeightRatio = 0.03f;
+    public static float HUDBottonBarHeightScreenHeightRatio = 0.08f;
+    public static float HUDTimePeriodLabelLeftMarginScreenWidthRatio = 0.85f;
+
+    public static float versionLabelLeftMarginScreenWidthRatio = 0.008f;
+    public static float versionLabelTopMarginScreenHeightRatio = 0.98f;
 
     // create an empty list of GameObjects that need to be dynamically added to their parent
     // this list will be emptied and populated in UI constructors that make nested sets of objects
@@ -258,7 +298,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
             case string name when name.Contains("MainMenu"):
                 ToggleVisibilityByScene.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "MainMenu");
                 return;
-            case string name when name.Contains("Exit"):
+            case string name when name.Contains("Quit"):
                 Application.Quit();
                 return;
 
@@ -438,6 +478,116 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         titleLabel.transform.SetParent(titleContainer.transform);
 
         return titleContainer;
+    }
+
+    public static GameObject CreateHUDTimePeriodIndicator(GameObject parent, string titleString)
+    {
+        // create the title container object
+        GameObject timePeriodContainer = new GameObject("TimePeriodContainer");
+        timePeriodContainer.AddComponent<CanvasRenderer>();
+        Image timePeriodContainerColor = timePeriodContainer.AddComponent<Image>();
+        timePeriodContainerColor.color = containerColor;
+
+        // position the title container
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromCameraTop(timePeriodContainer, HUDBottomBarTopMarginScreenHeightRatio);
+
+        // resize the title container
+        TransformScreenSpaceObject.ResizeObjectWidthToMatchCamera(timePeriodContainer);
+        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromCameraLeft(timePeriodContainer, HUDTimePeriodLabelLeftMarginScreenWidthRatio);
+
+        // add the title text
+        GameObject timePeriodLabel = new GameObject("TimePeriodLabel");
+        Text timePeriodLabelText = timePeriodLabel.AddComponent<Text>();
+        timePeriodLabelText.font = (Font)Resources.Load(labelFont);
+        timePeriodLabelText.text = titleString;
+        timePeriodLabelText.fontSize = HUDTimePeriodLabelSize;
+        timePeriodLabelText.alignment = TextAnchor.UpperLeft;
+
+        // resize the text's bounding box needs, before any transforms
+        TransformScreenSpaceObject.ResizeTextExtentsToFitContents(timePeriodLabelText);
+
+        // position the title text
+        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(timePeriodLabel);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(timePeriodLabel, timePeriodContainer, menuTitleTopMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(timePeriodLabel, timePeriodContainer, menuTitleLeftMarginScreenWidthRatio);
+        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromCameraBottom(timePeriodContainer, HUDBottomBarBottomMarginScreenHeightRatio);
+
+        // set parent/child hierarchy
+        timePeriodContainer.transform.SetParent(parent.transform);
+        timePeriodLabel.transform.SetParent(timePeriodContainer.transform);
+
+        return timePeriodContainer;
+    }
+
+    public static GameObject CreateHUDUnderConstructionLabel(GameObject parent, string message)
+    {
+        // create the label container
+        GameObject underConstructionLabelContainer = new GameObject("UnderConstructionContainer");
+        underConstructionLabelContainer.AddComponent<CanvasRenderer>();
+        // image is needed to create a rect transform
+        Image timePeriodContainerColor = underConstructionLabelContainer.AddComponent<Image>();
+        timePeriodContainerColor.color = clearColor;
+
+        // position the title container
+        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(underConstructionLabelContainer);
+
+        // add the title text
+        GameObject underConstructionLabel = new GameObject("UnderConstructionLabel");
+        Text underConstructionLabelText = underConstructionLabel.AddComponent<Text>();
+        underConstructionLabelText.font = (Font)Resources.Load(labelFont);
+        underConstructionLabelText.text = message;
+        underConstructionLabelText.fontSize = menuTitleLabelSize;
+        underConstructionLabelText.alignment = TextAnchor.UpperLeft;
+
+        // resize the text's bounding box needs, before any transforms
+        TransformScreenSpaceObject.ResizeTextExtentsToFitContents(underConstructionLabelText);
+
+        // position the title text
+        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(underConstructionLabel);
+
+        // set parent/child hierarchy
+        underConstructionLabelContainer.transform.SetParent(parent.transform);
+        underConstructionLabel.transform.SetParent(underConstructionLabelContainer.transform);
+
+        return underConstructionLabelContainer;
+    }
+
+    public static GameObject CreateVersionLabel(GameObject parent)
+    {
+        string version = "v" + Application.version;
+
+        // create the version container
+        GameObject versionLabelContainer = new GameObject("VersionLabelContainer");
+        versionLabelContainer.AddComponent<CanvasRenderer>();
+        // image is needed to create a rect transform
+        Image versionLabelContainerColor = versionLabelContainer.AddComponent<Image>();
+        versionLabelContainerColor.color = clearColor;
+
+        // position the version container
+        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(versionLabelContainer);
+
+        // add the version text
+        GameObject versionLabel = new GameObject("VersionLabel");
+        Text versionLabelText = versionLabel.AddComponent<Text>();
+        versionLabelText.color = subtleTextColor;
+        versionLabelText.font = (Font)Resources.Load(labelFont);
+        versionLabelText.text = version;
+        versionLabelText.fontSize = versionLabelSize;
+        versionLabelText.alignment = TextAnchor.UpperLeft;
+
+        // resize the text's bounding box needs, before any transforms
+        TransformScreenSpaceObject.ResizeTextExtentsToFitContents(versionLabelText);
+
+        // position the version text
+        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(versionLabel);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromCameraLeft(versionLabel, versionLabelLeftMarginScreenWidthRatio);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromCameraTop(versionLabel, versionLabelTopMarginScreenHeightRatio);
+
+        // set parent/child hierarchy
+        versionLabelContainer.transform.SetParent(parent.transform);
+        versionLabel.transform.SetParent(versionLabelContainer.transform);
+
+        return versionLabelContainer;
     }
 
     public static GameObject CreateCentralNavContainer(GameObject parent, GameObject topAlignmentObject)
@@ -722,14 +872,19 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // define a gameObject to align the buttons to
         GameObject buttonAlignmentObject = timeTravelThumbnailStack.transform.GetChild(0).gameObject;
 
+        // create the resume button
+        GameObject resumeButton = CreateTextButton("Resume", centralNavContainer, buttonColor);
+        // align and position the main menu button
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(resumeButton, buttonAlignmentObject, 0.0f);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(resumeButton, buttonAlignmentObject, textButtonLeftMarginScreenWidthRatio);
+
         // create the main menu button
         GameObject mainMenuButton = CreateTextButton("Main Menu", centralNavContainer, buttonColor);
-        // align and position the main menu button
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(mainMenuButton, buttonAlignmentObject, 0.0f);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(mainMenuButton, resumeButton, textButtonBottomMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(mainMenuButton, buttonAlignmentObject, textButtonLeftMarginScreenWidthRatio);
 
         // exit button
-        GameObject exitButton = CreateTextButton("Exit", centralNavContainer, buttonColor);
+        GameObject exitButton = CreateTextButton("Quit", centralNavContainer, buttonColor);
         // align and position the exit button
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(exitButton, mainMenuButton, textButtonBottomMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(exitButton, buttonAlignmentObject, textButtonLeftMarginScreenWidthRatio);

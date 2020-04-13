@@ -179,8 +179,10 @@ In scenes with an FPSController and FirstPersonCharacter (60s70s, 80s90s, AltFut
 		- **UILauncher** (GameObject)
 			- Holds scripts for generating UI (as children of the launcher), and for toggling between scenes
 				- Requires Scripts:
-				- **ToggleVisibilityByShortcut** (Script Component)
-					- Responsible for watching for keyboard events and toggling between Scenes (including menus)
+					- **CreateScreenSpaceUILayoutByName** (Script Component)
+						- Responsible for creating the Heads Up Display layout when in-game
+					- **ToggleVisibilityByShortcut** (Script Component)
+						- Responsible for watching for keyboard events and toggling between Scenes (including menus)
 		- **CubeMapRenderPosition** (GameObject)
 			- Represents a position in space from which to execute CubeMap updates, for use in glassy reflections
 

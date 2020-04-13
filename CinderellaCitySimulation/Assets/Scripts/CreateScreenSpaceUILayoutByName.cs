@@ -37,9 +37,8 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
             Debug.Log("Building the loading screen...");
 
             // the loading screen is responsible for preloading the large scenes so level choice is faster
-            //LoadSceneByName LoadSceneByNameScript = mainMenu.AddComponent<LoadSceneByName>();
 
-            // main menu canvas
+            // loading screen canvas
             GameObject loadingScreen = CreateScreenSpaceUIElements.CreateMenuCanvas(launcher, "LoadingScreen");
 
             // background image slideshow
@@ -50,6 +49,9 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
 
             // create the title bar container
             GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(loadingScreen, logoHeader, "Building Cinderella City...");
+
+            // create the game version indicator
+            GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(loadingScreen);
         }
 
         // the main menu
@@ -71,6 +73,9 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
 
             // time & place picker and container
             GameObject mainMenuCentralNav = CreateScreenSpaceUIElements.CreateMainMenuCentralNav(mainMenu, titleBarContainer);
+
+            // create the game version indicator
+            GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(mainMenu);
         }
 
         // pause menu
@@ -92,6 +97,31 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
 
             // time travel column and pause menu buttons
             GameObject pauseMenuCentralNav = CreateScreenSpaceUIElements.CreatePauseMenuCentralNav(pauseMenu, titleBarContainer);
+
+            // create the game version indicator
+            GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(pauseMenu);
+        }
+
+        // generic UI launcher in FPSController scenes
+        // used here to display persistent HUD UI
+        else if (name.Contains("UILauncher"))
+        {
+            Debug.Log("Building the Heads Up Display...");
+
+            // Heads Up Display canvas
+            GameObject HUDCanvas = CreateScreenSpaceUIElements.CreateMenuCanvas(launcher, "HUD");
+
+            // create the time period indicator
+            GameObject HUDTimePeriodIndicator = CreateScreenSpaceUIElements.CreateHUDTimePeriodIndicator(HUDCanvas, StringUtils.ConvertSceneNameToFriendlyName(this.gameObject.scene.name));
+
+            // create the game version indicator
+            GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(HUDCanvas);
+
+            // if this is the 60s70s scene, note that it's under construction
+            if (this.gameObject.scene.name.Contains("60s70s"))
+            {
+                CreateScreenSpaceUIElements.CreateHUDUnderConstructionLabel(HUDCanvas, "/// Under Construction ///");
+            }
         }
 
         // otherwise, no UI will be built because the name wasn't found or recognized
