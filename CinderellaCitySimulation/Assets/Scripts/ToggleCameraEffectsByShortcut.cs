@@ -18,6 +18,14 @@ public class ToggleCameraEffectsByShortcut : MonoBehaviour {
         ManageCameraEffects.SetPostProcessProfile(postProcessHost, profileName);
     }
 
+    private void OnEnable()
+    {
+        // optional: start a camera transition when the camera is enabled
+        /*
+        StartCoroutine(ToggleCameraEffectsByShortcut.ToggleCameraEffectWithTransition(this.gameObject, ManageCameraEffects.GetDefaultPostProcessProfileBySceneName(this.gameObject.scene.name), "FlashWhite", 0.2f));
+        */
+    }
+
     // Update is called once per frame
     void Update()
     {

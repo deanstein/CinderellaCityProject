@@ -26,17 +26,17 @@ MonoBehaviour:
     overrideState: 0
     value: 0
   keyValue:
-    overrideState: 0
+    overrideState: 1
     value: 1
   eyeAdaptation:
     overrideState: 0
     value: 0
   speedUp:
     overrideState: 1
-    value: 2
+    value: 16
   speedDown:
     overrideState: 1
-    value: 2
+    value: 16
 --- !u!114 &-6184137774916202681
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -202,7 +202,7 @@ MonoBehaviour:
     value: 0
   postExposure:
     overrideState: 1
-    value: 0.85
+    value: 0.75
   contrast:
     overrideState: 1
     value: 0

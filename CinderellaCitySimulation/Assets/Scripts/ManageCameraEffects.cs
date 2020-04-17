@@ -78,21 +78,6 @@ public class ManageCameraEffects : MonoBehaviour
         currentVolume.profile = flashProfile;
     }
 
-    // optional TODO: ensure custom camera effects match when time traveling?
-    /*
-    // matches the current camera to the active Post Process profile, for continuity when switching scenes
-    public static void MatchActivePostProcessProfile(GameObject postProcessHost)
-    {
-        Debug.Log("This profile: " + postProcessHost.GetComponent<PostProcessVolume>().profile.name);
-        Debug.Log("Active profile: " + CameraEffectGlobals.activeCameraEffect);
-        // match this profile with the globally-active profile if they're not matching already
-        if (postProcessHost.GetComponent<PostProcessVolume>().profile.name != CameraEffectGlobals.activeCameraEffect)
-        {
-            //SetPostProcessProfile(postProcessHost, CameraEffectGlobals.activeCameraEffect);
-        }
-    }
-    */
-
     public static string GetDefaultPostProcessProfileBySceneName(string sceneName)
     {
         switch (sceneName)

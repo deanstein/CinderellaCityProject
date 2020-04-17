@@ -17,9 +17,12 @@
           "Logic Updates": [
             "Added support for displaying HUD indicator UI in 60s70s and 80s90s scenes",
             "Added support for displaying the app version in all scenes",
+            "Added support for camera effect transitions when starting an FPS scene",
             "Added a Resume button to the Pause Menu"
           ],
           "Content Updates": [
+            "Added anchor stores to 60s70s version: JC Penney, Denver Dry Goods, and Joslins",
+            "Added lights to 60s70s version",
             "Made the Dark camera effect profile darker"
           ]
         }

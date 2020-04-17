@@ -29,8 +29,6 @@ public class ToggleVisibilityByShortcut : MonoBehaviour {
             // toggle to the previous scene with a camera effect transition
             StartCoroutine(ToggleVisibilityByScene.ToggleFromSceneToSceneWithTransition(SceneManager.GetActiveScene().name, previousTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform, 
                 ManageCameraEffects.CameraEffectGlobals.activePostProcessingHost, "FlashWhite", 0.4f));
-
-            // TODO: add a reverse transition in the new scene
         }
 
         // time travel requested - next time period
@@ -42,11 +40,6 @@ public class ToggleVisibilityByShortcut : MonoBehaviour {
 
             // then toggle to the next scene with a camera effect transition
             StartCoroutine(ToggleVisibilityByScene.ToggleFromSceneToSceneWithTransition(SceneManager.GetActiveScene().name, nextTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform, ManageCameraEffects.CameraEffectGlobals.activePostProcessingHost, "FlashWhite", 0.4f));
-
-            // TODO: add a reverse transition in the new scene
-            /*
-            StartCoroutine(ToggleCameraEffectsByShortcut.ToggleCameraEffectWithTransition(ManageCameraEffects.CameraEffectGlobals.activePostProcessingHost, ManageCameraEffects.GetDefaultPostProcessProfileBySceneName(nextTimePeriodSceneName), "FlashWhite", 0.4f));
-            */
         }
 
         /// UI visiblity shortcuts ///
