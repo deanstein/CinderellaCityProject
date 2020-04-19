@@ -136,7 +136,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
         // common area music
         AudioSourceGlobals.MallMusic60s70sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallCommon;
         AudioSourceGlobals.MallMusic60s70sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallCommon;
-        AudioSourceGlobals.MallMusic60s70sParams.clipSequence = new string[] { "60s-70s/Music/FWIENZY/FWIENZY - Corporate Eutopia", "60s-70s/Music/FWIENZY/FWIENZY - Late Night Sax", "60s-70s/Music/FWIENZY/FWIENZY - Paradise Plaza" };
+        AudioSourceGlobals.MallMusic60s70sParams.clipSequence = new string[] { "80s-90s/Music/Betamaxx/12. casual menswear", "80s-90s/Music/Betamaxx/6. woolworth", "60s-70s/Music/FWIENZY/FWIENZY - Late Night Sax", "60s-70s/Music/FWIENZY/FWIENZY - Paradise Plaza" };
 
         /// mall - 80s90s ///
 
@@ -148,7 +148,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
         // common area music
         AudioSourceGlobals.MallMusic80s90sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallCommon;
         AudioSourceGlobals.MallMusic80s90sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallCommon;
-        AudioSourceGlobals.MallMusic80s90sParams.clipSequence = new string[] { "80s-90s/Music/Betamaxx/6. woolworth", "80s-90s/Music/Betamaxx/8. mall walking", "80s-90s/Music/Betamaxx/12. casual menswear", "80s-90s/Music/Betamaxx/1. grand opening", "80s-90s/Music/Betamaxx/7. crystal fountain", "80s-90s/Music/Betamaxx/11. retail dystopia", "80s-90s/Music/BDalton/nick" };
+        AudioSourceGlobals.MallMusic80s90sParams.clipSequence = new string[] { "80s-90s/Music/Betamaxx/13. montgomery ward", "80s-90s/Music/Betamaxx/8. mall walking", "80s-90s/Music/Betamaxx/1. grand opening", "80s-90s/Music/Betamaxx/2. gold circle", "80s-90s/Music/Betamaxx/7. crystal fountain", "80s-90s/Music/Betamaxx/11. retail dystopia", "80s-90s/Music/BDalton/nick" };
 
         /// stores - 80s90s ///
         
