@@ -1,5 +1,5 @@
 {
-  "AppVersion": "0.5.3.202004",
+  "AppVersion": "0.5.4.202004",
   "VersionHistory": [
     {
       "0.6.0.202002": [
@@ -9,6 +9,18 @@
           ],
           "Content Updates": [
             "Imported select people from Citizens PRO 2019"
+          ]
+        }
+      ],
+      "0.5.4.202004": [
+        {
+          "Logic Updates": [
+            ""
+          ],
+          "Content Updates": [
+            "Baked lightmaps in 60s70s scene",
+            "Made adjustments to camera effect profiles",
+            "Fixed issues with Static settings on geometry in 60s70s"
           ]
         }
       ],

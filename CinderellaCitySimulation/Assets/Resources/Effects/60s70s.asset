@@ -27,7 +27,7 @@ MonoBehaviour:
     value: 0
   keyValue:
     overrideState: 1
-    value: 1
+    value: 1.4
   eyeAdaptation:
     overrideState: 0
     value: 0
@@ -64,7 +64,7 @@ MonoBehaviour:
     value: {x: 0.5, y: 0.5}
   intensity:
     overrideState: 1
-    value: 0.476
+    value: 0.331
   smoothness:
     overrideState: 0
     value: 0.2
@@ -196,7 +196,7 @@ MonoBehaviour:
     value: 0
   saturation:
     overrideState: 1
-    value: 22.6
+    value: 23
   brightness:
     overrideState: 0
     value: 0
