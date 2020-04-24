@@ -21,7 +21,7 @@ public class ToggleVisibilityByShortcut : MonoBehaviour {
 
         // time travel requested - previous time period
         if (Input.GetKeyDown("q") &&
-            StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNames, SceneManager.GetActiveScene().name))
+            StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNames, SceneManager.GetActiveScene().name) && this.name.Contains("UILauncher"))
         {
             // get the previous time period scene name
             string previousTimePeriodSceneName = ManageAvailableScenes.GetNextTimePeriodSceneName("previous");
@@ -33,7 +33,7 @@ public class ToggleVisibilityByShortcut : MonoBehaviour {
 
         // time travel requested - next time period
         if (Input.GetKeyDown("e") &&
-            StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNames, SceneManager.GetActiveScene().name))
+            StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNames, SceneManager.GetActiveScene().name) && this.name.Contains("UILauncher"))
         {
             // get the next time period scene name
             string nextTimePeriodSceneName = ManageAvailableScenes.GetNextTimePeriodSceneName("next");
@@ -47,7 +47,7 @@ public class ToggleVisibilityByShortcut : MonoBehaviour {
         // main menu
         // only accessible from time period scenes
         if (Input.GetKeyDown("m") &&
-            StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNames, SceneManager.GetActiveScene().name))
+            StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNames, SceneManager.GetActiveScene().name) && this.name.Contains("UILauncher"))
         {
             ToggleVisibilityByScene.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "MainMenu");
         }
@@ -55,7 +55,7 @@ public class ToggleVisibilityByShortcut : MonoBehaviour {
         // pause menu
         // only accessible from time period scenes
         if (Input.GetKeyDown(KeyCode.Escape) &&
-            StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNames, SceneManager.GetActiveScene().name))
+            StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNames, SceneManager.GetActiveScene().name) && this.name.Contains("UILauncher"))
         {
             // before pausing, we need to capture a screenshot from the active FPSController
             // then update the pause menu background image
@@ -75,6 +75,20 @@ public class ToggleVisibilityByShortcut : MonoBehaviour {
             && SceneManager.GetActiveScene().name.Contains("PauseMenu"))
         {
             ToggleVisibilityByScene.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, SceneGlobals.referringScene);
+        }
+
+        // optionally display or hide the under construction label
+        if (Input.GetKeyDown(KeyCode.Slash) &&
+            StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNames, SceneManager.GetActiveScene().name) && this.name.Contains("UILauncher"))
+        {
+            if (UIGlobals.underConstructionLabelContainer.activeSelf)
+            {
+                UIGlobals.underConstructionLabelContainer.SetActive(false);
+            }
+            else if (!UIGlobals.underConstructionLabelContainer.activeSelf)
+            {
+                UIGlobals.underConstructionLabelContainer.SetActive(true);
+            }
         }
 
         /// object visibility shortcuts ///

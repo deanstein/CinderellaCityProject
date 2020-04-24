@@ -25,6 +25,9 @@ public class UIGlobals
     public static Texture2D pauseMenuBackgroundCameraTexture = new Texture2D(Screen.width, Screen.height);
     public static Texture2D FPSController60s70sCameraTexture = new Texture2D(Screen.width, Screen.height);
     public static Texture2D FPSController80s90sCameraTexture = new Texture2D(Screen.width, Screen.height);
+
+    // these are the HUD UI elements that can be hidden/revealed
+    public static GameObject underConstructionLabelContainer;
 }
 
 public class StringUtils
@@ -522,14 +525,14 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     public static GameObject CreateHUDUnderConstructionLabel(GameObject parent, string message)
     {
         // create the label container
-        GameObject underConstructionLabelContainer = new GameObject("UnderConstructionContainer");
-        underConstructionLabelContainer.AddComponent<CanvasRenderer>();
+        UIGlobals.underConstructionLabelContainer = new GameObject("UnderConstructionContainer");
+        UIGlobals.underConstructionLabelContainer.AddComponent<CanvasRenderer>();
         // image is needed to create a rect transform
-        Image timePeriodContainerColor = underConstructionLabelContainer.AddComponent<Image>();
+        Image timePeriodContainerColor = UIGlobals.underConstructionLabelContainer.AddComponent<Image>();
         timePeriodContainerColor.color = clearColor;
 
         // position the title container
-        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(underConstructionLabelContainer);
+        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(UIGlobals.underConstructionLabelContainer);
 
         // add the title text
         GameObject underConstructionLabel = new GameObject("UnderConstructionLabel");
@@ -546,10 +549,10 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         TransformScreenSpaceObject.PositionObjectAtCenterofCamera(underConstructionLabel);
 
         // set parent/child hierarchy
-        underConstructionLabelContainer.transform.SetParent(parent.transform);
-        underConstructionLabel.transform.SetParent(underConstructionLabelContainer.transform);
+        UIGlobals.underConstructionLabelContainer.transform.SetParent(parent.transform);
+        underConstructionLabel.transform.SetParent(UIGlobals.underConstructionLabelContainer.transform);
 
-        return underConstructionLabelContainer;
+        return UIGlobals.underConstructionLabelContainer;
     }
 
     public static GameObject CreateVersionLabel(GameObject parent)
