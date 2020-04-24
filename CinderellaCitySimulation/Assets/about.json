@@ -2,7 +2,7 @@
   "AppVersion": "0.5.4.202004",
   "VersionHistory": [
     {
-      "0.6.0.202002": [
+      "0.6.0.202005": [
         {
           "Logic Updates": [
             ""
@@ -15,12 +15,13 @@
       "0.5.4.202004": [
         {
           "Logic Updates": [
-            ""
+            "Added the ability to toggle the 'Under Construction' label with '/'"
           ],
           "Content Updates": [
-            "Baked lightmaps in 60s70s scene",
+            "Added baked lightmaps in 60s70s scene",
             "Made adjustments to camera effect profiles",
-            "Fixed issues with Static settings on geometry in 60s70s"
+            "Fixed issues with Static settings on geometry in 60s70s",
+            "Fixed an issue where people were not toggling off when requested in 60s70s"
           ]
         }
       ],
