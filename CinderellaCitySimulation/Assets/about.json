@@ -1,11 +1,11 @@
 {
-  "AppVersion": "0.5.4.202004",
+  "AppVersion": "0.6.0.202005",
   "VersionHistory": [
     {
       "0.6.0.202005": [
         {
           "Logic Updates": [
-            ""
+            "Refactored 'by input event' code (Camera Effects, Objects, and Scenes/UI) to simplify and clarify which objects are watching for which input events"
           ],
           "Content Updates": [
             "Imported select people from Citizens PRO 2019"
@@ -15,7 +15,7 @@
       "0.5.4.202004": [
         {
           "Logic Updates": [
-            "Added the ability to toggle the 'Under Construction' label with '/'"
+            "Added the ability to toggle the 'Under Construction' label with '/' shortcut"
           ],
           "Content Updates": [
             "Added baked lightmaps in 60s70s scene",

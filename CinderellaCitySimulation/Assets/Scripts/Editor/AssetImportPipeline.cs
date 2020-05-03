@@ -611,10 +611,8 @@ public class AssetImportUpdate : AssetPostprocessor {
         if (assetName.Contains("proxy-people"))
         {
             // add components to the parent gameObject
-            AddCustomScriptComponentToGameObject(gameObjectByAssetName, "ToggleVisibilityByShortcut");
-            ToggleVisibilityByShortcut ToggleVisibilityScript = gameObjectByAssetName.GetComponent<ToggleVisibilityByShortcut>();
-            ToggleVisibilityScript.objectType = "people";
-            ToggleVisibilityScript.shortcut = "p";
+            AddCustomScriptComponentToGameObject(gameObjectByAssetName, "ToggleObjectsByInputEvent");
+            ToggleObjectsByInputEvent ToggleVisibilityScript = gameObjectByAssetName.GetComponent<ToggleObjectsByInputEvent>();
 
             // add components to children gameObjects
 
@@ -636,6 +634,12 @@ public class AssetImportUpdate : AssetPostprocessor {
     {
         // get the game object from the global asset name that was changed
         GameObject gameObjectFromAsset = GameObject.Find(globalAssetFileName);
+        if (!gameObjectFromAsset)
+        {
+            Debug.Log("For some reason, couldn't find the modified game object.");
+            return;
+        }
+
         Transform[] allChildren = gameObjectFromAsset.GetComponentsInChildren<Transform>();
 
         // set the GameObject itself as static, if it isn't already
@@ -852,6 +856,88 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
     }
 
+    // define the proxyType based on this asset's name
+    public static string AssociateProxyTypeByName(string assetName)
+    {
+        if (assetName.Contains("proxy-trees"))
+        {
+            proxyType = "Trees";
+            Debug.Log("Proxy type: " + proxyType);
+
+            return proxyType;
+        }
+
+        if (assetName.Contains("cameras"))
+        {
+            proxyType = "Cameras";
+            Debug.Log("Proxy type: " + proxyType);
+
+            return proxyType;
+        }
+
+        if (assetName.Contains("proxy-people"))
+        {
+            proxyType = "People";
+            Debug.Log("Proxy type: " + proxyType);
+
+            return proxyType;
+        }
+
+        else
+        {
+            return "";
+        }
+    }
+
+    // define the replacement path based on this asset's name
+    public static string AssociateProxyReplacementPathByName(string objectName)
+    {
+        //
+        // TREES
+        //
+
+        if (objectName.Contains("tree-center-court"))
+        {
+            // identify the path of the prefab to replace this object
+            replacementObjectPath = "Assets/TreesVariety/oak/oak 3.prefab";
+
+            return replacementObjectPath;
+        }
+
+        if (objectName.Contains("tree-center-court-small"))
+        {
+            // identify the path of the prefab to replace this object
+            replacementObjectPath = "Assets/TreesVariety/birch/birch 2.prefab";
+
+            return replacementObjectPath;
+        }
+
+        if (objectName.Contains("tree-shamrock"))
+        {
+            // identify the path of the prefab to replace this object
+            replacementObjectPath = "Assets/TreesVariety/birch/birch 5.prefab";
+
+            return replacementObjectPath;
+        }
+
+        // 
+        // PEOPLE
+        //
+
+        if (objectName.Contains("people-aaron"))
+        {
+            // identify the path of the prefab to replace this object
+            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Male/Winter/casual11_m_highpoly.prefab";
+
+            return replacementObjectPath;
+        }
+
+        else
+        {
+            return "";
+        }
+    }
+
     // define how to instantiate proxy replacement objects
     public static void InstantiateProxyReplacements(string assetName)
     {
@@ -862,26 +948,8 @@ public class AssetImportUpdate : AssetPostprocessor {
             return;
         }
 
-        if (assetName.Contains("proxy-trees"))
-        {
-            proxyType = "Trees";
-            Debug.Log("Proxy type: " + proxyType);
-        }
-
-        if (assetName.Contains("cameras"))
-        {
-            proxyType = "Cameras";
-            Debug.Log("Proxy type: " + proxyType);
-        }
-
-        if (assetName.Contains("proxy-people"))
-        {
-            proxyType = "People";
-            Debug.Log("Proxy type: " + proxyType);
-
-            // people aren't ready yet
-            return;
-        }
+        // update the global proxy type variable based on the asset name
+        string proxyType = AssociateProxyTypeByName(assetName);
 
         // find the associated GameObject by this asset's name
         GameObject gameObjectByAsset = GameObject.Find(assetName);
@@ -904,28 +972,14 @@ public class AssetImportUpdate : AssetPostprocessor {
         // for each of this asset's children, look for any whose name indicates they are proxies to be replaced
         foreach (Transform child in allChildren)
         {
+            // these objects are visible proxy objects that need to be replaced with Unity equivalents
             if (child.name.Contains("REPLACE"))
             {
                 GameObject gameObjectToBeReplaced = child.gameObject;
                 Debug.Log("Found a proxy gameObject to be replaced: " + gameObjectToBeReplaced);
 
-                if (child.name.Contains("tree-center-court"))
-                {
-                    // identify the path of the prefab to replace this object
-                    replacementObjectPath = "Assets/TreesVariety/oak/oak 3.prefab";
-                }
-
-                if (child.name.Contains("tree-center-court-small"))
-                {
-                    // identify the path of the prefab to replace this object
-                    replacementObjectPath = "Assets/TreesVariety/birch/birch 2.prefab";
-                }
-
-                if (child.name.Contains("tree-shamrock"))
-                {
-                    // identify the path of the prefab to replace this object
-                    replacementObjectPath = "Assets/TreesVariety/birch/birch 5.prefab";
-                }
+                // define the proxy replacement path by the child object's name
+                replacementObjectPath = AssociateProxyReplacementPathByName(child.name);
 
                 // ensure the object we want to replace is visible, so we can measure it
                 ToggleVisibility.ToggleGameObjectOn(gameObjectToBeReplaced);
@@ -1276,7 +1330,8 @@ public class AssetImportUpdate : AssetPostprocessor {
         if (assetFilePath.Contains("anchor-broadway.fbx")
             || assetFilePath.Contains("anchor-jcp.fbx")
             || assetFilePath.Contains("anchor-joslins.fbx")
-            || assetFilePath.Contains("anchor-mgwards.fbx"))
+            || assetFilePath.Contains("anchor-mgwards.fbx")
+            || assetFilePath.Contains("anchor-denver.fbx"))
         {
             // pre-processor option flags
             doSetGlobalScale = true; // always true
@@ -1547,7 +1602,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         //
         // these are temporary fixes
         //
-        if (assetFilePath.Contains("temp-rose-mall-fix.fbx"))
+        if (assetFilePath.Contains("temp-fix.fbx"))
         {
             // pre-processor option flags
             doSetGlobalScale = true; // always true
