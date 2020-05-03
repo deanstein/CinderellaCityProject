@@ -86,12 +86,14 @@ The following scripts are critical to the behavior and processes underpinning th
 	- RenderCameraToImageSelfDestruct.cs
 		- Responsible for rendering a camera's view to an image, either on-disk or in-memory
 		- Will self-destruct (delete itself or its own component) after running once, because it must run on PreRender(), which happens every frame - it only needs to run in one frame, anything further will cause performance issues
+	- ToggleCameraEffectsByInputEvent
+		- Responsible for toggling camera effects on certain input events
 	- ToggleComponentByProximityToPlayer.cs
 		- Responsible for enabling/disabling GameObject Components (AudioSources, scripts...) based on their proximity to the FPS Controller (player)
-	- ToggleVisibilityByScene.cs
-		- Responsible for toggling geometry on/off depending on what Scene is incoming and outgoing (typically between menus and FPS Controller scenes)
-	- ToggleVisibilityByShortcut.cs
-		- Responsible for toggling geometry on/off by keyboard shortcut, including for time-traveling
+	- ToggleObjectsByInputEvent.cs
+		- Responsible for toggling geometry on/off on certain input events
+	- ToggleSceneAndUIByInputEvent.cs
+		- Responsible for toggling entire Scenes and associated UI on certain input events
 	- TransformScreenSpaceObject.cs
 		- Responsible for positioning screen space objects (UI) based on the available screen real estate and proportions
 
@@ -174,14 +176,14 @@ In scenes with an FPSController and FirstPersonCharacter (60s70s, 80s90s, AltFut
 			- **FPSCharacter** (GameObject)
 				- Unity Standard Asset, Responsible for the player's camera
 				- Requires Scripts:
-					- **ToggleCameraEffectsByShortcut** (Script Component)
+					- **ToggleCameraEffectsByinputEvent** (Script Component)
 						- Responsible for watching for keyboard events and toggling scene effects
 		- **UILauncher** (GameObject)
 			- Holds scripts for generating UI (as children of the launcher), and for toggling between scenes
 				- Requires Scripts:
 					- **CreateScreenSpaceUILayoutByName** (Script Component)
 						- Responsible for creating the Heads Up Display layout when in-game
-					- **ToggleVisibilityByShortcut** (Script Component)
+					- **ToggleSceneAndUIByInputEvent** (Script Component)
 						- Responsible for watching for keyboard events and toggling between Scenes (including menus)
 		- **CubeMapRenderPosition** (GameObject)
 			- Represents a position in space from which to execute CubeMap updates, for use in glassy reflections

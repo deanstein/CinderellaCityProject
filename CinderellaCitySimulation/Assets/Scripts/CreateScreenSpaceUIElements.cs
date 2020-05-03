@@ -250,7 +250,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         foreach (string disabledSceneName in ManageAvailableScenes.GetDisabledTimePeriodSceneNames(SceneGlobals.referringScene))
         {
             // toggle the scene, but ignore scriptHost objects - so no scripts or behaviors enable
-            ToggleVisibilityByScene.ToggleSceneObjectsOnExceptScriptHosts(disabledSceneName);
+            ToggleSceneAndUI.ToggleSceneObjectsOnExceptScriptHosts(disabledSceneName);
 
             ManageFPSControllers.RelocateAlignFPSControllerToFPSController(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform);
 
@@ -264,10 +264,10 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
             CaptureActiveFPSControllerCamera();
 
             // turn everything off again
-            ToggleVisibilityByScene.ToggleSceneObjectsOff(disabledSceneName);
+            ToggleSceneAndUI.ToggleSceneObjectsOff(disabledSceneName);
 
             // return the script hosts to their on state
-            ToggleVisibilityByScene.ToggleScriptHostObjectListOn();
+            ToggleSceneAndUI.ToggleScriptHostObjectListOn();
         }
     }
 
@@ -296,10 +296,10 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         {
             // handle buttons that lead to menus and exit
             case string name when name.Contains("Resume"):
-                ToggleVisibilityByScene.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, SceneGlobals.referringScene);
+                ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, SceneGlobals.referringScene);
                 return;
             case string name when name.Contains("MainMenu"):
-                ToggleVisibilityByScene.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "MainMenu");
+                ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "MainMenu");
                 return;
             case string name when name.Contains("Quit"):
                 Application.Quit();
@@ -319,13 +319,13 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
                 if (name.Contains("TimeTravel"))
                 {
                     // switch to the correct scene based on the time period and location in the button name
-                    ToggleVisibilityByScene.ToggleFromSceneToSceneRelocatePlayerToFPSController(SceneManager.GetActiveScene().name, timePeriod, ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform);
+                    ToggleSceneAndUI.ToggleFromSceneToSceneRelocatePlayerToFPSController(SceneManager.GetActiveScene().name, timePeriod, ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform);
                 }
                 // otherwise, this request includes a specific location in its name, so relocate the player there
                 else
                 {
                     // switch to the correct scene based on the time period and location in the button name
-                    ToggleVisibilityByScene.ToggleFromSceneToSceneRelocatePlayerToCamera(SceneManager.GetActiveScene().name, timePeriod, playerPosition);
+                    ToggleSceneAndUI.ToggleFromSceneToSceneRelocatePlayerToCamera(SceneManager.GetActiveScene().name, timePeriod, playerPosition);
                 }
                 return;
             default:

@@ -49,7 +49,7 @@ public class LoadAllScenesAsync : MonoBehaviour {
             // when the async operation is done, turn off its objects
             if (asyncOperations[i].isDone)
             {
-                ToggleVisibilityByScene.ToggleSceneObjectsOff(loadSceneNames[i]);
+                ToggleSceneAndUI.ToggleSceneObjectsOff(loadSceneNames[i]);
             }
         }
 
@@ -68,9 +68,9 @@ public class LoadAllScenesAsync : MonoBehaviour {
 
         // set the specified scene as active, once all scenes are loaded
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(setActiveSceneName));
-        ToggleVisibilityByScene.ToggleSceneObjectsOn(setActiveSceneName);
+        ToggleSceneAndUI.ToggleSceneObjectsOn(setActiveSceneName);
 
         // then turn off all the Loading Screen's objects
-        ToggleVisibilityByScene.ToggleSceneObjectsOff("LoadingScreen");
+        ToggleSceneAndUI.ToggleSceneObjectsOff("LoadingScreen");
     }
 }
