@@ -48,6 +48,7 @@ public class AssetImportUpdate : AssetPostprocessor {
     // instantiate proxy strings
     static string proxyType;
     static string replacementObjectPath;
+    static string animatorControllerPath;
 
     // post-processing seems to repeat itself a lot, so set a max and keep track of how many times
     // note that if an object was just instantiated in the scene, this max hit value gets incremented by 1
@@ -434,12 +435,9 @@ public class AssetImportUpdate : AssetPostprocessor {
     {
         // create an array of MeshChunks found within this GameObject so we can get the bounding box size
         MeshRenderer[] gameObjectMeshRendererArray = gameObjectToMeasure.GetComponentsInChildren<MeshRenderer>();
-        //Mesh mesh = gameObjectToMeasure.GetComponent(MeshRenderer);
 
-        //float width = GetComponent(MeshFilter).mesh.bounds.extents.x;
-
-        // create a list to contain heights
-        List<float> gameObjectMaxDimList = new List<float>();
+        // store the game object's maximum bounding box dimension
+        float gameObjectMaxDimension = 1;
 
         // for each MeshRenderer found, get the height and add it to the list
         for (int i = 0; i < gameObjectMeshRendererArray.Length; i++)
@@ -465,13 +463,11 @@ public class AssetImportUpdate : AssetPostprocessor {
             float maxXYZ = XYZList.Max();
             Debug.Log("Max XYZ dimension for " + gameObjectMeshRendererArray[i] + ": " + maxXYZ);
 
-            // add this height to the list of heights
-            gameObjectMaxDimList.Add(maxXYZ);
-            //Debug.Log(gameObjectHeightsList);
+            // set the max dimension to the max XYZ value
+            gameObjectMaxDimension = maxXYZ;
         }
 
-        float gameObjectMaxHeight = gameObjectMaxDimList.Max();
-        //Debug.Log("Max height of " + gameObjectToMeasure + ": " + gameObjectMaxHeight);
+        float gameObjectMaxHeight = gameObjectMaxDimension;
 
         // if the bounding box is zero, this might not be ready for measuring yet
         // so set the flag to try proxy replacement again
@@ -889,6 +885,76 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
     }
 
+    // define the animator controller based on this asset's name
+    public static string AssociateAnimatorControllerPathByName(string objectName)
+    {
+        // talking - androgynous
+        if (objectName.Contains("talking"))
+        {
+            animatorControllerPath = "Assets/Citizens PRO/Animations/talking 1.controller";
+
+            return animatorControllerPath;
+        }
+        // walking - male or female
+        if (objectName.Contains("male") && objectName.Contains("walking"))
+        {
+            animatorControllerPath = "Assets/Citizens PRO/Animations/male walking.controller";
+
+            return animatorControllerPath;
+        }
+        if (objectName.Contains("female") && objectName.Contains("walking"))
+        {
+            animatorControllerPath = "Assets/Citizens PRO/Animations/female walking.controller";
+
+            return animatorControllerPath;
+        }
+        // sitting - male or female
+        if (objectName.Contains("male") && objectName.Contains("sitting"))
+        {
+            animatorControllerPath = "Assets/Citizens PRO/Animations/male sitting.controller";
+
+            return animatorControllerPath;
+        }
+        if (objectName.Contains("female") && objectName.Contains("sitting"))
+        {
+            animatorControllerPath = "Assets/Citizens PRO/Animations/female sitting.controller";
+
+            return animatorControllerPath;
+        }
+        // listening - male or female
+        if (objectName.Contains("male") && objectName.Contains("listening"))
+        {
+            animatorControllerPath = "Assets/Citizens PRO/Animations/male listening.controller";
+
+            return animatorControllerPath;
+        }
+        if (objectName.Contains("female") && objectName.Contains("listening"))
+        {
+            animatorControllerPath = "Assets/Citizens PRO/Animations/female listening.controller";
+
+            return animatorControllerPath;
+        }
+        // idle - male or female
+        if (objectName.Contains("male") && objectName.Contains("idle"))
+        {
+            animatorControllerPath = "Assets/Citizens PRO/Animations/male idle 1.controller";
+
+            return animatorControllerPath;
+        }
+        if (objectName.Contains("female") && objectName.Contains("idle"))
+        {
+            animatorControllerPath = "Assets/Citizens PRO/Animations/female idle 1.controller";
+
+            return animatorControllerPath;
+        }
+        else
+        {
+            animatorControllerPath = "Assets/Citizens PRO/Animations/man controller.controller";
+
+            return animatorControllerPath;
+        }
+    }
+
     // define the replacement path based on this asset's name
     public static string AssociateProxyReplacementPathByName(string objectName)
     {
@@ -932,6 +998,38 @@ public class AssetImportUpdate : AssetPostprocessor {
             return replacementObjectPath;
         }
 
+        if (objectName.Contains("people-ginger-marcus"))
+        {
+            // identify the path of the prefab to replace this object
+            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Female/Winter/casual18_f_highpoly.prefab";
+
+            return replacementObjectPath;
+        }
+
+        if (objectName.Contains("people-lindsey"))
+        {
+            // identify the path of the prefab to replace this object
+            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Female/Winter/casual03_f_highpoly.prefab";
+
+            return replacementObjectPath;
+        }
+
+        if (objectName.Contains("people-denise"))
+        {
+            // identify the path of the prefab to replace this object
+            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Female/Summer/casual14_f_highpoly.prefab";
+
+            return replacementObjectPath;
+        }
+
+        if (objectName.Contains("people-dale"))
+        {
+            // identify the path of the prefab to replace this object
+            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Male/Summer/casual24_m_highpoly.prefab";
+
+            return replacementObjectPath;
+        }
+
         else
         {
             return "";
@@ -955,6 +1053,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         GameObject gameObjectByAsset = GameObject.Find(assetName);
         
         // we might get here, if so we need to return to prevent an error
+        // TODO: find out why this is sometimes happening
         if (!gameObjectByAsset)
         {
             Debug.Log("Couldn't find the GameObject by name: " + assetName);
@@ -1006,6 +1105,19 @@ public class AssetImportUpdate : AssetPostprocessor {
 
                     // tag this instanced prefab as a delete candidate for the next import
                     instancedPrefab.gameObject.tag = proxyReplacementDeleteTag;
+
+                    // if we're replacing proxy people, need to set a controller
+                    if (child.name.Contains("people"))
+                    {
+                        // the instanced prefab should have an animator
+                        Animator personAnimator = instancedPrefab.GetComponent<Animator>();
+
+                        // define the desired controller for this person
+                        personAnimator.runtimeAnimatorController = (RuntimeAnimatorController)AssetDatabase.LoadAssetAtPath(AssociateAnimatorControllerPathByName(child.name), typeof(RuntimeAnimatorController));
+                        Debug.Log("Animator controller: " + personAnimator.runtimeAnimatorController);
+
+                        //Debug.Log(personAnimator.runtimeAnimatorController.animationClips.Length);
+                    }
                 }
                 else
                 {
