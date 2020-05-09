@@ -176,7 +176,7 @@ In scenes with an FPSController and FirstPersonCharacter (60s70s, 80s90s, AltFut
 			- **FPSCharacter** (GameObject)
 				- Unity Standard Asset, Responsible for the player's camera
 				- Requires Scripts:
-					- **ToggleCameraEffectsByinputEvent** (Script Component)
+					- **ToggleCameraEffectsByInputEvent** (Script Component)
 						- Responsible for watching for keyboard events and toggling scene effects
 		- **UILauncher** (GameObject)
 			- Holds scripts for generating UI (as children of the launcher), and for toggling between scenes
