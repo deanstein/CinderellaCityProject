@@ -221,12 +221,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 713447430}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c41095c829efd1d4688e7aeea2053c66, type: 3}
+  m_Script: {fileID: 11500000, guid: 2b86888d106ef8c4abe935f8f6d1de28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectType: 
-  shortcut: 
-  objectState: 
 --- !u!1 &1368714270
 GameObject:
   m_ObjectHideFlags: 0

@@ -157,6 +157,8 @@ In scenes that exclusively generate and display UI elements, we need to add cust
 			- Requires Scripts:
 				- **CreateScreenSpaceUILayoutByName** (Script Component)
 					- Responsible for identifying which UI components to build based on the Scene name
+				- **ToggleSceneAndUIByInputEvent** (Script Component)
+					- Responsible for responding to input events and displaying scenes and UI
 
 #### First-Person Scenes (Affects scenes: 60s70s, 80s90s, AltFuture)
 In scenes with an FPSController and FirstPersonCharacter (60s70s, 80s90s, AltFuture), we need to add custom script components to some GameObjects to control behaviors related to UI and the FPSController. Note that the FPSController needs to be renamed with a prefix of the era it's in.

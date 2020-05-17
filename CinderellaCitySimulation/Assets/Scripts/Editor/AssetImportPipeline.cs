@@ -5,10 +5,12 @@ using System.Linq;
 using System.Reflection;
 
 using UnityEditor;
+using UnityEditor.AI;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEditor.SceneManagement;
 
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
 
@@ -62,24 +64,25 @@ public class AssetImportUpdate : AssetPostprocessor {
 
     // master pre-processor option flags
     // ... for models
-    static bool doSetGlobalScale;
-    static bool doInstantiateAndPlaceInCurrentScene;
-    static bool doSetColliderActive;
-    static bool doSetUVActiveAndConfigure;
-    static bool doDeleteReimportMaterialsTextures;
-    static bool doAddBehaviorComponents;
+    static bool doSetGlobalScale = false;
+    static bool doInstantiateAndPlaceInCurrentScene = false;
+    static bool doSetColliderActive = false;
+    static bool doSetUVActiveAndConfigure = false;
+    static bool doDeleteReimportMaterialsTextures = false;
+    static bool doAddBehaviorComponents = false;
     // ... for audio clips
-    static bool doSetClipImportSettings;
+    static bool doSetClipImportSettings = false;
     // ... for textures and images
-    static bool doSetTextureToSpriteImportSettings;
+    static bool doSetTextureToSpriteImportSettings = false;
 
     // master post-processor option flags
     // ... for models
-    static bool doSetStatic;
-    static bool doSetMaterialEmission;
-    static bool doSetMaterialSmoothnessMetallic;
-    static bool doInstantiateProxyReplacements;
-    static bool doHideProxyObjects;
+    static bool doSetStatic = false;
+    static bool doSetMaterialEmission = false;
+    static bool doSetMaterialSmoothnessMetallic = false;
+    static bool doInstantiateProxyReplacements = false;
+    static bool doHideProxyObjects = false;
+    static bool doRebuildNavMesh = false;
 
     //
     // end master list
@@ -484,7 +487,9 @@ public class AssetImportUpdate : AssetPostprocessor {
     {
         // get the height of the object to be replaced
         float targetHeight = GetMaxGOBoundingBoxDimension(gameObjectToMatch);
+        //Debug.Log("Target height: " + targetHeight);
         float currentHeight = GetMaxGOBoundingBoxDimension(gameObjectToScale);
+        //Debug.Log("Current height: " + currentHeight);
 
         float scaleFactor = (targetHeight / currentHeight) * ((gameObjectToScale.transform.localScale.x + gameObjectToScale.transform.localScale.y + gameObjectToScale.transform.localScale.z) / 3);
 
@@ -564,7 +569,6 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         // find the associated GameObject by this asset's name, and all of its children objects
         GameObject gameObjectByAssetName = GameObject.Find(assetName);
-        //PrefabUtility.UnpackPrefabInstance(gameObjectByAssetName, PrefabUnpackMode.OutermostRoot, InteractionMode.AutomatedAction);
 
         //
         // set rules based on name
@@ -885,76 +889,6 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
     }
 
-    // define the animator controller based on this asset's name
-    public static string AssociateAnimatorControllerPathByName(string objectName)
-    {
-        // talking - androgynous
-        if (objectName.Contains("talking"))
-        {
-            animatorControllerPath = "Assets/Citizens PRO/Animations/talking 1.controller";
-
-            return animatorControllerPath;
-        }
-        // walking - male or female
-        if (objectName.Contains("male") && objectName.Contains("walking"))
-        {
-            animatorControllerPath = "Assets/Citizens PRO/Animations/male walking.controller";
-
-            return animatorControllerPath;
-        }
-        if (objectName.Contains("female") && objectName.Contains("walking"))
-        {
-            animatorControllerPath = "Assets/Citizens PRO/Animations/female walking.controller";
-
-            return animatorControllerPath;
-        }
-        // sitting - male or female
-        if (objectName.Contains("male") && objectName.Contains("sitting"))
-        {
-            animatorControllerPath = "Assets/Citizens PRO/Animations/male sitting.controller";
-
-            return animatorControllerPath;
-        }
-        if (objectName.Contains("female") && objectName.Contains("sitting"))
-        {
-            animatorControllerPath = "Assets/Citizens PRO/Animations/female sitting.controller";
-
-            return animatorControllerPath;
-        }
-        // listening - male or female
-        if (objectName.Contains("male") && objectName.Contains("listening"))
-        {
-            animatorControllerPath = "Assets/Citizens PRO/Animations/male listening.controller";
-
-            return animatorControllerPath;
-        }
-        if (objectName.Contains("female") && objectName.Contains("listening"))
-        {
-            animatorControllerPath = "Assets/Citizens PRO/Animations/female listening.controller";
-
-            return animatorControllerPath;
-        }
-        // idle - male or female
-        if (objectName.Contains("male") && objectName.Contains("idle"))
-        {
-            animatorControllerPath = "Assets/Citizens PRO/Animations/male idle 1.controller";
-
-            return animatorControllerPath;
-        }
-        if (objectName.Contains("female") && objectName.Contains("idle"))
-        {
-            animatorControllerPath = "Assets/Citizens PRO/Animations/female idle 1.controller";
-
-            return animatorControllerPath;
-        }
-        else
-        {
-            animatorControllerPath = "Assets/Citizens PRO/Animations/man controller.controller";
-
-            return animatorControllerPath;
-        }
-    }
-
     // define the replacement path based on this asset's name
     public static string AssociateProxyReplacementPathByName(string objectName)
     {
@@ -1098,7 +1032,8 @@ public class AssetImportUpdate : AssetPostprocessor {
                     instancedPrefab.transform.parent = gameObjectToBeReplaced.transform.parent;
                     instancedPrefab.transform.SetPositionAndRotation(gameObjectToBeReplaced.transform.localPosition, gameObjectToBeReplaced.transform.localRotation);
                     instancedPrefab.transform.localScale = gameObjectToBeReplaced.transform.localScale;
-                    ScaleToMatchHeight(instancedPrefab, gameObjectToBeReplaced); // further scale the new object to match the proxy's height
+                    // further scale the new object to match the proxy's height
+                    ScaleToMatchHeight(instancedPrefab, gameObjectToBeReplaced); 
 
                     // ensure the new prefab rotates about the traditional Z (up) axis to match its proxy 
                     instancedPrefab.transform.localEulerAngles = new Vector3(0, gameObjectToBeReplaced.transform.localEulerAngles.y, 0);
@@ -1106,17 +1041,32 @@ public class AssetImportUpdate : AssetPostprocessor {
                     // tag this instanced prefab as a delete candidate for the next import
                     instancedPrefab.gameObject.tag = proxyReplacementDeleteTag;
 
-                    // if we're replacing proxy people, need to set a controller
+                    // if we're replacing proxy people, need to set additional properties on the replacement
                     if (child.name.Contains("people"))
                     {
                         // the instanced prefab should have an animator
                         Animator personAnimator = instancedPrefab.GetComponent<Animator>();
 
                         // define the desired controller for this person
-                        personAnimator.runtimeAnimatorController = (RuntimeAnimatorController)AssetDatabase.LoadAssetAtPath(AssociateAnimatorControllerPathByName(child.name), typeof(RuntimeAnimatorController));
-                        Debug.Log("Animator controller: " + personAnimator.runtimeAnimatorController);
+                        // first, get the script
+                        personAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(ManageNPCControllers.GetDefaultAnimatorControllerFilePathByName(child.name));
 
-                        //Debug.Log(personAnimator.runtimeAnimatorController.animationClips.Length);
+                        // unless
+                        if (!child.name.Contains("talking") && !child.name.Contains("listening") && !child.name.Contains("idle") && !child.name.Contains("sitting"))
+                        {
+                            // add a navigation mesh agent to this person so it can find its way on the navmesh
+                            NavMeshAgent thisAgent = instancedPrefab.AddComponent<NavMeshAgent>();
+                            thisAgent.speed = 1.0f;
+                            thisAgent.angularSpeed = 60f;
+                            thisAgent.radius = 0.25f;
+                            thisAgent.autoTraverseOffMeshLink = false;
+
+                           // set the quality of the non-static obstacle avoidance
+                           thisAgent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
+
+                            // add the script to follow a path
+                            FollowPathOnNavMesh followPathByNameScript =               instancedPrefab.AddComponent<FollowPathOnNavMesh>();
+                        }
                     }
                 }
                 else
@@ -1217,6 +1167,17 @@ public class AssetImportUpdate : AssetPostprocessor {
             }
         }
       
+    }
+
+    // objects that should impact navigation should kick off a navigation mesh rebuild
+    public static void RebuildNavMesh()
+    {
+        // only do this if the object is also going to be set as static
+        if (doSetStatic)
+        {
+            UnityEditor.AI.NavMeshBuilder.BuildNavMesh();
+        }
+
     }
 
     // runs when a texture/image asset is updated
@@ -1359,6 +1320,8 @@ public class AssetImportUpdate : AssetPostprocessor {
             return;
         }
 
+        // check if there's a leftover .fbm folder, and if so, delete it
+        CleanUpFBMDirectory(globalAssetFileDirectory, globalAssetFileName);
 
         ClearConsole();
         Debug.Log("START Model PreProcessing...");
@@ -1403,42 +1366,6 @@ public class AssetImportUpdate : AssetPostprocessor {
         // each file should state its preference for all available pre- and post-processor flags as defined above
         //
 
-        if (assetFilePath.Contains("cc-microcosm.fbx"))
-        {
-            // pre-processor option flags
-            doSetGlobalScale = true; // always true
-            doInstantiateAndPlaceInCurrentScene = true;
-            doSetColliderActive = true;
-            doSetUVActiveAndConfigure = true;
-            doDeleteReimportMaterialsTextures = true;
-            doAddBehaviorComponents = false;
-
-            // post-processor option flags
-            doSetStatic = true;
-            doSetMaterialEmission = true;
-            doSetMaterialSmoothnessMetallic = true;
-            doInstantiateProxyReplacements = true;
-            doHideProxyObjects = true;
-        }
-
-        if (assetFilePath.Contains("cc-microcosm-2.fbx"))
-        {
-            // pre-processor option flags
-            doSetGlobalScale = true; // always true
-            doInstantiateAndPlaceInCurrentScene = true;
-            doSetColliderActive = true;
-            doSetUVActiveAndConfigure = true;
-            doDeleteReimportMaterialsTextures = true;
-            doAddBehaviorComponents = false;
-
-            // post-processor option flags
-            doSetStatic = true;
-            doSetMaterialEmission = true;
-            doSetMaterialSmoothnessMetallic = true;
-            doInstantiateProxyReplacements = false;
-            doHideProxyObjects = false;
-        }
-
         if (assetFilePath.Contains("anchor-broadway.fbx")
             || assetFilePath.Contains("anchor-jcp.fbx")
             || assetFilePath.Contains("anchor-joslins.fbx")
@@ -1459,6 +1386,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
+            doRebuildNavMesh = true;
         }
 
         if (assetFilePath.Contains("mall-doors-windows-exterior.fbx")
@@ -1478,6 +1406,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetMaterialSmoothnessMetallic = true;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
+            doRebuildNavMesh = false;
         }
 
         if (assetFilePath.Contains("mall-doors-windows-solid.fbx"))
@@ -1496,6 +1425,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
+            doRebuildNavMesh = true;
         }
 
         if (assetFilePath.Contains("mall-flags.fbx"))
@@ -1514,6 +1444,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
+            doRebuildNavMesh = false;
         }
 
         if (assetFilePath.Contains("mall-furniture.fbx"))
@@ -1532,6 +1463,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
+            doRebuildNavMesh = true;
         }
 
         if (assetFilePath.Contains("mall-floor-ceiling-vertical.fbx")
@@ -1562,6 +1494,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetMaterialSmoothnessMetallic = true;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
+            doRebuildNavMesh = true;
         }
 
         if (assetFilePath.Contains("mall-handrails.fbx"))
@@ -1580,6 +1513,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetMaterialSmoothnessMetallic = true;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
+            doRebuildNavMesh = false;
         }
 
         if (assetFilePath.Contains("mall-wayfinding"))
@@ -1598,6 +1532,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetMaterialSmoothnessMetallic = true;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
+            doRebuildNavMesh = false;
         }
 
         if (assetFilePath.Contains("mall-lights.fbx")
@@ -1618,6 +1553,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
+            doRebuildNavMesh = false;
         }
 
         if (assetFilePath.Contains("mall-structure.fbx"))
@@ -1654,6 +1590,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = true;
             doHideProxyObjects = true;
+            doRebuildNavMesh = false;
         }
 
         if (assetFilePath.Contains("proxy-people.fbx")
@@ -1668,11 +1605,12 @@ public class AssetImportUpdate : AssetPostprocessor {
             doAddBehaviorComponents = true;
 
             // post-processor option flags
-            doSetStatic = true;
+            doSetStatic = false;
             doSetMaterialEmission = false;
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = true;
             doHideProxyObjects = true;
+            doRebuildNavMesh = false;
         }
 
         if (assetFilePath.Contains("site.fbx"))
@@ -1691,6 +1629,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
+            doRebuildNavMesh = true;
         }
 
         if (assetFilePath.Contains("speakers.fbx") || assetFilePath.Contains("speakers-simple.fbx"))
@@ -1709,6 +1648,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
+            doRebuildNavMesh = false;
         }
 
         //
@@ -1834,6 +1774,11 @@ public class AssetImportUpdate : AssetPostprocessor {
             HideProxyObjects(globalAssetFileName);
         }
 
+        if (doRebuildNavMesh)
+        {
+            RebuildNavMesh();
+        }
+
         // newly-instantiated objects need to be set as a child of the scene container
         // NOTE: this assumes each scene only has 1 top-level object: a "Container" that holds all Scene objects
         if (newlyInstantiated)
@@ -1843,26 +1788,4 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         Debug.Log("END PostProcessing");
     }
-
-    public class AssetImportUpdateMono : MonoBehaviour
-    {
-
-        //public VersionControl.Asset.States state;
-
-        // Use this for initialization 
-        void Start()
-        {
-
-            //Debug.Log(state);
-            //var gameObjectMaterials = gameObject.GetComponent<Material>();
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
-    }
-
 }
