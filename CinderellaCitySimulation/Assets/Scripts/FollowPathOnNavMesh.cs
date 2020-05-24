@@ -24,7 +24,7 @@ public class FollowPathOnNavMesh : MonoBehaviour
         path = new NavMeshPath();
 
         // set the destination
-        destination = RandomNavmeshLocation(destinationRadius);
+        destination = Utils.GeometryUtils.GetRandomNavMeshPointWithinRadius(this.transform.position,  destinationRadius, true);
 
         // find a path to the destination
         bool pathSuccess = NavMesh.CalculatePath(this.gameObject.transform.position, destination, NavMesh.AllAreas, path);
@@ -71,69 +71,9 @@ public class FollowPathOnNavMesh : MonoBehaviour
                 if (!thisAgent.hasPath || thisAgent.velocity.sqrMagnitude == 0f)
                 {
                     // reached the destination - now set another one
-                    thisAgent.SetDestination(RandomNavmeshLocation(destinationRadius));
+                    thisAgent.SetDestination(Utils.GeometryUtils.GetRandomNavMeshPointWithinRadius(this.gameObject.transform.position, destinationRadius, false));
                 }
             }
         }
-    }
-
-    // get a random point on the navmesh
-    public Vector3 RandomNavmeshLocation(float radius)
-    {
-        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * radius;
-
-        randomDirection += transform.position;
-        NavMeshHit hit;
-        Vector3 finalPosition = Vector3.zero;
-
-        if (NavMesh.SamplePosition(randomDirection, out hit, radius, 1))
-        {
-            // the hit position could wind up on the roof
-            // so clamp the y (up) value to ~the 2nd floor height (~10 meters) at all times
-            if (hit.position.y > 10)
-            {
-                finalPosition = new Vector3(hit.position.x, 10, hit.position.z);
-            }
-            else
-            {
-                finalPosition = hit.position;
-            }
-
-            // optional: visualize the location and a connecting line
-            //Debug.DrawLine(this.gameObject.transform.position, finalPosition, Color.red, 100f);
-            //Debug.DrawLine(finalPosition, new Vector3(finalPosition.x, finalPosition.y + 1, finalPosition.z), Color.red, 100f);
-        }
-
-        return finalPosition;
-    }
-}
-
-public class GeometryUtils
-{
-    public static float angle = 20.0f; // Maximum angle offset for new point 
-    float speed = 8.0f; // Units per second 
-    private float pos = 0.0f;
-    private float segLength = 2.0f;
-    public static List<float> path = new List<float>();
-
-    // get a point on a mesh
-    public static List<Vector3> GetPointOnMesh(GameObject meshParent)
-    {
-
-        MeshFilter[] meshes = meshParent.GetComponentsInChildren<MeshFilter>();
-
-        Vector3 meshPos = new Vector3(0, 0, 0);
-        List<Vector3> gameObjectMeshPosList = new List<Vector3>();
-
-        foreach (MeshFilter mesh in meshes)
-        {
-            Vector3[] vertices = mesh.mesh.vertices;
-            meshPos = meshParent.transform.TransformPoint(vertices[0]);
-            Debug.Log(meshPos);
-            gameObjectMeshPosList.Add(meshPos);
-        }
-
-        return gameObjectMeshPosList;
-
     }
 }

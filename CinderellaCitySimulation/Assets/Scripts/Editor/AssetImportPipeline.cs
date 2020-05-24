@@ -433,72 +433,6 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
     }
 
-    // define how to get the max height of a gameObject
-    public static float GetMaxGOBoundingBoxDimension(GameObject gameObjectToMeasure)
-    {
-        // create an array of MeshChunks found within this GameObject so we can get the bounding box size
-        MeshRenderer[] gameObjectMeshRendererArray = gameObjectToMeasure.GetComponentsInChildren<MeshRenderer>();
-
-        // store the game object's maximum bounding box dimension
-        float gameObjectMaxDimension = 1;
-
-        // for each MeshRenderer found, get the height and add it to the list
-        for (int i = 0; i < gameObjectMeshRendererArray.Length; i++)
-        {
-            Debug.Log("Found a MeshChunk to get bounds info from: " + gameObjectMeshRendererArray[i]);
-
-            // assume this mesh is valid, and doesn't need to be processed again
-            proxyReplacementProcessingRequired = false;
-
-            Bounds bounds = gameObjectMeshRendererArray[i].bounds;
-
-            //Debug.Log("Bounds: " + bounds);
-            float dimX = bounds.extents.x;
-            float dimY = bounds.extents.y;
-            float dimZ = bounds.extents.z;
-            Debug.Log("Mesh dimensions for " + gameObjectMeshRendererArray[i] + dimX + "," + dimY + "," +  dimZ);
-
-            List<float> XYZList = new List<float>();
-            XYZList.Add(dimX);
-            XYZList.Add(dimY);
-            XYZList.Add(dimZ);
-
-            float maxXYZ = XYZList.Max();
-            Debug.Log("Max XYZ dimension for " + gameObjectMeshRendererArray[i] + ": " + maxXYZ);
-
-            // set the max dimension to the max XYZ value
-            gameObjectMaxDimension = maxXYZ;
-        }
-
-        float gameObjectMaxHeight = gameObjectMaxDimension;
-
-        // if the bounding box is zero, this might not be ready for measuring yet
-        // so set the flag to try proxy replacement again
-        if (gameObjectMaxHeight == 0)
-        {
-            Debug.Log("This object couldn't be measured (0 bounding box) and should be tried again next time.");
-            proxyReplacementProcessingRequired = true;
-        }
-        return gameObjectMaxHeight;
-    }
-
-    // define how to scale one GameObject to match the height of another
-    public static void ScaleToMatchHeight(GameObject gameObjectToScale, GameObject gameObjectToMatch)
-    {
-        // get the height of the object to be replaced
-        float targetHeight = GetMaxGOBoundingBoxDimension(gameObjectToMatch);
-        //Debug.Log("Target height: " + targetHeight);
-        float currentHeight = GetMaxGOBoundingBoxDimension(gameObjectToScale);
-        //Debug.Log("Current height: " + currentHeight);
-
-        float scaleFactor = (targetHeight / currentHeight) * ((gameObjectToScale.transform.localScale.x + gameObjectToScale.transform.localScale.y + gameObjectToScale.transform.localScale.z) / 3);
-
-        // scale the prefab to match the height of its replacement
-        gameObjectToScale.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
-        Debug.Log("<b>Scaled </b>" + gameObjectToScale + " <b>to match</b> " + gameObjectToMatch + " <b>(" + scaleFactor + " scale factor)</b>");
-    }
-
-
     // define how to create a component attached to a GameObject, or delete it and create a new one if component already exists
     public static void RemoveComponentIfExisting(GameObject gameObjectForComponent, string componentType)
     {
@@ -582,7 +516,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             // add components to children gameObjects
 
             // first delete the existing script host objects
-            string speakerScriptHostDeleteTag = TagHelper.GetOrCreateTagByScriptHostType("Speakers");
+            string speakerScriptHostDeleteTag = ManageTags.GetOrCreateTagByScriptHostType("Speakers");
             ManageTags.DeleteObjectsByTag(speakerScriptHostDeleteTag);
 
             foreach (Transform child in gameObjectByAssetName.transform)
@@ -857,7 +791,7 @@ public class AssetImportUpdate : AssetPostprocessor {
     }
 
     // define the proxyType based on this asset's name
-    public static string AssociateProxyTypeByName(string assetName)
+    public static string GetProxyTypeByName(string assetName)
     {
         if (assetName.Contains("proxy-trees"))
         {
@@ -889,87 +823,6 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
     }
 
-    // define the replacement path based on this asset's name
-    public static string AssociateProxyReplacementPathByName(string objectName)
-    {
-        //
-        // TREES
-        //
-
-        if (objectName.Contains("tree-center-court"))
-        {
-            // identify the path of the prefab to replace this object
-            replacementObjectPath = "Assets/TreesVariety/oak/oak 3.prefab";
-
-            return replacementObjectPath;
-        }
-
-        if (objectName.Contains("tree-center-court-small"))
-        {
-            // identify the path of the prefab to replace this object
-            replacementObjectPath = "Assets/TreesVariety/birch/birch 2.prefab";
-
-            return replacementObjectPath;
-        }
-
-        if (objectName.Contains("tree-shamrock"))
-        {
-            // identify the path of the prefab to replace this object
-            replacementObjectPath = "Assets/TreesVariety/birch/birch 5.prefab";
-
-            return replacementObjectPath;
-        }
-
-        // 
-        // PEOPLE
-        //
-
-        if (objectName.Contains("people-aaron"))
-        {
-            // identify the path of the prefab to replace this object
-            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Male/Winter/casual11_m_highpoly.prefab";
-
-            return replacementObjectPath;
-        }
-
-        if (objectName.Contains("people-ginger-marcus"))
-        {
-            // identify the path of the prefab to replace this object
-            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Female/Winter/casual18_f_highpoly.prefab";
-
-            return replacementObjectPath;
-        }
-
-        if (objectName.Contains("people-lindsey"))
-        {
-            // identify the path of the prefab to replace this object
-            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Female/Winter/casual03_f_highpoly.prefab";
-
-            return replacementObjectPath;
-        }
-
-        if (objectName.Contains("people-denise"))
-        {
-            // identify the path of the prefab to replace this object
-            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Female/Summer/casual14_f_highpoly.prefab";
-
-            return replacementObjectPath;
-        }
-
-        if (objectName.Contains("people-dale"))
-        {
-            // identify the path of the prefab to replace this object
-            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Male/Summer/casual24_m_highpoly.prefab";
-
-            return replacementObjectPath;
-        }
-
-        else
-        {
-            return "";
-        }
-    }
-
     // define how to instantiate proxy replacement objects
     public static void InstantiateProxyReplacements(string assetName)
     {
@@ -981,7 +834,11 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
 
         // update the global proxy type variable based on the asset name
-        string proxyType = AssociateProxyTypeByName(assetName);
+        string proxyType = GetProxyTypeByName(assetName);
+
+        // define the delete tag to look for, based on the proxyType, then delete existing proxy replacements
+        string proxyReplacementDeleteTag = ManageTags.GetOrCreateTagByProxyType(proxyType);
+        ManageTags.DeleteObjectsByTag(proxyReplacementDeleteTag);
 
         // find the associated GameObject by this asset's name
         GameObject gameObjectByAsset = GameObject.Find(assetName);
@@ -994,90 +851,50 @@ public class AssetImportUpdate : AssetPostprocessor {
             return;
         }
 
-        var transformByAsset = gameObjectByAsset.transform;
-
-        // define the delete tag to look for, based on the proxyType, then delete existing proxy replacements
-        string proxyReplacementDeleteTag = TagHelper.GetOrCreateTagByProxyType(proxyType);
-        ManageTags.DeleteObjectsByTag(proxyReplacementDeleteTag);
-
+        // get all the children from the gameObject
         Transform[] allChildren = gameObjectByAsset.GetComponentsInChildren<Transform>();
 
-        // for each of this asset's children, look for any whose name indicates they are proxies to be replaced
+        // do something with each of the object's children
         foreach (Transform child in allChildren)
         {
             // these objects are visible proxy objects that need to be replaced with Unity equivalents
             if (child.name.Contains("REPLACE"))
             {
-                GameObject gameObjectToBeReplaced = child.gameObject;
-                Debug.Log("Found a proxy gameObject to be replaced: " + gameObjectToBeReplaced);
+                // replace the proxy object with the replacement prefab
+                GameObject instancedPrefab = ManageProxyMapping.ReplaceProxyObjectWithPrefab(child.gameObject, proxyType);
 
-                // define the proxy replacement path by the child object's name
-                replacementObjectPath = AssociateProxyReplacementPathByName(child.name);
-
-                // ensure the object we want to replace is visible, so we can measure it
-                ToggleVisibility.ToggleGameObjectOn(gameObjectToBeReplaced);
-
-                // create a new gameObject for the new asset
-                GameObject newObject = (GameObject)AssetDatabase.LoadAssetAtPath(replacementObjectPath, typeof(GameObject));
-
-                // create an instance from the prefab
-                var instancedPrefab = PrefabUtility.InstantiatePrefab(newObject as GameObject) as GameObject;
-                
-                // if instancing the prefab was successful, move it to the same location as the proxy
-                if (instancedPrefab)
+                // special rules if we're replacing proxy people
+                if (child.name.Contains("people"))
                 {
-                    Debug.Log("<b>Instanced this prefab: </b>" + instancedPrefab);
+                    // apply animator controllers, agents, and scripts to the new prefab
+                    ManageNPCControllers.ConfigureNPCForPathfinding(child.gameObject, instancedPrefab);
 
-                    // give the new prefab the same parent, position, and scale as the proxy
-                    instancedPrefab.transform.parent = gameObjectToBeReplaced.transform.parent;
-                    instancedPrefab.transform.SetPositionAndRotation(gameObjectToBeReplaced.transform.localPosition, gameObjectToBeReplaced.transform.localRotation);
-                    instancedPrefab.transform.localScale = gameObjectToBeReplaced.transform.localScale;
-                    // further scale the new object to match the proxy's height
-                    ScaleToMatchHeight(instancedPrefab, gameObjectToBeReplaced); 
-
-                    // ensure the new prefab rotates about the traditional Z (up) axis to match its proxy 
-                    instancedPrefab.transform.localEulerAngles = new Vector3(0, gameObjectToBeReplaced.transform.localEulerAngles.y, 0);
-
-                    // tag this instanced prefab as a delete candidate for the next import
-                    instancedPrefab.gameObject.tag = proxyReplacementDeleteTag;
-
-                    // if we're replacing proxy people, need to set additional properties on the replacement
-                    if (child.name.Contains("people"))
+                    // create additional random filler people around this one
+                    for (var i = 0; i < ProxyGlobals.numberOfFillersToGenerate; i++)
                     {
-                        // the instanced prefab should have an animator
-                        Animator personAnimator = instancedPrefab.GetComponent<Animator>();
+                        // create a random point on the navmesh
+                        Vector3 randomPoint = Utils.GeometryUtils.GetRandomNavMeshPointWithinRadius(child.transform.localPosition, ProxyGlobals.numberOfFillersToGenerate, false);
 
-                        // define the desired controller for this person
-                        // first, get the script
-                        personAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(ManageNPCControllers.GetDefaultAnimatorControllerFilePathByName(child.name));
+                        // determine which pool to get people from given the scene name
+                        string[] peoplePrefabPoolForCurrentScene = ManageProxyMapping.GetPeoplePrefabPoolBySceneName(SceneManager.GetActiveScene().name);
 
-                        // unless
-                        if (!child.name.Contains("talking") && !child.name.Contains("listening") && !child.name.Contains("idle") && !child.name.Contains("sitting"))
-                        {
-                            // add a navigation mesh agent to this person so it can find its way on the navmesh
-                            NavMeshAgent thisAgent = instancedPrefab.AddComponent<NavMeshAgent>();
-                            thisAgent.speed = 1.0f;
-                            thisAgent.angularSpeed = 60f;
-                            thisAgent.radius = 0.25f;
-                            thisAgent.autoTraverseOffMeshLink = false;
+                        // instantiate a random person at the point
+                        GameObject randomInstancedPrefab = ManageProxyMapping.InstantiateRandomPrefabFromPoolAtPoint(child.gameObject.transform.parent.gameObject, peoplePrefabPoolForCurrentScene, randomPoint);
 
-                           // set the quality of the non-static obstacle avoidance
-                           thisAgent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
+                        // apply animator controllers, agents, and scripts to the new random prefab
+                        ManageNPCControllers.ConfigureNPCForPathfinding(child.gameObject, randomInstancedPrefab);
 
-                            // add the script to follow a path
-                            FollowPathOnNavMesh followPathByNameScript =               instancedPrefab.AddComponent<FollowPathOnNavMesh>();
-                        }
+                        // tag this instanced prefab as a delete candidate for the next import
+                        randomInstancedPrefab.gameObject.tag = proxyReplacementDeleteTag;
                     }
                 }
-                else
-                {
-                    Debug.Log("This prefab is null.");
-                }
-
-            }
-
+            }   
+            // camera thumbnail objects - not replaced by proxies, but handled differently
             else if (child.name.Contains("Camera-Thumbnail"))
             {
+                // get the current scene
+                Scene currentScene = EditorSceneManager.GetActiveScene();
+
                 // need to manipulate the default FormIt Group/Instance name to remove the digits at the end
 
                 // first, remove the characters after the last hyphen
@@ -1088,9 +905,6 @@ public class AssetImportUpdate : AssetPostprocessor {
                 // create a new object to host the camera
                 // include the name of the current scene (assumes reimporting into the correct scene)
                 GameObject cameraObject = new GameObject(cameraName + "-" + currentScene.name);
-
-                //var existingCamera = Camera.main.GetComponent<Camera>();
-                //var camera = CopyComponent<Camera>(existingCamera, camera);
 
                 // create a camera
                 var camera = cameraObject.AddComponent<Camera>();
@@ -1162,7 +976,7 @@ public class AssetImportUpdate : AssetPostprocessor {
                     //Debug.Log("Found a proxy gameObject to be hide: " + gameObjectToBeReplaced);
 
                     // turn off the visibility of the object to be replaced
-                    ToggleVisibility.ToggleGameObjectOff(gameObjectToBeReplaced);
+                    ToggleObjects.ToggleGameObjectOff(gameObjectToBeReplaced);
                 }
             }
         }
@@ -1467,18 +1281,10 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
 
         if (assetFilePath.Contains("mall-floor-ceiling-vertical.fbx")
-            || assetFilePath.Contains("mall-floor-ceiling-vertical-faceted.fbx")
             || assetFilePath.Contains("mall-interior-detailing.fbx")
-            || assetFilePath.Contains("mall-interior-detailing-faceted.fbx")
-            || assetFilePath.Contains("mall-interior-detailing-faceted-L1.fbx")
-            || assetFilePath.Contains("mall-interior-detailing-faceted-L2.fbx")
-            || assetFilePath.Contains("mall-interior-detailing-faceted-L3.fbx")
             || assetFilePath.Contains("mall-exterior-detailing.fbx")
-            || assetFilePath.Contains("mall-exterior-detailing-faceted.fbx")
             || assetFilePath.Contains("mall-exterior-walls.fbx")
-            || assetFilePath.Contains("store-interior-detailing.fbx")
-            || assetFilePath.Contains("store-interior-detailing-L1.fbx")
-            || assetFilePath.Contains("store-interior-detailing-L2.fbx"))
+            || assetFilePath.Contains("store-interior-detailing.fbx"))
         {
             // pre-processor option flags
             doSetGlobalScale = true; // always true

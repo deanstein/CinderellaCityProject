@@ -5,11 +5,13 @@
       "0.6.0.202005": [
         {
           "Logic Updates": [
-            "Added support for NavMesh baking and NPC pathfinding scripts in AssetImportPipeline",
             "Added support for replacing 2D cutout people with 3D animated people from Citizens PRO by name in AssetImportPipeline",
+            "Added support for NavMesh baking and NPC pathfinding scripts in AssetImportPipeline",
+            "Added support for additional random filler people from each proxy person in AssetImportPipeline",
             "Refactored 'by input event' code (Camera Effects, Objects, and Scenes/UI) to simplify and clarify which objects are watching for which input events"
           ],
           "Content Updates": [
+            "Added 3D people in all scenes",
             "Imported select prefabs, animations, and models from Citizens PRO 2019",
             "Replaced 2D cutout people with 3D animated people from Citizens PRO in 60s70s, 80s90s, and Experimental scenes"            
           ]
