@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
+using UnityEngine.AI;
 
 public class NPCControllerGlobals
 {
@@ -81,6 +83,34 @@ public class ManageNPCControllers
         else
         {
             return NPCControllerGlobals.animatorControllerFilePathMaleIdle;
+        }
+    }
+
+    // add the typical controller, nav mesh agent, and associated scripts to a gameObject
+    public static void ConfigureNPCForPathfinding(GameObject proxyObject, GameObject NPCObject)
+    {
+        // the instanced prefab should have an animator
+        Animator personAnimator = NPCObject.GetComponent<Animator>();
+
+        // define the desired controller for this person
+        // first, get the script
+        personAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(ManageNPCControllers.GetDefaultAnimatorControllerFilePathByName(proxyObject.name));
+
+        // if not named for a specific posture, follow paths and walk
+        if (!proxyObject.name.Contains("talking") && !proxyObject.name.Contains("listening") && !proxyObject.name.Contains("idle") && !proxyObject.name.Contains("sitting"))
+        {
+            // add a navigation mesh agent to this person so it can find its way on the navmesh
+            NavMeshAgent thisAgent = NPCObject.AddComponent<NavMeshAgent>();
+            thisAgent.speed = 1.0f;
+            thisAgent.angularSpeed = 60f;
+            thisAgent.radius = 0.25f;
+            thisAgent.autoTraverseOffMeshLink = false;
+
+            // set the quality of the non-static obstacle avoidance
+            thisAgent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
+
+            // add the script to follow a path
+            FollowPathOnNavMesh followPathByNameScript = NPCObject.AddComponent<FollowPathOnNavMesh>();
         }
     }
 }

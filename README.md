@@ -51,11 +51,6 @@ The following scripts are critical to the behavior and processes underpinning th
 		- Adds a menu option in GameObject -> Render to Cubemap, which creates a Cubemap from the position of an object in space
 		- Each FPS Character Scene should have a "CubemapPosition" object, which needs to be selected when running "Render to Cubemap" - temporary cameras are added to this object in order to generate the Cubemap
 		- Downloaded from a 3rd party on the Unity forums (attribution in code)
-	- TagHelper.cs
-		- Responsible for creating new Tags in the project, if they don't already exist
-		- Downloaded from a 3rd party on the Unity forums (attribution in code)
-	- ToggleVisibility.cs
-		- Responsible for toggling the visibility of objects on or off, from the Editor
 	
 - **In-Game Scripts**  // these run while the game is playing
 	- AnimateScreenSpaceObject.cs
@@ -66,6 +61,8 @@ The following scripts are critical to the behavior and processes underpinning th
 		- Responsible for building and positioning any screen-space object (UI)
 	- CreateScreenSpaceUILayoutByName.cs
 		- Responsible for creating bespoke UI layouts, depending on the name of its host object (for example, different menus have different layouts or UI elements)
+	- FollowPathOnNavMesh.cs
+		- Responsible finding destinations and paths on a Navigation Mesh for 3D animated people
 	- LoadAllScenesAsync.cs
 		- Used only on the Loading Screen, and responsible for loading all game Scenes into memory, before proceeding with showing the Main Menu
 		- Allows for seamless switching between eras
@@ -75,10 +72,14 @@ The following scripts are critical to the behavior and processes underpinning th
 		- Responsible for managing active and available camera effects, like PostProcessProfiles
 	- ManageFPSControllers.cs
 		- Responsible for managing the location, rotation, and behavior of FPS Controllers (player) in Scenes
+	- ManageNPCControllers.cs
+		- Responsible for managing which 3D mall patrons (non-player characters) get which animation controllers, and for switching between the animations during gameplay
+	- ManageProxyMapping.cs
+		- Responsible for mapping between proxy objects and associated prefabs, like people and trees
 	- ManageSunSettings.cs
 		- Responsible for adjusting the Sun position and properties of the Pause Menu, in order to generate accurate screenshots of disabled Scenes for "time traveling" thumbnails
 	- ManageTags.cs
-		- Responsible for defining consistent Tag names, as well as finding and operating on objects with specific Tags
+		- Responsible for creating new Tags in the project, and finding/operating on objects with specific Tags
 	- PlayAudioSequencesByName.cs
 		- Responsible for playing a specific sequence of audio tracks, depending on the name of the host object (typically a speaker, mechanical device, or NPC)
 	- RefreshImageSprite.cs
@@ -96,6 +97,8 @@ The following scripts are critical to the behavior and processes underpinning th
 		- Responsible for toggling entire Scenes and associated UI on certain input events
 	- TransformScreenSpaceObject.cs
 		- Responsible for positioning screen space objects (UI) based on the available screen real estate and proportions
+	- Utils.cs
+		- Holds a variety of low-level, common operations shared among other scripts
 
 ### AssetImportPipeline
 
