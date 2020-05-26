@@ -863,84 +863,95 @@ public class AssetImportUpdate : AssetPostprocessor {
                 // replace the proxy object with the replacement prefab
                 GameObject instancedPrefab = ManageProxyMapping.ReplaceProxyObjectWithPrefab(child.gameObject, proxyType);
 
-                // special rules if we're replacing proxy people
-                if (child.name.Contains("people"))
+                // only do something if the instanced prefab is valid
+                if (instancedPrefab)
                 {
-                    // apply animator controllers, agents, and scripts to the new prefab
-                    ManageNPCControllers.ConfigureNPCForPathfinding(child.gameObject, instancedPrefab);
-
-                    // create additional random filler people around this one
-                    for (var i = 0; i < ProxyGlobals.numberOfFillersToGenerate; i++)
+                    // special rules if we're replacing proxy people
+                    if (child.name.Contains("people"))
                     {
-                        // create a random point on the navmesh
-                        Vector3 randomPoint = Utils.GeometryUtils.GetRandomNavMeshPointWithinRadius(child.transform.localPosition, ProxyGlobals.numberOfFillersToGenerate, false);
+                        // apply animator controllers, agents, and scripts to the new prefab
+                        ManageNPCControllers.ConfigureNPCForAnimationAndPathfinding(child.gameObject, instancedPrefab);
 
-                        // determine which pool to get people from given the scene name
-                        string[] peoplePrefabPoolForCurrentScene = ManageProxyMapping.GetPeoplePrefabPoolBySceneName(SceneManager.GetActiveScene().name);
+                        // create additional random filler people around this one
+                        for (var i = 0; i < ProxyGlobals.numberOfFillersToGenerate; i++)
+                        {
+                            // create a random point on the navmesh
+                            Vector3 randomPoint = Utils.GeometryUtils.GetRandomNavMeshPointWithinRadius(child.transform.localPosition, ProxyGlobals.numberOfFillersToGenerate, false);
 
-                        // instantiate a random person at the point
-                        GameObject randomInstancedPrefab = ManageProxyMapping.InstantiateRandomPrefabFromPoolAtPoint(child.gameObject.transform.parent.gameObject, peoplePrefabPoolForCurrentScene, randomPoint);
+                            // determine which pool to get people from given the scene name
+                            string[] peoplePrefabPoolForCurrentScene = ManageProxyMapping.GetPeoplePrefabPoolBySceneName(SceneManager.GetActiveScene().name);
 
-                        // apply animator controllers, agents, and scripts to the new random prefab
-                        ManageNPCControllers.ConfigureNPCForPathfinding(child.gameObject, randomInstancedPrefab);
+                            // instantiate a random person at the point
+                            GameObject randomInstancedPrefab = ManageProxyMapping.InstantiateRandomPrefabFromPoolAtPoint(child.gameObject.transform.parent.gameObject, peoplePrefabPoolForCurrentScene, randomPoint);
 
-                        // tag this instanced prefab as a delete candidate for the next import
-                        randomInstancedPrefab.gameObject.tag = proxyReplacementDeleteTag;
+                            // only do something if the prefab is valid
+                            if (randomInstancedPrefab)
+                            {
+                                // feed this into the NPC configurator to indicate there is no proxy to match
+                                GameObject nullProxyObject = null;
+
+                                // apply animator controllers, agents, and scripts to the new random prefab
+                                ManageNPCControllers.ConfigureNPCForAnimationAndPathfinding(nullProxyObject, randomInstancedPrefab);
+
+                                // tag this instanced prefab as a delete candidate for the next import
+                                randomInstancedPrefab.gameObject.tag = proxyReplacementDeleteTag;
+                            }
+                        }
                     }
                 }
-            }   
-            // camera thumbnail objects - not replaced by proxies, but handled differently
-            else if (child.name.Contains("Camera-Thumbnail"))
-            {
-                // get the current scene
-                Scene currentScene = EditorSceneManager.GetActiveScene();
+                // camera thumbnail objects - not replaced by proxies, but handled differently
+                else if (child.name.Contains("Camera-Thumbnail"))
+                {
+                    // get the current scene
+                    Scene currentScene = EditorSceneManager.GetActiveScene();
 
-                // need to manipulate the default FormIt Group/Instance name to remove the digits at the end
+                    // need to manipulate the default FormIt Group/Instance name to remove the digits at the end
 
-                // first, remove the characters after the last hyphen
-                string tempName = child.name.Remove(child.name.LastIndexOf("-"), child.name.Length - child.name.LastIndexOf("-"));
-                // then remove the characters after the last hyphen again
-                string cameraName = tempName.Remove(tempName.LastIndexOf("-"), tempName.Length - tempName.LastIndexOf("-"));
+                    // first, remove the characters after the last hyphen
+                    string tempName = child.name.Remove(child.name.LastIndexOf("-"), child.name.Length - child.name.LastIndexOf("-"));
+                    // then remove the characters after the last hyphen again
+                    string cameraName = tempName.Remove(tempName.LastIndexOf("-"), tempName.Length - tempName.LastIndexOf("-"));
 
-                // create a new object to host the camera
-                // include the name of the current scene (assumes reimporting into the correct scene)
-                GameObject cameraObject = new GameObject(cameraName + "-" + currentScene.name);
+                    // create a new object to host the camera
+                    // include the name of the current scene (assumes reimporting into the correct scene)
+                    GameObject cameraObject = new GameObject(cameraName + "-" + currentScene.name);
 
-                // create a camera
-                var camera = cameraObject.AddComponent<Camera>();
+                    // create a camera
+                    var camera = cameraObject.AddComponent<Camera>();
 
-                // configure the camera to work with PostProcessing
-                camera.renderingPath = RenderingPath.DeferredShading;
-                camera.allowMSAA = false;
-                camera.useOcclusionCulling = false;
+                    // configure the camera to work with PostProcessing
+                    camera.renderingPath = RenderingPath.DeferredShading;
+                    camera.allowMSAA = false;
+                    camera.useOcclusionCulling = false;
 
-                // make the camera a sibling of the original camera geometry
-                cameraObject.transform.parent = child.transform.parent;
-                // match the position and rotation
-                cameraObject.transform.SetPositionAndRotation(child.transform.localPosition, child.transform.localRotation);
+                    // make the camera a sibling of the original camera geometry
+                    cameraObject.transform.parent = child.transform.parent;
+                    // match the position and rotation
+                    cameraObject.transform.SetPositionAndRotation(child.transform.localPosition, child.transform.localRotation);
 
-                // tag this camera object as a delete candidate for the next import
-                cameraObject.tag = proxyReplacementDeleteTag;
+                    // tag this camera object as a delete candidate for the next import
+                    cameraObject.tag = proxyReplacementDeleteTag;
 
-                // make the camera look at the plane
-                // this assumes the only child of the camera is a plane (a FormIt Group with LCS at the center of the plane)
-                cameraObject.transform.LookAt(child.GetChild(0).transform.position);
+                    // make the camera look at the plane
+                    // this assumes the only child of the camera is a plane (a FormIt Group with LCS at the center of the plane)
+                    cameraObject.transform.LookAt(child.GetChild(0).transform.position);
 
-                // copy the PostProcessing effects from the Main Camera
-                PostProcessVolume existingVolume = Camera.main.GetComponent<PostProcessVolume>();
-                PostProcessLayer existingLayer = Camera.main.GetComponent<PostProcessLayer>();
-                CopyComponent<PostProcessVolume>(existingVolume, cameraObject);
-                CopyComponent<PostProcessLayer>(existingLayer, cameraObject);
+                    // copy the PostProcessing effects from the Main Camera
+                    PostProcessVolume existingVolume = Camera.main.GetComponent<PostProcessVolume>();
+                    PostProcessLayer existingLayer = Camera.main.GetComponent<PostProcessLayer>();
+                    CopyComponent<PostProcessVolume>(existingVolume, cameraObject);
+                    CopyComponent<PostProcessLayer>(existingLayer, cameraObject);
 
-                // this script writes a new image from the camera's view, from the Editor
-                // it will run once, then self-destruct
-                RenderCameraToImageSelfDestruct renderCameraScript = cameraObject.AddComponent<RenderCameraToImageSelfDestruct>();
+                    // this script writes a new image from the camera's view, from the Editor
+                    // it will run once, then self-destruct
+                    RenderCameraToImageSelfDestruct renderCameraScript = cameraObject.AddComponent<RenderCameraToImageSelfDestruct>();
 
-                // specify the path for the camera capture
-                renderCameraScript.filePath = UIGlobals.projectUIPath;
+                    // specify the path for the camera capture
+                    renderCameraScript.filePath = UIGlobals.projectUIPath;
 
-                // disable the camera to prevent performance issues
-                camera.enabled = false;
+                    // disable the camera to prevent performance issues
+                    camera.enabled = false;
+                }
             }
         }
     }

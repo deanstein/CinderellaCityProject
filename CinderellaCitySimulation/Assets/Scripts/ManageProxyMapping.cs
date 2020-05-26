@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 
 using UnityEditor;
-using UnityEditor.SceneManagement;
 
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
 public class ProxyGlobals
@@ -32,6 +30,7 @@ public class ProxyGlobals
         peoplePrefabFolderPath + "/Female/Summer/Girl_33.prefab",
         peoplePrefabFolderPath + "/Female/Summer/granny01.prefab",
         peoplePrefabFolderPath + "/Female/Winter/casual16_f_highpoly.prefab",
+        peoplePrefabFolderPath + "/Female/Winter/casual22_f_highpoly.prefab",
         peoplePrefabFolderPath + "/Female/Winter/casual25_f_highpoly.prefab",
 
         peoplePrefabFolderPath + "/Male/Summer/business01_m_highpoly.prefab",
@@ -105,6 +104,22 @@ public class ManageProxyMapping
                 return ProxyGlobals.peoplePrefabPool80s90s;
             case string name when name.Contains("Experimental"):
                 return ProxyGlobals.peoplePrefabPool60s70s;
+            default:
+                return null;
+        }
+    }
+
+    // get a random prefab from the correct scene pool
+    public static string GetRandomPersonPrefabFilePathBySceneName(string sceneName)
+    {
+        switch (sceneName)
+        {
+            case string name when name.Contains("60s70s"):
+                return ProxyGlobals.peoplePrefabPool80s90s[Random.Range(0, ProxyGlobals.peoplePrefabPool80s90s.Length)];
+            case string name when name.Contains("80s90s"):
+                return ProxyGlobals.peoplePrefabPool60s70s[Random.Range(0, ProxyGlobals.peoplePrefabPool60s70s.Length)];
+            case string name when name.Contains("Experimental"):
+                return ProxyGlobals.peoplePrefabPool60s70s[Random.Range(0, ProxyGlobals.peoplePrefabPool60s70s.Length)];
             default:
                 return null;
         }
@@ -187,9 +202,83 @@ public class ManageProxyMapping
             return replacementObjectPath;
         }
 
+        if (objectName.Contains("people-jason-morin"))
+        {
+            // identify the path of the prefab to replace this object
+            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Male/Summer/casual23_m_highpoly.prefab";
+
+            return replacementObjectPath;
+        }
+
+        if (objectName.Contains("people-stu-goldstein"))
+        {
+            // identify the path of the prefab to replace this object
+            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Male/Summer/business01_m_highpoly.prefab";
+
+            return replacementObjectPath;
+        }
+
+        if (objectName.Contains("people-lisa"))
+        {
+            // identify the path of the prefab to replace this object
+            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Female/Summer/Girl_22.prefab";
+
+            return replacementObjectPath;
+        }
+
+        if (objectName.Contains("people-matt"))
+        {
+            // identify the path of the prefab to replace this object
+            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Male/Winter/casual20_m_highpoly.prefab";
+
+            return replacementObjectPath;
+        }
+
+        if (objectName.Contains("people-melanie"))
+        {
+            // identify the path of the prefab to replace this object
+            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Female/Summer/casual14_f_highpoly.prefab";
+
+            return replacementObjectPath;
+        }
+
+        if (objectName.Contains("people-nick"))
+        {
+            // identify the path of the prefab to replace this object
+            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Male/Summer/Man_44.prefab";
+
+            return replacementObjectPath;
+        }
+
+        if (objectName.Contains("people-rachel"))
+        {
+            // identify the path of the prefab to replace this object
+            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Female/Summer/casual07_f_highpoly.prefab";
+
+            return replacementObjectPath;
+        }
+
+        if (objectName.Contains("people-susan"))
+        {
+            // identify the path of the prefab to replace this object
+            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Female/Summer/casual04_f_highpoly.prefab";
+
+            return replacementObjectPath;
+        }
+
+        if (objectName.Contains("people-tia"))
+        {
+            // identify the path of the prefab to replace this object
+            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Female/Summer/casual19_f_highpoly.prefab";
+
+            return replacementObjectPath;
+        }
+
         else
         {
-            return "";
+            // if the name isn't handled,
+            // replace this object with a random prefab appropriate to this scene
+            return GetRandomPersonPrefabFilePathBySceneName(SceneManager.GetActiveScene().name);
         }
     }
 
@@ -264,7 +353,7 @@ public class ManageProxyMapping
         }
         else
         {
-            Debug.Log("This prefab is null.");
+            Debug.Log("Failed to instantiate this prefab. Is the path valid?" + replacementObjectPath);
         }
         return instancedPrefab;
     }
