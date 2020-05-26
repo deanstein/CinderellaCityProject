@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
+using UnityEditor;
+
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -8,6 +10,9 @@ public class NPCControllerGlobals
 {
     // the folder path inside Resources to find the NPC Controllers
     public static string animatorControllerFolderPath = "Animator Controllers/";
+
+    // max distance the NPCController can be from the player to disable itself, and pathfinding logic
+    public static float maxDistanceBeforeSuspend = 10f;
 
     // define the available animator controller file paths
     public static string animatorControllerFilePathTalking1 = animatorControllerFolderPath + "talking 1";
@@ -76,7 +81,7 @@ public class ManageNPCControllers
     // get the correct gender controller for idling
     public static string GetIdleAnimatorControllerByGender(string nameWithGender)
     {
-        if (nameWithGender.Contains("female"))
+        if (nameWithGender.Contains("female") || nameWithGender.Contains("_f_") || nameWithGender.Contains("Girl"))
         {
             return NPCControllerGlobals.animatorControllerFilePathFemaleIdle;
         }
@@ -86,31 +91,70 @@ public class ManageNPCControllers
         }
     }
 
-    // add the typical controller, nav mesh agent, and associated scripts to a gameObject
-    public static void ConfigureNPCForPathfinding(GameObject proxyObject, GameObject NPCObject)
+
+    // get the correct gender controller for idling
+    public static string GetWalkingAnimatorControllerByGender(string nameWithGender)
     {
-        // the instanced prefab should have an animator
-        Animator personAnimator = NPCObject.GetComponent<Animator>();
-
-        // define the desired controller for this person
-        // first, get the script
-        personAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(ManageNPCControllers.GetDefaultAnimatorControllerFilePathByName(proxyObject.name));
-
-        // if not named for a specific posture, follow paths and walk
-        if (!proxyObject.name.Contains("talking") && !proxyObject.name.Contains("listening") && !proxyObject.name.Contains("idle") && !proxyObject.name.Contains("sitting"))
+        if (nameWithGender.Contains("female") || nameWithGender.Contains("_f_") || nameWithGender.Contains("Girl"))
         {
-            // add a navigation mesh agent to this person so it can find its way on the navmesh
-            NavMeshAgent thisAgent = NPCObject.AddComponent<NavMeshAgent>();
-            thisAgent.speed = 1.0f;
-            thisAgent.angularSpeed = 60f;
-            thisAgent.radius = 0.25f;
-            thisAgent.autoTraverseOffMeshLink = false;
+            return NPCControllerGlobals.animatorControllerFilePathFemaleWalking;
+        }
+        else
+        {
+            return NPCControllerGlobals.animatorControllerFilePathMaleWalking;
+        }
+    }
 
-            // set the quality of the non-static obstacle avoidance
-            thisAgent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
+    public static void ConfigureNPCForPathfinding(GameObject NPCObject)
+    {
+        // NPCs need only animate and follow paths when within a certain radius of the player
+        ToggleComponentByProximityToPlayer toggleByProximityScript = NPCObject.AddComponent<ToggleComponentByProximityToPlayer>();
+        toggleByProximityScript.maxDistance = NPCControllerGlobals.maxDistanceBeforeSuspend;
+        toggleByProximityScript.toggleComponentTypes = new string[] { "Animator", "NavMeshAgent", "FollowPathOnNavMesh" };
 
-            // add the script to follow a path
-            FollowPathOnNavMesh followPathByNameScript = NPCObject.AddComponent<FollowPathOnNavMesh>();
+        // everyone walks by default
+        // add a navigation mesh agent to this person so it can find its way on the navmesh
+        NavMeshAgent thisAgent = NPCObject.AddComponent<NavMeshAgent>();
+        thisAgent.speed = 1.0f;
+        thisAgent.angularSpeed = 60f;
+        thisAgent.radius = 0.25f;
+        thisAgent.autoTraverseOffMeshLink = false;
+
+        // set the quality of the non-static obstacle avoidance
+        thisAgent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
+
+        // add the script to follow a path
+        FollowPathOnNavMesh followPathByNameScript = NPCObject.AddComponent<FollowPathOnNavMesh>();
+    }
+
+    // add the typical controller, nav mesh agent, and associated scripts to a gameObject
+    public static void ConfigureNPCForAnimationAndPathfinding(GameObject proxyObject, GameObject NPCObject)
+    {
+        // if there's a proxy object, check the proxy name for a specific animation to use
+        if (proxyObject)
+        {
+            // set the default animator controller for this person
+            Animator thisAnimator = NPCObject.GetComponent<Animator>();
+            thisAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(ManageNPCControllers.GetDefaultAnimatorControllerFilePathByName(proxyObject.name));
+
+            // TODO: figure out how to get the animation to apply in the Editor
+
+            // anyone not the following gestures will get configured to walk
+            if (!proxyObject.name.Contains("talking") && !proxyObject.name.Contains("listening") && !proxyObject.name.Contains("idle") && !proxyObject.name.Contains("sitting"))
+            {
+                ConfigureNPCForPathfinding(NPCObject);
+            }
+        }
+
+        // otherwise, this is a random filler person and can be configured to walk
+        else
+        {
+            // set the default animator controller for this person
+            Animator thisAnimator = NPCObject.GetComponent<Animator>();
+            thisAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(ManageNPCControllers.GetWalkingAnimatorControllerByGender(NPCObject.name));
+
+            // configure the random filler person for pathfinding
+            ConfigureNPCForPathfinding(NPCObject);
         }
     }
 }
