@@ -110,7 +110,7 @@ public class ManageNPCControllers
         // NPCs need only animate and follow paths when within a certain radius of the player
         ToggleComponentByProximityToPlayer toggleByProximityScript = NPCObject.AddComponent<ToggleComponentByProximityToPlayer>();
         toggleByProximityScript.maxDistance = NPCControllerGlobals.maxDistanceBeforeSuspend;
-        toggleByProximityScript.toggleComponentTypes = new string[] { "Animator", "NavMeshAgent", "FollowPathOnNavMesh" };
+        toggleByProximityScript.toggleComponentTypes = new string[] { "NavMeshAgent", "FollowPathOnNavMesh" };
 
         // everyone walks by default
         // add a navigation mesh agent to this person so it can find its way on the navmesh
@@ -125,6 +125,16 @@ public class ManageNPCControllers
 
         // add the script to follow a path
         FollowPathOnNavMesh followPathByNameScript = NPCObject.AddComponent<FollowPathOnNavMesh>();
+
+        // add the script to update the animation based on the speed
+        UpdateAnimatorBySpeed updateAnimatorScript = NPCObject.AddComponent<UpdateAnimatorBySpeed>();
+    }
+
+    // TODO: get this to work
+    public static void setAnimationFrame(Animator animatorToSet, string animationName)
+    {
+        animatorToSet.Play(animationName);
+        animatorToSet.Update(Time.deltaTime);
     }
 
     // add the typical controller, nav mesh agent, and associated scripts to a gameObject
@@ -137,7 +147,12 @@ public class ManageNPCControllers
             Animator thisAnimator = NPCObject.GetComponent<Animator>();
             thisAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(ManageNPCControllers.GetDefaultAnimatorControllerFilePathByName(proxyObject.name));
 
-            // TODO: figure out how to get the animation to apply in the Editor
+            // TODO: get the initial animation to appear in the editor
+            /*
+            string animationName = thisAnimator.runtimeAnimatorController.animationClips[0].name;
+
+            setAnimationFrame(thisAnimator, animationName);
+            */
 
             // anyone not the following gestures will get configured to walk
             if (!proxyObject.name.Contains("talking") && !proxyObject.name.Contains("listening") && !proxyObject.name.Contains("idle") && !proxyObject.name.Contains("sitting"))
@@ -152,6 +167,8 @@ public class ManageNPCControllers
             // set the default animator controller for this person
             Animator thisAnimator = NPCObject.GetComponent<Animator>();
             thisAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(ManageNPCControllers.GetWalkingAnimatorControllerByGender(NPCObject.name));
+
+            // TODO: get the initial animation to appear in the editor
 
             // configure the random filler person for pathfinding
             ConfigureNPCForPathfinding(NPCObject);

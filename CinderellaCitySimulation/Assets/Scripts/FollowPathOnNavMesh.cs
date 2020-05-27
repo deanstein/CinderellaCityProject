@@ -42,28 +42,7 @@ public class FollowPathOnNavMesh : MonoBehaviour
 
     private void Update()
     {
-        // if we've stopped moving, change to an idle controller
-        if (thisAgent.remainingDistance <= thisAgent.stoppingDistance && thisAgent.pathPending)
-        {
-            this.GetComponent<Animator>().runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(ManageNPCControllers.GetIdleAnimatorControllerByGender(this.name));
-        }
-        // if we're moving, use this agent's default controller
-        else if (!thisAgent.pathPending)
-        {
-            this.GetComponent<Animator>().runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(ManageNPCControllers.GetDefaultAnimatorControllerFilePathByName(this.name));
-        }
-
-        // if we're colliding with another agent, set the animation to talking
-        if (thisAgent.velocity.sqrMagnitude <= 0.1f)
-        {
-            this.GetComponent<Animator>().runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(NPCControllerGlobals.animatorControllerFilePathTalking1);
-        }
-        else
-        {
-            this.GetComponent<Animator>().runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(ManageNPCControllers.GetDefaultAnimatorControllerFilePathByName(this.name));
-        }
-
-        // Check if we've reached the destination
+          // Check if we've reached the destination
         if (!thisAgent.pathPending)
         {
             if (thisAgent.remainingDistance <= thisAgent.stoppingDistance)
