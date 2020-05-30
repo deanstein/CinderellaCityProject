@@ -149,7 +149,7 @@ public class ManageNPCControllers
         FollowPathOnNavMesh followPathByNameScript = NPCObject.AddComponent<FollowPathOnNavMesh>();
 
         // add the script to update the animation based on the speed
-        UpdateAnimatorBySpeed updateAnimatorScript = NPCObject.AddComponent<UpdateAnimatorBySpeed>();
+        UpdateNPCAnimatorByState updateAnimatorScript = NPCObject.AddComponent<UpdateNPCAnimatorByState>();
     }
 
     // TODO: get this to work

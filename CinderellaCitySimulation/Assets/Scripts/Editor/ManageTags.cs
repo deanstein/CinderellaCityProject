@@ -1,12 +1,9 @@
 ﻿
-using System.Collections.Generic;
 using UnityEngine;
+
 using UnityEditor;
 
-// this script needs to be attached to the UILauncher in each FPSScene
-// in order to properly tabulate the objects with certain tags
-
-public class ManageTagsEditor
+public class ManageTags
 {
     public static void AddTag(string tag)
     {
@@ -27,7 +24,7 @@ public class ManageTagsEditor
             tags.InsertArrayElementAtIndex(0);
             tags.GetArrayElementAtIndex(0).stringValue = tag;
             so.ApplyModifiedProperties();
-            Debug.Log("TagHelper added a new tag.");
+            //Debug.Log("TagHelper added a new tag.");
             so.Update();
         }
     }
@@ -36,10 +33,10 @@ public class ManageTagsEditor
     public static string GetOrCreateTagByScriptHostType(string scriptHostType)
     {
         // define the tag that will be used to hide the proxies
-        string deleteScriptHostTag = ManageTags.TagGlobals.scriptHostTagPrefix + scriptHostType;
+        string deleteScriptHostTag = ManageTaggedObjects.TaggedObjectGlobals.scriptHostTagPrefix + scriptHostType;
 
         // run TagHelper to create the hide proxy tag if it doesn't exist yet
-        ManageTagsEditor.AddTag(deleteScriptHostTag);
+        ManageTags.AddTag(deleteScriptHostTag);
 
         return deleteScriptHostTag;
     }
@@ -48,10 +45,10 @@ public class ManageTagsEditor
     public static string GetOrCreateTagByProxyType(string proxyType)
     {
         // define the tag that will be used to hide the proxies
-        string deleteReplacementTag = ManageTags.TagGlobals.deleteProxyReplacementTagPrefix + proxyType;
+        string deleteReplacementTag = ManageTaggedObjects.TaggedObjectGlobals.deleteProxyReplacementTagPrefix + proxyType;
 
         // run TagHelper to create the hide proxy tag if it doesn't exist yet
-        ManageTagsEditor.AddTag(deleteReplacementTag);
+        ManageTags.AddTag(deleteReplacementTag);
 
         return deleteReplacementTag;
     }

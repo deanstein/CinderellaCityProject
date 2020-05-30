@@ -319,7 +319,7 @@ public class ManageProxyMapping
     public static GameObject ReplaceProxyObjectWithPrefab(GameObject proxyObject, string proxyType)
     {
         // define the delete tag to look for, based on the proxyType, then delete existing proxy replacements
-        string proxyReplacementDeleteTag = ManageTagsEditor.GetOrCreateTagByProxyType(proxyType);
+        string proxyReplacementDeleteTag = ManageTags.GetOrCreateTagByProxyType(proxyType);
 
         // instantiate the instanced prefab
         GameObject instancedPrefab;
