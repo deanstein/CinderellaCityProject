@@ -8,6 +8,9 @@ using UnityEngine.SceneManagement;
 
 public class ProxyGlobals
 {
+    // the average height of proxy objects, used by fillers to get a rough height mapping
+    public static float averageProxyHeight = 0;
+
     // the number of random filler people to be generated per imported proxy person
     public static int numberOfFillersToGenerate = 5;
 
@@ -294,13 +297,16 @@ public class ManageProxyMapping
         // create an instance from the prefab
         GameObject instancedPrefab = PrefabUtility.InstantiatePrefab(newObject as GameObject) as GameObject;
 
-        // if instancing the prefab was successful, adjust its position and parent
+        // if instancing the prefab was successful, adjust its position, scale, and parent
         if (instancedPrefab)
         {
             Debug.Log("<b>Instanced this prefab: </b>" + instancedPrefab);
 
             // move the prefab to the specified location
             instancedPrefab.transform.position = destinationPoint;
+
+            // scale the prefab to match a globally-available average height
+            Utils.GeometryUtils.ScaleGameObjectToMaxHeight(instancedPrefab, ProxyGlobals.averageProxyHeight);
 
             // nest the prefab below the given parent
             instancedPrefab.transform.parent = parent.transform;
@@ -313,7 +319,7 @@ public class ManageProxyMapping
     public static GameObject ReplaceProxyObjectWithPrefab(GameObject proxyObject, string proxyType)
     {
         // define the delete tag to look for, based on the proxyType, then delete existing proxy replacements
-        string proxyReplacementDeleteTag = ManageTags.GetOrCreateTagByProxyType(proxyType);
+        string proxyReplacementDeleteTag = ManageTagsEditor.GetOrCreateTagByProxyType(proxyType);
 
         // instantiate the instanced prefab
         GameObject instancedPrefab;
@@ -344,6 +350,18 @@ public class ManageProxyMapping
             instancedPrefab.transform.localScale = gameObjectToBeReplaced.transform.localScale;
             // further scale the new object to match the proxy's height
             Utils.GeometryUtils.ScaleToMatchHeight(instancedPrefab, gameObjectToBeReplaced);
+
+            // record the scale used for filler replacements to use
+            // assume that if this is zero, this is the first proxy, so start the average at this height
+            if (ProxyGlobals.averageProxyHeight == 0)
+            {
+                ProxyGlobals.averageProxyHeight = Utils.GeometryUtils.GetMaxGOBoundingBoxDimension(proxyObject);
+            }
+            // otherwise, account for this proxy's height in the overall average
+            else
+            {
+                ProxyGlobals.averageProxyHeight = (ProxyGlobals.averageProxyHeight + Utils.GeometryUtils.GetMaxGOBoundingBoxDimension(proxyObject)) / 2;
+            }
 
             // ensure the new prefab rotates about the traditional Z (up) axis to match its proxy 
             instancedPrefab.transform.localEulerAngles = new Vector3(0, gameObjectToBeReplaced.transform.localEulerAngles.y, 0);

@@ -8,11 +8,17 @@ using UnityEngine.AI;
 
 public class NPCControllerGlobals
 {
-    // the folder path inside Resources to find the NPC Controllers
-    public static string animatorControllerFolderPath = "Animator Controllers/";
+    // keep track of how many NPCControllers are active and pathfinding
+    public static int activeNPCControllers = 0;
+
+    // on import, max disance an NPC can be from a valid navmesh point before it's relocated randomly
+    public static float maxDistanceForClosestPointAdjustment = 5f;
 
     // max distance the NPCController can be from the player to disable itself, and pathfinding logic
-    public static float maxDistanceBeforeSuspend = 10f;
+    public static float maxDistanceBeforeSuspend = 20f;
+
+    // the folder path inside Resources to find the NPC Controllers
+    public static string animatorControllerFolderPath = "Animator Controllers/";
 
     // define the available animator controller file paths
     public static string animatorControllerFilePathTalking1 = animatorControllerFolderPath + "talking 1";
@@ -119,6 +125,22 @@ public class ManageNPCControllers
         thisAgent.angularSpeed = 60f;
         thisAgent.radius = 0.25f;
         thisAgent.autoTraverseOffMeshLink = false;
+
+        // ensure the agent is moved to a valid location on the navmesh
+
+        // if the distance between the current position, and the nearest navmesh position
+        // is less than the max distance, use the closest point on the navmesh
+        if (Vector3.Distance(NPCObject.transform.position, Utils.GeometryUtils.GetNearestPointOnNavmesh(NPCObject.transform.position)) < NPCControllerGlobals.maxDistanceForClosestPointAdjustment)
+        {
+            NPCObject.transform.position = Utils.GeometryUtils.GetNearestPointOnNavmesh(NPCObject.transform.position);
+        }
+        // otherwise, this person is probably floating in space
+        // so find a totally random location on the navmesh for them to go
+        else
+        {
+            NPCObject.transform.position = Utils.GeometryUtils.GetRandomNavMeshPointWithinRadius(NPCObject.transform.position, 1000, false);
+        }
+
 
         // set the quality of the non-static obstacle avoidance
         thisAgent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;

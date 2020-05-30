@@ -34,6 +34,29 @@ public class Utils
         }
 
         // get a random point on the scene's current navmesh within some radius from a starting point
+        public static Vector3 GetNearestPointOnNavmesh(Vector3 startingPoint)
+        {
+            // use a very large radius - we want to find the nearest point anywhere
+            float radius = 1000;
+
+            // set up the hit and final position
+            NavMeshHit hit;
+            Vector3 finalPosition = Vector3.zero;
+
+            // if we get a hit
+            if (NavMesh.SamplePosition(startingPoint, out hit, radius, 1))
+            {
+                finalPosition = hit.position;
+            }
+            else
+            {
+                Debug.Log("Failed to find a point on the NavMesh.");
+            }
+
+            return finalPosition;
+        }
+
+        // get a random point on the scene's current navmesh within some radius from a starting point
         public static Vector3 GetRandomNavMeshPointWithinRadius(Vector3 startingPoint, float radius, bool stayOnLevel)
         {
             // get a random direction within the radius
@@ -125,11 +148,21 @@ public class Utils
             float currentHeight = GetMaxGOBoundingBoxDimension(gameObjectToScale);
             //Debug.Log("Current height: " + currentHeight);
 
+            Utils.GeometryUtils.ScaleGameObjectToMaxHeight(gameObjectToScale, targetHeight);
+        }
+
+        // define how to scale a GameObject to match a height
+        public static void ScaleGameObjectToMaxHeight(GameObject gameObjectToScale, float targetHeight)
+        {
+            //Debug.Log("Target height: " + targetHeight);
+            float currentHeight = GetMaxGOBoundingBoxDimension(gameObjectToScale);
+            //Debug.Log("Current height: " + currentHeight);
+
             float scaleFactor = (targetHeight / currentHeight) * ((gameObjectToScale.transform.localScale.x + gameObjectToScale.transform.localScale.y + gameObjectToScale.transform.localScale.z) / 3);
 
             // scale the prefab to match the height of its replacement
             gameObjectToScale.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
-            Debug.Log("<b>Scaled </b>" + gameObjectToScale + " <b>to match</b> " + gameObjectToMatch + " <b>(" + scaleFactor + " scale factor)</b>");
+            Debug.Log("<b>Scaled </b>" + gameObjectToScale + " <b>to max height: </b> " + targetHeight + " <b>(" + scaleFactor + " scale factor)</b>");
         }
     }
 }

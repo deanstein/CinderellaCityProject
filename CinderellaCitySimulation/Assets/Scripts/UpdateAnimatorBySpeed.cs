@@ -19,13 +19,12 @@ public class UpdateAnimatorBySpeed : MonoBehaviour
     {
         // get this nav mesh agent
         thisAgent = this.GetComponent<NavMeshAgent>();
-
     }
 
     private void Update()
     {
         // if we're just starting, and the navmesh agent hasn't been enabled, set the animator to idle
-        if (lastVelocity == 0 && !thisAgent.enabled)
+        if (lastVelocity == 0 || !thisAgent.enabled)
         {
             this.GetComponent<Animator>().runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(ManageNPCControllers.GetIdleAnimatorControllerByGender(this.name));
         }
