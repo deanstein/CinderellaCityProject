@@ -8,7 +8,7 @@ using UnityEngine.AI;
 
 // this script should be attached to an object that has an animator that should change based on speed
 
-public class UpdateAnimatorBySpeed : MonoBehaviour
+public class UpdateNPCAnimatorByState : MonoBehaviour
 {
     // the navigation mesh agent on this object
     public NavMeshAgent thisAgent;

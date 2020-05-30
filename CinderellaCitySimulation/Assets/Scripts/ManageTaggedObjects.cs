@@ -1,14 +1,14 @@
 ﻿
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
+
+using System.Collections.Generic;
 
 // this script needs to be attached to the UILauncher in each FPSScene
 // in order to properly tabulate the objects with certain tags
 
-public class ManageTags : MonoBehaviour
+public class ManageTaggedObjects : MonoBehaviour
 {
-    public class TagGlobals
+    public class TaggedObjectGlobals
     {
         // for consistency, keep the prefix for certain tags here
         // these get appended with a specific type by other scripts
@@ -24,14 +24,13 @@ public class ManageTags : MonoBehaviour
     }
 
     // finds all objects with tags associated with script host types, and stores them globally
-    // TODO: this may need to become a class, if we need to access script host objects by particular type
-    public static void FindAndStoreAllScriptHostObjectsByTypes(string[] types)
+    public static void GetScriptHostObjectsByTypes(string[] types)
     {
         foreach(string type in types )
         {
-            string tag = TagGlobals.scriptHostTagPrefix + type;
+            string tag = TaggedObjectGlobals.scriptHostTagPrefix + type;
             GameObject[] taggedObjects = GameObject.FindGameObjectsWithTag(tag);
-            TagGlobals.scriptHostObjects.Add(taggedObjects);
+            TaggedObjectGlobals.scriptHostObjects.Add(taggedObjects);
         }
     }
 
@@ -50,6 +49,6 @@ public class ManageTags : MonoBehaviour
     private void Start()
     {
         // needs to run the first time this scene is loaded, for scripts to access downstream
-        FindAndStoreAllScriptHostObjectsByTypes(TagGlobals.scriptHostTypes);
+        GetScriptHostObjectsByTypes(TaggedObjectGlobals.scriptHostTypes);
     }
 }

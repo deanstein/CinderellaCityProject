@@ -105,7 +105,7 @@ public class ToggleSceneAndUI
     public static void ToggleScriptHostObjectListOn()
     {
         // disable the script host objects for each of the host types given
-        foreach (GameObject[] scriptHostObjectArray in ManageTags.TagGlobals.scriptHostObjects)
+        foreach (GameObject[] scriptHostObjectArray in ManageTaggedObjects.TaggedObjectGlobals.scriptHostObjects)
         {
             foreach (GameObject scriptHostObject in scriptHostObjectArray)
             {
@@ -117,7 +117,7 @@ public class ToggleSceneAndUI
     public static void ToggleScriptHostObjectListOff()
     {
         // disable the script host objects for each of the host types given
-        foreach (GameObject[] scriptHostObjectArray in ManageTags.TagGlobals.scriptHostObjects)
+        foreach (GameObject[] scriptHostObjectArray in ManageTaggedObjects.TaggedObjectGlobals.scriptHostObjects)
         {
             foreach (GameObject scriptHostObject in scriptHostObjectArray)
             {

@@ -516,8 +516,8 @@ public class AssetImportUpdate : AssetPostprocessor {
             // add components to children gameObjects
 
             // first delete the existing script host objects
-            string speakerScriptHostDeleteTag = ManageTagsEditor.GetOrCreateTagByScriptHostType("Speakers");
-            ManageTags.DeleteObjectsByTag(speakerScriptHostDeleteTag);
+            string speakerScriptHostDeleteTag = ManageTags.GetOrCreateTagByScriptHostType("Speakers");
+            ManageTaggedObjects.DeleteObjectsByTag(speakerScriptHostDeleteTag);
 
             foreach (Transform child in gameObjectByAssetName.transform)
             {
@@ -837,8 +837,8 @@ public class AssetImportUpdate : AssetPostprocessor {
         string proxyType = GetProxyTypeByName(assetName);
 
         // define the delete tag to look for, based on the proxyType, then delete existing proxy replacements
-        string proxyReplacementDeleteTag = ManageTagsEditor.GetOrCreateTagByProxyType(proxyType);
-        ManageTags.DeleteObjectsByTag(proxyReplacementDeleteTag);
+        string proxyReplacementDeleteTag = ManageTags.GetOrCreateTagByProxyType(proxyType);
+        ManageTaggedObjects.DeleteObjectsByTag(proxyReplacementDeleteTag);
 
         // find the associated GameObject by this asset's name
         GameObject gameObjectByAsset = GameObject.Find(assetName);
