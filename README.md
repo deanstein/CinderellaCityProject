@@ -73,7 +73,7 @@ The following scripts are critical to the behavior and processes underpinning th
 	- ManageFPSControllers.cs
 		- Responsible for managing the location, rotation, and behavior of FPS Controllers (player) in Scenes
 	- ManageNPCControllers.cs
-		- Responsible for managing which 3D mall patrons (non-player characters) get which animation controllers, and for switching between the animations during gameplay
+		- Responsible for mapping between 3D mall patrons (non-player characters) and animation controllers, depending on name or gender
 	- ManageProxyMapping.cs
 		- Responsible for mapping between proxy objects and associated prefabs, like people and trees
 	- ManageSunSettings.cs
@@ -97,6 +97,8 @@ The following scripts are critical to the behavior and processes underpinning th
 		- Responsible for toggling entire Scenes and associated UI on certain input events
 	- TransformScreenSpaceObject.cs
 		- Responsible for positioning screen space objects (UI) based on the available screen real estate and proportions
+	- UpdateAnimatorBySpeed.cs
+		- Responsible for changing a NavMesh agent's animator to various poses depending on the speed of the agent
 	- Utils.cs
 		- Holds a variety of low-level, common operations shared among other scripts
 

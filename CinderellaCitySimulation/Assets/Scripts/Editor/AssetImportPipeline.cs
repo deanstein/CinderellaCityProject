@@ -516,7 +516,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             // add components to children gameObjects
 
             // first delete the existing script host objects
-            string speakerScriptHostDeleteTag = ManageTags.GetOrCreateTagByScriptHostType("Speakers");
+            string speakerScriptHostDeleteTag = ManageTagsEditor.GetOrCreateTagByScriptHostType("Speakers");
             ManageTags.DeleteObjectsByTag(speakerScriptHostDeleteTag);
 
             foreach (Transform child in gameObjectByAssetName.transform)
@@ -837,7 +837,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         string proxyType = GetProxyTypeByName(assetName);
 
         // define the delete tag to look for, based on the proxyType, then delete existing proxy replacements
-        string proxyReplacementDeleteTag = ManageTags.GetOrCreateTagByProxyType(proxyType);
+        string proxyReplacementDeleteTag = ManageTagsEditor.GetOrCreateTagByProxyType(proxyType);
         ManageTags.DeleteObjectsByTag(proxyReplacementDeleteTag);
 
         // find the associated GameObject by this asset's name
@@ -899,59 +899,60 @@ public class AssetImportUpdate : AssetPostprocessor {
                         }
                     }
                 }
-                // camera thumbnail objects - not replaced by proxies, but handled differently
-                else if (child.name.Contains("Camera-Thumbnail"))
-                {
-                    // get the current scene
-                    Scene currentScene = EditorSceneManager.GetActiveScene();
+            }
 
-                    // need to manipulate the default FormIt Group/Instance name to remove the digits at the end
+            // camera thumbnail objects - these are used to generate thumbnails
+            else if (child.name.Contains("Camera-Thumbnail"))
+            {
+                // get the current scene
+                Scene currentScene = EditorSceneManager.GetActiveScene();
 
-                    // first, remove the characters after the last hyphen
-                    string tempName = child.name.Remove(child.name.LastIndexOf("-"), child.name.Length - child.name.LastIndexOf("-"));
-                    // then remove the characters after the last hyphen again
-                    string cameraName = tempName.Remove(tempName.LastIndexOf("-"), tempName.Length - tempName.LastIndexOf("-"));
+                // need to manipulate the default FormIt Group/Instance name to remove the digits at the end
 
-                    // create a new object to host the camera
-                    // include the name of the current scene (assumes reimporting into the correct scene)
-                    GameObject cameraObject = new GameObject(cameraName + "-" + currentScene.name);
+                // first, remove the characters after the last hyphen
+                string tempName = child.name.Remove(child.name.LastIndexOf("-"), child.name.Length - child.name.LastIndexOf("-"));
+                // then remove the characters after the last hyphen again
+                string cameraName = tempName.Remove(tempName.LastIndexOf("-"), tempName.Length - tempName.LastIndexOf("-"));
 
-                    // create a camera
-                    var camera = cameraObject.AddComponent<Camera>();
+                // create a new object to host the camera
+                // include the name of the current scene (assumes reimporting into the correct scene)
+                GameObject cameraObject = new GameObject(cameraName + "-" + currentScene.name);
 
-                    // configure the camera to work with PostProcessing
-                    camera.renderingPath = RenderingPath.DeferredShading;
-                    camera.allowMSAA = false;
-                    camera.useOcclusionCulling = false;
+                // create a camera
+                var camera = cameraObject.AddComponent<Camera>();
 
-                    // make the camera a sibling of the original camera geometry
-                    cameraObject.transform.parent = child.transform.parent;
-                    // match the position and rotation
-                    cameraObject.transform.SetPositionAndRotation(child.transform.localPosition, child.transform.localRotation);
+                // configure the camera to work with PostProcessing
+                camera.renderingPath = RenderingPath.DeferredShading;
+                camera.allowMSAA = false;
+                camera.useOcclusionCulling = false;
 
-                    // tag this camera object as a delete candidate for the next import
-                    cameraObject.tag = proxyReplacementDeleteTag;
+                // make the camera a sibling of the original camera geometry
+                cameraObject.transform.parent = child.transform.parent;
+                // match the position and rotation
+                cameraObject.transform.SetPositionAndRotation(child.transform.localPosition, child.transform.localRotation);
 
-                    // make the camera look at the plane
-                    // this assumes the only child of the camera is a plane (a FormIt Group with LCS at the center of the plane)
-                    cameraObject.transform.LookAt(child.GetChild(0).transform.position);
+                // tag this camera object as a delete candidate for the next import
+                cameraObject.tag = proxyReplacementDeleteTag;
 
-                    // copy the PostProcessing effects from the Main Camera
-                    PostProcessVolume existingVolume = Camera.main.GetComponent<PostProcessVolume>();
-                    PostProcessLayer existingLayer = Camera.main.GetComponent<PostProcessLayer>();
-                    CopyComponent<PostProcessVolume>(existingVolume, cameraObject);
-                    CopyComponent<PostProcessLayer>(existingLayer, cameraObject);
+                // make the camera look at the plane
+                // this assumes the only child of the camera is a plane (a FormIt Group with LCS at the center of the plane)
+                cameraObject.transform.LookAt(child.GetChild(0).transform.position);
 
-                    // this script writes a new image from the camera's view, from the Editor
-                    // it will run once, then self-destruct
-                    RenderCameraToImageSelfDestruct renderCameraScript = cameraObject.AddComponent<RenderCameraToImageSelfDestruct>();
+                // copy the PostProcessing effects from the Main Camera
+                PostProcessVolume existingVolume = Camera.main.GetComponent<PostProcessVolume>();
+                PostProcessLayer existingLayer = Camera.main.GetComponent<PostProcessLayer>();
+                CopyComponent<PostProcessVolume>(existingVolume, cameraObject);
+                CopyComponent<PostProcessLayer>(existingLayer, cameraObject);
 
-                    // specify the path for the camera capture
-                    renderCameraScript.filePath = UIGlobals.projectUIPath;
+                // this script writes a new image from the camera's view, from the Editor
+                // it will run once, then self-destruct
+                RenderCameraToImageSelfDestruct renderCameraScript = cameraObject.AddComponent<RenderCameraToImageSelfDestruct>();
 
-                    // disable the camera to prevent performance issues
-                    camera.enabled = false;
-                }
+                // specify the path for the camera capture
+                renderCameraScript.filePath = UIGlobals.projectUIPath;
+
+                // disable the camera to prevent performance issues
+                camera.enabled = false;
             }
         }
     }
