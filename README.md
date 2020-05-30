@@ -43,11 +43,13 @@ The following scripts are critical to the behavior and processes underpinning th
 		- Outlined in more detail below
 	- CopyLightingSettings.cs
 		- Adds menu items in Window -> Rendering, which allow for copying the Lighting Settings from one Scene, and pasting them into another Scene
-		- Downloaded from a 3rd party on the Unity forums (attribution in code)
+		- Sourced from a 3rd party on the Unity forums (attribution in code)
 	- ExtractTexturesFromCubeMap.cs
 		- Adds a menu option in Window -> CubeSplitter, which allows for extracting the texture files from a CubeMap for editing
-		- Downloaded from a 3rd party on the Unity forums (attribution in code)
-	- RenderCubeMapWizard.cs
+		- Sourced from a 3rd party on the Unity forums (attribution in code)
+	- ManageTags.cs
+		- Responsible for creating new Tags in the project, or returning existing Tags if available
+	- RenderCubeMapFromPosition.cs
 		- Adds a menu option in GameObject -> Render to Cubemap, which creates a Cubemap from the position of an object in space
 		- Each FPS Character Scene should have a "CubemapPosition" object, which needs to be selected when running "Render to Cubemap" - temporary cameras are added to this object in order to generate the Cubemap
 		- Downloaded from a 3rd party on the Unity forums (attribution in code)
@@ -78,8 +80,8 @@ The following scripts are critical to the behavior and processes underpinning th
 		- Responsible for mapping between proxy objects and associated prefabs, like people and trees
 	- ManageSunSettings.cs
 		- Responsible for adjusting the Sun position and properties of the Pause Menu, in order to generate accurate screenshots of disabled Scenes for "time traveling" thumbnails
-	- ManageTags.cs
-		- Responsible for creating new Tags in the project, and finding/operating on objects with specific Tags
+	- ManageTaggedObjects.cs
+		- Responsible for retrieving and operating on objects by Tag
 	- PlayAudioSequencesByName.cs
 		- Responsible for playing a specific sequence of audio tracks, depending on the name of the host object (typically a speaker, mechanical device, or NPC)
 	- RefreshImageSprite.cs
