@@ -16,7 +16,7 @@ public static class TransformScreenSpaceObject
     {
         RectTransform rectTransform = screenSpaceObject.GetComponent<RectTransform>();
         float objectHeight = rectTransform.rect.height * rectTransform.localScale.y;
-        //Debug.Log("Object height: " + imageHeight);
+        //Utils.DebugUtils.DebugLog("Object height: " + imageHeight);
 
         float objectPositionY = rectTransform.position.y;
 
@@ -29,7 +29,7 @@ public static class TransformScreenSpaceObject
     {
         RectTransform rectTransform = screenSpaceObject.GetComponent<RectTransform>();
         float objectHeight = rectTransform.rect.height * rectTransform.localScale.y;
-        //Debug.Log("Object height: " + objectHeight);
+        //Utils.DebugUtils.DebugLog("Object height: " + objectHeight);
 
         float objectPositionY = rectTransform.position.y;
 
@@ -42,7 +42,7 @@ public static class TransformScreenSpaceObject
     {
         RectTransform rectTransform = screenSpaceObject.GetComponent<RectTransform>();
         float objectWidth = rectTransform.rect.width * rectTransform.localScale.x;
-        //Debug.Log("Object width: " + objectWidth);
+        //Utils.DebugUtils.DebugLog("Object width: " + objectWidth);
 
         float objectPositionX = rectTransform.position.x;
 
@@ -55,7 +55,7 @@ public static class TransformScreenSpaceObject
     {
         RectTransform rectTransform = screenSpaceObject.GetComponent<RectTransform>();
         float objectWidth = rectTransform.rect.width * rectTransform.localScale.x;
-        //Debug.Log("Object width: " + objectWidth);
+        //Utils.DebugUtils.DebugLog("Object width: " + objectWidth);
 
         float objectPositionX = rectTransform.position.x;
 
@@ -68,20 +68,20 @@ public static class TransformScreenSpaceObject
     {
         RectTransform rectTransform = screenSpaceObject.GetComponent<RectTransform>();
         float objectHeight = rectTransform.rect.height * rectTransform.localScale.y;
-        //Debug.Log("Object height: " + imageHeight);
+        //Utils.DebugUtils.DebugLog("Object height: " + imageHeight);
 
         float objectPositionX = rectTransform.position.x;
         float objectPositionY = rectTransform.position.y;
 
         float objectTopY = objectPositionY + (objectHeight / 2);
         float objectBuffer = cameraHeight - objectTopY;
-        //Debug.Log("Current buffer: " + currentBuffer);
+        //Utils.DebugUtils.DebugLog("Current buffer: " + currentBuffer);
 
         float requestedBuffer = cameraHeight * bufferProportion;
         
         // determine the delta: the number of pixels to move up or down (if negative) to achieve the requested buffer
         float bufferDelta = objectBuffer - requestedBuffer;
-        //Debug.Log("Buffer delta: " + bufferDelta);
+        //Utils.DebugUtils.DebugLog("Buffer delta: " + bufferDelta);
 
         // move the object as required
         Vector3 newObjectPosition = new Vector3(objectPositionX, objectPositionY + bufferDelta, 0);
@@ -92,20 +92,20 @@ public static class TransformScreenSpaceObject
     {
         RectTransform rectTransform = screenSpaceObject.GetComponent<RectTransform>();
         float objectWidth = rectTransform.rect.width * rectTransform.localScale.x;
-        //Debug.Log("Object height: " + imageHeight);
+        //Utils.DebugUtils.DebugLog("Object height: " + imageHeight);
 
         float objectPositionX = rectTransform.position.x;
         float objectPositionY = rectTransform.position.y;
 
         float objectLeftY = objectPositionX - (objectWidth / 2);
         float objectBuffer = objectLeftY;
-        //Debug.Log("Current buffer: " + currentBuffer);
+        //Utils.DebugUtils.DebugLog("Current buffer: " + currentBuffer);
 
         float requestedBuffer = cameraWidth * bufferProportion;
 
         // determine the delta: the number of pixels to move up or down (if negative) to achieve the requested buffer
         float bufferDelta = objectBuffer - requestedBuffer;
-        //Debug.Log("Buffer delta: " + bufferDelta);
+        //Utils.DebugUtils.DebugLog("Buffer delta: " + bufferDelta);
 
         // move the object as required
         Vector3 newObjectPosition = new Vector3(objectPositionX - bufferDelta, objectPositionY, 0);
@@ -116,7 +116,7 @@ public static class TransformScreenSpaceObject
     {
         RectTransform rectTransform = screenSpaceObject.GetComponent<RectTransform>();
         float objectHeight = rectTransform.rect.height * rectTransform.localScale.y;
-        //Debug.Log("Object height: " + imageHeight);
+        //Utils.DebugUtils.DebugLog("Object height: " + imageHeight);
 
         float screenSpaceObjectPosX = rectTransform.position.x;
         float screenSpaceObjectPosY = rectTransform.position.y;
@@ -125,13 +125,13 @@ public static class TransformScreenSpaceObject
         float neighborObjectTopEdgeY = GetObjectTopEdgePositionY(neighborObject);
 
         float objectBuffer = neighborObjectTopEdgeY - screenSpaceObjectTopEdgeY;
-        //Debug.Log("Current buffer: " + currentBuffer);
+        //Utils.DebugUtils.DebugLog("Current buffer: " + currentBuffer);
 
         float requestedBuffer = cameraHeight * bufferProportion;
 
         // determine the delta: the number of pixels to move up or down (if negative) to achieve the requested buffer
         float bufferDelta = objectBuffer + requestedBuffer;
-        //Debug.Log("Buffer delta: " + bufferDelta);
+        //Utils.DebugUtils.DebugLog("Buffer delta: " + bufferDelta);
 
         // move the object as required
         Vector3 newObjectPosition = new Vector3(screenSpaceObjectPosX, screenSpaceObjectPosY + bufferDelta, 0);
@@ -142,7 +142,7 @@ public static class TransformScreenSpaceObject
     {
         RectTransform rectTransform = screenSpaceObject.GetComponent<RectTransform>();
         float objectWidth = rectTransform.rect.width * rectTransform.localScale.x;
-        //Debug.Log("Object width: " + objectWidth + " and scale: " + rectTransform.localScale.x);
+        //Utils.DebugUtils.DebugLog("Object width: " + objectWidth + " and scale: " + rectTransform.localScale.x);
 
         float screenSpaceObjectPosX = rectTransform.position.x;
         float screenSpaceObjectPosY = rectTransform.position.y;
@@ -151,13 +151,13 @@ public static class TransformScreenSpaceObject
         float neighborObjectLeftX = GetObjectLeftEdgePositionX(neighborObject);
 
         float objectBuffer = neighborObjectLeftX - screenSpaceObjectLeftX;
-        //Debug.Log("Current buffer: " + objectBuffer);
+        //Utils.DebugUtils.DebugLog("Current buffer: " + objectBuffer);
 
         float requestedBuffer = cameraWidth * bufferProportion;
 
         // determine the delta: the number of pixels to move left or right (if negative) to achieve the requested buffer
         float bufferDelta = objectBuffer - requestedBuffer;
-        //Debug.Log("Buffer delta: " + bufferDelta);
+        //Utils.DebugUtils.DebugLog("Buffer delta: " + bufferDelta);
 
         // move the object as required
         Vector3 newObjectPosition = new Vector3(screenSpaceObjectPosX + bufferDelta, screenSpaceObjectPosY, 0);
@@ -168,7 +168,7 @@ public static class TransformScreenSpaceObject
     {
         RectTransform rectTransform = screenSpaceObject.GetComponent<RectTransform>();
         float objectWidth = rectTransform.rect.width * rectTransform.localScale.x;
-        //Debug.Log("Object width: " + objectWidth + " and scale: " + rectTransform.localScale.x);
+        //Utils.DebugUtils.DebugLog("Object width: " + objectWidth + " and scale: " + rectTransform.localScale.x);
 
         float screenSpaceObjectPosX = rectTransform.position.x;
         float screenSpaceObjectPosY = rectTransform.position.y;
@@ -177,13 +177,13 @@ public static class TransformScreenSpaceObject
         float neighborObjectRightX = GetObjectRightEdgePositionX(neighborObject);
 
         float objectBuffer = neighborObjectRightX - screenSpaceObjectLeftX;
-        //Debug.Log("Current buffer: " + objectBuffer);
+        //Utils.DebugUtils.DebugLog("Current buffer: " + objectBuffer);
 
         float requestedBuffer = cameraWidth * bufferProportion;
 
         // determine the delta: the number of pixels to move up or down (if negative) to achieve the requested buffer
         float bufferDelta = objectBuffer + requestedBuffer;
-        //Debug.Log("Buffer delta: " + bufferDelta);
+        //Utils.DebugUtils.DebugLog("Buffer delta: " + bufferDelta);
 
         // move the object as required
         Vector3 newObjectPosition = new Vector3(screenSpaceObjectPosX + bufferDelta, screenSpaceObjectPosY, 0);
@@ -194,28 +194,28 @@ public static class TransformScreenSpaceObject
     {
         RectTransform rectTransform = screenSpaceObject.GetComponent<RectTransform>();
         float objectHeight = rectTransform.rect.height * rectTransform.localScale.y;
-        //Debug.Log("Object height: " + objectHeight);
+        //Utils.DebugUtils.DebugLog("Object height: " + objectHeight);
 
         float screenSpaceObjectPosX = rectTransform.position.x;
         float screenSpaceObjectPosY = rectTransform.position.y;
 
         float screenSpaceObjectTopEdgeY = screenSpaceObjectPosY + (objectHeight / 2);
-        //Debug.Log("Object top edge Y: " + screenSpaceObjectTopEdgeY);
+        //Utils.DebugUtils.DebugLog("Object top edge Y: " + screenSpaceObjectTopEdgeY);
 
         float neighborObjectBottomEdgeY = GetObjectBottomEdgePositionY(neighborObject);
-        //Debug.Log("Neight object bottom edge Y: " + neighborObjectBottomEdgeY);
+        //Utils.DebugUtils.DebugLog("Neight object bottom edge Y: " + neighborObjectBottomEdgeY);
 
         float objectBuffer = neighborObjectBottomEdgeY - screenSpaceObjectTopEdgeY;
-        //Debug.Log("Current buffer: " + objectBuffer);
+        //Utils.DebugUtils.DebugLog("Current buffer: " + objectBuffer);
 
         float requestedBuffer = cameraHeight * bufferProportion;
 
         // determine the delta: the number of pixels to move up or down (if negative) to achieve the requested buffer
         float bufferDelta = objectBuffer - requestedBuffer;
-        //Debug.Log("Buffer delta: " + bufferDelta);
+        //Utils.DebugUtils.DebugLog("Buffer delta: " + bufferDelta);
 
         float newPosY = screenSpaceObjectPosY + bufferDelta;
-        //Debug.Log("New pos Y : " + newPosY);
+        //Utils.DebugUtils.DebugLog("New pos Y : " + newPosY);
 
         // move the object as required
         Vector3 newObjectPosition = new Vector3(screenSpaceObjectPosX, newPosY, 0);
@@ -227,7 +227,7 @@ public static class TransformScreenSpaceObject
         // get the position at mid-width and mid-height of the screen
         float newPositionX = cameraWidth / 2;
         float newPositionY = cameraHeight / 2;
-        //Debug.Log("Camera resolution: " + cameraWidth + ", " + cameraHeight);
+        //Utils.DebugUtils.DebugLog("Camera resolution: " + cameraWidth + ", " + cameraHeight);
 
         // move the object so it's centered
         Vector3 newObjectPosition = new Vector3(newPositionX, newPositionY, 0);
@@ -288,16 +288,16 @@ public static class TransformScreenSpaceObject
         float screenSpaceObjectWidth = screenSpaceObjectRectTransform.rect.width;
 
         float screenSpaceObjectLeftEdgePositionX = GetObjectLeftEdgePositionX(screenSpaceObject);
-        //Debug.Log("Screen space object left edge position X: " + screenSpaceObjectLeftEdgePositionX);
+        //Utils.DebugUtils.DebugLog("Screen space object left edge position X: " + screenSpaceObjectLeftEdgePositionX);
 
         float cameraLeftEdgePositionX = 0;
-        //Debug.Log("Camera left edge position X: " + cameraLeftEdgePositionX);
+        //Utils.DebugUtils.DebugLog("Camera left edge position X: " + cameraLeftEdgePositionX);
 
         float newScreenSpaceObjectLeftEdgePositionX = cameraLeftEdgePositionX + (cameraWidth * bufferProportion);
-        //Debug.Log("New screen space object left edge position X: " + newScreenSpaceObjectLeftEdgePositionX);
+        //Utils.DebugUtils.DebugLog("New screen space object left edge position X: " + newScreenSpaceObjectLeftEdgePositionX);
 
         float newScreenSpaceObjectWidth = screenSpaceObjectRectTransform.rect.width + (screenSpaceObjectLeftEdgePositionX - newScreenSpaceObjectLeftEdgePositionX);
-        //Debug.Log("New screen space object width: " + newScreenSpaceObjectWidth);
+        //Utils.DebugUtils.DebugLog("New screen space object width: " + newScreenSpaceObjectWidth);
 
         float screenSpaceObjectWidthDelta = newScreenSpaceObjectWidth - screenSpaceObjectWidth;
         screenSpaceObjectRectTransform.sizeDelta = new Vector2(newScreenSpaceObjectWidth, screenSpaceObjectRectTransform.rect.height);
@@ -314,16 +314,16 @@ public static class TransformScreenSpaceObject
         float screenSpaceObjectWidth = screenSpaceObjectRectTransform.rect.width;
 
         float screenSpaceObjectLeftEdgePositionX = GetObjectLeftEdgePositionX(screenSpaceObject);
-        //Debug.Log("Screen space object left edge position X: " + screenSpceObjectRightEdgePositionX);
+        //Utils.DebugUtils.DebugLog("Screen space object left edge position X: " + screenSpceObjectRightEdgePositionX);
 
         float neighborObjectLeftEdgePositionX = GetObjectLeftEdgePositionX(neighborObject);
-        //Debug.Log("Alignment object left edge position X: " + neighborObjectRightEdgePositionX);
+        //Utils.DebugUtils.DebugLog("Alignment object left edge position X: " + neighborObjectRightEdgePositionX);
 
         float newScreenSpaceObjectLeftEdgePositionX = neighborObjectLeftEdgePositionX - (cameraWidth * bufferProportion);
-        //Debug.Log("New screen space object left edge position X: " + newScreenSpaceObjectRightEdgePositionX);
+        //Utils.DebugUtils.DebugLog("New screen space object left edge position X: " + newScreenSpaceObjectRightEdgePositionX);
 
         float newScreenSpaceObjectWidth = screenSpaceObjectRectTransform.rect.width + (screenSpaceObjectLeftEdgePositionX - newScreenSpaceObjectLeftEdgePositionX);
-        //Debug.Log("New screen space object width: " + newScreenSpaceObjectWidth);
+        //Utils.DebugUtils.DebugLog("New screen space object width: " + newScreenSpaceObjectWidth);
 
         float screenSpaceObjectWidthDelta = newScreenSpaceObjectWidth - screenSpaceObjectWidth;
         screenSpaceObjectRectTransform.sizeDelta = new Vector2(newScreenSpaceObjectWidth, screenSpaceObjectRectTransform.rect.height);
@@ -340,16 +340,16 @@ public static class TransformScreenSpaceObject
         float screenSpaceObjectWidth = screenSpaceObjectRectTransform.rect.width;
 
         float screenSpaceObjectRightEdgePositionX = GetObjectRightEdgePositionX(screenSpaceObject);
-        //Debug.Log("Screen space object right edge position X: " + screenSpceObjectRightEdgePositionX);
+        //Utils.DebugUtils.DebugLog("Screen space object right edge position X: " + screenSpceObjectRightEdgePositionX);
 
         float neighborObjectRightEdgePositionX = GetObjectRightEdgePositionX(neighborObject);
-        //Debug.Log("Alignment object right edge position X: " + neighborObjectRightEdgePositionX);
+        //Utils.DebugUtils.DebugLog("Alignment object right edge position X: " + neighborObjectRightEdgePositionX);
 
         float newScreenSpaceObjectRightEdgePositionX = neighborObjectRightEdgePositionX + (cameraWidth * bufferProportion);
-        //Debug.Log("New screen space object right edge position X: " + newScreenSpaceObjectRightEdgePositionX);
+        //Utils.DebugUtils.DebugLog("New screen space object right edge position X: " + newScreenSpaceObjectRightEdgePositionX);
 
         float newScreenSpaceObjectWidth = screenSpaceObjectRectTransform.rect.width - (screenSpaceObjectRightEdgePositionX - newScreenSpaceObjectRightEdgePositionX);
-        //Debug.Log("New screen space object width: " + newScreenSpaceObjectWidth);
+        //Utils.DebugUtils.DebugLog("New screen space object width: " + newScreenSpaceObjectWidth);
 
         float screenSpaceObjectWidthDelta = newScreenSpaceObjectWidth - screenSpaceObjectWidth;
         screenSpaceObjectRectTransform.sizeDelta = new Vector2(newScreenSpaceObjectWidth, screenSpaceObjectRectTransform.rect.height);
@@ -364,22 +364,22 @@ public static class TransformScreenSpaceObject
         RectTransform screenSpaceObjectRectTransform = screenSpaceObject.GetComponent<RectTransform>();
 
         float screenSpaceObjectHeight = screenSpaceObjectRectTransform.rect.height;
-        //Debug.Log("Screen space object height: " + screenSpaceObjectHeight);
+        //Utils.DebugUtils.DebugLog("Screen space object height: " + screenSpaceObjectHeight);
 
         float screenSpaceObjectBottomEdgePositionY = GetObjectBottomEdgePositionY(screenSpaceObject);
-        //Debug.Log("Screen space object bottom edge position Y: " + screenSpaceObjectBottomEdgePositionY);
+        //Utils.DebugUtils.DebugLog("Screen space object bottom edge position Y: " + screenSpaceObjectBottomEdgePositionY);
 
         float neighborObjectBottomEdgePositionY = GetObjectBottomEdgePositionY(neighborObject);
-        //Debug.Log("Alignment object bottom edge position Y: " + neighborObjectBottomEdgePositionY);
+        //Utils.DebugUtils.DebugLog("Alignment object bottom edge position Y: " + neighborObjectBottomEdgePositionY);
 
         float newScreenSpaceObjectBottomEdgePositionY = neighborObjectBottomEdgePositionY - (cameraHeight * bufferProportion);
-        //Debug.Log("New screen space object bottom edge position Y: " + newScreenSpaceObjectBottomEdgePositionY);
+        //Utils.DebugUtils.DebugLog("New screen space object bottom edge position Y: " + newScreenSpaceObjectBottomEdgePositionY);
 
         float newScreenSpaceObjectHeight = screenSpaceObjectRectTransform.rect.height + (screenSpaceObjectBottomEdgePositionY - newScreenSpaceObjectBottomEdgePositionY);
-        //Debug.Log("New screen space object height: " + newScreenSpaceObjectHeight);
+        //Utils.DebugUtils.DebugLog("New screen space object height: " + newScreenSpaceObjectHeight);
 
         float screenSpaceObjectHeightDelta = newScreenSpaceObjectHeight - screenSpaceObjectHeight;
-        //Debug.Log("Screen space object height delta: " + screenSpaceObjectHeightDelta);
+        //Utils.DebugUtils.DebugLog("Screen space object height delta: " + screenSpaceObjectHeightDelta);
         screenSpaceObjectRectTransform.sizeDelta = new Vector2(screenSpaceObjectRectTransform.rect.width, newScreenSpaceObjectHeight);
 
         // the resize happened from the center, so adjust the position to compensate
@@ -394,16 +394,16 @@ public static class TransformScreenSpaceObject
         float screenSpaceObjectHeight = screenSpaceObjectRectTransform.rect.height;
 
         float screenSpaceObjectBottomEdgePositionY = GetObjectBottomEdgePositionY(screenSpaceObject);
-        //Debug.Log("Screen space object bottom edge position Y: " + screenSpaceObjectBottomEdgePositionY);
+        //Utils.DebugUtils.DebugLog("Screen space object bottom edge position Y: " + screenSpaceObjectBottomEdgePositionY);
 
         float cameraBottomEdgePositionY = 0;
-        //Debug.Log("Alignment object bottom edge position Y: " + cameraBottomEdgePositionY);
+        //Utils.DebugUtils.DebugLog("Alignment object bottom edge position Y: " + cameraBottomEdgePositionY);
 
         float newScreenSpaceObjectBottomEdgePositionY = cameraBottomEdgePositionY + (cameraHeight * bufferProportion);
-        //Debug.Log("New screen space object bottom edge position Y: " + newScreenSpaceObjectBottomEdgePositionY);
+        //Utils.DebugUtils.DebugLog("New screen space object bottom edge position Y: " + newScreenSpaceObjectBottomEdgePositionY);
 
         float newScreenSpaceObjectHeight = screenSpaceObjectRectTransform.rect.height + (screenSpaceObjectBottomEdgePositionY - newScreenSpaceObjectBottomEdgePositionY);
-        //Debug.Log("New screen space object height: " + newScreenSpaceObjectHeight);
+        //Utils.DebugUtils.DebugLog("New screen space object height: " + newScreenSpaceObjectHeight);
 
         float screenSpaceObjectHeightDelta = newScreenSpaceObjectHeight - screenSpaceObjectHeight;
         screenSpaceObjectRectTransform.sizeDelta = new Vector2(screenSpaceObjectRectTransform.rect.width, newScreenSpaceObjectHeight);
@@ -473,13 +473,13 @@ public static class TransformScreenSpaceObject
         { // Image is wider than the camera
 
             scale *= cameraToObjectHeightRatio;
-            //Debug.Log("New scale factor: " + scale);
+            //Utils.DebugUtils.DebugLog("New scale factor: " + scale);
         }
         else
         { // Image is taller than the camera
 
             scale *= cameraToObjectWidthRatio;
-            //Debug.Log("New scale factor: " + scale);
+            //Utils.DebugUtils.DebugLog("New scale factor: " + scale);
         }
 
         //transform.position = Vector2.zero; // Optional

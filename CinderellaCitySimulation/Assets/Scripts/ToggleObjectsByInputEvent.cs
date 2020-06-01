@@ -37,7 +37,7 @@ public class ToggleObjects
             if (child.gameObject.activeSelf)
             {
                 child.gameObject.SetActive(false);
-                Debug.Log("Turning off GameObject: " + gameObject);
+                Utils.DebugUtils.DebugLog("Turning off GameObject: " + gameObject);
             }
         }
     }
@@ -49,7 +49,7 @@ public class ToggleObjects
             if (!child.gameObject.activeSelf)
             {
                 child.gameObject.SetActive(true);
-                Debug.Log("Turning on GameObject: " + gameObject);
+                Utils.DebugUtils.DebugLog("Turning on GameObject: " + gameObject);
             }
         }
     }

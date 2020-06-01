@@ -129,7 +129,7 @@ public class ToggleSceneAndUI
     // toggles all scene objects on
     public static void ToggleSceneObjectsOn(string sceneName)
     {
-        //Debug.Log("Toggling Scene object visibility ON for: " + sceneName + "...");
+        //Utils.DebugUtils.DebugLog("Toggling Scene object visibility ON for: " + sceneName + "...");
 
         // each Scene should have a GameObject that contains all of the Scene objects
         // this container should be named after the Scene + "Container"
@@ -145,7 +145,7 @@ public class ToggleSceneAndUI
             if (!child.gameObject.activeSelf)
             {
                 child.gameObject.SetActive(true);
-                //Debug.Log("Toggled visibility ON for: " + child.gameObject.name);
+                //Utils.DebugUtils.DebugLog("Toggled visibility ON for: " + child.gameObject.name);
             }
         }
     }
@@ -153,7 +153,7 @@ public class ToggleSceneAndUI
     // toggles all scene objects off
     public static void ToggleSceneObjectsOff(string sceneName)
     {
-        //Debug.Log("Toggling Scene object visibility OFF for: " + sceneName + "...");
+        //Utils.DebugUtils.DebugLog("Toggling Scene object visibility OFF for: " + sceneName + "...");
 
         // each Scene should have a GameObject that contains all of the Scene objects
         // this container should be named after the Scene + "Container"
@@ -169,7 +169,7 @@ public class ToggleSceneAndUI
             if (child.gameObject.activeSelf)
             {
                 child.gameObject.SetActive(false);
-                //Debug.Log("Toggled visibility OFF for: " + child.gameObject.name);
+                //Utils.DebugUtils.DebugLog("Toggled visibility OFF for: " + child.gameObject.name);
             }
         }
     }
@@ -177,7 +177,7 @@ public class ToggleSceneAndUI
     // toggles the "fromScene" off, and toggles the "toScene" on
     public static void ToggleFromSceneToScene(string fromScene, string toScene)
     {
-        Debug.Log("Toggling from Scene " + "<b>" + fromScene + "</b>" + " to Scene " + "<b>" + toScene + "</b>");
+        Utils.DebugUtils.DebugLog("Toggling from Scene " + "<b>" + fromScene + "</b>" + " to Scene " + "<b>" + toScene + "</b>");
 
         // toggle the toScene first, to avoid any gaps in playback
         ToggleSceneObjectsOn(toScene);

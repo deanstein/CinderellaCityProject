@@ -24,7 +24,7 @@ public class ManageTags
             tags.InsertArrayElementAtIndex(0);
             tags.GetArrayElementAtIndex(0).stringValue = tag;
             so.ApplyModifiedProperties();
-            //Debug.Log("TagHelper added a new tag.");
+            //Utils.DebugUtils.DebugLog("TagHelper added a new tag.");
             so.Update();
         }
     }

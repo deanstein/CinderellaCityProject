@@ -241,7 +241,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
             // set and play the clip based on the list of clip names
             masterAudioSource.clip = (AudioClip)Resources.Load(clipNames[counter]);
             masterAudioSource.Play();
-            Debug.Log("Playing master music " + masterAudioSource.clip.name + " on " + masterAudioSource);
+            Utils.DebugUtils.DebugLog("Playing master music " + masterAudioSource.clip.name + " on " + masterAudioSource);
 
             float remainingClipTime;
 
@@ -251,14 +251,14 @@ public class PlayAudioSequencesByName : MonoBehaviour
                 // calculate how much time is left in the clip to accurately set the WaitForSeconds
                 remainingClipTime = FastForwardMasterAudioSourceToMatchGameTime(masterAudioSource);
                 needsFastForwarding = false;
-                //Debug.Log("Clip was set to fast forward.");
+                //Utils.DebugUtils.DebugLog("Clip was set to fast forward.");
             }
             // otherwise the remaining clip time is just the clip's length
             else
             {
                 remainingClipTime = masterAudioSource.clip.length;
                 needsFastForwarding = false;
-                //Debug.Log("Clip was NOT set to fast forward.");
+                //Utils.DebugUtils.DebugLog("Clip was NOT set to fast forward.");
             }
 
             // if we're at the end of the list, reset to return to the beginning
@@ -284,7 +284,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
             slaveAudioSource.clip = masterAudioSource.clip;
             slaveAudioSource.time = masterAudioSource.time;
             slaveAudioSource.Play();
-            Debug.Log("Playing slave music " + masterAudioSource.clip.name + " on " + slaveAudioSource);
+            Utils.DebugUtils.DebugLog("Playing slave music " + masterAudioSource.clip.name + " on " + slaveAudioSource);
 
             // calculate how much time is left in the clip to accurately set the WaitForSeconds
             float remainingClipTime = CalculateRemainingClipTime(slaveAudioSource);
@@ -300,12 +300,12 @@ public class PlayAudioSequencesByName : MonoBehaviour
     // synchronize two AudioSources
     IEnumerator SyncAudioSources(AudioSource masterAudioSource, AudioSource slaveAudioSource)
     {
-        //Debug.Log("Master AudioSource (from sync): " + masterAudioSource);
+        //Utils.DebugUtils.DebugLog"Master AudioSource (from sync): " + masterAudioSource);
 
         // ensure the slave's clip name matches the master clip
         if (masterAudioSource.clip.name != slaveAudioSource.clip.name)
         {
-            Debug.Log("Corrected mismatched clips. Master: " + masterAudioSource.clip.name + " Slave: " + slaveAudioSource.clip.name);
+            Utils.DebugUtils.DebugLog("Corrected mismatched clips. Master: " + masterAudioSource.clip.name + " Slave: " + slaveAudioSource.clip.name);
             slaveAudioSource.clip = masterAudioSource.clip;
         }
 
@@ -315,7 +315,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
             slaveAudioSource.time = masterAudioSource.time;
             slaveAudioSource.Play();
 
-            Debug.Log("Synchronized AudioSource time between master: " + masterAudioSource + " and slave: " + slaveAudioSource + " at " + Time.time);
+            Utils.DebugUtils.DebugLog("Synchronized AudioSource time between master: " + masterAudioSource + " and slave: " + slaveAudioSource + " at " + Time.time);
             //Debug.Log("Master audiosource clip: " + masterAudioSource.clip + " and time: " + masterAudioSource.time + " Slave audiosource clip: " + slaveAudioSource.clip + " and time: " +  slaveAudioSource.time);
         }
 

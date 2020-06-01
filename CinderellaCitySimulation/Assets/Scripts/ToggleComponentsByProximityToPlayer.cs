@@ -46,7 +46,7 @@ public class ToggleComponentByProximityToPlayer : MonoBehaviour {
             {
                 if (!(this.GetComponent(componentType) as Behaviour).enabled)
                 {
-                    Debug.Log("Enabled " + componentType + " on " + this.name);
+                    Utils.DebugUtils.DebugLog("Enabled " + componentType + " on " + this.name);
                     (this.GetComponent(componentType) as Behaviour).enabled = true;
                 }
             }
@@ -62,7 +62,7 @@ public class ToggleComponentByProximityToPlayer : MonoBehaviour {
             {
                 if ((this.GetComponent(componentType) as Behaviour).enabled)
                 {
-                    Debug.Log("Disabled " + componentType + " on " + this.name);
+                    Utils.DebugUtils.DebugLog("Disabled " + componentType + " on " + this.name);
                     (this.GetComponent(componentType) as Behaviour).enabled = false;
                 }
             }

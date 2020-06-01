@@ -97,7 +97,7 @@ public class AssetImportUpdate : AssetPostprocessor {
     private void SceneChangedInEditModeCallback(Scene previousScene, Scene newScene)
     {
         currentScene = newScene;
-        Debug.Log("Opened a different Scene in the Editor: " + newScene.name);
+        Utils.DebugUtils.DebugLog("Opened a different Scene in the Editor: " + newScene.name);
     }
 
     // define how to clear the console
@@ -173,7 +173,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         {
             if (g.name == gameObjectFromAsset.name)
             {
-                Debug.Log("This object is already present in the model.");
+                Utils.DebugUtils.DebugLog("This object is already present in the model.");
                 return;
             }
         }
@@ -181,7 +181,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // otherwise, instantiate as a prefab with the name of the file
         newlyInstantiatedPrefab = PrefabUtility.InstantiatePrefab(gameObjectFromAsset, scene) as GameObject;
         newlyInstantiatedPrefab.name = gameObjectFromAsset.name;
-        Debug.Log("This object was instantiated in the model hierarchy.");
+        Utils.DebugUtils.DebugLog("This object was instantiated in the model hierarchy.");
 
         // set the flag that an object was just instantiated so we can fix parent/child hierarchy in post-processor
         newlyInstantiated = true;
@@ -218,7 +218,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         {
             //var dependencyPath = AssetDatabase.GetAssetPath(dependency);
             var dependencyPathString = dependencyPath.ToString();
-            //Debug.Log("Dependency path: " + dependencyPathString);
+            //Utils.DebugUtils.DebugLog("Dependency path: " + dependencyPathString);
 
             // if there are materials or textures detected in the path, delete them
             // note that we also check that the path includes the file name to avoid other assets from being affected
@@ -226,7 +226,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             {
                 UnityEngine.Windows.File.Delete(dependencyPathString);
                 UnityEngine.Windows.File.Delete(dependencyPathString + ".meta");
-                Debug.Log("<b>Deleting files and meta files:</b> " + dependencyPathString);
+                Utils.DebugUtils.DebugLog("<b>Deleting files and meta files:</b> " + dependencyPathString);
                 reimportRequired = true;
                 prevTime = Time.time;
             }
@@ -237,11 +237,11 @@ public class AssetImportUpdate : AssetPostprocessor {
         // if materials or textures were deleted, force reimport the model
         if (reimportRequired)
         {
-            Debug.Log("Reimport model triggered. Forcing asset update...");
+            Utils.DebugUtils.DebugLog("Reimport model triggered. Forcing asset update...");
             AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
         }
 
-        Debug.Log("Re-importing materials...");
+        Utils.DebugUtils.DebugLog("Re-importing materials...");
 
         // import materials
         importer.importMaterials = true;
@@ -263,7 +263,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         globalAssetTexturesDirectory = assetTexturesDirectory;
 
         // re-extract textures
-        Debug.Log("Re-importing textures...");
+        Utils.DebugUtils.DebugLog("Re-importing textures...");
         importer.ExtractTextures(assetTexturesDirectory);
 
     }
@@ -289,7 +289,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         Texture texture = mat.GetTexture("_MainTex");
         mat.SetTexture("_EmissionMap", texture);
 
-        Debug.Log("<b>Set standard emission on Material: </b>" + mat);
+        Utils.DebugUtils.DebugLog("<b>Set standard emission on Material: </b>" + mat);
     }
 
     // define how to enable custom emission color and intensity on a material
@@ -305,7 +305,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // redefine the color with intensity factored in - this should result in the UI slider matching the desired value
         color *= Mathf.Pow(2.0F, adjustedIntensity);
         mat.SetColor("_EmissionColor", color);
-        Debug.Log("<b>Set custom emission intensity of " + intensity + " (" + adjustedIntensity + " internally) on Material: </b>" + mat);
+        Utils.DebugUtils.DebugLog("<b>Set custom emission intensity of " + intensity + " (" + adjustedIntensity + " internally) on Material: </b>" + mat);
     }
 
     // define how to set a custom material emission color
@@ -323,7 +323,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
 
         mat.color = new Color(R, G, B);
-        Debug.Log("<b>Set custom emission color on Material: </b>" + mat);
+        Utils.DebugUtils.DebugLog("<b>Set custom emission color on Material: </b>" + mat);
     }
 
     // define how to create a greyscale new texture given a scale factor from 0 (black) to 1 (white)
@@ -340,7 +340,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // so it's likely already made and can be reusedused
         if (!AssetDatabase.LoadAssetAtPath(filePath, typeof(Texture)))
         {
-            //Debug.Log("No MetallicGlossMap detected. Creating one.");
+            //Utils.DebugUtils.DebugLog("No MetallicGlossMap detected. Creating one.");
             // since the texture is just one color, we don't need a high resolution
             int sizeX = 100;
             int sizeY = 100;
@@ -367,7 +367,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
         else
         {
-            //Debug.Log("MetallicGlossMap texture already exists.");
+            //Utils.DebugUtils.DebugLog("MetallicGlossMap texture already exists.");
         }
 
         return filePath;
@@ -378,7 +378,7 @@ public class AssetImportUpdate : AssetPostprocessor {
     // define how to set material smoothness
     public static void SetMaterialSmoothness(string materialFilePath, float smoothness)
     {
-        Debug.Log("<b>Set smoothness on Material: </b>" + materialFilePath);
+        Utils.DebugUtils.DebugLog("<b>Set smoothness on Material: </b>" + materialFilePath);
 
         // get the material at this path
         Material mat = (Material)AssetDatabase.LoadAssetAtPath(materialFilePath, typeof(Material));
@@ -418,7 +418,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // set the MetallicGlossMap as the black texture
         mat.SetTexture("_MetallicGlossMap", metallicGlossTexture);
 
-        Debug.Log("<b>Set metallic on Material: </b>" + mat);
+        Utils.DebugUtils.DebugLog("<b>Set metallic on Material: </b>" + mat);
     }
 
     // define how to clean up an automatically-created .fbm folder
@@ -426,8 +426,8 @@ public class AssetImportUpdate : AssetPostprocessor {
     {
         if (AssetDatabase.IsValidFolder(assetFileDirectory + assetFileName + ".fbm"))
         {
-            Debug.Log("<b>Deleting a leftover .FBM folder.</b>");
-            //Debug.Log(assetFileDirectory + assetFileName + ".fbm");
+            Utils.DebugUtils.DebugLog("<b>Deleting a leftover .FBM folder.</b>");
+            //Utils.DebugUtils.DebugLog(assetFileDirectory + assetFileName + ".fbm");
             UnityEngine.Windows.Directory.Delete(globalAssetFileDirectory + globalAssetFileName + ".fbm");
             UnityEngine.Windows.File.Delete(globalAssetFileDirectory + globalAssetFileName + ".fbm.meta");
         }
@@ -439,7 +439,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // if this object already has a component of this type, delete it
         if (gameObjectForComponent.GetComponent(componentType) as Component)
         {
-            Debug.Log("<b>Deleted</b> existing behavior component " + componentType + " on " + gameObjectForComponent + ".");
+            Utils.DebugUtils.DebugLog("<b>Deleted</b> existing behavior component " + componentType + " on " + gameObjectForComponent + ".");
             Component componentToDelete = gameObjectForComponent.GetComponent(componentType) as Component;
             //AudioSource audioSourceToDelete = gameObjectForComponent.gameObject.GetComponent<AudioSource>();
 
@@ -460,7 +460,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // now add the component
         gameObjectForComponent.AddComponent(unityEngineComponentType);
 
-        Debug.Log("<b>Added</b> " + componentName + " component to " + gameObjectForComponent);
+        Utils.DebugUtils.DebugLog("<b>Added</b> " + componentName + " component to " + gameObjectForComponent);
     }
 
     // adds Unity Engine components to a GameObject's children
@@ -484,7 +484,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // now add the component
         Component customScriptComponent = gameObjectForComponent.AddComponent(customScriptComponentType);
 
-        Debug.Log("<b>Added</b> " + scriptName + " component to " + gameObjectForComponent);
+        Utils.DebugUtils.DebugLog("<b>Added</b> " + scriptName + " component to " + gameObjectForComponent);
     }
 
     // adds custom components to a GameObject's children
@@ -499,7 +499,7 @@ public class AssetImportUpdate : AssetPostprocessor {
     // add certain behavior components to certain GameObjects as defined by their host file name
     public static void AddBehaviorComponentsByName(string assetName)
     {
-        Debug.Log("Adding behavior components...");
+        Utils.DebugUtils.DebugLog("Adding behavior components...");
 
         // find the associated GameObject by this asset's name, and all of its children objects
         GameObject gameObjectByAssetName = GameObject.Find(assetName);
@@ -578,7 +578,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         GameObject gameObjectFromAsset = GameObject.Find(globalAssetFileName);
         if (!gameObjectFromAsset)
         {
-            Debug.Log("For some reason, couldn't find the modified game object.");
+            Utils.DebugUtils.DebugLog("For some reason, couldn't find the modified game object.");
             return;
         }
 
@@ -588,11 +588,11 @@ public class AssetImportUpdate : AssetPostprocessor {
         if (gameObjectFromAsset.gameObject.isStatic == false)
         {
             gameObjectFromAsset.isStatic = true;
-            Debug.Log("<b>Setting GameObject to static: </b>" + gameObjectFromAsset);
+            Utils.DebugUtils.DebugLog("<b>Setting GameObject to static: </b>" + gameObjectFromAsset);
         }
         else
         {
-            Debug.Log("GameObject was already static: " + gameObjectFromAsset);
+            Utils.DebugUtils.DebugLog("GameObject was already static: " + gameObjectFromAsset);
         }
 
         // also set each of the GameObject's children as static, if they aren't already
@@ -601,11 +601,11 @@ public class AssetImportUpdate : AssetPostprocessor {
             if (child.gameObject.isStatic == false)
             {
                 child.gameObject.isStatic = true;
-                //Debug.Log("<b>Setting GameObject to static: </b>" + child.gameObject);
+                //Utils.DebugUtils.DebugLog("<b>Setting GameObject to static: </b>" + child.gameObject);
             }
             else
             {
-                //Debug.Log("GameObject was already static: " + child.gameObject);
+                //Utils.DebugUtils.DebugLog("GameObject was already static: " + child.gameObject);
             }
         }
     }
@@ -621,7 +621,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         {
             var dependencyPath = AssetDatabase.GetAssetPath(dependency);
             var dependencyPathString = dependencyPath.ToString();
-            //Debug.Log("Dependency path: " + dependencyPathString);
+            //Utils.DebugUtils.DebugLog("Dependency path: " + dependencyPathString);
 
             //
             // apply general rules
@@ -725,7 +725,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         {
             var dependencyPath = AssetDatabase.GetAssetPath(dependency);
             var dependencyPathString = dependencyPath.ToString();
-            //Debug.Log("Dependency path: " + dependencyPathString);
+            //Utils.DebugUtils.DebugLog("Dependency path: " + dependencyPathString);
 
             //
             // apply general rules
@@ -804,7 +804,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         if (assetName.Contains("proxy-trees"))
         {
             proxyType = "Trees";
-            Debug.Log("Proxy type: " + proxyType);
+            Utils.DebugUtils.DebugLog("Proxy type: " + proxyType);
 
             return proxyType;
         }
@@ -812,7 +812,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         if (assetName.Contains("cameras"))
         {
             proxyType = "Cameras";
-            Debug.Log("Proxy type: " + proxyType);
+            Utils.DebugUtils.DebugLog("Proxy type: " + proxyType);
 
             return proxyType;
         }
@@ -820,7 +820,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         if (assetName.Contains("proxy-people"))
         {
             proxyType = "People";
-            Debug.Log("Proxy type: " + proxyType);
+            Utils.DebugUtils.DebugLog("Proxy type: " + proxyType);
 
             return proxyType;
         }
@@ -917,7 +917,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // don't do anything if this isn't required
         if (proxyReplacementProcessingRequired == false)
         {
-            Debug.Log("ProxyReplacementProcessing was not required.");
+            Utils.DebugUtils.DebugLog("ProxyReplacementProcessing was not required.");
             return;
         }
 
@@ -935,7 +935,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // TODO: find out why this is sometimes happening
         if (!gameObjectByAsset)
         {
-            Debug.Log("Couldn't find the GameObject by name: " + assetName);
+            Utils.DebugUtils.DebugLog("Couldn't find the GameObject by name: " + assetName);
             return;
         }
 
@@ -1073,7 +1073,7 @@ public class AssetImportUpdate : AssetPostprocessor {
                 if (child.name.Contains("REPLACE") || (child.name.Contains("Camera")))
                 {
                     GameObject gameObjectToBeReplaced = child.gameObject;
-                    //Debug.Log("Found a proxy gameObject to be hide: " + gameObjectToBeReplaced);
+                    //Utils.DebugUtils.DebugLog("Found a proxy gameObject to be hide: " + gameObjectToBeReplaced);
 
                     // turn off the visibility of the object to be replaced
                     ToggleObjects.ToggleGameObjectOff(gameObjectToBeReplaced);
@@ -1098,23 +1098,23 @@ public class AssetImportUpdate : AssetPostprocessor {
     void OnPreprocessTexture()
     {
         // check if the pre-processor just ran, and if so, skip pre-processing
-        //Debug.Log("Current time: " + Time.time);
-        //Debug.Log("Previous time: " + prevTime);
+        //Utils.DebugUtils.DebugLog("Current time: " + Time.time);
+        //Utils.DebugUtils.DebugLog("Previous time: " + prevTime);
         if (Time.time == prevTime)
         {
-            //Debug.Log("Skipping pre-processing the model again.");
+            //Utils.DebugUtils.DebugLog("Skipping pre-processing the model again.");
             return;
         }
 
         ClearConsole();
-        Debug.Log("START Texture PreProcessing...");
+        Utils.DebugUtils.DebugLog("START Texture PreProcessing...");
 
         postProcessingHits.Clear();
 
         // get the file path of the asset that just got updated
         TextureImporter textureImporter = assetImporter as TextureImporter;
         String assetFilePath = textureImporter.assetPath.ToLower();
-        Debug.Log("Modified file: " + assetFilePath);
+        Utils.DebugUtils.DebugLog("Modified file: " + assetFilePath);
 
         // make the asset path available globally
         globalAssetFilePath = assetFilePath;
@@ -1160,23 +1160,23 @@ public class AssetImportUpdate : AssetPostprocessor {
     void OnPreprocessAudio()
     {
         // check if the pre-processor just ran, and if so, skip pre-processing
-        //Debug.Log("Current time: " + Time.time);
-        //Debug.Log("Previous time: " + prevTime);
+        //Utils.DebugUtils.DebugLog("Current time: " + Time.time);
+        //Utils.DebugUtils.DebugLog("Previous time: " + prevTime);
         if (Time.time == prevTime)
         {
-            //Debug.Log("Skipping pre-processing the model again.");
+            //Utils.DebugUtils.DebugLog("Skipping pre-processing the model again.");
             return;
         }
 
         ClearConsole();
-        Debug.Log("START Audio PreProcessing...");
+        Utils.DebugUtils.DebugLog("START Audio PreProcessing...");
 
         postProcessingHits.Clear();
 
         // get the file path of the asset that just got updated
         AudioImporter audioImporter = assetImporter as AudioImporter;
         String assetFilePath = audioImporter.assetPath.ToLower();
-        Debug.Log(assetFilePath);
+        Utils.DebugUtils.DebugLog(assetFilePath);
 
         // make the asset path available globally
         globalAssetFilePath = assetFilePath;
@@ -1226,11 +1226,11 @@ public class AssetImportUpdate : AssetPostprocessor {
     void OnPreprocessModel()
     {
         // check if the pre-processor just ran, and if so, skip pre-processing
-        //Debug.Log("Current time: " + Time.time);
-        //Debug.Log("Previous time: " + prevTime);
+        //Utils.DebugUtils.DebugLog("Current time: " + Time.time);
+        //Utils.DebugUtils.DebugLog("Previous time: " + prevTime);
         if (Time.time == prevTime)
         {
-            //Debug.Log("Skipping pre-processing the model again.");
+            //Utils.DebugUtils.DebugLog("Skipping pre-processing the model again.");
             return;
         }
 
@@ -1238,14 +1238,14 @@ public class AssetImportUpdate : AssetPostprocessor {
         CleanUpFBMDirectory(globalAssetFileDirectory, globalAssetFileName);
 
         ClearConsole();
-        Debug.Log("START Model PreProcessing...");
+        Utils.DebugUtils.DebugLog("START Model PreProcessing...");
 
         postProcessingHits.Clear();
 
         // get the file path of the asset that just got updated
         ModelImporter modelImporter = assetImporter as ModelImporter;
         String assetFilePath = modelImporter.assetPath.ToLower();
-        Debug.Log("Modified file: " + assetFilePath);
+        Utils.DebugUtils.DebugLog("Modified file: " + assetFilePath);
 
         // make the asset path available globally
         globalAssetFilePath = assetFilePath;
@@ -1269,8 +1269,8 @@ public class AssetImportUpdate : AssetPostprocessor {
         StreamReader reader = new StreamReader(importSettingsPath);
         string json = reader.ReadToEnd();
         object jsonObject = JsonUtility.FromJson<AssetImportUpdate>(json);
-        Debug.Log("Import settings JSON found: " + json);
-        //Debug.Log("Get file names: " + jsonObject.fbxFileNames);
+        Utils.DebugUtils.DebugLog("Import settings JSON found: " + json);
+        //Utils.DebugUtils.DebugLog("Get file names: " + jsonObject.fbxFileNames);
         //return JsonUtility.FromJson<AssetImportUpdate>(json);
         */
 
@@ -1634,7 +1634,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // if post processing isn't required, skip
         if (!postProcessingRequired)
         {
-            Debug.Log("Skipping PostProcessing (not required)");
+            Utils.DebugUtils.DebugLog("Skipping PostProcessing (not required)");
             return;
         }
 
@@ -1642,11 +1642,11 @@ public class AssetImportUpdate : AssetPostprocessor {
         // any further is probably not necessary
         if (!postProcessingRequired || postProcessingHits.Count >= globalMaxPostProcessingHits)
         {
-            Debug.Log("Skipping PostProcessing (max allowed reached)");
+            Utils.DebugUtils.DebugLog("Skipping PostProcessing (max allowed reached)");
             return;
         }
 
-        Debug.Log("START PostProcessing...");
+        Utils.DebugUtils.DebugLog("START PostProcessing...");
 
         // add to the list of post processing hits, so we know how many times we've been here
         postProcessingHits.Add(true);
@@ -1692,6 +1692,6 @@ public class AssetImportUpdate : AssetPostprocessor {
             SetObjectAsChildOfSceneContainer(newlyInstantiatedPrefab);
         }
 
-        Debug.Log("END PostProcessing");
+        Utils.DebugUtils.DebugLog("END PostProcessing");
     }
 }

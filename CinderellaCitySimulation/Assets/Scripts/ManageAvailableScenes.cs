@@ -56,7 +56,7 @@ public static class ManageAvailableScenes
         // if the current scene doesn't match any in the list, return with an error
         if (currentTimePeriodSceneIndex == -1)
         {
-            Debug.Log("Error: failed to determine the next time period, because the current time period is unknown.");
+            Utils.DebugUtils.DebugLog("Error: failed to determine the next time period, because the current time period is unknown.");
             return "null";
         }
 

@@ -297,7 +297,7 @@ public class ManageProxyMapping
         // if instancing the prefab was successful, adjust its position, scale, and parent
         if (instancedPrefab)
         {
-            Debug.Log("<b>Instanced this prefab: </b>" + instancedPrefab);
+            Utils.DebugUtils.DebugLog("<b>Instanced this prefab: </b>" + instancedPrefab);
 
             // move the prefab to the specified location
             instancedPrefab.transform.position = destinationPoint;
@@ -322,7 +322,7 @@ public class ManageProxyMapping
         GameObject instancedPrefab;
 
         GameObject gameObjectToBeReplaced = proxyObject.gameObject;
-        Debug.Log("Found a proxy gameObject to be replaced: " + gameObjectToBeReplaced);
+        Utils.DebugUtils.DebugLog("Found a proxy gameObject to be replaced: " + gameObjectToBeReplaced);
 
         // define the proxy replacement path by the proxyObject object's name
         string replacementObjectPath = GetProxyReplacementPathByName(proxyObject.name);
@@ -339,7 +339,7 @@ public class ManageProxyMapping
         // if instancing the prefab was successful, move it to the same location as the proxy
         if (instancedPrefab)
         {
-            Debug.Log("<b>Instanced this prefab: </b>" + instancedPrefab);
+            Utils.DebugUtils.DebugLog("<b>Instanced this prefab: </b>" + instancedPrefab);
 
             // give the new prefab the same parent, position, and scale as the proxy
             instancedPrefab.transform.parent = gameObjectToBeReplaced.transform.parent;
@@ -368,7 +368,7 @@ public class ManageProxyMapping
         }
         else
         {
-            Debug.Log("Failed to instantiate this prefab. Is the path valid?" + replacementObjectPath);
+            Utils.DebugUtils.DebugLog("Failed to instantiate this prefab. Is the path valid?" + replacementObjectPath);
         }
         return instancedPrefab;
     }

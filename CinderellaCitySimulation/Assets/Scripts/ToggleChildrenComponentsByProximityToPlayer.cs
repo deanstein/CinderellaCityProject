@@ -31,7 +31,11 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
     // this may be overridden by AssetImportPipeline
     public float maxDistance = 20f;
 
-    public float frames = 0;
+    // keep track of the number of frames between updates
+    public float frameCount = 0;
+
+    // the number of frames between proximity checks
+    public float maxFramesBetweenCheck = 5;
 
     private void Awake()
     {
@@ -71,11 +75,13 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        frames++;
+        // increment the framecount
+        frameCount++;
 
-        if (frames == 5)
+        // check only when we've reached the max amount of frames between checks
+        if (frameCount == maxFramesBetweenCheck)
         {
-            frames = 0;
+            frameCount = 0;
 
             // get the latest player position
             playerPosition = player.transform.position;
@@ -133,7 +139,7 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
             {
                 if (!(hostObject.GetComponent(componentType) as Behaviour).enabled)
                 {
-                    //Debug.Log("Enabled " + componentType + " on " + this.name);
+                    //Utils.DebugUtils.DebugLog("Enabled " + componentType + " on " + this.name);
                     (hostObject.GetComponent(componentType) as Behaviour).enabled = true;
                 }
             }
@@ -149,7 +155,7 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
             {
                 if ((hostObject.GetComponent(componentType) as Behaviour).enabled)
                 {
-                    //Debug.Log("Enabled " + componentType + " on " + this.name);
+                    //Utils.DebugUtils.DebugLog("Enabled " + componentType + " on " + this.name);
                     (hostObject.GetComponent(componentType) as Behaviour).enabled = false;
                 }
             }
