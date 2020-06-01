@@ -7,6 +7,12 @@ using UnityEngine.Rendering.PostProcessing;
 // this script should be attached to FPSCharacter objects that need to watch for shortcuts to adjust camera effects
 public class ToggleCameraEffectsByInputEvent : MonoBehaviour {
 
+    private void Awake()
+    {
+        // add this volume priority to the global priority value
+        ManageCameraEffects.CameraEffectGlobals.highestKnownPriority += this.GetComponent<PostProcessVolume>().priority;
+    }
+
     private void OnEnable()
     {
         // optional: start a camera transition when the camera is enabled

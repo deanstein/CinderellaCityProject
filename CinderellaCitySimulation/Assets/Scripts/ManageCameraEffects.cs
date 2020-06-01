@@ -9,6 +9,9 @@ public class ManageCameraEffects : MonoBehaviour
 {
     public class CameraEffectGlobals
     {
+        // record the highest known camera effect priority
+        public static float highestKnownPriority = 0;
+
         // gets set true when there is a camera effect active
         public static bool isCameraEffectActive = false;
 
@@ -22,7 +25,22 @@ public class ManageCameraEffects : MonoBehaviour
         public static string effectsPath = "Effects/";
     }
 
-    // sets a post processing effects profile on this gameObject's child by the given name, with the given transition time
+    public static void IncrementEffectPriority(PostProcessVolume cameraEffectVolume)
+    {
+        // if this priority is higher than the last recorded, then we already have priority
+        if (CameraEffectGlobals.highestKnownPriority < cameraEffectVolume.priority)
+        {
+            CameraEffectGlobals.highestKnownPriority = cameraEffectVolume.priority;
+        }
+        // otherwise, increment this higher priority and set this to it
+        else
+        {
+            CameraEffectGlobals.highestKnownPriority++;
+            cameraEffectVolume.priority = CameraEffectGlobals.highestKnownPriority;
+        }
+    }
+
+    // sets a post processing effects profile on this gameObject's child by the given name
     public static void SetPostProcessProfile(GameObject postProcessVolumeHost, string profileName)
     {
         // set this object as the globally-available postProcessingHost
@@ -40,6 +58,9 @@ public class ManageCameraEffects : MonoBehaviour
             // set the target profile as the current profile
             postProcessVolume.profile = targetProfile;
 
+            // ensure the new volume has priority
+            IncrementEffectPriority(postProcessVolume);
+
             // indicate that an effect is active
             CameraEffectGlobals.isCameraEffectActive = true;
 
@@ -54,6 +75,9 @@ public class ManageCameraEffects : MonoBehaviour
 
             // set the default profile as the current profile
             postProcessVolume.profile = defaultProfile;
+
+            // ensure the new volume has priority
+            IncrementEffectPriority(postProcessVolume);
 
             // indicate that an effect is no longer active
             CameraEffectGlobals.activeCameraEffect = GetDefaultPostProcessProfileBySceneName(SceneManager.GetActiveScene().name);
@@ -76,6 +100,9 @@ public class ManageCameraEffects : MonoBehaviour
 
         // set the flash profile
         currentVolume.profile = flashProfile;
+
+        // ensure the new volume has priority
+        IncrementEffectPriority(currentVolume);
     }
 
     public static string GetDefaultPostProcessProfileBySceneName(string sceneName)
