@@ -52,7 +52,7 @@ The following scripts are critical to the behavior and processes underpinning th
 	- RenderCubeMapFromPosition.cs
 		- Adds a menu option in GameObject -> Render to Cubemap, which creates a Cubemap from the position of an object in space
 		- Each FPS Character Scene should have a "CubemapPosition" object, which needs to be selected when running "Render to Cubemap" - temporary cameras are added to this object in order to generate the Cubemap
-		- Downloaded from a 3rd party on the Unity forums (attribution in code)
+		- Sourced from a 3rd party on the Unity forums (attribution in code)
 	
 - **In-Game Scripts**  // these run while the game is playing
 	- AnimateScreenSpaceObject.cs
@@ -91,8 +91,12 @@ The following scripts are critical to the behavior and processes underpinning th
 		- Will self-destruct (delete itself or its own component) after running once, because it must run on PreRender(), which happens every frame - it only needs to run in one frame, anything further will cause performance issues
 	- ToggleCameraEffectsByInputEvent
 		- Responsible for toggling camera effects on certain input events
+	- ToggleChildrenComponentsByProximityToPlayer.cs
+		- Responsible for enabling/disabling children GameObject Components (AudioSources, scripts...) based on their proximity to the player
+		- Used for non-static objects like NPCs
 	- ToggleComponentByProximityToPlayer.cs
-		- Responsible for enabling/disabling GameObject Components (AudioSources, scripts...) based on their proximity to the FPS Controller (player)
+		- Responsible for enabling/disabling GameObject Components (AudioSources, scripts...) based on their proximity to the player
+		- Used for static objects like speakers
 	- ToggleObjectsByInputEvent.cs
 		- Responsible for toggling geometry on/off on certain input events
 	- ToggleSceneAndUIByInputEvent.cs
@@ -177,8 +181,9 @@ In scenes with an FPSController and FirstPersonCharacter (60s70s, 80s90s, AltFut
 			 	- **ManageSunSettings** (ScriptComponent)
 				 	- Responsible for collecting Sun settings for FPSController scenes, and applying them to PauseMenu for accurate inactive screenshots
 		- **60s70sFPSController** (GameObject)
-			- Unity Standard Asset, Responsible for the player's movement in space, modified slightly from default
+			- Responsible for the player's movement in space, derived from the Unity standard asset, but modified
 			- Requires Specific Name: '(EraName)FPSController'
+			- Requires Tags: Player
 			- Requires Scripts:
 				- **ManageFPSControllers** (Script Component)
 					- Responsible for keeping track of the current FPSController

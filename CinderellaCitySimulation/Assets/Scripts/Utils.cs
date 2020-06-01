@@ -1,18 +1,30 @@
 ﻿using System.Linq;
+
 using System.Collections.Generic;
+
+using UnityEditor;
 
 using UnityEngine;
 using UnityEngine.AI;
 
 public class Utils
 {
-    public class ListUtils
-    {
-
-    }
-
     public class GeometryUtils
     {
+        public static List<Transform> GetAllChildrenTransforms(Transform parent)
+        {
+            List<Transform> children = new List<Transform>();
+
+            int count = parent.childCount;
+
+            for (int i = 0; i < count; i++)
+            {
+                children.Add(parent.GetChild(i));
+            }
+
+            return children;
+        }
+
         // get a point on a mesh
         public static List<Vector3> GetPointOnMeshAtIndex(GameObject meshParent, int vertexIndex)
         {

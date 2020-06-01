@@ -15,7 +15,7 @@ public class NPCControllerGlobals
     public static float maxDistanceForClosestPointAdjustment = 5f;
 
     // max distance the NPCController can be from the player to disable itself, and pathfinding logic
-    public static float maxDistanceBeforeSuspend = 20f;
+    public static float maxDistanceBeforeSuspend = 30f;
 
     // the folder path inside Resources to find the NPC Controllers
     public static string animatorControllerFolderPath = "Animator Controllers/";
@@ -97,7 +97,6 @@ public class ManageNPCControllers
         }
     }
 
-
     // get the correct gender controller for idling
     public static string GetWalkingAnimatorControllerByGender(string nameWithGender)
     {
@@ -111,90 +110,11 @@ public class ManageNPCControllers
         }
     }
 
-    public static void ConfigureNPCForPathfinding(GameObject NPCObject)
-    {
-        // NPCs need only animate and follow paths when within a certain radius of the player
-        ToggleComponentByProximityToPlayer toggleByProximityScript = NPCObject.AddComponent<ToggleComponentByProximityToPlayer>();
-        toggleByProximityScript.maxDistance = NPCControllerGlobals.maxDistanceBeforeSuspend;
-        toggleByProximityScript.toggleComponentTypes = new string[] { "NavMeshAgent", "FollowPathOnNavMesh" };
-
-        // everyone walks by default
-        // add a navigation mesh agent to this person so it can find its way on the navmesh
-        NavMeshAgent thisAgent = NPCObject.AddComponent<NavMeshAgent>();
-        thisAgent.speed = 1.0f;
-        thisAgent.angularSpeed = 60f;
-        thisAgent.radius = 0.25f;
-        thisAgent.autoTraverseOffMeshLink = false;
-
-        // ensure the agent is moved to a valid location on the navmesh
-
-        // if the distance between the current position, and the nearest navmesh position
-        // is less than the max distance, use the closest point on the navmesh
-        if (Vector3.Distance(NPCObject.transform.position, Utils.GeometryUtils.GetNearestPointOnNavmesh(NPCObject.transform.position)) < NPCControllerGlobals.maxDistanceForClosestPointAdjustment)
-        {
-            NPCObject.transform.position = Utils.GeometryUtils.GetNearestPointOnNavmesh(NPCObject.transform.position);
-        }
-        // otherwise, this person is probably floating in space
-        // so find a totally random location on the navmesh for them to go
-        else
-        {
-            NPCObject.transform.position = Utils.GeometryUtils.GetRandomNavMeshPointWithinRadius(NPCObject.transform.position, 1000, false);
-        }
-
-
-        // set the quality of the non-static obstacle avoidance
-        thisAgent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
-
-        // add the script to follow a path
-        FollowPathOnNavMesh followPathByNameScript = NPCObject.AddComponent<FollowPathOnNavMesh>();
-
-        // add the script to update the animation based on the speed
-        UpdateNPCAnimatorByState updateAnimatorScript = NPCObject.AddComponent<UpdateNPCAnimatorByState>();
-    }
-
     // TODO: get this to work
     public static void setAnimationFrame(Animator animatorToSet, string animationName)
     {
         animatorToSet.Play(animationName);
         animatorToSet.Update(Time.deltaTime);
-    }
-
-    // add the typical controller, nav mesh agent, and associated scripts to a gameObject
-    public static void ConfigureNPCForAnimationAndPathfinding(GameObject proxyObject, GameObject NPCObject)
-    {
-        // if there's a proxy object, check the proxy name for a specific animation to use
-        if (proxyObject)
-        {
-            // set the default animator controller for this person
-            Animator thisAnimator = NPCObject.GetComponent<Animator>();
-            thisAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(ManageNPCControllers.GetDefaultAnimatorControllerFilePathByName(proxyObject.name));
-
-            // TODO: get the initial animation to appear in the editor
-            /*
-            string animationName = thisAnimator.runtimeAnimatorController.animationClips[0].name;
-
-            setAnimationFrame(thisAnimator, animationName);
-            */
-
-            // anyone not the following gestures will get configured to walk
-            if (!proxyObject.name.Contains("talking") && !proxyObject.name.Contains("listening") && !proxyObject.name.Contains("idle") && !proxyObject.name.Contains("sitting"))
-            {
-                ConfigureNPCForPathfinding(NPCObject);
-            }
-        }
-
-        // otherwise, this is a random filler person and can be configured to walk
-        else
-        {
-            // set the default animator controller for this person
-            Animator thisAnimator = NPCObject.GetComponent<Animator>();
-            thisAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(ManageNPCControllers.GetWalkingAnimatorControllerByGender(NPCObject.name));
-
-            // TODO: get the initial animation to appear in the editor
-
-            // configure the random filler person for pathfinding
-            ConfigureNPCForPathfinding(NPCObject);
-        }
     }
 }
 
