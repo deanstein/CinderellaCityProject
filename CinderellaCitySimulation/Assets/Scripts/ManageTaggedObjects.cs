@@ -41,7 +41,7 @@ public class ManageTaggedObjects : MonoBehaviour
         GameObject[] replacementsToDelete = GameObject.FindGameObjectsWithTag(tag);
         for (int i = 0; i < replacementsToDelete.Length; i++)
         {
-            Debug.Log("<b>Deleted an object with delete tag: </b>" + tag);
+            Utils.DebugUtils.DebugLog("<b>Deleted an object with delete tag: </b>" + tag);
             UnityEngine.Object.DestroyImmediate(replacementsToDelete[i].gameObject);
         }
     }

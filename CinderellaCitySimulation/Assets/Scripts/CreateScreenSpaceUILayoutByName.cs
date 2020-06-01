@@ -34,7 +34,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         // loading screen
         if (name.Contains("LoadingScreenLauncher"))
         {
-            Debug.Log("Building the loading screen...");
+            Utils.DebugUtils.DebugLog("Building the loading screen...");
 
             // the loading screen is responsible for preloading the large scenes so level choice is faster
 
@@ -57,7 +57,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         // the main menu
         else if (name.Contains("MainMenuLauncher"))
         {
-            Debug.Log("Building the Main Menu...");
+            Utils.DebugUtils.DebugLog("Building the Main Menu...");
 
             // main menu canvas
             GameObject mainMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(launcher, "MainMenu");
@@ -81,7 +81,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         // pause menu
         else if (name.Contains("PauseMenuLauncher"))
         {
-            Debug.Log("Building the Pause Menu...");
+            Utils.DebugUtils.DebugLog("Building the Pause Menu...");
 
             // pause menu canvas
             GameObject pauseMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(launcher, "PauseMenu");
@@ -106,7 +106,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         // used here to display persistent HUD UI
         else if (name.Contains("UILauncher"))
         {
-            Debug.Log("Building the Heads Up Display...");
+            Utils.DebugUtils.DebugLog("Building the Heads Up Display...");
 
             // Heads Up Display canvas
             GameObject HUDCanvas = CreateScreenSpaceUIElements.CreateMenuCanvas(launcher, "HUD");
@@ -127,7 +127,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         // otherwise, no UI will be built because the name wasn't found or recognized
         else
         {
-            Debug.Log("Unknown UI type! " + name);
+            Utils.DebugUtils.DebugLog("Unknown UI type! " + name);
         }
     }
 }

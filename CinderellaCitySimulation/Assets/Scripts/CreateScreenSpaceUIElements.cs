@@ -70,7 +70,7 @@ public class StringUtils
         // get the index of the scene we're in
         int sceneIndex = SceneGlobals.availableTimePeriodSceneNames.IndexOf(sceneName);
 
-        Debug.Log("Scene index: " + sceneIndex);
+        Utils.DebugUtils.DebugLog("Scene index: " + sceneIndex);
 
         if (sceneIndex != -1)
         {

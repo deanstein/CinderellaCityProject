@@ -54,7 +54,7 @@ public class ManageFPSControllers : MonoBehaviour {
         {
             if (camera.name.Contains(cameraPartialName))
             {
-                Debug.Log("Found a matching camera: " + camera.name);
+                Utils.DebugUtils.DebugLog("Found a matching camera: " + camera.name);
 
                 // get the current FPSController
                 GameObject activeFPSController = FPSControllerGlobals.activeFPSController;

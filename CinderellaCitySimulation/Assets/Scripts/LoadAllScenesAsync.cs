@@ -24,7 +24,7 @@ public class LoadAllScenesAsync : MonoBehaviour {
         foreach (string sceneName in loadSceneNames)
         {
             AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-            Debug.Log("Started loading scene: " + sceneName);
+            Utils.DebugUtils.DebugLog("Started loading scene: " + sceneName);
 
             // collect the async operations into a list
             asyncOperations.Add(asyncOperation);

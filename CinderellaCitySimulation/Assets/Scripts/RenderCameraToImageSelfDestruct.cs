@@ -60,7 +60,7 @@ public class RenderCameraToImageSelfDestruct : MonoBehaviour
                 // write bytes to file system
                 File.WriteAllBytes(fullPath, Bytes);
 
-                Debug.Log("<b>Rendered a camera to an image:</b> " + fullPath);
+                Utils.DebugUtils.DebugLog("<b>Rendered a camera to an image:</b> " + fullPath);
             }
             //otherwise store the texture globally for other scripts to access
             else
@@ -70,7 +70,7 @@ public class RenderCameraToImageSelfDestruct : MonoBehaviour
                 // assign the texture by name
                 CreateScreenSpaceUIElements.AssignCameraTextureToVariableByName();
 
-                Debug.Log("<b>Rendered a camera to an internal variable.</b> ");
+                Utils.DebugUtils.DebugLog("<b>Rendered a camera to an internal variable.</b> ");
             }
 
             // must delete this script component so it doesn't run every frame

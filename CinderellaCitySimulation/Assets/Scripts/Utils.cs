@@ -9,6 +9,20 @@ using UnityEngine.AI;
 
 public class Utils
 {
+    public class DebugUtils
+    {
+        // print debug messages in the Editor console?
+        static bool printDebugMessages = true;
+
+        public static void DebugLog(string message)
+        {
+            // only print messages if the flag is set, and if we're in the Editor - otherwise, don't
+            if (printDebugMessages && Application.isEditor)
+            {
+                Debug.Log(message);
+            }
+        }
+    }
     public class GeometryUtils
     {
         public static List<Transform> GetAllChildrenTransforms(Transform parent)
@@ -38,7 +52,7 @@ public class Utils
             {
                 Vector3[] vertices = mesh.mesh.vertices;
                 meshPos = meshParent.transform.TransformPoint(vertices[vertexIndex]);
-                Debug.Log(meshPos);
+                //Utils.DebugUtils.DebugLog(meshPos);
                 gameObjectMeshPosList.Add(meshPos);
             }
 
@@ -62,7 +76,7 @@ public class Utils
             }
             else
             {
-                Debug.Log("Failed to find a point on the NavMesh.");
+                Utils.DebugUtils.DebugLog("Failed to find a point on the NavMesh.");
             }
 
             return finalPosition;
@@ -124,7 +138,7 @@ public class Utils
             // for each MeshRenderer found, get the height and add it to the list
             for (int i = 0; i < gameObjectMeshRendererArray.Length; i++)
             {
-                Debug.Log("Found a MeshChunk to get bounds info from: " + gameObjectMeshRendererArray[i]);
+                Utils.DebugUtils.DebugLog("Found a MeshChunk to get bounds info from: " + gameObjectMeshRendererArray[i]);
 
                 Bounds bounds = gameObjectMeshRendererArray[i].bounds;
 
@@ -132,7 +146,7 @@ public class Utils
                 float dimX = bounds.extents.x;
                 float dimY = bounds.extents.y;
                 float dimZ = bounds.extents.z;
-                Debug.Log("Mesh dimensions for " + gameObjectMeshRendererArray[i] + dimX + "," + dimY + "," + dimZ);
+                Utils.DebugUtils.DebugLog("Mesh dimensions for " + gameObjectMeshRendererArray[i] + dimX + "," + dimY + "," + dimZ);
 
                 List<float> XYZList = new List<float>();
                 XYZList.Add(dimX);
@@ -140,7 +154,7 @@ public class Utils
                 XYZList.Add(dimZ);
 
                 float maxXYZ = XYZList.Max();
-                Debug.Log("Max XYZ dimension for " + gameObjectMeshRendererArray[i] + ": " + maxXYZ);
+                Utils.DebugUtils.DebugLog("Max XYZ dimension for " + gameObjectMeshRendererArray[i] + ": " + maxXYZ);
 
                 // set the max dimension to the max XYZ value
                 gameObjectMaxDimension = maxXYZ;
@@ -156,9 +170,9 @@ public class Utils
         {
             // get the height of the object to be replaced
             float targetHeight = GetMaxGOBoundingBoxDimension(gameObjectToMatch);
-            //Debug.Log("Target height: " + targetHeight);
+            //Utils.DebugUtils.DebugLog("Target height: " + targetHeight);
             float currentHeight = GetMaxGOBoundingBoxDimension(gameObjectToScale);
-            //Debug.Log("Current height: " + currentHeight);
+            //Utils.DebugUtils.DebugLog("Current height: " + currentHeight);
 
             Utils.GeometryUtils.ScaleGameObjectToMaxHeight(gameObjectToScale, targetHeight);
         }
@@ -166,15 +180,15 @@ public class Utils
         // define how to scale a GameObject to match a height
         public static void ScaleGameObjectToMaxHeight(GameObject gameObjectToScale, float targetHeight)
         {
-            //Debug.Log("Target height: " + targetHeight);
+            //Utils.DebugUtils.DebugLog("Target height: " + targetHeight);
             float currentHeight = GetMaxGOBoundingBoxDimension(gameObjectToScale);
-            //Debug.Log("Current height: " + currentHeight);
+            //Utils.DebugUtils.DebugLog("Current height: " + currentHeight);
 
             float scaleFactor = (targetHeight / currentHeight) * ((gameObjectToScale.transform.localScale.x + gameObjectToScale.transform.localScale.y + gameObjectToScale.transform.localScale.z) / 3);
 
             // scale the prefab to match the height of its replacement
             gameObjectToScale.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
-            Debug.Log("<b>Scaled </b>" + gameObjectToScale + " <b>to max height: </b> " + targetHeight + " <b>(" + scaleFactor + " scale factor)</b>");
+            Utils.DebugUtils.DebugLog("<b>Scaled </b>" + gameObjectToScale + " <b>to max height: </b> " + targetHeight + " <b>(" + scaleFactor + " scale factor)</b>");
         }
     }
 }
