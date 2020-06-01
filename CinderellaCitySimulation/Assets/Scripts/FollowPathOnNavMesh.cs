@@ -19,7 +19,7 @@ public class FollowPathOnNavMesh : MonoBehaviour
     {
         // keep track of how many NPCControllers are active and pathfinding
         NPCControllerGlobals.activeNPCControllers++;
-        Debug.Log("Active NPCControllers following paths: " + NPCControllerGlobals.activeNPCControllers);
+        //Debug.Log("Active NPCControllers following paths: " + NPCControllerGlobals.activeNPCControllers);
 
         // if a path was previously recorded, use it
         if (path != null)
