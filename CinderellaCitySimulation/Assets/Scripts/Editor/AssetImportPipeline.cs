@@ -851,7 +851,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             thisAgent = NPCObject.GetComponent<NavMeshAgent>();
         }
         thisAgent.speed = 1.0f;
-        thisAgent.angularSpeed = 60f;
+        thisAgent.angularSpeed = 200f;
         thisAgent.radius = 0.25f;
         thisAgent.autoTraverseOffMeshLink = false;
         thisAgent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;

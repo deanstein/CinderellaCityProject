@@ -2,8 +2,6 @@
 
 using System.Collections.Generic;
 
-using UnityEditor;
-
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -25,6 +23,23 @@ public class Utils
     }
     public class GeometryUtils
     {
+        // gets distance between two points, allegedly faster than Unity's built-in distance method
+        // (sourced from the Unity forums)
+        public static float GetFastDistance(Vector3 v1, Vector3 v2)
+        {
+            float f;
+            float f2;
+            f = v1.x - v2.x;
+            if (f < 0) { f = f * -1; }
+            f2 = v1.z - v2.z;
+            if (f2 < 0) { f2 = f2 * -1; }
+
+            if (f > f2) { f2 = f; }
+            // simulates a box-shaped distance calculation
+
+            return f2;
+        }
+
         public static List<Transform> GetAllChildrenTransforms(Transform parent)
         {
             List<Transform> children = new List<Transform>();

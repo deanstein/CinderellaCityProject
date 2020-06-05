@@ -3,73 +3,99 @@
 using System.Collections.Generic;
 
 // this script should be attached to a parent GameObject containing
-// other children with components that need to be disabled when too far from the player
+// children with components that need to be disabled when too far from the player
 
 public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
 
-    // get the player and its position
+    // the component types to toggle are passed in from AssetImportPipeline
+    public string[] toggleComponentTypes;
+
+    // get the player, its position, and its camera
     GameObject player;
     Vector3 playerPosition;
+    Camera playerCamera;
 
     // instantiate lists for children
     List<Transform> childrenTransformsList = new List<Transform>();
     List<GameObject> childrenObjectsList = new List<GameObject>();
     List<Vector3> childrenPositionsList = new List<Vector3>();
     List<GameObject> activeChildrenList = new List<GameObject>();
+    List<int> childrenNotInFrameCountsList = new List<int>();
 
     //instantiate arrays for children
     GameObject[] childrenObjects;
     Vector3[] childrenPositions;
+    int[] childrenNotInFrameCounts;
 
-    // the component types to toggle are passed in from AssetImportPipeline
-    public string[] toggleComponentTypes;
+    // the screen-space position of an object in world space
+    Vector3 screenSpacePoint;
+
+    // these "extend" the camera extents (usualy between 0 and 1), to more quickly enable components
+    // when the camera is sweeping around -so the player won't notice the components being enabled
+    public float minScreenSpacePoint = -2;
+    public float maxScreenSpacePoint = 3;
 
     // the current distance between this object and the player
     public float currentDistance = 0;
 
-    // the maximum distance this object can be from the FPSController before the specified component is disabled
+    // the maximum distance this object can be from the player before the specified components are disabled
     // this may be overridden by AssetImportPipeline
     public float maxDistance = 20f;
 
     // keep track of the number of frames between updates
-    public float frameCount = 0;
+    public int frameCount = 0;
 
     // the number of frames between proximity checks
-    public float maxFramesBetweenCheck = 5;
+    // not doing this calculation every frame helps with performance
+    public int maxFramesBetweenCheck = 5;
+
+    // the max number of times we check and if the object is out of view, disable its components
+    // this prevents moving objects from stopping right in front of the camera when components are disabled
+    public int maxNotInFrameCount = 250;
 
     private void Awake()
     {
         // get the player
         player = GameObject.FindWithTag("Player");
 
-        // get the initial position of the player
+        // get the player's camera
+        playerCamera = player.transform.GetChild(0).GetComponent<Camera>();
+
+        // get the initial player position
         playerPosition = player.transform.position;
 
-        // get all the NPCs - starting with their transforms
+        // get all the children of this object - starting with their transforms
         childrenTransformsList = Utils.GeometryUtils.GetAllChildrenTransforms(this.transform);
 
-        // record every transform as a GameObject in a new list
-        foreach (Transform NPCTransform in childrenTransformsList)
+        // get the corresponding gameobjects
+        foreach (Transform childrenTransform in childrenTransformsList)
         {
-            if (NPCTransform.GetComponent(toggleComponentTypes[0]) as Behaviour)
+            if (childrenTransform.GetComponent(toggleComponentTypes[0]) as Behaviour)
             {
-                childrenObjectsList.Add(NPCTransform.gameObject);
+                childrenObjectsList.Add(childrenTransform.gameObject);
             }
 
             // disable the children components on this tranform's gamobject initially
-            DisableComponents(NPCTransform.gameObject);
+            DisableComponents(childrenTransform.gameObject);
         }
 
-        // convert the list to an array
-        childrenObjects = childrenObjectsList.ToArray();
-
-        foreach (GameObject NPCObject in childrenObjectsList)
+        // fill out lists about the children
+        foreach (GameObject childObject in childrenObjectsList)
         {
-            childrenPositionsList.Add(NPCObject.transform.position);
+            childrenPositionsList.Add(childObject.transform.position);
+            childrenNotInFrameCountsList.Add(0);
         }
 
-        // convert the list to an array
+        // convert the lists to arrays
+        childrenObjects = childrenObjectsList.ToArray();
         childrenPositions = childrenPositionsList.ToArray();
+        childrenNotInFrameCounts = childrenNotInFrameCountsList.ToArray();
+    }
+
+    private void OnEnable()
+    {
+        // on enable, set the current count to the max so we immediately update
+        frameCount = maxFramesBetweenCheck;
     }
 
     // Update is called once per frame
@@ -78,9 +104,10 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
         // increment the framecount
         frameCount++;
 
-        // check only when we've reached the max amount of frames between checks
-        if (frameCount == maxFramesBetweenCheck)
+        // do this expensive check only when we've reached the max amount of frames between checks
+        if (frameCount >= maxFramesBetweenCheck)
         {
+            // reset the frame count
             frameCount = 0;
 
             // get the latest player position
@@ -90,45 +117,45 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
             for (var i = 0; i < childrenPositions.Length; i++)
             {
                 // update this child's position
-                childrenPositions[i] = childrenObjects[i].transform.position;
+                childrenPositions[i] = new Vector3(childrenObjects[i].transform.position.x, childrenObjects[i].transform.position.y + 1, childrenObjects[i].transform.position.z);
 
-                // if we're within range, enable the components
-                if (GetFastDistance(playerPosition, childrenPositions[i]) < maxDistance)
+                // get the screen space position of this object
+                screenSpacePoint = playerCamera.WorldToViewportPoint(childrenPositions[i]);
+
+                // determine if the child's position is visible to screen space
+                bool isOnScreen = false;
+
+                if (screenSpacePoint.z > -1 && screenSpacePoint.x > -1 && screenSpacePoint.x < 2 && screenSpacePoint.y > -1 && screenSpacePoint.y < 2)
+                {
+                    isOnScreen = true;
+                }
+
+                // if we're within range, and the object is visible, enable the components
+                if (Utils.GeometryUtils.GetFastDistance(playerPosition, childrenPositions[i]) < maxDistance && isOnScreen)
                 {
                     // first, ensure we're not tracking this object already
                     if (!activeChildrenList.Contains(childrenObjects[i]))
                     {
                         EnableComponents(childrenObjects[i]);
                         activeChildrenList.Add(childrenObjects[i]);
+                        childrenNotInFrameCounts[i] = 0;
                     }
                 }
                 // otherwise, disable the components
                 else
                 {
-                    // first, check if this object is being tracked as active
-                    if (activeChildrenList.Contains(childrenObjects[i]))
+                    childrenNotInFrameCounts[i]++;
+
+                    // check if this object is being tracked as active, and if it's been out of frame for enough time
+                    if (activeChildrenList.Contains(childrenObjects[i]) && childrenNotInFrameCounts[i] >= maxNotInFrameCount)
                     {
                         DisableComponents(childrenObjects[i]);
                         activeChildrenList.Remove(childrenObjects[i]);
+                        childrenNotInFrameCounts[i] = 0;
                     }
                 }
             }
         }
-    }
-
-    float GetFastDistance(Vector3 v1, Vector3 v2)
-    {
-        float f;
-        float f2;
-        f = v1.x - v2.x;
-        if (f < 0) { f = f * -1; }
-        f2 = v1.z - v2.z;
-        if (f2 < 0) { f2 = f2 * -1; }
-
-        if (f > f2) { f2 = f; }
-        // simulates a box-shaped distance calculation
-
-        return f2;
     }
 
     public void EnableComponents(GameObject hostObject)
