@@ -23,7 +23,7 @@ public class ToggleSceneAndUIByInputEvent : MonoBehaviour {
 
             // toggle to the previous scene with a camera effect transition
             StartCoroutine(ToggleSceneAndUI.ToggleFromSceneToSceneWithTransition(SceneManager.GetActiveScene().name, previousTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform,
-                ManageCameraEffects.CameraEffectGlobals.activePostProcessingHost, "FlashWhite", 0.4f));
+                ManageCameraEffects.CameraEffectGlobals.activePostProcessingHost, "FlashBlack", 0.2f));
         }
 
         // time travel requested - next time period
@@ -34,7 +34,7 @@ public class ToggleSceneAndUIByInputEvent : MonoBehaviour {
             string nextTimePeriodSceneName = ManageAvailableScenes.GetNextTimePeriodSceneName("next");
 
             // then toggle to the next scene with a camera effect transition
-            StartCoroutine(ToggleSceneAndUI.ToggleFromSceneToSceneWithTransition(SceneManager.GetActiveScene().name, nextTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform, ManageCameraEffects.CameraEffectGlobals.activePostProcessingHost, "FlashWhite", 0.4f));
+            StartCoroutine(ToggleSceneAndUI.ToggleFromSceneToSceneWithTransition(SceneManager.GetActiveScene().name, nextTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform, ManageCameraEffects.CameraEffectGlobals.activePostProcessingHost, "FlashBlack", 0.2f));
         }
 
         /// UI visiblity shortcuts ///

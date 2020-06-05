@@ -92,7 +92,7 @@ The following scripts are critical to the behavior and processes underpinning th
 	- ToggleCameraEffectsByInputEvent
 		- Responsible for toggling camera effects on certain input events
 	- ToggleChildrenComponentsByProximityToPlayer.cs
-		- Responsible for enabling/disabling children GameObject Components (AudioSources, scripts...) based on their proximity to the player
+		- Responsible for enabling/disabling children GameObject Components (NavMeshAgents, scripts...) based on their proximity to the player
 		- Used for non-static objects like NPCs
 	- ToggleComponentByProximityToPlayer.cs
 		- Responsible for enabling/disabling GameObject Components (AudioSources, scripts...) based on their proximity to the player
