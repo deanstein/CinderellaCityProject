@@ -23,7 +23,7 @@ public class ToggleSceneAndUIByInputEvent : MonoBehaviour {
 
             // toggle to the previous scene with a camera effect transition
             StartCoroutine(ToggleSceneAndUI.ToggleFromSceneToSceneWithTransition(SceneManager.GetActiveScene().name, previousTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform,
-                ManageCameraEffects.CameraEffectGlobals.activePostProcessingHost, "FlashBlack", 0.2f));
+                ManageCameraActions.CameraActionGlobals.activeCameraHost, "FlashBlack", 0.2f));
         }
 
         // time travel requested - next time period
@@ -34,7 +34,7 @@ public class ToggleSceneAndUIByInputEvent : MonoBehaviour {
             string nextTimePeriodSceneName = ManageAvailableScenes.GetNextTimePeriodSceneName("next");
 
             // then toggle to the next scene with a camera effect transition
-            StartCoroutine(ToggleSceneAndUI.ToggleFromSceneToSceneWithTransition(SceneManager.GetActiveScene().name, nextTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform, ManageCameraEffects.CameraEffectGlobals.activePostProcessingHost, "FlashBlack", 0.2f));
+            StartCoroutine(ToggleSceneAndUI.ToggleFromSceneToSceneWithTransition(SceneManager.GetActiveScene().name, nextTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform, ManageCameraActions.CameraActionGlobals.activeCameraHost, "FlashBlack", 0.2f));
         }
 
         /// UI visiblity shortcuts ///
@@ -220,13 +220,13 @@ public class ToggleSceneAndUI
         string currentProfileName = postProcessHost.GetComponent<PostProcessVolume>().profile.name;
 
         // first, toggle the flash transition
-        ManageCameraEffects.SetPostProcessTransitionProfile(postProcessHost, transitionProfileName);
+        ManageCameraActions.SetPostProcessTransitionProfile(postProcessHost, transitionProfileName);
 
         // wait for the transition time
         yield return new WaitForSeconds(transitionTime);
 
         // reset the profile to the original
-        ManageCameraEffects.SetPostProcessProfile(postProcessHost, currentProfileName);
+        ManageCameraActions.SetPostProcessProfile(postProcessHost, currentProfileName);
 
         // toggle to the requested scene
         ToggleFromSceneToSceneRelocatePlayerToFPSController(fromScene, toScene, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform);

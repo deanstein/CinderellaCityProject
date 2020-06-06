@@ -1,23 +1,24 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Rendering.PostProcessing;
 
+using System.Collections;
+using System.IO;
+
 // this script should be attached to FPSCharacter objects that need to watch for shortcuts to adjust camera effects
-public class ToggleCameraEffectsByInputEvent : MonoBehaviour {
+public class ToggleCameraActionsByInputEvent : MonoBehaviour {
 
     private void Awake()
     {
         // add this volume priority to the global priority value
-        ManageCameraEffects.CameraEffectGlobals.highestKnownPriority += this.GetComponent<PostProcessVolume>().priority;
+        ManageCameraActions.CameraActionGlobals.highestKnownCameraEffectPriority += this.GetComponent<PostProcessVolume>().priority;
     }
 
     private void OnEnable()
     {
         // optional: start a camera transition when the camera is enabled
         /*
-        StartCoroutine(ToggleCameraEffectsByInputEvent.ToggleCameraEffectWithTransition(this.gameObject, ManageCameraEffects.GetDefaultPostProcessProfileBySceneName(this.gameObject.scene.name), "FlashWhite", 0.2f));
+        StartCoroutine(ToggleCameraActionsByInputEvent.ToggleCameraEffectWithTransition(this.gameObject, ManageCameraEffects.GetDefaultPostProcessProfileBySceneName(this.gameObject.scene.name), "FlashWhite", 0.2f));
         */
     }
 
@@ -25,7 +26,7 @@ public class ToggleCameraEffectsByInputEvent : MonoBehaviour {
     void Update()
     {
         // update the globally-available Post Process host
-        ManageCameraEffects.CameraEffectGlobals.activePostProcessingHost = this.gameObject;
+        ManageCameraActions.CameraActionGlobals.activeCameraHost = this.gameObject;
 
         // define which effects belong to which shortcut
         if (Input.GetKeyDown("1"))
@@ -44,6 +45,10 @@ public class ToggleCameraEffectsByInputEvent : MonoBehaviour {
         {
             StartCoroutine(ToggleCameraEffects.ToggleCameraEffectWithTransition(this.gameObject, "Dark", "FlashBlack", 0.4f));
         }
+        else if (Input.GetKeyDown("x"))
+        {
+            TakeScreenshots.CaptureScreenshotOfCurrentCamera();
+        }
     }
 }
 
@@ -52,13 +57,30 @@ public class ToggleCameraEffects
     public static IEnumerator ToggleCameraEffectWithTransition(GameObject postProcessHost, string profileName, string transitionProfileName, float transitionTime)
     {
         // first, toggle the flash transition
-        ManageCameraEffects.SetPostProcessTransitionProfile(postProcessHost, transitionProfileName);
+        ManageCameraActions.SetPostProcessTransitionProfile(postProcessHost, transitionProfileName);
 
         // wait for the transition time
         yield return new WaitForSeconds(transitionTime);
 
         // set the requested camera effect profile
-        ManageCameraEffects.SetPostProcessProfile(postProcessHost, profileName);
+        ManageCameraActions.SetPostProcessProfile(postProcessHost, profileName);
+    }
+}
+
+public class TakeScreenshots
+{
+    public static void CaptureScreenshotOfCurrentCamera()
+    {
+        // get the correct screenshot path based on the current context
+        string screenshotPath = ManageCameraActions.GetScreenshotPathByContext();
+
+        // generate a file name based on the current context
+        string screenshotName = ManageCameraActions.GetScreenshotFileNameByContext();
+
+        // take the screenshot and store it at the given location
+        ScreenCapture.CaptureScreenshot(screenshotPath + screenshotName);
+
+        Utils.DebugUtils.DebugLog("Captured a screenshot of the current camera at: " + screenshotPath + screenshotName);
     }
 }
 
