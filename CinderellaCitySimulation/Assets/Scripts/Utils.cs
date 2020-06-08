@@ -106,39 +106,60 @@ public class Utils
             // apply the random direction from the starting point
             randomDirection += startingPoint;
 
-            // set up the hit and final position
+            // set up a potential hit
             NavMeshHit hit;
             Vector3 finalPosition = Vector3.zero;
 
-            // if we get a hit
-            if (NavMesh.SamplePosition(randomDirection, out hit, radius, 1))
+            // how many times to try
+            int tries = 30;
+
+            // if stayOnLevel is true, try several times to get a new hit that
+            // maintains the y-value/height
+            if (stayOnLevel)
             {
-                // if stayOnLevel is true, replace the y-value with the original position's y-value
-                if (stayOnLevel)
+                // try up to 30 times to get a new hit point 
+                for (var i = 0; i < tries; i++)
                 {
-                    finalPosition = new Vector3(hit.position.x, startingPoint.y, hit.position.z);
+                    // if we get a hit
+                    if (NavMesh.SamplePosition(randomDirection, out hit, radius, 1))
+                    {
+                        // check if the hit point is at a different height than the starting point
+                        // otherwise, try another hit
+                        if (Mathf.Abs(hit.position.y - startingPoint.y) < NPCControllerGlobals.maxStepHeight)
+                        {
+                            finalPosition = hit.position;
+                            return finalPosition;
+                        }
+                    }
                 }
 
-                else
+                return finalPosition;
+            }
+            else
+            {
+                // if we get a hit
+                if (NavMesh.SamplePosition(randomDirection, out hit, radius, 1))
                 {
                     // the hit position could wind up on the roof
                     // so clamp the y (up) value to ~the 2nd floor height (~10 meters) at all times
                     if (hit.position.y > 10)
                     {
                         finalPosition = new Vector3(hit.position.x, 10, hit.position.z);
+                        return finalPosition;
                     }
                     else
                     {
                         finalPosition = hit.position;
+                        return finalPosition;
                     }
                 }
 
-                // optional: visualize the location and a connecting line
-                //Debug.DrawLine(this.gameObject.transform.position, finalPosition, Color.red, 100f);
-                //Debug.DrawLine(finalPosition, new Vector3(finalPosition.x, finalPosition.y + 1, finalPosition.z), Color.red, 100f);
+                return finalPosition;
             }
 
-            return finalPosition;
+            // optional: visualize the location and a connecting line
+            //Debug.DrawLine(this.gameObject.transform.position, finalPosition, Color.red, 100f);
+            //Debug.DrawLine(finalPosition, new Vector3(finalPosition.x, finalPosition.y + 1, finalPosition.z), Color.red, 100f);
         }
 
         // define how to get the max height of a gameObject

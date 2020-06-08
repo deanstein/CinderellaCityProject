@@ -11,6 +11,9 @@ public class NPCControllerGlobals
     // keep track of how many NPCControllers are active and pathfinding
     public static int activeNPCControllers = 0;
 
+    // the maximum step height that NPCs can navigate over
+    public static float maxStepHeight = 0.18f;
+
     // on import, max disance an NPC can be from a valid navmesh point before it's relocated randomly
     public static float maxDistanceForClosestPointAdjustment = 5f;
 

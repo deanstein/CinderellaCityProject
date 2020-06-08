@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 
 using UnityEditor;
-using UnityEditor.AI;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEditor.SceneManagement;
 
@@ -29,8 +28,8 @@ public class AssetImportUpdate : AssetPostprocessor {
 
     // if the model just updated isn't already in the scene, we need to keep track of it
     // in order to maintain parent/child hierarchy in the post-processor
-    static GameObject newlyInstantiatedPrefab;
-    static bool newlyInstantiated;
+    static GameObject newlyInstantiatedFBXContainer;
+    static bool isNewlyInstantiatedFBXContainer;
 
     // get the current scene
     static Scene currentScene = EditorSceneManager.GetActiveScene();
@@ -51,6 +50,11 @@ public class AssetImportUpdate : AssetPostprocessor {
     static string proxyType;
     static string replacementObjectPath;
     static string animatorControllerPath;
+
+    // keep track of the newly-instantiated objects - like trees and people - for counting and culling
+    static List<GameObject> instancedPrefabs = new List<GameObject>();
+    // keep track of how many instances had to be deleted because no good random point was found
+    static int culledPrefabs = 0;
 
     // post-processing seems to repeat itself a lot, so set a max and keep track of how many times
     // note that if an object was just instantiated in the scene, this max hit value gets incremented by 1
@@ -82,7 +86,7 @@ public class AssetImportUpdate : AssetPostprocessor {
     static bool doSetMaterialSmoothnessMetallic = false;
     static bool doInstantiateProxyReplacements = false;
     static bool doHideProxyObjects = false;
-    static bool doRebuildNavMesh = false;
+    static bool doConfigureNavMesh = false;
 
     //
     // end master list
@@ -179,12 +183,12 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
 
         // otherwise, instantiate as a prefab with the name of the file
-        newlyInstantiatedPrefab = PrefabUtility.InstantiatePrefab(gameObjectFromAsset, scene) as GameObject;
-        newlyInstantiatedPrefab.name = gameObjectFromAsset.name;
+        newlyInstantiatedFBXContainer = PrefabUtility.InstantiatePrefab(gameObjectFromAsset, scene) as GameObject;
+        newlyInstantiatedFBXContainer.name = gameObjectFromAsset.name;
         Utils.DebugUtils.DebugLog("This object was instantiated in the model hierarchy.");
 
         // set the flag that an object was just instantiated so we can fix parent/child hierarchy in post-processor
-        newlyInstantiated = true;
+        isNewlyInstantiatedFBXContainer = true;
 
         // allow additional post processing hits since this model was just instantiated
         globalMaxPostProcessingHits = globalMaxPostProcessingHits + 2;
@@ -869,7 +873,19 @@ public class AssetImportUpdate : AssetPostprocessor {
         // so find a totally random location on the navmesh for them to go
         else
         {
-            NPCObject.transform.position = Utils.GeometryUtils.GetRandomNavMeshPointWithinRadius(NPCObject.transform.position, 1000, false);
+            // try to find a random point on this level, within a huge radius
+            Vector3 randomPoint = Utils.GeometryUtils.GetRandomNavMeshPointWithinRadius(NPCObject.transform.position, 1000, true);
+
+            // set the position to the random point only if it's non-zero
+            if (randomPoint != Vector3.zero)
+            {
+                NPCObject.transform.position = Utils.GeometryUtils.GetRandomNavMeshPointWithinRadius(NPCObject.transform.position, 1000, true);
+            }
+            else
+            {
+                // othwerise, this gets moved to the origin and will be culled later
+                NPCObject.transform.position = randomPoint;
+            }
         }
     }
 
@@ -921,6 +937,10 @@ public class AssetImportUpdate : AssetPostprocessor {
             return;
         }
 
+        // reset the lists and counts
+        instancedPrefabs.Clear();
+        culledPrefabs = 0;
+
         // update the global proxy type variable based on the asset name
         string proxyType = GetProxyTypeByName(assetName);
 
@@ -954,6 +974,9 @@ public class AssetImportUpdate : AssetPostprocessor {
                 // only do something if the instanced prefab is valid
                 if (instancedPrefab)
                 {
+                    // add this instanced prefab to the global list for tracking
+                    instancedPrefabs.Add(instancedPrefab);
+
                     // special rules if we're replacing proxy people
                     if (child.name.Contains("people"))
                     {
@@ -964,26 +987,47 @@ public class AssetImportUpdate : AssetPostprocessor {
                         for (var i = 0; i < ProxyGlobals.numberOfFillersToGenerate; i++)
                         {
                             // create a random point on the navmesh
-                            Vector3 randomPoint = Utils.GeometryUtils.GetRandomNavMeshPointWithinRadius(child.transform.localPosition, ProxyGlobals.numberOfFillersToGenerate, false);
+                            Vector3 randomPoint = Utils.GeometryUtils.GetRandomNavMeshPointWithinRadius(child.transform.localPosition, ProxyGlobals.numberOfFillersToGenerate, true);
 
                             // determine which pool to get people from given the scene name
                             string[] peoplePrefabPoolForCurrentScene = ManageProxyMapping.GetPeoplePrefabPoolBySceneName(SceneManager.GetActiveScene().name);
 
-                            // instantiate a random person at the point
-                            GameObject randomInstancedPrefab = ManageProxyMapping.InstantiateRandomPrefabFromPoolAtPoint(child.gameObject.transform.parent.gameObject, peoplePrefabPoolForCurrentScene, randomPoint);
-
-                            // only do something if the prefab is valid
-                            if (randomInstancedPrefab)
+                            // if we get a zero vector, the random point generation failed
+                            // so only do something if the randomPoint is valid
+                            if (randomPoint != Vector3.zero)
                             {
-                                // feed this into the NPC configurator to indicate there is no proxy to match
-                                GameObject nullProxyObject = null;
+                                // instantiate a random person at the point
+                                GameObject randomInstancedPrefab = ManageProxyMapping.InstantiateRandomPrefabFromPoolAtPoint(child.gameObject.transform.parent.gameObject, peoplePrefabPoolForCurrentScene, randomPoint);
 
-                                // apply animator controllers, agents, and scripts to the new random prefab
-                                ConfigureNPCForAnimationAndPathfinding(nullProxyObject, randomInstancedPrefab);
+                                // only do something if the prefab is valid
+                                if (randomInstancedPrefab)
+                                {
+                                    // add this random instanced prefab to the list for tracking
+                                    instancedPrefabs.Add(instancedPrefab);
 
-                                // tag this instanced prefab as a delete candidate for the next import
-                                randomInstancedPrefab.gameObject.tag = proxyReplacementDeleteTag;
+                                    // feed this into the NPC configurator to indicate there is no proxy to match
+                                    GameObject nullProxyObject = null;
+
+                                    // apply animator controllers, agents, and scripts to the new random prefab
+                                    ConfigureNPCForAnimationAndPathfinding(nullProxyObject, randomInstancedPrefab);
+
+                                    // tag this instanced prefab as a delete candidate for the next import
+                                    randomInstancedPrefab.gameObject.tag = proxyReplacementDeleteTag;
+                                }
                             }
+                        }
+                    }
+
+                    // some people may have been placed at Vector3.zero, meaning we couldn't
+                    // find a good random spot for them - so they should be deleted
+                    foreach (GameObject instanceToTest in instancedPrefabs)
+                    {
+                        if (instanceToTest != null && instanceToTest.transform.position == Vector3.zero)
+                        {
+                            // count this as a culled instance
+                            culledPrefabs++;
+                            // delete the object
+                            UnityEngine.GameObject.DestroyImmediate(instanceToTest);
                         }
                     }
                 }
@@ -1043,6 +1087,9 @@ public class AssetImportUpdate : AssetPostprocessor {
                 camera.enabled = false;
             }
         }
+
+        // log how many prefabs were successfully instanced
+        Utils.DebugUtils.DebugLog("Number of successfully instanced prefabs: " + (instancedPrefabs.Count - culledPrefabs) + " (" + culledPrefabs + " culled)");
     }
 
     // copies a component and all its settings from one GameObject to another
@@ -1083,15 +1130,23 @@ public class AssetImportUpdate : AssetPostprocessor {
       
     }
 
-    // objects that should impact navigation should kick off a navigation mesh rebuild
-    public static void RebuildNavMesh()
+    // configure and bake the nav mesh
+    public static void ConfigureNavMesh()
     {
-        // only do this if the object is also going to be set as static
-        if (doSetStatic)
-        {
-            UnityEditor.AI.NavMeshBuilder.BuildNavMesh();
-        }
+        // TODO: none of this seems to work - fix it or remove it
+        UnityEditor.AI.NavMeshBuilder.BuildNavMesh();
 
+        /*
+        // get some build settings?
+        var buildSettings = NavMesh.CreateSettings();
+
+        // Warning : nasty, dirty reflection kludge here
+        var t = typeof(UnityEngine.AI.NavMeshBuildSettings);
+        object boxedSettings = new UnityEngine.AI.NavMeshBuildSettings();
+        boxedSettings = buildSettings;
+        t.GetField("m_AgentSlope", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(boxedSettings, 0.0f);
+        buildSettings = (NavMeshBuildSettings)boxedSettings;
+        */
     }
 
     // runs when a texture/image asset is updated
@@ -1300,7 +1355,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
-            doRebuildNavMesh = true;
+            doConfigureNavMesh = false;
         }
 
         if (assetFilePath.Contains("mall-doors-windows-exterior.fbx")
@@ -1320,7 +1375,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetMaterialSmoothnessMetallic = true;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
-            doRebuildNavMesh = false;
+            doConfigureNavMesh = false;
         }
 
         if (assetFilePath.Contains("mall-doors-windows-solid.fbx"))
@@ -1339,7 +1394,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
-            doRebuildNavMesh = true;
+            doConfigureNavMesh = false;
         }
 
         if (assetFilePath.Contains("mall-flags.fbx"))
@@ -1358,7 +1413,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
-            doRebuildNavMesh = false;
+            doConfigureNavMesh = false;
         }
 
         if (assetFilePath.Contains("mall-furniture.fbx"))
@@ -1377,7 +1432,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
-            doRebuildNavMesh = true;
+            doConfigureNavMesh = false;
         }
 
         if (assetFilePath.Contains("mall-floor-ceiling-vertical.fbx")
@@ -1400,7 +1455,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetMaterialSmoothnessMetallic = true;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
-            doRebuildNavMesh = true;
+            doConfigureNavMesh = false;
         }
 
         if (assetFilePath.Contains("mall-handrails.fbx"))
@@ -1419,7 +1474,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetMaterialSmoothnessMetallic = true;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
-            doRebuildNavMesh = false;
+            doConfigureNavMesh = false;
         }
 
         if (assetFilePath.Contains("mall-wayfinding"))
@@ -1438,7 +1493,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetMaterialSmoothnessMetallic = true;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
-            doRebuildNavMesh = false;
+            doConfigureNavMesh = false;
         }
 
         if (assetFilePath.Contains("mall-lights.fbx")
@@ -1459,7 +1514,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
-            doRebuildNavMesh = false;
+            doConfigureNavMesh = false;
         }
 
         if (assetFilePath.Contains("mall-structure.fbx"))
@@ -1496,11 +1551,10 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = true;
             doHideProxyObjects = true;
-            doRebuildNavMesh = false;
+            doConfigureNavMesh = false;
         }
 
-        if (assetFilePath.Contains("proxy-people.fbx")
-            || assetFilePath.Contains("proxy-trees.fbx"))
+        if (assetFilePath.Contains("proxy-people.fbx"))
         {
             // pre-processor option flags
             doSetGlobalScale = true; // always true
@@ -1516,7 +1570,26 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = true;
             doHideProxyObjects = true;
-            doRebuildNavMesh = false;
+            doConfigureNavMesh = true;
+        }
+
+        if (assetFilePath.Contains("proxy-trees.fbx"))
+        {
+            // pre-processor option flags
+            doSetGlobalScale = true; // always true
+            doInstantiateAndPlaceInCurrentScene = true;
+            doSetColliderActive = false;
+            doSetUVActiveAndConfigure = false;
+            doDeleteReimportMaterialsTextures = true;
+            doAddBehaviorComponents = true;
+
+            // post-processor option flags
+            doSetStatic = false;
+            doSetMaterialEmission = false;
+            doSetMaterialSmoothnessMetallic = false;
+            doInstantiateProxyReplacements = true;
+            doHideProxyObjects = true;
+            doConfigureNavMesh = false;
         }
 
         if (assetFilePath.Contains("site.fbx"))
@@ -1535,7 +1608,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
-            doRebuildNavMesh = true;
+            doConfigureNavMesh = false;
         }
 
         if (assetFilePath.Contains("speakers.fbx") || assetFilePath.Contains("speakers-simple.fbx"))
@@ -1554,7 +1627,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
-            doRebuildNavMesh = false;
+            doConfigureNavMesh = false;
         }
 
         //
@@ -1680,16 +1753,16 @@ public class AssetImportUpdate : AssetPostprocessor {
             HideProxyObjects(globalAssetFileName);
         }
 
-        if (doRebuildNavMesh)
+        if (doConfigureNavMesh)
         {
-            RebuildNavMesh();
+            ConfigureNavMesh();
         }
 
         // newly-instantiated objects need to be set as a child of the scene container
         // NOTE: this assumes each scene only has 1 top-level object: a "Container" that holds all Scene objects
-        if (newlyInstantiated)
+        if (isNewlyInstantiatedFBXContainer)
         {
-            SetObjectAsChildOfSceneContainer(newlyInstantiatedPrefab);
+            SetObjectAsChildOfSceneContainer(newlyInstantiatedFBXContainer);
         }
 
         Utils.DebugUtils.DebugLog("END PostProcessing");
