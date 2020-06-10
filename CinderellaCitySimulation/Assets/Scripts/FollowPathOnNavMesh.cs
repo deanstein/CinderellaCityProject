@@ -13,7 +13,7 @@ public class FollowPathOnNavMesh : MonoBehaviour
     public NavMeshAgent thisAgent;
     public Vector3 destination;
     public NavMeshPath path;
-    public float destinationRadius = 60;
+    public float destinationRadius = 20f;
 
     private void OnEnable()
     {
@@ -29,16 +29,20 @@ public class FollowPathOnNavMesh : MonoBehaviour
 
     }
 
-    private void OnDisable()
+    private void Awake()
     {
-        NPCControllerGlobals.activeNPCControllers--;
-
-        // keep track of how many NPCControllers are active and pathfinding
-        path = this.GetComponent<NavMeshAgent>().path;
+        // record this object's position in the pool so others can reference it later
+        NPCControllerGlobals.initialNPCPositionsList.Add(this.transform.position);
     }
 
     void Start()
     {
+        // if the NPC positions array hasn't been converted yet, convert it
+        if (NPCControllerGlobals.initialNPCPositions == null)
+        {
+            NPCControllerGlobals.initialNPCPositions = NPCControllerGlobals.initialNPCPositionsList.ToArray();
+        }
+
         // get this nav mesh agent
         thisAgent = this.GetComponent<NavMeshAgent>();
 
@@ -46,7 +50,7 @@ public class FollowPathOnNavMesh : MonoBehaviour
         path = new NavMeshPath();
 
         // set the destination
-        destination = Utils.GeometryUtils.GetRandomNavMeshPointWithinRadius(this.transform.position,  destinationRadius, true);
+        destination = Utils.GeometryUtils.GetRandomPointOnNavMeshFromPool(this.transform.position, NPCControllerGlobals.initialNPCPositions, destinationRadius, true);
 
         // find a path to the destination
         bool pathSuccess = NavMesh.CalculatePath(this.gameObject.transform.position, destination, NavMesh.AllAreas, path);
@@ -76,10 +80,18 @@ public class FollowPathOnNavMesh : MonoBehaviour
                 if (!thisAgent.hasPath || thisAgent.velocity.sqrMagnitude == 0f)
                 {
                     // reached the destination - now set another one
-                    NavMesh.CalculatePath(this.transform.position, Utils.GeometryUtils.GetRandomNavMeshPointWithinRadius(this.gameObject.transform.position, destinationRadius, false), NavMesh.AllAreas, path);
-                    Debug.Log("Agent "  + thisAgent.gameObject.name + " reached its destination.");
+                    NavMesh.CalculatePath(this.transform.position, Utils.GeometryUtils.GetRandomPointOnNavMeshFromPool(this.transform.position, NPCControllerGlobals.initialNPCPositions, destinationRadius, true), NavMesh.AllAreas, path);
+                    Utils.DebugUtils.DebugLog("Agent "  + thisAgent.gameObject.name + " reached its destination.");
                 }
             }
         }
+    }
+
+    private void OnDisable()
+    {
+        NPCControllerGlobals.activeNPCControllers--;
+
+        // keep track of how many NPCControllers are active and pathfinding
+        path = this.GetComponent<NavMeshAgent>().path;
     }
 }

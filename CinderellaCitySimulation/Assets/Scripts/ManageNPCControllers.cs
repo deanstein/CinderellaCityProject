@@ -1,15 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-
-using UnityEditor;
+﻿using System.Collections.Generic;
 
 using UnityEngine;
-using UnityEngine.AI;
 
 public class NPCControllerGlobals
 {
     // keep track of how many NPCControllers are active and pathfinding
     public static int activeNPCControllers = 0;
+
+    // keep track of the initial NPC positions, for use in randomly picking from later
+    public static List<Vector3> initialNPCPositionsList = new List<Vector3>();
+    public static Vector3[] initialNPCPositions;
 
     // the maximum step height that NPCs can navigate over
     public static float maxStepHeight = 0.18f;

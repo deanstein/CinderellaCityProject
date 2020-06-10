@@ -10,7 +10,7 @@ public class Utils
     public class DebugUtils
     {
         // print debug messages in the Editor console?
-        static bool printDebugMessages = true;
+        static bool printDebugMessages = false;
 
         public static void DebugLog(string message)
         {
@@ -75,7 +75,7 @@ public class Utils
         }
 
         // get a random point on the scene's current navmesh within some radius from a starting point
-        public static Vector3 GetNearestPointOnNavmesh(Vector3 startingPoint)
+        public static Vector3 GetNearestPointOnNavMesh(Vector3 startingPoint)
         {
             // use a very large radius - we want to find the nearest point anywhere
             float radius = 1000;
@@ -98,7 +98,39 @@ public class Utils
         }
 
         // get a random point on the scene's current navmesh within some radius from a starting point
-        public static Vector3 GetRandomNavMeshPointWithinRadius(Vector3 startingPoint, float radius, bool stayOnLevel)
+        public static Vector3 GetRandomPointOnNavMeshFromPool(Vector3 currentPosition, Vector3[] positionPool, float radius, bool stayOnLevel)
+        {
+            // get a random selection from the pool
+            Vector3 randomPosition = positionPool[Random.Range(0, positionPool.Length)];
+
+            // when picking from the random position pool,
+            // we should try to adhere to the specified radius and stayOnLevel requests
+            // so try several times, before giving up and falling back to a random point
+            int maxTries = 30;
+            for (var i = 0; i < maxTries;  i++)
+            {
+                bool isWithinRadius = GetFastDistance(currentPosition, randomPosition) < radius;
+                bool isOnLevel = Mathf.Abs(currentPosition.y - randomPosition.y) < NPCControllerGlobals.maxStepHeight;
+
+                // test if we meet the specified criteria
+                if (isWithinRadius && isOnLevel)
+                {
+                    // if so, return out of this for loop
+                    return randomPosition;
+                }
+                else
+                {
+                    // get a different random position 
+                    randomPosition = positionPool[Random.Range(0, positionPool.Length)];
+                }
+            }
+
+            // if we get here, we couldn't match the criteria, so use a random point after all
+            return randomPosition;
+        }
+
+        // get a random point on the scene's current navmesh within some radius from a starting point
+        public static Vector3 GetRandomNPoinOnNavMesh(Vector3 startingPoint, float radius, bool stayOnLevel)
         {
             // get a random direction within the radius
             Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * radius;
