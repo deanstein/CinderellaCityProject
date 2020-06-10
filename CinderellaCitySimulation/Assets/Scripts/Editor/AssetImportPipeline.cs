@@ -865,21 +865,21 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         // if the distance between the current position, and the nearest navmesh position
         // is less than the max distance, use the closest point on the navmesh
-        if (Vector3.Distance(NPCObject.transform.position, Utils.GeometryUtils.GetNearestPointOnNavmesh(NPCObject.transform.position)) < NPCControllerGlobals.maxDistanceForClosestPointAdjustment)
+        if (Vector3.Distance(NPCObject.transform.position, Utils.GeometryUtils.GetNearestPointOnNavMesh(NPCObject.transform.position)) < NPCControllerGlobals.maxDistanceForClosestPointAdjustment)
         {
-            NPCObject.transform.position = Utils.GeometryUtils.GetNearestPointOnNavmesh(NPCObject.transform.position);
+            NPCObject.transform.position = Utils.GeometryUtils.GetNearestPointOnNavMesh(NPCObject.transform.position);
         }
         // otherwise, this person is probably floating in space
         // so find a totally random location on the navmesh for them to go
         else
         {
             // try to find a random point on this level, within a huge radius
-            Vector3 randomPoint = Utils.GeometryUtils.GetRandomNavMeshPointWithinRadius(NPCObject.transform.position, 1000, true);
+            Vector3 randomPoint = Utils.GeometryUtils.GetRandomNPoinOnNavMesh(NPCObject.transform.position, 1000, true);
 
             // set the position to the random point only if it's non-zero
             if (randomPoint != Vector3.zero)
             {
-                NPCObject.transform.position = Utils.GeometryUtils.GetRandomNavMeshPointWithinRadius(NPCObject.transform.position, 1000, true);
+                NPCObject.transform.position = Utils.GeometryUtils.GetRandomNPoinOnNavMesh(NPCObject.transform.position, 1000, true);
             }
             else
             {
@@ -987,7 +987,7 @@ public class AssetImportUpdate : AssetPostprocessor {
                         for (var i = 0; i < ProxyGlobals.numberOfFillersToGenerate; i++)
                         {
                             // create a random point on the navmesh
-                            Vector3 randomPoint = Utils.GeometryUtils.GetRandomNavMeshPointWithinRadius(child.transform.localPosition, ProxyGlobals.numberOfFillersToGenerate, true);
+                            Vector3 randomPoint = Utils.GeometryUtils.GetRandomNPoinOnNavMesh(child.transform.localPosition, ProxyGlobals.numberOfFillersToGenerate, true);
 
                             // determine which pool to get people from given the scene name
                             string[] peoplePrefabPoolForCurrentScene = ManageProxyMapping.GetPeoplePrefabPoolBySceneName(SceneManager.GetActiveScene().name);
