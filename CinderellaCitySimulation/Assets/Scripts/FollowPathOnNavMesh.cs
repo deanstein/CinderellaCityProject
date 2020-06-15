@@ -11,9 +11,9 @@ using UnityEngine.AI;
 public class FollowPathOnNavMesh : MonoBehaviour
 {
     public NavMeshAgent thisAgent;
-    public Vector3 destination;
+    public UpdateNPCAnimatorByState thisAnimatorUpdateScript;
+    public Vector3 initialDestination;
     public NavMeshPath path;
-    public float destinationRadius = 20f;
 
     private void OnEnable()
     {
@@ -31,6 +31,9 @@ public class FollowPathOnNavMesh : MonoBehaviour
 
     private void Awake()
     {
+        thisAgent = this.GetComponent<NavMeshAgent>();
+        thisAnimatorUpdateScript = this.GetComponent<UpdateNPCAnimatorByState>();
+
         // record this object's position in the pool so others can reference it later
         NPCControllerGlobals.initialNPCPositionsList.Add(this.transform.position);
     }
@@ -38,22 +41,19 @@ public class FollowPathOnNavMesh : MonoBehaviour
     void Start()
     {
         // if the NPC positions array hasn't been converted yet, convert it
-        if (NPCControllerGlobals.initialNPCPositions == null)
+        if (NPCControllerGlobals.initialNPCPositionsArray == null)
         {
-            NPCControllerGlobals.initialNPCPositions = NPCControllerGlobals.initialNPCPositionsList.ToArray();
+            NPCControllerGlobals.initialNPCPositionsArray = NPCControllerGlobals.initialNPCPositionsList.ToArray();
         }
-
-        // get this nav mesh agent
-        thisAgent = this.GetComponent<NavMeshAgent>();
 
         // instantiate an empty path that it will follow
         path = new NavMeshPath();
 
         // set the destination
-        destination = Utils.GeometryUtils.GetRandomPointOnNavMeshFromPool(this.transform.position, NPCControllerGlobals.initialNPCPositions, destinationRadius, true);
+        initialDestination = Utils.GeometryUtils.GetRandomPointOnNavMeshFromPool(this.transform.position, NPCControllerGlobals.initialNPCPositionsArray, 0, NPCControllerGlobals.maxDestinationDistance, true);
 
         // find a path to the destination
-        bool pathSuccess = NavMesh.CalculatePath(this.gameObject.transform.position, destination, NavMesh.AllAreas, path);
+        bool pathSuccess = NavMesh.CalculatePath(this.gameObject.transform.position, initialDestination, NavMesh.AllAreas, path);
 
         // if a path was created, set this agent to use it
         if (pathSuccess)
@@ -68,21 +68,27 @@ public class FollowPathOnNavMesh : MonoBehaviour
 
     private void Update()
     {
-        if (path != null && !thisAgent.hasPath)
-        {
-            thisAgent.path = path;
-        }
-
         if (!thisAgent.pathPending)
         {
-            if (thisAgent.remainingDistance <= thisAgent.stoppingDistance)
+            float currentVelocity = thisAgent.velocity.magnitude;
+
+            // if this agent's speed gets too low, it's likely colliding badly with others
+            // to prevent a traffic jam, find a different random point from the pool to switch directions
+            if (currentVelocity > 0f && currentVelocity < NPCControllerGlobals.minimumSpeedBeforeRepath)
             {
-                if (!thisAgent.hasPath || thisAgent.velocity.sqrMagnitude == 0f)
-                {
-                    // reached the destination - now set another one
-                    NavMesh.CalculatePath(this.transform.position, Utils.GeometryUtils.GetRandomPointOnNavMeshFromPool(this.transform.position, NPCControllerGlobals.initialNPCPositions, destinationRadius, true), NavMesh.AllAreas, path);
-                    Utils.DebugUtils.DebugLog("Agent "  + thisAgent.gameObject.name + " reached its destination.");
-                }
+                thisAgent.SetDestination(Utils.GeometryUtils.GetRandomPointOnNavMeshFromPool(this.transform.position, NPCControllerGlobals.initialNPCPositionsArray, NPCControllerGlobals.minDiscardDistance, NPCControllerGlobals.maxDiscardDistance, true));
+
+                // optional: visualize the path with a red line in the editor
+                Debug.DrawLine(this.transform.position, thisAgent.destination, Color.red, Time.deltaTime);
+            }
+
+            // if the agent gets within range of the destination, consider it arrived
+            // this prevents the agent from fighting with another for the same point in space
+            else if (thisAgent.remainingDistance <= NPCControllerGlobals.defaultNPCStoppingDistance)
+            {
+                // reached the destination - now set another one
+                thisAgent.SetDestination(Utils.GeometryUtils.GetRandomPointOnNavMeshFromPool(this.transform.position, NPCControllerGlobals.initialNPCPositionsArray, 0, NPCControllerGlobals.maxDestinationDistance, true));
+                Utils.DebugUtils.DebugLog("Agent " + thisAgent.gameObject.name + " reached its destination.");
             }
         }
     }
