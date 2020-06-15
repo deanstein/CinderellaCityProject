@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -8,71 +5,43 @@ using UnityEngine.AI;
 
 public class UpdateNPCAnimatorByState : MonoBehaviour
 {
-    // the navigation mesh agent on this object
+    // this object's agent and animator
     public NavMeshAgent thisAgent;
-
-    // the previous recorded velocity of this navmesh agent
-    public Vector3 lastKnownVelocity = Vector3.zero;
-
-    // determine if we're resuming, and switch to the default controller state
-    public bool isResuming = false;
+    public Animator thisAnimator;
 
     void Awake()
     {
+        // get a random speed for this agent and animator to use
+        float randomSpeed = UnityEngine.Random.Range(NPCControllerGlobals.minWalkingSpeed, NPCControllerGlobals.maxWalkingSpeed);
+
         // get this NPC's nav mesh agent
         thisAgent = this.GetComponent<NavMeshAgent>();
-    }
+        thisAgent.speed = randomSpeed;
 
-    private void OnDisable()
-    {
-        isResuming = true;
+        // get this NPC's animator
+        thisAnimator = this.GetComponent<Animator>();
+        thisAnimator.speed = randomSpeed;
     }
 
     private void Update()
     {
         // if we're just starting, and the navmesh agent hasn't been enabled, set the animator to idle
-        if (lastKnownVelocity.magnitude == 0 || !thisAgent.enabled)
+        if (!thisAgent.enabled)
         {
-            this.GetComponent<Animator>().runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(ManageNPCControllers.GetIdleAnimatorControllerByGender(this.name));
+            thisAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(ManageNPCControllers.GetIdleAnimatorControllerByGender(this.name));
         }
 
-        // if we're resuming, use the default controller, instead of resetting to idle
-        if (isResuming)
-        {
-            this.GetComponent<Animator>().runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(ManageNPCControllers.GetDefaultAnimatorControllerFilePathByName(this.name));
-
-            // set the velocity to the last recorded velocity
-            thisAgent.velocity = lastKnownVelocity;
-
-            // reset the isResuming flag
-            isResuming = false;
-        }
-
-        // otherwise, once the agent is enabled, check the speed to adjust the animator as required
+        // otherwise, when the agent is enabled, match the animation speed with the velocity
         else if (thisAgent.enabled)
         {
-            lastKnownVelocity = thisAgent.velocity;
-
-            // if we've stopped moving, change to an idle controller
-            if (thisAgent.remainingDistance <= thisAgent.stoppingDistance && thisAgent.pathPending)
-            {
-                this.GetComponent<Animator>().runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(ManageNPCControllers.GetIdleAnimatorControllerByGender(this.name));
-            }
             // if we're moving, use this agent's default controller
-            else if (!thisAgent.pathPending)
+            if (!thisAgent.pathPending && thisAgent.velocity.magnitude > 0)
             {
-                this.GetComponent<Animator>().runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(ManageNPCControllers.GetDefaultAnimatorControllerFilePathByName(this.name));
+                thisAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(ManageNPCControllers.GetDefaultAnimatorControllerFilePathByName(this.name));
             }
 
-            // if we're colliding with another agent, set the animation to talking
-            if (thisAgent.velocity.sqrMagnitude <= 0.1f)
-            {
-                this.GetComponent<Animator>().runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(NPCControllerGlobals.animatorControllerFilePathTalking1);
-            }
-            else
-            {
-                this.GetComponent<Animator>().runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(ManageNPCControllers.GetDefaultAnimatorControllerFilePathByName(this.name));
-            }
+            thisAnimator.speed = thisAgent.velocity.magnitude;
+
         }
 
     }

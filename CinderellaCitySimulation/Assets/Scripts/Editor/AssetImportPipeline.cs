@@ -856,9 +856,9 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
         thisAgent.speed = 1.0f;
         thisAgent.angularSpeed = 200f;
-        thisAgent.radius = 0.25f;
+        thisAgent.radius = NPCControllerGlobals.defaultNPCRadius;
         thisAgent.autoTraverseOffMeshLink = false;
-        thisAgent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
+        thisAgent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
         thisAgent.enabled = false;
 
         // ensure the agent is moved to a valid location on the navmesh

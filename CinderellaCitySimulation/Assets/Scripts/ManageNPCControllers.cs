@@ -9,15 +9,34 @@ public class NPCControllerGlobals
 
     // keep track of the initial NPC positions, for use in randomly picking from later
     public static List<Vector3> initialNPCPositionsList = new List<Vector3>();
-    public static Vector3[] initialNPCPositions;
+    public static Vector3[] initialNPCPositionsArray;
+
+    // the agent radius, and also the stopping distance to avoid congestion near destination points
+    public static float defaultNPCRadius = 0.4f;
+    public static float defaultNPCStoppingDistance = defaultNPCRadius * 8;
 
     // the maximum step height that NPCs can navigate over
     public static float maxStepHeight = 0.18f;
 
+    // the minimum agent speed allowed before trying to re-path
+    public static float minimumSpeedBeforeRepath = 0.2f;
+
+    // define the walking speed range
+    public static float minWalkingSpeed = 0.8f;
+    public static float maxWalkingSpeed = 1.0f;
+
+    // the max distance for new NPC destinations
+    public static float maxDestinationDistance = 25f;
+
+    // when NPCs get into a traffic jam, they get set to a "discard" destination, far away
+    // this helps self-correct when areas get too congested
+    public static float minDiscardDistance = 10f;
+    public static float maxDiscardDistance = 40f;
+
     // on import, max disance an NPC can be from a valid navmesh point before it's relocated randomly
     public static float maxDistanceForClosestPointAdjustment = 5f;
 
-    // max distance the NPCController can be from the player to disable itself, and pathfinding logic
+    // max distance the NPCController can be from the player to disable itself, and its pathfinding logic
     public static float maxDistanceBeforeSuspend = 30f;
 
     // the folder path inside Resources to find the NPC Controllers

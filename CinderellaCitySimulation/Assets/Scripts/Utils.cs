@@ -1,16 +1,39 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.AI;
 
+public static class ArrayUtilities
+{
+    // create a subset from a range of indices
+    public static T[] RangeSubset<T>(this T[] array, int startIndex, int length)
+    {
+        T[] subset = new T[length];
+        Array.Copy(array, startIndex, subset, 0, length);
+        return subset;
+    }
+
+    // create a subset from a specific list of indices
+    public static T[] Subset<T>(this T[] array, params int[] indices)
+    {
+        T[] subset = new T[indices.Length];
+        for (int i = 0; i < indices.Length; i++)
+        {
+            subset[i] = array[indices[i]];
+        }
+        return subset;
+    }
+}
+
 public class Utils
 {
     public class DebugUtils
     {
         // print debug messages in the Editor console?
-        static bool printDebugMessages = false;
+        static bool printDebugMessages = true;
 
         public static void DebugLog(string message)
         {
@@ -21,6 +44,7 @@ public class Utils
             }
         }
     }
+
     public class GeometryUtils
     {
         // gets distance between two points, allegedly faster than Unity's built-in distance method
@@ -98,10 +122,10 @@ public class Utils
         }
 
         // get a random point on the scene's current navmesh within some radius from a starting point
-        public static Vector3 GetRandomPointOnNavMeshFromPool(Vector3 currentPosition, Vector3[] positionPool, float radius, bool stayOnLevel)
+        public static Vector3 GetRandomPointOnNavMeshFromPool(Vector3 currentPosition, Vector3[] positionPool, float minDistance, float maxDistance, bool stayOnLevel)
         {
             // get a random selection from the pool
-            Vector3 randomPosition = positionPool[Random.Range(0, positionPool.Length)];
+            Vector3 randomPosition = positionPool[UnityEngine.Random.Range(0, positionPool.Length)];
 
             // when picking from the random position pool,
             // we should try to adhere to the specified radius and stayOnLevel requests
@@ -109,11 +133,12 @@ public class Utils
             int maxTries = 30;
             for (var i = 0; i < maxTries;  i++)
             {
-                bool isWithinRadius = GetFastDistance(currentPosition, randomPosition) < radius;
+                float distance = GetFastDistance(currentPosition, randomPosition);
+                bool isIdealDistance = distance > minDistance && distance < maxDistance;
                 bool isOnLevel = Mathf.Abs(currentPosition.y - randomPosition.y) < NPCControllerGlobals.maxStepHeight;
 
                 // test if we meet the specified criteria
-                if (isWithinRadius && isOnLevel)
+                if (isIdealDistance && isOnLevel)
                 {
                     // if so, return out of this for loop
                     return randomPosition;
@@ -121,11 +146,10 @@ public class Utils
                 else
                 {
                     // get a different random position 
-                    randomPosition = positionPool[Random.Range(0, positionPool.Length)];
+                    randomPosition = positionPool[UnityEngine.Random.Range(0, positionPool.Length)];
                 }
             }
 
-            // if we get here, we couldn't match the criteria, so use a random point after all
             return randomPosition;
         }
 

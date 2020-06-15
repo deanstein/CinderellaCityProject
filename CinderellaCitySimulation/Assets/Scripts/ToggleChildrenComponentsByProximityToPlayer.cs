@@ -10,6 +10,10 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
     // the component types to toggle are passed in from AssetImportPipeline
     public string[] toggleComponentTypes;
 
+    // distribute the large arrays into smaller ones to be evaluated over many frames
+    int numberOfDistributedArrays = 8; // also the number of frames before the entire array is updated
+    int distributedChildrenListLength = 0;
+
     // get the player, its position, and its camera
     GameObject player;
     Vector3 playerPosition;
@@ -22,10 +26,16 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
     List<GameObject> activeChildrenList = new List<GameObject>();
     List<int> childrenNotInFrameCountsList = new List<int>();
 
-    //instantiate arrays for children
+    // instantiate arrays for children
     GameObject[] childrenObjects;
     Vector3[] childrenPositions;
     int[] childrenNotInFrameCounts;
+
+    // instantiate distributed arrays - these are small subsets of the large arrays
+    // to enhance performance by breaking up the potentially huge list of objects over many frames
+    GameObject[] distributedChildrenObjects;
+    Vector3[] distributedChildrenPositions;
+    int[] distributedChildrenNotInFrameCounts;
 
     // the screen-space position of an object in world space
     Vector3 screenSpacePoint;
@@ -90,6 +100,8 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
         childrenObjects = childrenObjectsList.ToArray();
         childrenPositions = childrenPositionsList.ToArray();
         childrenNotInFrameCounts = childrenNotInFrameCountsList.ToArray();
+
+        distributedChildrenListLength = Mathf.RoundToInt(childrenObjects.Length / numberOfDistributedArrays);
     }
 
     private void OnEnable()
@@ -101,58 +113,70 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        // increment the framecount
-        frameCount++;
+        int distributedListIndexStart = frameCount * distributedChildrenListLength;
+        int distributedListIndexEnd = distributedListIndexStart + distributedChildrenListLength;
 
-        // do this expensive check only when we've reached the max amount of frames between checks
-        if (frameCount >= maxFramesBetweenCheck)
+        // update the distributed array subsets based on the current frame
+        // and increment the frame count
+        if (distributedListIndexEnd < childrenObjects.Length - 1)
         {
-            // reset the frame count
+            distributedChildrenObjects = ArrayUtilities.RangeSubset(childrenObjects, distributedListIndexStart, distributedChildrenListLength);
+            distributedChildrenPositions = ArrayUtilities.RangeSubset(childrenPositions, distributedListIndexStart, distributedChildrenListLength);
+            distributedChildrenNotInFrameCounts = ArrayUtilities.RangeSubset(childrenNotInFrameCounts, distributedListIndexStart, distributedChildrenListLength);
+            frameCount++;
+        }
+        // check if we're at the end of the array, and adjust the last index to stay in bounds
+        // and reset the frame count
+        else
+        {
+            distributedChildrenObjects = ArrayUtilities.RangeSubset(childrenObjects, distributedListIndexStart, distributedChildrenListLength - (distributedListIndexEnd - childrenObjects.Length));
+            distributedChildrenPositions = ArrayUtilities.RangeSubset(childrenPositions, distributedListIndexStart, distributedChildrenListLength - (distributedListIndexEnd - childrenPositions.Length));
+            distributedChildrenNotInFrameCounts = ArrayUtilities.RangeSubset(childrenNotInFrameCounts, distributedListIndexStart, distributedChildrenListLength - (distributedListIndexEnd - childrenNotInFrameCounts.Length));
             frameCount = 0;
+        }
 
-            // get the latest player position
-            playerPosition = player.transform.position;
+        // get the latest player position
+        playerPosition = player.transform.position;
 
-            // update every child's position, and check if they are within range
-            for (var i = 0; i < childrenPositions.Length; i++)
+        // update every child's position, and check if they are within range
+        for (var i = 0; i < distributedChildrenPositions.Length; i++)
+        {
+            // update this child's position
+            distributedChildrenPositions[i] = new Vector3(distributedChildrenObjects[i].transform.position.x, distributedChildrenObjects[i].transform.position.y + 1, distributedChildrenObjects[i].transform.position.z);
+
+            // get the screen space position of this object
+            screenSpacePoint = playerCamera.WorldToViewportPoint(distributedChildrenPositions[i]);
+
+            // determine if the child's position is visible to screen space
+            bool isOnScreen = false;
+
+            if (screenSpacePoint.z > -1 && screenSpacePoint.x > -1 && screenSpacePoint.x < 2 && screenSpacePoint.y > -1 && screenSpacePoint.y < 2)
             {
-                // update this child's position
-                childrenPositions[i] = new Vector3(childrenObjects[i].transform.position.x, childrenObjects[i].transform.position.y + 1, childrenObjects[i].transform.position.z);
+                isOnScreen = true;
+            }
 
-                // get the screen space position of this object
-                screenSpacePoint = playerCamera.WorldToViewportPoint(childrenPositions[i]);
-
-                // determine if the child's position is visible to screen space
-                bool isOnScreen = false;
-
-                if (screenSpacePoint.z > -1 && screenSpacePoint.x > -1 && screenSpacePoint.x < 2 && screenSpacePoint.y > -1 && screenSpacePoint.y < 2)
+            // if we're within range, and the object is visible, enable the components
+            if (Utils.GeometryUtils.GetFastDistance(playerPosition, distributedChildrenPositions[i]) < maxDistance && isOnScreen)
+            {
+                // first, ensure we're not tracking this object already
+                if (!activeChildrenList.Contains(distributedChildrenObjects[i]))
                 {
-                    isOnScreen = true;
+                    EnableComponents(distributedChildrenObjects[i]);
+                    activeChildrenList.Add(distributedChildrenObjects[i]);
+                    distributedChildrenNotInFrameCounts[i] = 0;
                 }
+            }
+            // otherwise, disable the components
+            else
+            {
+                distributedChildrenNotInFrameCounts[i]++;
 
-                // if we're within range, and the object is visible, enable the components
-                if (Utils.GeometryUtils.GetFastDistance(playerPosition, childrenPositions[i]) < maxDistance && isOnScreen)
+                // check if this object is being tracked as active, and if it's been out of frame for enough time
+                if (activeChildrenList.Contains(distributedChildrenObjects[i]) && distributedChildrenNotInFrameCounts[i] >= maxNotInFrameCount)
                 {
-                    // first, ensure we're not tracking this object already
-                    if (!activeChildrenList.Contains(childrenObjects[i]))
-                    {
-                        EnableComponents(childrenObjects[i]);
-                        activeChildrenList.Add(childrenObjects[i]);
-                        childrenNotInFrameCounts[i] = 0;
-                    }
-                }
-                // otherwise, disable the components
-                else
-                {
-                    childrenNotInFrameCounts[i]++;
-
-                    // check if this object is being tracked as active, and if it's been out of frame for enough time
-                    if (activeChildrenList.Contains(childrenObjects[i]) && childrenNotInFrameCounts[i] >= maxNotInFrameCount)
-                    {
-                        DisableComponents(childrenObjects[i]);
-                        activeChildrenList.Remove(childrenObjects[i]);
-                        childrenNotInFrameCounts[i] = 0;
-                    }
+                    DisableComponents(distributedChildrenObjects[i]);
+                    activeChildrenList.Remove(distributedChildrenObjects[i]);
+                    distributedChildrenNotInFrameCounts[i] = 0;
                 }
             }
         }
