@@ -76,10 +76,12 @@ public class FollowPathOnNavMesh : MonoBehaviour
             // to prevent a traffic jam, find a different random point from the pool to switch directions
             if (currentVelocity > 0f && currentVelocity < NPCControllerGlobals.minimumSpeedBeforeRepath)
             {
-                thisAgent.SetDestination(Utils.GeometryUtils.GetRandomPointOnNavMeshFromPool(this.transform.position, NPCControllerGlobals.initialNPCPositionsArray, NPCControllerGlobals.minDiscardDistance, NPCControllerGlobals.maxDiscardDistance, true));
+                NavMesh.CalculatePath(this.gameObject.transform.position, Utils.GeometryUtils.GetRandomPointOnNavMeshFromPool(this.transform.position, NPCControllerGlobals.initialNPCPositionsArray, NPCControllerGlobals.minDiscardDistance, NPCControllerGlobals.maxDiscardDistance, true), NavMesh.AllAreas, path);
+
+                thisAgent.SetPath(path);
 
                 // optional: visualize the path with a red line in the editor
-                Debug.DrawLine(this.transform.position, thisAgent.destination, Color.red, Time.deltaTime);
+                //Debug.DrawLine(this.transform.position, thisAgent.destination, Color.red, Time.deltaTime);
             }
 
             // if the agent gets within range of the destination, consider it arrived
@@ -87,7 +89,10 @@ public class FollowPathOnNavMesh : MonoBehaviour
             else if (thisAgent.remainingDistance <= NPCControllerGlobals.defaultNPCStoppingDistance)
             {
                 // reached the destination - now set another one
-                thisAgent.SetDestination(Utils.GeometryUtils.GetRandomPointOnNavMeshFromPool(this.transform.position, NPCControllerGlobals.initialNPCPositionsArray, 0, NPCControllerGlobals.maxDestinationDistance, true));
+                NavMesh.CalculatePath(this.gameObject.transform.position, Utils.GeometryUtils.GetRandomPointOnNavMeshFromPool(this.transform.position, NPCControllerGlobals.initialNPCPositionsArray, 0, NPCControllerGlobals.maxDestinationDistance, true), NavMesh.AllAreas, path);
+
+                thisAgent.SetPath(path);
+
                 Utils.DebugUtils.DebugLog("Agent " + thisAgent.gameObject.name + " reached its destination.");
             }
         }
