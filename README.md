@@ -187,11 +187,13 @@ In scenes with an FPSController and FirstPersonCharacter (60s70s, 80s90s, AltFut
 			- Requires Scripts:
 				- **ManageFPSControllers** (Script Component)
 					- Responsible for keeping track of the current FPSController
-			- **FPSCharacter** (GameObject)
+			- **FirstPersonCharacter** (GameObject)
 				- Unity Standard Asset, Responsible for the player's camera
 				- Requires Scripts:
 					- **ToggleCameraEffectsByInputEvent** (Script Component)
 						- Responsible for watching for keyboard events and toggling scene effects
+			- **FirstPersonAgent** (GameOBject)
+				- Allows the NPCs in the game to avoid colliding with the player, and enables the player to follow a path for "guided tours"
 		- **UILauncher** (GameObject)
 			- Holds scripts for generating UI (as children of the launcher), and for toggling between scenes
 				- Requires Scripts:

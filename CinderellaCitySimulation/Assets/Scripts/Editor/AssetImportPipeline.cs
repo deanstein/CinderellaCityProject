@@ -835,16 +835,37 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
     }
 
-    public static void ConfigureNPCForPathfinding(GameObject NPCObject)
+    public static void ConfigureNPCForPathfinding(GameObject NPCObject, GameObject proxyObject)
     {
-        // add the script to follow a path
-        FollowPathOnNavMesh followPathOnNavMeshScript = NPCObject.AddComponent<FollowPathOnNavMesh>();
-        followPathOnNavMeshScript.enabled = false;
+        // if a proxyObject is passed in, check its name before applying pathfinding logic
+        // these proxyObjects are named in FormIt to indicate unique behaviors or postures
+        // and may be specifically designated to not walk
+        if (proxyObject)
+        {
+            // only add pathfinding logic for walking people
+            if (!proxyObject.name.Contains("talking") && !proxyObject.name.Contains("idle") && !proxyObject.name.Contains("sitting") && !proxyObject.name.Contains("listening"))
+            {
+                // add the script to follow a path
+                FollowPathOnNavMesh followPathOnNavMeshScript = NPCObject.AddComponent<FollowPathOnNavMesh>();
+                followPathOnNavMeshScript.enabled = false;
 
-        // add the script to update the animation based on the speed
-        UpdateNPCAnimatorByState updateAnimatorScript = NPCObject.AddComponent<UpdateNPCAnimatorByState>();
+                // add the script to update the animation based on the speed
+                UpdateNPCAnimatorByState updateAnimatorScript = NPCObject.AddComponent<UpdateNPCAnimatorByState>();
+            }
+        }
+        // otherwise, this is a filler, and it can be configured to find paths 
+        else
+        {
+            // add the script to follow a path
+            FollowPathOnNavMesh followPathOnNavMeshScript = NPCObject.AddComponent<FollowPathOnNavMesh>();
+            followPathOnNavMeshScript.enabled = false;
+
+            // add the script to update the animation based on the speed
+            UpdateNPCAnimatorByState updateAnimatorScript = NPCObject.AddComponent<UpdateNPCAnimatorByState>();
+        }
 
         // add a navigation mesh agent to this person so it can find its way on the navmesh
+        // or act as an obstacle to other agents if this one is idle
         NavMeshAgent thisAgent;
         if (!NPCObject.GetComponent<NavMeshAgent>())
         {
@@ -874,6 +895,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         else
         {
             // try to find a random point on this level, within a huge radius
+            // returns the origin if the random point couldn't be found
             Vector3 randomPoint = Utils.GeometryUtils.GetRandomNPoinOnNavMesh(NPCObject.transform.position, 1000, true);
 
             // set the position to the random point only if it's non-zero
@@ -883,7 +905,8 @@ public class AssetImportUpdate : AssetPostprocessor {
             }
             else
             {
-                // othwerise, this gets moved to the origin and will be culled later
+                // otherwise, the random point was at the origin, so
+                // this NPC gets moved there and will be deleted later
                 NPCObject.transform.position = randomPoint;
             }
         }
@@ -906,11 +929,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             setAnimationFrame(thisAnimator, animationName);
             */
 
-            // anyone not the following gestures will get configured to walk
-            if (!proxyObject.name.Contains("talking") && !proxyObject.name.Contains("listening") && !proxyObject.name.Contains("idle") && !proxyObject.name.Contains("sitting"))
-            {
-                ConfigureNPCForPathfinding(NPCObject);
-            }
+            ConfigureNPCForPathfinding(NPCObject, proxyObject);
         }
 
         // otherwise, this is a random filler person and can be configured to walk
@@ -923,7 +942,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             // TODO: get the initial animation to appear in the editor
 
             // configure the random filler person for pathfinding
-            ConfigureNPCForPathfinding(NPCObject);
+            ConfigureNPCForPathfinding(NPCObject, proxyObject);
         }
     }
 
