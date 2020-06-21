@@ -918,9 +918,13 @@ public class AssetImportUpdate : AssetPostprocessor {
         // if there's a proxy object, check the proxy name for a specific animation to use
         if (proxyObject)
         {
+            // in order to correctly assign gender and name using string searches,
+            // combine the name of the proxy and its replacement NPC object so both sources are covered
+            string combinedName = proxyObject.name + "-" + NPCObject.name;
+
             // set the default animator controller for this person
             Animator thisAnimator = NPCObject.GetComponent<Animator>();
-            thisAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(ManageNPCControllers.GetDefaultAnimatorControllerFilePathByName(proxyObject.name));
+            thisAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(ManageNPCControllers.GetDefaultAnimatorControllerFilePathByName(combinedName));
 
             // TODO: get the initial animation to appear in the editor
             /*
@@ -1003,10 +1007,10 @@ public class AssetImportUpdate : AssetPostprocessor {
                         ConfigureNPCForAnimationAndPathfinding(child.gameObject, instancedPrefab);
 
                         // create additional random filler people around this one
-                        for (var i = 0; i < ProxyGlobals.numberOfFillersToGenerate; i++)
+                        for (var i = 0; i < ManageProxyMapping.GetNPCFillerCountBySceneName(SceneManager.GetActiveScene().name); i++)
                         {
                             // create a random point on the navmesh
-                            Vector3 randomPoint = Utils.GeometryUtils.GetRandomNPoinOnNavMesh(child.transform.localPosition, ProxyGlobals.numberOfFillersToGenerate, true);
+                            Vector3 randomPoint = Utils.GeometryUtils.GetRandomNPoinOnNavMesh(child.transform.localPosition, ProxyGlobals.fillerRadius, true);
 
                             // determine which pool to get people from given the scene name
                             string[] peoplePrefabPoolForCurrentScene = ManageProxyMapping.GetPeoplePrefabPoolBySceneName(SceneManager.GetActiveScene().name);

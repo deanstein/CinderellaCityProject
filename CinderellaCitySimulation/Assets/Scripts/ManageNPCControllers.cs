@@ -42,6 +42,11 @@ public class NPCControllerGlobals
     // the folder path inside Resources to find the NPC Controllers
     public static string animatorControllerFolderPath = "Animator Controllers/";
 
+    // different prefabs from different sources refer to 
+    // male and female in a variety of ways, so capture them here
+    public static List<string> maleDescriptorsList = new List<string> { "male", "_m_", "Man" };
+    public static List<string> femaleDescriptorsList = new List<string> { "female", "_f_", "Girl", "granny" };
+
     // define the available animator controller file paths
     public static string animatorControllerFilePathTalking1 = animatorControllerFolderPath + "talking 1";
 
@@ -70,32 +75,32 @@ public class ManageNPCControllers
                 return  NPCControllerGlobals.animatorControllerFilePathTalking1;
 
             // walking - male or female
-            case string partialName when partialName.Contains("male") && partialName.Contains("walking"):
+            case string partialName when StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.maleDescriptorsList, partialName) && partialName.Contains("walking"):
                 return NPCControllerGlobals.animatorControllerFilePathMaleWalking;
-            case string partialName when partialName.Contains("female") && partialName.Contains("walking"):
+            case string partialName when StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.femaleDescriptorsList, partialName) && partialName.Contains("walking"):
                 return NPCControllerGlobals.animatorControllerFilePathFemaleWalking;
 
             // sitting - male or female
-            case string partialName when partialName.Contains("male") && partialName.Contains("sitting"):
+            case string partialName when StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.maleDescriptorsList, partialName) && partialName.Contains("sitting"):
                 return NPCControllerGlobals.animatorControllerFilePathMaleSitting;
-            case string partialName when partialName.Contains("female") && partialName.Contains("sitting"):
+            case string partialName when StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.femaleDescriptorsList, partialName) && partialName.Contains("sitting"):
                 return NPCControllerGlobals.animatorControllerFilePathFemaleSitting;
 
             // listening - male or female
-            case string partialName when partialName.Contains("male") && partialName.Contains("listening"):
+            case string partialName when StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.maleDescriptorsList, partialName) && partialName.Contains("listening"):
                 return NPCControllerGlobals.animatorControllerFilePathMaleListening;
-            case string partialName when partialName.Contains("female") && partialName.Contains("listening"):
+            case string partialName when StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.femaleDescriptorsList, partialName) && partialName.Contains("listening"):
                 return NPCControllerGlobals.animatorControllerFilePathFemaleListening;
 
             // idle - male or female
-            case string partialName when partialName.Contains("male") && partialName.Contains("idle"):
+            case string partialName when StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.maleDescriptorsList, partialName) && partialName.Contains("idle"):
                 return NPCControllerGlobals.animatorControllerFilePathMaleIdle;
-            case string partialName when partialName.Contains("female") && partialName.Contains("idle"):
+            case string partialName when StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.femaleDescriptorsList, partialName) && partialName.Contains("idle"):
                 return NPCControllerGlobals.animatorControllerFilePathFemaleIdle;
 
-            // if no posture specified, go idle
+            // if no posture specified, default to walking
             default:
-                if (objectName.Contains("female"))
+                if (StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.femaleDescriptorsList, objectName))
                 {
                     return NPCControllerGlobals.animatorControllerFilePathFemaleWalking;
                 }

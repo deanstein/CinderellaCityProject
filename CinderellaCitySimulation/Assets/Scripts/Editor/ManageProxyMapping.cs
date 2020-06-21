@@ -9,10 +9,11 @@ public class ProxyGlobals
     public static float averageProxyHeight = 0;
 
     // the number of random filler people to be generated per imported proxy person
-    public static int numberOfFillersToGenerate = 5;
+    public static int fillerNPCsToGenerate60s70s = 6;
+    public static int fillerNPCsToGenerate80s90s = 4;
 
     // the radius for filler people from the original person's position
-    public static int fillerRadius = 60;
+    public static int fillerRadius = 10;
 
     // the folder path to find people prefabs
     public static string peoplePrefabFolderPath = "Assets/Citizens PRO/People Prefabs";
@@ -93,6 +94,20 @@ public class ProxyGlobals
 
 public class ManageProxyMapping
 {
+    // get the number of fillers to generate based on the scene
+    public static int GetNPCFillerCountBySceneName(string sceneName)
+    {
+        switch (sceneName)
+        {
+            case string name when name.Contains("60s70s"):
+                return ProxyGlobals.fillerNPCsToGenerate60s70s;
+            case string name when name.Contains("80s90s"):
+                return ProxyGlobals.fillerNPCsToGenerate80s90s;
+            default:
+                return 0;
+        }
+    }
+
     // get the proxy pool based on the scene
     public static string[] GetPeoplePrefabPoolBySceneName(string sceneName)
     {
@@ -343,7 +358,7 @@ public class ManageProxyMapping
 
             // give the new prefab the same parent, position, and scale as the proxy
             instancedPrefab.transform.parent = gameObjectToBeReplaced.transform.parent;
-            instancedPrefab.transform.SetPositionAndRotation(gameObjectToBeReplaced.transform.localPosition, gameObjectToBeReplaced.transform.localRotation);
+            instancedPrefab.transform.position = gameObjectToBeReplaced.transform.position;
             instancedPrefab.transform.localScale = gameObjectToBeReplaced.transform.localScale;
             // further scale the new object to match the proxy's height
             Utils.GeometryUtils.ScaleToMatchHeight(instancedPrefab, gameObjectToBeReplaced);
@@ -360,8 +375,9 @@ public class ManageProxyMapping
                 ProxyGlobals.averageProxyHeight = (ProxyGlobals.averageProxyHeight + Utils.GeometryUtils.GetMaxGOBoundingBoxDimension(proxyObject)) / 2;
             }
 
-            // ensure the new prefab rotates about the traditional Z (up) axis to match its proxy 
-            instancedPrefab.transform.localEulerAngles = new Vector3(0, gameObjectToBeReplaced.transform.localEulerAngles.y, 0);
+            // ensure the instanced prefab rotates about the vertical axis
+            // to match the orientation of the object that's being replaced
+            instancedPrefab.transform.eulerAngles = new Vector3(0,  gameObjectToBeReplaced.transform.eulerAngles.y - 270, 0);
 
             // tag this instanced prefab as a delete candidate for the next import
             instancedPrefab.gameObject.tag = proxyReplacementDeleteTag;
