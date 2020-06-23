@@ -24,7 +24,11 @@ public class ToggleObjectsByInputEvent : MonoBehaviour {
         {
             ToggleObjects.ToggleObjectChildrenVisibility(this.gameObject);
         }
-
+        // reset people to starting location
+        if (Input.GetKeyDown("r") && this.name.Contains("people"))
+        {
+            ManageNPCControllers.ResetAllNPCsToOriginalLocation();
+        }
     }
 }
 
