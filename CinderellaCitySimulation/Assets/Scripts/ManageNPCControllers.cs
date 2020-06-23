@@ -5,7 +5,9 @@ using UnityEngine;
 public class NPCControllerGlobals
 {
     // keep track of how many NPCControllers are active and pathfinding
-    public static int activeNPCControllers = 0;
+    public static int activeNPCControllersCount = 0;
+    public static List<GameObject> activeNPCControllersList = new List<GameObject>();
+    public static GameObject[] activeNPCControllersArray;
 
     // keep track of the initial NPC positions, for use in randomly picking from later
     public static List<Vector3> initialNPCPositionsList = new List<Vector3>();
@@ -137,8 +139,17 @@ public class ManageNPCControllers
         }
     }
 
+    // reset all NPCs to their original location
+    public static void ResetAllNPCsToOriginalLocation()
+    {
+        for (var i = 0; i < NPCControllerGlobals.activeNPCControllersArray.Length; i++)
+        {
+            NPCControllerGlobals.activeNPCControllersArray[i].transform.position = NPCControllerGlobals.initialNPCPositionsArray[i];
+        }
+    }
+
     // TODO: get this to work
-    public static void setAnimationFrame(Animator animatorToSet, string animationName)
+    public static void SetAnimationFrame(Animator animatorToSet, string animationName)
     {
         animatorToSet.Play(animationName);
         animatorToSet.Update(Time.deltaTime);

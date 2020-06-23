@@ -886,9 +886,9 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         // if the distance between the current position, and the nearest navmesh position
         // is less than the max distance, use the closest point on the navmesh
-        if (Vector3.Distance(NPCObject.transform.position, Utils.GeometryUtils.GetNearestPointOnNavMesh(NPCObject.transform.position)) < NPCControllerGlobals.maxDistanceForClosestPointAdjustment)
+        if (Vector3.Distance(NPCObject.transform.position, Utils.GeometryUtils.GetNearestPointOnNavMesh(NPCObject.transform.position, 1000)) < NPCControllerGlobals.maxDistanceForClosestPointAdjustment)
         {
-            NPCObject.transform.position = Utils.GeometryUtils.GetNearestPointOnNavMesh(NPCObject.transform.position);
+            NPCObject.transform.position = Utils.GeometryUtils.GetNearestPointOnNavMesh(NPCObject.transform.position, 1000);
         }
         // otherwise, this person is probably floating in space
         // so find a totally random location on the navmesh for them to go
@@ -1026,7 +1026,7 @@ public class AssetImportUpdate : AssetPostprocessor {
                                 if (randomInstancedPrefab)
                                 {
                                     // add this random instanced prefab to the list for tracking
-                                    instancedPrefabs.Add(instancedPrefab);
+                                    instancedPrefabs.Add(randomInstancedPrefab);
 
                                     // feed this into the NPC configurator to indicate there is no proxy to match
                                     GameObject nullProxyObject = null;

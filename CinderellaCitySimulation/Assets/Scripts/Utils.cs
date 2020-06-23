@@ -99,11 +99,8 @@ public class Utils
         }
 
         // get a random point on the scene's current navmesh within some radius from a starting point
-        public static Vector3 GetNearestPointOnNavMesh(Vector3 startingPoint)
+        public static Vector3 GetNearestPointOnNavMesh(Vector3 startingPoint, float radius)
         {
-            // use a very large radius - we want to find the nearest point anywhere
-            float radius = 1000;
-
             // set up the hit and final position
             NavMeshHit hit;
             Vector3 finalPosition = Vector3.zero;
@@ -130,7 +127,7 @@ public class Utils
             // when picking from the random position pool,
             // we should try to adhere to the specified radius and stayOnLevel requests
             // so try several times, before giving up and falling back to a random point
-            int maxTries = 30;
+            int maxTries = 1000;
             for (var i = 0; i < maxTries;  i++)
             {
                 float distance = GetFastDistance(currentPosition, randomPosition);
@@ -145,7 +142,7 @@ public class Utils
                 }
                 else
                 {
-                    // get a different random position 
+                    // get a different random position and try again
                     randomPosition = positionPool[UnityEngine.Random.Range(0, positionPool.Length)];
                 }
             }

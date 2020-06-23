@@ -9,8 +9,9 @@ public class ProxyGlobals
     public static float averageProxyHeight = 0;
 
     // the number of random filler people to be generated per imported proxy person
-    public static int fillerNPCsToGenerate60s70s = 6;
-    public static int fillerNPCsToGenerate80s90s = 4;
+    public static int fillerNPCsToGenerateExperimental = 0;
+    public static int fillerNPCsToGenerate60s70s = 5;
+    public static int fillerNPCsToGenerate80s90s = 3;
 
     // the radius for filler people from the original person's position
     public static int fillerRadius = 10;
@@ -20,23 +21,36 @@ public class ProxyGlobals
 
     // define the pool of people prefabs available to each scene
     public static string[] peoplePrefabPool60s70s = new string[] {
+        // female
         peoplePrefabFolderPath + "/Female/Summer/business02_f_highpoly.prefab",
+        peoplePrefabFolderPath + "/Female/Summer/business03_f_highpoly.prefab",
+        peoplePrefabFolderPath + "/Female/Summer/business05_f_highpoly.prefab",
         peoplePrefabFolderPath + "/Female/Summer/casual01_f_highpoly.prefab",
         peoplePrefabFolderPath + "/Female/Summer/casual04_f_highpoly.prefab",
         peoplePrefabFolderPath + "/Female/Summer/casual08_f_highpoly.prefab",
         peoplePrefabFolderPath + "/Female/Summer/casual09_f_highpoly.prefab",
         peoplePrefabFolderPath + "/Female/Summer/casual10_f_highpoly.prefab",
+        peoplePrefabFolderPath + "/Female/Summer/casual20_f_highpoly.prefab",
         peoplePrefabFolderPath + "/Female/Summer/Girl_11.prefab",
         peoplePrefabFolderPath + "/Female/Summer/Girl_22.prefab",
         peoplePrefabFolderPath + "/Female/Summer/Girl_33.prefab",
+        peoplePrefabFolderPath + "/Female/Summer/Girl_44.prefab",
+        peoplePrefabFolderPath + "/Female/Summer/Girl_66.prefab",
         peoplePrefabFolderPath + "/Female/Summer/granny01.prefab",
-        peoplePrefabFolderPath + "/Female/Winter/casual16_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Winter/casual22_f_highpoly.prefab",
+        peoplePrefabFolderPath + "/Female/Winter/casual17_f_highpoly.prefab",
         peoplePrefabFolderPath + "/Female/Winter/casual25_f_highpoly.prefab",
+        // POC - may be intentionally duplicated here to increase likelihood of being chosen
+        peoplePrefabFolderPath + "/Female/Winter/casual16_f_highpoly.prefab",
+        peoplePrefabFolderPath + "/Female/Winter/casual23_f_highpoly.prefab",
+        peoplePrefabFolderPath + "/Female/Winter/casual23_f_highpoly.prefab",
+        peoplePrefabFolderPath + "/Female/Winter/casual23_f_highpoly.prefab",
 
+        // male
         peoplePrefabFolderPath + "/Male/Summer/business01_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/business05_m_highpoly.prefab",
+        peoplePrefabFolderPath + "/Male/Summer/business02_m_highpoly.prefab",
+        peoplePrefabFolderPath + "/Male/Summer/business04_m_highpoly.prefab",
         peoplePrefabFolderPath + "/Male/Summer/business06_m_highpoly.prefab",
+        peoplePrefabFolderPath + "/Male/Summer/business07_m_highpoly.prefab",
         peoplePrefabFolderPath + "/Male/Summer/casual09_m_highpoly.prefab",
         peoplePrefabFolderPath + "/Male/Summer/casual17_m_highpoly.prefab",
         peoplePrefabFolderPath + "/Male/Summer/casual18_m_highpoly.prefab",
@@ -46,28 +60,45 @@ public class ProxyGlobals
         peoplePrefabFolderPath + "/Male/Summer/Man_33.prefab",
         peoplePrefabFolderPath + "/Male/Summer/Man_44.prefab",
         peoplePrefabFolderPath + "/Male/Summer/Man_55.prefab",
+        peoplePrefabFolderPath + "/Male/Summer/Man_66.prefab",
+        peoplePrefabFolderPath + "/Male/Summer/Man_88.prefab",
         peoplePrefabFolderPath + "/Male/Summer/Man_99.prefab",
+        peoplePrefabFolderPath + "/Male/Winter/casual05_m_highpoly.prefab",
         peoplePrefabFolderPath + "/Male/Winter/casual08_m_highpoly.prefab",
         peoplePrefabFolderPath + "/Male/Winter/casual14_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Winter/casual21_m_highpoly.prefab",
         peoplePrefabFolderPath + "/Male/Winter/casual26_m_highpoly.prefab",
+        // POC - may be intentionally duplicated here to increase likelihood of being chosen
+        peoplePrefabFolderPath + "/Male/Summer/business05_m_highpoly.prefab",
+        peoplePrefabFolderPath + "/Male/Summer/business05_m_highpoly.prefab",
+        peoplePrefabFolderPath + "/Male/Summer/business05_m_highpoly.prefab",
+        peoplePrefabFolderPath + "/Male/Winter/casual21_m_highpoly.prefab",
+        peoplePrefabFolderPath + "/Male/Winter/casual21_m_highpoly.prefab",
+        peoplePrefabFolderPath + "/Male/Winter/casual21_m_highpoly.prefab",
     };
     public static string[] peoplePrefabPool80s90s = new string[] {
-        peoplePrefabFolderPath + "/Female/Summer/business03_f_highpoly.prefab",
+        // female
         peoplePrefabFolderPath + "/Female/Summer/business04_f_highpoly.prefab",
+        peoplePrefabFolderPath + "/Female/Summer/casual05_f_highpoly.prefab",
         peoplePrefabFolderPath + "/Female/Summer/casual11_f_highpoly.prefab",
         peoplePrefabFolderPath + "/Female/Summer/casual12_f_highpoly.prefab",
         peoplePrefabFolderPath + "/Female/Summer/casual14_f_highpoly.prefab",
         peoplePrefabFolderPath + "/Female/Summer/casual15_f_highpoly.prefab",
+        peoplePrefabFolderPath + "/Female/Summer/casual21_f_highpoly.prefab",
+        peoplePrefabFolderPath + "/Female/Summer/Girl_55.prefab",
+        peoplePrefabFolderPath + "/Female/Summer/Girl_77.prefab",
         peoplePrefabFolderPath + "/Female/Summer/granny02.prefab",
         peoplePrefabFolderPath + "/Female/Winter/casual02_f_highpoly.prefab",
         peoplePrefabFolderPath + "/Female/Winter/casual03_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Winter/casual16_f_highpoly.prefab",
         peoplePrefabFolderPath + "/Female/Winter/casual18_f_highpoly.prefab",
         peoplePrefabFolderPath + "/Female/Winter/casual23_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Winter/casual24_f_highpoly.prefab",
         peoplePrefabFolderPath + "/Female/Winter/casual26_f_highpoly.prefab",
+        // POC - may be intentionally duplicated here to increase likelihood of being chosen
+        peoplePrefabFolderPath + "/Female/Winter/casual16_f_highpoly.prefab",
+        peoplePrefabFolderPath + "/Female/Winter/casual24_f_highpoly.prefab",
+        peoplePrefabFolderPath + "/Female/Winter/casual24_f_highpoly.prefab",
+        peoplePrefabFolderPath + "/Female/Winter/casual24_f_highpoly.prefab",
 
+        // male
         peoplePrefabFolderPath + "/Male/Summer/business02_m_highpoly.prefab",
         peoplePrefabFolderPath + "/Male/Summer/business03_m_highpoly.prefab",
         peoplePrefabFolderPath + "/Male/Summer/casual02_m_highpoly.prefab",
@@ -82,13 +113,24 @@ public class ProxyGlobals
         peoplePrefabFolderPath + "/Male/Summer/casual27_m_highpoly.prefab",
         peoplePrefabFolderPath + "/Male/Summer/casual31_m_highpoly.prefab",
         peoplePrefabFolderPath + "/Male/Summer/business07_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Winter/casual05_m_highpoly.prefab",
+        peoplePrefabFolderPath + "/Male/Summer/Man_22.prefab",
+        peoplePrefabFolderPath + "/Male/Summer/Man_111.prefab",
         peoplePrefabFolderPath + "/Male/Winter/casual06_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Winter/casual07_m_highpoly.prefab",
+        peoplePrefabFolderPath + "/Male/Winter/casual10_m_highpoly.prefab",
         peoplePrefabFolderPath + "/Male/Winter/casual11_m_highpoly.prefab",
         peoplePrefabFolderPath + "/Male/Winter/casual16_m_highpoly.prefab",
+        peoplePrefabFolderPath + "/Male/Winter/casual19_m_highpoly.prefab",
         peoplePrefabFolderPath + "/Male/Winter/casual20_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Winter/casual32_m_highpoly.prefab",
+        peoplePrefabFolderPath + "/Male/Winter/casual31_m_highpoly.prefab",
+        // POC - may be intentionally duplicated here to increase likelihood of being chosen
+        peoplePrefabFolderPath + "/Male/Summer/Man_11.prefab",
+        peoplePrefabFolderPath + "/Male/Summer/Man_11.prefab",
+        peoplePrefabFolderPath + "/Male/Summer/Man_11.prefab",
+        peoplePrefabFolderPath + "/Male/Winter/casual07_m_highpoly.prefab",
+        peoplePrefabFolderPath + "/Male/Winter/casual07_m_highpoly.prefab",
+        peoplePrefabFolderPath + "/Male/Summer/business05_m_highpoly.prefab",
+        peoplePrefabFolderPath + "/Male/Summer/business05_m_highpoly.prefab",
+        peoplePrefabFolderPath + "/Male/Summer/business05_m_highpoly.prefab",
     };
 }
 
@@ -99,6 +141,8 @@ public class ManageProxyMapping
     {
         switch (sceneName)
         {
+            case string name when name.Contains("Experimental"):
+                return ProxyGlobals.fillerNPCsToGenerateExperimental;
             case string name when name.Contains("60s70s"):
                 return ProxyGlobals.fillerNPCsToGenerate60s70s;
             case string name when name.Contains("80s90s"):
@@ -130,9 +174,9 @@ public class ManageProxyMapping
         switch (sceneName)
         {
             case string name when name.Contains("60s70s"):
-                return ProxyGlobals.peoplePrefabPool80s90s[Random.Range(0, ProxyGlobals.peoplePrefabPool80s90s.Length)];
-            case string name when name.Contains("80s90s"):
                 return ProxyGlobals.peoplePrefabPool60s70s[Random.Range(0, ProxyGlobals.peoplePrefabPool60s70s.Length)];
+            case string name when name.Contains("80s90s"):
+                return ProxyGlobals.peoplePrefabPool80s90s[Random.Range(0, ProxyGlobals.peoplePrefabPool80s90s.Length)];
             case string name when name.Contains("Experimental"):
                 return ProxyGlobals.peoplePrefabPool60s70s[Random.Range(0, ProxyGlobals.peoplePrefabPool60s70s.Length)];
             default:
@@ -384,7 +428,7 @@ public class ManageProxyMapping
         }
         else
         {
-            Utils.DebugUtils.DebugLog("Failed to instantiate this prefab. Is the path valid?" + replacementObjectPath);
+            Utils.DebugUtils.DebugLog("Failed to instantiate this prefab. Is the path valid? " + replacementObjectPath);
         }
         return instancedPrefab;
     }

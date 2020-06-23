@@ -18,7 +18,7 @@ public class FollowPathOnNavMesh : MonoBehaviour
     private void OnEnable()
     {
         // keep track of how many NPCControllers are active and pathfinding
-        NPCControllerGlobals.activeNPCControllers++;
+        NPCControllerGlobals.activeNPCControllersCount++;
         //Utils.DebugUtils.DebugLog("Active NPCControllers following paths: " + NPCControllerGlobals.activeNPCControllers);
 
         // if a path was previously recorded, use it
@@ -34,16 +34,21 @@ public class FollowPathOnNavMesh : MonoBehaviour
         thisAgent = this.GetComponent<NavMeshAgent>();
         thisAnimatorUpdateScript = this.GetComponent<UpdateNPCAnimatorByState>();
 
-        // record this object's position in the pool so others can reference it later
+        // record this NPC and its position for other scripts to reference later
+        NPCControllerGlobals.activeNPCControllersList.Add(this.gameObject);
         NPCControllerGlobals.initialNPCPositionsList.Add(this.transform.position);
     }
 
     void Start()
     {
-        // if the NPC positions array hasn't been converted yet, convert it
+        // if the NPC arrays haven't been converted yet, convert them
         if (NPCControllerGlobals.initialNPCPositionsArray == null)
         {
             NPCControllerGlobals.initialNPCPositionsArray = NPCControllerGlobals.initialNPCPositionsList.ToArray();
+        }
+        if (NPCControllerGlobals.activeNPCControllersArray == null)
+        {
+            NPCControllerGlobals.activeNPCControllersArray = NPCControllerGlobals.activeNPCControllersList.ToArray();
         }
 
         // instantiate an empty path that it will follow
@@ -100,9 +105,10 @@ public class FollowPathOnNavMesh : MonoBehaviour
 
     private void OnDisable()
     {
-        NPCControllerGlobals.activeNPCControllers--;
-
         // keep track of how many NPCControllers are active and pathfinding
+        NPCControllerGlobals.activeNPCControllersCount--;
+
+        // remember the path so this NPC can resume it when enabled
         path = this.GetComponent<NavMeshAgent>().path;
     }
 }

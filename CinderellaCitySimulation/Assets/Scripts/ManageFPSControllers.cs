@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.AI;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityStandardAssets.Characters.FirstPerson;
 
 public class ManageFPSControllers : MonoBehaviour {
@@ -58,19 +58,35 @@ public class ManageFPSControllers : MonoBehaviour {
 
                 // get the current FPSController
                 GameObject activeFPSController = FPSControllerGlobals.activeFPSController;
+                GameObject activeFirstPersonCharacter = activeFPSController.transform.GetChild(0).gameObject;
+                NavMeshAgent activeAgent = activeFPSController.GetComponent<NavMeshAgent>();
 
                 // need to make sure the camera transform doesn't include a rotation up or down (causes FPSCharacter to tilt)
                 Vector3 currentCameraForward = camera.transform.forward;
                 Vector3 newCameraForward = new Vector3(currentCameraForward.x, 0, currentCameraForward.z);
 
-                // match the FPSController's position and rotation to the camera
-                activeFPSController.transform.SetPositionAndRotation(camera.transform.position, Quaternion.LookRotation(newCameraForward, Vector3.up));
+                // get the nearest point from the camera to the nav mesh
+                // this ensures the FPSController will be standing on the floor, not floating
+                Vector3 nearestPointToCameraOnNavMesh = Utils.GeometryUtils.GetNearestPointOnNavMesh(camera.transform.position, 5);
+                Vector3 adjustedFPSLocationAboveNavMesh = new Vector3(nearestPointToCameraOnNavMesh.x, nearestPointToCameraOnNavMesh.y + ((activeAgent.height / 2) * activeFPSController.transform.localScale.y), nearestPointToCameraOnNavMesh.z);
 
-                // match the CharacterController's camera separately
-                activeFPSController.transform.GetChild(0).GetComponent<Camera>().transform.forward = currentCameraForward;
+                // disable the nav mesh agent temporarily to prevent positioning issues
+                activeAgent.enabled = false;
+
+                // match the FPSController's position and rotation to the camera
+                activeFPSController.transform.SetPositionAndRotation(adjustedFPSLocationAboveNavMesh, Quaternion.LookRotation(newCameraForward, Vector3.up));
+
+                // set the FirstPersonCharacter's camera forward direction
+                activeFirstPersonCharacter.GetComponent<Camera>().transform.forward = currentCameraForward;
+
+                // set the FirstPersonCharacter height to the camera height
+                activeFirstPersonCharacter.transform.position = new Vector3(activeFirstPersonCharacter.transform.position.x, camera.transform.position.y, activeFirstPersonCharacter.transform.position.z);
 
                 // reset the FPSController mouse to avoid incorrect rotation due to interference
                 activeFPSController.transform.GetComponent<FirstPersonController>().MouseReset();
+
+                // enable the agent again
+                activeAgent.enabled = true;
             }
         }
     }
@@ -80,15 +96,28 @@ public class ManageFPSControllers : MonoBehaviour {
     {
         // get the current FPSController
         GameObject activeFPSController = FPSControllerGlobals.activeFPSController;
+        GameObject activeFirstPersonCharacter = activeFPSController.transform.GetChild(0).gameObject;
+        NavMeshAgent activeAgent = activeFPSController.GetComponent<NavMeshAgent>();
+
+        GameObject firstPersonCharacterToMatch = FPSControllerTransformToMatch.transform.GetChild(0).gameObject;
+
+        // disable the nav mesh agent temporarily to prevent positioning issues
+        activeAgent.enabled = false;
 
         // match the FPSController's position and rotation to the referring controller's position and rotation
         activeFPSController.transform.SetPositionAndRotation(FPSControllerTransformToMatch.position, FPSControllerTransformToMatch.rotation);
 
-        // match the CharacterController's camera separately
-        activeFPSController.transform.GetChild(0).GetComponent<Camera>().transform.forward = FPSControllerTransformToMatch.transform.GetChild(0).gameObject.GetComponent<Camera>().transform.forward;
+        // set the FirstPersonCharacter's camera forward direction
+        activeFirstPersonCharacter.GetComponent<Camera>().transform.forward = firstPersonCharacterToMatch.GetComponent<Camera>().transform.forward;
 
         // reset the FPSController mouse to avoid incorrect rotation due to interference
         activeFPSController.transform.GetComponent<FirstPersonController>().MouseReset();
+
+        // set the FirstPersonCharacter height to the camera height
+        activeFirstPersonCharacter.transform.position = new Vector3(activeFirstPersonCharacter.transform.position.x, firstPersonCharacterToMatch.transform.position.y, activeFirstPersonCharacter.transform.position.z);
+
+        // enable the agent again
+        activeAgent.enabled = true;
     }
 
     // enables the mouse lock on all FPSControllers
