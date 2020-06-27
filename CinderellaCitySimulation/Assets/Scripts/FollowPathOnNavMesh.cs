@@ -10,10 +10,60 @@ using UnityEngine.AI;
 
 public class FollowPathOnNavMesh : MonoBehaviour
 {
+    // agent, destination, and path
     public NavMeshAgent thisAgent;
     public UpdateNPCAnimatorByState thisAnimatorUpdateScript;
     public Vector3 initialDestination;
     public NavMeshPath path;
+
+    // variables related to the test for whether the NPC is on a collision course with the player
+    bool doCheckIsNPCApproachingPlayer = true;
+    int numberOfFramesApproachingPlayer = 0;
+    int maxNumberOfFramesApproachingPlayer = 45;
+    float dotProductThresholdFar = -0.96f;
+    float dotProductThresholdClose = -0.93f;
+    float maxDistanceForFarCheck = 7.0f;
+    float maxDistanceForCloseCheck = 2.0f;
+
+    // returns true if the NPC on a collision course with the player
+    private bool GetIsNPCApproachingPlayer(GameObject NPCObject, GameObject FPSController)
+    {
+        // get the NPC direction and compare it to the vector between the NPC and player
+        Vector3 NPCForwardVector = (NPCObject.transform.forward).normalized;
+        Vector3 NPCToFPSVector = (NPCObject.transform.position - FPSController.transform.position).normalized;
+        Vector3 FPSForwardVector = FPSController.transform.forward.normalized;
+
+        // use the dot product to determine how close the two vectors are
+        // or how aligned the NPC is to the player
+        float dotProductPosition = Vector3.Dot(NPCForwardVector, NPCToFPSVector);
+        float dotProductAlignment = Vector3.Dot(NPCForwardVector, FPSForwardVector);
+
+        // distance between this object and the player
+        float distanceFromNPCToPlayer = Utils.GeometryUtils.GetFastDistance(NPCObject.transform.position, FPSController.transform.position);
+
+        // if the NPC object is looking at, and heading towards, the player
+        // or if the NPC is very close to, and mostly looking at, the player
+        // start counting the number of frames to determine if this NPC will collide with the player
+        if ((dotProductPosition < dotProductThresholdFar && dotProductAlignment < dotProductThresholdFar && distanceFromNPCToPlayer < maxDistanceForFarCheck && thisAgent.velocity.magnitude > 0) || (dotProductAlignment < dotProductThresholdClose && distanceFromNPCToPlayer < maxDistanceForCloseCheck))
+        {
+            numberOfFramesApproachingPlayer++;
+            if (numberOfFramesApproachingPlayer >= maxNumberOfFramesApproachingPlayer)
+            {
+                numberOfFramesApproachingPlayer = 0;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        // otherwise, the NPC is not on a collision course with the player
+        else
+        {
+            numberOfFramesApproachingPlayer = 0;
+            return false;
+        }
+    }
 
     private void OnEnable()
     {
@@ -76,6 +126,19 @@ public class FollowPathOnNavMesh : MonoBehaviour
         if (!thisAgent.pathPending)
         {
             float currentVelocity = thisAgent.velocity.magnitude;
+
+            // optionally check if the NPC is on a collision course with the player and adjust
+            if (doCheckIsNPCApproachingPlayer)
+            {
+                // if this NPC appears to be on a collision course with the player,
+                // get a different destination so the NPC doesn't continue walking into the player
+                if (GetIsNPCApproachingPlayer(this.gameObject, ManageFPSControllers.FPSControllerGlobals.activeFPSController))
+                {
+                    NavMesh.CalculatePath(this.gameObject.transform.position, Utils.GeometryUtils.GetRandomPointOnNavMeshFromPool(this.transform.position, NPCControllerGlobals.initialNPCPositionsArray, NPCControllerGlobals.minDiscardDistance, NPCControllerGlobals.maxDiscardDistance, true), NavMesh.AllAreas, path);
+
+                    thisAgent.SetPath(path);
+                }
+            }
 
             // if this agent's speed gets too low, it's likely colliding badly with others
             // to prevent a traffic jam, find a different random point from the pool to switch directions
