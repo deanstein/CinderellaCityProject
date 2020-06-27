@@ -11,7 +11,7 @@ public class ProxyGlobals
     // the number of random filler people to be generated per imported proxy person
     public static int fillerNPCsToGenerateExperimental = 0;
     public static int fillerNPCsToGenerate60s70s = 5;
-    public static int fillerNPCsToGenerate80s90s = 3;
+    public static int fillerNPCsToGenerate80s90s = 4;
 
     // the radius for filler people from the original person's position
     public static int fillerRadius = 10;
@@ -43,7 +43,6 @@ public class ProxyGlobals
         peoplePrefabFolderPath + "/Female/Winter/casual16_f_highpoly.prefab",
         peoplePrefabFolderPath + "/Female/Winter/casual23_f_highpoly.prefab",
         peoplePrefabFolderPath + "/Female/Winter/casual23_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Winter/casual23_f_highpoly.prefab",
 
         // male
         peoplePrefabFolderPath + "/Male/Summer/business01_m_highpoly.prefab",
@@ -70,8 +69,6 @@ public class ProxyGlobals
         // POC - may be intentionally duplicated here to increase likelihood of being chosen
         peoplePrefabFolderPath + "/Male/Summer/business05_m_highpoly.prefab",
         peoplePrefabFolderPath + "/Male/Summer/business05_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/business05_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Winter/casual21_m_highpoly.prefab",
         peoplePrefabFolderPath + "/Male/Winter/casual21_m_highpoly.prefab",
         peoplePrefabFolderPath + "/Male/Winter/casual21_m_highpoly.prefab",
     };
@@ -94,7 +91,6 @@ public class ProxyGlobals
         peoplePrefabFolderPath + "/Female/Winter/casual26_f_highpoly.prefab",
         // POC - may be intentionally duplicated here to increase likelihood of being chosen
         peoplePrefabFolderPath + "/Female/Winter/casual16_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Winter/casual24_f_highpoly.prefab",
         peoplePrefabFolderPath + "/Female/Winter/casual24_f_highpoly.prefab",
         peoplePrefabFolderPath + "/Female/Winter/casual24_f_highpoly.prefab",
 
@@ -125,10 +121,8 @@ public class ProxyGlobals
         // POC - may be intentionally duplicated here to increase likelihood of being chosen
         peoplePrefabFolderPath + "/Male/Summer/Man_11.prefab",
         peoplePrefabFolderPath + "/Male/Summer/Man_11.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/Man_11.prefab",
         peoplePrefabFolderPath + "/Male/Winter/casual07_m_highpoly.prefab",
         peoplePrefabFolderPath + "/Male/Winter/casual07_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/business05_m_highpoly.prefab",
         peoplePrefabFolderPath + "/Male/Summer/business05_m_highpoly.prefab",
         peoplePrefabFolderPath + "/Male/Summer/business05_m_highpoly.prefab",
     };
