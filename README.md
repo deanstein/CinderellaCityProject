@@ -1,5 +1,5 @@
 # The Cinderella City Project
-The Cinderella City Project is dedicated to digitally rebuilding a historic shopping center for a virtual retail history experience. The real Cinderella City Mall existed in Englewood, Colorado from 1968 to 1998.
+The Cinderella City Project is an effort to digitally rebuild a historic shopping center for a virtual history experience. The real Cinderella City Mall existed in Englewood, Colorado from 1968 to 1998.
 
 - [Read about the project and donate on Ko-Fi](https://www.ko-fi.com/cinderellacityproject)
 - [Check out photos and videos on Instagram](https://instagram.com/cinderellacityproject)
@@ -12,20 +12,22 @@ Modeled in Autodesk FormIt, and brought to life in Unity, the simulation illustr
 
 The simulation includes details like an accurate representation of the architectural character and signage of the shopping mall, as well as other immersive elements like music, historical photographs, interactive people, and recorded verbal memories.
 
+In addition, the simulation will include an "Alternate Future" interactive exhibit showing how the shopping center could have been adaptively reused in 1998, rather than almost completely demolished.
+
 ## Unity Project Structure
 
-The Cinderella City Simulation is a Unity project, and has a specific organizational structure to enable automation of some elements, or to minimize effort when manual (one-time setup) steps are required.
+The Cinderella City Simulation is a Unity project, requiring a specific folder structure to enable automation of some elements, or to minimize effort when manual (one-time setup) steps are required.
 
 ### FormIt Model + FBX Assets
 
-The Cinderella City Mall model is built in FormIt, and exported in pieces as FBX files.
+The Cinderella City Mall model is built in Autodesk FormIt, and exported in pieces as FBX files.
 
-There will be three versions of Cinderella City Mall in FormIt: 
+Eventually, this project will feature three versions of Cinderella City Mall, built in FormIt and experienced in Unity:
 - 1960s/1970s
 - 1980s/1990s
 - Alternate Future
 
-Each version gets FBX files exported to the Assets folder in Unity, with a subfolder indicating the time period or era: **Assets/FBX/60s70s/**
+Each version requires FBX files exported to the Assets folder in Unity, with a subfolder indicating the time period or era: **Assets/FBX/60s70s/**
 
 Each FBX file needs to be stored in a folder with a matching name, which allows the AssetImportPipeline to manage textures and materials separately for each file. A few examples:
 - Assets/FBX/60s70s/mall-doors-windows-interior/mall-doors-windows-interior.fbx
@@ -114,15 +116,15 @@ To automate the import process of importing various file types, and to clean up 
 
 **It is critical that the current scene open in the Editor is the scene intended as a destination for files updated in the Assets folder.**
 
-- Any files intended for import need to be whitelisted, so only the ones we explicitly care about get sent through the AssetImportPipeline
-- Whitelisted FBX files will be automatically placed in the game scene, if they aren't there already, using a global scale defined by us, and global positioning as defined in the FBX file
-- Whitelisted FBX files will extract all textures and materials to subfolders inside the current folder, and will delete existing textures and materials inside the current scene
+- Any files intended for processing by the pipeline need to be allowlisted, so only the ones the project is set to configure will be sent through the AssetImportPipeline
+- Allowlisted FBX files will be automatically placed in the game scene, if they aren't there already, using a global scale defined by us, and global positioning as defined in the FBX file
+- Allowlisted FBX files will extract all textures and materials to subfolders inside the current folder, and will delete existing textures and materials inside the current scene
 - Whitelisted FBX files with "proxy" in their name will automatically get their proxy objects from FormIt replaced with real objects from Unity (for example, trees, people, and cameras)
-- Whitelisted FBX files with "speaker" in their name will automatically get audio emitters, doppler effects, and custom behavior script components to simulate the effect of mall speakers (also used for global sounds like background noise and chatter)
-- Whitelisted audio files get imported with certain settings, so they sound like they are coming from mall speakers
+- Allowlisted FBX files with "speaker" in their name will automatically get audio emitters, doppler effects, and custom behavior script components to simulate the effect of mall speakers (also used for global sounds like background noise and chatter)
+- Allowlisted audio files get imported with certain settings, so they sound like they are coming from mall speakers
 - All images in the "UI" folder get imported as sprites
 
-### Scene + GameObject Hierarchy (one-time setup)
+### Scene Hierarchy
 Each scene needs to have one "Container" object that contains all objects in the Scene. This is crucial to be able to toggle all Scene objects on/off.
 
 Scene structure example:
@@ -135,77 +137,110 @@ Scene structure example:
 		- Geometry group 2 (GameObject)
 		- Geometry group ... (GameObject)
 
-### Manually-Applied Script Components (one-time setup)
-AssetImportPipeline automatically adds scriptable components to GameObjects that are imported from FBX (speakers, people...), but all Scenes must also have manually-generated GameObjects and/or scripts present to enable certain behaviors and communication between Scenes.
+### Scene Configurations
+All Scenes require a bit of manual setup to enable certain behaviors and communication, in addition to the automatic import that AssetImportPipeline provides.
 
-The following Scenes require manually-generated GameObjects and Scriptable Components as outlined below (one-time setup only):
+The following Scenes are required, and need to be organized as follows:
 
-#### Asynchronous Scene Loading (Affects scenes: LoadingScreen)
+#### Asynchronous Scene Loading (Includes scenes: LoadingScreen)
 The LoadingScreen is responsible for asynchronously loading all required Scenes in the game, including the 3D geometric and 2D UI scenes, so that switching between Scenes is seamless.
 
- - LoadingScreen (Scene)
- 	- LoadingScreenContainer (GameObject)
+ - **LoadingScreen** (Scene)
+ 	- **LoadingScreenContainer** (GameObject)
 		- **LoadingScreenLauncher** (GameObject)
 			- Holds scripts for generating UI (as children of the launcher), and for toggling between scenes
 			- Requires Scripts:
-				- **CreateScreenSpaceUILayoutByName** (Script Component)
+				- *CreateScreenSpaceUILayoutByName* (Script Component)
 					- Responsible for identifying which UI components to build based on the Scene name
-				- **LoadAllScenesAsync** (Script Component)
+				- *LoadAllScenesAsync* (Script Component)
 					- Responsible for asynchronously loading all specified scenes
+	- **Occlusion Area** (GameObject)
+		- Used for occlusion culling in all first-person scenes
 
-#### UI + Menu Scenes (Affects scenes: MainMenu, PauseMenu)
+#### UI + Menu Scenes (Includes scenes: MainMenu, PauseMenu)
 In scenes that exclusively generate and display UI elements, we need to add custom script components to some GameObjects to control behaviors related to UI:
 
- - MainMenu (Scene)
- 	- MainMenuContainer (GameObject)
+ - **MainMenu** (Scene)
+ 	- **MainMenuContainer** (GameObject)
 	 	- **Sun** (GameObject) (PauseMenu only)
 		 	- Used for matching the Sun settings of other scenes, for the purposes of accurate inactive scene screenshots
 			 - Requires Scripts:
-			 	- **ManageSunSettings** (ScriptComponent)
+			 	- *ManageSunSettings* (ScriptComponent)
 				 	- Responsible for collecting Sun settings for FPSController scenes, and applying them to PauseMenu for accurate inactive screenshots
 		- **MainMenuLauncher** (GameObject)
 			- Holds scripts for generating UI (as children of the launcher), and for toggling between scenes
 			- Requires Scripts:
-				- **CreateScreenSpaceUILayoutByName** (Script Component)
+				- *CreateScreenSpaceUILayoutByName* (Script Component)
 					- Responsible for identifying which UI components to build based on the Scene name
-				- **ToggleSceneAndUIByInputEvent** (Script Component)
+				- *ToggleSceneAndUIByInputEvent* (Script Component)
 					- Responsible for responding to input events and displaying scenes and UI
 
-#### First-Person Scenes (Affects scenes: 60s70s, 80s90s, AltFuture)
+#### First-Person Scenes (Includes scenes: 60s70s, 80s90s, AltFuture)
 In scenes with an FPSController and FirstPersonCharacter (60s70s, 80s90s, AltFuture), we need to add custom script components to some GameObjects to control behaviors related to UI and the FPSController. Note that the FPSController needs to be renamed with a prefix of the era it's in.
 
- - 60s70s (Scene)
- 	- 60s70sContainer (GameObject)
+ - **60s70s** (Scene)
+ 	- **60s70sContainer** (GameObject)
 		- **Sun** (GameObject)
 			 - Requires Scripts:
-			 	- **ManageSunSettings** (ScriptComponent)
+			 	- *ManageSunSettings.cs* (ScriptComponent)
 				 	- Responsible for collecting Sun settings for FPSController scenes, and applying them to PauseMenu for accurate inactive screenshots
 		- **60s70sFPSController** (GameObject)
 			- Responsible for the player's movement in space, derived from the Unity standard asset, but modified
 			- Requires Specific Name: '(EraName)FPSController'
 			- Requires Tags: Player
 			- Requires Scripts:
-				- **ManageFPSControllers** (Script Component)
-					- Responsible for keeping track of the current FPSController
+				- *CharacterController* (Unity Component)
+				- *ManageFPSControllers* (Script Component)
+					- Tracks and controls FPSControllers across Scenes
 			- **FirstPersonCharacter** (GameObject)
-				- Unity Standard Asset, Responsible for the player's camera
+				- *AudioListener* (Unity Component)
+				- *Post Process Layer + Post Process Volume* (Unity Component)
+					- Overlay the camera with screen-based color and brightness effects
+				- *Camera* (Camera Component)
+					- The player's eye height, view angle, and head orientation
 				- Requires Scripts:
-					- **ToggleCameraEffectsByInputEvent** (Script Component)
+					- *ToggleCameraEffectsByInputEvent.cs* (Script Component)
 						- Responsible for watching for keyboard events and toggling scene effects
 			- **FirstPersonAgent** (GameOBject)
-				- Allows the NPCs in the game to avoid colliding with the player, and enables the player to follow a path for "guided tours"
+				- *Agent* (Nav Mesh Agent)
+					- Allows the NPCs in the game to avoid colliding with the player, and enables the player to follow a path for "guided tours"
+				- Requires a Navigation Mesh to be present in the scene
 		- **UILauncher** (GameObject)
 			- Holds scripts for generating UI (as children of the launcher), and for toggling between scenes
 				- Requires Scripts:
-					- **CreateScreenSpaceUILayoutByName** (Script Component)
+					- *CreateScreenSpaceUILayoutByName* (Script Component)
 						- Responsible for creating the Heads Up Display layout when in-game
-					- **ToggleSceneAndUIByInputEvent** (Script Component)
+					- **oggleSceneAndUIByInputEvent* (Script Component)
 						- Responsible for watching for keyboard events and toggling between Scenes (including menus)
 		- **CubeMapRenderPosition** (GameObject)
 			- Represents a position in space from which to execute CubeMap updates, for use in glassy reflections
 
+-**Navigation Mesh**
+
+First-person scenes with NPCs require the setup and baking of a Navigation Mesh for each scene, to allow the NPCs to find destinations and follow paths.
+
+Each scene requires its own navigation mesh to be baked, and these meshes should be re-baked when scene geometry changes in a way that would affect navigation abilities.
+
+- Open the scene where the navigation mesh needs to be updated
+- Switch to the Navigation panel (Window > AI > Navigation)
+- Bake the nav mesh
+
+**Occlusion Culling**
+
+First-person scenes require the setup and baking of occlusion culling data to maintain high performance while navigating around the large, detailed mall.
+
+Because the Cinderella City Project uses multiple scenes opened additively, the occlusion culling data must be baked with all scenes open. To bake occlusion properly for all scenes:
 
 
+- Open the Loading Screen scene
+- Additively open the rest of the scenes:
+	- Main Menu
+	- Pause Menu
+	- 60s70s
+	- 80s90s
+	- AltFuture
+- Go to the Occlusion Culling panel (Window > Rendering > Occlusion Culling) and bake the Occlusion Culling data with all scenes open
+- Occlusion culling data will be stored in the Loading Screen scene, and can only be used when launching scenes from the Loading Screen
 
 
 
