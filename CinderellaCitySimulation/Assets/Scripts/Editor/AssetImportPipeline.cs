@@ -632,7 +632,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             //
 
             // all LIGHTs get their color and texture set as emission color/texture
-            if (dependencyPathString.Contains("LIGHT"))
+            if (dependencyPathString.Contains("LIGHT - "))
             {
                 SetStandardMaterialEmission(dependencyPathString);
             }
@@ -649,6 +649,26 @@ public class AssetImportUpdate : AssetPostprocessor {
             if (dependencyPathString.Contains("wayfinding directory"))
             {
                 SetCustomMaterialEmissionIntensity(dependencyPathString, 1.0F);
+            }
+
+            if (dependencyPathString.Contains("blue mall columns"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, 2.5F);
+            }
+
+            if (dependencyPathString.Contains("blue mall ceiling"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, 2.25F);
+            }
+
+            if (dependencyPathString.Contains("blue mall cove"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, 2.25F);
+            }
+
+            if (dependencyPathString.Contains("blue mall fountain planter intense"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, 3.25F);
             }
 
             if (dependencyPathString.Contains("fluorescent panel"))
@@ -737,13 +757,18 @@ public class AssetImportUpdate : AssetPostprocessor {
 
             if (dependencyPathString.Contains("drywall"))
             {
-                SetMaterialSmoothness(dependencyPathString, 0.05F);
+                SetMaterialSmoothness(dependencyPathString, 0.02F);
             }
 
             if (dependencyPathString.Contains("glass")
                 || dependencyPathString.Contains("mirror"))
             {
                 SetMaterialSmoothness(dependencyPathString, 1.0F);
+            }
+
+            if (dependencyPathString.Contains("glossy"))
+            {
+                SetMaterialSmoothness(dependencyPathString, 0.8F);
             }
 
             if (dependencyPathString.Contains("metal") && dependencyPathString.Contains(".mat"))
@@ -1474,6 +1499,25 @@ public class AssetImportUpdate : AssetPostprocessor {
 
             // post-processor option flags
             doSetStatic = true;
+            doSetMaterialEmission = false;
+            doSetMaterialSmoothnessMetallic = true;
+            doInstantiateProxyReplacements = false;
+            doHideProxyObjects = false;
+            doConfigureNavMesh = false;
+        }
+
+        if (assetFilePath.Contains("mall-water.fbx"))
+        {
+            // pre-processor option flags
+            doSetGlobalScale = true; // always true
+            doInstantiateAndPlaceInCurrentScene = true;
+            doSetColliderActive = true;
+            doSetUVActiveAndConfigure = false;
+            doDeleteReimportMaterialsTextures = true;
+            doAddBehaviorComponents = false;
+
+            // post-processor option flags
+            doSetStatic = false;
             doSetMaterialEmission = false;
             doSetMaterialSmoothnessMetallic = true;
             doInstantiateProxyReplacements = false;
