@@ -16,10 +16,10 @@ public class ToggleSceneAndUIByInputEvent : MonoBehaviour {
 
         // time travel requested - previous time period
         if (Input.GetKeyDown("q") &&
-            StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNames, SceneManager.GetActiveScene().name))
+            StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name))
         {
             // get the previous time period scene name
-            string previousTimePeriodSceneName = ManageAvailableScenes.GetNextTimePeriodSceneName("previous");
+            string previousTimePeriodSceneName = ManageScenes.GetNextTimePeriodSceneName("previous");
 
             // toggle to the previous scene with a camera effect transition
             StartCoroutine(ToggleSceneAndUI.ToggleFromSceneToSceneWithTransition(SceneManager.GetActiveScene().name, previousTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform,
@@ -28,10 +28,10 @@ public class ToggleSceneAndUIByInputEvent : MonoBehaviour {
 
         // time travel requested - next time period
         if (Input.GetKeyDown("e") &&
-            StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNames, SceneManager.GetActiveScene().name))
+            StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name))
         {
             // get the next time period scene name
-            string nextTimePeriodSceneName = ManageAvailableScenes.GetNextTimePeriodSceneName("next");
+            string nextTimePeriodSceneName = ManageScenes.GetNextTimePeriodSceneName("next");
 
             // then toggle to the next scene with a camera effect transition
             StartCoroutine(ToggleSceneAndUI.ToggleFromSceneToSceneWithTransition(SceneManager.GetActiveScene().name, nextTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform, ManageCameraActions.CameraActionGlobals.activeCameraHost, "FlashBlack", 0.2f));
@@ -42,7 +42,7 @@ public class ToggleSceneAndUIByInputEvent : MonoBehaviour {
         // main menu
         // only accessible from time period scenes
         if (Input.GetKeyDown("m") &&
-            StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNames, SceneManager.GetActiveScene().name))
+            StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name))
         {
             ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "MainMenu");
         }
@@ -50,7 +50,7 @@ public class ToggleSceneAndUIByInputEvent : MonoBehaviour {
         // pause menu
         // only accessible from time period scenes
         if (Input.GetKeyDown(KeyCode.Escape) &&
-            StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNames, SceneManager.GetActiveScene().name))
+            StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name))
         {
             // before pausing, we need to capture a screenshot from the active FPSController
             // then update the pause menu background image
@@ -74,7 +74,7 @@ public class ToggleSceneAndUIByInputEvent : MonoBehaviour {
 
         // optionally display or hide the under construction label
         if (Input.GetKeyDown(KeyCode.Slash) &&
-            StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNames, SceneManager.GetActiveScene().name))
+            StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name))
         {
             if (UIGlobals.underConstructionLabelContainer.activeSelf)
             {
