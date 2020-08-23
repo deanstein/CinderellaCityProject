@@ -153,7 +153,7 @@ public class ManageFPSControllers : MonoBehaviour {
     private void OnDisable()
     {
         // unlock the cursor only when the upcoming scene is a menu (not a time period scene)
-        if (SceneGlobals.availableTimePeriodSceneNames.IndexOf(SceneGlobals.upcomingScene) == -1)
+        if (SceneGlobals.availableTimePeriodSceneNamesList.IndexOf(SceneGlobals.upcomingScene) == -1)
         {
             FPSControllerGlobals.activeFPSController.transform.GetComponent<FirstPersonController>().m_MouseLook.SetCursorLock(false);
         }

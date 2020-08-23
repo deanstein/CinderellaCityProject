@@ -43,6 +43,9 @@ The following scripts are critical to the behavior and processes underpinning th
 		- Responsible for applying settings and modifications to imported files (FBX models, audio files, images/graphics...)
 		- Runs automatically when a whitelisted file type is imported (or re-imported) in the Unity Editor
 		- Outlined in more detail below
+	- CCPMenuActions.cs
+		- Creates a Cinderella City Project menu in the Unity menu bar
+		- Offers a series of one-click actions that automate several tedious workflows, like updating Nav Meshes and Occlusion Culling for all Scenes.
 	- CopyLightingSettings.cs
 		- Adds menu items in Window -> Rendering, which allow for copying the Lighting Settings from one Scene, and pasting them into another Scene
 		- Sourced from a 3rd party on the Unity forums (attribution in code)
@@ -70,8 +73,6 @@ The following scripts are critical to the behavior and processes underpinning th
 	- LoadAllScenesAsync.cs
 		- Used only on the Loading Screen, and responsible for loading all game Scenes into memory, before proceeding with showing the Main Menu
 		- Allows for seamless switching between eras
-	- ManageAvailableScenes.cs
-		- Responsible for creating and maintaining lists of Scenes, including any active Scenes, inactive Scenes, and the order of "era switching" (which era comes previously or next)
 	- ManageCameraEffects.cs
 		- Responsible for managing active and available camera effects, like PostProcessProfiles
 	- ManageFPSControllers.cs
@@ -80,6 +81,8 @@ The following scripts are critical to the behavior and processes underpinning th
 		- Responsible for mapping between 3D mall patrons (non-player characters) and animation controllers, depending on name or gender
 	- ManageProxyMapping.cs
 		- Responsible for mapping between proxy objects and associated prefabs, like people and trees
+	- ManageScenes.cs
+		- Responsible for opening, loading, and managing lists of Scenes, including any active Scenes, inactive Scenes, and the order of "time traveling" while in-game
 	- ManageSunSettings.cs
 		- Responsible for adjusting the Sun position and properties of the Pause Menu, in order to generate accurate screenshots of disabled Scenes for "time traveling" thumbnails
 	- ManageTaggedObjects.cs

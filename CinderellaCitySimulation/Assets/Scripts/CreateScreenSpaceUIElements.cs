@@ -68,7 +68,7 @@ public class StringUtils
     public static string ConvertSceneNameToFriendlyName(string sceneName)
     {
         // get the index of the scene we're in
-        int sceneIndex = SceneGlobals.availableTimePeriodSceneNames.IndexOf(sceneName);
+        int sceneIndex = SceneGlobals.availableTimePeriodSceneNamesList.IndexOf(sceneName);
 
         Utils.DebugUtils.DebugLog("Scene index: " + sceneIndex);
 
@@ -244,10 +244,10 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     public static void CaptureDisabledSceneFPSCameras()
     {
         // define the time periods that are considered disabled at this time
-        ManageAvailableScenes.GetDisabledTimePeriodSceneNames(SceneGlobals.referringScene);
+        ManageScenes.GetDisabledTimePeriodSceneNames(SceneGlobals.referringScene);
 
         // for each inactive time period, enable it without scripts, take a screenshot, and update textures
-        foreach (string disabledSceneName in ManageAvailableScenes.GetDisabledTimePeriodSceneNames(SceneGlobals.referringScene))
+        foreach (string disabledSceneName in ManageScenes.GetDisabledTimePeriodSceneNames(SceneGlobals.referringScene))
         {
             // toggle the scene, but ignore scriptHost objects - so no scripts or behaviors enable
             ToggleSceneAndUI.ToggleSceneObjectsOnExceptScriptHosts(disabledSceneName);
@@ -307,7 +307,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
             // handle buttons that request a time and place
             // check if the button name contains an available time period (scene name)
-            case string name when StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNames, name):
+            case string name when StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, name):
                 // buttons need to be named with hyphens delimiting important info
                 string[] nameSplitByDelimiter = name.Split('-');
                 // the place needs to be 1st
@@ -729,7 +729,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         for (var i = 0; i < timePeriodNames.Length; i++)
         {
             // combine the place name and time period strings
-            string combinedPlaceTimeNameSpacelessDashed = StringUtils.CleanString(placeName) + "-" + SceneGlobals.availableTimePeriodSceneNames[i];
+            string combinedPlaceTimeNameSpacelessDashed = StringUtils.CleanString(placeName) + "-" + SceneGlobals.availableTimePeriodSceneNamesList[i];
 
             // create the button
             GameObject timePeriodButton = new GameObject(combinedPlaceTimeNameSpacelessDashed + "-Button");
