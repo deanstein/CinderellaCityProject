@@ -27,6 +27,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: acoustic tile - black
+    second: {fileID: 2100000, guid: 6d2ada55f03f87b4ebfef3f5197b2378, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: acoustic tile - lines
     second: {fileID: 2100000, guid: 1455985d52b65124e8336132fa989683, type: 2}
   - first:
@@ -77,8 +82,28 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - 70s cinder alley
+    second: {fileID: 2100000, guid: f4d9c54b43a136a488d6c970f56a834b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - blue fountain tile
+    second: {fileID: 2100000, guid: 7020d1991c41ca245958a1193f2170a2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - carpet rose
     second: {fileID: 2100000, guid: 594f7d8ffebd22649b0b40b78a275b93, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - ceiling fixture metal
+    second: {fileID: 2100000, guid: 96ea5091e1a6a884db2ee6711a48092e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - ceiling tile texture
+    second: {fileID: 2100000, guid: 94905317b67ce0e40980a11291958916, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -94,6 +119,16 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: mall - floor trim
     second: {fileID: 2100000, guid: d692bde7351b68945827505acb0fa339, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - fountain ledges
+    second: {fileID: 2100000, guid: 6bf3e188200abfc45aa6b9f6a85051b8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - fountain toe kick metal
+    second: {fileID: 2100000, guid: f8064de9df4e0b345b664219550d8ae5, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -122,8 +157,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - stair terrazzo tile
+    second: {fileID: 2100000, guid: 7ba0198d344e3aa4498124d2caf4c10b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - under stair gravel
     second: {fileID: 2100000, guid: 17686633b1d7b774aa7834e404889f8d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - white fountain tile
+    second: {fileID: 2100000, guid: 34fdfb487214af54aba0b9818ac40582, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -134,6 +179,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: soffit
     second: {fileID: 2100000, guid: a1f1c0536a2b9894f9bdf5bbd0ea509e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: soil - interior
+    second: {fileID: 2100000, guid: 91eda75d29c151e4785a5603f5c41f56, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -221,7 +271,7 @@ ModelImporter:
     secondaryUVAngleDistortion: 4
     secondaryUVAreaDistortion: 4
     secondaryUVHardAngle: 88
-    secondaryUVPackMargin: 64
+    secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
