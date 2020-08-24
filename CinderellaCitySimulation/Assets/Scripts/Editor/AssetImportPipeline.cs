@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 
 using UnityEditor;
@@ -38,6 +37,7 @@ public class AssetImportUpdate : AssetPostprocessor {
     static float globalScale = 1.0f;
 
     // in some cases, we need to stop processing from happening if it's already been done
+    // so keep track of the last time processing was done, to help determine whether to skip
     static float prevTime;
 
     // post-processing should only happen after pre-processing
@@ -72,6 +72,7 @@ public class AssetImportUpdate : AssetPostprocessor {
     static bool doInstantiateAndPlaceInCurrentScene = false;
     static bool doSetColliderActive = false;
     static bool doSetUVActiveAndConfigure = false;
+    static bool doSetCustomLightmapSettings = false;
     static bool doDeleteReimportMaterialsTextures = false;
     static bool doAddBehaviorComponents = false;
     // ... for audio clips
@@ -81,12 +82,12 @@ public class AssetImportUpdate : AssetPostprocessor {
 
     // master post-processor option flags
     // ... for models
-    static bool doSetStatic = false;
+    static bool doSetStaticFlags = false;
     static bool doSetMaterialEmission = false;
     static bool doSetMaterialSmoothnessMetallic = false;
     static bool doInstantiateProxyReplacements = false;
     static bool doHideProxyObjects = false;
-    static bool doConfigureNavMesh = false;
+    static bool doRebuildNavMesh = false;
 
     //
     // end master list
@@ -131,10 +132,43 @@ public class AssetImportUpdate : AssetPostprocessor {
     {
         mi.generateSecondaryUV = true;
         mi.secondaryUVHardAngle = 88;
-        mi.secondaryUVPackMargin = 64;
+        mi.secondaryUVPackMargin = 4;
         mi.secondaryUVAngleDistortion = 4;
         mi.secondaryUVAreaDistortion = 4;
         mi.importNormals = ModelImporterNormals.Calculate;
+    }
+
+    // set each mesh renderer in the asset to a certain scale in the lightmap
+    static void SetCustomLightmapSettingsByName(string assetFilePath)
+    {
+        // get the gameObject from the asset file path
+        GameObject gameObjectFromAsset = (GameObject)AssetDatabase.LoadAssetAtPath(assetFilePath, typeof(GameObject));
+
+        // it's possible that the post-processor is running repeatedly (not kicked off by an asset change)
+        // if that happens, the gameObject from asset will be null, so skip this to prevent errors
+        if (gameObjectFromAsset == null)
+        {
+            return;
+        }
+
+        // get all the children transforms
+        Transform[] allChildrenTransforms = gameObjectFromAsset.GetComponentsInChildren<Transform>();
+
+        //  modify the lightmap settings for each of the renderers
+        foreach (Transform child in allChildrenTransforms)
+        {
+            // only try if there's a renderer on this transform
+            if (child.GetComponent<Renderer>() != null)
+            {
+                // ensure the renderer lightmap scale is set
+                Renderer rend = child.GetComponent<Renderer>();
+                SerializedObject so = new SerializedObject(rend);
+
+                // set various properties
+                so.FindProperty("m_ScaleInLightmap").floatValue = ManageImportSettings.GetShadowMapResolutionMultiplierByName(assetFilePath);
+                so.ApplyModifiedProperties();
+            }
+        }
     }
 
     // define how to set audio clip import settings
@@ -575,42 +609,29 @@ public class AssetImportUpdate : AssetPostprocessor {
     // <><><><><><><><><><><><><>
     //
 
-    // define how to get the asset's in-scene gameObject and set it to static
-    static void SetAssetAsStaticGameObject(string assetName)
+    // set every transform in an asset gameObject to specific static editor flags
+    static void SetStaticFlagsByName(string assetFilePath)
     {
-        // get the game object from the global asset name that was changed
-        GameObject gameObjectFromAsset = GameObject.Find(globalAssetFileName);
+        // get the appropriate flags for this asset
+        var staticFlags = ManageImportSettings.GetStaticFlagsByName(assetFilePath);
+
+        // get the gameObject from the asset path
+        GameObject gameObjectFromAsset = (GameObject)AssetDatabase.LoadAssetAtPath(assetFilePath, typeof(GameObject));
+
+        // it's possible that the post-processor is running repeatedly (not kicked off by an asset change)
+        // if that happens, the gameObject from asset will be null, so skip this to prevent errors
         if (!gameObjectFromAsset)
         {
-            Utils.DebugUtils.DebugLog("For some reason, couldn't find the modified game object.");
             return;
         }
 
+        // get all children of the asset-based gameObject
         Transform[] allChildren = gameObjectFromAsset.GetComponentsInChildren<Transform>();
 
-        // set the GameObject itself as static, if it isn't already
-        if (gameObjectFromAsset.gameObject.isStatic == false)
-        {
-            gameObjectFromAsset.isStatic = true;
-            Utils.DebugUtils.DebugLog("<b>Setting GameObject to static: </b>" + gameObjectFromAsset);
-        }
-        else
-        {
-            Utils.DebugUtils.DebugLog("GameObject was already static: " + gameObjectFromAsset);
-        }
-
-        // also set each of the GameObject's children as static, if they aren't already
+        // ensure that every transform has the correct static settings
         foreach (Transform child in allChildren)
         {
-            if (child.gameObject.isStatic == false)
-            {
-                child.gameObject.isStatic = true;
-                //Utils.DebugUtils.DebugLog("<b>Setting GameObject to static: </b>" + child.gameObject);
-            }
-            else
-            {
-                //Utils.DebugUtils.DebugLog("GameObject was already static: " + child.gameObject);
-            }
+            GameObjectUtility.SetStaticEditorFlags(child.gameObject, staticFlags);
         }
     }
 
@@ -1179,22 +1200,10 @@ public class AssetImportUpdate : AssetPostprocessor {
     }
 
     // configure and bake the nav mesh
-    public static void ConfigureNavMesh()
+    public static void RebuildNavMesh()
     {
         // TODO: none of this seems to work - fix it or remove it
         UnityEditor.AI.NavMeshBuilder.BuildNavMesh();
-
-        /*
-        // get some build settings?
-        var buildSettings = NavMesh.CreateSettings();
-
-        // Warning : nasty, dirty reflection kludge here
-        var t = typeof(UnityEngine.AI.NavMeshBuildSettings);
-        object boxedSettings = new UnityEngine.AI.NavMeshBuildSettings();
-        boxedSettings = buildSettings;
-        t.GetField("m_AgentSlope", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(boxedSettings, 0.0f);
-        buildSettings = (NavMeshBuildSettings)boxedSettings;
-        */
     }
 
     // runs when a texture/image asset is updated
@@ -1365,18 +1374,6 @@ public class AssetImportUpdate : AssetPostprocessor {
         String assetFileDirectory = assetFilePath.Substring(0, assetFilePath.Length - assetFileNameAndExtension.Length);
         globalAssetFileDirectory = assetFileDirectory;
 
-
-        /* TODO: use a JSON object to store and read the file import properties */
-        /*
-        // locate the import settings JSON file
-        StreamReader reader = new StreamReader(importSettingsPath);
-        string json = reader.ReadToEnd();
-        object jsonObject = JsonUtility.FromJson<AssetImportUpdate>(json);
-        Utils.DebugUtils.DebugLog("Import settings JSON found: " + json);
-        //Utils.DebugUtils.DebugLog("Get file names: " + jsonObject.fbxFileNames);
-        //return JsonUtility.FromJson<AssetImportUpdate>(json);
-        */
-
         //
         // whitelist of files to get modifications
         // only files explicitly mentioned below will get changed
@@ -1398,12 +1395,13 @@ public class AssetImportUpdate : AssetPostprocessor {
             doAddBehaviorComponents = false;
 
             // post-processor option flags
-            doSetStatic = true;
+            doSetStaticFlags = true;
+            doSetCustomLightmapSettings = false;
             doSetMaterialEmission = false;
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
-            doConfigureNavMesh = false;
+            doRebuildNavMesh = true;
         }
 
         if (assetFilePath.Contains("mall-doors-windows-exterior.fbx")
@@ -1418,12 +1416,13 @@ public class AssetImportUpdate : AssetPostprocessor {
             doAddBehaviorComponents = false;
 
             // post-processor option flags
-            doSetStatic = false;
+            doSetStaticFlags = false;
+            doSetCustomLightmapSettings = false;
             doSetMaterialEmission = false;
             doSetMaterialSmoothnessMetallic = true;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
-            doConfigureNavMesh = false;
+            doRebuildNavMesh = true;
         }
 
         if (assetFilePath.Contains("mall-doors-windows-solid.fbx"))
@@ -1437,12 +1436,13 @@ public class AssetImportUpdate : AssetPostprocessor {
             doAddBehaviorComponents = false;
 
             // post-processor option flags
-            doSetStatic = true;
+            doSetStaticFlags = true;
+            doSetCustomLightmapSettings = false;
             doSetMaterialEmission = false;
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
-            doConfigureNavMesh = false;
+            doRebuildNavMesh = true;
         }
 
         if (assetFilePath.Contains("mall-flags.fbx"))
@@ -1456,12 +1456,13 @@ public class AssetImportUpdate : AssetPostprocessor {
             doAddBehaviorComponents = false;
 
             // post-processor option flags
-            doSetStatic = true;
+            doSetStaticFlags = true;
+            doSetCustomLightmapSettings = false;
             doSetMaterialEmission = false;
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
-            doConfigureNavMesh = false;
+            doRebuildNavMesh = false;
         }
 
         if (assetFilePath.Contains("mall-furniture.fbx"))
@@ -1475,12 +1476,13 @@ public class AssetImportUpdate : AssetPostprocessor {
             doAddBehaviorComponents = false;
 
             // post-processor option flags
-            doSetStatic = true;
+            doSetStaticFlags = true;
+            doSetCustomLightmapSettings = true;
             doSetMaterialEmission = false;
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
-            doConfigureNavMesh = false;
+            doRebuildNavMesh = true;
         }
 
         if (assetFilePath.Contains("mall-floor-ceiling-vertical.fbx")
@@ -1498,12 +1500,13 @@ public class AssetImportUpdate : AssetPostprocessor {
             doAddBehaviorComponents = false;
 
             // post-processor option flags
-            doSetStatic = true;
+            doSetStaticFlags = true;
+            doSetCustomLightmapSettings = false;
             doSetMaterialEmission = false;
             doSetMaterialSmoothnessMetallic = true;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
-            doConfigureNavMesh = false;
+            doRebuildNavMesh = true;
         }
 
         if (assetFilePath.Contains("mall-water.fbx"))
@@ -1517,12 +1520,13 @@ public class AssetImportUpdate : AssetPostprocessor {
             doAddBehaviorComponents = false;
 
             // post-processor option flags
-            doSetStatic = false;
+            doSetStaticFlags = false;
+            doSetCustomLightmapSettings = false;
             doSetMaterialEmission = false;
             doSetMaterialSmoothnessMetallic = true;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
-            doConfigureNavMesh = false;
+            doRebuildNavMesh = false;
         }
 
         if (assetFilePath.Contains("mall-handrails.fbx"))
@@ -1536,12 +1540,13 @@ public class AssetImportUpdate : AssetPostprocessor {
             doAddBehaviorComponents = false;
 
             // post-processor option flags
-            doSetStatic = false;
+            doSetStaticFlags = true;
+            doSetCustomLightmapSettings = false;
             doSetMaterialEmission = false;
             doSetMaterialSmoothnessMetallic = true;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
-            doConfigureNavMesh = false;
+            doRebuildNavMesh = true;
         }
 
         if (assetFilePath.Contains("mall-wayfinding"))
@@ -1555,12 +1560,13 @@ public class AssetImportUpdate : AssetPostprocessor {
             doAddBehaviorComponents = false;
 
             // post-processor option flags
-            doSetStatic = false;
+            doSetStaticFlags = true;
+            doSetCustomLightmapSettings = false;
             doSetMaterialEmission = true;
             doSetMaterialSmoothnessMetallic = true;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
-            doConfigureNavMesh = false;
+            doRebuildNavMesh = true;
         }
 
         if (assetFilePath.Contains("mall-lights.fbx")
@@ -1576,12 +1582,13 @@ public class AssetImportUpdate : AssetPostprocessor {
             doAddBehaviorComponents = false;
 
             // post-processor option flags
-            doSetStatic = true;
+            doSetStaticFlags = true;
+            doSetCustomLightmapSettings = true;
             doSetMaterialEmission = true;
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
-            doConfigureNavMesh = false;
+            doRebuildNavMesh = false;
         }
 
         if (assetFilePath.Contains("mall-structure.fbx"))
@@ -1595,11 +1602,13 @@ public class AssetImportUpdate : AssetPostprocessor {
             doAddBehaviorComponents = false;
 
             // post-processor option flags
-            doSetStatic = true;
+            doSetStaticFlags = true;
+            doSetCustomLightmapSettings = false;
             doSetMaterialEmission = false;
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
+            doRebuildNavMesh = false;
         }
 
         if (assetFilePath.Contains("proxy-cameras.fbx"))
@@ -1613,12 +1622,13 @@ public class AssetImportUpdate : AssetPostprocessor {
             doAddBehaviorComponents = false;
 
             // post-processor option flags
-            doSetStatic = false;
+            doSetStaticFlags = false;
+            doSetCustomLightmapSettings = false;
             doSetMaterialEmission = false;
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = true;
             doHideProxyObjects = true;
-            doConfigureNavMesh = false;
+            doRebuildNavMesh = false;
         }
 
         if (assetFilePath.Contains("proxy-people.fbx"))
@@ -1632,12 +1642,13 @@ public class AssetImportUpdate : AssetPostprocessor {
             doAddBehaviorComponents = true;
 
             // post-processor option flags
-            doSetStatic = false;
+            doSetStaticFlags = false;
+            doSetCustomLightmapSettings = false;
             doSetMaterialEmission = false;
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = true;
             doHideProxyObjects = true;
-            doConfigureNavMesh = true;
+            doRebuildNavMesh = true;
         }
 
         if (assetFilePath.Contains("proxy-trees.fbx"))
@@ -1651,12 +1662,13 @@ public class AssetImportUpdate : AssetPostprocessor {
             doAddBehaviorComponents = true;
 
             // post-processor option flags
-            doSetStatic = false;
+            doSetStaticFlags = false;
+            doSetCustomLightmapSettings = false;
             doSetMaterialEmission = false;
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = true;
             doHideProxyObjects = true;
-            doConfigureNavMesh = false;
+            doRebuildNavMesh = true;
         }
 
         if (assetFilePath.Contains("site.fbx"))
@@ -1670,12 +1682,13 @@ public class AssetImportUpdate : AssetPostprocessor {
             doAddBehaviorComponents = false;
 
             // post-processor option flags
-            doSetStatic = true;
+            doSetStaticFlags = true;
+            doSetCustomLightmapSettings = true;
             doSetMaterialEmission = false;
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
-            doConfigureNavMesh = false;
+            doRebuildNavMesh = true;
         }
 
         if (assetFilePath.Contains("speakers.fbx") || assetFilePath.Contains("speakers-simple.fbx"))
@@ -1689,16 +1702,17 @@ public class AssetImportUpdate : AssetPostprocessor {
             doAddBehaviorComponents = true;
 
             // post-processor option flags
-            doSetStatic = false;
+            doSetStaticFlags = false;
+            doSetCustomLightmapSettings = false;
             doSetMaterialEmission = false;
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
-            doConfigureNavMesh = false;
+            doRebuildNavMesh = false;
         }
 
         //
-        // these are temporary fixes
+        // these are temporary fixes or experimental models for testing
         //
         if (assetFilePath.Contains("temp-fix.fbx"))
         {
@@ -1711,11 +1725,33 @@ public class AssetImportUpdate : AssetPostprocessor {
             doAddBehaviorComponents = false;
 
             // post-processor option flags
-            doSetStatic = false;
+            doSetStaticFlags = false;
+            doSetCustomLightmapSettings = false;
             doSetMaterialEmission = false;
             doSetMaterialSmoothnessMetallic = false;
             doInstantiateProxyReplacements = false;
             doHideProxyObjects = false;
+            doRebuildNavMesh = false;
+        }
+
+        if (assetFilePath.Contains("experimental-simple.fbx"))
+        {
+            // pre-processor option flags
+            doSetGlobalScale = true; // always true
+            doInstantiateAndPlaceInCurrentScene = true;
+            doSetColliderActive = false;
+            doSetUVActiveAndConfigure = true;
+            doDeleteReimportMaterialsTextures = true;
+            doAddBehaviorComponents = false;
+
+            // post-processor option flags
+            doSetStaticFlags = true;
+            doSetCustomLightmapSettings = true;
+            doSetMaterialEmission = true;
+            doSetMaterialSmoothnessMetallic = false;
+            doInstantiateProxyReplacements = false;
+            doHideProxyObjects = false;
+            doRebuildNavMesh = true;
         }
 
         //
@@ -1795,9 +1831,14 @@ public class AssetImportUpdate : AssetPostprocessor {
         // execute all AssetImportUpdate PostProcessor option flags marked as true
         //
 
-        if (doSetStatic)
+        if (doSetStaticFlags)
         {
-            SetAssetAsStaticGameObject(globalAssetFileName);
+            SetStaticFlagsByName(globalAssetFilePath);
+        }
+
+        if (doSetCustomLightmapSettings)
+        {
+            SetCustomLightmapSettingsByName(globalAssetFilePath);
         }
 
         if (doSetMaterialEmission)
@@ -1820,9 +1861,9 @@ public class AssetImportUpdate : AssetPostprocessor {
             HideProxyObjects(globalAssetFileName);
         }
 
-        if (doConfigureNavMesh)
+        if (doRebuildNavMesh)
         {
-            ConfigureNavMesh();
+            RebuildNavMesh();
         }
 
         // newly-instantiated objects need to be set as a child of the scene container
