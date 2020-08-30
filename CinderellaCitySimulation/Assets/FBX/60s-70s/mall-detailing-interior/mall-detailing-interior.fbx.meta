@@ -1,0 +1,299 @@
+fileFormatVersion: 2
+guid: a1f97e35d2955da41bfba28c5f11b84a
+ModelImporter:
+  serializedVersion: 25
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: DefaultMaterial
+    second: {fileID: 2100000, guid: 6ab23aaedbb19c443b478329bee2484d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Water - Subtle Waves
+    second: {fileID: 2100000, guid: d6ee815c6b054b044925abf7e1eabeb4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: drywall
+    second: {fileID: 2100000, guid: 9cab8ccdf6c70a142aad455065f73cad, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - 60s blue dark
+    second: {fileID: 2100000, guid: 2cb42dad1a69be840acd66b8a7289e09, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - 60s blue light
+    second: {fileID: 2100000, guid: 6f0cdb10fb276944384526d37953dc00, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - 60s blue very dark
+    second: {fileID: 2100000, guid: 82b4df81d382d344ab35b961dd9d4552, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - 60s dark trim
+    second: {fileID: 2100000, guid: 39143c21c5add8d4b87968a723f788bc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - 60s rose dark
+    second: {fileID: 2100000, guid: 57a618875f6792845a75b6f3a80c3d5c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - 60s rose light
+    second: {fileID: 2100000, guid: 4d97c0ee5a4708e4caddd2fa1c6ae98f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - blue column yellow tile
+    second: {fileID: 2100000, guid: c09fbc33789c28547b80f33fe016abe5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - blue fountain tile
+    second: {fileID: 2100000, guid: 1ae870d9fd128bb4e8561946b7358a43, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - blue wood
+    second: {fileID: 2100000, guid: 84c29b62c22b5ce4ebd896dc1015fd07, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - blue wood mesh
+    second: {fileID: 2100000, guid: cceeaf923f0a289468800e201d7b2adc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - brick - whitewash
+    second: {fileID: 2100000, guid: e5cc1b2996f349d42b2cb8c0798cc636, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - floor trim
+    second: {fileID: 2100000, guid: 77dd91f2e51dcbb4eb9b0e1940fd3839, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - fountain ledges
+    second: {fileID: 2100000, guid: 5be78dd7352b2bd4f88408a739e3578d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - fountain toe kick metal
+    second: {fileID: 2100000, guid: 02040e78b46cf1247b2140e165164e01, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - mezz panel
+    second: {fileID: 2100000, guid: eed87321a8bbce54f9206c3ef5f6e375, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - office wood vertical
+    second: {fileID: 2100000, guid: 0d50b3bf9299f8c4dafe63356c7f56fe, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - white fountain tile
+    second: {fileID: 2100000, guid: 4ac46bf8cdf722346a36c0bab844d82d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - yellow wood
+    second: {fileID: 2100000, guid: 7a6bc3110ec98ff41b6cdfdd619f436b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - yellow wood mesh
+    second: {fileID: 2100000, guid: cb3c881baf1dd254db669452493ac760, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: soil - interior
+    second: {fileID: 2100000, guid: 013749baf5e894844bd62dd0e82d1925, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - black
+    second: {fileID: 2100000, guid: 57456ea47245e4348917407e9aa3b32c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - black glossy
+    second: {fileID: 2100000, guid: 817c7c8095aedf845a018879f39170f0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - brown vertical wood panels
+    second: {fileID: 2100000, guid: 71dea4bb31956d147aa33324878c40b5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - dark blue
+    second: {fileID: 2100000, guid: 312deabba3c38fd468eb456924dd36d5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - dark brown
+    second: {fileID: 2100000, guid: 43297f43daf897f4a874010bde3894ca, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - dark grey 1
+    second: {fileID: 2100000, guid: d70a25bea9d8c724c9beabb00e40a434, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - dark wood
+    second: {fileID: 2100000, guid: 43a7a5e08f5363d43a60c40408178aa5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - flat planks orangeish
+    second: {fileID: 2100000, guid: 7a975093f16d76146adb69974bae17f9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - grainy wood
+    second: {fileID: 2100000, guid: 0f3d5288d9e4ea144be726889863f5a7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - mirror
+    second: {fileID: 2100000, guid: 8d70e76a8ebac8542b4730ce7ee3e4fe, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - off white
+    second: {fileID: 2100000, guid: 1b574065587e3a945992c43abb60cd11, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - pink 1
+    second: {fileID: 2100000, guid: 12c082edc2afa504aa46bc43306fdf5d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - purple-grey
+    second: {fileID: 2100000, guid: fc276f04283ecfa43abaf03a82eb7c5c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - red brick 1
+    second: {fileID: 2100000, guid: 71f7066c28c95b94583c65efac278ec9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - rotated wood
+    second: {fileID: 2100000, guid: ee1918fd7bb9b624cbef277b556ab70e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - smoky mirror
+    second: {fileID: 2100000, guid: 83f9fb83310d5ab4c99ead09c98ea0d9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - stucco white
+    second: {fileID: 2100000, guid: 07b4a06932c2c4f40aaf1da32679986e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - very dark brown reflective
+    second: {fileID: 2100000, guid: 9f8cdb41fa30f8b458df09bedc9dc8b5, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 1
+    materialSearch: 0
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 1
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 1
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 4
+    secondaryUVAreaDistortion: 4
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 64
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 1
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
