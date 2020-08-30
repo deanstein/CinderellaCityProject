@@ -166,12 +166,14 @@ public class AssetImportUpdate : AssetPostprocessor {
                 float existingResolution = so.FindProperty("m_ScaleInLightmap").floatValue;
                 float newResolution = ManageImportSettings.GetShadowMapResolutionMultiplierByName(gameObject.name);
 
+                // only bother changing the properties if the existing and new res don't match
                 if (existingResolution != newResolution)
                 {
                     so.FindProperty("m_ScaleInLightmap").floatValue = newResolution;
                     so.ApplyModifiedProperties();
                 }
 
+                // need to dispose of the serialized object to avoid runaway RAM usage
                 so.Dispose();
             }
         }

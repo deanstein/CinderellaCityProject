@@ -8,7 +8,7 @@ public class CCPMenuActions : MonoBehaviour
     [MenuItem("Cinderella City Project/Update All Scenes Occlusion Culling")]
     public static void UpdateOcclusionCulling()
     {
-        ManageScenes.LoadEditorScenesAdditively(SceneGlobals.loadingSceneName, SceneGlobals.allGameplaySceneNames);
+        ManageEditorScenes.LoadEditorScenesAdditively(SceneGlobals.loadingSceneName, SceneGlobals.allGameplaySceneNames);
         StaticOcclusionCulling.Compute();
         // TODO: return to the loading screen once occlusion culling is computed
     }
