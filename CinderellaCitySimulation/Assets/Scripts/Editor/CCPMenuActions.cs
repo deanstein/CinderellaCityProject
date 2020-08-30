@@ -5,12 +5,7 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class CCPMenuActions : MonoBehaviour
 {
-    void Update()
-    {
-        Debug.Log("EditorUpdate " + StaticOcclusionCulling.isRunning);
-    }
-
-    [MenuItem("Cinderella City Project/Update Occlusion Culling")]
+    [MenuItem("Cinderella City Project/Update All Scenes Occlusion Culling")]
     public static void UpdateOcclusionCulling()
     {
         ManageScenes.LoadEditorScenesAdditively(SceneGlobals.loadingSceneName, SceneGlobals.allGameplaySceneNames);
@@ -18,7 +13,7 @@ public class CCPMenuActions : MonoBehaviour
         // TODO: return to the loading screen once occlusion culling is computed
     }
 
-    [MenuItem("Cinderella City Project/Update All Nav Meshes")]
+    [MenuItem("Cinderella City Project/Update All Scenes Nav Meshes")]
     public static void RebuildAllNavMeshes()
     {
         foreach (string sceneName in SceneGlobals.availableTimePeriodSceneNames)
@@ -42,6 +37,38 @@ public class CCPMenuActions : MonoBehaviour
                 EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene());
             }
         }
+        // TODO: return to the loading screen once all nav meshes are updated
     }
-    // TODO: return to the loading screen once all nav meshes are updated
+
+    [MenuItem("Cinderella City Project/Update This Scene Static Flags")]
+    public static void SetAllStaticFlagsInCurrentScene()
+    {
+        // get the current scene's container
+        GameObject sceneContainer = AssetImportUpdate.GetCurrentSceneContainer();
+
+        // get all the scene objects
+        GameObject[] sceneObjects = AssetImportUpdate.GetAllTopLevelChildrenInObject(sceneContainer);
+
+        // set the static flags for each scene object
+        foreach (GameObject sceneObject in sceneObjects)
+        {
+            AssetImportUpdate.SetStaticFlagsByName(sceneObject);
+        }
+    }
+
+    [MenuItem("Cinderella City Project/Update This Scene Lightmap Resolutions")]
+    public static void SetAllLightmapResolutionsInCurrentScene()
+    {
+        // get the current scene's container
+        GameObject sceneContainer = AssetImportUpdate.GetCurrentSceneContainer();
+
+        // get all the scene objects
+        GameObject[] sceneObjects = AssetImportUpdate.GetAllTopLevelChildrenInObject(sceneContainer);
+
+        // set the static flags for each scene object
+        foreach (GameObject sceneObject in sceneObjects)
+        {
+            AssetImportUpdate.SetCustomLightmapSettingsByName(sceneObject);
+        }
+    }
 }

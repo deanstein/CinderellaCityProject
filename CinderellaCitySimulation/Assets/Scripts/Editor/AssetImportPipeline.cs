@@ -14,6 +14,12 @@ using UnityEngine.SceneManagement;
 
 [InitializeOnLoad]
 
+public class AssetImportGlobals
+{
+    // initialize import parameters
+    public static ModelImportParams ModelImportParamsByName;
+}
+
 public class AssetImportUpdate : AssetPostprocessor {
 
     // this script only runs when an asset is updated
@@ -24,6 +30,9 @@ public class AssetImportUpdate : AssetPostprocessor {
     static String globalAssetFileName;
     static String globalAssetFileDirectory;
     static String globalAssetTexturesDirectory;
+
+    // get the gameobject from the asset path, if it's available
+    static GameObject globalGameObjectFromAsset = (GameObject) AssetDatabase.LoadAssetAtPath(globalAssetFilePath, typeof(GameObject));
 
     // if the model just updated isn't already in the scene, we need to keep track of it
     // in order to maintain parent/child hierarchy in the post-processor
@@ -62,35 +71,17 @@ public class AssetImportUpdate : AssetPostprocessor {
     static List<bool> postProcessingHits = new List<bool>();
 
     //
-    // master list of option flags that any file just changed can receive
-    // all option flags should default to false, except global scale
+    // TODO: move these into ManageImportSettings
     //
 
     // master pre-processor option flags
-    // ... for models
-    static bool doSetGlobalScale = false;
-    static bool doInstantiateAndPlaceInCurrentScene = false;
-    static bool doSetColliderActive = false;
-    static bool doSetUVActiveAndConfigure = false;
-    static bool doSetCustomLightmapSettings = false;
-    static bool doDeleteReimportMaterialsTextures = false;
-    static bool doAddBehaviorComponents = false;
     // ... for audio clips
     static bool doSetClipImportSettings = false;
     // ... for textures and images
     static bool doSetTextureToSpriteImportSettings = false;
 
-    // master post-processor option flags
-    // ... for models
-    static bool doSetStaticFlags = false;
-    static bool doSetMaterialEmission = false;
-    static bool doSetMaterialSmoothnessMetallic = false;
-    static bool doInstantiateProxyReplacements = false;
-    static bool doHideProxyObjects = false;
-    static bool doRebuildNavMesh = false;
-
     //
-    // end master list
+    // end TODO
     //
 
     // set up callbacks
@@ -132,27 +123,35 @@ public class AssetImportUpdate : AssetPostprocessor {
     {
         mi.generateSecondaryUV = true;
         mi.secondaryUVHardAngle = 88;
-        mi.secondaryUVPackMargin = 4;
+        mi.secondaryUVPackMargin = 64;
         mi.secondaryUVAngleDistortion = 4;
         mi.secondaryUVAreaDistortion = 4;
         mi.importNormals = ModelImporterNormals.Calculate;
     }
 
     // set each mesh renderer in the asset to a certain scale in the lightmap
-    static void SetCustomLightmapSettingsByName(string assetFilePath)
+    public static void SetCustomLightmapSettingsByName(GameObject gameObject)
     {
-        // get the gameObject from the asset file path
-        GameObject gameObjectFromAsset = (GameObject)AssetDatabase.LoadAssetAtPath(assetFilePath, typeof(GameObject));
-
         // it's possible that the post-processor is running repeatedly (not kicked off by an asset change)
         // if that happens, the gameObject from asset will be null, so skip this to prevent errors
-        if (gameObjectFromAsset == null)
+        if (gameObject == null)
+        {
+            return;
+        }
+
+        // get the model import params for this object
+        ModelImportParams ImportParams = ManageImportSettings.GetModelImportParamsByName(gameObject.name);
+
+        // if the requested gameObject matches the name of an imported asset,
+        // and if that asset is specifically excluded from custom lightmap settings,
+        // then skip to avoid working on geometry that's not necessary
+        if (!ImportParams.doSetStaticFlags)
         {
             return;
         }
 
         // get all the children transforms
-        Transform[] allChildrenTransforms = gameObjectFromAsset.GetComponentsInChildren<Transform>();
+        Transform[] allChildrenTransforms = gameObject.GetComponentsInChildren<Transform>();
 
         //  modify the lightmap settings for each of the renderers
         foreach (Transform child in allChildrenTransforms)
@@ -160,13 +159,20 @@ public class AssetImportUpdate : AssetPostprocessor {
             // only try if there's a renderer on this transform
             if (child.GetComponent<Renderer>() != null)
             {
-                // ensure the renderer lightmap scale is set
+                // get the renderer
                 Renderer rend = child.GetComponent<Renderer>();
                 SerializedObject so = new SerializedObject(rend);
 
-                // set various properties
-                so.FindProperty("m_ScaleInLightmap").floatValue = ManageImportSettings.GetShadowMapResolutionMultiplierByName(assetFilePath);
-                so.ApplyModifiedProperties();
+                float existingResolution = so.FindProperty("m_ScaleInLightmap").floatValue;
+                float newResolution = ManageImportSettings.GetShadowMapResolutionMultiplierByName(gameObject.name);
+
+                if (existingResolution != newResolution)
+                {
+                    so.FindProperty("m_ScaleInLightmap").floatValue = newResolution;
+                    so.ApplyModifiedProperties();
+                }
+
+                so.Dispose();
             }
         }
     }
@@ -228,16 +234,36 @@ public class AssetImportUpdate : AssetPostprocessor {
         globalMaxPostProcessingHits = globalMaxPostProcessingHits + 2;
     }
 
-    // sets an object as a child of the scene container
-    // needs to happen in post-processor
-    static void SetObjectAsChildOfSceneContainer(GameObject prefab)
+    public static GameObject GetCurrentSceneContainer()
     {
         // place the object in the scene's container (used to disable all scene objects)
         GameObject[] rootObjects = SceneManager.GetActiveScene().GetRootGameObjects();
         // this assumes there's only 1 object in the scene: a container for all objects
         GameObject sceneContainer = rootObjects[0];
+        return sceneContainer;
+    }
 
-        prefab.transform.SetParent(sceneContainer.transform);
+    // sets an object as a child of the scene container
+    // needs to happen in post-processor
+    static void SetObjectAsChildOfSceneContainer(GameObject prefabToModify)
+    {
+        GameObject sceneContainer = GetCurrentSceneContainer();
+
+        prefabToModify.transform.SetParent(sceneContainer.transform);
+    }
+
+    // gets all children in the root object
+    public static GameObject[] GetAllTopLevelChildrenInObject(GameObject parentObject)
+    {
+        List<GameObject> childrenList = new List<GameObject>();
+
+        foreach (Transform trans in parentObject.transform)
+        {
+            childrenList.Add(trans.gameObject);
+        }
+        GameObject[] childrenObjects = childrenList.ToArray();
+
+        return childrenObjects;
     }
 
     // define how to delete and reimport materials and textures
@@ -610,23 +636,31 @@ public class AssetImportUpdate : AssetPostprocessor {
     //
 
     // set every transform in an asset gameObject to specific static editor flags
-    static void SetStaticFlagsByName(string assetFilePath)
+    public static void SetStaticFlagsByName(GameObject gameObject)
     {
-        // get the appropriate flags for this asset
-        var staticFlags = ManageImportSettings.GetStaticFlagsByName(assetFilePath);
-
-        // get the gameObject from the asset path
-        GameObject gameObjectFromAsset = (GameObject)AssetDatabase.LoadAssetAtPath(assetFilePath, typeof(GameObject));
-
         // it's possible that the post-processor is running repeatedly (not kicked off by an asset change)
         // if that happens, the gameObject from asset will be null, so skip this to prevent errors
-        if (!gameObjectFromAsset)
+        if (!gameObject)
         {
             return;
         }
 
+        // get the model import params for this object
+        ModelImportParams ImportParams = ManageImportSettings.GetModelImportParamsByName(gameObject.name);
+
+        // if the requested gameObject matches the name of an imported asset,
+        // and if that asset is specifically excluded from static flags,
+        // then skip to avoid putting static editor flags on this object
+        if (!ImportParams.doSetStaticFlags)
+        {
+            return;
+        }
+
+        // get the appropriate flags for this asset
+        var staticFlags = ManageImportSettings.GetStaticFlagsByName(gameObject.name);
+
         // get all children of the asset-based gameObject
-        Transform[] allChildren = gameObjectFromAsset.GetComponentsInChildren<Transform>();
+        Transform[] allChildren = gameObject.GetComponentsInChildren<Transform>();
 
         // ensure that every transform has the correct static settings
         foreach (Transform child in allChildren)
@@ -674,7 +708,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
             if (dependencyPathString.Contains("blue mall columns"))
             {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 2.5F);
+                SetCustomMaterialEmissionIntensity(dependencyPathString, 3F);
             }
 
             if (dependencyPathString.Contains("blue mall ceiling"))
@@ -1375,415 +1409,42 @@ public class AssetImportUpdate : AssetPostprocessor {
         globalAssetFileDirectory = assetFileDirectory;
 
         //
-        // whitelist of files to get modifications
-        // only files explicitly mentioned below will get changed
-        // each file should state its preference for all available pre- and post-processor flags as defined above
-        //
+        // get the model import parameters based on the name
+        // 
 
-        if (assetFilePath.Contains("anchor-broadway.fbx")
-            || assetFilePath.Contains("anchor-jcp.fbx")
-            || assetFilePath.Contains("anchor-joslins.fbx")
-            || assetFilePath.Contains("anchor-mgwards.fbx")
-            || assetFilePath.Contains("anchor-denver.fbx"))
-        {
-            // pre-processor option flags
-            doSetGlobalScale = true; // always true
-            doInstantiateAndPlaceInCurrentScene = true;
-            doSetColliderActive = true;
-            doSetUVActiveAndConfigure = true;
-            doDeleteReimportMaterialsTextures = true;
-            doAddBehaviorComponents = false;
-
-            // post-processor option flags
-            doSetStaticFlags = true;
-            doSetCustomLightmapSettings = false;
-            doSetMaterialEmission = false;
-            doSetMaterialSmoothnessMetallic = false;
-            doInstantiateProxyReplacements = false;
-            doHideProxyObjects = false;
-            doRebuildNavMesh = true;
-        }
-
-        if (assetFilePath.Contains("mall-doors-windows-exterior.fbx")
-            || assetFilePath.Contains("mall-doors-windows-interior.fbx"))
-        {
-            // pre-processor option flags
-            doSetGlobalScale = true; // always true
-            doInstantiateAndPlaceInCurrentScene = true;
-            doSetColliderActive = false;
-            doSetUVActiveAndConfigure = false;
-            doDeleteReimportMaterialsTextures = true;
-            doAddBehaviorComponents = false;
-
-            // post-processor option flags
-            doSetStaticFlags = false;
-            doSetCustomLightmapSettings = false;
-            doSetMaterialEmission = false;
-            doSetMaterialSmoothnessMetallic = true;
-            doInstantiateProxyReplacements = false;
-            doHideProxyObjects = false;
-            doRebuildNavMesh = true;
-        }
-
-        if (assetFilePath.Contains("mall-doors-windows-solid.fbx"))
-        {
-            // pre-processor option flags
-            doSetGlobalScale = true; // always true
-            doInstantiateAndPlaceInCurrentScene = true;
-            doSetColliderActive = true;
-            doSetUVActiveAndConfigure = true;
-            doDeleteReimportMaterialsTextures = true;
-            doAddBehaviorComponents = false;
-
-            // post-processor option flags
-            doSetStaticFlags = true;
-            doSetCustomLightmapSettings = false;
-            doSetMaterialEmission = false;
-            doSetMaterialSmoothnessMetallic = false;
-            doInstantiateProxyReplacements = false;
-            doHideProxyObjects = false;
-            doRebuildNavMesh = true;
-        }
-
-        if (assetFilePath.Contains("mall-flags.fbx"))
-        {
-            // pre-processor option flags
-            doSetGlobalScale = true; // always true
-            doInstantiateAndPlaceInCurrentScene = true;
-            doSetColliderActive = false;
-            doSetUVActiveAndConfigure = true;
-            doDeleteReimportMaterialsTextures = true;
-            doAddBehaviorComponents = false;
-
-            // post-processor option flags
-            doSetStaticFlags = true;
-            doSetCustomLightmapSettings = false;
-            doSetMaterialEmission = false;
-            doSetMaterialSmoothnessMetallic = false;
-            doInstantiateProxyReplacements = false;
-            doHideProxyObjects = false;
-            doRebuildNavMesh = false;
-        }
-
-        if (assetFilePath.Contains("mall-furniture.fbx"))
-        {
-            // pre-processor option flags
-            doSetGlobalScale = true; // always true
-            doInstantiateAndPlaceInCurrentScene = true;
-            doSetColliderActive = true;
-            doSetUVActiveAndConfigure = true;
-            doDeleteReimportMaterialsTextures = true;
-            doAddBehaviorComponents = false;
-
-            // post-processor option flags
-            doSetStaticFlags = true;
-            doSetCustomLightmapSettings = true;
-            doSetMaterialEmission = false;
-            doSetMaterialSmoothnessMetallic = false;
-            doInstantiateProxyReplacements = false;
-            doHideProxyObjects = false;
-            doRebuildNavMesh = true;
-        }
-
-        if (assetFilePath.Contains("mall-floor-ceiling-vertical.fbx")
-            || assetFilePath.Contains("mall-interior-detailing.fbx")
-            || assetFilePath.Contains("mall-exterior-detailing.fbx")
-            || assetFilePath.Contains("mall-exterior-walls.fbx")
-            || assetFilePath.Contains("store-interior-detailing.fbx"))
-        {
-            // pre-processor option flags
-            doSetGlobalScale = true; // always true
-            doInstantiateAndPlaceInCurrentScene = true;
-            doSetColliderActive = true;
-            doSetUVActiveAndConfigure = true;
-            doDeleteReimportMaterialsTextures = true;
-            doAddBehaviorComponents = false;
-
-            // post-processor option flags
-            doSetStaticFlags = true;
-            doSetCustomLightmapSettings = false;
-            doSetMaterialEmission = false;
-            doSetMaterialSmoothnessMetallic = true;
-            doInstantiateProxyReplacements = false;
-            doHideProxyObjects = false;
-            doRebuildNavMesh = true;
-        }
-
-        if (assetFilePath.Contains("mall-water.fbx"))
-        {
-            // pre-processor option flags
-            doSetGlobalScale = true; // always true
-            doInstantiateAndPlaceInCurrentScene = true;
-            doSetColliderActive = true;
-            doSetUVActiveAndConfigure = false;
-            doDeleteReimportMaterialsTextures = true;
-            doAddBehaviorComponents = false;
-
-            // post-processor option flags
-            doSetStaticFlags = false;
-            doSetCustomLightmapSettings = false;
-            doSetMaterialEmission = false;
-            doSetMaterialSmoothnessMetallic = true;
-            doInstantiateProxyReplacements = false;
-            doHideProxyObjects = false;
-            doRebuildNavMesh = false;
-        }
-
-        if (assetFilePath.Contains("mall-handrails.fbx"))
-        {
-            // pre-processor option flags
-            doSetGlobalScale = true; // always true
-            doInstantiateAndPlaceInCurrentScene = true;
-            doSetColliderActive = true;
-            doSetUVActiveAndConfigure = false;
-            doDeleteReimportMaterialsTextures = true;
-            doAddBehaviorComponents = false;
-
-            // post-processor option flags
-            doSetStaticFlags = true;
-            doSetCustomLightmapSettings = false;
-            doSetMaterialEmission = false;
-            doSetMaterialSmoothnessMetallic = true;
-            doInstantiateProxyReplacements = false;
-            doHideProxyObjects = false;
-            doRebuildNavMesh = true;
-        }
-
-        if (assetFilePath.Contains("mall-wayfinding"))
-        {
-            // pre-processor option flags
-            doSetGlobalScale = true; // always true
-            doInstantiateAndPlaceInCurrentScene = true;
-            doSetColliderActive = true;
-            doSetUVActiveAndConfigure = true;
-            doDeleteReimportMaterialsTextures = true;
-            doAddBehaviorComponents = false;
-
-            // post-processor option flags
-            doSetStaticFlags = true;
-            doSetCustomLightmapSettings = false;
-            doSetMaterialEmission = true;
-            doSetMaterialSmoothnessMetallic = true;
-            doInstantiateProxyReplacements = false;
-            doHideProxyObjects = false;
-            doRebuildNavMesh = true;
-        }
-
-        if (assetFilePath.Contains("mall-lights.fbx")
-            || assetFilePath.Contains("mall-signage.fbx")
-            || assetFilePath.Contains("site-lights.fbx"))
-        {
-            // pre-processor option flags
-            doSetGlobalScale = true; // always true
-            doInstantiateAndPlaceInCurrentScene = true;
-            doSetColliderActive = true;
-            doSetUVActiveAndConfigure = true;
-            doDeleteReimportMaterialsTextures = true;
-            doAddBehaviorComponents = false;
-
-            // post-processor option flags
-            doSetStaticFlags = true;
-            doSetCustomLightmapSettings = true;
-            doSetMaterialEmission = true;
-            doSetMaterialSmoothnessMetallic = false;
-            doInstantiateProxyReplacements = false;
-            doHideProxyObjects = false;
-            doRebuildNavMesh = false;
-        }
-
-        if (assetFilePath.Contains("mall-structure.fbx"))
-        {
-            // pre-processor option flags
-            doSetGlobalScale = true; // always true
-            doInstantiateAndPlaceInCurrentScene = true;
-            doSetColliderActive = true;
-            doSetUVActiveAndConfigure = false;
-            doDeleteReimportMaterialsTextures = true;
-            doAddBehaviorComponents = false;
-
-            // post-processor option flags
-            doSetStaticFlags = true;
-            doSetCustomLightmapSettings = false;
-            doSetMaterialEmission = false;
-            doSetMaterialSmoothnessMetallic = false;
-            doInstantiateProxyReplacements = false;
-            doHideProxyObjects = false;
-            doRebuildNavMesh = false;
-        }
-
-        if (assetFilePath.Contains("proxy-cameras.fbx"))
-        {
-            // pre-processor option flags
-            doSetGlobalScale = true; // always true
-            doInstantiateAndPlaceInCurrentScene = true;
-            doSetColliderActive = false;
-            doSetUVActiveAndConfigure = false;
-            doDeleteReimportMaterialsTextures = false;
-            doAddBehaviorComponents = false;
-
-            // post-processor option flags
-            doSetStaticFlags = false;
-            doSetCustomLightmapSettings = false;
-            doSetMaterialEmission = false;
-            doSetMaterialSmoothnessMetallic = false;
-            doInstantiateProxyReplacements = true;
-            doHideProxyObjects = true;
-            doRebuildNavMesh = false;
-        }
-
-        if (assetFilePath.Contains("proxy-people.fbx"))
-        {
-            // pre-processor option flags
-            doSetGlobalScale = true; // always true
-            doInstantiateAndPlaceInCurrentScene = true;
-            doSetColliderActive = false;
-            doSetUVActiveAndConfigure = false;
-            doDeleteReimportMaterialsTextures = true;
-            doAddBehaviorComponents = true;
-
-            // post-processor option flags
-            doSetStaticFlags = false;
-            doSetCustomLightmapSettings = false;
-            doSetMaterialEmission = false;
-            doSetMaterialSmoothnessMetallic = false;
-            doInstantiateProxyReplacements = true;
-            doHideProxyObjects = true;
-            doRebuildNavMesh = true;
-        }
-
-        if (assetFilePath.Contains("proxy-trees.fbx"))
-        {
-            // pre-processor option flags
-            doSetGlobalScale = true; // always true
-            doInstantiateAndPlaceInCurrentScene = true;
-            doSetColliderActive = false;
-            doSetUVActiveAndConfigure = false;
-            doDeleteReimportMaterialsTextures = true;
-            doAddBehaviorComponents = true;
-
-            // post-processor option flags
-            doSetStaticFlags = false;
-            doSetCustomLightmapSettings = false;
-            doSetMaterialEmission = false;
-            doSetMaterialSmoothnessMetallic = false;
-            doInstantiateProxyReplacements = true;
-            doHideProxyObjects = true;
-            doRebuildNavMesh = true;
-        }
-
-        if (assetFilePath.Contains("site.fbx"))
-        {
-            // pre-processor option flags
-            doSetGlobalScale = true; // always true
-            doInstantiateAndPlaceInCurrentScene = true;
-            doSetColliderActive = true;
-            doSetUVActiveAndConfigure = true;
-            doDeleteReimportMaterialsTextures = true;
-            doAddBehaviorComponents = false;
-
-            // post-processor option flags
-            doSetStaticFlags = true;
-            doSetCustomLightmapSettings = true;
-            doSetMaterialEmission = false;
-            doSetMaterialSmoothnessMetallic = false;
-            doInstantiateProxyReplacements = false;
-            doHideProxyObjects = false;
-            doRebuildNavMesh = true;
-        }
-
-        if (assetFilePath.Contains("speakers.fbx") || assetFilePath.Contains("speakers-simple.fbx"))
-        {
-            // pre-processor option flags
-            doSetGlobalScale = true; // always true
-            doInstantiateAndPlaceInCurrentScene = true;
-            doSetColliderActive = false;
-            doSetUVActiveAndConfigure = false;
-            doDeleteReimportMaterialsTextures = true;
-            doAddBehaviorComponents = true;
-
-            // post-processor option flags
-            doSetStaticFlags = false;
-            doSetCustomLightmapSettings = false;
-            doSetMaterialEmission = false;
-            doSetMaterialSmoothnessMetallic = false;
-            doInstantiateProxyReplacements = false;
-            doHideProxyObjects = false;
-            doRebuildNavMesh = false;
-        }
-
-        //
-        // these are temporary fixes or experimental models for testing
-        //
-        if (assetFilePath.Contains("temp-fix.fbx"))
-        {
-            // pre-processor option flags
-            doSetGlobalScale = true; // always true
-            doInstantiateAndPlaceInCurrentScene = true;
-            doSetColliderActive = false;
-            doSetUVActiveAndConfigure = false;
-            doDeleteReimportMaterialsTextures = true;
-            doAddBehaviorComponents = false;
-
-            // post-processor option flags
-            doSetStaticFlags = false;
-            doSetCustomLightmapSettings = false;
-            doSetMaterialEmission = false;
-            doSetMaterialSmoothnessMetallic = false;
-            doInstantiateProxyReplacements = false;
-            doHideProxyObjects = false;
-            doRebuildNavMesh = false;
-        }
-
-        if (assetFilePath.Contains("experimental-simple.fbx"))
-        {
-            // pre-processor option flags
-            doSetGlobalScale = true; // always true
-            doInstantiateAndPlaceInCurrentScene = true;
-            doSetColliderActive = false;
-            doSetUVActiveAndConfigure = true;
-            doDeleteReimportMaterialsTextures = true;
-            doAddBehaviorComponents = false;
-
-            // post-processor option flags
-            doSetStaticFlags = true;
-            doSetCustomLightmapSettings = true;
-            doSetMaterialEmission = true;
-            doSetMaterialSmoothnessMetallic = false;
-            doInstantiateProxyReplacements = false;
-            doHideProxyObjects = false;
-            doRebuildNavMesh = true;
-        }
+        // get the model import settings 
+        AssetImportGlobals.ModelImportParamsByName = ManageImportSettings.GetModelImportParamsByName(globalAssetFilePath);
 
         //
         // now execute all AssetImportUpdate PreProcessor option flags marked as true
         //
 
-        if (doSetGlobalScale)
+        if (AssetImportGlobals.ModelImportParamsByName.doSetGlobalScale)
         {
             SetGlobalScale(modelImporter);
         }
 
-        if (doInstantiateAndPlaceInCurrentScene)
+        if (AssetImportGlobals.ModelImportParamsByName.doInstantiateAndPlaceInCurrentScene)
         {
             InstantiateAndPlaceAssetAsGameObject(globalAssetFilePath, currentScene);
         }
 
-        if (doSetColliderActive)
+        if (AssetImportGlobals.ModelImportParamsByName.doSetColliderActive)
         {
             SetColliderActive(modelImporter);
         }
 
-        if (doSetUVActiveAndConfigure)
+        if (AssetImportGlobals.ModelImportParamsByName.doSetUVActiveAndConfigure)
         {
             SetUVActiveAndConfigure(modelImporter);
         }
 
-        if (doDeleteReimportMaterialsTextures)
+        if (AssetImportGlobals.ModelImportParamsByName.doDeleteReimportMaterialsTextures)
         {
             DeleteReimportMaterialsTextures(globalAssetFilePath);
         }
 
-        if (doAddBehaviorComponents)
+        if (AssetImportGlobals.ModelImportParamsByName.doAddBehaviorComponents)
         {
             AddBehaviorComponentsByName(globalAssetFileName);
         }
@@ -1831,37 +1492,37 @@ public class AssetImportUpdate : AssetPostprocessor {
         // execute all AssetImportUpdate PostProcessor option flags marked as true
         //
 
-        if (doSetStaticFlags)
+        if (AssetImportGlobals.ModelImportParamsByName.doSetStaticFlags)
         {
-            SetStaticFlagsByName(globalAssetFilePath);
+            SetStaticFlagsByName(globalGameObjectFromAsset);
         }
 
-        if (doSetCustomLightmapSettings)
+        if (AssetImportGlobals.ModelImportParamsByName.doSetCustomLightmapSettings)
         {
-            SetCustomLightmapSettingsByName(globalAssetFilePath);
+            SetCustomLightmapSettingsByName(globalGameObjectFromAsset);
         }
 
-        if (doSetMaterialEmission)
+        if (AssetImportGlobals.ModelImportParamsByName.doSetMaterialEmission)
         {
             SetMaterialEmissionByName();
         }
 
-        if (doSetMaterialSmoothnessMetallic)
+        if (AssetImportGlobals.ModelImportParamsByName.doSetMaterialSmoothnessMetallic)
         {
             SetMaterialSmoothnessMetallicByName();
         }
 
-        if (doInstantiateProxyReplacements)
+        if (AssetImportGlobals.ModelImportParamsByName.doInstantiateProxyReplacements)
         {
             InstantiateProxyReplacements(globalAssetFileName);
         }
 
-        if (doHideProxyObjects)
+        if (AssetImportGlobals.ModelImportParamsByName.doHideProxyObjects)
         {
             HideProxyObjects(globalAssetFileName);
         }
 
-        if (doRebuildNavMesh)
+        if (AssetImportGlobals.ModelImportParamsByName.doRebuildNavMesh)
         {
             RebuildNavMesh();
         }

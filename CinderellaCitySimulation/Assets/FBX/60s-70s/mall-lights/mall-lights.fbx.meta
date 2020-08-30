@@ -8,12 +8,32 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: DefaultMaterial
-    second: {fileID: 2100000, guid: 5b433862565a70446a0f2897b1b0dff6, type: 2}
+    second: {fileID: 2100000, guid: d5e597966c275c54dae894ea3a7acad7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - blue mall ceiling
+    second: {fileID: 2100000, guid: c0596e860be2d3d44b6adc774d85f9ff, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - blue mall columns
+    second: {fileID: 2100000, guid: b43c2b541cbd90b42bffd2db4c8ce4d0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - blue mall cove
+    second: {fileID: 2100000, guid: 5e18668809b0834438f29372ed0fc10d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - blue mall fountain planter intense
+    second: {fileID: 2100000, guid: 8c939eb89e7adff4dbb90c9fdbfcd42d, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: LIGHT - cinder alley incandescent
-    second: {fileID: 2100000, guid: 3337ed2ba9dac7d44be8150f339f6202, type: 2}
+    second: {fileID: 2100000, guid: eb0e5e52b5ac54746a85e1eed3a1c5f3, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -62,18 +82,38 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: LIGHT - track lighting
+    second: {fileID: 2100000, guid: 62afc634665c3884da31f4d1124c989e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - blue mall light fixture metal
+    second: {fileID: 2100000, guid: 5c8f8d786d3d9fc40b8eb86e9469041e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - ceiling fixture metal
     second: {fileID: 2100000, guid: 71db5f298f09aab48b3129da320a4574, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - gas lamp glass
+    second: {fileID: 2100000, guid: 1fd869863dae63a4fbd62a65f3918f23, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - gas lamp metal
-    second: {fileID: 2100000, guid: 2cb684fce2229614da7e3fa7fd6a90cc, type: 2}
+    second: {fileID: 2100000, guid: 1a7a31ed0c9e22842afb06fb35a1a364, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: mall - polished concrete
-    second: {fileID: 2100000, guid: b18af422907301b4d9d3807205797cc8, type: 2}
+    second: {fileID: 2100000, guid: d1976e4af063264498823572b34993a7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - track lighting black
+    second: {fileID: 2100000, guid: 13fe1d62ba5bc5840b2a9bc1fd0632e5, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
