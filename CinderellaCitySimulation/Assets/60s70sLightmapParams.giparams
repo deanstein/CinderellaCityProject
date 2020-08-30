@@ -12,9 +12,9 @@ LightmapParameters:
   clusterResolution: 0.5
   irradianceBudget: 1788
   irradianceQuality: 131072
-  backFaceTolerance: 0.9
+  backFaceTolerance: 1
   isTransparent: 0
-  modellingTolerance: 0.001
+  modellingTolerance: 0.0001
   systemTag: -1
   edgeStitching: 1
   blurRadius: 2
