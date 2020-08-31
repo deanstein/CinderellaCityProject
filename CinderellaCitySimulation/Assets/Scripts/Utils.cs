@@ -98,6 +98,19 @@ public class Utils
             return gameObjectMeshPosList;
         }
 
+        // determine if an object is close enough to a valid nav mesh point to be considered on the nav mesh
+        public static bool GetIsOnNavMeshWithinTolerance(GameObject gameObjectToMeasure, float tolerance)
+        {
+            if (GetFastDistance(gameObjectToMeasure.transform.position, GetNearestPointOnNavMesh(gameObjectToMeasure.transform.position, tolerance)) < tolerance)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         // get a random point on the scene's current navmesh within some radius from a starting point
         public static Vector3 GetNearestPointOnNavMesh(Vector3 startingPoint, float radius)
         {

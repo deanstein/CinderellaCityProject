@@ -16,6 +16,8 @@ public class ManageFPSControllers : MonoBehaviour {
         public static GameObject activeFPSController;
         public static Transform activeFPSControllerTransform;
         public static Vector3 activeFPSControllerCameraForward;
+        public static bool isActiveFPSControllerOnNavMesh;
+        public static Vector3 activeFPSControllerNavMeshPosition;
 
         public Texture2D outgoingFPSControllerCameraTexture;
     }
@@ -42,6 +44,25 @@ public class ManageFPSControllers : MonoBehaviour {
         FPSControllerGlobals.activeFPSControllerTransform = this.transform;
         // record the forward vector of the active FPSController camera for other scripts to access
         FPSControllerGlobals.activeFPSControllerCameraForward = this.transform.GetChild(0).GetComponent<Camera>().transform.forward;
+    }
+
+    // update the active controller's nav mesh data
+    public void UpdateActiveFPSControllerNavMeshData()
+    {
+        // determine if the controller is close enough to a nav mesh point 
+        // to be considered on the nav mesh
+        if (Utils.GeometryUtils.GetIsOnNavMeshWithinTolerance(FPSControllerGlobals.activeFPSControllerTransform.gameObject, 5.0f))
+        {
+            FPSControllerGlobals.isActiveFPSControllerOnNavMesh = true;
+        }
+        else
+        {
+            FPSControllerGlobals.isActiveFPSControllerOnNavMesh = false;
+        }
+
+        // get the nearest point on the nav mesh to the controller
+        // this will be the world origin if a point is not found
+        FPSControllerGlobals.activeFPSControllerNavMeshPosition = Utils.GeometryUtils.GetNearestPointOnNavMesh(FPSControllerGlobals.activeFPSControllerTransform.position, 5.0f);
     }
 
     // reposition and realign this FPSController to match another camera in the scene
@@ -161,8 +182,9 @@ public class ManageFPSControllers : MonoBehaviour {
 
     private void Update()
     {
-        // record the active FPSController position globally for other scripts to access
+        // record certain FPSController data globally for other scripts to access
         UpdateActiveFPSControllerPositionAndCamera();
+        UpdateActiveFPSControllerNavMeshData();
     }
 }
 
