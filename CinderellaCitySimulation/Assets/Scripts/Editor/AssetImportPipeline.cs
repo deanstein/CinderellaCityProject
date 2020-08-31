@@ -748,6 +748,11 @@ public class AssetImportUpdate : AssetPostprocessor {
                 SetCustomMaterialEmissionIntensity(dependencyPathString, 3.0F);
             }
 
+            if (dependencyPathString.Contains("high intensity sodium"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, 2.0F);
+            }
+
             if (dependencyPathString.Contains("low intensity yellow"))
             {
                 SetCustomMaterialEmissionIntensity(dependencyPathString, 1.0F);
@@ -811,11 +816,6 @@ public class AssetImportUpdate : AssetPostprocessor {
             //
             // apply general rules
             //
-
-            if (dependencyPathString.Contains("drywall"))
-            {
-                SetMaterialSmoothness(dependencyPathString, 0.02F);
-            }
 
             if (dependencyPathString.Contains("glass")
                 || dependencyPathString.Contains("mirror"))
