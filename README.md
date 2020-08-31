@@ -52,6 +52,12 @@ The following scripts are critical to the behavior and processes underpinning th
 	- ExtractTexturesFromCubeMap.cs
 		- Adds a menu option in Window -> CubeSplitter, which allows for extracting the texture files from a CubeMap for editing
 		- Sourced from a 3rd party on the Unity forums (attribution in code)
+	- ManageEditorScenes.cs
+		- Responsible for toggling between scenes, or loading scenes additively, in the editor environment
+	- ManageImportSettings.cs
+		- Contains import settings for various importable files, used by AssetImportPipeline to apply certain settings to certain files
+	- ManageProxyMapping.cs
+		- Contains proxy maps for certain importable files and certain prefabs (trees, people, etc)
 	- ManageTags.cs
 		- Responsible for creating new Tags in the project, or returning existing Tags if available
 	- RenderCubeMapFromPosition.cs
@@ -70,11 +76,13 @@ The following scripts are critical to the behavior and processes underpinning th
 		- Responsible for creating bespoke UI layouts, depending on the name of its host object (for example, different menus have different layouts or UI elements)
 	- FollowPathOnNavMesh.cs
 		- Responsible finding destinations and paths on a Navigation Mesh for 3D animated people
+	- FollowPlayer.cs
+		- Responsible for making an object's position match the current player's position at all times
 	- LoadAllScenesAsync.cs
 		- Used only on the Loading Screen, and responsible for loading all game Scenes into memory, before proceeding with showing the Main Menu
 		- Allows for seamless switching between eras
-	- ManageCameraEffects.cs
-		- Responsible for managing active and available camera effects, like PostProcessProfiles
+	- ManageCameraActions.cs
+		- Responsible for managing camera actions, including taking screenshots and applying effects
 	- ManageFPSControllers.cs
 		- Responsible for managing the location, rotation, and behavior of FPS Controllers (player) in Scenes
 	- ManageNPCControllers.cs
@@ -108,7 +116,9 @@ The following scripts are critical to the behavior and processes underpinning th
 		- Responsible for toggling entire Scenes and associated UI on certain input events
 	- TransformScreenSpaceObject.cs
 		- Responsible for positioning screen space objects (UI) based on the available screen real estate and proportions
-	- UpdateAnimatorBySpeed.cs
+	- UpdateFPSAgentByState.cs
+		- Responsible for toggling the agent attached to the player on/off to enable the agent to relocate to the player's position when required.
+	- UpdateNPCAnimatorByState.cs
 		- Responsible for changing a NavMesh agent's animator to various poses depending on the speed of the agent
 	- Utils.cs
 		- Holds a variety of low-level, common operations shared among other scripts
@@ -208,6 +218,11 @@ In scenes with an FPSController and FirstPersonCharacter (60s70s, 80s90s, AltFut
 				- *Agent* (Nav Mesh Agent)
 					- Allows the NPCs in the game to avoid colliding with the player, and enables the player to follow a path for "guided tours"
 				- Requires a Navigation Mesh to be present in the scene
+				- Requires Scripts:
+					- *FollowPlayer.cs* (Script Component)
+						- Responsible for making the FirstPersonAgent follow the player
+					- *UpdateFPSAgentByState.cs* (Script Component)
+						- Responsible for toggling the FPSAgent on/off to facilitate relocation when required
 		- **UILauncher** (GameObject)
 			- Holds scripts for generating UI (as children of the launcher), and for toggling between scenes
 				- Requires Scripts:
