@@ -1171,7 +1171,7 @@ public class AssetImportUpdate : AssetPostprocessor {
                 // tag this camera object as a delete candidate for the next import
                 cameraObject.tag = proxyReplacementDeleteTag;
 
-                // make the camera look at the plane
+                // make the camera looks at the plane
                 // this assumes the only child of the camera is a plane (a FormIt Group with LCS at the center of the plane)
                 cameraObject.transform.LookAt(child.GetChild(0).transform.position);
 
@@ -1180,13 +1180,6 @@ public class AssetImportUpdate : AssetPostprocessor {
                 PostProcessLayer existingLayer = Camera.main.GetComponent<PostProcessLayer>();
                 CopyComponent<PostProcessVolume>(existingVolume, cameraObject);
                 CopyComponent<PostProcessLayer>(existingLayer, cameraObject);
-
-                // this script writes a new image from the camera's view, from the Editor
-                // it will run once, then self-destruct
-                RenderCameraToImageSelfDestruct renderCameraScript = cameraObject.AddComponent<RenderCameraToImageSelfDestruct>();
-
-                // specify the path for the camera capture
-                renderCameraScript.filePath = UIGlobals.projectUIPath;
 
                 // disable the camera to prevent performance issues
                 camera.enabled = false;
@@ -1535,6 +1528,10 @@ public class AssetImportUpdate : AssetPostprocessor {
         {
             SetObjectAsChildOfSceneContainer(newlyInstantiatedFBXContainer);
         }
+
+        // save the scene
+        // required to see some of the post-processing changes take effect in the editor
+        EditorSceneManager.SaveOpenScenes();
 
         Utils.DebugUtils.DebugLog("END PostProcessing");
     }

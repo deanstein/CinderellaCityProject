@@ -7,13 +7,6 @@ using UnityEngine.SceneManagement;
 // this script also contains general object visibility utils used by other scripts
 public class ToggleObjectsByInputEvent : MonoBehaviour {
 
-    // these are passed in from AssetImportPipeline
-    public string objectType;
-    public string shortcut;
-
-    // used for console debugging
-    public string objectState;
-
      // watch for shortcuts every frame
     void Update()
     {

@@ -70,8 +70,6 @@ public class StringUtils
         // get the index of the scene we're in
         int sceneIndex = SceneGlobals.availableTimePeriodSceneNamesList.IndexOf(sceneName);
 
-        Utils.DebugUtils.DebugLog("Scene index: " + sceneIndex);
-
         if (sceneIndex != -1)
         {
             // now get the associated friendly name

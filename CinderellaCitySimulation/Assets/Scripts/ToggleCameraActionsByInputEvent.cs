@@ -1,9 +1,8 @@
-﻿using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using UnityEditor;
+using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 
 using System.Collections;
-using System.IO;
 
 // this script should be attached to FPSCharacter objects that need to watch for shortcuts to adjust camera effects
 public class ToggleCameraActionsByInputEvent : MonoBehaviour {
@@ -16,6 +15,12 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
 
     private void OnEnable()
     {
+        // if we're in screenshot mode, update all the cameras in this scene
+        if (EditorPrefs.GetBool(ManageCameraActions.CameraActionGlobals.screenshotModeFlag))
+        {
+            StartCoroutine(TakeScreenshots.CaptureAllThumbnailScreenshots());
+        }
+
         // optional: start a camera transition when the camera is enabled
         /*
         StartCoroutine(ToggleCameraActionsByInputEvent.ToggleCameraEffectWithTransition(this.gameObject, ManageCameraEffects.GetDefaultPostProcessProfileBySceneName(this.gameObject.scene.name), "FlashWhite", 0.2f));
@@ -25,7 +30,7 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
     // watch for shortcuts every frame
     void Update()
     {
-        // update the globally-available Post Process host
+        // update the globally-available camera host
         ManageCameraActions.CameraActionGlobals.activeCameraHost = this.gameObject;
 
         // define which effects belong to which shortcut
@@ -49,6 +54,17 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
         {
             TakeScreenshots.CaptureScreenshotOfCurrentCamera();
         }
+    }
+
+    void OnApplicationQuit()
+    {
+        // if in screenshot mode, copy the newly-created screenshots to their proper destination
+        if (EditorPrefs.GetBool(ManageCameraActions.CameraActionGlobals.screenshotModeFlag))
+        {
+            ManageCameraActions.ReplaceSceneThumbnailsInResources();
+        }
+
+        EditorPrefs.SetBool(ManageCameraActions.CameraActionGlobals.screenshotModeFlag, false);
     }
 }
 
@@ -80,7 +96,39 @@ public class TakeScreenshots
         // take the screenshot and store it at the given location
         ScreenCapture.CaptureScreenshot(screenshotPath + screenshotName);
 
-        Utils.DebugUtils.DebugLog("Captured a screenshot of the current camera at: " + screenshotPath + screenshotName);
+        Utils.DebugUtils.DebugLog("<b>Saved a screenshot of the current camera at: </b>" + screenshotPath + screenshotName);
+    }
+
+    // moves the current player around to all cameras requiring a screenshot
+    public static IEnumerator CaptureAllThumbnailScreenshots()
+    {
+        // get all thumbnail cameras in the current scene
+        GameObject[] cameraHostObjects = ManageCameraActions.GetAllThumbnailCamerasInScene();
+
+        // relocate the player to each of these camera host locations, and take a screenshot
+        foreach (GameObject cameraHost in cameraHostObjects)
+        {
+            // get the correct screenshot path based on the current context
+            string screenshotPath = ManageCameraActions.CameraActionGlobals.inGameScreenshotsPath;
+
+            // generate a file name based on the current context
+            string screenshotName = cameraHost.name + ManageCameraActions.CameraActionGlobals.screenshotFormat;
+
+            // move the player to the camera
+            ManageFPSControllers.RelocateAlignFPSControllerToCamera(cameraHost.name);
+
+            // wait for the relocation to take effet
+            yield return new WaitForSeconds(1);
+
+            // capture a screenshot without UI to the approprite path
+            ScreenCapture.CaptureScreenshot(screenshotPath + screenshotName);
+
+            // wait for the capture to complete
+            yield return new WaitForSeconds(1);
+        }
+
+        // exit when complete
+        EditorApplication.ExitPlaymode();
     }
 }
 

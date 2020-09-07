@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Rendering.PostProcessing;
@@ -91,7 +91,6 @@ public class ToggleSceneAndUIByInputEvent : MonoBehaviour {
 // utilities for toggling between scenes, and for toggling scene-specific UI elements
 public class ToggleSceneAndUI
 {
-
     // toggles all scene objects on, except those tagged with any sort of script host tag
     public static void ToggleSceneObjectsOnExceptScriptHosts(string sceneName)
     {
