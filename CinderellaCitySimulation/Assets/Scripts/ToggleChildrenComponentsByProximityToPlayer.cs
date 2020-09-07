@@ -65,15 +65,6 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
 
     private void Awake()
     {
-        // get the player
-        player = GameObject.FindWithTag("Player");
-
-        // get the player's camera
-        playerCamera = player.transform.GetChild(0).GetComponent<Camera>();
-
-        // get the initial player position
-        playerPosition = player.transform.position;
-
         // get all the children of this object - starting with their transforms
         childrenTransformsList = Utils.GeometryUtils.GetAllChildrenTransforms(this.transform);
 
@@ -108,6 +99,11 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
     {
         // on enable, set the current count to the max so we immediately update
         frameCount = maxFramesBetweenCheck;
+
+        // get the player, its camera, and its position
+        player = ManageFPSControllers.FPSControllerGlobals.activeFPSController;
+        playerCamera = player.GetComponentInChildren<Camera>();
+        playerPosition = player.transform.position;
     }
 
     // Update is called once per frame

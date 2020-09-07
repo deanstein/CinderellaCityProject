@@ -111,7 +111,7 @@ public class Utils
             }
         }
 
-        // get a random point on the scene's current navmesh within some radius from a starting point
+        // get a point on the scene's current navmesh within some radius from a starting point
         public static Vector3 GetNearestPointOnNavMesh(Vector3 startingPoint, float radius)
         {
             // set up the hit and final position
@@ -226,6 +226,29 @@ public class Utils
             // optional: visualize the location and a connecting line
             //Debug.DrawLine(this.gameObject.transform.position, finalPosition, Color.red, 100f);
             //Debug.DrawLine(finalPosition, new Vector3(finalPosition.x, finalPosition.y + 1, finalPosition.z), Color.red, 100f);
+        }
+
+        // used to correct nav mesh points which are just slightly above the floor
+        // ensures the player will always be on the floor when relocating to a camera
+        // returns zero if the raycast didn't hit anything
+        public static Vector3 GetNearestRaycastPointBelowPos(Vector3 initialPosition, float maxDistance)
+        {
+            NavMeshHit navhit;
+            if (NavMesh.SamplePosition(initialPosition, out navhit, maxDistance, NavMesh.AllAreas))
+            {
+                Ray r = new Ray(navhit.position, Vector3.down);
+                RaycastHit hit;
+                if (Physics.Raycast(r, out hit, maxDistance, LayerMask.GetMask("Default")))
+                {
+                    //Debug.Log("Hit distance: " + hit.distance);
+                    Vector3 adjustedPosition = initialPosition;
+                    adjustedPosition.y = initialPosition.y - hit.distance;
+
+                    return adjustedPosition;
+                }
+            }
+
+            return Vector3.zero;
         }
 
         // define how to get the max height of a gameObject

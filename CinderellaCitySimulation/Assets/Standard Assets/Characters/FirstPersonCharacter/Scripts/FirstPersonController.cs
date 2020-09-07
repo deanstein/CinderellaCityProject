@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 using UnityStandardAssets.Utility;
@@ -59,7 +59,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         public void MouseReset()
         {
-            m_MouseLook.Init(transform, m_Camera.transform);
+            if (m_MouseLook != null && m_Camera != null)
+            {
+                m_MouseLook.Init(transform, m_Camera.transform);
+            }
         }
 
         // Update is called once per frame

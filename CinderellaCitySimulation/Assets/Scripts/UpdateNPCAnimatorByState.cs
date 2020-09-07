@@ -25,10 +25,13 @@ public class UpdateNPCAnimatorByState : MonoBehaviour
 
     private void Update()
     {
-        // if we're just starting, and the navmesh agent hasn't been enabled, set the animator to idle
+        // if the agent hasn't been enabled, agive it a walking animation
+        // so that walking NPCs look normal as they calculate their nav mesh paths
         if (!thisAgent.enabled)
         {
-            thisAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(ManageNPCControllers.GetIdleAnimatorControllerByGender(this.name));
+            thisAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(ManageNPCControllers.GetWalkingAnimatorControllerByGender(this.name));
+
+            thisAnimator.speed = thisAgent.velocity.magnitude;
         }
 
         // otherwise, when the agent is enabled, match the animation speed with the velocity
@@ -41,7 +44,6 @@ public class UpdateNPCAnimatorByState : MonoBehaviour
             }
 
             thisAnimator.speed = thisAgent.velocity.magnitude;
-
         }
 
     }

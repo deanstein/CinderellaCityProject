@@ -1,9 +1,10 @@
 ﻿
+using UnityEditor;
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Rendering.PostProcessing;
 
-using System.Collections;
 using System.IO;
 
 public class ManageCameraActions : MonoBehaviour
@@ -13,6 +14,15 @@ public class ManageCameraActions : MonoBehaviour
         // gets the most recent postProcessingHost
         public static GameObject activeCameraHost;
 
+        // all cameras used for UI screenshots
+        public static GameObject[] allThumbnailCameras;
+
+        // all cameras used for guided tour waypoints
+        public static GameObject[] allPointOfInterestCameras;
+
+        // number of seconds to wait for a thumbnail camera to be captured
+        public static int thumbnailCameraCaptureDelay = 1;
+
         // record the highest known camera effect priority
         public static float highestKnownCameraEffectPriority = 0;
 
@@ -21,10 +31,13 @@ public class ManageCameraActions : MonoBehaviour
 
         // gets the currently-active camera effect
         public static string activeCameraEffect;
-        
+
         //
         // define paths and file names
         //
+
+        // screenshot mode flag
+        public static string screenshotModeFlag = "isInScreenshotMode";
 
         // define where camera effects like PostProcessProfiles are stored
         public static string cameraEffectsPath = "Effects/"; // in Resources
@@ -71,29 +84,29 @@ public class ManageCameraActions : MonoBehaviour
         // if we're not in the editor, set the screenshot path as required
         if (!Application.isEditor)
         {
-            string screenshotFileName = GenerateInGameScreenshotFileName();
+            string screenshotFileName = GetInGameScreenshotFileName();
 
             return screenshotFileName;
         }
         // otherwise, we're in the editor, so the screenshot path is different
         else
         {
-            string screenshotFileName = GenerateEditorScreenshotFileName(CameraActionGlobals.activeCameraHost);
+            string screenshotFileName = UIGlobals.projectUIPath + (CameraActionGlobals.activeCameraHost);
 
             return screenshotFileName;
         }
     }
 
-    // define how to generate the screenshot file name when taken from in the editor
-    public static string GenerateEditorScreenshotFileName(GameObject cameraHost)
+    // get all the thumbnail cameras in this scene
+    public static GameObject[] GetAllThumbnailCamerasInScene()
     {
-        string screenshotName = cameraHost.name + CameraActionGlobals.screenshotFormat;
+        GameObject[] allThumbnailCameras = GameObject.FindGameObjectsWithTag(ManageTaggedObjects.TaggedObjectGlobals.deleteProxyReplacementTagPrefix + "Cameras");
 
-        return screenshotName;
+        return allThumbnailCameras;
     }
 
-    // define how to generate the screenshot file name when taken from in-game
-    public static string GenerateInGameScreenshotFileName()
+    // get the correct screenshot file name when taken from in-game
+    public static string GetInGameScreenshotFileName()
     {
         // define the delimeter for screenshots
         string delimeter = " ";
@@ -111,6 +124,25 @@ public class ManageCameraActions : MonoBehaviour
         string screenshotName = dateStamp + delimeter + timeStamp + delimeter + sceneName + CameraActionGlobals.screenshotFormat;
 
         return screenshotName;
+    }
+
+    // copies all scene screenshots from the computer back to resources, replacing the previous
+    public static void ReplaceSceneThumbnailsInResources()
+    {
+        GameObject[] thumbnailCameras = GetAllThumbnailCamerasInScene();
+
+        // for each thumbnail camera, copy the corresponding screenshot
+        // from the game path to the resources path
+        foreach (GameObject thumbnailCamera in thumbnailCameras)
+        {
+            // determine the temporary and final (resources) file path based on this camera's name
+            string temporaryFilePath = CameraActionGlobals.inGameScreenshotsPath + thumbnailCamera.name + CameraActionGlobals.screenshotFormat;
+            string resourcesFilePath = UIGlobals.projectUIPath + thumbnailCamera.name + CameraActionGlobals.screenshotFormat;
+
+            Utils.DebugUtils.DebugLog("<b>Replacing</b> " + temporaryFilePath + " <b>with</b> " + resourcesFilePath);
+
+            FileUtil.ReplaceFile(temporaryFilePath, resourcesFilePath);
+        }
     }
 
     // increment the current camera effect priority
