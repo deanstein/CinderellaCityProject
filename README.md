@@ -228,20 +228,18 @@ In scenes with an FPSController and FirstPersonCharacter (60s70s, 80s90s, AltFut
 				- Requires Scripts:
 					- *CreateScreenSpaceUILayoutByName* (Script Component)
 						- Responsible for creating the Heads Up Display layout when in-game
-					- **oggleSceneAndUIByInputEvent* (Script Component)
+					- **ToggleSceneAndUIByInputEvent* (Script Component)
 						- Responsible for watching for keyboard events and toggling between Scenes (including menus)
 		- **CubeMapRenderPosition** (GameObject)
 			- Represents a position in space from which to execute CubeMap updates, for use in glassy reflections
 
--**Navigation Mesh**
+**Navigation Mesh**
 
 First-person scenes with NPCs require the setup and baking of a Navigation Mesh for each scene, to allow the NPCs to find destinations and follow paths.
 
 Each scene requires its own navigation mesh to be baked, and these meshes should be re-baked when scene geometry changes in a way that would affect navigation abilities.
 
-- Open the scene where the navigation mesh needs to be updated
-- Switch to the Navigation panel (Window > AI > Navigation)
-- Bake the nav mesh
+- Run the "Update Nav Meshes for All Scenes" item in the CCP menu
 
 **Occlusion Culling**
 
@@ -250,15 +248,7 @@ First-person scenes require the setup and baking of occlusion culling data to ma
 Because the Cinderella City Project uses multiple scenes opened additively, the occlusion culling data must be baked with all scenes open. To bake occlusion properly for all scenes:
 
 
-- Open the Loading Screen scene
-- Additively open the rest of the scenes:
-	- Main Menu
-	- Pause Menu
-	- 60s70s
-	- 80s90s
-	- AltFuture
-- Go to the Occlusion Culling panel (Window > Rendering > Occlusion Culling) and bake the Occlusion Culling data with all scenes open
-- Occlusion culling data will be stored in the Loading Screen scene, and can only be used when launching scenes from the Loading Screen
+- Run the "Update Occlusion Culling for All Scenes" item in the CCP menu
 
 
 
