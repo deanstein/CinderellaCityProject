@@ -10,6 +10,11 @@ public class ManageFPSControllers : MonoBehaviour {
     // this script needs to be attached to each FPSController in each scene
     public class FPSControllerGlobals
     {
+        // marked true when the user is in-game, toggling between eras via shortcut input
+        // helps ensure the player doesn't fall when time-traveling to an era 
+        // that doesn't have a surface to stand on in that location
+        public static bool isTimeTraveling = false;
+
         // all FPSControllers
         public static List<GameObject> allFPSControllers = new List<GameObject>();
 
@@ -19,6 +24,12 @@ public class ManageFPSControllers : MonoBehaviour {
         public static Vector3 activeFPSControllerCameraForward;
         public static bool isActiveFPSControllerOnNavMesh;
         public static Vector3 activeFPSControllerNavMeshPosition;
+
+        // this scene's first FPSController location
+        // which is used to calculate turning gravity back on after time traveling
+        public static Vector3 initialFPSControllerLocation;
+        // the max distance a player can go before gravity is re-enabled after time-travling
+        public static float maxDistanceBeforeResettingGravity = 0.5f;
 
         // the current nav mesh agent - the FPSController should only ever have one of these
         public static NavMeshAgent activeFPSControllerNavMeshAgent;
@@ -146,6 +157,10 @@ public class ManageFPSControllers : MonoBehaviour {
     // reposition and realign this FPSController to match the given one
     public static void RelocateAlignFPSControllerToFPSController(Transform FPSControllerTransformToMatch)
     {
+        // mark that the player is time-traveling, so gravity gets temporarily disabled
+        // in case the next era has no floor there
+        FPSControllerGlobals.isTimeTraveling = true;
+
         // get the current FPSController
         GameObject activeFPSController = FPSControllerGlobals.activeFPSController;
         GameObject activeFirstPersonCharacter = activeFPSController.transform.GetChild(0).gameObject;
@@ -163,7 +178,6 @@ public class ManageFPSControllers : MonoBehaviour {
 
         // set the FirstPersonCharacter height to the camera height
         activeFirstPersonCharacter.transform.position = new Vector3(activeFirstPersonCharacter.transform.position.x, firstPersonCharacterToMatch.transform.position.y, activeFirstPersonCharacter.transform.position.z);
-
     }
 
     // used to allow AI control of the FPSController,
@@ -245,6 +259,31 @@ public class ManageFPSControllers : MonoBehaviour {
         }
     }
 
+    // waits until the player moves a given max distance before restoring gravity
+    // prevents the player from falling when time-traveling to an era with no floor at that location
+    public void UpdateFPSControllerGravityByState(Vector3 initialPosition, float maxDistance)
+    {
+        // only do something if the time traveling flag is set
+        if (FPSControllerGlobals.isTimeTraveling)
+        {
+            // every frame, get the position as the player moves,
+            // but lock the Y-axis to prevent falling, just in case there's no floor
+            Vector3 newPosition = new Vector3(this.transform.position.x, FPSControllerGlobals.initialFPSControllerLocation.y, this.transform.position.z);
+
+            this.transform.position = newPosition;
+
+            // keep track of the player's distance from the initial position
+            float distance = Utils.GeometryUtils.GetFastDistance(initialPosition, FPSControllerGlobals.activeFPSControllerTransform.position);
+
+            // when the player has moved a bit, turn off the time traveling flag
+            // so the next position update won't have the locked Y axis
+            if (distance > maxDistance)
+            {
+                FPSControllerGlobals.isTimeTraveling = false;
+            }
+        }
+    }
+
     private void OnEnable()
     {
         // update the active controller as this object
@@ -264,6 +303,9 @@ public class ManageFPSControllers : MonoBehaviour {
         // lock the cursor so it doesn't display on-screen
         // need to do this on every FPSController - even disabled FPSControllers can keep the cursor visible
         EnableMouseLockOnAllFPSControllers();
+
+        // record this initial position so we can freeze the player's Y-position here when gravity is off
+        FPSControllerGlobals.initialFPSControllerLocation = this.transform.position;
     }
 
     private void OnDisable()
@@ -280,6 +322,11 @@ public class ManageFPSControllers : MonoBehaviour {
         // record certain FPSController data globally for other scripts to access
         UpdateActiveFPSControllerPositionAndCamera();
         UpdateActiveFPSControllerNavMeshData();
+
+        // when the player is time traveling, temporarily pause their gravity in case there's no floor below
+        // or restore their gravity if they've moved after time-traveling
+        // (skipped if the time-traveling flag isn't set to true)
+        UpdateFPSControllerGravityByState(FPSControllerGlobals.initialFPSControllerLocation, FPSControllerGlobals.maxDistanceBeforeResettingGravity);
     }
 }
 
