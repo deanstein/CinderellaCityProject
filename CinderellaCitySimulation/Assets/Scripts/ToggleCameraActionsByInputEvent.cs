@@ -15,12 +15,13 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
 
     private void OnEnable()
     {
+#if UNITY_EDITOR
         // if we're in screenshot mode, update all the cameras in this scene
         if (EditorPrefs.GetBool(ManageCameraActions.CameraActionGlobals.screenshotModeFlag))
         {
             StartCoroutine(TakeScreenshots.CaptureAllThumbnailScreenshots());
         }
-
+#endif
         // optional: start a camera transition when the camera is enabled
         /*
         StartCoroutine(ToggleCameraActionsByInputEvent.ToggleCameraEffectWithTransition(this.gameObject, ManageCameraEffects.GetDefaultPostProcessProfileBySceneName(this.gameObject.scene.name), "FlashWhite", 0.2f));
@@ -58,6 +59,7 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
 
     void OnApplicationQuit()
     {
+#if UNITY_EDITOR
         // if in screenshot mode, copy the newly-created screenshots to their proper destination
         if (EditorPrefs.GetBool(ManageCameraActions.CameraActionGlobals.screenshotModeFlag))
         {
@@ -65,6 +67,7 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
         }
 
         EditorPrefs.SetBool(ManageCameraActions.CameraActionGlobals.screenshotModeFlag, false);
+#endif
     }
 }
 
@@ -126,9 +129,10 @@ public class TakeScreenshots
             // wait for the capture to complete
             yield return new WaitForSeconds(1);
         }
-
+#if UNITY_EDITOR
         // exit when complete
         EditorApplication.ExitPlaymode();
+#endif
     }
 }
 

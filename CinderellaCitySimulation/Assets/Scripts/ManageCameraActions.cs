@@ -129,6 +129,7 @@ public class ManageCameraActions : MonoBehaviour
     // copies all scene screenshots from the computer back to resources, replacing the previous
     public static void ReplaceSceneThumbnailsInResources()
     {
+#if UNITY_EDITOR
         GameObject[] thumbnailCameras = GetAllThumbnailCamerasInScene();
 
         // for each thumbnail camera, copy the corresponding screenshot
@@ -143,6 +144,7 @@ public class ManageCameraActions : MonoBehaviour
 
             FileUtil.ReplaceFile(temporaryFilePath, resourcesFilePath);
         }
+#endif
     }
 
     // increment the current camera effect priority
