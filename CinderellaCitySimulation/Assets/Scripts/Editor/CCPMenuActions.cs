@@ -1,12 +1,20 @@
 ﻿using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 using System.IO;
+using System.Collections.Generic;
 
 [ExecuteInEditMode]
 public class CCPMenuActions : MonoBehaviour
 {
+    [MenuItem("Cinderella City Project/Open Scene/Open All Scenes Additively")]
+    public static void OpenAllScenesAdditively()
+    {
+        ManageEditorScenes.LoadEditorScenesAdditively(SceneGlobals.loadingSceneName, SceneGlobals.allGameplaySceneNames);
+    }
+
     [MenuItem("Cinderella City Project/Open Scene/Loading")]
     public static void OpenLoadingScene()
     {
@@ -70,9 +78,47 @@ public class CCPMenuActions : MonoBehaviour
     [MenuItem("Cinderella City Project/Update All Scenes Occlusion Culling")]
     public static void UpdateOcclusionCulling()
     {
-        PlayFullSimulationInEditor();
+        // load all scenes additively
+        ManageEditorScenes.LoadEditorScenesAdditively(SceneGlobals.loadingSceneName, SceneGlobals.allGameplaySceneNames);
+
+        // of the open scenes, get the time period scene containers
+        List<GameObject> timePeriodSceneContainers = ManageEditorScenes.GetAllTimePeriodSceneContainers();
+
+        // record the original positions of the time period scene containers
+        // so we can move the containers back to their original positions when done
+        List<Vector3> originalTimePeriodSceneContainerPositions = new List<Vector3>();
+
+        // for each of the time period scene containers, move them up at intervals
+        // so that when we bake OC data, the different scenes are not on top of each other
+        for (var i = 0; i < timePeriodSceneContainers.Count; i++)
+        {
+            // the new height will be a multiple of the global height interval and i
+            float addNewHeight = i * EditorSceneGlobals.moveSceneContainerIntervalForOC;
+
+            Vector3 originalPosition = timePeriodSceneContainers[i].transform.position;
+            originalTimePeriodSceneContainerPositions.Add(originalPosition);
+
+            Vector3 newPosition = new Vector3(originalPosition.x, originalPosition.y + addNewHeight, originalPosition.z);
+
+            // only bother moving the scene container if the new height is not 0
+            if (addNewHeight != 0)
+            {
+                timePeriodSceneContainers[i].transform.position = newPosition;
+            }
+        }
+
+        // compute the static occlusion culling after the scenes are moved to intervals
         StaticOcclusionCulling.Compute();
-        // TODO: return to the loading screen once occlusion culling is computed
+
+        // return the scene containers to their original positions
+        for (var i = 0; i < timePeriodSceneContainers.Count; i++)
+        {
+            // only bother moving the scene container if its position doesn't match the original position
+            if (timePeriodSceneContainers[i].transform.position != originalTimePeriodSceneContainerPositions[0])
+            {
+                timePeriodSceneContainers[i].transform.position = originalTimePeriodSceneContainerPositions[0];
+            }
+        }
     }
 
     [MenuItem("Cinderella City Project/Update All Scenes Nav Meshes")]
@@ -106,7 +152,7 @@ public class CCPMenuActions : MonoBehaviour
     public static void SetAllStaticFlagsInCurrentScene()
     {
         // get the current scene's container
-        GameObject sceneContainer = AssetImportUpdate.GetCurrentSceneContainer();
+        GameObject sceneContainer = ManageEditorScenes.GetSceneContainerObject(SceneManager.GetActiveScene());
 
         // get all the scene objects
         GameObject[] sceneObjects = AssetImportUpdate.GetAllTopLevelChildrenInObject(sceneContainer);
@@ -122,7 +168,7 @@ public class CCPMenuActions : MonoBehaviour
     public static void SetAllLightmapResolutionsInCurrentScene()
     {
         // get the current scene's container
-        GameObject sceneContainer = AssetImportUpdate.GetCurrentSceneContainer();
+        GameObject sceneContainer = ManageEditorScenes.GetSceneContainerObject(SceneManager.GetActiveScene());
 
         // get all the scene objects
         GameObject[] sceneObjects = AssetImportUpdate.GetAllTopLevelChildrenInObject(sceneContainer);

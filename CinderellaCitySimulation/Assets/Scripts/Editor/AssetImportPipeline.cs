@@ -236,20 +236,11 @@ public class AssetImportUpdate : AssetPostprocessor {
         globalMaxPostProcessingHits = globalMaxPostProcessingHits + 2;
     }
 
-    public static GameObject GetCurrentSceneContainer()
-    {
-        // place the object in the scene's container (used to disable all scene objects)
-        GameObject[] rootObjects = SceneManager.GetActiveScene().GetRootGameObjects();
-        // this assumes there's only 1 object in the scene: a container for all objects
-        GameObject sceneContainer = rootObjects[0];
-        return sceneContainer;
-    }
-
     // sets an object as a child of the scene container
     // needs to happen in post-processor
     static void SetObjectAsChildOfSceneContainer(GameObject prefabToModify)
     {
-        GameObject sceneContainer = GetCurrentSceneContainer();
+        GameObject sceneContainer = ManageEditorScenes.GetSceneContainerObject(SceneManager.GetActiveScene());
 
         prefabToModify.transform.SetParent(sceneContainer.transform);
     }
