@@ -161,7 +161,7 @@ public class FollowPathOnNavMesh : MonoBehaviour
 
                 thisAgent.SetPath(path);
 
-                Utils.DebugUtils.DebugLog("Agent " + thisAgent.gameObject.name + " reached its destination.");
+                //Utils.DebugUtils.DebugLog("Agent " + thisAgent.gameObject.name + " reached its destination.");
             }
         }
     }

@@ -78,6 +78,8 @@ The following scripts are critical to the behavior and processes underpinning th
 		- Responsible finding destinations and paths on a Navigation Mesh for 3D animated people
 	- FollowPlayer.cs
 		- Responsible for making an object's position match the current player's position at all times
+	- HoistSceneObjects.cs
+		- Responsible for "hoisting" scene containers and other objects, so they aren't occupying the same space which could cause Occlusion Culling to fail
 	- LoadAllScenesAsync.cs
 		- Used only on the Loading Screen, and responsible for loading all game Scenes into memory, before proceeding with showing the Main Menu
 		- Allows for seamless switching between eras
@@ -193,6 +195,9 @@ In scenes with an FPSController and FirstPersonCharacter (60s70s, 80s90s, AltFut
 
  - **60s70s** (Scene)
  	- **60s70sContainer** (GameObject)
+	 		- Requires Scripts:
+			 	- *HoistSceneObjects.cs* (ScriptCOmponent)
+				 	- Responsible for hoisting the scene container up at the beginning of the game
 		- **Sun** (GameObject)
 			 - Requires Scripts:
 			 	- *ManageSunSettings.cs* (ScriptComponent)

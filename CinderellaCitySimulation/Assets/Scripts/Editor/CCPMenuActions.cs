@@ -57,7 +57,7 @@ public class CCPMenuActions : MonoBehaviour
         EditorApplication.EnterPlaymode();
     }
 
-    [MenuItem("Cinderella City Project/Update This Scene Thumbnail Screenshots")]
+    [MenuItem("Cinderella City Project/Thumbnail Screenshots/Update for Current Scene")]
     public static void CaptureThisSceneThumbnailScreenshots()
     {
         // ensure the required directory is available
@@ -75,53 +75,45 @@ public class CCPMenuActions : MonoBehaviour
         EditorApplication.EnterPlaymode();
     }
 
-    [MenuItem("Cinderella City Project/Update All Scenes Occlusion Culling")]
+    [MenuItem("Cinderella City Project/Occlusion Culling/Move Containers Up")]
+    public static void MoveContainersUp()
+    {
+        // of the open scenes, get the time period scene containers
+        List<GameObject> timePeriodSceneContainers = ManageEditorScenes.GetAllTimePeriodSceneContainers();
+
+        HoistSceneObjects.HoistAllSceneContainersUp(timePeriodSceneContainers);
+    }
+
+    [MenuItem("Cinderella City Project/Occlusion Culling/Move Containers Down")]
+    public static void MoveContainersDown()
+    {
+        // of the open scenes, get the time period scene containers
+        List<GameObject> timePeriodSceneContainers = ManageEditorScenes.GetAllTimePeriodSceneContainers();
+
+        HoistSceneObjects.HoistAllSceneContainersDown(timePeriodSceneContainers);
+    }
+
+    [MenuItem("Cinderella City Project/Occlusion Culling/Update for Current Scene")]
+    public static void BakeOCData()
+    {
+        StaticOcclusionCulling.Compute();
+    }
+
+    [MenuItem("Cinderella City Project/Occlusion Culling/Update for All Scenes")]
     public static void UpdateOcclusionCulling()
     {
         // load all scenes additively
         ManageEditorScenes.LoadEditorScenesAdditively(SceneGlobals.loadingSceneName, SceneGlobals.allGameplaySceneNames);
 
-        // of the open scenes, get the time period scene containers
-        List<GameObject> timePeriodSceneContainers = ManageEditorScenes.GetAllTimePeriodSceneContainers();
-
-        // record the original positions of the time period scene containers
-        // so we can move the containers back to their original positions when done
-        List<Vector3> originalTimePeriodSceneContainerPositions = new List<Vector3>();
-
-        // for each of the time period scene containers, move them up at intervals
-        // so that when we bake OC data, the different scenes are not on top of each other
-        for (var i = 0; i < timePeriodSceneContainers.Count; i++)
-        {
-            // the new height will be a multiple of the global height interval and i
-            float addNewHeight = i * EditorSceneGlobals.moveSceneContainerIntervalForOC;
-
-            Vector3 originalPosition = timePeriodSceneContainers[i].transform.position;
-            originalTimePeriodSceneContainerPositions.Add(originalPosition);
-
-            Vector3 newPosition = new Vector3(originalPosition.x, originalPosition.y + addNewHeight, originalPosition.z);
-
-            // only bother moving the scene container if the new height is not 0
-            if (addNewHeight != 0)
-            {
-                timePeriodSceneContainers[i].transform.position = newPosition;
-            }
-        }
+        MoveContainersUp();
 
         // compute the static occlusion culling after the scenes are moved to intervals
         StaticOcclusionCulling.Compute();
 
-        // return the scene containers to their original positions
-        for (var i = 0; i < timePeriodSceneContainers.Count; i++)
-        {
-            // only bother moving the scene container if its position doesn't match the original position
-            if (timePeriodSceneContainers[i].transform.position != originalTimePeriodSceneContainerPositions[0])
-            {
-                timePeriodSceneContainers[i].transform.position = originalTimePeriodSceneContainerPositions[0];
-            }
-        }
+        MoveContainersDown();
     }
 
-    [MenuItem("Cinderella City Project/Update All Scenes Nav Meshes")]
+    [MenuItem("Cinderella City Project/Nav Meshes/Update for All Scenes")]
     public static void RebuildAllNavMeshes()
     {
         foreach (string sceneName in SceneGlobals.availableTimePeriodSceneNames)
@@ -131,28 +123,38 @@ public class CCPMenuActions : MonoBehaviour
             {
                 EditorSceneManager.OpenScene(SceneGlobals.GetScenePathByName(sceneName));
 
-                // build the nav mesh and save the scene
-                UnityEditor.AI.NavMeshBuilder.BuildNavMesh();
-                EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene());
+            }
 
-                Utils.DebugUtils.DebugLog("Updated the nav mesh in scene: " + sceneName);
-            }
-            // otherwise, we're already in the request scene, so build the nav mesh
-            else
-            {
-                // build the nav mesh and save the scene
-                UnityEditor.AI.NavMeshBuilder.BuildNavMesh();
-                EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene());
-            }
+            // otherwise, we're already in the requested scene, so build the nav mesh
+
+            // get this scene's container
+            GameObject sceneContainer = ManageScenes.GetSceneContainerObject(SceneManager.GetActiveScene());
+            List<GameObject> sceneContainers = new List<GameObject>();
+            sceneContainers.Add(sceneContainer);
+
+            // first, move this scene container as appropriate
+            HoistSceneObjects.HoistAllSceneContainersUp(sceneContainers);
+            Debug.Log("Hoisting nav mesh for scene: " + sceneContainer.name);
+
+            // build the nav mesh
+            UnityEditor.AI.NavMeshBuilder.BuildNavMesh();
+
+            Utils.DebugUtils.DebugLog("Updated the nav mesh in scene: " + sceneName);
+
+            // now move the scene container back down
+            HoistSceneObjects.HoistAllSceneContainersDown(sceneContainers);
+
+            EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene());
         }
+
         // TODO: return to the loading screen once all nav meshes are updated
     }
 
-    [MenuItem("Cinderella City Project/Update This Scene Static Flags")]
+    [MenuItem("Cinderella City Project/Static Flags/Update for Current Scene")]
     public static void SetAllStaticFlagsInCurrentScene()
     {
         // get the current scene's container
-        GameObject sceneContainer = ManageEditorScenes.GetSceneContainerObject(SceneManager.GetActiveScene());
+        GameObject sceneContainer = ManageScenes.GetSceneContainerObject(SceneManager.GetActiveScene());
 
         // get all the scene objects
         GameObject[] sceneObjects = AssetImportUpdate.GetAllTopLevelChildrenInObject(sceneContainer);
@@ -164,11 +166,11 @@ public class CCPMenuActions : MonoBehaviour
         }
     }
 
-    [MenuItem("Cinderella City Project/Update This Scene Lightmap Resolutions")]
+    [MenuItem("Cinderella City Project/Lightmap Resolutions/Update for Current Scene")]
     public static void SetAllLightmapResolutionsInCurrentScene()
     {
         // get the current scene's container
-        GameObject sceneContainer = ManageEditorScenes.GetSceneContainerObject(SceneManager.GetActiveScene());
+        GameObject sceneContainer = ManageScenes.GetSceneContainerObject(SceneManager.GetActiveScene());
 
         // get all the scene objects
         GameObject[] sceneObjects = AssetImportUpdate.GetAllTopLevelChildrenInObject(sceneContainer);

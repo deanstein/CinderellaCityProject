@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -79,7 +79,7 @@ public class StringUtils
         }
         else
         {
-            return null;
+            return "Experimental";
         }
     }
 
@@ -242,15 +242,21 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     public static void CaptureDisabledSceneFPSCameras()
     {
         // define the time periods that are considered disabled at this time
-        ManageScenes.GetDisabledTimePeriodSceneNames(SceneGlobals.referringScene);
+        List<string> disabledTimePeriodSceneNames = ManageScenes.GetDisabledTimePeriodSceneNames(SceneGlobals.referringSceneName);
+        //Utils.DebugUtils.DebugLog("Disabled time period scene names: " + disabledTimePeriodSceneNames);
 
         // for each inactive time period, enable it without scripts, take a screenshot, and update textures
-        foreach (string disabledSceneName in ManageScenes.GetDisabledTimePeriodSceneNames(SceneGlobals.referringScene))
+        foreach (string disabledSceneName in disabledTimePeriodSceneNames)
         {
             // toggle the scene, but ignore scriptHost objects - so no scripts or behaviors enable
             ToggleSceneAndUI.ToggleSceneObjectsOnExceptScriptHosts(disabledSceneName);
 
-            ManageFPSControllers.RelocateAlignFPSControllerToFPSController(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform);
+            // adjust the FPSController transform to account for hoisting
+            Transform adjustedFPSControllerTransform = ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform;
+            adjustedFPSControllerTransform.position = HoistSceneObjects.AdjustPositionForHoistBetweenScenes(adjustedFPSControllerTransform.position, SceneGlobals.referringSceneName, disabledSceneName);
+
+            // relocate the disabled FPSController to the correct position for a screenshot
+            ManageFPSControllers.RelocateAlignFPSControllerToFPSController(adjustedFPSControllerTransform);
 
             // inherit the sun settings of the disabled scene, in order to generate an accurate screenshot
             Light sunToInherit = ManageSunSettings.GetSunBySceneName(disabledSceneName);
@@ -260,6 +266,12 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
             // capture the current camera
             // this will also update the global variable with the texture, depending on the scene name
             CaptureActiveFPSControllerCamera();
+
+            // reverse the position adjustment after camera is captured
+            adjustedFPSControllerTransform.position = HoistSceneObjects.AdjustPositionForHoistBetweenScenes(adjustedFPSControllerTransform.position, disabledSceneName, SceneGlobals.referringSceneName);
+
+            // relocate the disabled FPSController to the correct position for a screenshot
+            ManageFPSControllers.RelocateAlignFPSControllerToFPSController(adjustedFPSControllerTransform);
 
             // turn everything off again
             ToggleSceneAndUI.ToggleSceneObjectsOff(disabledSceneName);
@@ -294,7 +306,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         {
             // handle buttons that lead to menus and exit
             case string name when name.Contains("Resume"):
-                ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, SceneGlobals.referringScene);
+                ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, SceneGlobals.referringSceneName);
                 return;
             case string name when name.Contains("MainMenu"):
                 ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "MainMenu");
@@ -319,7 +331,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
                     // switch to the correct scene based on the time period and location in the button name
                     ToggleSceneAndUI.ToggleFromSceneToSceneRelocatePlayerToFPSController(SceneManager.GetActiveScene().name, timePeriod, ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform);
                 }
-                // otherwise, this request includes a specific location in its name, so relocate the player there
+                // otherwise, this request includes a specific location in its name, so relocate the player to that camera
                 else
                 {
                     // switch to the correct scene based on the time period and location in the button name
