@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -28,6 +28,11 @@ public class UIGlobals
 
     // these are the HUD UI elements that can be hidden/revealed
     public static GameObject underConstructionLabelContainer;
+    public static GameObject currentTimePeriodNotificationContainer;
+    public static GameObject timePeriodNotificationContainer60s70s;
+    public static GameObject timePeriodNotificationContainer80s90s;
+    public static GameObject timePeriodNotificationContainerAltFuture;
+    public static GameObject timePeriodNotificationContainerExperimental;
 }
 
 public class StringUtils
@@ -219,6 +224,46 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
                 return UIGlobals.FPSController60s70sCameraTexture;
             case string imageHostName when imageHostName.Contains("80s90s"):
                 return UIGlobals.FPSController80s90sCameraTexture;
+            default:
+                return null;
+        }
+    }
+
+    // get the time travel notification container for each scene
+    public static GameObject GetTimePeriodNotificationContainerByName(string sceneName)
+    {
+        switch (sceneName)
+        {
+            case string scenePartialName when scenePartialName.Contains("60s70s"):
+                return UIGlobals.timePeriodNotificationContainer60s70s;
+            case string scenePartialName when scenePartialName.Contains("80s90s"):
+                return UIGlobals.timePeriodNotificationContainer80s90s;
+            case string scenePartialName when scenePartialName.Contains("AltFuture"):
+                return UIGlobals.timePeriodNotificationContainerAltFuture;
+            case string scenePartialName when scenePartialName.Contains("Experimental"):
+                return UIGlobals.timePeriodNotificationContainerExperimental;
+            default:
+                return null;
+        }
+    }
+
+    // set the time travel notification container for each scene (invoked when the UI is built)
+    public static GameObject SetTimePeriodNotificationContainerByName(GameObject containerToStore, string sceneName)
+    {
+        switch (sceneName)
+        {
+            case string scenePartialName when scenePartialName.Contains("60s70s"):
+                UIGlobals.timePeriodNotificationContainer60s70s = containerToStore;
+                return containerToStore;
+            case string scenePartialName when scenePartialName.Contains("80s90s"):
+                UIGlobals.timePeriodNotificationContainer80s90s = containerToStore;
+                return containerToStore;
+            case string scenePartialName when scenePartialName.Contains("AltFuture"):
+                UIGlobals.timePeriodNotificationContainerAltFuture = containerToStore;
+                return containerToStore;
+            case string scenePartialName when scenePartialName.Contains("Experimental"):
+                UIGlobals.timePeriodNotificationContainerExperimental = containerToStore;
+                return containerToStore;
             default:
                 return null;
         }
@@ -530,6 +575,52 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         timePeriodLabel.transform.SetParent(timePeriodContainer.transform);
 
         return timePeriodContainer;
+    }
+
+    // displays the time period in the center of the screen
+    // only used when time traveling, to remind the user what time period they've switched to
+    public static GameObject CreateHUDTimePeriodNotification(GameObject parent, string notificationText)
+    {
+        // create the label container
+        GameObject timePeriodNotificationContainer = new GameObject("TimePeriodNotificationContainer" + parent.scene.name);
+        timePeriodNotificationContainer.AddComponent<CanvasRenderer>();
+
+        SetTimePeriodNotificationContainerByName(timePeriodNotificationContainer, parent.scene.name);
+
+        // image is needed to create a rect transform
+        Image timePeriodContainerColor = timePeriodNotificationContainer.AddComponent<Image>();
+        timePeriodContainerColor.color = containerColor;
+
+        // position the title container
+        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(timePeriodNotificationContainer);
+
+        // add the title text
+        GameObject underConstructionLabel = new GameObject("TimePeriodNotificationLabel");
+        Text underConstructionLabelText = underConstructionLabel.AddComponent<Text>();
+        underConstructionLabelText.font = (Font)Resources.Load(labelFont);
+        underConstructionLabelText.text = notificationText;
+        underConstructionLabelText.fontSize = menuTitleLabelSize;
+        underConstructionLabelText.alignment = TextAnchor.UpperLeft;
+
+        // resize the text's bounding box needs, before any transforms
+        Vector2 textSize = TransformScreenSpaceObject.ResizeTextExtentsToFitContents(underConstructionLabelText);
+
+        RectTransform rt = timePeriodContainerColor.GetComponent<RectTransform>();
+        rt.sizeDelta = new Vector2(textSize.x, textSize.y);
+
+        Vector2 newSize = TransformScreenSpaceObject.ResizeObjectFromCenterByMargin(timePeriodNotificationContainer, 0.01f, 0.01f);
+
+        // position the title text
+        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(underConstructionLabel);
+
+        // set parent/child hierarchy
+        timePeriodNotificationContainer.transform.SetParent(parent.transform);
+        underConstructionLabel.transform.SetParent(timePeriodNotificationContainer.transform);
+
+        // disable initially
+        timePeriodNotificationContainer.SetActive(false);
+
+        return timePeriodNotificationContainer;
     }
 
     public static GameObject CreateHUDUnderConstructionLabel(GameObject parent, string message)

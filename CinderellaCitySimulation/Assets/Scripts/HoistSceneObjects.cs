@@ -38,7 +38,7 @@ public class HoistSceneObjects : MonoBehaviour
     {
         float hoistDelta = GetHoistDeltaBetweenScenes(referringSceneName, upcomingSceneName);
 
-        Utils.DebugUtils.DebugLog("Scene hoist delta: " + hoistDelta + " between " + SceneGlobals.referringSceneName + " and " + SceneGlobals.upcomingSceneName);
+        //Utils.DebugUtils.DebugLog("Scene hoist delta: " + hoistDelta + " between " + SceneGlobals.referringSceneName + " and " + SceneGlobals.upcomingSceneName);
 
         Vector3 newPosition = new Vector3(positionToModify.x, positionToModify.y + hoistDelta, positionToModify.z);
 
@@ -70,8 +70,6 @@ public class HoistSceneObjects : MonoBehaviour
 
         float oldSceneHoistHeight = GetHoistHeightBySceneName(oldSceneName);
         float newSceneHoistHeight = GetHoistHeightBySceneName(newSceneName);
-
-        Debug.Log("Old scene (" + oldSceneName + ") hoist height: " + oldSceneHoistHeight + " and new scene (" + newSceneName + ") hoist height: " + newSceneHoistHeight);
 
         // if either of the scene hoist heights are -1,
         // that scene is a menu and shouldn't affect hoisting

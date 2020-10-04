@@ -65,8 +65,9 @@ public static class ManageScenes
     // gets the container object for the current scene
     public static GameObject GetSceneContainerObject(Scene sceneWithContainer)
     {
-        // place the object in the scene's container (used to disable all scene objects)
+        // get the root objects of the scene
         GameObject[] rootObjects = sceneWithContainer.GetRootGameObjects();
+
         // this assumes there's only 1 object in the scene: a container for all objects
         GameObject sceneContainer = rootObjects[0];
         return sceneContainer;

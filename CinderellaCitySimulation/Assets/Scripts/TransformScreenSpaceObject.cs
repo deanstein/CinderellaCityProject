@@ -413,6 +413,21 @@ public static class TransformScreenSpaceObject
         screenSpaceObjectRectTransform.position = newObjectPosition;
     }
 
+    public static Vector2 ResizeObjectFromCenterByMargin(GameObject screenSpaceObject, float screenSizeRatioMarginWidth, float screenSizeRatioMarginHeight)
+    {
+        RectTransform currentRectTransform = screenSpaceObject.GetComponent<RectTransform>();
+
+        float widthMarginPixels = cameraWidth * screenSizeRatioMarginWidth;
+        float heightMarginPixels = cameraHeight * screenSizeRatioMarginHeight;
+
+        float newRectWidth = currentRectTransform.rect.width + (2 * widthMarginPixels);
+        float newRectHeight = currentRectTransform.rect.height + (2 * heightMarginPixels);
+
+        currentRectTransform.sizeDelta = new Vector2(newRectWidth, newRectHeight);
+
+        return new Vector2(newRectWidth, newRectHeight);
+    }
+
     public static Vector2 ResizeTextExtentsToFitContents(Text text)
     {
         RectTransform introMessageRectTransform = text.GetComponent<RectTransform>();

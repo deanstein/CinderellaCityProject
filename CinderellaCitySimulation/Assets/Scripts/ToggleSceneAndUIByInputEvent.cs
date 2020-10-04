@@ -3,9 +3,27 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.UI;
+
+// globals used for fading
+public static class FadeGlobals
+{
+    public static int frameCount = 0;
+
+    public static float startValue = 1.0f;
+    public static float endValue = 0.0f;
+
+    public static float currentValue = 1.0f;
+}
 
 // this script should be attached to UI launcher objects that watch for shortcuts to toggle scenes or UI on/off
 public class ToggleSceneAndUIByInputEvent : MonoBehaviour {
+
+    private void OnEnable()
+    {
+        // when this UI host is toggled, show the temporary time travel notification in some scenarios
+        StartCoroutine(ToggleSceneAndUI.ToggleTimePeriodNotificationTemporarily(1.5f));
+    }
 
     // watch for shortcuts in every frame
     private void Update()
@@ -82,15 +100,28 @@ public class ToggleSceneAndUIByInputEvent : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Slash) &&
             StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name))
         {
-            if (UIGlobals.underConstructionLabelContainer.activeSelf)
-            {
-                UIGlobals.underConstructionLabelContainer.SetActive(false);
-            }
-            else if (!UIGlobals.underConstructionLabelContainer.activeSelf)
-            {
-                UIGlobals.underConstructionLabelContainer.SetActive(true);
-            }
+            ToggleSceneAndUI.ToggleUnderConstructionLabel();
         }
+
+        // experimental: fade testing
+        if (Input.GetKeyDown(KeyCode.Slash) && SceneManager.GetActiveScene().name.Contains("Experimental"))
+        {
+            FadeGlobals.frameCount = 0;
+            FadeGlobals.startValue = 0.0f;
+            FadeGlobals.currentValue = 0.0f;
+            FadeGlobals.endValue = 1.0f;
+        }
+        if (Input.GetKeyDown(KeyCode.Backslash) && SceneManager.GetActiveScene().name.Contains("Experimental"))
+        {
+            FadeGlobals.frameCount = 0;
+            FadeGlobals.startValue = 1.0f;
+            FadeGlobals.currentValue = 1.0f;
+            FadeGlobals.endValue = 0.0f;
+        }
+
+        // coming soon: update values over a given amount of frames
+        //Debug.Log(FadeGlobals.currentValue);
+        //ToggleSceneAndUI.ValueTo(FadeGlobals.startValue, FadeGlobals.endValue, 15);
     }
 }
 
@@ -250,6 +281,69 @@ public class ToggleSceneAndUI
 
             // capture the current FPSController camera
             CreateScreenSpaceUIElements.CaptureActiveFPSControllerCamera();
+        }
+    }
+
+    // toggle and update the time period notification
+    public static IEnumerator ToggleTimePeriodNotificationTemporarily(float displayTime)
+    {
+        // need to wait just a bit for the UI to get built and stored
+        yield return new WaitForEndOfFrame();
+
+        // get the current time period notification container for this scene
+        UIGlobals.currentTimePeriodNotificationContainer = CreateScreenSpaceUIElements.GetTimePeriodNotificationContainerByName(SceneManager.GetActiveScene().name);
+
+        // only enable/disable the time period notification container
+        // if the player is time traveling, not in a menu, and not pausing
+        if (UIGlobals.currentTimePeriodNotificationContainer != null && ManageFPSControllers.FPSControllerGlobals.isTimeTraveling && !ManageFPSControllers.FPSControllerGlobals.isPausing)
+        {
+            // toggle the time period notification container on
+            UIGlobals.currentTimePeriodNotificationContainer.SetActive(true);
+
+            // display the message for a moment
+            yield return new WaitForSeconds(displayTime);
+
+            // toggle the time period notification container back off
+            UIGlobals.currentTimePeriodNotificationContainer.SetActive(false);
+        }
+    }
+
+    // toggle the under construction label if it's available for this scene
+    public static void ToggleUnderConstructionLabel()
+    {
+        if (UIGlobals.underConstructionLabelContainer)
+        {
+            if (UIGlobals.underConstructionLabelContainer.activeSelf)
+            {
+                UIGlobals.underConstructionLabelContainer.SetActive(false);
+            }
+            else if (!UIGlobals.underConstructionLabelContainer.activeSelf)
+            {
+                UIGlobals.underConstructionLabelContainer.SetActive(true);
+            }
+        }
+    }
+
+    // coming soon: ability to tween between values over a given number of frames
+    public static void ValueTo(float startValue, float endValue, int numberOfFrames)
+    {
+        if (FadeGlobals.frameCount != numberOfFrames && FadeGlobals.currentValue != endValue)
+        {
+            float changeValue = Mathf.Abs(startValue - endValue) / numberOfFrames;
+
+            if (startValue - endValue > 0)
+            {
+
+                FadeGlobals.currentValue -= changeValue;
+            }
+            else
+            {
+                float addValue = (startValue - endValue) / numberOfFrames;
+
+                FadeGlobals.currentValue += changeValue;
+            }
+
+            FadeGlobals.frameCount++;
         }
     }
 }
