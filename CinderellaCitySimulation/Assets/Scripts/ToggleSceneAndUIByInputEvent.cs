@@ -60,16 +60,22 @@ public class ToggleSceneAndUIByInputEvent : MonoBehaviour {
             // toggle to Pause
             ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "PauseMenu");
 
+            // set the pausing flag to prevent disabled scenes from adversely affecting hoisting behavior
+            ManageFPSControllers.FPSControllerGlobals.isPausing = true;
+
             // now capture a screenshot from the inactive scenes' FPSControllers
             // then update the thumbnail sprites
             CreateScreenSpaceUIElements.CaptureDisabledSceneFPSCameras();
             CreateScreenSpaceUIElements.RefreshThumbnailSprites();
+
+            // reset the pause flag
+            ManageFPSControllers.FPSControllerGlobals.isPausing = false;
         }
         // if we're already in the pause menu, return to the previous scene (referring scene)
         else if (Input.GetKeyDown(KeyCode.Escape)
             && SceneManager.GetActiveScene().name.Contains("PauseMenu"))
         {
-            ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, SceneGlobals.referringScene);
+            ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, SceneGlobals.referringSceneName);
         }
 
         // optionally display or hide the under construction label
@@ -185,8 +191,8 @@ public class ToggleSceneAndUI
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(toScene));
 
         // mark the referring and upcoming scenes globally, for other scripts to access
-        SceneGlobals.referringScene = fromScene;
-        SceneGlobals.upcomingScene = toScene;
+        SceneGlobals.referringSceneName = fromScene;
+        SceneGlobals.upcomingSceneName = toScene;
 
         // now toggle the fromScene scene off
         ToggleSceneObjectsOff(fromScene);

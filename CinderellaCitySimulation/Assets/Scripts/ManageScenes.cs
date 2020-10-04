@@ -5,8 +5,11 @@ using UnityEngine.SceneManagement;
 public class SceneGlobals
 {
     // when a scene change is requested, record the outgoing and upcoming scenes for other scripts to access
-    public static string referringScene;
-    public static string upcomingScene;
+    public static string referringSceneName;
+    public static string upcomingSceneName;
+
+    // the pause menu will record the last known time period scene name when Pause was invoked
+    public static string lastKnownTimePeriodSceneName;
 
     // construct a path to a scene from its name
     public static string GetScenePathByName(string sceneName)
@@ -57,6 +60,16 @@ public static class ManageScenes
 
             Utils.DebugUtils.DebugLog("Started loading scene asynchronously: " + sceneName);
         }
+    }
+
+    // gets the container object for the current scene
+    public static GameObject GetSceneContainerObject(Scene sceneWithContainer)
+    {
+        // place the object in the scene's container (used to disable all scene objects)
+        GameObject[] rootObjects = sceneWithContainer.GetRootGameObjects();
+        // this assumes there's only 1 object in the scene: a container for all objects
+        GameObject sceneContainer = rootObjects[0];
+        return sceneContainer;
     }
 
     // gets the disabled time period scene names, given the current scene name

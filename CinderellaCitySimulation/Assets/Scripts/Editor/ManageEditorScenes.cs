@@ -3,13 +3,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEditor.SceneManagement;
 
-public static class EditorSceneGlobals
-{
-    // the amount to move each scene container to ensure when baking Occlusion Culling,
-    // the different scenes are not on top of each other which causes bad occlusion behavior
-    public static float moveSceneContainerIntervalForOC = 100f;
-}
-
 public static class ManageEditorScenes
 {
     // load the given scenes additively in the Unity Editor, starting from a given loading scene
@@ -49,15 +42,6 @@ public static class ManageEditorScenes
         return sceneList;
     }
 
-    public static GameObject GetSceneContainerObject(Scene sceneWithContainer)
-    {
-        // place the object in the scene's container (used to disable all scene objects)
-        GameObject[] rootObjects = sceneWithContainer.GetRootGameObjects();
-        // this assumes there's only 1 object in the scene: a container for all objects
-        GameObject sceneContainer = rootObjects[0];
-        return sceneContainer;
-    }
-
     public static List<GameObject> GetAllOpenSceneContainerObjects()
     {
         List<GameObject> allSceneContainerObjects = new List<GameObject>();
@@ -66,7 +50,7 @@ public static class ManageEditorScenes
 
         for (var i = 0; i < allScenes.Count; i++)
         {
-            GameObject sceneContainer = GetSceneContainerObject(allScenes[i]);
+            GameObject sceneContainer = ManageScenes.GetSceneContainerObject(allScenes[i]);
 
             allSceneContainerObjects.Add(sceneContainer);
         }

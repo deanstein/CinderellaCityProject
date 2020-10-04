@@ -240,7 +240,7 @@ public class AssetImportUpdate : AssetPostprocessor {
     // needs to happen in post-processor
     static void SetObjectAsChildOfSceneContainer(GameObject prefabToModify)
     {
-        GameObject sceneContainer = ManageEditorScenes.GetSceneContainerObject(SceneManager.GetActiveScene());
+        GameObject sceneContainer = ManageScenes.GetSceneContainerObject(SceneManager.GetActiveScene());
 
         prefabToModify.transform.SetParent(sceneContainer.transform);
     }

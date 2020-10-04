@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.SceneManagement;
 using UnityStandardAssets.Characters.FirstPerson;
 
 public class ManageFPSControllers : MonoBehaviour {
@@ -14,6 +15,8 @@ public class ManageFPSControllers : MonoBehaviour {
         // helps ensure the player doesn't fall when time-traveling to an era 
         // that doesn't have a surface to stand on in that location
         public static bool isTimeTraveling = false;
+
+        public static bool isPausing = false;
 
         // all FPSControllers
         public static List<GameObject> allFPSControllers = new List<GameObject>();
@@ -86,6 +89,9 @@ public class ManageFPSControllers : MonoBehaviour {
     // reposition and realign this FPSController to match another camera in the scene
     public static void RelocateAlignFPSControllerToCamera(string cameraPartialName)
     {
+        // be sure that the time traveling flag is false to prevent unexpected player hoisting behavior
+        FPSControllerGlobals.isTimeTraveling = false;
+
         // get the current FPSController
         GameObject activeFPSController = FPSControllerGlobals.activeFPSController;
         GameObject activeFirstPersonCharacter = activeFPSController.transform.GetChild(0).gameObject;
@@ -126,7 +132,7 @@ public class ManageFPSControllers : MonoBehaviour {
                 // further correct the point, because the nav mesh isn't exactly on the floor surface
                 Vector3 nearestPointToCameraOnFloor = Utils.GeometryUtils.GetNearestRaycastPointBelowPos(nearestPointToCameraOnNavMesh, 1.0f);
 
-                // if zero, no good poitn was found, so fall back to the nav mesh point
+                // if zero, no good point was found, so fall back to the nav mesh point
                 if (nearestPointToCameraOnFloor == Vector3.zero)
                 {
                     nearestPointToCameraOnFloor = nearestPointToCameraOnNavMesh;
@@ -167,6 +173,21 @@ public class ManageFPSControllers : MonoBehaviour {
 
         GameObject firstPersonCharacterToMatch = FPSControllerTransformToMatch.transform.GetChild(0).gameObject;
 
+        // get the existing post process volume and profile
+        PostProcessVolume existingVolume = activeFPSController.GetComponentInChildren<PostProcessVolume>();
+        PostProcessProfile existingProfile = existingVolume.profile;
+
+        // create a temporary profile with no motion blur
+        PostProcessProfile newProfile = new PostProcessProfile();
+        newProfile = existingProfile;
+        MotionBlur blur;
+        newProfile.TryGetSettings(out blur);
+        blur.enabled.Override(false);
+        existingVolume.priority++;
+
+        // temporarily override the existing volume to avoid motion blur when relocating
+        existingVolume.profile = newProfile;
+
         // match the FPSController's position and rotation to the referring controller's position and rotation
         activeFPSController.transform.SetPositionAndRotation(FPSControllerTransformToMatch.position, FPSControllerTransformToMatch.rotation);
 
@@ -178,6 +199,12 @@ public class ManageFPSControllers : MonoBehaviour {
 
         // set the FirstPersonCharacter height to the camera height
         activeFirstPersonCharacter.transform.position = new Vector3(activeFirstPersonCharacter.transform.position.x, firstPersonCharacterToMatch.transform.position.y, activeFirstPersonCharacter.transform.position.z);
+
+        // hoist the FPSController to the right height
+        HoistSceneObjects.HoistObjectOnSceneChange(activeFPSController);
+
+        // restore the existing post process profile
+        existingVolume.profile = existingProfile;
     }
 
     // used to allow AI control of the FPSController,
@@ -268,7 +295,7 @@ public class ManageFPSControllers : MonoBehaviour {
         {
             // every frame, get the position as the player moves,
             // but lock the Y-axis to prevent falling, just in case there's no floor
-            Vector3 newPosition = new Vector3(this.transform.position.x, FPSControllerGlobals.initialFPSControllerLocation.y, this.transform.position.z);
+            Vector3 newPosition = HoistSceneObjects.AdjustPositionForHoistBetweenScenes(new Vector3(this.transform.position.x, FPSControllerGlobals.initialFPSControllerLocation.y, this.transform.position.z), SceneGlobals.lastKnownTimePeriodSceneName, SceneGlobals.upcomingSceneName);
 
             this.transform.position = newPosition;
 
@@ -310,8 +337,13 @@ public class ManageFPSControllers : MonoBehaviour {
 
     private void OnDisable()
     {
+        if (!FPSControllerGlobals.isPausing)
+        {
+            SceneGlobals.lastKnownTimePeriodSceneName = this.gameObject.scene.name;
+        }
+
         // unlock the cursor only when the upcoming scene is a menu (not a time period scene)
-        if (SceneGlobals.availableTimePeriodSceneNamesList.IndexOf(SceneGlobals.upcomingScene) == -1)
+        if (SceneGlobals.availableTimePeriodSceneNamesList.IndexOf(SceneGlobals.upcomingSceneName) == -1)
         {
           FPSControllerGlobals.activeFPSController.transform.GetComponent<FirstPersonController>().m_MouseLook.SetCursorLock(false);
         }
@@ -326,7 +358,7 @@ public class ManageFPSControllers : MonoBehaviour {
         // when the player is time traveling, temporarily pause their gravity in case there's no floor below
         // or restore their gravity if they've moved after time-traveling
         // (skipped if the time-traveling flag isn't set to true)
-        UpdateFPSControllerGravityByState(FPSControllerGlobals.initialFPSControllerLocation, FPSControllerGlobals.maxDistanceBeforeResettingGravity);
+        UpdateFPSControllerGravityByState(HoistSceneObjects.AdjustPositionForHoistBetweenScenes(FPSControllerGlobals.initialFPSControllerLocation, SceneGlobals.referringSceneName, SceneGlobals.upcomingSceneName), FPSControllerGlobals.maxDistanceBeforeResettingGravity);
     }
 }
 

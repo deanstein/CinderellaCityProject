@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -118,7 +118,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
             GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(HUDCanvas);
 
             // if this is the 60s70s scene, note that it's under construction
-            if (this.gameObject.scene.name.Contains("60s70s"))
+            if (this.gameObject.scene.name.Contains("AltFuture"))
             {
                 CreateScreenSpaceUIElements.CreateHUDUnderConstructionLabel(HUDCanvas, "/// Under Construction ///");
             }
