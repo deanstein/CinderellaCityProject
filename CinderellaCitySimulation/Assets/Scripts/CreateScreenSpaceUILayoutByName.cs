@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -113,6 +113,9 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
 
             // create the time period indicator
             GameObject HUDTimePeriodIndicator = CreateScreenSpaceUIElements.CreateHUDTimePeriodIndicator(HUDCanvas, StringUtils.ConvertSceneNameToFriendlyName(this.gameObject.scene.name));
+
+            // create the time period notification
+            GameObject HUDTimePeriodNotificationContainer = CreateScreenSpaceUIElements.CreateHUDTimePeriodNotification(HUDCanvas, StringUtils.ConvertSceneNameToFriendlyName(this.gameObject.scene.name));
 
             // create the game version indicator
             GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(HUDCanvas);

@@ -337,6 +337,8 @@ public class ManageFPSControllers : MonoBehaviour {
 
     private void OnDisable()
     {
+        // record this scene as the last known time period scene
+        // but not when pausing, which is only loading background scenes for thumbnail generation
         if (!FPSControllerGlobals.isPausing)
         {
             SceneGlobals.lastKnownTimePeriodSceneName = this.gameObject.scene.name;
