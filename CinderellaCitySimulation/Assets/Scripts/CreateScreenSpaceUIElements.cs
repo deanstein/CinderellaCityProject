@@ -308,6 +308,9 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
             Light sunToOverwrite = ManageSunSettings.GetSunBySceneName(SceneManager.GetActiveScene().name);
             ManageSunSettings.InheritSunSettingsBySceneName(disabledSceneName, sunToInherit, sunToOverwrite);
 
+            // briefly set this as the active scene to update the skybox settings
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(disabledSceneName));
+
             // capture the current camera
             // this will also update the global variable with the texture, depending on the scene name
             CaptureActiveFPSControllerCamera();
@@ -323,6 +326,9 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
             // return the script hosts to their on state
             ToggleSceneAndUI.ToggleScriptHostObjectListOn();
+
+            // set Pause as active again
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(SceneGlobals.pauseMenu));
         }
     }
 
@@ -351,6 +357,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         {
             // handle buttons that lead to menus and exit
             case string name when name.Contains("Resume"):
+                ManageFPSControllers.FPSControllerGlobals.isTimeTraveling = false;
                 ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, SceneGlobals.referringSceneName);
                 return;
             case string name when name.Contains("MainMenu"):

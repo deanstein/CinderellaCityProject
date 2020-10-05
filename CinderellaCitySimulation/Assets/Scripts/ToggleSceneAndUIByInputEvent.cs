@@ -93,6 +93,7 @@ public class ToggleSceneAndUIByInputEvent : MonoBehaviour {
         else if (Input.GetKeyDown(KeyCode.Escape)
             && SceneManager.GetActiveScene().name.Contains("PauseMenu"))
         {
+            ManageFPSControllers.FPSControllerGlobals.isTimeTraveling = false;
             ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, SceneGlobals.referringSceneName);
         }
 
