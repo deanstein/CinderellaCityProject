@@ -34,6 +34,9 @@ public class SceneGlobals
     // the name of the scene to set active after all other scenes are loaded
     public static string startingSceneName = "MainMenu";
 
+    // the pause menu
+    public static string pauseMenu = "PauseMenu";
+
     // convert the friendly names to Scene names
     // uses CleanString to remove spaces, punctuation, and in the case of years, "19"
     // for example: "1980s-1990s" becomes "80s90s"

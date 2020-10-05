@@ -27,20 +27,20 @@ public class ManageSunSettings : MonoBehaviour
     // defines the Sun (Light) for each FPS Controller scene, as well as the Pause Menu (required for disabled scene screenshots)
     public void AssignSunByParentName()
     {
-        if (this.transform.parent.name.Contains("60s70s"))
+        if (this.gameObject.scene.name.Contains("60s70s"))
         {
             SunGlobals.sun60s70s = this.GetComponent<Light>();
         }
-        else if (this.transform.parent.name.Contains("80s90s"))
+        else if (this.gameObject.scene.name.Contains("80s90s"))
         {
             SunGlobals.sun80s90s = this.GetComponent<Light>();
         }
-        else if (this.transform.parent.name.Contains("AltFuture"))
+        else if (this.gameObject.scene.name.Contains("AltFuture"))
         {
             SunGlobals.sunAltFuture = this.GetComponent<Light>();
         }
         // pause menu sun gets overwritten for consistency in disabled scene screenshots
-        else if (this.transform.parent.name.Contains("PauseMenu"))
+        else if (this.gameObject.scene.name.Contains("PauseMenu"))
         {
             SunGlobals.sunPauseMenu = this.GetComponent<Light>();
         }
