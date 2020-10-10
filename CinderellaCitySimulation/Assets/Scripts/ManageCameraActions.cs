@@ -37,7 +37,7 @@ public class ManageCameraActions : MonoBehaviour
         //
 
         // screenshot mode flag
-        public static string screenshotModeFlag = "isInScreenshotMode";
+        public static string screenshotModeFlag = "CCP.IsInScreenshotMode";
 
         // define where camera effects like PostProcessProfiles are stored
         public static string cameraEffectsPath = "Effects/"; // in Resources
