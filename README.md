@@ -52,6 +52,8 @@ The following scripts are critical to the behavior and processes underpinning th
 	- ExtractTexturesFromCubeMap.cs
 		- Adds a menu option in Window -> CubeSplitter, which allows for extracting the texture files from a CubeMap for editing
 		- Sourced from a 3rd party on the Unity forums (attribution in code)
+	- ManageEditorPrefs.cs
+		- Responsible for defining the syntax of EditorPrefs (stored in the registry) as well as protocols for writing new EditorPrefs
 	- ManageEditorScenes.cs
 		- Responsible for toggling between scenes, or loading scenes additively, in the editor environment
 	- ManageImportSettings.cs
@@ -195,9 +197,6 @@ In scenes with an FPSController and FirstPersonCharacter (60s70s, 80s90s, AltFut
 
  - **60s70s** (Scene)
  	- **60s70sContainer** (GameObject)
-	 		- Requires Scripts:
-			 	- *HoistSceneObjects.cs* (ScriptCOmponent)
-				 	- Responsible for hoisting the scene container up at the beginning of the game
 		- **Sun** (GameObject)
 			 - Requires Scripts:
 			 	- *ManageSunSettings.cs* (ScriptComponent)
