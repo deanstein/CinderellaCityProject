@@ -274,26 +274,26 @@ public class CCPMenuActions : MonoBehaviour
             // and display a debug log message
             if (EditorPrefs.GetFloat(originalSceneContainerYPosKey, -1) == -1)
             {
-                Utils.DebugUtils.DebugLog("Error: Cannot hoist scene container down, because there is no EditorPrefs record of an original YPosition for this scene container: " + currentSceneContainer.name);
+                Utils.DebugUtils.DebugLog("ERROR: Cannot hoist scene container down, because there is no EditorPrefs record of an original YPosition for this scene container: " + currentSceneContainer.name);
 
                 return;
             }
             // otherwise, there's a value stored, so check if the value
-            // indicates the current scene has been hoisted up and needs to be hoisted down
-            else if (Mathf.Approximately(currentSceneContainerYPos - EditorPrefs.GetFloat(originalSceneContainerYPosKey, -1), HoistSceneGlobals.hoistInterval))
+            // indicates the current scene has been hoisted up and needs to be hoisted back down
+            else if (Mathf.Approximately(currentSceneContainerYPos - EditorPrefs.GetFloat(originalSceneContainerYPosKey, -1), HoistSceneObjects.GetHoistHeightBySceneName(SceneManager.GetActiveScene().name)))
             {
                 // hoist the current scene container
                 HoistSceneObjects.HoistAllSceneContainersDown(currentSceneContainerList);
 
-                Utils.DebugUtils.DebugLog("This scene container was moved back down to align with its recorded original YPosition: " + currentSceneContainer.name);
+                Utils.DebugUtils.DebugLog("This scene container was moved back down to align with its recorded original YPos: " + currentSceneContainer.name);
             }
-            else if (currentSceneContainerYPos - EditorPrefs.GetFloat(originalSceneContainerYPosKey, -1) == 0)
+            else if (Mathf.Approximately(currentSceneContainerYPos - EditorPrefs.GetFloat(originalSceneContainerYPosKey, -1), 0))
             {
-                Utils.DebugUtils.DebugLog("Made no changes to this scene container because it is at its original height already: " + currentSceneContainer.name + " " + EditorPrefs.GetFloat(originalSceneContainerYPosKey, -1));
+                Utils.DebugUtils.DebugLog("Made no changes to this scene container because it is at its original YPos already: " + currentSceneContainer.name + " " + EditorPrefs.GetFloat(originalSceneContainerYPosKey, -1));
             }
             else
             {
-                Utils.DebugUtils.DebugLog("Made no changes to this scene container because its original height and current height do not have a delta of the global hoist interval. Did something go wrong? " + currentSceneContainer.name + " Delta: " + (currentSceneContainerYPos - EditorPrefs.GetFloat(originalSceneContainerYPosKey)));
+                Utils.DebugUtils.DebugLog("Made no changes to this scene container because its original YPos and current YPos do not have a delta of the global hoist interval. Did something go wrong? " + currentSceneContainer.name + " Delta: " + (currentSceneContainerYPos - EditorPrefs.GetFloat(originalSceneContainerYPosKey)));
             }
         }
     }
