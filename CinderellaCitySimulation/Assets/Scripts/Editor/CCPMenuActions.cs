@@ -60,6 +60,16 @@ public class CCPMenuActions : MonoBehaviour
         EditorSceneManager.OpenScene(loadingScenePath);
     }
 
+    /* --------- Editor Debug ---------- */
+
+    /*
+    [MenuItem("Cinderella City Project/Editor Debug/Log Current Scene Name")]
+    public static void LogCurrentScene()
+    {
+        Utils.DebugUtils.DebugLog("Current Editor scene: " + SceneManager.GetActiveScene().name);
+    }
+    */
+
     /* ---------- Scene Hoisting ---------- */
 
     [MenuItem("Cinderella City Project/Hoist Scenes/Hoist Open Scene Containers Up")]
@@ -270,7 +280,7 @@ public class CCPMenuActions : MonoBehaviour
             }
             // otherwise, there's a value stored, so check if the value
             // indicates the current scene has been hoisted up and needs to be hoisted down
-            else if (currentSceneContainerYPos - EditorPrefs.GetFloat(originalSceneContainerYPosKey, -1) == HoistSceneGlobals.hoistInterval)
+            else if (Mathf.Approximately(currentSceneContainerYPos - EditorPrefs.GetFloat(originalSceneContainerYPosKey, -1), HoistSceneGlobals.hoistInterval))
             {
                 // hoist the current scene container
                 HoistSceneObjects.HoistAllSceneContainersDown(currentSceneContainerList);
