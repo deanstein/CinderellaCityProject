@@ -13,6 +13,9 @@ public class CCPMenuActions : MonoBehaviour
     [MenuItem("Cinderella City Project/Play Full Simulation in Editor", false, 0)]
     public static void PlayFullSimulationInEditor()
     {
+        // first, hoist scenes up
+        HoistSceneObjectsEditor.HoistAllRequiredSceneContainersUp();
+
         OpenLoadingScene();
         EditorApplication.EnterPlaymode();
     }
@@ -68,7 +71,6 @@ public class CCPMenuActions : MonoBehaviour
     {
         Utils.DebugUtils.DebugLog("Current Editor scene: " + SceneManager.GetActiveScene().name);
     }
-    */
 
     /* ---------- Scene Hoisting ---------- */
 
@@ -78,7 +80,7 @@ public class CCPMenuActions : MonoBehaviour
         // of the open scenes, get the time period scene containers
         List<GameObject> timePeriodSceneContainers = ManageEditorScenes.GetAllTimePeriodSceneContainers();
 
-        HoistSceneObjects.HoistAllSceneContainersUp(timePeriodSceneContainers);
+        HoistSceneObjectsEditor.HoistSceneContainersUp(timePeriodSceneContainers);
     }
 
     [MenuItem("Cinderella City Project/Hoist Scenes/Hoist Open Scene Containers Down")]
@@ -87,8 +89,24 @@ public class CCPMenuActions : MonoBehaviour
         // of the open scenes, get the time period scene containers
         List<GameObject> timePeriodSceneContainers = ManageEditorScenes.GetAllTimePeriodSceneContainers();
 
-        HoistSceneObjects.HoistAllSceneContainersDown(timePeriodSceneContainers);
+        HoistSceneObjectsEditor.HoistSceneContainersDown(timePeriodSceneContainers);
     }
+
+    [MenuItem("Cinderella City Project/Hoist Scenes/Hoist All Required Scene Containers Up")]
+    public static void HoistAllRequiredSceneContainersUp()
+    {
+        HoistSceneObjectsEditor.HoistAllRequiredSceneContainersUp();
+    }
+
+    [MenuItem("Cinderella City Project/Hoist Scenes/Hoist All Required Scene Containers Down")]
+    public static void HoistAllRequiredSceneContainersDown()
+    {
+        // of the open scenes, get the time period scene containers
+        List<GameObject> timePeriodSceneContainers = ManageEditorScenes.GetAllTimePeriodSceneContainers();
+
+        HoistSceneObjectsEditor.HoistSceneContainersDown(timePeriodSceneContainers);
+    }
+
 
     /* ---------- Update Data ---------- */
 
@@ -150,7 +168,7 @@ public class CCPMenuActions : MonoBehaviour
             sceneContainers.Add(sceneContainer);
 
             // first, move this scene container as appropriate
-            HoistSceneObjects.HoistAllSceneContainersUp(sceneContainers);
+            HoistSceneObjectsEditor.HoistSceneContainersUp(sceneContainers);
             Debug.Log("Hoisting nav mesh for scene: " + sceneContainer.name);
 
             // build the nav mesh
@@ -159,7 +177,7 @@ public class CCPMenuActions : MonoBehaviour
             Utils.DebugUtils.DebugLog("Updated the nav mesh in scene: " + sceneName);
 
             // now move the scene container back down
-            HoistSceneObjects.HoistAllSceneContainersDown(sceneContainers);
+            HoistSceneObjectsEditor.HoistSceneContainersDown(sceneContainers);
 
             EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene());
         }
@@ -204,97 +222,14 @@ public class CCPMenuActions : MonoBehaviour
     [MenuItem("Cinderella City Project/Build Prep/Run Pre-Build Steps")]
     public static void PreBuild()
     {
-        // before building, need to iterate through scenes 
-        // to find any requiring hoisting, then hoist and record original height to EditorPrefs
-        // note that this operation will change the scene and save it
-
-        // first, get any scenes that require hoisting
-        List<string> timePeriodHoistSceneNames = HoistSceneObjects.GetScenesRequiringHoisting();
-
-        // for each time period requiring hoisting, open the scene,
-        // and update its position in EditorPrefs if necessary
-        foreach (string timePeriodHoistSceneName in timePeriodHoistSceneNames)
-        {
-            // open the scene if it's not already open
-            if (SceneManager.GetActiveScene().name != timePeriodHoistSceneName)
-            {
-                EditorSceneManager.OpenScene(SceneGlobals.GetScenePathByName(timePeriodHoistSceneName));
-            }
-
-            // get the current scene container
-            GameObject currentSceneContainer = ManageScenes.GetSceneContainerObject(SceneManager.GetActiveScene());
-            // need to have this in a list format for another function
-            List<GameObject> currentSceneContainerList = new List<GameObject>();
-            currentSceneContainerList.Add(currentSceneContainer);
-
-            float currentSceneContainerYPos = currentSceneContainer.transform.position.z;
-
-            // get the Z-pos EditorPrefs key by name
-            string editorPrefsYPosKey = ManageEditorPrefs.GetEditorPrefKeyBySceneName(SceneManager.GetActiveScene().name, ManageEditorPrefs.EditorPrefsGlobals.originalContainerYPosKeyID);
-
-            // record the current scene container position to EditorPrefs for reference later
-            ManageEditorPrefs.SetCurrentSceneContainerYPosEditorPref();
-
-            // hoist the current scene container
-            HoistSceneObjects.HoistAllSceneContainersUp(currentSceneContainerList);
-        }
+        // before building, need to hoist all required scenes up
+        HoistSceneObjectsEditor.HoistAllRequiredSceneContainersUp();
     }
 
     [MenuItem("Cinderella City Project/Build Prep/Run Post-Build Steps")]
     public static void PostBuild()
     {
-        // after building, need to hoist scenes back down to their original height
-        // using EditorPrefs to find and compare the original height to current height
-
-        // first, get any scenes that require hoisting
-        List<string> timePeriodHoistSceneNames = HoistSceneObjects.GetScenesRequiringHoisting();
-
-        // for each time period requiring hoisting, open the scene,
-        // and update its position in EditorPrefs if necessary
-        foreach (string timePeriodHoistSceneName in timePeriodHoistSceneNames)
-        {
-            // open the scene if it's not already open
-            if (SceneManager.GetActiveScene().name != timePeriodHoistSceneName)
-            {
-                EditorSceneManager.OpenScene(SceneGlobals.GetScenePathByName(timePeriodHoistSceneName));
-            }
-
-            // get the current scene container
-            GameObject currentSceneContainer = ManageScenes.GetSceneContainerObject(SceneManager.GetActiveScene());
-            // need to have this in a list format for another function
-            List<GameObject> currentSceneContainerList = new List<GameObject>();
-            currentSceneContainerList.Add(currentSceneContainer);
-
-            float currentSceneContainerYPos = currentSceneContainer.transform.position.y;
-
-            // get the Z-pos EditorPrefs key by name
-            string originalSceneContainerYPosKey = ManageEditorPrefs.GetEditorPrefKeyBySceneName(SceneManager.GetActiveScene().name, ManageEditorPrefs.EditorPrefsGlobals.originalContainerYPosKeyID);
-
-            // if the original height is not set in preferences, don't do anything
-            // and display a debug log message
-            if (EditorPrefs.GetFloat(originalSceneContainerYPosKey, -1) == -1)
-            {
-                Utils.DebugUtils.DebugLog("ERROR: Cannot hoist scene container down, because there is no EditorPrefs record of an original YPosition for this scene container: " + currentSceneContainer.name);
-
-                return;
-            }
-            // otherwise, there's a value stored, so check if the value
-            // indicates the current scene has been hoisted up and needs to be hoisted back down
-            else if (Mathf.Approximately(currentSceneContainerYPos - EditorPrefs.GetFloat(originalSceneContainerYPosKey, -1), HoistSceneObjects.GetHoistHeightBySceneName(SceneManager.GetActiveScene().name)))
-            {
-                // hoist the current scene container
-                HoistSceneObjects.HoistAllSceneContainersDown(currentSceneContainerList);
-
-                Utils.DebugUtils.DebugLog("This scene container was moved back down to align with its recorded original YPos: " + currentSceneContainer.name);
-            }
-            else if (Mathf.Approximately(currentSceneContainerYPos - EditorPrefs.GetFloat(originalSceneContainerYPosKey, -1), 0))
-            {
-                Utils.DebugUtils.DebugLog("Made no changes to this scene container because it is at its original YPos already: " + currentSceneContainer.name + " " + EditorPrefs.GetFloat(originalSceneContainerYPosKey, -1));
-            }
-            else
-            {
-                Utils.DebugUtils.DebugLog("Made no changes to this scene container because its original YPos and current YPos do not have a delta of the global hoist interval. Did something go wrong? " + currentSceneContainer.name + " Delta: " + (currentSceneContainerYPos - EditorPrefs.GetFloat(originalSceneContainerYPosKey)));
-            }
-        }
+        // after building, need to hoist required scenes back down
+        HoistSceneObjectsEditor.HoistAllRequiredSceneContainersDown();
     }
 }

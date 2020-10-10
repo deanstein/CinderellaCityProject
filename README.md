@@ -52,6 +52,8 @@ The following scripts are critical to the behavior and processes underpinning th
 	- ExtractTexturesFromCubeMap.cs
 		- Adds a menu option in Window -> CubeSplitter, which allows for extracting the texture files from a CubeMap for editing
 		- Sourced from a 3rd party on the Unity forums (attribution in code)
+	- HoistSceneObjectsEditor.cs
+		- Responsible for "hoisting" scene containers and other objects, so they aren't occupying the same space which could cause Occlusion Culling to fail
 	- ManageEditorPrefs.cs
 		- Responsible for defining the syntax of EditorPrefs (stored in the registry) as well as protocols for writing new EditorPrefs
 	- ManageEditorScenes.cs
