@@ -11,10 +11,6 @@ public static class HoistSceneGlobals
 {
     // the space interval used to hoist each scene vertically to avoid levels sharing the same space
     public static float hoistInterval = 20f;
-
-    // editor only: record the original positions of the time period scene containers
-    // so we can move the containers back to their original positions when done
-    public static List<Vector3> originalTimePeriodSceneContainerPositions = new List<Vector3>();
 }
 
 public class HoistSceneObjects : MonoBehaviour
@@ -149,45 +145,6 @@ public class HoistSceneObjects : MonoBehaviour
 
         // return the origin if the object didn't exist
         return newPosition;
-    }
-
-    // used only the in editor to hoist all scene containers up
-    // for follow-on operations like updating nav meshes or occlusion culling
-    public static void HoistAllSceneContainersUp(List<GameObject> timePeriodSceneContainers)
-    {
-#if UNITY_EDITOR
-        // for each of the time period scene containers, move them up at intervals
-        // so that when we bake OC data, the different scenes are not on top of each other
-        foreach (GameObject sceneContainer in timePeriodSceneContainers)
-        {
-            // the new height will be a multiple of the global height interval and i
-            float addNewHeight = HoistSceneObjects.GetHoistHeightBySceneName(sceneContainer.name);
-
-            Vector3 originalPosition = sceneContainer.transform.position;
-            HoistSceneGlobals.originalTimePeriodSceneContainerPositions.Add(originalPosition);
-
-            Vector3 newPosition = new Vector3(originalPosition.x, originalPosition.y + addNewHeight, originalPosition.z);
-
-            sceneContainer.transform.position = newPosition;
-        }
-#endif
-    }
-
-    // used only the in editor to move all scene containers back down
-    // after operations like updating nav meshes or occlusion culling
-    public static void HoistAllSceneContainersDown(List<GameObject> timePeriodSceneContainers)
-    {
-#if UNITY_EDITOR
-        // return the scene containers to their original positions
-        for (var i = 0; i < timePeriodSceneContainers.Count; i++)
-        {
-            // only bother moving the scene container if its position doesn't match the original position
-            if (timePeriodSceneContainers[i].transform.position != HoistSceneGlobals.originalTimePeriodSceneContainerPositions[i])
-            {
-                timePeriodSceneContainers[i].transform.position = HoistSceneGlobals.originalTimePeriodSceneContainerPositions[i];
-            }
-        }
-#endif
     }
 
 }
