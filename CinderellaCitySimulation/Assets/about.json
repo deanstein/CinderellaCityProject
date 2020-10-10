@@ -1,20 +1,32 @@
 {
-  "AppVersion": "0.6.0.202005",
+  "AppVersion": "0.6.0.202010",
   "VersionHistory": [
     {
-      "0.6.0.202005": [
+      "0.6.0.202010": [
         {
           "Logic Updates": [
-            "Added support for replacing 2D proxy people with 3D animated people (NPCs) from Citizens PRO by name or randomly, in AssetImportPipeline",
+            "Added support for generating 3D animated people (NPCs) from Citizens PRO by name or randomly based on 2D proxies, in AssetImportPipeline",
             "Added support for generating additional NPCs from one 2D proxy object",
+            "Added support for NPC pathfinding in-game",
             "Added support for NavMesh baking and NPC pathfinding scripts in AssetImportPipeline",
-            "Added support for toggline children components by pxorimity to player, and by visibility in camera",
+            "Added support for toggling children components by pxorimity to player, and by visibility in camera",
+            "Added support for capturing in-game screenshots with new ManageCameraActions class",
+            "Added support for Occlusion Culling, including scene hoisting and EditorPrefs management to support proper Occlusion Culling",
+            "Added support for dynamic Lightmap Resolution settings per-FBX in AssetImportPipeline",
+            "Added automated screenshot generation support for updated Main Menu screenshots including in-motion NPCs from in-game",
+            "Added fall protection for player when time-traveling to an era with no floor below the player",
+            "Added support for CCP Menu actions, providing access to various macros and automated Editor processes, including scene opening, build prep, and updates to Nav Meshes, Static Flags, Lightmap Resolution, and more",
+            "Added support for DebugUtils, with ability to disable debug messages in Editor",
             "Refactored 'by input event' code (Camera Effects, Objects, and Scenes/UI) to simplify and clarify which objects are watching for which input events"
           ],
           "Content Updates": [
-            "Added 3D people in all scenes",
-            "Imported select prefabs, animations, and models from Citizens PRO 2019",
-            "Replaced 2D cutout people with 3D animated people from Citizens PRO in 60s70s, 80s90s, and Experimental scenes"            
+            "Replaced 2D cutout people with 3D animated people from Citizens PRO in 60s70s, 80s90s, and Experimental scenes",
+            "Added Occlusion Culling support for drastically improved performance in 60s70s and 80s90s scenes",
+            "Updated 60s70s FBX models, including new interior detailing, lights, storefronts, signage, and more",
+            "Added time period notification UI when player time-travels, to clarify the current time period",
+            "Improved Pause Menu thumbnail generation by matching sun settings and skybox between scenes",
+            "Added CCP Menu in Editor for various macros and automated editor processes",
+            "Imported select prefabs, animations, and models from Citizens PRO 2019"
           ]
         }
       ],
