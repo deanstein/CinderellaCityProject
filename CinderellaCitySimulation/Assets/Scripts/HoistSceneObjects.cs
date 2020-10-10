@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -18,12 +19,6 @@ public static class HoistSceneGlobals
 
 public class HoistSceneObjects : MonoBehaviour
 {
-    // when attached to a scene container object, the object moves at the start of the game
-    private void Awake()
-    {
-        HoistCurrentSceneContainer(this.gameObject);
-    }
-
     public static Transform AdjustTransformForHoistBetweenScenes(Transform transformToModify, string referringSceneName, string upcomingSceneName)
     {
         Vector3 newPosition = AdjustPositionForHoistBetweenScenes(transformToModify.position, referringSceneName, upcomingSceneName);
@@ -60,6 +55,25 @@ public class HoistSceneObjects : MonoBehaviour
             default:
                 return -1;
         }
+    }
+
+    // of the time period scenes, get only the ones that actually require hoisting
+    // used before scenes are open in the editor, to avoid opening unnecessary scenes for hoisting only
+    public static List<string> GetScenesRequiringHoisting()
+    {
+        List<string> timePeriodSceneNames = SceneGlobals.availableTimePeriodSceneNamesList;
+        List<string> timePeriodSceneNamesForHoist = new List<string>();
+
+        // check each available time period for a hoist height
+        foreach (string timePeriodSceneName in timePeriodSceneNames)
+        {
+            if (HoistSceneObjects.GetHoistHeightBySceneName(timePeriodSceneName) != 0)
+            {
+                timePeriodSceneNamesForHoist.Add(timePeriodSceneName);
+            }
+        }
+
+        return timePeriodSceneNamesForHoist;
     }
 
     // determines the distance to move the player
