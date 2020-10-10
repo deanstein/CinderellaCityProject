@@ -45,14 +45,21 @@ public static class ManageEditorPrefs
 
             // set the editor pref using the key and position
             // but only if the number hasn't been set or needs to be updated
-            if (EditorPrefs.GetFloat(currentSceneContainerYPosKey, -1) == -1 || EditorPrefs.GetFloat(currentSceneContainerYPosKey, -1) != currentSceneContainerYPos)
+            if (EditorPrefs.GetFloat(currentSceneContainerYPosKey, -1) == -1)
             {
                 EditorPrefs.SetFloat(currentSceneContainerYPosKey, currentSceneContainerYPos);
-                Utils.DebugUtils.DebugLog("This scene's container YPos was not recorded, or was out of date, in EditorPrefs, so it's been updated.");
+
+                Utils.DebugUtils.DebugLog("This scene's container YPos was not recorded previously, so the current YPos was recorded: " + currentSceneContainer.name);
+            }
+            else if (!Mathf.Approximately(EditorPrefs.GetFloat(currentSceneContainerYPosKey, -1), currentSceneContainerYPos))
+            {
+                EditorPrefs.SetFloat(currentSceneContainerYPosKey, currentSceneContainerYPos);
+
+                Utils.DebugUtils.DebugLog("This scene's container YPos was already recorded, but didn't match the current YPos, so it's been overwritten: " + currentSceneContainer.name);
             }
             else
             {
-                Utils.DebugUtils.DebugLog("This scene's container YPos was already recorded and up to date in EditorPrefs");
+                Utils.DebugUtils.DebugLog("This scene's container YPos was already recorded and up to date in EditorPrefs: " + currentSceneContainer.name);
             }
         }
     }
