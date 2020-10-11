@@ -102,8 +102,11 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
 
         // get the player, its camera, and its position
         player = ManageFPSControllers.FPSControllerGlobals.activeFPSController;
-        playerCamera = player.GetComponentInChildren<Camera>();
-        playerPosition = player.transform.position;
+        if (player)
+        {
+            playerCamera = player.GetComponentInChildren<Camera>();
+            playerPosition = player.transform.position;
+        }
     }
 
     // Update is called once per frame

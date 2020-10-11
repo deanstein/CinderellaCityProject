@@ -3,7 +3,7 @@
 // this script should be attached to a parent GameObject containing
 // other children with components that need to be disabled when too far from the player
 
-public class ToggleComponentByProximityToPlayer : MonoBehaviour {
+public class ToggleComponentsByProximityToPlayer : MonoBehaviour {
 
     // these are passed in from AssetImportPipeline
     // these are the component types that will get toggled
