@@ -9,7 +9,7 @@ using UnityEngine;
 
 // the object this script is attached to should have these components
 [RequireComponent(typeof(AudioSource))]
-[RequireComponent(typeof(ToggleComponentByProximityToPlayer))]
+[RequireComponent(typeof(ToggleComponentsByProximityToPlayer))]
 
 // define the type of data/parameters that a set of speakers can get and set
 [System.Serializable]
@@ -58,7 +58,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
 {
     // define components to be accessed or modified
     AudioSource thisAudioSourceComponent;
-    ToggleComponentByProximityToPlayer thisToggleComponentByProximityScript;
+    ToggleComponentsByProximityToPlayer thisToggleComponentByProximityScript;
 
     // used for synchronizing a slave and a master audiosource
     private float masterSlaveInitialSyncTime = 0.0f;
@@ -77,8 +77,8 @@ public class PlayAudioSequencesByName : MonoBehaviour
         switch (name)
         {
             // mall - 60s70s
-            case string partialName when partialName.Contains("mall-ambient-chatter-60s70s"):
-                return AudioSourceGlobals.MallChatter60s70sParams;
+            case string partialName when partialName.Contains("mall-ambient-chatter-80s90s"):
+                return AudioSourceGlobals.MallChatter80s90sParams;
             case string partialName when partialName.Contains("mall-music-60s70s"):
                 return AudioSourceGlobals.MallMusic60s70sParams;
 
@@ -98,10 +98,12 @@ public class PlayAudioSequencesByName : MonoBehaviour
             case string partialName when partialName.Contains("store-music-musicland-80s90s"):
                 return AudioSourceGlobals.StoreMusicMusicland80s90sParams;
             default:
+                Utils.DebugUtils.DebugLog("Failed to associate speaker params with this speaker: " + name);
                 return null;
         }
     }
 
+    //[RequireComponent(ToggleComponentByProximityToPlayer)]
     private void Awake()
     {
         // set options for this object's AudioSource component
@@ -117,7 +119,8 @@ public class PlayAudioSequencesByName : MonoBehaviour
         thisAudioSourceComponent.bypassReverbZones = true;
 
         // set options for this object's ToggleComponentByProximity script component
-        thisToggleComponentByProximityScript = this.GetComponent<ToggleComponentByProximityToPlayer>();
+        //Utils.DebugUtils.DebugLog("This speaker host is trying to access proximty component: " + this.name);
+        thisToggleComponentByProximityScript = this.GetComponent<ToggleComponentsByProximityToPlayer>();
         thisToggleComponentByProximityScript.maxDistance = AssociateSpeakerParamsByName(this.name).maxDistance;
 
         // 

@@ -588,9 +588,9 @@ public class AssetImportUpdate : AssetPostprocessor {
                 // add the required scripts and behaviors
                 AddUnityEngineComponentToGameObject(scriptHostObject, "AudioSource");
                 AddCustomScriptComponentToGameObject(scriptHostObject, "PlayAudioSequencesByName");
-                AddCustomScriptComponentToGameObject(scriptHostObject, "ToggleComponentByProximityToPlayer");
+                AddCustomScriptComponentToGameObject(scriptHostObject, "ToggleComponentsByProximityToPlayer");
 
-                ToggleComponentByProximityToPlayer ToggleComponentByProximityScript = scriptHostObject.GetComponent<ToggleComponentByProximityToPlayer>();
+                ToggleComponentsByProximityToPlayer ToggleComponentByProximityScript = scriptHostObject.GetComponent<ToggleComponentsByProximityToPlayer>();
                 ToggleComponentByProximityScript.toggleComponentTypes = new string[] { "AudioSource", "PlayAudioSequencesByName" };
 
                 // mark this object as a delete candidate
@@ -1522,8 +1522,8 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         // save the scene
         // required to see some of the post-processing changes take effect in the editor
-        EditorSceneManager.SaveOpenScenes();
+        //EditorSceneManager.SaveOpenScenes();
 
-        Utils.DebugUtils.DebugLog("END PostProcessing");
+        //Utils.DebugUtils.DebugLog("END PostProcessing");
     }
 }
