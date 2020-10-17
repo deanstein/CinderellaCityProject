@@ -82,6 +82,7 @@ public class HoistSceneObjectsEditor : MonoBehaviour
 
     // hoists the given scene containers up for operations like building nav meshes
     // ***assumes the given scene containers belong to scenes that are open in the editor***
+    // ***assumes the given scene containers have already been filtered and require hoisting***
     public static bool HoistSceneContainersUp(List<GameObject> timePeriodSceneContainers)
     {
         // record whether the scene was hoisted
@@ -94,7 +95,7 @@ public class HoistSceneObjectsEditor : MonoBehaviour
             Vector3 currentPosition = sceneContainer.transform.position;
 
             // get the Z-pos EditorPrefs key by name
-            string originalSceneContainerYPosKey = ManageEditorPrefs.GetEditorPrefKeyBySceneName(SceneManager.GetActiveScene().name, ManageEditorPrefs.EditorPrefsGlobals.originalContainerYPosKeyID);
+            string originalSceneContainerYPosKey = ManageEditorPrefs.GetEditorPrefKeyBySceneName(sceneContainer.scene.name, ManageEditorPrefs.EditorPrefsGlobals.originalContainerYPosKeyID);
 
             // get the new height to add based on this scene container
             float addNewHeight = HoistSceneObjects.GetHoistHeightBySceneName(sceneContainer.name);
@@ -102,13 +103,11 @@ public class HoistSceneObjectsEditor : MonoBehaviour
 
             // if a position is already recorded, and it seems like this scene container has already been hoisted,
             // return without modifying the scene
-            if (EditorPrefs.GetFloat(originalSceneContainerYPosKey, -1) != -1 && Mathf.Approximately(currentPosition.y, EditorPrefs.GetFloat(originalSceneContainerYPosKey, -1) + HoistSceneObjects.GetHoistHeightBySceneName(SceneManager.GetActiveScene().name)))
+            if (EditorPrefs.GetFloat(originalSceneContainerYPosKey, -1) != -1 && Mathf.Approximately(currentPosition.y, EditorPrefs.GetFloat(originalSceneContainerYPosKey, -1) + HoistSceneObjects.GetHoistHeightBySceneName(sceneContainer.scene.name)))
             {
 
                 Utils.DebugUtils.DebugLog("This scene container appears to already have been hoisted, and won't be modified: " + sceneContainer.name);
                 sceneModified = false;
-
-                return sceneModified;
             }
             else
             {
@@ -119,8 +118,6 @@ public class HoistSceneObjectsEditor : MonoBehaviour
 
                 Utils.DebugUtils.DebugLog("This scene container was hoisted up: " + sceneContainer.name);
                 sceneModified = true;
-
-                return sceneModified;
             }
         }
         return sceneModified;
@@ -128,6 +125,7 @@ public class HoistSceneObjectsEditor : MonoBehaviour
 
     // hoists the given scene containers up for operations like building nav meshes
     // ***assumes the given scene containers belong to scenes that are open in the editor***
+    // ***assumes the given scene containers have already been filtered and require hoisting***
     public static bool HoistSceneContainersDown(List<GameObject> timePeriodSceneContainers)
     {
         // record whether the scene was hoisted
@@ -139,7 +137,7 @@ public class HoistSceneObjectsEditor : MonoBehaviour
             float currentSceneContainerYPos = timePeriodSceneContainer.transform.position.y;
 
             // get the Z-pos EditorPrefs key by name
-            string originalSceneContainerYPosKey = ManageEditorPrefs.GetEditorPrefKeyBySceneName(SceneManager.GetActiveScene().name, ManageEditorPrefs.EditorPrefsGlobals.originalContainerYPosKeyID);
+            string originalSceneContainerYPosKey = ManageEditorPrefs.GetEditorPrefKeyBySceneName(timePeriodSceneContainer.scene.name, ManageEditorPrefs.EditorPrefsGlobals.originalContainerYPosKeyID);
 
             // if the original height is not set in preferences, don't do anything
             // and display a debug log message
@@ -148,11 +146,10 @@ public class HoistSceneObjectsEditor : MonoBehaviour
                 Utils.DebugUtils.DebugLog("ERROR: Cannot hoist scene container down, because there is no EditorPrefs record of an original YPosition for this scene container: " + timePeriodSceneContainer.name);
 
                 sceneModified = false;
-                return sceneModified;
             }
             // otherwise, there's a value stored, so check if the value
             // indicates the current scene has been hoisted up and needs to be hoisted back down
-            else if (Mathf.Approximately(currentSceneContainerYPos - EditorPrefs.GetFloat(originalSceneContainerYPosKey, -1), HoistSceneObjects.GetHoistHeightBySceneName(SceneManager.GetActiveScene().name)))
+            else if (Mathf.Approximately(currentSceneContainerYPos - EditorPrefs.GetFloat(originalSceneContainerYPosKey, -1), HoistSceneObjects.GetHoistHeightBySceneName(timePeriodSceneContainer.scene.name)))
             {
                 // get the new height to remove based on this scene container
                 float removeHeight = HoistSceneObjects.GetHoistHeightBySceneName(timePeriodSceneContainer.name);
@@ -163,7 +160,6 @@ public class HoistSceneObjectsEditor : MonoBehaviour
                 Utils.DebugUtils.DebugLog("This scene container was moved back down to align with its recorded original YPos: " + timePeriodSceneContainer.name);
 
                 sceneModified = true;
-                return sceneModified;
             }
             else if (Mathf.Approximately(currentSceneContainerYPos - EditorPrefs.GetFloat(originalSceneContainerYPosKey, -1), 0))
             {

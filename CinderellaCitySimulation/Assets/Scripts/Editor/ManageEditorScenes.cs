@@ -58,7 +58,7 @@ public static class ManageEditorScenes
         return allSceneContainerObjects;
     }
 
-    public static List<GameObject> GetAllTimePeriodSceneContainers()
+    public static List<GameObject> GetOpenTimePeriodSceneContainers()
     {
         List<GameObject> allOpenSceneContainerObjects = GetAllOpenSceneContainerObjects();
         List<GameObject> timePeriodSceneContainerObjects = new List<GameObject>();
@@ -75,6 +75,29 @@ public static class ManageEditorScenes
         }
 
         return timePeriodSceneContainerObjects;
+    }
+
+    public static List<GameObject> GetOpenTimePeriodSceneContainersRequiringHoist()
+    {
+        // of the open scenes, get the time period scene containers
+        List<GameObject> openTimePeriodSceneContainers = ManageEditorScenes.GetOpenTimePeriodSceneContainers();
+
+        // get a list of scenes requiring hoisting
+        List<string> timePeriodHoistSceneNames = HoistSceneObjects.GetScenesRequiringHoisting();
+
+        // create a new list to store the scene containers that require hoisting
+        List<GameObject> openTimePeriodSceneContainersRequiringHoist = new List<GameObject>();
+
+        // populate the list of open scene containers requiring hoisting
+        foreach (GameObject openTimePeriodSceneContainer in openTimePeriodSceneContainers)
+        {
+            if (StringUtils.TestIfAnyListItemContainedInString(timePeriodHoistSceneNames, openTimePeriodSceneContainer.name))
+            {
+                openTimePeriodSceneContainersRequiringHoist.Add(openTimePeriodSceneContainer);
+            }
+        }
+
+        return openTimePeriodSceneContainersRequiringHoist;
     }
 }
 
