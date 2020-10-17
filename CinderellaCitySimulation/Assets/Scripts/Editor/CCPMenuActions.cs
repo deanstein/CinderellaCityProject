@@ -77,19 +77,19 @@ public class CCPMenuActions : MonoBehaviour
     [MenuItem("Cinderella City Project/Hoist Scenes/Hoist Open Scene Containers Up")]
     public static void HoistCurrentEditorSceneContainersUp()
     {
-        // of the open scenes, get the time period scene containers
-        List<GameObject> timePeriodSceneContainers = ManageEditorScenes.GetAllTimePeriodSceneContainers();
+        // of the open scene containers, get only the ones requiring hoisting
+        List<GameObject> openScenContainersRequiringHoist = ManageEditorScenes.GetOpenTimePeriodSceneContainersRequiringHoist();
 
-        HoistSceneObjectsEditor.HoistSceneContainersUp(timePeriodSceneContainers);
+        HoistSceneObjectsEditor.HoistSceneContainersUp(openScenContainersRequiringHoist);
     }
 
     [MenuItem("Cinderella City Project/Hoist Scenes/Hoist Open Scene Containers Down")]
     public static void HoistCurrentEditorSceneContainersDown()
     {
-        // of the open scenes, get the time period scene containers
-        List<GameObject> timePeriodSceneContainers = ManageEditorScenes.GetAllTimePeriodSceneContainers();
+        // of the open scene containers, get only the ones requiring hoisting
+        List<GameObject> openScenContainersRequiringHoist = ManageEditorScenes.GetOpenTimePeriodSceneContainersRequiringHoist();
 
-        HoistSceneObjectsEditor.HoistSceneContainersDown(timePeriodSceneContainers);
+        HoistSceneObjectsEditor.HoistSceneContainersDown(openScenContainersRequiringHoist);
     }
 
     [MenuItem("Cinderella City Project/Hoist Scenes/Hoist All Required Scene Containers Up")]
@@ -102,7 +102,7 @@ public class CCPMenuActions : MonoBehaviour
     public static void HoistAllRequiredSceneContainersDown()
     {
         // of the open scenes, get the time period scene containers
-        List<GameObject> timePeriodSceneContainers = ManageEditorScenes.GetAllTimePeriodSceneContainers();
+        List<GameObject> timePeriodSceneContainers = ManageEditorScenes.GetOpenTimePeriodSceneContainers();
 
         HoistSceneObjectsEditor.HoistSceneContainersDown(timePeriodSceneContainers);
     }
@@ -126,12 +126,6 @@ public class CCPMenuActions : MonoBehaviour
         // in play mode, all screenshots are captured
         // and when the application stops, the screenshots are copied to the correct directory
         EditorApplication.EnterPlaymode();
-    }
-
-    [MenuItem("Cinderella City Project/Occlusion Culling/Update for Current Scene")]
-    public static void BakeOCData()
-    {
-        StaticOcclusionCulling.Compute();
     }
 
     [MenuItem("Cinderella City Project/Occlusion Culling/Update for All Scenes")]

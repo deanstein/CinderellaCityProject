@@ -1,7 +1,17 @@
 {
-  "AppVersion": "0.6.0.202010",
+  "AppVersion": "0.6.1.202010",
   "VersionHistory": [
     {
+      "0.6.1.202010": [
+        {
+          "Logic Updates": [
+            "Fixed an issue where occlusion culling would generate unexpected results in the basement of the 80s90s era, due to insufficient scene hoisting which caused the mechanical penthouse of 60s70s to collide with the basement of 80s90s"
+          ],
+          "Content Updates": [
+            ""
+          ]
+        }
+      ],
       "0.6.0.202010": [
         {
           "Logic Updates": [
@@ -9,7 +19,7 @@
             "Added support for generating additional NPCs from one 2D proxy object",
             "Added support for NPC pathfinding in-game",
             "Added support for NavMesh baking and NPC pathfinding scripts in AssetImportPipeline",
-            "Added support for toggling children components by pxorimity to player, and by visibility in camera",
+            "Added support for toggling children components by proximity to player, and by visibility in camera",
             "Added support for capturing in-game screenshots with new ManageCameraActions class",
             "Added support for Occlusion Culling, including scene hoisting and EditorPrefs management to support proper Occlusion Culling",
             "Added support for dynamic Lightmap Resolution settings per-FBX in AssetImportPipeline",
