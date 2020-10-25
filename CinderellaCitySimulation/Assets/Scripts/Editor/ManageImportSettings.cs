@@ -52,8 +52,9 @@ public class ManageImportSettings
                 ImportParams.doRebuildNavMesh = false;
                 return ImportParams;
 
-            case string assetOrModelName when assetOrModelName.Contains("mall-doors-windows-exterior")
-            || assetOrModelName.Contains("mall-doors-windows-interior"):
+            case string assetOrModelName when assetOrModelName.Contains("mall-doors-exterior")
+            || assetOrModelName.Contains("mall-doors-windows-interior")
+            || assetOrModelName.Contains("mall-windows-exterior"):
                 // pre-processor option flags
                 ImportParams.doSetGlobalScale = true; // always true
                 ImportParams.doInstantiateAndPlaceInCurrentScene = true;
@@ -62,7 +63,7 @@ public class ManageImportSettings
                 ImportParams.doDeleteReimportMaterialsTextures = true;
                 ImportParams.doAddBehaviorComponents = false;
                 // post-processor option flags
-                ImportParams.doSetStaticFlags = false;
+                ImportParams.doSetStaticFlags = true;
                 ImportParams.doSetCustomLightmapSettings = false;
                 ImportParams.doSetMaterialEmission = false;
                 ImportParams.doSetMaterialSmoothnessMetallic = true;
@@ -144,6 +145,24 @@ public class ManageImportSettings
                 ImportParams.doSetCustomLightmapSettings = false;
                 ImportParams.doSetMaterialEmission = false;
                 ImportParams.doSetMaterialSmoothnessMetallic = true;
+                ImportParams.doInstantiateProxyReplacements = false;
+                ImportParams.doHideProxyObjects = false;
+                ImportParams.doRebuildNavMesh = false;
+                return ImportParams;
+
+            case string assetOrModelName when assetOrModelName.Contains("mall-furniture"):
+                // pre-processor option flags
+                ImportParams.doSetGlobalScale = true; // always true
+                ImportParams.doInstantiateAndPlaceInCurrentScene = true;
+                ImportParams.doSetColliderActive = true;
+                ImportParams.doSetUVActiveAndConfigure = false;
+                ImportParams.doDeleteReimportMaterialsTextures = true;
+                ImportParams.doAddBehaviorComponents = false;
+                // post-processor option flags
+                ImportParams.doSetStaticFlags = true;
+                ImportParams.doSetCustomLightmapSettings = true;
+                ImportParams.doSetMaterialEmission = false;
+                ImportParams.doSetMaterialSmoothnessMetallic = false;
                 ImportParams.doInstantiateProxyReplacements = false;
                 ImportParams.doHideProxyObjects = false;
                 ImportParams.doRebuildNavMesh = false;
@@ -377,6 +396,9 @@ public class ManageImportSettings
     {
         switch (assetName)
         {
+            // no static editor flags
+            case string name when (name.Contains("doors-exterior")):
+                return 0;
             // only navigation static
             case string name when (name.Contains("windows") || name.Contains("handrails") || name.Contains("wayfinding")) && !name.Contains("solid"):
                 return StaticEditorFlags.NavigationStatic;
@@ -400,7 +422,7 @@ public class ManageImportSettings
             case string name when name.Contains("lights") || name.Contains("signage"):
                 return 10f;
             case string name when name.Contains("floor-roof"):
-                return 0.1f;
+                return 2.0f;
             case string name when name.Contains("site") || name.Contains("structure"):
                 return 0.1f;
             case string name when name.Contains("walls-detailing-exterior"):
