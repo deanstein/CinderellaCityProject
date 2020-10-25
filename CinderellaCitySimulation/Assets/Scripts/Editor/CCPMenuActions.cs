@@ -142,6 +142,28 @@ public class CCPMenuActions : MonoBehaviour
         HoistCurrentEditorSceneContainersDown();
     }
 
+    [MenuItem("Cinderella City Project/Nav Meshes/Update for Current Scene")]
+    public static void RebuildCurrentSceneNavMesh()
+    {
+            // get this scene's container
+            GameObject sceneContainer = ManageScenes.GetSceneContainerObject(EditorSceneManager.GetActiveScene());
+            List<GameObject> sceneContainers = new List<GameObject>();
+            sceneContainers.Add(sceneContainer);
+
+            // first, move this scene container as appropriate
+            HoistSceneObjectsEditor.HoistSceneContainersUp(sceneContainers);
+
+            // build the nav mesh
+            UnityEditor.AI.NavMeshBuilder.BuildNavMesh();
+
+            Utils.DebugUtils.DebugLog("Updated the nav mesh in scene: " + EditorSceneManager.GetActiveScene().name);
+
+            // now move the scene container back down
+            HoistSceneObjectsEditor.HoistSceneContainersDown(sceneContainers);
+
+            EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene());
+    }
+
     [MenuItem("Cinderella City Project/Nav Meshes/Update for All Scenes")]
     public static void RebuildAllNavMeshes()
     {
@@ -156,27 +178,8 @@ public class CCPMenuActions : MonoBehaviour
 
             // otherwise, we're already in the requested scene, so build the nav mesh
 
-            // get this scene's container
-            GameObject sceneContainer = ManageScenes.GetSceneContainerObject(SceneManager.GetActiveScene());
-            List<GameObject> sceneContainers = new List<GameObject>();
-            sceneContainers.Add(sceneContainer);
-
-            // first, move this scene container as appropriate
-            HoistSceneObjectsEditor.HoistSceneContainersUp(sceneContainers);
-            Debug.Log("Hoisting nav mesh for scene: " + sceneContainer.name);
-
-            // build the nav mesh
-            UnityEditor.AI.NavMeshBuilder.BuildNavMesh();
-
-            Utils.DebugUtils.DebugLog("Updated the nav mesh in scene: " + sceneName);
-
-            // now move the scene container back down
-            HoistSceneObjectsEditor.HoistSceneContainersDown(sceneContainers);
-
-            EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene());
+            RebuildCurrentSceneNavMesh();
         }
-
-        // TODO: return to the loading screen once all nav meshes are updated
     }
 
     [MenuItem("Cinderella City Project/Static Flags/Update for Current Scene")]

@@ -390,7 +390,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         string fileName = "metallicMap-" + scale + "-" + scale + "-" + scale + ".png";
 
         // define the path where this texture will be stored
-        string filePath = globalAssetFileDirectory + "Textures/" + fileName;
+        string filePath = globalAssetTexturesDirectory + "/" + fileName;
 
         // only make a new texture if it doesn't exist yet
         // note that this texture does not get cleaned up in DeleteReimportMaterialsTextures
@@ -415,6 +415,12 @@ public class AssetImportUpdate : AssetPostprocessor {
                 {
                     newTexture.SetPixel(x, y, color);
                 }
+            }
+
+            // create the required textures folder before trying to write to it
+            if (!Directory.Exists(globalAssetTexturesDirectory))
+            {
+                Directory.CreateDirectory(globalAssetTexturesDirectory);
             }
 
             // write the texture to the file system
