@@ -52,6 +52,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - decorative light concrete
+    second: {fileID: 2100000, guid: 1402bd1aaabc9d544ba6547a1c6c2a79, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - expansion joint
     second: {fileID: 2100000, guid: df58eb94259b34e4984b76f2eef3ae27, type: 2}
   - first:
@@ -84,6 +89,16 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: mall - stair terrazzo tile
     second: {fileID: 2100000, guid: 3e90d8a1dbae63d46a47797860b7b710, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - terra cotta tile
+    second: {fileID: 2100000, guid: 22daa8c0ad758554082d021ef606d2b4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - terra cotta tile special
+    second: {fileID: 2100000, guid: 7824e1582fdc05948a6b5f41910fdf3b, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -176,7 +191,7 @@ ModelImporter:
     secondaryUVAngleDistortion: 4
     secondaryUVAreaDistortion: 4
     secondaryUVHardAngle: 88
-    secondaryUVPackMargin: 4
+    secondaryUVPackMargin: 64
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
