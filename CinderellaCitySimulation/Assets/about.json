@@ -1,7 +1,23 @@
 {
-  "AppVersion": "0.6.1.202010",
   "VersionHistory": [
     {
+      "0.6.2.202010": [
+        {
+          "Logic Updates": [
+            "Added missing configuration for exterior doors when setting StaticEditorFlags",
+            "Added ability to update Nav Mesh for current scene only in the CCP Menu",
+            "Improved support for mall furniture, and updated door/window configurations in ManageImportSettings",
+            "Improved reliability in AssetImportPipeline in certain cases",
+            "Increased the Light Map resolution for mall floors"
+          ],
+          "Content Updates": [
+            "Added floor details and updated doors/windows in 60s70s",
+            "Updated lighting in 60s70s",
+            "Updated thumbnails for 60s70s in Main Menu",
+            "Fixed door and window static flags, and updated NavMesh in 60s70s"
+          ]
+        }
+      ],
       "0.6.1.202010": [
         {
           "Logic Updates": [
