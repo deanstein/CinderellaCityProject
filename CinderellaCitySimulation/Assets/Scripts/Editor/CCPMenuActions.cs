@@ -138,8 +138,6 @@ public class CCPMenuActions : MonoBehaviour
 
         // compute the static occlusion culling after the scenes are moved to intervals
         StaticOcclusionCulling.Compute();
-
-        HoistCurrentEditorSceneContainersDown();
     }
 
     [MenuItem("Cinderella City Project/Nav Meshes/Update for Current Scene")]
