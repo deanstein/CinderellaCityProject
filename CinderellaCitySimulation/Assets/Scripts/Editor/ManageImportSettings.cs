@@ -8,17 +8,22 @@ public class ModelImportParams
     public bool doInstantiateAndPlaceInCurrentScene = false;
     public bool doSetColliderActive = false;
     public bool doSetUVActiveAndConfigure = false;
-    public bool doSetCustomLightmapSettings = false;
     public bool doDeleteReimportMaterialsTextures = false;
     public bool doAddBehaviorComponents = false;
 
     // post-processor option flags
-    public bool doSetStaticFlags = false;
     public bool doSetMaterialEmission = false;
     public bool doSetMaterialSmoothnessMetallic = false;
     public bool doInstantiateProxyReplacements = false;
     public bool doHideProxyObjects = false;
+
+    // these import params are deprecated, for now,
+    // because these operations don't fire reliably in the post-processor
+    // so they are manually executed from the CCP Menu
+    // leaving here for now in case they can be added back to the import process in the future
+    public bool doSetStaticFlags = false;
     public bool doRebuildNavMesh = false;
+    public bool doSetCustomLightmapSettings = false;
 }
 
 // return import settings based on the asset name
@@ -43,13 +48,10 @@ public class ManageImportSettings
                 ImportParams.doDeleteReimportMaterialsTextures = true;
                 ImportParams.doAddBehaviorComponents = false;
                 // post-processor option flags
-                ImportParams.doSetStaticFlags = true;
-                ImportParams.doSetCustomLightmapSettings = false;
                 ImportParams.doSetMaterialEmission = false;
                 ImportParams.doSetMaterialSmoothnessMetallic = false;
                 ImportParams.doInstantiateProxyReplacements = false;
                 ImportParams.doHideProxyObjects = false;
-                ImportParams.doRebuildNavMesh = false;
                 return ImportParams;
 
             case string assetOrModelName when assetOrModelName.Contains("mall-doors-exterior")
@@ -63,13 +65,10 @@ public class ManageImportSettings
                 ImportParams.doDeleteReimportMaterialsTextures = true;
                 ImportParams.doAddBehaviorComponents = false;
                 // post-processor option flags
-                ImportParams.doSetStaticFlags = true;
-                ImportParams.doSetCustomLightmapSettings = false;
                 ImportParams.doSetMaterialEmission = false;
                 ImportParams.doSetMaterialSmoothnessMetallic = true;
                 ImportParams.doInstantiateProxyReplacements = false;
                 ImportParams.doHideProxyObjects = false;
-                ImportParams.doRebuildNavMesh = false;
                 return ImportParams;
 
             case string assetOrModelName when assetOrModelName.Contains("mall-doors-windows-solid"):
@@ -81,13 +80,10 @@ public class ManageImportSettings
                 ImportParams.doDeleteReimportMaterialsTextures = true;
                 ImportParams.doAddBehaviorComponents = false;
                 // post-processor option flags
-                ImportParams.doSetStaticFlags = true;
-                ImportParams.doSetCustomLightmapSettings = false;
                 ImportParams.doSetMaterialEmission = false;
                 ImportParams.doSetMaterialSmoothnessMetallic = false;
                 ImportParams.doInstantiateProxyReplacements = false;
                 ImportParams.doHideProxyObjects = false;
-                ImportParams.doRebuildNavMesh = false;
                 return ImportParams;
 
             case string assetOrModelName when assetOrModelName.Contains("mall-flags"):
@@ -99,13 +95,10 @@ public class ManageImportSettings
                 ImportParams.doDeleteReimportMaterialsTextures = true;
                 ImportParams.doAddBehaviorComponents = false;
                 // post-processor option flags
-                ImportParams.doSetStaticFlags = true;
-                ImportParams.doSetCustomLightmapSettings = false;
                 ImportParams.doSetMaterialEmission = false;
                 ImportParams.doSetMaterialSmoothnessMetallic = false;
                 ImportParams.doInstantiateProxyReplacements = false;
                 ImportParams.doHideProxyObjects = false;
-                ImportParams.doRebuildNavMesh = false;
                 return ImportParams;
 
             case string assetOrModelName when assetOrModelName.Contains("mall-ceiling")
@@ -123,13 +116,10 @@ public class ManageImportSettings
                 ImportParams.doDeleteReimportMaterialsTextures = true;
                 ImportParams.doAddBehaviorComponents = false;
                 // post-processor option flags
-                ImportParams.doSetStaticFlags = true;
-                ImportParams.doSetCustomLightmapSettings = true;
                 ImportParams.doSetMaterialEmission = false;
                 ImportParams.doSetMaterialSmoothnessMetallic = true;
                 ImportParams.doInstantiateProxyReplacements = false;
                 ImportParams.doHideProxyObjects = false;
-                ImportParams.doRebuildNavMesh = false;
                 return ImportParams;
 
             case string assetOrModelName when assetOrModelName.Contains("mall-water"):
@@ -141,13 +131,10 @@ public class ManageImportSettings
                 ImportParams.doDeleteReimportMaterialsTextures = true;
                 ImportParams.doAddBehaviorComponents = false;
                 // post-processor option flags
-                ImportParams.doSetStaticFlags = false;
-                ImportParams.doSetCustomLightmapSettings = false;
                 ImportParams.doSetMaterialEmission = false;
                 ImportParams.doSetMaterialSmoothnessMetallic = true;
                 ImportParams.doInstantiateProxyReplacements = false;
                 ImportParams.doHideProxyObjects = false;
-                ImportParams.doRebuildNavMesh = false;
                 return ImportParams;
 
             case string assetOrModelName when assetOrModelName.Contains("mall-furniture"):
@@ -159,13 +146,10 @@ public class ManageImportSettings
                 ImportParams.doDeleteReimportMaterialsTextures = true;
                 ImportParams.doAddBehaviorComponents = false;
                 // post-processor option flags
-                ImportParams.doSetStaticFlags = true;
-                ImportParams.doSetCustomLightmapSettings = true;
                 ImportParams.doSetMaterialEmission = false;
                 ImportParams.doSetMaterialSmoothnessMetallic = false;
                 ImportParams.doInstantiateProxyReplacements = false;
                 ImportParams.doHideProxyObjects = false;
-                ImportParams.doRebuildNavMesh = false;
                 return ImportParams;
 
             case string assetOrModelName when assetOrModelName.Contains("mall-handrails"):
@@ -177,13 +161,10 @@ public class ManageImportSettings
                 ImportParams.doDeleteReimportMaterialsTextures = true;
                 ImportParams.doAddBehaviorComponents = false;
                 // post-processor option flags
-                ImportParams.doSetStaticFlags = true;
-                ImportParams.doSetCustomLightmapSettings = false;
                 ImportParams.doSetMaterialEmission = false;
                 ImportParams.doSetMaterialSmoothnessMetallic = true;
                 ImportParams.doInstantiateProxyReplacements = false;
                 ImportParams.doHideProxyObjects = false;
-                ImportParams.doRebuildNavMesh = false;
                 return ImportParams;
 
             case string assetOrModelName when assetOrModelName.Contains("mall-wayfinding"):
@@ -195,13 +176,10 @@ public class ManageImportSettings
                 ImportParams.doDeleteReimportMaterialsTextures = true;
                 ImportParams.doAddBehaviorComponents = false;
                 // post-processor option flags
-                ImportParams.doSetStaticFlags = true;
-                ImportParams.doSetCustomLightmapSettings = false;
                 ImportParams.doSetMaterialEmission = true;
                 ImportParams.doSetMaterialSmoothnessMetallic = true;
                 ImportParams.doInstantiateProxyReplacements = false;
                 ImportParams.doHideProxyObjects = false;
-                ImportParams.doRebuildNavMesh = false;
                 return ImportParams;
 
             case string assetOrModelName when assetOrModelName.Contains("mall-lights")
@@ -215,13 +193,10 @@ public class ManageImportSettings
                 ImportParams.doDeleteReimportMaterialsTextures = true;
                 ImportParams.doAddBehaviorComponents = false;
                 // post-processor option flags
-                ImportParams.doSetStaticFlags = true;
-                ImportParams.doSetCustomLightmapSettings = true;
                 ImportParams.doSetMaterialEmission = true;
                 ImportParams.doSetMaterialSmoothnessMetallic = false;
                 ImportParams.doInstantiateProxyReplacements = false;
                 ImportParams.doHideProxyObjects = false;
-                ImportParams.doRebuildNavMesh = false;
                 return ImportParams;
 
             case string assetOrModelName when assetOrModelName.Contains("mall-structure"):
@@ -233,13 +208,10 @@ public class ManageImportSettings
                 ImportParams.doDeleteReimportMaterialsTextures = true;
                 ImportParams.doAddBehaviorComponents = false;
                 // post-processor option flags
-                ImportParams.doSetStaticFlags = true;
-                ImportParams.doSetCustomLightmapSettings = true;
                 ImportParams.doSetMaterialEmission = false;
                 ImportParams.doSetMaterialSmoothnessMetallic = false;
                 ImportParams.doInstantiateProxyReplacements = false;
                 ImportParams.doHideProxyObjects = false;
-                ImportParams.doRebuildNavMesh = false;
                 return ImportParams;
 
             case string assetOrModelName when assetOrModelName.Contains("proxy-cameras"):
@@ -251,13 +223,10 @@ public class ManageImportSettings
                 ImportParams.doDeleteReimportMaterialsTextures = false;
                 ImportParams.doAddBehaviorComponents = false;
                 // post-processor option flags
-                ImportParams.doSetStaticFlags = false;
-                ImportParams.doSetCustomLightmapSettings = false;
                 ImportParams.doSetMaterialEmission = false;
                 ImportParams.doSetMaterialSmoothnessMetallic = false;
                 ImportParams.doInstantiateProxyReplacements = true;
                 ImportParams.doHideProxyObjects = true;
-                ImportParams.doRebuildNavMesh = false;
                 return ImportParams;
 
             case string assetOrModelName when assetOrModelName.Contains("proxy-people"):
@@ -269,13 +238,10 @@ public class ManageImportSettings
                 ImportParams.doDeleteReimportMaterialsTextures = true;
                 ImportParams.doAddBehaviorComponents = true;
                 // post-processor option flags
-                ImportParams.doSetStaticFlags = false;
-                ImportParams.doSetCustomLightmapSettings = false;
                 ImportParams.doSetMaterialEmission = false;
                 ImportParams.doSetMaterialSmoothnessMetallic = false;
                 ImportParams.doInstantiateProxyReplacements = true;
                 ImportParams.doHideProxyObjects = true;
-                ImportParams.doRebuildNavMesh = false;
                 return ImportParams;
 
             case string assetOrModelName when assetOrModelName.Contains("proxy-trees"):
@@ -287,13 +253,10 @@ public class ManageImportSettings
                 ImportParams.doDeleteReimportMaterialsTextures = true;
                 ImportParams.doAddBehaviorComponents = true;
                 // post-processor option flags
-                ImportParams.doSetStaticFlags = false;
-                ImportParams.doSetCustomLightmapSettings = false;
                 ImportParams.doSetMaterialEmission = false;
                 ImportParams.doSetMaterialSmoothnessMetallic = false;
                 ImportParams.doInstantiateProxyReplacements = true;
                 ImportParams.doHideProxyObjects = true;
-                ImportParams.doRebuildNavMesh = false;
                 return ImportParams;
 
 
@@ -306,13 +269,10 @@ public class ManageImportSettings
                 ImportParams.doDeleteReimportMaterialsTextures = true;
                 ImportParams.doAddBehaviorComponents = false;
                 // post-processor option flags
-                ImportParams.doSetStaticFlags = true;
-                ImportParams.doSetCustomLightmapSettings = true;
                 ImportParams.doSetMaterialEmission = false;
                 ImportParams.doSetMaterialSmoothnessMetallic = false;
                 ImportParams.doInstantiateProxyReplacements = false;
                 ImportParams.doHideProxyObjects = false;
-                ImportParams.doRebuildNavMesh = false;
                 return ImportParams;
 
             case string assetOrModelName when assetOrModelName.Contains("speakers") || assetOrModelName.Contains("speakers-simple"):
@@ -324,13 +284,10 @@ public class ManageImportSettings
                 ImportParams.doDeleteReimportMaterialsTextures = true;
                 ImportParams.doAddBehaviorComponents = true;
                 // post-processor option flags
-                ImportParams.doSetStaticFlags = false;
-                ImportParams.doSetCustomLightmapSettings = false;
                 ImportParams.doSetMaterialEmission = false;
                 ImportParams.doSetMaterialSmoothnessMetallic = false;
                 ImportParams.doInstantiateProxyReplacements = false;
                 ImportParams.doHideProxyObjects = false;
-                ImportParams.doRebuildNavMesh = false;
                 return ImportParams;
 
             // these are temporary files or experimental models for testing
@@ -344,13 +301,10 @@ public class ManageImportSettings
                 ImportParams.doDeleteReimportMaterialsTextures = true;
                 ImportParams.doAddBehaviorComponents = false;
                 // post-processor option flags
-                ImportParams.doSetStaticFlags = false;
-                ImportParams.doSetCustomLightmapSettings = false;
                 ImportParams.doSetMaterialEmission = false;
                 ImportParams.doSetMaterialSmoothnessMetallic = false;
                 ImportParams.doInstantiateProxyReplacements = false;
                 ImportParams.doHideProxyObjects = false;
-                ImportParams.doRebuildNavMesh = false;
                 return ImportParams;
 
             case string assetOrModelName when assetOrModelName.Contains("experimental-simple"):
@@ -362,13 +316,10 @@ public class ManageImportSettings
                 ImportParams.doDeleteReimportMaterialsTextures = true;
                 ImportParams.doAddBehaviorComponents = false;
                 // post-processor option flags
-                ImportParams.doSetStaticFlags = true;
-                ImportParams.doSetCustomLightmapSettings = true;
                 ImportParams.doSetMaterialEmission = true;
                 ImportParams.doSetMaterialSmoothnessMetallic = false;
                 ImportParams.doInstantiateProxyReplacements = false;
                 ImportParams.doHideProxyObjects = false;
-                ImportParams.doRebuildNavMesh = false;
                 return ImportParams;
 
             default:
@@ -380,13 +331,10 @@ public class ManageImportSettings
                 ImportParams.doDeleteReimportMaterialsTextures = false;
                 ImportParams.doAddBehaviorComponents = false;
                 // post-processor option flags
-                ImportParams.doSetStaticFlags = false;
-                ImportParams.doSetCustomLightmapSettings = false;
                 ImportParams.doSetMaterialEmission = false;
                 ImportParams.doSetMaterialSmoothnessMetallic = false;
                 ImportParams.doInstantiateProxyReplacements = false;
                 ImportParams.doHideProxyObjects = false;
-                ImportParams.doRebuildNavMesh = false;
                 return ImportParams;
         }
     }

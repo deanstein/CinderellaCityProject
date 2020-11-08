@@ -212,19 +212,28 @@ public class CCPMenuActions : MonoBehaviour
         }
     }
 
-    /* ---------- Build Prep ---------- */
+    /* ---------- Batch Operations ---------- */
 
-    [MenuItem("Cinderella City Project/Build Prep/Run Pre-Build Steps")]
-    public static void PreBuild()
+    [MenuItem("Cinderella City Project/Batch Operations/Post Process Scene Update")]
+    public static void PostProcessSceneUpdate()
     {
-        // before building, need to hoist all required scenes up
-        HoistSceneObjectsEditor.HoistAllRequiredSceneContainersUp();
-    }
+        // first, ensure the current scene is hoisted as required so downstream operations work correctly
+        HoistCurrentEditorSceneContainersUp();
 
-    [MenuItem("Cinderella City Project/Build Prep/Run Post-Build Steps")]
-    public static void PostBuild()
-    {
-        // after building, need to hoist required scenes back down
-        HoistSceneObjectsEditor.HoistAllRequiredSceneContainersDown();
+        // update the static flags - this is required for the following operations
+        SetAllStaticFlagsInCurrentScene();
+
+        // update the nav meshes
+        RebuildCurrentSceneNavMesh();
+
+        // update the lightmap resolutions
+        SetAllLightmapResolutionsInCurrentScene();
+
+        // save the scene
+        // required to see some of the post-processing changes take effect in the editor
+        EditorSceneManager.SaveOpenScenes();
+
+        // occlusion culling requires opening all scenes additively, so it's saved for last
+        UpdateOcclusionCulling();
     }
 }

@@ -1484,16 +1484,6 @@ public class AssetImportUpdate : AssetPostprocessor {
         // execute all AssetImportUpdate PostProcessor option flags marked as true
         //
 
-        if (AssetImportGlobals.ModelImportParamsByName.doSetStaticFlags)
-        {
-            SetStaticFlagsByName(globalGameObjectFromAsset);
-        }
-
-        if (AssetImportGlobals.ModelImportParamsByName.doSetCustomLightmapSettings)
-        {
-            SetCustomLightmapSettingsByName(globalGameObjectFromAsset);
-        }
-
         if (AssetImportGlobals.ModelImportParamsByName.doSetMaterialEmission)
         {
             SetMaterialEmissionByName();
@@ -1514,9 +1504,21 @@ public class AssetImportUpdate : AssetPostprocessor {
             HideProxyObjects(globalAssetFileName);
         }
 
+        // these never worked reliably, so they've been deprecated (now invoked manually via CCP menu)
+        // but keeping them around if they can be used again in the future
         if (AssetImportGlobals.ModelImportParamsByName.doRebuildNavMesh)
         {
             RebuildNavMesh();
+        }
+
+        if (AssetImportGlobals.ModelImportParamsByName.doSetCustomLightmapSettings)
+        {
+            SetCustomLightmapSettingsByName(globalGameObjectFromAsset);
+        }
+
+        if (AssetImportGlobals.ModelImportParamsByName.doSetStaticFlags)
+        {
+            SetStaticFlagsByName(globalGameObjectFromAsset);
         }
 
         // newly-instantiated objects need to be set as a child of the scene container
@@ -1526,10 +1528,6 @@ public class AssetImportUpdate : AssetPostprocessor {
             SetObjectAsChildOfSceneContainer(newlyInstantiatedFBXContainer);
         }
 
-        // save the scene
-        // required to see some of the post-processing changes take effect in the editor
-        //EditorSceneManager.SaveOpenScenes();
-
-        //Utils.DebugUtils.DebugLog("END PostProcessing");
+        Utils.DebugUtils.DebugLog("END PostProcessing");
     }
 }
