@@ -315,6 +315,15 @@ public class Utils
             gameObjectToScale.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
             Utils.DebugUtils.DebugLog("<b>Scaled </b>" + gameObjectToScale + " <b>to max height: </b> " + targetHeight + " <b>(" + scaleFactor + " scale factor)</b>");
         }
+
+        // randomly rotate a GameObject about its vertical axis (Y)
+        public static void RandomRotateGameObjectAboutY(GameObject gameObjectToRotate)
+        {
+            Quaternion currentRotation = gameObjectToRotate.transform.rotation;
+            float randomYRotation = UnityEngine.Random.Range(-1.0f, 1.0f);
+            Quaternion adjustedRotation = new Quaternion(currentRotation.x, randomYRotation, currentRotation.z, currentRotation.w);
+            gameObjectToRotate.transform.rotation = adjustedRotation;
+        }
     }
 }
 

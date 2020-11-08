@@ -930,6 +930,9 @@ public class AssetImportUpdate : AssetPostprocessor {
 
                 // add the script to update the animation based on the speed
                 UpdateNPCAnimatorByState updateAnimatorScript = NPCObject.AddComponent<UpdateNPCAnimatorByState>();
+
+                // randomly rotate the person since it'll be walking toward a random destination anyway
+                Utils.GeometryUtils.RandomRotateGameObjectAboutY(NPCObject);
             }
         }
         // otherwise, this is a filler, and it can be configured to find paths 
@@ -1118,6 +1121,12 @@ public class AssetImportUpdate : AssetPostprocessor {
                                 }
                             }
                         }
+                    }
+
+                    else if (child.name.Contains("vegetation"))
+                    {
+                        // randomly rotate to add visual variety
+                        Utils.GeometryUtils.RandomRotateGameObjectAboutY(instancedPrefab);
                     }
 
                     // some people may have been placed at Vector3.zero, meaning we couldn't
