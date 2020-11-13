@@ -19,15 +19,17 @@ public class UpdateFPSAgentByState : MonoBehaviour
             // get the current nav mesh agent
             // determine if this player agent host is
             // at the same position as the player within some tolerance
-            bool isFPSAgentAtPlayerPos = Utils.GeometryUtils.GetFastDistance(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.nextPosition, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position) < 1.0f;
+            bool isFPSAgentAtPlayerPos = Vector3.Distance(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.nextPosition, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position) < 1.0f;
+            //Utils.DebugUtils.DebugLog("Nav Mesh Agent pos: " + ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.nextPosition);
+            //Utils.DebugUtils.DebugLog("FPS controller position: " + ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position);
+            //Utils.DebugUtils.DebugLog("Is FPS agent at player pos? " + isFPSAgentAtPlayerPos);
 
             // if the agent host object and the player are not within some max distance, 
             // disable the nav mesh agent
             if (!isFPSAgentAtPlayerPos)
             {
-
                 ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.enabled = false;
-                //Debug.Log("Disabling player nav mesh agent.");
+                //Utils.DebugUtils.DebugLog("Disabling player nav mesh agent + " + ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.transform.parent.name);
             }
 
             // only try to re-enable the nav mesh agent if the player is on the nav mesh
@@ -35,7 +37,7 @@ public class UpdateFPSAgentByState : MonoBehaviour
             if (ManageFPSControllers.FPSControllerGlobals.isActiveFPSControllerOnNavMesh && isFPSAgentAtPlayerPos)
             {
                 ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.enabled = true;
-                //Debug.Log("Enabling player nav mesh agent.");
+                //Utils.DebugUtils.DebugLog("Enabling player nav mesh agent + " + ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.transform.parent.name);
             }
         }
     }

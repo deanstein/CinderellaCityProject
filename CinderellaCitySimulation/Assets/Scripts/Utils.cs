@@ -47,23 +47,6 @@ public class Utils
 
     public class GeometryUtils
     {
-        // gets distance between two points, allegedly faster than Unity's built-in distance method
-        // (sourced from the Unity forums)
-        public static float GetFastDistance(Vector3 v1, Vector3 v2)
-        {
-            float f;
-            float f2;
-            f = v1.x - v2.x;
-            if (f < 0) { f = f * -1; }
-            f2 = v1.z - v2.z;
-            if (f2 < 0) { f2 = f2 * -1; }
-
-            if (f > f2) { f2 = f; }
-            // simulates a box-shaped distance calculation
-
-            return f2;
-        }
-
         public static List<Transform> GetAllChildrenTransforms(Transform parent)
         {
             List<Transform> children = new List<Transform>();
@@ -101,7 +84,7 @@ public class Utils
         // determine if an object is close enough to a valid nav mesh point to be considered on the nav mesh
         public static bool GetIsOnNavMeshWithinTolerance(GameObject gameObjectToMeasure, float tolerance)
         {
-            if (GetFastDistance(gameObjectToMeasure.transform.position, GetNearestPointOnNavMesh(gameObjectToMeasure.transform.position, tolerance)) < tolerance)
+            if (Vector3.Distance(gameObjectToMeasure.transform.position, GetNearestPointOnNavMesh(gameObjectToMeasure.transform.position, tolerance)) < tolerance)
             {
                 return true;
             }
@@ -143,7 +126,7 @@ public class Utils
             int maxTries = 1000;
             for (var i = 0; i < maxTries;  i++)
             {
-                float distance = GetFastDistance(currentPosition, randomPosition);
+                float distance = Vector3.Distance(currentPosition, randomPosition);
                 bool isIdealDistance = distance > minDistance && distance < maxDistance;
                 bool isOnLevel = Mathf.Abs(currentPosition.y - randomPosition.y) < NPCControllerGlobals.maxStepHeight;
 

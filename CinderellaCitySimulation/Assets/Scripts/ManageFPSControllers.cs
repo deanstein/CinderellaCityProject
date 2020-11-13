@@ -300,7 +300,7 @@ public class ManageFPSControllers : MonoBehaviour {
             this.transform.position = newPosition;
 
             // keep track of the player's distance from the initial position
-            float distance = Utils.GeometryUtils.GetFastDistance(initialPosition, FPSControllerGlobals.activeFPSControllerTransform.position);
+            float distance = Vector3.Distance(initialPosition, FPSControllerGlobals.activeFPSControllerTransform.position);
 
             // when the player has moved a bit, turn off the time traveling flag
             // so the next position update won't have the locked Y axis

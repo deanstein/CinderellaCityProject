@@ -39,7 +39,7 @@ public class FollowPathOnNavMesh : MonoBehaviour
         float dotProductAlignment = Vector3.Dot(NPCForwardVector, FPSForwardVector);
 
         // distance between this object and the player
-        float distanceFromNPCToPlayer = Utils.GeometryUtils.GetFastDistance(NPCObject.transform.position, FPSController.transform.position);
+        float distanceFromNPCToPlayer = Vector3.Distance(NPCObject.transform.position, FPSController.transform.position);
 
         // if the NPC object is looking at, and heading towards, the player
         // or if the NPC is very close to, and mostly looking at, the player
