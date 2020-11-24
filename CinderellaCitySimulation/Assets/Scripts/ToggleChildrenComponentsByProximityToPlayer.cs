@@ -155,7 +155,7 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
             }
 
             // if we're within range, and the object is visible, enable the components
-            if (Utils.GeometryUtils.GetFastDistance(playerPosition, distributedChildrenPositions[i]) < maxDistance && isOnScreen)
+            if (Vector3.Distance(playerPosition, distributedChildrenPositions[i]) < maxDistance && isOnScreen)
             {
                 // first, ensure we're not tracking this object already
                 if (!activeChildrenList.Contains(distributedChildrenObjects[i]))
