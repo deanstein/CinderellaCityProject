@@ -35,11 +35,32 @@ public class ManageImportSettings
 
         switch (name)
         {
+            /// typical building or site elements
+            /// will receive all material and collider treatments
             case string assetOrModelName when assetOrModelName.Contains("anchor-broadway")
             || assetOrModelName.Contains("anchor-jcp")
             || assetOrModelName.Contains("anchor-joslins")
             || assetOrModelName.Contains("anchor-mgwards")
-            || assetOrModelName.Contains("anchor-denver"):
+            || assetOrModelName.Contains("anchor-denver")
+
+            || assetOrModelName.Contains("mall-ceilings")
+            || assetOrModelName.Contains("mall-detailing-interior")
+            || assetOrModelName.Contains("mall-floors-vert")
+            || assetOrModelName.Contains("mall-roof")
+            || assetOrModelName.Contains("mall-walls-detailing-exterior")
+            || assetOrModelName.Contains("mall-walls-interior")
+            || assetOrModelName.Contains("store-floors")
+
+
+            || assetOrModelName.Contains("site-context-buildings")
+            || assetOrModelName.Contains("site-curb-gutter-sidewalk-vert")
+            || assetOrModelName.Contains("site-detailing")
+            || assetOrModelName.Contains("site-parking-surface")
+            || assetOrModelName.Contains("site-roads")
+            || assetOrModelName.Contains("site-structure")
+
+            || assetOrModelName.Contains("store-ceilings")
+            || assetOrModelName.Contains("store-detailing"):
                 // pre-processor option flags
                 ImportParams.doSetGlobalScale = true; // always true
                 ImportParams.doInstantiateAndPlaceInCurrentScene = true;
@@ -49,10 +70,12 @@ public class ManageImportSettings
                 ImportParams.doAddBehaviorComponents = false;
                 // post-processor option flags
                 ImportParams.doSetMaterialEmission = false;
-                ImportParams.doSetMaterialSmoothnessMetallic = false;
+                ImportParams.doSetMaterialSmoothnessMetallic = true;
                 ImportParams.doInstantiateProxyReplacements = false;
                 ImportParams.doHideProxyObjects = false;
                 return ImportParams;
+
+            /// special-cased building elements
 
             case string assetOrModelName when assetOrModelName.Contains("mall-doors-exterior")
             || assetOrModelName.Contains("mall-doors-windows-interior")
@@ -101,27 +124,6 @@ public class ManageImportSettings
                 ImportParams.doHideProxyObjects = false;
                 return ImportParams;
 
-            case string assetOrModelName when assetOrModelName.Contains("mall-ceiling")
-            || assetOrModelName.Contains("mall-detailing-interior")
-            || assetOrModelName.Contains("mall-floor-roof-vertical")
-            || assetOrModelName.Contains("mall-walls-detailing-exterior")
-            || assetOrModelName.Contains("mall-walls-interior")
-            || assetOrModelName.Contains("store-ceiling")
-            || assetOrModelName.Contains("store-detailing"):
-                // pre-processor option flags
-                ImportParams.doSetGlobalScale = true; // always true
-                ImportParams.doInstantiateAndPlaceInCurrentScene = true;
-                ImportParams.doSetColliderActive = true;
-                ImportParams.doSetUVActiveAndConfigure = true;
-                ImportParams.doDeleteReimportMaterialsTextures = true;
-                ImportParams.doAddBehaviorComponents = false;
-                // post-processor option flags
-                ImportParams.doSetMaterialEmission = false;
-                ImportParams.doSetMaterialSmoothnessMetallic = true;
-                ImportParams.doInstantiateProxyReplacements = false;
-                ImportParams.doHideProxyObjects = false;
-                return ImportParams;
-
             case string assetOrModelName when assetOrModelName.Contains("mall-water"):
                 // pre-processor option flags
                 ImportParams.doSetGlobalScale = true; // always true
@@ -147,12 +149,13 @@ public class ManageImportSettings
                 ImportParams.doAddBehaviorComponents = false;
                 // post-processor option flags
                 ImportParams.doSetMaterialEmission = false;
-                ImportParams.doSetMaterialSmoothnessMetallic = false;
+                ImportParams.doSetMaterialSmoothnessMetallic = true;
                 ImportParams.doInstantiateProxyReplacements = false;
                 ImportParams.doHideProxyObjects = false;
                 return ImportParams;
 
-            case string assetOrModelName when assetOrModelName.Contains("mall-handrails"):
+            case string assetOrModelName when assetOrModelName.Contains("mall-handrails")
+            || assetOrModelName.Contains("site-handrails"):
                 // pre-processor option flags
                 ImportParams.doSetGlobalScale = true; // always true
                 ImportParams.doInstantiateAndPlaceInCurrentScene = true;
@@ -167,7 +170,9 @@ public class ManageImportSettings
                 ImportParams.doHideProxyObjects = false;
                 return ImportParams;
 
-            case string assetOrModelName when assetOrModelName.Contains("mall-wayfinding"):
+            case string assetOrModelName when assetOrModelName.Contains("lights")
+            || assetOrModelName.Contains("signage")
+            || assetOrModelName.Contains("wayfinding"):
                 // pre-processor option flags
                 ImportParams.doSetGlobalScale = true; // always true
                 ImportParams.doInstantiateAndPlaceInCurrentScene = true;
@@ -178,23 +183,6 @@ public class ManageImportSettings
                 // post-processor option flags
                 ImportParams.doSetMaterialEmission = true;
                 ImportParams.doSetMaterialSmoothnessMetallic = true;
-                ImportParams.doInstantiateProxyReplacements = false;
-                ImportParams.doHideProxyObjects = false;
-                return ImportParams;
-
-            case string assetOrModelName when assetOrModelName.Contains("mall-lights")
-            || assetOrModelName.Contains("mall-signage")
-            || assetOrModelName.Contains("site-lights"):
-                // pre-processor option flags
-                ImportParams.doSetGlobalScale = true; // always true
-                ImportParams.doInstantiateAndPlaceInCurrentScene = true;
-                ImportParams.doSetColliderActive = true;
-                ImportParams.doSetUVActiveAndConfigure = true;
-                ImportParams.doDeleteReimportMaterialsTextures = true;
-                ImportParams.doAddBehaviorComponents = false;
-                // post-processor option flags
-                ImportParams.doSetMaterialEmission = true;
-                ImportParams.doSetMaterialSmoothnessMetallic = false;
                 ImportParams.doInstantiateProxyReplacements = false;
                 ImportParams.doHideProxyObjects = false;
                 return ImportParams;
@@ -213,6 +201,8 @@ public class ManageImportSettings
                 ImportParams.doInstantiateProxyReplacements = false;
                 ImportParams.doHideProxyObjects = false;
                 return ImportParams;
+
+            /// proxy objects which either get replaced or augmented on import
 
             case string assetOrModelName when assetOrModelName.Contains("proxy-cameras"):
                 // pre-processor option flags
@@ -259,23 +249,8 @@ public class ManageImportSettings
                 ImportParams.doHideProxyObjects = true;
                 return ImportParams;
 
-
-            case string assetOrModelName when assetOrModelName.Contains("site"):
-                // pre-processor option flags
-                ImportParams.doSetGlobalScale = true; // always true
-                ImportParams.doInstantiateAndPlaceInCurrentScene = true;
-                ImportParams.doSetColliderActive = true;
-                ImportParams.doSetUVActiveAndConfigure = true;
-                ImportParams.doDeleteReimportMaterialsTextures = true;
-                ImportParams.doAddBehaviorComponents = false;
-                // post-processor option flags
-                ImportParams.doSetMaterialEmission = false;
-                ImportParams.doSetMaterialSmoothnessMetallic = false;
-                ImportParams.doInstantiateProxyReplacements = false;
-                ImportParams.doHideProxyObjects = false;
-                return ImportParams;
-
-            case string assetOrModelName when assetOrModelName.Contains("speakers") || assetOrModelName.Contains("speakers-simple"):
+            case string assetOrModelName when assetOrModelName.Contains("speakers") 
+            || assetOrModelName.Contains("speakers-simple"):
                 // pre-processor option flags
                 ImportParams.doSetGlobalScale = true; // always true
                 ImportParams.doInstantiateAndPlaceInCurrentScene = true;
@@ -285,12 +260,12 @@ public class ManageImportSettings
                 ImportParams.doAddBehaviorComponents = true;
                 // post-processor option flags
                 ImportParams.doSetMaterialEmission = false;
-                ImportParams.doSetMaterialSmoothnessMetallic = false;
+                ImportParams.doSetMaterialSmoothnessMetallic = true;
                 ImportParams.doInstantiateProxyReplacements = false;
                 ImportParams.doHideProxyObjects = false;
                 return ImportParams;
 
-            // these are temporary files or experimental models for testing
+            /// temporary files or experimental models for testing
 
             case string assetOrModelName when assetOrModelName.Contains("temp-fix"):
                 // pre-processor option flags
@@ -321,6 +296,9 @@ public class ManageImportSettings
                 ImportParams.doInstantiateProxyReplacements = false;
                 ImportParams.doHideProxyObjects = false;
                 return ImportParams;
+
+            /// if the name wasn't mentioned here, we do nothing
+            /// files need to be specified above to have any special rules applied
 
             default:
                 // pre-processor option flags
@@ -365,17 +343,26 @@ public class ManageImportSettings
         {
             case string name when name.Contains("furniture"):
                 return 4f;
-            case string name when name.Contains("detailing-interior") || name.Contains("store-detailing") || name.Contains("mall-ceiling"):
+            case string name when name.Contains("mall-detailing-interior") 
+            || name.Contains("mall-ceilings")
+            || name.Contains("mall-walls-detailing-exterior")
+            || name.Contains("store-detailing"):
                 return 3f;
-            case string name when name.Contains("lights") || name.Contains("signage"):
+            case string name when name.Contains("lights") 
+            || name.Contains("signage"):
                 return 10f;
-            case string name when name.Contains("floor-roof"):
+            case string name when name.Contains("mall-floors-vert")
+            || name.Contains("site-curb-gutter-sidewalk-vert"):
                 return 2.0f;
-            case string name when name.Contains("site") || name.Contains("structure"):
+            case string name when name.Contains("mall-roof") 
+            || name.Contains("site-context-buildings")
+            || name.Contains("structure")
+            || name.Contains("site-roads")
+            || name.Contains("site-parking-surface"):
                 return 0.1f;
-            case string name when name.Contains("walls-detailing-exterior"):
-                return 0.2f;
-            case string name when name.Contains("walls-interior") || name.Contains("store-ceiling"):
+            case string name when name.Contains("mall-walls-interior") 
+            || name.Contains("store-ceilings")
+            || name.Contains("store-floors"):
                 return 0.1f;
             case string name when name.Contains("experimental-simple"):
                 return 22f;
