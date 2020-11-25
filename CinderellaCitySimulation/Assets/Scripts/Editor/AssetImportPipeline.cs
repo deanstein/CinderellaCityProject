@@ -139,17 +139,6 @@ public class AssetImportUpdate : AssetPostprocessor {
             return;
         }
 
-        // get the model import params for this object
-        ModelImportParams ImportParams = ManageImportSettings.GetModelImportParamsByName(gameObject.name);
-
-        // if the requested gameObject matches the name of an imported asset,
-        // and if that asset is specifically excluded from custom lightmap settings,
-        // then skip to avoid working on geometry that's not necessary
-        if (!ImportParams.doSetStaticFlags)
-        {
-            return;
-        }
-
         // get all the children transforms
         Transform[] allChildrenTransforms = gameObject.GetComponentsInChildren<Transform>();
 
@@ -165,6 +154,8 @@ public class AssetImportUpdate : AssetPostprocessor {
 
                 float existingResolution = so.FindProperty("m_ScaleInLightmap").floatValue;
                 float newResolution = ManageImportSettings.GetShadowMapResolutionMultiplierByName(gameObject.name);
+
+                Utils.DebugUtils.DebugLog("Changing resolution of " + gameObject.name + " child " + child.name + " to " + newResolution);
 
                 // only bother changing the properties if the existing and new res don't match
                 if (existingResolution != newResolution)
@@ -242,7 +233,10 @@ public class AssetImportUpdate : AssetPostprocessor {
     {
         GameObject sceneContainer = ManageScenes.GetSceneContainerObject(SceneManager.GetActiveScene());
 
-        prefabToModify.transform.SetParent(sceneContainer.transform);
+        if (prefabToModify)
+        {
+            prefabToModify.transform.SetParent(sceneContainer.transform);
+        }
     }
 
     // gets all children in the root object
@@ -646,14 +640,6 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         // get the model import params for this object
         ModelImportParams ImportParams = ManageImportSettings.GetModelImportParamsByName(gameObject.name);
-
-        // if the requested gameObject matches the name of an imported asset,
-        // and if that asset is specifically excluded from static flags,
-        // then skip to avoid putting static editor flags on this object
-        if (!ImportParams.doSetStaticFlags)
-        {
-            return;
-        }
 
         // get the appropriate flags for this asset
         var staticFlags = ManageImportSettings.GetStaticFlagsByName(gameObject.name);
