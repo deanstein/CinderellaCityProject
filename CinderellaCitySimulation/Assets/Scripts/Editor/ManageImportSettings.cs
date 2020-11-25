@@ -37,11 +37,11 @@ public class ManageImportSettings
         {
             /// typical building or site elements
             /// will receive all material and collider treatments
-            case string assetOrModelName when assetOrModelName.Contains("anchor-broadway")
-            || assetOrModelName.Contains("anchor-jcp")
-            || assetOrModelName.Contains("anchor-joslins")
-            || assetOrModelName.Contains("anchor-mgwards")
-            || assetOrModelName.Contains("anchor-denver")
+            case string assetOrModelName when assetOrModelName.Contains("anchor-broadway-detailing-exterior")
+            || assetOrModelName.Contains("anchor-jcp-detailing-exterior")
+            || assetOrModelName.Contains("anchor-joslins-detailing-exterior")
+            || assetOrModelName.Contains("anchor-mgwards-detailing-exterior")
+            || assetOrModelName.Contains("anchor-denver-detailing-exterior")
 
             || assetOrModelName.Contains("mall-ceilings")
             || assetOrModelName.Contains("mall-detailing-interior")
