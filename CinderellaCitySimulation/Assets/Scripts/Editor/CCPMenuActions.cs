@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -61,15 +61,6 @@ public class CCPMenuActions : MonoBehaviour
     {
         string loadingScenePath = SceneGlobals.GetScenePathByName("Experimental");
         EditorSceneManager.OpenScene(loadingScenePath);
-    }
-
-    /* --------- Editor Debug ---------- */
-
-    /*
-    [MenuItem("Cinderella City Project/Editor Debug/Log Current Scene Name")]
-    public static void LogCurrentScene()
-    {
-        Utils.DebugUtils.DebugLog("Current Editor scene: " + SceneManager.GetActiveScene().name);
     }
 
     /* ---------- Scene Hoisting ---------- */
@@ -229,6 +220,9 @@ public class CCPMenuActions : MonoBehaviour
         // update the lightmap resolutions
         SetAllLightmapResolutionsInCurrentScene();
 
+        // remove aany FBM folders that might be present
+        AssetImportUpdate.DeleteAllFBMFolders();
+
         // save the scene
         // required to see some of the post-processing changes take effect in the editor
         EditorSceneManager.SaveOpenScenes();
@@ -236,4 +230,32 @@ public class CCPMenuActions : MonoBehaviour
         // occlusion culling requires opening all scenes additively, so it's saved for last
         UpdateOcclusionCulling();
     }
+
+    /* --------- Editor Debug ---------- */
+
+
+    [MenuItem("Cinderella City Project/Editor Debug/Log Current Scene Name")]
+    public static void LogCurrentScene()
+    {
+        Utils.DebugUtils.DebugLog("Current Editor scene: " + SceneManager.GetActiveScene().name);
+    }
+
+    [MenuItem("Cinderella City Project/Editor Debug/Log Current Scene Object Count")]
+    public static void LogCurrentSceneObjectCount()
+    {
+        // get the current scene's container
+        GameObject sceneContainer = ManageScenes.GetSceneContainerObject(SceneManager.GetActiveScene());
+
+        // get all the scene objects
+        GameObject[] sceneObjects = AssetImportUpdate.GetAllTopLevelChildrenInObject(sceneContainer);
+
+        Debug.Log("Scene Objects: " + sceneObjects.Length);
+    }
+
+    [MenuItem("Cinderella City Project/Editor Debug/Delete All FBM Folders")]
+    public static void DeleteAllFBMFolders()
+    {
+        AssetImportUpdate.DeleteAllFBMFolders();
+    }
+
 }

@@ -478,15 +478,59 @@ public class AssetImportUpdate : AssetPostprocessor {
         Utils.DebugUtils.DebugLog("<b>Set metallic on Material: </b>" + mat);
     }
 
-    // define how to clean up an automatically-created .fbm folder
-    public static void CleanUpFBMDirectory(string assetFileDirectory, string assetFileName)
+    // clean up the automatically-created .fbm folder on import
+    // this folder is not necessary because we put materials in a "Materials" folder
+    public static void DeleteFBMFolderOnImport(string assetFileDirectory, string assetFileName)
     {
-        if (AssetDatabase.IsValidFolder(assetFileDirectory + assetFileName + ".fbm"))
+        string FBMFolderPath = assetFileDirectory + assetFileName + ".fbm";
+        if (AssetDatabase.IsValidFolder(FBMFolderPath))
         {
-            Utils.DebugUtils.DebugLog("<b>Deleting a leftover .FBM folder.</b>");
+            Utils.DebugUtils.DebugLog("<b>Deleting a leftover .FBM folder: </b>" + FBMFolderPath);
             //Utils.DebugUtils.DebugLog(assetFileDirectory + assetFileName + ".fbm");
             UnityEngine.Windows.Directory.Delete(globalAssetFileDirectory + globalAssetFileName + ".fbm");
             UnityEngine.Windows.File.Delete(globalAssetFileDirectory + globalAssetFileName + ".fbm.meta");
+        }
+    }
+
+    // clean up all .fbm folders in the project
+    public static void DeleteAllFBMFolders()
+    {
+        // get the current scene's container
+        GameObject sceneContainer = ManageScenes.GetSceneContainerObject(SceneManager.GetActiveScene());
+
+        // get all the scene objects
+        GameObject[] sceneObjects = GetAllTopLevelChildrenInObject(sceneContainer);
+
+        bool anyFoldersDeleted = false;
+
+        foreach (GameObject sceneObject in sceneObjects)
+        {
+            // get the prefab path associated with this scene object
+            string prefabPathBySceneObject = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(sceneObject);
+
+            // only proceed if the prefab path is non-zero in length
+            if (prefabPathBySceneObject.Length != 0)
+            {
+                // determine the FBM dir, which would be at the same level as the object
+                // but with an .fbm extension instead
+                string prefabPathWithoutExtension = Utils.StringUtils.RemoveNameOrPathExtension(prefabPathBySceneObject);
+                string FBMFolderPath = prefabPathWithoutExtension + ".fbm";
+
+                // if the folder exists, delete it
+                if (AssetDatabase.IsValidFolder(FBMFolderPath))
+                {
+                    Utils.DebugUtils.DebugLog("<b>Found a leftover .FBM folder to delete: </b>" + FBMFolderPath);
+                    UnityEngine.Windows.Directory.Delete(FBMFolderPath);
+                    UnityEngine.Windows.File.Delete(FBMFolderPath + ".meta");
+
+                    anyFoldersDeleted = true;
+                }
+            }
+        }
+
+        if (!anyFoldersDeleted)
+        {
+            Utils.DebugUtils.DebugLog("Found no .FBM folders to delete for the objects found in the scene.");
         }
     }
 
@@ -749,6 +793,11 @@ public class AssetImportUpdate : AssetPostprocessor {
             if (dependencyPathString.Contains("americana shop"))
             {
                 SetCustomMaterialEmissionIntensity(dependencyPathString, -1.0F);
+            }
+
+            if (dependencyPathString.Contains("the denver blue"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, -0.2F);
             }
 
             if (dependencyPathString.Contains("store yellowing"))
@@ -1368,7 +1417,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
 
         // check if there's a leftover .fbm folder, and if so, delete it
-        CleanUpFBMDirectory(globalAssetFileDirectory, globalAssetFileName);
+        DeleteFBMFolderOnImport(globalAssetFileDirectory, globalAssetFileName);
 
         ClearConsole();
         Utils.DebugUtils.DebugLog("START Model PreProcessing...");
@@ -1453,7 +1502,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         string[] movedFromAssetPaths)
     {
         // check if there's a leftover .fbm folder, and if so, delete it
-        CleanUpFBMDirectory(globalAssetFileDirectory, globalAssetFileName);
+        DeleteFBMFolderOnImport(globalAssetFileDirectory, globalAssetFileName);
 
         // if post processing isn't required, skip
         if (!postProcessingRequired)

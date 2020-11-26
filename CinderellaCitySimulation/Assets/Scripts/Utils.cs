@@ -45,6 +45,26 @@ public class Utils
         }
     }
 
+    public class StringUtils
+    {
+        // convert a file path to a directory 
+        // by cutting off the extension (assumed to be 3 characters)
+        public static string ConvertFilePathToDirectory(string filePathWithExtension, string fileName)
+        {
+            String directoryPath = filePathWithExtension.Substring(0, filePathWithExtension.Length - (fileName.Length + 4));
+
+            return directoryPath;
+        }
+
+        // remove a 3-letter extension and the dot from a name or path
+        public static string RemoveNameOrPathExtension(string nameOrPathWithExtension)
+        {
+            string nameOrPathWithoutExtension = nameOrPathWithExtension.Substring(0, nameOrPathWithExtension.Length - 4);
+
+            return nameOrPathWithoutExtension;
+        }
+    }
+
     public class GeometryUtils
     {
         public static List<Transform> GetAllChildrenTransforms(Transform parent)
