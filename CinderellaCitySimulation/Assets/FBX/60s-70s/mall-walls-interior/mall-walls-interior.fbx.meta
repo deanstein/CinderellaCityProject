@@ -22,13 +22,28 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - brick
+    second: {fileID: 2100000, guid: 78a2f444f15e1884992aada06272086e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - floor trim
     second: {fileID: 2100000, guid: 5b6f3386ba652f24db1d1460ea4efdb0, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: store - brown 3
+    second: {fileID: 2100000, guid: aa8dac8ed5a8d1f4ea7b182d54bf167c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: store - dark brown
     second: {fileID: 2100000, guid: 0baa523a633511f4b83a93a93831e36b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - dark brown 2
+    second: {fileID: 2100000, guid: 518a682a3a2ab5540aaa2d36b6b7405e, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -116,7 +131,7 @@ ModelImporter:
     secondaryUVAngleDistortion: 4
     secondaryUVAreaDistortion: 4
     secondaryUVHardAngle: 88
-    secondaryUVPackMargin: 4
+    secondaryUVPackMargin: 64
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
