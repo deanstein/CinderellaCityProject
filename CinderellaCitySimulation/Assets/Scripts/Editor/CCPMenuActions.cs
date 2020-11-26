@@ -232,15 +232,16 @@ public class CCPMenuActions : MonoBehaviour
     }
 
     /* --------- Editor Debug ---------- */
+    bool showDebugMenu = false;
 
-
-    [MenuItem("Cinderella City Project/Editor Debug/Log Current Scene Name")]
+#if showDebugMenu
+    [MenuItem("Cinderella City Project/CCP Debug/Log Current Scene Name")]
     public static void LogCurrentScene()
     {
         Utils.DebugUtils.DebugLog("Current Editor scene: " + SceneManager.GetActiveScene().name);
     }
 
-    [MenuItem("Cinderella City Project/Editor Debug/Log Current Scene Object Count")]
+    [MenuItem("Cinderella City Project/CCP Debug/Log Current Scene Object Count")]
     public static void LogCurrentSceneObjectCount()
     {
         // get the current scene's container
@@ -252,10 +253,11 @@ public class CCPMenuActions : MonoBehaviour
         Debug.Log("Scene Objects: " + sceneObjects.Length);
     }
 
-    [MenuItem("Cinderella City Project/Editor Debug/Delete All FBM Folders")]
+    [MenuItem("Cinderella City Project/CCP Debug/Delete All FBM Folders")]
     public static void DeleteAllFBMFolders()
     {
         AssetImportUpdate.DeleteAllFBMFolders();
     }
+#endif
 
 }
