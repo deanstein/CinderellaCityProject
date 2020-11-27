@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 [ExecuteInEditMode]
+[InitializeOnLoad]
 public class CCPMenuActions : MonoBehaviour
 {
     /* ---------- Play ---------- */
@@ -98,6 +99,168 @@ public class CCPMenuActions : MonoBehaviour
         HoistSceneObjectsEditor.HoistSceneContainersDown(timePeriodSceneContainers);
     }
 
+    /* ---------- Update Mode Menu ---------- */
+
+    public static class UpdateModeSelectorMenu
+    {
+        static List<string> GetUpdateModeSearchKeysByUIState()
+        {
+            List<string> updateModeSearchKeys = new List<string>();
+
+            if (isUpdateModeAnchors)
+            {
+                string keyWord = "anchor-";
+                updateModeSearchKeys.Add(keyWord);
+            }
+
+            if (isUpdateModeMall)
+            {
+                string keyWord = "mall-";
+                updateModeSearchKeys.Add(keyWord);
+            }
+
+            if (isUpdateModeSite)
+            {
+                string keyWord = "site-";
+                updateModeSearchKeys.Add(keyWord);
+            }
+
+            return updateModeSearchKeys;
+        }
+
+        // get all the scene objects requiring update, based on the CCP menu's update mode choices
+        public static List<GameObject> GetSceneObjectsByUpdateMode()
+        {
+            // get all the scene objects
+            GameObject[] sceneContainerObjects = ManageScenes.GetTopLevelChildrenInSceneContainer(SceneManager.GetActiveScene());
+            /// ... and as a list
+            List<GameObject> sceneObjectsList = new List<GameObject>(sceneContainerObjects);
+
+            // if update all is checked, return all objects from the scene like normal
+            if (isUpdateModeAll)
+            {
+                Utils.DebugUtils.DebugLog("All objects were selected for update.");
+
+                return sceneObjectsList;
+            }
+
+            // otherwise, accumulate the selected objects
+            else
+            {
+                // get the string search keys for the selected update modes
+                List<string> searchKeys = GetUpdateModeSearchKeysByUIState();
+
+                // reset to an empty list to store each pass of searches
+                sceneObjectsList = new List<GameObject>();
+
+                if (searchKeys.Count > 0)
+                {
+                    foreach (string searchKey in searchKeys)
+                    {
+                        foreach (GameObject sceneContainerObject in sceneContainerObjects)
+                        {
+                            if (sceneContainerObject.name.Contains(searchKey))
+                            {
+                                sceneObjectsList.Add(sceneContainerObject);
+                            }
+                        }
+                    }
+
+                    Utils.DebugUtils.DebugLog("Found " + sceneObjectsList.Count + " scene objects to update.");
+                    return sceneObjectsList;
+                }
+                else
+                {
+                    Utils.DebugUtils.DebugLog("No models selected for post-update processing.");
+                    return null;
+                }
+            }
+        }
+
+        // initialize the update mode flags from editor prefs
+        static UpdateModeSelectorMenu()
+        {
+            isUpdateModeAll = EditorPrefs.GetBool(isUpdateModeAllKey, true);
+            isUpdateModeAnchors = EditorPrefs.GetBool(isUpdateModeAnchorsKey, true);
+            isUpdateModeMall = EditorPrefs.GetBool(isUpdateModeMallKey, true);
+            isUpdateModeSite = EditorPrefs.GetBool(isUpdateModeSiteKey, true);
+        }
+
+        /// create a checkbox menu item for each update mode
+
+        private const string isUpdateModeAllMenuItem = "Cinderella City Project/Set Update Modes/All Models";
+        private const string isUpdateModeAllKey = "CCP.IsUpdateModeAll";
+        public static bool isUpdateModeAll;
+
+        [MenuItem(isUpdateModeAllMenuItem)]
+        private static void SetIsUpdateModeAll()
+        {            isUpdateModeMall = EditorPrefs.GetBool(isUpdateModeMallKey, true);
+            isUpdateModeAll = !isUpdateModeAll;
+            EditorPrefs.SetBool(isUpdateModeAllKey, isUpdateModeAll);
+        }
+        [MenuItem(isUpdateModeAllMenuItem, true)]
+        private static bool SetIsUpdateModeAllValidate()
+        {
+            Menu.SetChecked(isUpdateModeAllMenuItem, isUpdateModeAll);
+            return true;
+        }
+
+
+        private const string isUpdateModeAnchorsMenuItem = "Cinderella City Project/Set Update Modes/Anchors";
+        private const string isUpdateModeAnchorsKey = "CCP.IsUpdateModeAnchor";
+        public static bool isUpdateModeAnchors;
+
+        [MenuItem(isUpdateModeAnchorsMenuItem)]
+        private static void SetIsUpdateModeAnchor()
+        {
+            isUpdateModeAnchors = !isUpdateModeAnchors;
+            EditorPrefs.SetBool(isUpdateModeAnchorsKey, isUpdateModeAnchors);
+        }
+        [MenuItem(isUpdateModeAnchorsMenuItem, true)]
+        private static bool SetIsUpdateModeAnchorsValidate()
+        {
+            Menu.SetChecked(isUpdateModeAnchorsMenuItem, isUpdateModeAnchors);
+            return true;
+        }
+
+
+        private const string isUpdateModeMallMenuItem = "Cinderella City Project/Set Update Modes/Mall + Stores";
+        private const string isUpdateModeMallKey = "CCP.IsUpdateModeMall";
+        public static bool isUpdateModeMall;
+
+        [MenuItem(isUpdateModeMallMenuItem)]
+        private static void SetIsUpdateModeMall()
+        {
+            isUpdateModeMall = !isUpdateModeMall;
+            EditorPrefs.SetBool(isUpdateModeMallKey, isUpdateModeMall);
+        }
+        [MenuItem(isUpdateModeMallMenuItem, true)]
+        private static bool SetIsUpdateModeMallValidate()
+        {
+            Menu.SetChecked(isUpdateModeMallMenuItem, isUpdateModeMall);
+            return true;
+        }
+
+
+        private const string isUpdateModeSiteMenuItem = "Cinderella City Project/Set Update Modes/Site";
+        private const string isUpdateModeSiteKey = "CCP.IsUpdateModeSite";
+        public static bool isUpdateModeSite;
+
+        [MenuItem(isUpdateModeSiteMenuItem)]
+        private static void SetIsUpdateModeSite()
+        {
+            isUpdateModeSite = !isUpdateModeSite;
+            EditorPrefs.SetBool(isUpdateModeSiteKey, isUpdateModeSite);
+        }
+        [MenuItem(isUpdateModeSiteMenuItem, true)]
+        private static bool SetIsUpdateModeSiteValidate()
+        {
+            Menu.SetChecked(isUpdateModeSiteMenuItem, isUpdateModeSite);
+            return true;
+        }
+    }
+
+
 
     /* ---------- Update Data ---------- */
 
@@ -174,32 +337,32 @@ public class CCPMenuActions : MonoBehaviour
     [MenuItem("Cinderella City Project/Static Flags/Update for Current Scene")]
     public static void SetAllStaticFlagsInCurrentScene()
     {
-        // get the current scene's container
-        GameObject sceneContainer = ManageScenes.GetSceneContainerObject(SceneManager.GetActiveScene());
-
         // get all the scene objects
-        GameObject[] sceneObjects = AssetImportUpdate.GetAllTopLevelChildrenInObject(sceneContainer);
+        GameObject[] sceneObjects = UpdateModeSelectorMenu.GetSceneObjectsByUpdateMode().ToArray();
 
-        // set the static flags for each scene object
-        foreach (GameObject sceneObject in sceneObjects)
+        if (sceneObjects.Length > 0)
         {
-            AssetImportUpdate.SetStaticFlagsByName(sceneObject);
+            // set the static flags for each scene object
+            foreach (GameObject sceneObject in sceneObjects)
+            {
+                AssetImportUpdate.SetStaticFlagsByName(sceneObject);
+            }
         }
     }
 
     [MenuItem("Cinderella City Project/Lightmap Resolutions/Update for Current Scene")]
     public static void SetAllLightmapResolutionsInCurrentScene()
     {
-        // get the current scene's container
-        GameObject sceneContainer = ManageScenes.GetSceneContainerObject(SceneManager.GetActiveScene());
-
         // get all the scene objects
-        GameObject[] sceneObjects = AssetImportUpdate.GetAllTopLevelChildrenInObject(sceneContainer);
+        GameObject[] sceneObjects = UpdateModeSelectorMenu.GetSceneObjectsByUpdateMode().ToArray();
 
-        // set the static flags for each scene object
-        foreach (GameObject sceneObject in sceneObjects)
+        if (sceneObjects.Length > 0)
         {
-            AssetImportUpdate.SetCustomLightmapSettingsByName(sceneObject);
+            // set the static flags for each scene object
+            foreach (GameObject sceneObject in sceneObjects)
+            {
+                AssetImportUpdate.SetCustomLightmapSettingsByName(sceneObject);
+            }
         }
     }
 
@@ -232,9 +395,7 @@ public class CCPMenuActions : MonoBehaviour
     }
 
     /* --------- Editor Debug ---------- */
-    bool showDebugMenu = false;
-
-#if showDebugMenu
+#if false
     [MenuItem("Cinderella City Project/CCP Debug/Log Current Scene Name")]
     public static void LogCurrentScene()
     {
@@ -244,20 +405,21 @@ public class CCPMenuActions : MonoBehaviour
     [MenuItem("Cinderella City Project/CCP Debug/Log Current Scene Object Count")]
     public static void LogCurrentSceneObjectCount()
     {
-        // get the current scene's container
-        GameObject sceneContainer = ManageScenes.GetSceneContainerObject(SceneManager.GetActiveScene());
+        int sceneObjectCount = ManageScenes.GetTopLevelChildrenInSceneContainer(SceneManager.GetActiveScene()).Length;
 
-        // get all the scene objects
-        GameObject[] sceneObjects = AssetImportUpdate.GetAllTopLevelChildrenInObject(sceneContainer);
+        Debug.Log("Scene Objects: " + sceneObjectCount);
+    }
 
-        Debug.Log("Scene Objects: " + sceneObjects.Length);
+    [MenuItem("Cinderella City Project/CCP Debug/Log Scene Object Count by Update Mode")]
+    public static void GetAllSceneObjectsByModeTest()
+    {
+        UpdateModeSelectorMenu.GetSceneObjectsByUpdateMode();
     }
 
     [MenuItem("Cinderella City Project/CCP Debug/Delete All FBM Folders")]
-    public static void DeleteAllFBMFolders()
+    public static void DeleteAllFBMFoldersTest()
     {
         AssetImportUpdate.DeleteAllFBMFolders();
     }
 #endif
-
 }

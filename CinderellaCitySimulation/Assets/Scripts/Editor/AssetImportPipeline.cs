@@ -239,21 +239,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
     }
 
-    // gets all children in the root object
-    public static GameObject[] GetAllTopLevelChildrenInObject(GameObject parentObject)
-    {
-        List<GameObject> childrenList = new List<GameObject>();
-
-        foreach (Transform trans in parentObject.transform)
-        {
-            childrenList.Add(trans.gameObject);
-        }
-        GameObject[] childrenObjects = childrenList.ToArray();
-
-        return childrenObjects;
-    }
-
-    // define how to delete and reimport materials and textures
+    // delete and reimport all materials and textures associated with the asset at the given path
     public void DeleteReimportMaterialsTextures(string assetFilePath)
     {
         // initialize ModelImporter
@@ -495,11 +481,8 @@ public class AssetImportUpdate : AssetPostprocessor {
     // clean up all .fbm folders in the project
     public static void DeleteAllFBMFolders()
     {
-        // get the current scene's container
-        GameObject sceneContainer = ManageScenes.GetSceneContainerObject(SceneManager.GetActiveScene());
-
         // get all the scene objects
-        GameObject[] sceneObjects = GetAllTopLevelChildrenInObject(sceneContainer);
+        GameObject[] sceneObjects = ManageScenes.GetTopLevelChildrenInSceneContainer(SceneManager.GetActiveScene());
 
         bool anyFoldersDeleted = false;
 
