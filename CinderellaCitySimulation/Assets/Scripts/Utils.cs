@@ -67,7 +67,22 @@ public class Utils
 
     public class GeometryUtils
     {
-        public static List<Transform> GetAllChildrenTransforms(Transform parent)
+        // gets all children in the root object
+        public static GameObject[] GetAllTopLevelChildrenInObject(GameObject parentObject)
+        {
+            List<GameObject> childrenList = new List<GameObject>();
+
+            foreach (Transform trans in parentObject.transform)
+            {
+                childrenList.Add(trans.gameObject);
+            }
+            GameObject[] childrenObjects = childrenList.ToArray();
+
+            return childrenObjects;
+        }
+
+        // get all children transforms given a parent transform
+        public static List<Transform> GetAllChildrenTransformsInTransform(Transform parent)
         {
             List<Transform> children = new List<Transform>();
 

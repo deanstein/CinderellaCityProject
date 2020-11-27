@@ -76,6 +76,18 @@ public static class ManageScenes
         return sceneContainer;
     }
 
+    // gets the top-level children in this scene's scene container
+    public static GameObject[] GetTopLevelChildrenInSceneContainer(Scene sceneWithContainer)
+    {
+        // get the current scene's container
+        GameObject sceneContainer = ManageScenes.GetSceneContainerObject(SceneManager.GetActiveScene());
+
+        // get all the scene objects
+        GameObject[] sceneObjects = Utils.GeometryUtils.GetAllTopLevelChildrenInObject(sceneContainer);
+
+        return sceneObjects;
+    }
+
     // gets the disabled time period scene names, given the current scene name
     public static List<string> GetDisabledTimePeriodSceneNames(string currentSceneName)
     {

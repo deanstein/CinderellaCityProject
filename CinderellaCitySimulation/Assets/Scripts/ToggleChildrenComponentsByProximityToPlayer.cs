@@ -66,7 +66,7 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
     private void Awake()
     {
         // get all the children of this object - starting with their transforms
-        childrenTransformsList = Utils.GeometryUtils.GetAllChildrenTransforms(this.transform);
+        childrenTransformsList = Utils.GeometryUtils.GetAllChildrenTransformsInTransform(this.transform);
 
         // get the corresponding gameobjects
         foreach (Transform childrenTransform in childrenTransformsList)
