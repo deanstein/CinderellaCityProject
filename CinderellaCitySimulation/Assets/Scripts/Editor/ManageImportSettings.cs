@@ -249,6 +249,21 @@ public class ManageImportSettings
                 ImportParams.doHideProxyObjects = true;
                 return ImportParams;
 
+            case string assetOrModelName when assetOrModelName.Contains("proxy-blocker-npc"):
+                // pre-processor option flags
+                ImportParams.doSetGlobalScale = true; // always true
+                ImportParams.doInstantiateAndPlaceInCurrentScene = true;
+                ImportParams.doSetColliderActive = false;
+                ImportParams.doSetUVActiveAndConfigure = false;
+                ImportParams.doDeleteReimportMaterialsTextures = false;
+                ImportParams.doAddBehaviorComponents = false;
+                // post-processor option flags
+                ImportParams.doSetMaterialEmission = false;
+                ImportParams.doSetMaterialSmoothnessMetallic = false;
+                ImportParams.doInstantiateProxyReplacements = false;
+                ImportParams.doHideProxyObjects = true;
+                return ImportParams;
+
             case string assetOrModelName when assetOrModelName.Contains("speakers") 
             || assetOrModelName.Contains("speakers-simple"):
                 // pre-processor option flags
@@ -326,7 +341,11 @@ public class ManageImportSettings
             case string name when (name.Contains("doors-exterior")):
                 return 0;
             // only navigation static
-            case string name when (name.Contains("windows") || name.Contains("handrails") || name.Contains("wayfinding")) && !name.Contains("solid"):
+            case string name when (name.Contains("windows") 
+            || name.Contains("handrails") 
+            || name.Contains("wayfinding")
+            || name.Contains("proxy-blocker-npc")) 
+            && !name.Contains("solid"):
                 return StaticEditorFlags.NavigationStatic;
             // if not specified, the default is to get all static editor flags
             default:

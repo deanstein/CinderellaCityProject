@@ -155,7 +155,7 @@ public class AssetImportUpdate : AssetPostprocessor {
                 float existingResolution = so.FindProperty("m_ScaleInLightmap").floatValue;
                 float newResolution = ManageImportSettings.GetShadowMapResolutionMultiplierByName(gameObject.name);
 
-                Utils.DebugUtils.DebugLog("Changing resolution of " + gameObject.name + " child " + child.name + " to " + newResolution);
+                //Utils.DebugUtils.DebugLog("Changing resolution of " + gameObject.name + " child " + child.name + " to " + newResolution);
 
                 // only bother changing the properties if the existing and new res don't match
                 if (existingResolution != newResolution)
@@ -670,9 +670,10 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         // get the appropriate flags for this asset
         var staticFlags = ManageImportSettings.GetStaticFlagsByName(gameObject.name);
+        Utils.DebugUtils.DebugLog("Setting static flags for " + gameObject.name);
 
         // get all children of the asset-based gameObject
-        Transform[] allChildren = gameObject.GetComponentsInChildren<Transform>();
+        Transform[] allChildren = gameObject.GetComponentsInChildren<Transform>(true); // true to include inactive children
 
         // ensure that every transform has the correct static settings
         foreach (Transform child in allChildren)
@@ -932,36 +933,12 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
     }
 
-    public static void ConfigureNPCForPathfinding(GameObject NPCObject, GameObject proxyObject)
+    public static void ApplyAndConfigureNPCAgent(GameObject NPCObject, GameObject proxyObject)
     {
-        // if a proxyObject is passed in, check its name before applying pathfinding logic
-        // these proxyObjects are named in FormIt to indicate unique behaviors or postures
-        // and may be specifically designated to not walk
-        if (proxyObject)
+        // only add an agent if the proxy object indicates this NPC is not sitting
+        if (proxyObject && proxyObject.name.Contains("sitting"))
         {
-            // only add pathfinding logic for walking people
-            if (!proxyObject.name.Contains("talking") && !proxyObject.name.Contains("idle") && !proxyObject.name.Contains("sitting") && !proxyObject.name.Contains("listening"))
-            {
-                // add the script to follow a path
-                FollowPathOnNavMesh followPathOnNavMeshScript = NPCObject.AddComponent<FollowPathOnNavMesh>();
-                followPathOnNavMeshScript.enabled = false;
-
-                // add the script to update the animation based on the speed
-                UpdateNPCAnimatorByState updateAnimatorScript = NPCObject.AddComponent<UpdateNPCAnimatorByState>();
-
-                // randomly rotate the person since it'll be walking toward a random destination anyway
-                Utils.GeometryUtils.RandomRotateGameObjectAboutY(NPCObject);
-            }
-        }
-        // otherwise, this is a filler, and it can be configured to find paths 
-        else
-        {
-            // add the script to follow a path
-            FollowPathOnNavMesh followPathOnNavMeshScript = NPCObject.AddComponent<FollowPathOnNavMesh>();
-            followPathOnNavMeshScript.enabled = false;
-
-            // add the script to update the animation based on the speed
-            UpdateNPCAnimatorByState updateAnimatorScript = NPCObject.AddComponent<UpdateNPCAnimatorByState>();
+            return;
         }
 
         // add a navigation mesh agent to this person so it can find its way on the navmesh
@@ -981,12 +958,57 @@ public class AssetImportUpdate : AssetPostprocessor {
         thisAgent.autoTraverseOffMeshLink = false;
         thisAgent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
         thisAgent.enabled = false;
+    }
+
+    public static void ConfigureNPCForPathfinding(GameObject NPCObject, GameObject proxyObject)
+    {
+        // add an agent if required
+        ApplyAndConfigureNPCAgent(NPCObject, proxyObject);
+
+        // if a proxy object was specified, check its name before proceeding
+        if (proxyObject)
+        {
+            // add walking logic only if the proxy name indicates this NPC should be walking
+            if (!proxyObject.name.Contains("talking") && !proxyObject.name.Contains("idle") && !proxyObject.name.Contains("sitting") && !proxyObject.name.Contains("listening"))
+            {
+                // add the script to follow a path
+                FollowPathOnNavMesh followPathOnNavMeshScript = NPCObject.AddComponent<FollowPathOnNavMesh>();
+                followPathOnNavMeshScript.enabled = false;
+
+                // add the script to update the animation based on the speed
+                UpdateNPCAnimatorByState updateAnimatorScript = NPCObject.AddComponent<UpdateNPCAnimatorByState>();
+
+                // randomly rotate the person since it'll be walking toward a random destination anyway
+                Utils.GeometryUtils.RandomRotateGameObjectAboutY(NPCObject);
+            }
+            // otherwise, this NPC was specified specifically as not walking
+            // so return out of this entire function
+            else
+            {
+                return;
+            }
+        }
+        // otherwise, this is a filler, and it can be configured to find paths 
+        else
+        {
+            // add the script to follow a path
+            FollowPathOnNavMesh followPathOnNavMeshScript = NPCObject.AddComponent<FollowPathOnNavMesh>();
+            followPathOnNavMeshScript.enabled = false;
+
+            // add the script to update the animation based on the speed
+            UpdateNPCAnimatorByState updateAnimatorScript = NPCObject.AddComponent<UpdateNPCAnimatorByState>();
+        }
 
         // ensure the agent is moved to a valid location on the navmesh
 
+        // get the distance between the current position, and the nearest navmesh position
+        float distanceToNearestNavMeshPoint = Vector3.Distance(NPCObject.transform.position, Utils.GeometryUtils.GetNearestPointOnNavMesh(NPCObject.transform.position, 1000));
+
+        //Utils.DebugUtils.DebugLog("Distance from " + NPCObject.name + " to its nearest NavMesh point: " + distanceToNearestNavMeshPoint);
+
         // if the distance between the current position, and the nearest navmesh position
         // is less than the max distance, use the closest point on the navmesh
-        if (Vector3.Distance(NPCObject.transform.position, Utils.GeometryUtils.GetNearestPointOnNavMesh(NPCObject.transform.position, 1000)) < NPCControllerGlobals.maxDistanceForClosestPointAdjustment)
+        if (distanceToNearestNavMeshPoint < NPCControllerGlobals.maxDistanceForClosestPointAdjustment)
         {
             NPCObject.transform.position = Utils.GeometryUtils.GetNearestPointOnNavMesh(NPCObject.transform.position, 1000);
         }
@@ -996,19 +1018,9 @@ public class AssetImportUpdate : AssetPostprocessor {
         {
             // try to find a random point on this level, within a huge radius
             // returns the origin if the random point couldn't be found
-            Vector3 randomPoint = Utils.GeometryUtils.GetRandomNPoinOnNavMesh(NPCObject.transform.position, 1000, true);
+            Vector3 randomPoint = Utils.GeometryUtils.GetRandomPointOnNavMesh(NPCObject.transform.position, 1000, true);
 
-            // set the position to the random point only if it's non-zero
-            if (randomPoint != Vector3.zero)
-            {
-                NPCObject.transform.position = Utils.GeometryUtils.GetRandomNPoinOnNavMesh(NPCObject.transform.position, 1000, true);
-            }
-            else
-            {
-                // otherwise, the random point was at the origin, so
-                // this NPC gets moved there and will be deleted later
-                NPCObject.transform.position = randomPoint;
-            }
+            NPCObject.transform.position = randomPoint;
         }
     }
 
@@ -1083,7 +1095,8 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
 
         // get all the children from the gameObject
-        Transform[] allChildren = gameObjectByAsset.GetComponentsInChildren<Transform>();
+        List<Transform> allChildrenList = Utils.GeometryUtils.GetAllChildrenTransformsInTransform(gameObjectByAsset.transform);
+        Transform[] allChildren = allChildrenList.ToArray();
 
         // do something with each of the object's children
         foreach (Transform child in allChildren)
@@ -1110,7 +1123,7 @@ public class AssetImportUpdate : AssetPostprocessor {
                         for (var i = 0; i < ManageProxyMapping.GetNPCFillerCountBySceneName(SceneManager.GetActiveScene().name); i++)
                         {
                             // create a random point on the navmesh
-                            Vector3 randomPoint = Utils.GeometryUtils.GetRandomNPoinOnNavMesh(child.transform.localPosition, ProxyGlobals.fillerRadius, true);
+                            Vector3 randomPoint = Utils.GeometryUtils.GetRandomPointOnNavMesh(child.transform.localPosition, ProxyGlobals.fillerRadius, true);
 
                             // determine which pool to get people from given the scene name
                             string[] peoplePrefabPoolForCurrentScene = ManageProxyMapping.GetPeoplePrefabPoolBySceneName(SceneManager.GetActiveScene().name);
@@ -1151,8 +1164,15 @@ public class AssetImportUpdate : AssetPostprocessor {
                     // find a good random spot for them - so they should be deleted
                     foreach (GameObject instanceToTest in instancedPrefabs)
                     {
+                        if (instanceToTest != null)
+                        {
+                            //Debug.Log("Instanced prefab position: " + instanceToTest.transform.position);
+                        }
+
                         if (instanceToTest != null && instanceToTest.transform.position == Vector3.zero)
                         {
+                            Utils.DebugUtils.DebugLog("<b>Culling </b>" + instanceToTest.name + " because it was found at the world origin.");
+
                             // count this as a culled instance
                             culledPrefabs++;
                             // delete the object
@@ -1227,7 +1247,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         return copy as T;
     }
 
-    // define how to turn off the visibility of proxy assets
+    // disable the visibility of proxy assets
     public static void HideProxyObjects(string assetName)
     {
         // find the associated GameObject by this asset's name
@@ -1239,7 +1259,9 @@ public class AssetImportUpdate : AssetPostprocessor {
             // for each of this asset's children, look for any whose name indicates they are proxies to be replaced
             foreach (Transform child in transformByAsset)
             {
-                if (child.name.Contains("REPLACE") || (child.name.Contains("Camera")))
+                if (child.name.Contains("REPLACE") 
+                    || (child.name.Contains("Camera"))
+                    || (child.name.Contains("Blocker")))
                 {
                     GameObject gameObjectToBeReplaced = child.gameObject;
                     //Utils.DebugUtils.DebugLog("Found a proxy gameObject to be hide: " + gameObjectToBeReplaced);
@@ -1249,7 +1271,32 @@ public class AssetImportUpdate : AssetPostprocessor {
                 }
             }
         }
-      
+    }
+
+    // disable the visibility of proxy assets
+    public static void UnhideProxyObjects(string assetName)
+    {
+        // find the associated GameObject by this asset's name
+        GameObject gameObjectByAsset = GameObject.Find(assetName);
+        if (gameObjectByAsset)
+        {
+            var transformByAsset = gameObjectByAsset.transform;
+
+            // for each of this asset's children, look for any whose name indicates they are proxies to be replaced
+            foreach (Transform child in transformByAsset)
+            {
+                if (child.name.Contains("REPLACE")
+                    || (child.name.Contains("Camera"))
+                    || (child.name.Contains("Blocker")))
+                {
+                    GameObject gameObjectToBeReplaced = child.gameObject;
+                    //Utils.DebugUtils.DebugLog("Found a proxy gameObject to be hide: " + gameObjectToBeReplaced);
+
+                    // turn off the visibility of the object to be replaced
+                    ToggleObjects.ToggleGameObjectOn(gameObjectToBeReplaced);
+                }
+            }
+        }
     }
 
     // configure and bake the nav mesh

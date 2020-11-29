@@ -398,6 +398,9 @@ public class ManageProxyMapping
             instancedPrefab.transform.parent = gameObjectToBeReplaced.transform.parent;
             instancedPrefab.transform.position = gameObjectToBeReplaced.transform.position;
             instancedPrefab.transform.localScale = gameObjectToBeReplaced.transform.localScale;
+            //Utils.DebugUtils.DebugLog("GameObject to be replaced position " + gameObjectToBeReplaced.transform.position);
+            //Utils.DebugUtils.DebugLog("Instanced prefab position: " + instancedPrefab.transform.position);
+
             // further scale the new object to match the proxy's height
             Utils.GeometryUtils.ScaleToMatchHeight(instancedPrefab, gameObjectToBeReplaced);
 

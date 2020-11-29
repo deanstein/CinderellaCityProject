@@ -95,18 +95,26 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
         distributedChildrenListLength = Mathf.RoundToInt(childrenObjects.Length / numberOfDistributedArrays);
     }
 
+    private void UpdatePlayer()
+    {
+        if (!player)
+        {
+            player = ManageFPSControllers.FPSControllerGlobals.activeFPSController;
+            if (player)
+            {
+                playerCamera = player.GetComponentInChildren<Camera>();
+                playerPosition = player.transform.position;
+            }
+        }
+    }
+
     private void OnEnable()
     {
         // on enable, set the current count to the max so we immediately update
         frameCount = maxFramesBetweenCheck;
 
         // get the player, its camera, and its position
-        player = ManageFPSControllers.FPSControllerGlobals.activeFPSController;
-        if (player)
-        {
-            playerCamera = player.GetComponentInChildren<Camera>();
-            playerPosition = player.transform.position;
-        }
+        UpdatePlayer();
     }
 
     // Update is called once per frame
@@ -135,7 +143,7 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
         }
 
         // get the latest player position
-        playerPosition = player.transform.position;
+        UpdatePlayer();
 
         // update every child's position, and check if they are within range
         for (var i = 0; i < distributedChildrenPositions.Length; i++)
@@ -155,7 +163,7 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
             }
 
             // if we're within range, and the object is visible, enable the components
-            if (Vector3.Distance(playerPosition, distributedChildrenPositions[i]) < maxDistance && isOnScreen)
+            if (Vector3.Distance(player.transform.position, distributedChildrenPositions[i]) < maxDistance && isOnScreen)
             {
                 // first, ensure we're not tracking this object already
                 if (!activeChildrenList.Contains(distributedChildrenObjects[i]))
