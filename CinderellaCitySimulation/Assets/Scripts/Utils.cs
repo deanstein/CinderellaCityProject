@@ -182,7 +182,7 @@ public class Utils
         }
 
         // get a random point on the scene's current navmesh within some radius from a starting point
-        public static Vector3 GetRandomNPoinOnNavMesh(Vector3 startingPoint, float radius, bool stayOnLevel)
+        public static Vector3 GetRandomPointOnNavMesh(Vector3 startingPoint, float radius, bool stayOnLevel)
         {
             // get a random direction within the radius
             Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * radius;
@@ -236,6 +236,11 @@ public class Utils
                         finalPosition = hit.position;
                         return finalPosition;
                     }
+                }
+
+                if (finalPosition == Vector3.zero)
+                {
+                    Utils.DebugUtils.DebugLog("ERROR: Failed to find a random point on NavMesh, so used the world origin instead.");
                 }
 
                 return finalPosition;
@@ -317,7 +322,11 @@ public class Utils
             float currentHeight = GetMaxGOBoundingBoxDimension(gameObjectToScale);
             //Utils.DebugUtils.DebugLog("Current height: " + currentHeight);
 
-            Utils.GeometryUtils.ScaleGameObjectToMaxHeight(gameObjectToScale, targetHeight);
+            // only scale if the target value is non-zero
+            if (targetHeight != 0)
+            {
+                Utils.GeometryUtils.ScaleGameObjectToMaxHeight(gameObjectToScale, targetHeight);
+            }
         }
 
         // define how to scale a GameObject to match a height

@@ -115,8 +115,14 @@ public class CCPMenuActions : MonoBehaviour
 
             if (isUpdateModeMall)
             {
-                string keyWord = "mall-";
-                updateModeSearchKeys.Add(keyWord);
+                string keyWord1 = "mall-";
+                updateModeSearchKeys.Add(keyWord1);
+
+                string keyWord2 = "store-";
+                updateModeSearchKeys.Add(keyWord2);
+
+                string keyWord3 = "blocker-";
+                updateModeSearchKeys.Add(keyWord3);
             }
 
             if (isUpdateModeSite)
@@ -297,23 +303,29 @@ public class CCPMenuActions : MonoBehaviour
     [MenuItem("Cinderella City Project/Nav Meshes/Update for Current Scene")]
     public static void RebuildCurrentSceneNavMesh()
     {
-            // get this scene's container
-            GameObject sceneContainer = ManageScenes.GetSceneContainerObject(EditorSceneManager.GetActiveScene());
-            List<GameObject> sceneContainers = new List<GameObject>();
-            sceneContainers.Add(sceneContainer);
+        // get this scene's container
+        GameObject sceneContainer = ManageScenes.GetSceneContainerObject(EditorSceneManager.GetActiveScene());
+        List<GameObject> sceneContainers = new List<GameObject>();
+        sceneContainers.Add(sceneContainer);
 
-            // first, move this scene container as appropriate
-            HoistSceneObjectsEditor.HoistSceneContainersUp(sceneContainers);
+        // first, move this scene container as appropriate
+        HoistSceneObjectsEditor.HoistSceneContainersUp(sceneContainers);
 
-            // build the nav mesh
-            UnityEditor.AI.NavMeshBuilder.BuildNavMesh();
+        // ensure that "blocker" objects are enabled before building the nav mesh
+        AssetImportUpdate.UnhideProxyObjects("proxy-blocker-npc");
 
-            Utils.DebugUtils.DebugLog("Updated the nav mesh in scene: " + EditorSceneManager.GetActiveScene().name);
+        // build the nav mesh
+        UnityEditor.AI.NavMeshBuilder.BuildNavMesh();
 
-            // now move the scene container back down
-            HoistSceneObjectsEditor.HoistSceneContainersDown(sceneContainers);
+        Utils.DebugUtils.DebugLog("Updated the nav mesh in scene: " + EditorSceneManager.GetActiveScene().name);
 
-            EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene());
+        // now move the scene container back down
+        HoistSceneObjectsEditor.HoistSceneContainersDown(sceneContainers);
+
+        // re-hide the proxy blocker
+        AssetImportUpdate.HideProxyObjects("proxy-blocker-npc");
+
+        EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene());
     }
 
     [MenuItem("Cinderella City Project/Nav Meshes/Update for All Scenes")]
