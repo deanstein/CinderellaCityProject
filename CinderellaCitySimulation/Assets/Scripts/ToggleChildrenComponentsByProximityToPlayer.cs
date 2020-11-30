@@ -95,26 +95,18 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
         distributedChildrenListLength = Mathf.RoundToInt(childrenObjects.Length / numberOfDistributedArrays);
     }
 
-    private void UpdatePlayer()
-    {
-        if (!player)
-        {
-            player = ManageFPSControllers.FPSControllerGlobals.activeFPSController;
-            if (player)
-            {
-                playerCamera = player.GetComponentInChildren<Camera>();
-                playerPosition = player.transform.position;
-            }
-        }
-    }
-
     private void OnEnable()
     {
         // on enable, set the current count to the max so we immediately update
         frameCount = maxFramesBetweenCheck;
 
         // get the player, its camera, and its position
-        UpdatePlayer();
+        player = ManageFPSControllers.FPSControllerGlobals.activeFPSController;
+        if (player)
+        {
+            playerCamera = player.GetComponentInChildren<Camera>();
+            playerPosition = player.transform.position;
+        }
     }
 
     // Update is called once per frame
@@ -141,9 +133,6 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
             distributedChildrenNotInFrameCounts = ArrayUtilities.RangeSubset(childrenNotInFrameCounts, distributedListIndexStart, distributedChildrenListLength - (distributedListIndexEnd - childrenNotInFrameCounts.Length));
             frameCount = 0;
         }
-
-        // get the latest player position
-        UpdatePlayer();
 
         // update every child's position, and check if they are within range
         for (var i = 0; i < distributedChildrenPositions.Length; i++)
