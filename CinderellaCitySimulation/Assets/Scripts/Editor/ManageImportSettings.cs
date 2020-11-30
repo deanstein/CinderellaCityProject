@@ -338,7 +338,8 @@ public class ManageImportSettings
         switch (assetName)
         {
             // no static editor flags
-            case string name when (name.Contains("doors-exterior")):
+            case string name when (name.Contains("doors-exterior")
+            || name.Contains("speakers")):
                 return 0;
             // only navigation static
             case string name when (name.Contains("windows") 
