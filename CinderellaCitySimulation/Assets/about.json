@@ -1,6 +1,22 @@
 {
   "VersionHistory": [
     {
+      "0.6.3.202011": [
+        {          
+          "Content Updates": [
+          "Added new storefronts, signage, furniture, and site details to 60s70s",
+          "Updated 60s70s models to reflect updated FBX model structure",
+          "Updated 60s70s people"
+        ],
+          "Logic Updates": [
+            "Updated AssetImportPipeline and ManageImportSettings to reflect new FBX model structure",
+            "Added CCP Menu support for post-update processing modes - anchors/mall/site - to avoid unnecessary processing when reimporting models",
+            "Added ability to clean up .fbm folders for the entire scene during post-process batch, instead of only on import",
+            "Added support for NPC blockers - geometrically-defined areas where NPCs should not spawn or travel through",
+            "Fixed issues with missing non-walking NPCs, like talking/listening/sitting"
+          ]
+        }
+      ],
       "0.6.2.202010": [
         {
           "Logic Updates": [
