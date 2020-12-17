@@ -339,11 +339,13 @@ public class ManageImportSettings
         {
             // no static editor flags
             case string name when (name.Contains("doors-exterior")
-            || name.Contains("speakers")):
+            || name.Contains("speakers")
+            || name.Contains("trees")):
                 return 0;
             // only navigation static
             case string name when (name.Contains("windows") 
-            || name.Contains("handrails") 
+            || name.Contains("handrails")
+            || name.Contains("furniture")
             || name.Contains("wayfinding")
             || name.Contains("proxy-blocker-npc")) 
             && !name.Contains("solid"):
@@ -367,23 +369,23 @@ public class ManageImportSettings
             || name.Contains("mall-ceilings")
             || name.Contains("mall-walls-detailing-exterior")
             || name.Contains("store-detailing"):
-                return 3f;
+                return 4f;
             case string name when name.Contains("lights") 
             || name.Contains("signage"):
                 return 10f;
             case string name when name.Contains("mall-floors-vert")
             || name.Contains("site-curb-gutter-sidewalk-vert"):
-                return 2.0f;
+                return 3f;
             case string name when name.Contains("mall-roof") 
             || name.Contains("site-context-buildings")
-            || name.Contains("structure")
+            || name.Contains("mall-structure")
             || name.Contains("site-roads")
             || name.Contains("site-parking-surface"):
                 return 0.1f;
             case string name when name.Contains("mall-walls-interior") 
             || name.Contains("store-ceilings")
             || name.Contains("store-floors"):
-                return 0.1f;
+                return 0.5f;
             case string name when name.Contains("experimental-simple"):
                 return 22f;
             // if not specified, the default is 1 (no change to global resolution for this asset)
