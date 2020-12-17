@@ -7,8 +7,63 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: DefaultMaterial
+    second: {fileID: 2100000, guid: 87cd086e5e5231944819b09e363c1fc6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - blue mall hanging planter orange
+    second: {fileID: 2100000, guid: c4023efbba99ee241a78f69f37ffc148, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - blue mall illuminated ring
+    second: {fileID: 2100000, guid: e68bfb498de8a2f479aa35c4de2269b1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: couch - blue leather
+    second: {fileID: 2100000, guid: bb1ced8f56cfbbd42a43330dba0824e0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: couch - brown leather
+    second: {fileID: 2100000, guid: 1078d34f9c414d7479f9d27cdd5d7763, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: couch - feet
+    second: {fileID: 2100000, guid: f018f44c1a9f6e741a8d3b4e691bf1dc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: couch - wood grain
+    second: {fileID: 2100000, guid: e20032777d668174e9e8e3c11d62ecbb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - 60s blue light furniture
+    second: {fileID: 2100000, guid: 8ce3c6ea7b444f14a9e25594ede5e8e3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - 60s dark trim
+    second: {fileID: 2100000, guid: 3bbc0b54799584842be6b7530cbbc6cd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - 60s hanging planter bottom ring
+    second: {fileID: 2100000, guid: 7d8917d32e62daa4ca4a7e67faa7cc75, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - bench brick color
     second: {fileID: 2100000, guid: a753a8998a9c58e4d8d368aba392ccf1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - blue mall light fixture mirror
+    second: {fileID: 2100000, guid: 6bf941277e1895944b36c2b28c9e1f5b, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -17,8 +72,33 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - floor trim
+    second: {fileID: 2100000, guid: 47b9e5d5bab20aa44925cdff2858d16e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - furniture beige
+    second: {fileID: 2100000, guid: fab90e38df1640c48b18888ee953196a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: silver metallic
+    second: {fileID: 2100000, guid: 993a88656456e0241a2be401f802a1a8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: soil - interior
+    second: {fileID: 2100000, guid: f986cbaf64a362d468bd226435cd95de, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: store - cinder alley brick 1
     second: {fileID: 2100000, guid: 33fa4fb3a30e05a4582b6119a5deb1d0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: white metal
+    second: {fileID: 2100000, guid: 0dabc201e6dcea6489ceb40a4f826b2f, type: 2}
   materials:
     importMaterials: 1
     materialName: 1
@@ -58,7 +138,7 @@ ModelImporter:
     importCameras: 1
     importLights: 1
     swapUVChannels: 0
-    generateSecondaryUV: 0
+    generateSecondaryUV: 1
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1
@@ -68,14 +148,14 @@ ModelImporter:
     minBoneWeight: 0.001
     meshOptimizationFlags: -1
     indexFormat: 0
-    secondaryUVAngleDistortion: 8
-    secondaryUVAreaDistortion: 15.000001
+    secondaryUVAngleDistortion: 4
+    secondaryUVAreaDistortion: 4
     secondaryUVHardAngle: 88
-    secondaryUVPackMargin: 4
+    secondaryUVPackMargin: 64
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
-    normalImportMode: 0
+    normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
