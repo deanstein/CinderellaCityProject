@@ -739,6 +739,16 @@ public class AssetImportUpdate : AssetPostprocessor {
                 SetCustomMaterialEmissionIntensity(dependencyPathString, 3.25F);
             }
 
+            if (dependencyPathString.Contains("blue mall hanging planter orange"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, -2.5F);
+            }
+
+            if (dependencyPathString.Contains("blue mall illuminated ring"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, 0.75F);
+            }
+
             if (dependencyPathString.Contains("fluorescent panel"))
             {
                 SetCustomMaterialEmissionIntensity(dependencyPathString, 2.0F);
@@ -782,6 +792,11 @@ public class AssetImportUpdate : AssetPostprocessor {
             if (dependencyPathString.Contains("the denver blue"))
             {
                 SetCustomMaterialEmissionIntensity(dependencyPathString, -0.2F);
+            }
+
+            if (dependencyPathString.Contains("penney's white"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, 2F);
             }
 
             if (dependencyPathString.Contains("store yellowing"))
