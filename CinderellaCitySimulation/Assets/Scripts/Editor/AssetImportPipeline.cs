@@ -678,7 +678,22 @@ public class AssetImportUpdate : AssetPostprocessor {
         // ensure that every transform has the correct static settings
         foreach (Transform child in allChildren)
         {
-            GameObjectUtility.SetStaticEditorFlags(child.gameObject, staticFlags);
+            if (child.GetComponent<Renderer>())
+            {
+                // ensure objects painted with a material indicating non-static don't get static flags
+                if (child.GetComponent<Renderer>().sharedMaterial.name.Contains("non-static"))
+                {
+                    GameObjectUtility.SetStaticEditorFlags(child.gameObject, 0);
+                }
+                else
+                {
+                    GameObjectUtility.SetStaticEditorFlags(child.gameObject, staticFlags);
+                }
+            }
+            else
+            {
+                GameObjectUtility.SetStaticEditorFlags(child.gameObject, staticFlags);
+            }
         }
     }
 
@@ -721,7 +736,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
             if (dependencyPathString.Contains("blue mall columns"))
             {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 3F);
+                SetCustomMaterialEmissionIntensity(dependencyPathString, 3.8F);
             }
 
             if (dependencyPathString.Contains("blue mall ceiling"))
@@ -741,7 +756,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
             if (dependencyPathString.Contains("blue mall hanging planter orange"))
             {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, -2.5F);
+                SetCustomMaterialEmissionIntensity(dependencyPathString, -2.75F);
             }
 
             if (dependencyPathString.Contains("blue mall illuminated ring"))
@@ -796,7 +811,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
             if (dependencyPathString.Contains("penney's white"))
             {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 2F);
+                SetCustomMaterialEmissionIntensity(dependencyPathString, 0.7F);
             }
 
             if (dependencyPathString.Contains("store yellowing"))
@@ -950,8 +965,8 @@ public class AssetImportUpdate : AssetPostprocessor {
 
     public static void ApplyAndConfigureNPCAgent(GameObject NPCObject, GameObject proxyObject)
     {
-        // only add an agent if the proxy object indicates this NPC is not sitting
-        if (proxyObject && proxyObject.name.Contains("sitting"))
+        // only add an agent if the proxy object name indicates it requires one
+        if (proxyObject && !ManageProxyMapping.GetPathfindingFlagByName(proxyObject))
         {
             return;
         }
@@ -984,7 +999,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         if (proxyObject)
         {
             // add walking logic only if the proxy name indicates this NPC should be walking
-            if (!proxyObject.name.Contains("talking") && !proxyObject.name.Contains("idle") && !proxyObject.name.Contains("sitting") && !proxyObject.name.Contains("listening"))
+            if (ManageProxyMapping.GetPathfindingFlagByName(proxyObject))
             {
                 // add the script to follow a path
                 FollowPathOnNavMesh followPathOnNavMeshScript = NPCObject.AddComponent<FollowPathOnNavMesh>();

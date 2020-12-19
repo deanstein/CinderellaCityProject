@@ -46,11 +46,10 @@ public class ManageImportSettings
             || assetOrModelName.Contains("mall-ceilings")
             || assetOrModelName.Contains("mall-detailing-interior")
             || assetOrModelName.Contains("mall-floors-vert")
+            || assetOrModelName.Contains("mall-light-shrouds")
             || assetOrModelName.Contains("mall-roof")
             || assetOrModelName.Contains("mall-walls-detailing-exterior")
             || assetOrModelName.Contains("mall-walls-interior")
-            || assetOrModelName.Contains("store-floors")
-
 
             || assetOrModelName.Contains("site-context-buildings")
             || assetOrModelName.Contains("site-curb-gutter-sidewalk-vert")
@@ -60,7 +59,8 @@ public class ManageImportSettings
             || assetOrModelName.Contains("site-structure")
 
             || assetOrModelName.Contains("store-ceilings")
-            || assetOrModelName.Contains("store-detailing"):
+            || assetOrModelName.Contains("store-detailing")
+            || assetOrModelName.Contains("store-floors"):
                 // pre-processor option flags
                 ImportParams.doSetGlobalScale = true; // always true
                 ImportParams.doInstantiateAndPlaceInCurrentScene = true;
@@ -339,6 +339,7 @@ public class ManageImportSettings
         {
             // no static editor flags
             case string name when (name.Contains("doors-exterior")
+            || name.Contains("light-shrouds")
             || name.Contains("speakers")
             || name.Contains("trees")):
                 return 0;
