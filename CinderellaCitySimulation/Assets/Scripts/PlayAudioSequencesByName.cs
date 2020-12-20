@@ -108,6 +108,12 @@ public class PlayAudioSequencesByName : MonoBehaviour
     {
         // set options for this object's AudioSource component
         thisAudioSourceComponent = this.GetComponent<AudioSource>();
+
+        if (!thisAudioSourceComponent || (AssociateSpeakerParamsByName(this.name) == null))
+        {
+            return;
+        }
+
         thisAudioSourceComponent.volume = AssociateSpeakerParamsByName(this.name).speakerVolume;
         thisAudioSourceComponent.maxDistance = AssociateSpeakerParamsByName(this.name).maxDistance;
         thisAudioSourceComponent.spatialBlend = 1.0F;

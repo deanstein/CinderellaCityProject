@@ -756,7 +756,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
             if (dependencyPathString.Contains("blue mall hanging planter orange"))
             {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, -2.75F);
+                SetCustomMaterialEmissionIntensity(dependencyPathString, -3.25F);
             }
 
             if (dependencyPathString.Contains("blue mall illuminated ring"))
@@ -926,6 +926,11 @@ public class AssetImportUpdate : AssetPostprocessor {
                 SetMaterialSmoothness(dependencyPathString, 0.6F);
             }
 
+            if (dependencyPathString.Contains("blue mall hanging planter orange"))
+            {
+                SetMaterialMetallic(dependencyPathString, 1.0F);
+            }
+
             if (string.IsNullOrEmpty(dependencyPathString)) continue;
         }
     }
@@ -965,8 +970,8 @@ public class AssetImportUpdate : AssetPostprocessor {
 
     public static void ApplyAndConfigureNPCAgent(GameObject NPCObject, GameObject proxyObject)
     {
-        // only add an agent if the proxy object name indicates it requires one
-        if (proxyObject && !ManageProxyMapping.GetPathfindingFlagByName(proxyObject))
+        // only add an agent if the proxy object indicates this NPC is not sitting or a service worker behind a counter
+        if (proxyObject && (proxyObject.name.Contains("sitting") || proxyObject.name.Contains("service")))
         {
             return;
         }
@@ -999,7 +1004,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         if (proxyObject)
         {
             // add walking logic only if the proxy name indicates this NPC should be walking
-            if (ManageProxyMapping.GetPathfindingFlagByName(proxyObject))
+            if (ManageProxyMapping.GetIsWalking(proxyObject))
             {
                 // add the script to follow a path
                 FollowPathOnNavMesh followPathOnNavMeshScript = NPCObject.AddComponent<FollowPathOnNavMesh>();

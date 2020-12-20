@@ -131,11 +131,11 @@ public class ProxyGlobals
 public class ManageProxyMapping
 {
     // determine whether navigation/pathfinding components should be applied to the proxy object
-    public static bool GetPathfindingFlagByName(GameObject proxyObject)
+    public static bool GetIsWalking(GameObject proxyObject)
     {
-        bool willPathfind = (!proxyObject.name.Contains("talking") && !proxyObject.name.Contains("idle") && !proxyObject.name.Contains("sitting") && !proxyObject.name.Contains("listening"));
+        bool isWalking = (!proxyObject.name.Contains("talking") && !proxyObject.name.Contains("idle") && !proxyObject.name.Contains("sitting") && !proxyObject.name.Contains("listening"));
 
-        return willPathfind;
+        return isWalking;
     }
 
     // get the number of fillers to generate based on the scene
