@@ -140,6 +140,12 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
             // update this child's position
             distributedChildrenPositions[i] = new Vector3(distributedChildrenObjects[i].transform.position.x, distributedChildrenObjects[i].transform.position.y + 1, distributedChildrenObjects[i].transform.position.z);
 
+            // skip if there's no player camera available
+            if (!playerCamera)
+            {
+                return;
+            }
+
             // get the screen space position of this object
             screenSpacePoint = playerCamera.WorldToViewportPoint(distributedChildrenPositions[i]);
 
