@@ -5,17 +5,21 @@
         {          
           "Content Updates": [
           "Added hanging planters in 60s70s",
+          "Added queues of NPCs in front of counter-based tenant storefronts in 60s70s",
           "Added non-static light shrouds in 60s70s",
           "Improved lighting and signage quality in 60s70s",
-          "Fixed an issue with Blue Mall column geometry",
-          "Fixed Z-fighting issues in parking garage",
-          "Updated Main Menu thumbnails"
+          "Fixed an issue with Blue Mall column geometry in 60s70s",
+          "Fixed Z-fighting issues in parking garage in 60s70s",
+          "Fixed missing floor gloss in 60s70s",
+          "Fixed missing camera blur in all scenes",
+          "Updated Main Menu thumbnails for 60s70s"
         ],
           "Logic Updates": [
             "Added support for non-static light shrouds",
             "Added support for setting empty static flags when geometry is painted with 'non-static' material",
             "Fixed an issue where NPCs were given navigation agents when not required",
-            "Fixed an issue where running the Update Thumbnails routine would result in Unity Editor errors"
+            "Fixed an issue where running the Update Thumbnails routine would result in Unity Editor errors",
+            "Removed artificial max resolution limitation in Unity launcher"
           ]
         }
       ],
