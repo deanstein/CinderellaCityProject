@@ -195,7 +195,7 @@ public class ManageProxyMapping
         // TREES
         //
 
-        if (objectName.Contains("tree-center-court"))
+        if (objectName.Contains("tree-center-court") && !objectName.Contains("tree-center-court-small"))
         {
             // identify the path of the prefab to replace this object
             replacementObjectPath = "Assets/TreesVariety/oak/oak 3.prefab";
