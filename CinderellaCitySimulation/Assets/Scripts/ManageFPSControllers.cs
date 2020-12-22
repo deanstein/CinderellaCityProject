@@ -158,6 +158,7 @@ public class ManageFPSControllers : MonoBehaviour {
 
         // restore the existing post process profile
         existingVolume.profile = existingProfile;
+        blur.enabled.Override(true);
     }
 
     // reposition and realign this FPSController to match the given one

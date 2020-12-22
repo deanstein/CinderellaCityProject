@@ -831,7 +831,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
             if (dependencyPathString.Contains("cinder alley incandescent"))
             {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 2.0F);
+                SetCustomMaterialEmissionIntensity(dependencyPathString, 3.5F);
             }
 
             // temporarily reducing the brightness of these until all signage brightness can be adjusted to affset albedo boost,
@@ -898,6 +898,16 @@ public class AssetImportUpdate : AssetPostprocessor {
                 || dependencyPathString.Contains("mall - cinder alley scored concrete"))
             {
                 SetMaterialSmoothness(dependencyPathString, 0.35F);
+            }
+
+            if (dependencyPathString.Contains("mall - terra cotta tile"))
+            {
+                SetMaterialSmoothness(dependencyPathString, 0.25F);
+            }
+
+            if (dependencyPathString.Contains("mall - terra cotta tile special"))
+            {
+                SetMaterialSmoothness(dependencyPathString, 0.2F);
             }
 
             if (dependencyPathString.Contains("mall - shamrock floor brick"))
