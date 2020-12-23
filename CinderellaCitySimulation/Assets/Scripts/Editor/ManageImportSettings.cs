@@ -48,6 +48,7 @@ public class ManageImportSettings
             || assetOrModelName.Contains("mall-floors-vert")
             || assetOrModelName.Contains("mall-light-shrouds")
             || assetOrModelName.Contains("mall-roof")
+            || assetOrModelName.Contains("mall-structure")
             || assetOrModelName.Contains("mall-walls-detailing-exterior")
             || assetOrModelName.Contains("mall-walls-interior")
 
@@ -183,21 +184,6 @@ public class ManageImportSettings
                 // post-processor option flags
                 ImportParams.doSetMaterialEmission = true;
                 ImportParams.doSetMaterialSmoothnessMetallic = true;
-                ImportParams.doInstantiateProxyReplacements = false;
-                ImportParams.doHideProxyObjects = false;
-                return ImportParams;
-
-            case string assetOrModelName when assetOrModelName.Contains("mall-structure"):
-                // pre-processor option flags
-                ImportParams.doSetGlobalScale = true; // always true
-                ImportParams.doInstantiateAndPlaceInCurrentScene = true;
-                ImportParams.doSetColliderActive = true;
-                ImportParams.doSetUVActiveAndConfigure = false;
-                ImportParams.doDeleteReimportMaterialsTextures = true;
-                ImportParams.doAddBehaviorComponents = false;
-                // post-processor option flags
-                ImportParams.doSetMaterialEmission = false;
-                ImportParams.doSetMaterialSmoothnessMetallic = false;
                 ImportParams.doInstantiateProxyReplacements = false;
                 ImportParams.doHideProxyObjects = false;
                 return ImportParams;
@@ -379,13 +365,13 @@ public class ManageImportSettings
                 return 3f;
             case string name when name.Contains("mall-roof") 
             || name.Contains("site-context-buildings")
-            || name.Contains("mall-structure")
-            || name.Contains("site-roads")
-            || name.Contains("site-parking-surface"):
+            || name.Contains("site-roads"):
                 return 0.1f;
             case string name when name.Contains("mall-walls-interior") 
             || name.Contains("store-ceilings")
-            || name.Contains("store-floors"):
+            || name.Contains("store-floors")
+            || name.Contains("site-parking-surface")
+            || name.Contains("structure"):
                 return 0.5f;
             case string name when name.Contains("experimental-simple"):
                 return 22f;
