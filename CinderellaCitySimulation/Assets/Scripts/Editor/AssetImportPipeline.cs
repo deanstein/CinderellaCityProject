@@ -52,8 +52,8 @@ public class AssetImportUpdate : AssetPostprocessor {
     // post-processing should only happen after pre-processing
     static bool postProcessingRequired = false;
 
-    // proxy replacement post-processing is needed only until replacements are valid and in the model
-    static bool proxyReplacementProcessingRequired = true;
+    // proxy replacements as required
+    static bool proxyReplacementProcessingRequired = false;
 
     // instantiate proxy strings
     static string proxyType;
@@ -205,13 +205,28 @@ public class AssetImportUpdate : AssetPostprocessor {
             gameObjectFromAsset = (GameObject)AssetDatabase.LoadAssetAtPath(assetFilePath, typeof(GameObject));
         }
 
-        // skip instantiating if it already exists in this scene
-        foreach (GameObject g in Transform.FindObjectsOfType<GameObject>())
+        // skip instantiating if this asset already exists in this scene
+
+        // get the top-level objects in the scene container
+        GameObject[] sceneObjects = ManageScenes.GetTopLevelChildrenInSceneContainer(SceneManager.GetActiveScene());
+        // test if the asset name matches any of the top-level object names
+        foreach (GameObject g in sceneObjects)
         {
             if (g.name == gameObjectFromAsset.name)
             {
-                Utils.DebugUtils.DebugLog("This object is already present in the model.");
-                return;
+                // if import params dictate that this object generates proxy replacements,
+                // delete the object in the hierarchy to force a full refresh
+                if (AssetImportGlobals.ModelImportParamsByName.doInstantiateProxyReplacements)
+                {
+                    Utils.DebugUtils.DebugLog("This object was already present in the model, but was flagged to replace proxy objects, so it's been deleted for a complete refresh.");
+                    GameObject.DestroyImmediate(g);
+                }
+                // non-proxy objects don't need to be deleted from the hierarchy
+                else
+                {
+                    Utils.DebugUtils.DebugLog("This object is already present in the model.");
+                    return;
+                }
             }
         }
 
@@ -974,16 +989,19 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         else
         {
-            return "";
+            return null;
         }
     }
 
     public static void ApplyAndConfigureNPCAgent(GameObject NPCObject, GameObject proxyObject)
     {
         // only add an agent if the proxy object indicates this NPC is not sitting or a service worker behind a counter
-        if (proxyObject && (proxyObject.name.Contains("sitting") || proxyObject.name.Contains("service")))
+        if (proxyObject)
         {
-            return;
+            if (!ManageProxyMapping.GetIsWalking(proxyObject))
+            {
+                return;
+            }
         }
 
         // add a navigation mesh agent to this person so it can find its way on the navmesh
@@ -1083,14 +1101,15 @@ public class AssetImportUpdate : AssetPostprocessor {
             Animator thisAnimator = NPCObject.GetComponent<Animator>();
             thisAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(ManageNPCControllers.GetDefaultAnimatorControllerFilePathByName(combinedName));
 
-            // TODO: get the initial animation to appear in the editor
-            /*
-            string animationName = thisAnimator.runtimeAnimatorController.animationClips[0].name;
-
-            setAnimationFrame(thisAnimator, animationName);
-            */
-
             ConfigureNPCForPathfinding(NPCObject, proxyObject);
+
+            // provide a mesh collider since this won't get an agent
+            if (NPCObject.GetComponentInChildren<SkinnedMeshRenderer>())
+            {
+                SkinnedMeshRenderer meshRend = NPCObject.GetComponentInChildren<SkinnedMeshRenderer>();
+                MeshCollider meshCollider = meshRend.gameObject.AddComponent<MeshCollider>();
+                meshCollider.sharedMesh = meshRend.sharedMesh;
+            }
         }
 
         // otherwise, this is a random filler person and can be configured to walk
@@ -1562,7 +1581,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         // since pre-processing is done, mark post-processing as required
         postProcessingRequired = true;
-        proxyReplacementProcessingRequired = true;
+        proxyReplacementProcessingRequired = AssetImportGlobals.ModelImportParamsByName.doInstantiateProxyReplacements;
 
         // mark the scene as dirty, in case something changed that needs to be saved
         // TODO: create a flag that's set to true when something is really changed, so we only mark dirty when necessary
