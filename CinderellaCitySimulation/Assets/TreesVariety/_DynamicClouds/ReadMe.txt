@@ -1,1 +1,0 @@
-Scene Camera Clipping Plane must be [5000] at least (for default scale FPS controller and Terrain size = 500x500).
