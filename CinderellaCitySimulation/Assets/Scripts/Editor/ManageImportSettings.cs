@@ -220,7 +220,7 @@ public class ManageImportSettings
                 ImportParams.doHideProxyObjects = true;
                 return ImportParams;
 
-            case string assetOrModelName when assetOrModelName.Contains("proxy-trees"):
+            case string assetOrModelName when assetOrModelName.Contains("proxy-trees-veg"):
                 // pre-processor option flags
                 ImportParams.doSetGlobalScale = true; // always true
                 ImportParams.doInstantiateAndPlaceInCurrentScene = true;
