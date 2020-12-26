@@ -3,9 +3,11 @@
 [Oo]bj/
 [Bb]uild/
 [Bb]uilds/
-_builds/
-_archive/
 Assets/AssetStoreTools*
+
+# 3rd-party packages
+CinderellaCitySimulation/Assets/3rdParty/
+CinderellaCitySimulation/Assets/3rdParty.meta
 
 # Visual Studio cache directory
 .vs/
