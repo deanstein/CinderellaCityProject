@@ -963,9 +963,9 @@ public class AssetImportUpdate : AssetPostprocessor {
     // define the proxyType based on this asset's name
     public static string GetProxyTypeByName(string assetName)
     {
-        if (assetName.Contains("proxy-trees"))
+        if (assetName.Contains("proxy-trees-veg"))
         {
-            proxyType = "Trees";
+            proxyType = "TreesVeg";
             Utils.DebugUtils.DebugLog("Proxy type: " + proxyType);
 
             return proxyType;
@@ -1155,6 +1155,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         if (!gameObjectByAsset)
         {
             Utils.DebugUtils.DebugLog("Couldn't find the GameObject by name: " + assetName);
+            postProcessingRequired = false;
             return;
         }
 
@@ -1218,7 +1219,7 @@ public class AssetImportUpdate : AssetPostprocessor {
                         }
                     }
 
-                    else if (child.name.Contains("vegetation"))
+                    else if (child.name.Contains("shrub"))
                     {
                         // randomly rotate to add visual variety
                         Utils.GeometryUtils.RandomRotateGameObjectAboutY(instancedPrefab);

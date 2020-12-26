@@ -189,157 +189,106 @@ public class ManageProxyMapping
     // define a replacement path by a name
     public static string GetProxyReplacementPathByName(string objectName)
     {
-        string replacementObjectPath = "";
-
         //
         // TREES
         //
-
-        if (objectName.Contains("tree-center-court") && !objectName.Contains("tree-center-court-small"))
+        if (objectName.Contains("tree"))
         {
-            // identify the path of the prefab to replace this object
-            replacementObjectPath = "Assets/TreesVariety/oak/oak 3.prefab";
+            switch (objectName)
+            {
+                case string name when name.Contains("blue-mall-palm"):
+                    return "Assets/TreesVariety/plants/grape_plant dark.prefab";
 
-            return replacementObjectPath;
+                case string name when name.Contains("blue-mall-spike"):
+                    return "Assets/TreesVariety/birch/birch 2.prefab";
+
+                case string name when name.Contains("blue-mall-woody"):
+                    return "Assets/TreesVariety/plants/cotton_plant 1.prefab";
+
+                case string name when name.Contains("center-court") && !objectName.Contains("center-court-small"):
+                    return "Assets/TreesVariety/oak/oak 3.prefab";
+
+                case string name when name.Contains("center-court-small"):
+                    return "Assets/TreesVariety/birch/birch 2.prefab";
+
+                case string name when name.Contains("shamrock"):
+                    return "Assets/TreesVariety/birch/birch 5.prefab";
+
+                default:
+                    return null;
+            }
         }
 
-        if (objectName.Contains("tree-center-court-small"))
+        //
+        // VEGETATION
+        //
+        if (objectName.Contains("shrub"))
         {
-            // identify the path of the prefab to replace this object
-            replacementObjectPath = "Assets/TreesVariety/birch/birch 2.prefab";
+            switch (objectName)
+            {
+                case string name when name.Contains("shrub-1"):
+                    return "Assets/TreesVariety/plants/cotton_plant 1.prefab";
 
-            return replacementObjectPath;
-        }
+                case string name when name.Contains("shrub-2"):
+                    return "Assets/TreesVariety/plants/grape_plant dark.prefab"; ;
 
-        if (objectName.Contains("tree-shamrock"))
-        {
-            // identify the path of the prefab to replace this object
-            replacementObjectPath = "Assets/TreesVariety/birch/birch 5.prefab";
+                case string name when name.Contains("hanging-planter-1"):
+                    return "Assets/TreesVariety/plants/potato_plant.prefab";
 
-            return replacementObjectPath;
+                default:
+                    return null;
+            }
         }
 
         // 
         // PEOPLE
         //
-
-        if (objectName.Contains("people-aaron"))
+        if (objectName.Contains("people"))
         {
-            // identify the path of the prefab to replace this object
-            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Male/Winter/casual11_m_highpoly.prefab";
+            switch (objectName)
+            {
+                // associate specific people with specific prefab models
+                case string name when name.Contains("aaron"):
+                    return "Assets/Citizens PRO/People Prefabs/Male/Winter/casual11_m_highpoly.prefab";
 
-            return replacementObjectPath;
+                case string name when name.Contains("dale"):
+                    return "Assets/Citizens PRO/People Prefabs/Male/Summer/casual24_m_highpoly.prefab";
+
+                case string name when name.Contains("denise"):
+                    return "Assets/Citizens PRO/People Prefabs/Female/Summer/casual14_f_highpoly.prefab";
+
+                case string name when name.Contains("ginger-marcus"):
+                    return "Assets/Citizens PRO/People Prefabs/Female/Winter/casual18_f_highpoly.prefab";
+
+                case string name when name.Contains("jason-morin"):
+                    return "Assets/Citizens PRO/People Prefabs/Male/Summer/casual23_m_highpoly.prefab";
+
+                case string name when name.Contains("leda-thaler"):
+                    return "Assets/Citizens PRO/People Prefabs/Female/Summer/casual04_f_highpoly.prefab";
+
+                case string name when name.Contains("lindsey"):
+                    return "Assets/Citizens PRO/People Prefabs/Female/Winter/casual03_f_highpoly.prefab";
+
+                case string name when name.Contains("matt"):
+                    return "Assets/Citizens PRO/People Prefabs/Male/Winter/casual20_m_highpoly.prefab";
+
+                case string name when name.Contains("melanie"):
+                    return "Assets/Citizens PRO/People Prefabs/Female/Summer/casual14_f_highpoly.prefab";
+
+                case string name when name.Contains("stu-goldstein"):
+                    return "Assets/Citizens PRO/People Prefabs/Male/Summer/business01_m_highpoly.prefab";
+
+                // if the name isn't specified,
+                // replace this object with a random person appropriate to this scene
+                default:
+                    return GetRandomPersonPrefabFilePathBySceneName(SceneManager.GetActiveScene().name);
+            }
         }
 
-        if (objectName.Contains("people-ginger-marcus"))
-        {
-            // identify the path of the prefab to replace this object
-            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Female/Winter/casual18_f_highpoly.prefab";
-
-            return replacementObjectPath;
-        }
-
-        if (objectName.Contains("people-lindsey"))
-        {
-            // identify the path of the prefab to replace this object
-            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Female/Winter/casual03_f_highpoly.prefab";
-
-            return replacementObjectPath;
-        }
-
-        if (objectName.Contains("people-denise"))
-        {
-            // identify the path of the prefab to replace this object
-            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Female/Summer/casual14_f_highpoly.prefab";
-
-            return replacementObjectPath;
-        }
-
-        if (objectName.Contains("people-dale"))
-        {
-            // identify the path of the prefab to replace this object
-            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Male/Summer/casual24_m_highpoly.prefab";
-
-            return replacementObjectPath;
-        }
-
-        if (objectName.Contains("people-jason-morin"))
-        {
-            // identify the path of the prefab to replace this object
-            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Male/Summer/casual23_m_highpoly.prefab";
-
-            return replacementObjectPath;
-        }
-
-        if (objectName.Contains("people-stu-goldstein"))
-        {
-            // identify the path of the prefab to replace this object
-            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Male/Summer/business01_m_highpoly.prefab";
-
-            return replacementObjectPath;
-        }
-
-        if (objectName.Contains("people-lisa"))
-        {
-            // identify the path of the prefab to replace this object
-            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Female/Summer/Girl_22.prefab";
-
-            return replacementObjectPath;
-        }
-
-        if (objectName.Contains("people-matt"))
-        {
-            // identify the path of the prefab to replace this object
-            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Male/Winter/casual20_m_highpoly.prefab";
-
-            return replacementObjectPath;
-        }
-
-        if (objectName.Contains("people-melanie"))
-        {
-            // identify the path of the prefab to replace this object
-            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Female/Summer/casual14_f_highpoly.prefab";
-
-            return replacementObjectPath;
-        }
-
-        if (objectName.Contains("people-nick"))
-        {
-            // identify the path of the prefab to replace this object
-            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Male/Summer/Man_44.prefab";
-
-            return replacementObjectPath;
-        }
-
-        if (objectName.Contains("people-rachel"))
-        {
-            // identify the path of the prefab to replace this object
-            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Female/Summer/casual07_f_highpoly.prefab";
-
-            return replacementObjectPath;
-        }
-
-        if (objectName.Contains("people-susan"))
-        {
-            // identify the path of the prefab to replace this object
-            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Female/Summer/casual04_f_highpoly.prefab";
-
-            return replacementObjectPath;
-        }
-
-        if (objectName.Contains("people-tia"))
-        {
-            // identify the path of the prefab to replace this object
-            replacementObjectPath = "Assets/Citizens PRO/People Prefabs/Female/Summer/casual19_f_highpoly.prefab";
-
-            return replacementObjectPath;
-        }
-
+        // otherwise, no proxy replacement path has been specified
         else
         {
-            // if the name isn't handled,
-            // replace this object with a random prefab appropriate to this scene
-            return GetRandomPersonPrefabFilePathBySceneName(SceneManager.GetActiveScene().name);
+            return null;
         }
     }
 
@@ -387,6 +336,11 @@ public class ManageProxyMapping
 
         // define the proxy replacement path by the proxyObject object's name
         string replacementObjectPath = GetProxyReplacementPathByName(proxyObject.name);
+        if (replacementObjectPath == null)
+        {
+            Utils.DebugUtils.DebugLog("No replacement path was specified for this proxy, so it has not been replaced: " + proxyObject.name);
+            return null;
+        }
 
         // ensure the object we want to replace is visible, so we can measure it
         ToggleObjects.ToggleGameObjectOn(gameObjectToBeReplaced);

@@ -4,10 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - DeleteReplacementTreesVeg
   - DeleteReplacementPeople
   - ScriptHostSpeakers
   - DeleteReplacementCameras
-  - DeleteReplacementTrees
   layers:
   - Default
   - TransparentFX
