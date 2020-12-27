@@ -280,21 +280,23 @@ public class Utils
             // create an array of MeshChunks found within this GameObject so we can get the bounding box size
             MeshRenderer[] gameObjectMeshRendererArray = gameObjectToMeasure.GetComponentsInChildren<MeshRenderer>();
 
+            MeshFilter[] gameObjectMeshFilterArray = gameObjectToMeasure.GetComponentsInChildren<MeshFilter>();
+
             // store the game object's maximum bounding box dimension
             float gameObjectMaxDimension = 1;
 
             // for each MeshRenderer found, get the height and add it to the list
-            for (int i = 0; i < gameObjectMeshRendererArray.Length; i++)
+            for (int i = 0; i < gameObjectMeshFilterArray.Length; i++)
             {
-                Utils.DebugUtils.DebugLog("Found a MeshChunk to get bounds info from: " + gameObjectMeshRendererArray[i]);
+                Utils.DebugUtils.DebugLog("Found a MeshChunk to get bounds info from: " + gameObjectMeshFilterArray[i]);
 
-                Bounds bounds = gameObjectMeshRendererArray[i].bounds;
+                Bounds bounds = gameObjectMeshFilterArray[i].sharedMesh.bounds;
 
                 //Debug.Log("Bounds: " + bounds);
                 float dimX = bounds.extents.x;
                 float dimY = bounds.extents.y;
                 float dimZ = bounds.extents.z;
-                Utils.DebugUtils.DebugLog("Mesh dimensions for " + gameObjectMeshRendererArray[i] + dimX + "," + dimY + "," + dimZ);
+                Utils.DebugUtils.DebugLog("Mesh dimensions for " + gameObjectMeshFilterArray[i] + dimX + "," + dimY + "," + dimZ);
 
                 List<float> XYZList = new List<float>();
                 XYZList.Add(dimX);
@@ -302,7 +304,7 @@ public class Utils
                 XYZList.Add(dimZ);
 
                 float maxXYZ = XYZList.Max();
-                Utils.DebugUtils.DebugLog("Max XYZ dimension for " + gameObjectMeshRendererArray[i] + ": " + maxXYZ);
+                Utils.DebugUtils.DebugLog("Max XYZ dimension for " + gameObjectMeshFilterArray[i] + ": " + maxXYZ);
 
                 // set the max dimension to the max XYZ value
                 gameObjectMaxDimension = maxXYZ;

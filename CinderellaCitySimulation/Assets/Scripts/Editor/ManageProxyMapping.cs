@@ -16,115 +16,120 @@ public class ProxyGlobals
     // the radius for filler people from the original person's position
     public static int fillerRadius = 10;
 
-    // the folder path to find people prefabs
-    public static string peoplePrefabFolderPath = "Assets/Citizens PRO/People Prefabs";
+    // identify folder paths to third-party asset packages
+    // people
+    public static string thirdPartyPrefabPathCitizensPro = "Assets/3rdParty/Citizens PRO/People Prefabs";
+    // trees + vegetation
+    public static string thirdPartyPrefabPathGlasswork = "Assets/3rdParty/Glasswork_Plants_Vol1/Prefabs/Standard";
+    public static string thirdPartyPrefabPathOddsEnds = "Assets/3rdParty/Odds_N_Ends Series - Tropical Foliage v1.1/PreFabs";
+    public static string thirdPartyPrefabPathTreesVariety = "Assets/3rdParty/TreesVariety";
 
     // define the pool of people prefabs available to each scene
     public static string[] peoplePrefabPool60s70s = new string[] {
         // female
-        peoplePrefabFolderPath + "/Female/Summer/business02_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Summer/business03_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Summer/business05_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Summer/casual01_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Summer/casual04_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Summer/casual08_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Summer/casual09_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Summer/casual10_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Summer/casual20_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Summer/Girl_11.prefab",
-        peoplePrefabFolderPath + "/Female/Summer/Girl_22.prefab",
-        peoplePrefabFolderPath + "/Female/Summer/Girl_33.prefab",
-        peoplePrefabFolderPath + "/Female/Summer/Girl_44.prefab",
-        peoplePrefabFolderPath + "/Female/Summer/Girl_66.prefab",
-        peoplePrefabFolderPath + "/Female/Summer/granny01.prefab",
-        peoplePrefabFolderPath + "/Female/Winter/casual17_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Winter/casual25_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Summer/business02_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Summer/business03_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Summer/business05_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Summer/casual01_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Summer/casual04_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Summer/casual08_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Summer/casual09_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Summer/casual10_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Summer/casual20_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Summer/Girl_11.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Summer/Girl_22.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Summer/Girl_33.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Summer/Girl_44.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Summer/Girl_66.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Summer/granny01.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Winter/casual17_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Winter/casual25_f_highpoly.prefab",
         // POC - may be intentionally duplicated here to increase likelihood of being chosen
-        peoplePrefabFolderPath + "/Female/Winter/casual16_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Winter/casual23_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Winter/casual23_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Winter/casual16_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Winter/casual23_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Winter/casual23_f_highpoly.prefab",
 
         // male
-        peoplePrefabFolderPath + "/Male/Summer/business01_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/business02_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/business04_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/business06_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/business07_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/casual09_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/casual17_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/casual18_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/casual23_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/casual28_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/casual29_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/Man_33.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/Man_44.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/Man_55.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/Man_66.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/Man_88.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/Man_99.prefab",
-        peoplePrefabFolderPath + "/Male/Winter/casual05_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Winter/casual08_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Winter/casual14_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Winter/casual26_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/business01_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/business02_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/business04_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/business06_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/business07_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/casual09_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/casual17_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/casual18_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/casual23_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/casual28_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/casual29_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/Man_33.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/Man_44.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/Man_55.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/Man_66.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/Man_88.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/Man_99.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Winter/casual05_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Winter/casual08_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Winter/casual14_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Winter/casual26_m_highpoly.prefab",
         // POC - may be intentionally duplicated here to increase likelihood of being chosen
-        peoplePrefabFolderPath + "/Male/Summer/business05_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/business05_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Winter/casual21_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Winter/casual21_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/business05_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/business05_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Winter/casual21_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Winter/casual21_m_highpoly.prefab",
     };
     public static string[] peoplePrefabPool80s90s = new string[] {
         // female
-        peoplePrefabFolderPath + "/Female/Summer/business04_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Summer/casual05_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Summer/casual11_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Summer/casual12_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Summer/casual14_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Summer/casual15_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Summer/casual21_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Summer/Girl_55.prefab",
-        peoplePrefabFolderPath + "/Female/Summer/Girl_77.prefab",
-        peoplePrefabFolderPath + "/Female/Summer/granny02.prefab",
-        peoplePrefabFolderPath + "/Female/Winter/casual02_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Winter/casual03_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Winter/casual18_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Winter/casual23_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Winter/casual26_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Summer/business04_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Summer/casual05_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Summer/casual11_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Summer/casual12_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Summer/casual14_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Summer/casual15_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Summer/casual21_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Summer/Girl_55.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Summer/Girl_77.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Summer/granny02.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Winter/casual02_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Winter/casual03_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Winter/casual18_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Winter/casual23_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Winter/casual26_f_highpoly.prefab",
         // POC - may be intentionally duplicated here to increase likelihood of being chosen
-        peoplePrefabFolderPath + "/Female/Winter/casual16_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Winter/casual24_f_highpoly.prefab",
-        peoplePrefabFolderPath + "/Female/Winter/casual24_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Winter/casual16_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Winter/casual24_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Winter/casual24_f_highpoly.prefab",
 
         // male
-        peoplePrefabFolderPath + "/Male/Summer/business02_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/business03_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/casual02_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/casual04_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/casual12_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/casual13_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/casual15_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/casual17_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/casual22_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/casual24_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/casual25_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/casual27_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/casual31_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/business07_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/Man_22.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/Man_111.prefab",
-        peoplePrefabFolderPath + "/Male/Winter/casual06_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Winter/casual10_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Winter/casual11_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Winter/casual16_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Winter/casual19_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Winter/casual20_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Winter/casual31_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/business02_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/business03_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/casual02_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/casual04_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/casual12_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/casual13_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/casual15_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/casual17_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/casual22_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/casual24_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/casual25_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/casual27_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/casual31_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/business07_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/Man_22.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/Man_111.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Winter/casual06_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Winter/casual10_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Winter/casual11_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Winter/casual16_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Winter/casual19_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Winter/casual20_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Winter/casual31_m_highpoly.prefab",
         // POC - may be intentionally duplicated here to increase likelihood of being chosen
-        peoplePrefabFolderPath + "/Male/Summer/Man_11.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/Man_11.prefab",
-        peoplePrefabFolderPath + "/Male/Winter/casual07_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Winter/casual07_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/business05_m_highpoly.prefab",
-        peoplePrefabFolderPath + "/Male/Summer/business05_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/Man_11.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/Man_11.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Winter/casual07_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Winter/casual07_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/business05_m_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Male/Summer/business05_m_highpoly.prefab",
     };
 }
 
@@ -196,23 +201,25 @@ public class ManageProxyMapping
         {
             switch (objectName)
             {
-                case string name when name.Contains("blue-mall-palm"):
-                    return "Assets/TreesVariety/plants/grape_plant dark.prefab";
+                // 1960s-1970s
+                case string name when (name.Contains("blue-mall-palm") && !name.Contains("spike")):
+                    return ProxyGlobals.thirdPartyPrefabPathGlasswork + "/Plant_Banana_V1_Standard.prefab";
 
-                case string name when name.Contains("blue-mall-spike"):
-                    return "Assets/TreesVariety/birch/birch 2.prefab";
+                case string name when name.Contains("blue-mall-palm-spike"):
+                    return ProxyGlobals.thirdPartyPrefabPathGlasswork + "/Plant_Plumeria_Standard.prefab";
 
                 case string name when name.Contains("blue-mall-woody"):
-                    return "Assets/TreesVariety/plants/cotton_plant 1.prefab";
+                    return ProxyGlobals.thirdPartyPrefabPathTreesVariety + "/plants/cotton_plant 1.prefab";
 
+                // 1980s-1990s
                 case string name when name.Contains("center-court") && !objectName.Contains("center-court-small"):
-                    return "Assets/TreesVariety/oak/oak 3.prefab";
+                    return ProxyGlobals.thirdPartyPrefabPathTreesVariety + "/oak/oak 3.prefab";
 
                 case string name when name.Contains("center-court-small"):
-                    return "Assets/TreesVariety/birch/birch 2.prefab";
+                    return ProxyGlobals.thirdPartyPrefabPathTreesVariety + "/birch/birch 2.prefab";
 
                 case string name when name.Contains("shamrock"):
-                    return "Assets/TreesVariety/birch/birch 5.prefab";
+                    return ProxyGlobals.thirdPartyPrefabPathTreesVariety + "/birch/birch 5.prefab";
 
                 default:
                     return null;
@@ -227,13 +234,16 @@ public class ManageProxyMapping
             switch (objectName)
             {
                 case string name when name.Contains("shrub-1"):
-                    return "Assets/TreesVariety/plants/cotton_plant 1.prefab";
+                    return ProxyGlobals.thirdPartyPrefabPathOddsEnds + "/tree_Heliconia.prefab";
 
                 case string name when name.Contains("shrub-2"):
-                    return "Assets/TreesVariety/plants/grape_plant dark.prefab"; ;
+                    return ProxyGlobals.thirdPartyPrefabPathGlasswork + "/Plant_Banana_V2_Standard.prefab";
+
+                case string name when name.Contains("shrub-palm"):
+                    return ProxyGlobals.thirdPartyPrefabPathOddsEnds + "/plant_Arrowhead_03.prefab";
 
                 case string name when name.Contains("hanging-planter-1"):
-                    return "Assets/TreesVariety/plants/potato_plant.prefab";
+                    return ProxyGlobals.thirdPartyPrefabPathTreesVariety + "/plants/potato_plant.prefab";
 
                 default:
                     return null;
@@ -249,34 +259,34 @@ public class ManageProxyMapping
             {
                 // associate specific people with specific prefab models
                 case string name when name.Contains("aaron"):
-                    return "Assets/Citizens PRO/People Prefabs/Male/Winter/casual11_m_highpoly.prefab";
+                    return ProxyGlobals.thirdPartyPrefabPathCitizensPro + "/Male/Winter/casual11_m_highpoly.prefab";
 
                 case string name when name.Contains("dale"):
-                    return "Assets/Citizens PRO/People Prefabs/Male/Summer/casual24_m_highpoly.prefab";
+                    return ProxyGlobals.thirdPartyPrefabPathCitizensPro + "/Male/Summer/casual24_m_highpoly.prefab";
 
                 case string name when name.Contains("denise"):
-                    return "Assets/Citizens PRO/People Prefabs/Female/Summer/casual14_f_highpoly.prefab";
+                    return ProxyGlobals.thirdPartyPrefabPathCitizensPro + "/Female/Summer/casual14_f_highpoly.prefab";
 
                 case string name when name.Contains("ginger-marcus"):
-                    return "Assets/Citizens PRO/People Prefabs/Female/Winter/casual18_f_highpoly.prefab";
+                    return ProxyGlobals.thirdPartyPrefabPathCitizensPro + "/Female/Winter/casual18_f_highpoly.prefab";
 
                 case string name when name.Contains("jason-morin"):
-                    return "Assets/Citizens PRO/People Prefabs/Male/Summer/casual23_m_highpoly.prefab";
+                    return ProxyGlobals.thirdPartyPrefabPathCitizensPro + "/Male/Summer/casual23_m_highpoly.prefab";
 
                 case string name when name.Contains("leda-thaler"):
-                    return "Assets/Citizens PRO/People Prefabs/Female/Summer/casual04_f_highpoly.prefab";
+                    return ProxyGlobals.thirdPartyPrefabPathCitizensPro + "/Female/Summer/casual04_f_highpoly.prefab";
 
                 case string name when name.Contains("lindsey"):
-                    return "Assets/Citizens PRO/People Prefabs/Female/Winter/casual03_f_highpoly.prefab";
+                    return ProxyGlobals.thirdPartyPrefabPathCitizensPro + "/Female/Winter/casual03_f_highpoly.prefab";
 
                 case string name when name.Contains("matt"):
-                    return "Assets/Citizens PRO/People Prefabs/Male/Winter/casual20_m_highpoly.prefab";
+                    return ProxyGlobals.thirdPartyPrefabPathCitizensPro + "/Male/Winter/casual20_m_highpoly.prefab";
 
                 case string name when name.Contains("melanie"):
-                    return "Assets/Citizens PRO/People Prefabs/Female/Summer/casual14_f_highpoly.prefab";
+                    return ProxyGlobals.thirdPartyPrefabPathCitizensPro + "/Female/Summer/casual14_f_highpoly.prefab";
 
                 case string name when name.Contains("stu-goldstein"):
-                    return "Assets/Citizens PRO/People Prefabs/Male/Summer/business01_m_highpoly.prefab";
+                    return ProxyGlobals.thirdPartyPrefabPathCitizensPro + "/Male/Summer/business01_m_highpoly.prefab";
 
                 // if the name isn't specified,
                 // replace this object with a random person appropriate to this scene
