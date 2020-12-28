@@ -57,8 +57,6 @@ public class AssetImportUpdate : AssetPostprocessor {
 
     // instantiate proxy strings
     static string proxyType;
-    static string replacementObjectPath;
-    static string animatorControllerPath;
 
     // keep track of the newly-instantiated objects - like trees and people - for counting and culling
     static List<GameObject> instancedPrefabs = new List<GameObject>();
@@ -1151,7 +1149,6 @@ public class AssetImportUpdate : AssetPostprocessor {
         GameObject gameObjectByAsset = GameObject.Find(assetName);
         
         // we might get here, if so we need to return to prevent an error
-        // TODO: find out why this is sometimes happening
         if (!gameObjectByAsset)
         {
             Utils.DebugUtils.DebugLog("Couldn't find the GameObject by name: " + assetName);
@@ -1160,8 +1157,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
 
         // get all the children from the gameObject
-        List<Transform> allChildrenList = Utils.GeometryUtils.GetAllChildrenTransformsInTransform(gameObjectByAsset.transform);
-        Transform[] allChildren = allChildrenList.ToArray();
+        Transform[] allChildren = gameObjectByAsset.GetComponentsInChildren<Transform>(true); // true to include inactive children;
 
         // do something with each of the object's children
         foreach (Transform child in allChildren)
@@ -1177,6 +1173,9 @@ public class AssetImportUpdate : AssetPostprocessor {
                 {
                     // add this instanced prefab to the global list for tracking
                     instancedPrefabs.Add(instancedPrefab);
+
+                    // nest the instanced prefab as a child of the original proxy object
+                    instancedPrefab.transform.parent = child.transform;
 
                     // special rules if we're replacing proxy people
                     if (child.name.Contains("people"))
@@ -1224,27 +1223,31 @@ public class AssetImportUpdate : AssetPostprocessor {
                         // randomly rotate to add visual variety
                         Utils.GeometryUtils.RandomRotateGameObjectAboutY(instancedPrefab);
                     }
+                }
 
-                    // some people may have been placed at Vector3.zero, meaning we couldn't
-                    // find a good random spot for them - so they should be deleted
-                    foreach (GameObject instanceToTest in instancedPrefabs)
+                // some people may have been placed at Vector3.zero, meaning we couldn't
+                // find a good random spot for them - so they should be deleted
+                foreach (GameObject instanceToTest in instancedPrefabs)
+                {
+                    if (instanceToTest != null)
                     {
-                        if (instanceToTest != null)
-                        {
-                            //Debug.Log("Instanced prefab position: " + instanceToTest.transform.position);
-                        }
+                        //Debug.Log("Instanced prefab position: " + instanceToTest.transform.position);
+                    }
 
-                        if (instanceToTest != null && instanceToTest.transform.position == Vector3.zero)
-                        {
-                            Utils.DebugUtils.DebugLog("<b>Culling </b>" + instanceToTest.name + " because it was found at the world origin.");
+                    if (instanceToTest != null && instanceToTest.transform.position == Vector3.zero)
+                    {
+                        Utils.DebugUtils.DebugLog("<b>Culling </b>" + instanceToTest.name + " because it was found at the world origin.");
 
-                            // count this as a culled instance
-                            culledPrefabs++;
-                            // delete the object
-                            UnityEngine.GameObject.DestroyImmediate(instanceToTest);
-                        }
+                        // count this as a culled instance
+                        culledPrefabs++;
+                        // delete the object
+                        UnityEngine.GameObject.DestroyImmediate(instanceToTest);
                     }
                 }
+
+                // ensure this process only runs once for each proxy object
+                // by setting the flag to false
+                proxyReplacementProcessingRequired = false;
             }
 
             // camera thumbnail objects - these are used to generate thumbnails
@@ -1319,20 +1322,24 @@ public class AssetImportUpdate : AssetPostprocessor {
         GameObject gameObjectByAsset = GameObject.Find(assetName);
         if (gameObjectByAsset)
         {
-            var transformByAsset = gameObjectByAsset.transform;
+            // get all the children from the gameObject
+            Transform[] assetChildren = gameObjectByAsset.GetComponentsInChildren<Transform>();
 
             // for each of this asset's children, look for any whose name indicates they are proxies to be replaced
-            foreach (Transform child in transformByAsset)
+            foreach (Transform child in assetChildren)
             {
                 if (child.name.Contains("REPLACE") 
                     || (child.name.Contains("Camera"))
                     || (child.name.Contains("Blocker")))
                 {
-                    GameObject gameObjectToBeReplaced = child.gameObject;
-                    //Utils.DebugUtils.DebugLog("Found a proxy gameObject to be hide: " + gameObjectToBeReplaced);
-
-                    // turn off the visibility of the object to be replaced
-                    ToggleObjects.ToggleGameObjectOff(gameObjectToBeReplaced);
+                    foreach (Transform proxyChild in child)
+                    {
+                        // only hide the gameobject if it's not a prefab
+                        if (PrefabUtility.GetPrefabAssetType(proxyChild) == PrefabAssetType.Model)
+                        {
+                            ToggleObjects.ToggleGameObjectOff(proxyChild.gameObject);
+                        }
+                    }
                 }
             }
         }

@@ -288,7 +288,13 @@ public class Utils
             // for each MeshRenderer found, get the height and add it to the list
             for (int i = 0; i < gameObjectMeshFilterArray.Length; i++)
             {
-                Utils.DebugUtils.DebugLog("Found a MeshChunk to get bounds info from: " + gameObjectMeshFilterArray[i]);
+                //Utils.DebugUtils.DebugLog("Found a MeshChunk to get bounds info from: " + gameObjectMeshFilterArray[i]);
+
+                // if this object has no mesh to measure, return a valid number
+                if (!gameObjectMeshFilterArray[i].sharedMesh)
+                {
+                    return 1;
+                }
 
                 Bounds bounds = gameObjectMeshFilterArray[i].sharedMesh.bounds;
 
@@ -296,7 +302,7 @@ public class Utils
                 float dimX = bounds.extents.x;
                 float dimY = bounds.extents.y;
                 float dimZ = bounds.extents.z;
-                Utils.DebugUtils.DebugLog("Mesh dimensions for " + gameObjectMeshFilterArray[i] + dimX + "," + dimY + "," + dimZ);
+                //Utils.DebugUtils.DebugLog("Mesh dimensions for " + gameObjectMeshFilterArray[i] + dimX + "," + dimY + "," + dimZ);
 
                 List<float> XYZList = new List<float>();
                 XYZList.Add(dimX);
@@ -304,7 +310,7 @@ public class Utils
                 XYZList.Add(dimZ);
 
                 float maxXYZ = XYZList.Max();
-                Utils.DebugUtils.DebugLog("Max XYZ dimension for " + gameObjectMeshFilterArray[i] + ": " + maxXYZ);
+                //Utils.DebugUtils.DebugLog("Max XYZ dimension for " + gameObjectMeshFilterArray[i] + ": " + maxXYZ);
 
                 // set the max dimension to the max XYZ value
                 gameObjectMaxDimension = maxXYZ;
