@@ -1,6 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
+using UnityStandardAssets.Characters.FirstPerson;
 
 using System.Collections;
 
@@ -34,6 +35,10 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
         // update the globally-available camera host
         ManageCameraActions.CameraActionGlobals.activeCameraHost = this.gameObject;
 
+        // get the player's rigid body and FPS Controller
+        Rigidbody playerRigidBody = this.gameObject.transform.parent.GetComponent<Rigidbody>();
+        FirstPersonController playerFPSController = this.gameObject.transform.parent.GetComponent<FirstPersonController>();
+
         // define which effects belong to which shortcut
         if (Input.GetKeyDown("1"))
         {
@@ -54,6 +59,47 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
         else if (Input.GetKeyDown("x"))
         {
             TakeScreenshots.CaptureScreenshotOfCurrentCamera();
+        }
+
+        // toggle anti-gravity mode
+        else if (Input.GetKeyDown("g"))
+        {
+            // if gravity is on, turn it off, and set the ground force and multiplier to 0
+            if (playerRigidBody.useGravity)
+            {
+                playerRigidBody.useGravity = false;
+                playerFPSController.m_StickToGroundForce = 0;
+                playerFPSController.m_GravityMultiplier = 0;
+            }
+            // if gravity is off, turn it on, and set the ground force and multiplier to their defaults
+            else if (!playerRigidBody.useGravity)
+            {
+                playerRigidBody.useGravity = true;
+                playerFPSController.m_StickToGroundForce = ManageFPSControllers.FPSControllerGlobals.defaultFPSControllerStickToGroundForce;
+                playerFPSController.m_GravityMultiplier = ManageFPSControllers.FPSControllerGlobals.defaultFPSControllerGravityMultiplier;
+            }
+        }
+        // move up
+        else if (Input.GetKey("r"))
+        {
+            // only do something if gravity is off
+            if (!playerRigidBody.useGravity)
+            {
+                Vector3 currentPos = this.transform.parent.position;
+                float YPosDelta = Time.fixedDeltaTime * (playerFPSController.m_WalkSpeed * 2);
+                this.transform.parent.position = new Vector3(currentPos.x, currentPos.y + YPosDelta, currentPos.z);
+            }
+        }
+        // move down
+        else if (Input.GetKey("f"))
+        {
+            // only do something if gravity is off
+            if (!playerRigidBody.useGravity)
+            {
+                Vector3 currentPos = this.transform.parent.position;
+                float YPosDelta = Time.fixedDeltaTime * (playerFPSController.m_WalkSpeed * 2);
+                this.transform.parent.position = new Vector3(currentPos.x, currentPos.y - YPosDelta, currentPos.z);
+            }
         }
     }
 
