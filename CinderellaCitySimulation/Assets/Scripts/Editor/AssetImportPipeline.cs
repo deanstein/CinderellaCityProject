@@ -1222,6 +1222,10 @@ public class AssetImportUpdate : AssetPostprocessor {
                     {
                         // randomly rotate to add visual variety
                         Utils.GeometryUtils.RandomRotateGameObjectAboutY(instancedPrefab);
+
+                        // randomly scale to add visual variety
+                        Utils.GeometryUtils.ScaleGameObjectRandomlyWithinRange(instancedPrefab, 0.85f, 1.2f);
+
                     }
                 }
 
@@ -1352,20 +1356,24 @@ public class AssetImportUpdate : AssetPostprocessor {
         GameObject gameObjectByAsset = GameObject.Find(assetName);
         if (gameObjectByAsset)
         {
-            var transformByAsset = gameObjectByAsset.transform;
+            // get all the children from the gameObject
+            Transform[] assetChildren = gameObjectByAsset.GetComponentsInChildren<Transform>();
 
             // for each of this asset's children, look for any whose name indicates they are proxies to be replaced
-            foreach (Transform child in transformByAsset)
+            foreach (Transform child in assetChildren)
             {
                 if (child.name.Contains("REPLACE")
                     || (child.name.Contains("Camera"))
                     || (child.name.Contains("Blocker")))
                 {
-                    GameObject gameObjectToBeReplaced = child.gameObject;
-                    //Utils.DebugUtils.DebugLog("Found a proxy gameObject to be hide: " + gameObjectToBeReplaced);
-
-                    // turn off the visibility of the object to be replaced
-                    ToggleObjects.ToggleGameObjectOn(gameObjectToBeReplaced);
+                    foreach (Transform proxyChild in child)
+                    {
+                        // only unhide the gameobject if it's not a prefab
+                        if (PrefabUtility.GetPrefabAssetType(proxyChild) == PrefabAssetType.Model)
+                        {
+                            ToggleObjects.ToggleGameObjectOn(proxyChild.gameObject);
+                        }
+                    }
                 }
             }
         }
