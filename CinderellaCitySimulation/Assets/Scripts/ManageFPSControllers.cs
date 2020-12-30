@@ -11,6 +11,10 @@ public class ManageFPSControllers : MonoBehaviour {
     // this script needs to be attached to each FPSController in each scene
     public class FPSControllerGlobals
     {
+        // default FPS Controller gravity values
+        public static float defaultFPSControllerGravityMultiplier = 2f;
+        public static float defaultFPSControllerStickToGroundForce = 10f;
+
         // marked true when the user is in-game, toggling between eras via shortcut input
         // helps ensure the player doesn't fall when time-traveling to an era 
         // that doesn't have a surface to stand on in that location
