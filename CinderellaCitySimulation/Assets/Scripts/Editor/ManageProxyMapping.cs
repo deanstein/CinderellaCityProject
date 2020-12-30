@@ -21,6 +21,7 @@ public class ProxyGlobals
     public static string thirdPartyPrefabPathCitizensPro = "Assets/3rdParty/Citizens PRO/People Prefabs";
     // trees + vegetation
     public static string thirdPartyPrefabPathGlasswork = "Assets/3rdParty/Glasswork_Plants_Vol1/Prefabs/Standard";
+    public static string thirdPartyPrefabPathLowPolyTropical = "Assets/3rdParty/files/Prefabs";
     public static string thirdPartyPrefabPathOddsEnds = "Assets/3rdParty/Odds_N_Ends Series - Tropical Foliage v1.1/PreFabs";
     public static string thirdPartyPrefabPathTreesVariety = "Assets/3rdParty/TreesVariety";
 
@@ -205,11 +206,14 @@ public class ManageProxyMapping
                 case string name when (name.Contains("blue-mall-palm") && !name.Contains("spike")):
                     return ProxyGlobals.thirdPartyPrefabPathGlasswork + "/Plant_Banana_V1_Standard.prefab";
 
-                case string name when name.Contains("blue-mall-palm-spike"):
+                case string name when name.Contains("blue-mall-palm-spike-1"):
                     return ProxyGlobals.thirdPartyPrefabPathGlasswork + "/Plant_Plumeria_Standard.prefab";
 
+                case string name when name.Contains("blue-mall-palm-spike-2"):
+                    return ProxyGlobals.thirdPartyPrefabPathGlasswork + "/Plant_Dracaena_Standard.prefab";
+
                 case string name when name.Contains("blue-mall-woody"):
-                    return ProxyGlobals.thirdPartyPrefabPathTreesVariety + "/plants/cotton_plant 1.prefab";
+                    return ProxyGlobals.thirdPartyPrefabPathTreesVariety + "/plants/grape_plant.prefab";
 
                 // 1980s-1990s
                 case string name when name.Contains("center-court") && !objectName.Contains("center-court-small"):
@@ -237,10 +241,10 @@ public class ManageProxyMapping
                     return ProxyGlobals.thirdPartyPrefabPathOddsEnds + "/tree_Heliconia.prefab";
 
                 case string name when name.Contains("shrub-2"):
-                    return ProxyGlobals.thirdPartyPrefabPathGlasswork + "/Plant_Banana_V2_Standard.prefab";
-
-                case string name when name.Contains("shrub-palm"):
                     return ProxyGlobals.thirdPartyPrefabPathOddsEnds + "/plant_Arrowhead_03.prefab";
+
+                case string name when name.Contains("shrub-palm"):                   
+                    return ProxyGlobals.thirdPartyPrefabPathGlasswork + "/Plant_Banana_V2_Standard.prefab";
 
                 case string name when name.Contains("hanging-planter-1"):
                     return ProxyGlobals.thirdPartyPrefabPathTreesVariety + "/plants/potato_plant.prefab";
@@ -374,7 +378,7 @@ public class ManageProxyMapping
             //Utils.DebugUtils.DebugLog("Instanced prefab position: " + instancedPrefab.transform.position);
 
             // further scale the new object to match the proxy's height
-            Utils.GeometryUtils.ScaleToMatchHeight(instancedPrefab, gameObjectToBeReplaced);
+            Utils.GeometryUtils.ScaleGameObjectToMatchOther(instancedPrefab, gameObjectToBeReplaced);
 
             // record the scale used for filler replacements to use
             // assume that if this is zero, this is the first proxy, so start the average at this height

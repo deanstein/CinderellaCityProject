@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Linq;
-
 using System.Collections.Generic;
-
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -322,7 +320,7 @@ public class Utils
         }
 
         // define how to scale one GameObject to match the height of another
-        public static void ScaleToMatchHeight(GameObject gameObjectToScale, GameObject gameObjectToMatch)
+        public static void ScaleGameObjectToMatchOther(GameObject gameObjectToScale, GameObject gameObjectToMatch)
         {
             // get the height of the object to be replaced
             float targetHeight = GetMaxGOBoundingBoxDimension(gameObjectToMatch);
@@ -358,6 +356,16 @@ public class Utils
             float randomYRotation = UnityEngine.Random.Range(-1.0f, 1.0f);
             Quaternion adjustedRotation = new Quaternion(currentRotation.x, randomYRotation, currentRotation.z, currentRotation.w);
             gameObjectToRotate.transform.rotation = adjustedRotation;
+        }
+
+        // define how to scale a GameObject to match a height
+        public static void ScaleGameObjectRandomlyWithinRange(GameObject gameObjectToScale, float minScale, float maxScale)
+        {
+
+            float scaleFactor = UnityEngine.Random.Range(minScale, maxScale);
+
+            // scale the prefab to match the height of its replacement
+            gameObjectToScale.transform.localScale = new Vector3(gameObjectToScale.transform.localScale.x * scaleFactor, gameObjectToScale.transform.localScale.y * scaleFactor, gameObjectToScale.transform.localScale.z * scaleFactor);
         }
     }
 }
