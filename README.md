@@ -1,28 +1,33 @@
+![Main Preview](README_intro.jpg)
+
+
 # The Cinderella City Project
-The Cinderella City Project is an effort to digitally rebuild a historic shopping center for a virtual history experience. The real Cinderella City Mall existed in Englewood, Colorado from 1968 to 1998.
+The Cinderella City Project is a digital reconstruction of a historic shopping center for a virtual reality history experience. 
+
+The real Cinderella City Mall existed in Englewood, Colorado from 1968 to 1998.
 
 - [Read about the project and donate on Ko-Fi](https://www.ko-fi.com/cinderellacityproject)
 - [Check out photos and videos on Instagram](https://instagram.com/cinderellacityproject)
 
-## Cinderella City Simulation
+
+# Cinderella City Simulation
 
 The Cinderella City Simulation is at the heart of the Cinderella City Project. 
 
-Modeled in Autodesk FormIt, and brought to life in Unity, the simulation illustrates distinct eras of the shopping mall, including the psychadelic 1960s-1970s, and the more conservative 1980s-1990s. The simulation will allow the player to experience the mall in these distinct eras, and will provide the ability to "time travel" between the two eras while maintaining the current position in space, to see how the world of retail and design changed over 30 years.
+Modeled in Autodesk FormIt, and brought to life in Unity, the simulation illustrates distinct time periods of Cinderella City's three-decade life, including the colorful 1960s-1970s, and the staid 1980s-1990s. Eventually, the simulation will also offer an "Alternate Future" interactive exhibit showing how the shopping center could have been adaptively reused in 1998 in lieu of demolition.
 
-The simulation includes details like an accurate representation of the architectural character and signage of the shopping mall, and in the future will feature other immersive elements like music, historical photographs, interactive people, and recorded verbal memories.
+While experiencing the mall in each era, the player can "time travel" to other time periods while maintaining the current position in space, to see how the world of retail and design changed over 30 years.
 
-In addition, the simulation will include an "Alternate Future" interactive exhibit showing how the shopping center could have been adaptively reused in 1998, rather than almost completely demolished.
+The simulation includes an accurate representation of the architectural character and signage of the shopping mall, and will soon feature other immersive elements like period-correct music, historical photographs, interactive people, and recorded verbal memories.
 
-Eventually, the Cinderella City Simulation will be made available to the public, supporting a variety of platforms including virtual reality headsets. The simulation may also be made into a permanent or semi-permanent Englewood, Colorado exhibit in the future.
+When released, the Cinderella City Simulation will support a variety of platforms including virtual reality headsets. The simulation may also be made into a permanent or semi-permanent Englewood, Colorado exhibit in the future.
 
-## Try the In-Progress Simulation
 
-Ready-to-play builds of the Cinderella City Simulation are available on the [Releases page.](https://github.com/deanstein/CinderellaCityProject/releases). The latest builds are at the top, with an explanation of what was changed or added in that build.
+# Try the Cinderella City Simulation (work in progress)
 
-Currently, the Cinderella City Simulation is only available as a pre-release, so these builds may exhibit bugs and unexpected behavior. The simulation is also primarily built for Windows, but other platforms will be supported in the future.
+The Cinderella City Simulation is under development, but in-progress builds are available for intrepid mall fans to try out.
 
-To try out the in-progress builds:
+The latest ready-to-play builds from the development branch can be found at the top of the [Releases page](https://github.com/deanstein/CinderellaCityProject/releases).
 
 - Click "Assets" below the release notes at the link above.
 - Download the .zip file ending in "_Win." 
@@ -31,9 +36,11 @@ To try out the in-progress builds:
 - Run "Cinderella City Simulation.exe".
 - Optionally choose your desired resolution. Higher resolutions may result in slower performance.
 
+Currently, the Cinderella City Simulation is only available as a pre-release, so these builds may exhibit bugs and unexpected behavior. The simulation is currently available only for Windows, but other platforms will be supported in the future.
+
 ### Simulation Controls
 
-After the simulation loads, you'll be at the Main Menu, where you can pick a time and place to start. Once you're in the simulation, here's how to navigate:
+After the simulation loads, you'll find yourself at the Main Menu, where you can pick a time and place to start. Once you're in the simulation, here's how to navigate:
 
 - Keyboard (Windows/Mac)
 	- WASD to walk forward, left, right, and backward respectively
@@ -42,25 +49,33 @@ After the simulation loads, you'll be at the Main Menu, where you can pick a tim
 	- Space to jump
 	- Q and E to time-travel
 	- P to toggle the people on/off
-	- R to reset the people to their original positions
+	- O to reset the people to their original positions
+	- G to enter/exit anti-gravity mode. While in anti-gravity mode:
+		- Hold R to rise/ascend
+		- Hold F to fall/descend
+		- Hit G again to toggle gravity on
 	- X to take a screenshot (stored at users/AppData/The Cinderella City Project/Cinderella City Simulation/Screenshots)
 	- 1, 2, 3, 4 to cycle between special post-processing camera modes. Tap the number again to return to the default.
 	- ESC to go to the Pause Menu
 		- You can also time-travel from here, with a visual showing what the other eras look like at this point in space
 	- M to go to the Main Menu
 
+
 # Known Issues
 
 As this is a work in progress, some issues are known and will be fixed in future updates:
 
 - During a long play session, the music in each era may fail to play correctly, resulting in the music skipping and repeating every frame. Simply time-travel to another era, then back, to solve this.
-- The on-screen label that appears after time-traveling may fail to dismiss in some cases. Simply time-travel to another era, then back, to solve this.
+- The on-screen label that appears after time-traveling may fail to dismiss in some cases. Simply time-travel to another era, then back, to work around this for now.
 - Walking people (NPCs) will fail to walk around queues of people, causing a small traffic jam.
 - Walking NPCs will walk through glass and storefronts in the 1980s-1990s era.
 - Bright beads of light will be visible in some areas in the 1980s-1990s era.
 - The Main Menu currently supports only 3 locations, but a scrollable interface will be added in the future to support additional points of interest.
+- The Blue Mall fountain is not yet animated.
+- Large areas of both time periods are unfinished.
 
-## Unity Project Structure
+
+# Unity Project Structure + Development Guide
 
 The Cinderella City Simulation is a Unity project, requiring a specific folder structure to enable automation of some elements, or to minimize effort when manual (one-time setup) steps are required.
 
