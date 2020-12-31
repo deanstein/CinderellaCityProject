@@ -296,7 +296,8 @@ public class ManageFPSControllers : MonoBehaviour {
     public void UpdateFPSControllerGravityByState(Vector3 initialPosition, float maxDistance)
     {
         // only do something if the time traveling flag is set
-        if (FPSControllerGlobals.isTimeTraveling)
+        // and if the rigid body is currently set to respect gravity
+        if (FPSControllerGlobals.isTimeTraveling && this.GetComponent<Rigidbody>().useGravity)
         {
             // every frame, get the position as the player moves,
             // but lock the Y-axis to prevent falling, just in case there's no floor
