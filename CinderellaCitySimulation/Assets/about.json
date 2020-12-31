@@ -1,6 +1,21 @@
 {
   "VersionHistory": [
     {
+      "0.6.5.202012": [
+        {          
+          "Content Updates": [
+          "Added plants and trees to 60s70s",
+          "Added shortcut 'G' to enter anti-gravity mode, and 'R' and 'F' to rise and fall, respectively.",
+          "Changed shortcut to reset people to 'O' from 'R'",
+          "Fixed missing railings in 60s70s site"
+        ],
+          "Logic Updates": [
+            "Added the ability to enter anti-gravity mode and navigate up/down using shortcut keys",
+            "Fixed an issue where measuring a proxy for replacement could result in a 0 scale factor",
+            "Fixed an issue where proxy mapping would replace proxies with NPCs when no replacement was specified"
+          ]
+        }
+      ],
       "0.6.4.202012": [
         {          
           "Content Updates": [
