@@ -85,8 +85,21 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
             // only do something if gravity is off
             if (!playerRigidBody.useGravity)
             {
+                // the delta to move the player up
+                float YPosDelta = 0;
+
+                // use running speed if shift is pressed
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    YPosDelta = Time.fixedDeltaTime * playerFPSController.m_RunSpeed;
+                }
+                // use walking speed by default
+                else
+                {
+                    YPosDelta = Time.fixedDeltaTime * playerFPSController.m_WalkSpeed;
+                }
+
                 Vector3 currentPos = this.transform.parent.position;
-                float YPosDelta = Time.fixedDeltaTime * (playerFPSController.m_WalkSpeed * 2);
                 this.transform.parent.position = new Vector3(currentPos.x, currentPos.y + YPosDelta, currentPos.z);
             }
         }
@@ -96,8 +109,21 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
             // only do something if gravity is off
             if (!playerRigidBody.useGravity)
             {
+                // the delta to move the player up
+                float YPosDelta = 0;
+
+                // use running speed if shift is pressed
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    YPosDelta = Time.fixedDeltaTime * playerFPSController.m_RunSpeed;
+                }
+                // use walking speed by default
+                else
+                {
+                    YPosDelta = Time.fixedDeltaTime * playerFPSController.m_WalkSpeed;
+                }
+
                 Vector3 currentPos = this.transform.parent.position;
-                float YPosDelta = Time.fixedDeltaTime * (playerFPSController.m_WalkSpeed * 2);
                 this.transform.parent.position = new Vector3(currentPos.x, currentPos.y - YPosDelta, currentPos.z);
             }
         }
