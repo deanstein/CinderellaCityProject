@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 95c93ade35edbf14eaab5452586c8b0f
+guid: 9975ae8fac776454386b0637ac3e7770
 ModelImporter:
   serializedVersion: 25
   internalIDToNameTable: []
@@ -7,8 +7,28 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: tree_green
-    second: {fileID: 2100000, guid: 4f80c47c8b552c2468ecf473976d1ebc, type: 2}
+      name: Chain Link Fencing
+    second: {fileID: 2100000, guid: 5050c50fd0763e149b92d8d665adb826, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: fence color
+    second: {fileID: 2100000, guid: 7a4b8051de2672c41abb42f6385931d7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - brick color
+    second: {fileID: 2100000, guid: b7b3c209870a16d4d96ac932cd3d93a3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: railing fence
+    second: {fileID: 2100000, guid: 3340a0c5d21802e4b9b648d6ad7cf4f9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: railing paint color
+    second: {fileID: 2100000, guid: 52a1f43d89664a14e818c00d7f151392, type: 2}
   materials:
     importMaterials: 1
     materialName: 1
@@ -41,7 +61,7 @@ ModelImporter:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
-    addColliders: 0
+    addColliders: 1
     useSRGBMaterialColor: 1
     importVisibility: 1
     importBlendShapes: 1
