@@ -380,6 +380,12 @@ public class CCPMenuActions : MonoBehaviour
 
     /* ---------- Batch Operations ---------- */
 
+    [MenuItem("Cinderella City Project/Batch Operations/Delete All FBM Folders")]
+    public static void DeleteAllFBMFoldersTest()
+    {
+        AssetImportUpdate.DeleteAllFBMFolders();
+    }
+
     [MenuItem("Cinderella City Project/Batch Operations/Post Process Scene Update")]
     public static void PostProcessSceneUpdate()
     {
@@ -426,12 +432,6 @@ public class CCPMenuActions : MonoBehaviour
     public static void GetAllSceneObjectsByModeTest()
     {
         UpdateModeSelectorMenu.GetSceneObjectsByUpdateMode();
-    }
-
-    [MenuItem("Cinderella City Project/CCP Debug/Delete All FBM Folders")]
-    public static void DeleteAllFBMFoldersTest()
-    {
-        AssetImportUpdate.DeleteAllFBMFolders();
     }
 #endif
 }
