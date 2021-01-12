@@ -199,8 +199,11 @@ public class AssetImportUpdate : AssetPostprocessor {
         // if the game object is null, this is a new file... so refresh the asset database and try again
         if (!gameObjectFromAsset)
         {
+            //Utils.DebugUtils.DebugLog("Game object from asset not valid (yet): " + assetFilePath);
             AssetDatabase.Refresh();
             gameObjectFromAsset = (GameObject)AssetDatabase.LoadAssetAtPath(assetFilePath, typeof(GameObject));
+
+            return;
         }
 
         // skip instantiating if this asset already exists in this scene
@@ -208,16 +211,16 @@ public class AssetImportUpdate : AssetPostprocessor {
         // get the top-level objects in the scene container
         GameObject[] sceneObjects = ManageScenes.GetTopLevelChildrenInSceneContainer(SceneManager.GetActiveScene());
         // test if the asset name matches any of the top-level object names
-        foreach (GameObject g in sceneObjects)
+        foreach (GameObject sceneObject in sceneObjects)
         {
-            if (g.name == gameObjectFromAsset.name)
+            if (sceneObject.name == gameObjectFromAsset.name)
             {
                 // if import params dictate that this object generates proxy replacements,
                 // delete the object in the hierarchy to force a full refresh
                 if (AssetImportGlobals.ModelImportParamsByName.doInstantiateProxyReplacements)
                 {
                     Utils.DebugUtils.DebugLog("This object was already present in the model, but was flagged to replace proxy objects, so it's been deleted for a complete refresh.");
-                    GameObject.DestroyImmediate(g);
+                    GameObject.DestroyImmediate(sceneObject);
                 }
                 // non-proxy objects don't need to be deleted from the hierarchy
                 else
@@ -616,7 +619,22 @@ public class AssetImportUpdate : AssetPostprocessor {
             string speakerScriptHostDeleteTag = ManageTags.GetOrCreateTagByScriptHostType("Speakers");
             ManageTaggedObjects.DeleteObjectsByTag(speakerScriptHostDeleteTag);
 
-            foreach (Transform child in gameObjectByAssetName.transform)
+
+            // get all the children of this object - including empty transforms (instances or groups)
+            Transform[] childrenTransforms = gameObjectByAssetName.GetComponentsInChildren<Transform>();
+            List<Transform> childrenRequiringAudioSource = new List<Transform>();
+
+            // loop through the transforms and get ones containing a speaker
+            foreach (Transform childTransform in childrenTransforms)
+            {
+                if (childTransform.name.Contains("speaker"))
+                {
+                    childrenRequiringAudioSource.Add(childTransform);
+                }
+            }
+
+
+            foreach (Transform child in childrenRequiringAudioSource)
             {
                 // first, create a host gameobject for all scripts and interactive elements
                 GameObject scriptHostObject = new GameObject(child.name + "-ScriptHost");
@@ -817,6 +835,16 @@ public class AssetImportUpdate : AssetPostprocessor {
                 SetCustomMaterialEmissionIntensity(dependencyPathString, -1.0F);
             }
 
+            if (dependencyPathString.Contains("woolworth's red"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, -1.0F);
+            }
+
+            if (dependencyPathString.Contains("k-g men's gold"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, -2.0F);
+            }
+
             if (dependencyPathString.Contains("the denver blue"))
             {
                 SetCustomMaterialEmissionIntensity(dependencyPathString, -0.2F);
@@ -825,6 +853,11 @@ public class AssetImportUpdate : AssetPostprocessor {
             if (dependencyPathString.Contains("penney's white"))
             {
                 SetCustomMaterialEmissionIntensity(dependencyPathString, 0.7F);
+            }
+
+            if (dependencyPathString.Contains("display case"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, 2.0F);
             }
 
             if (dependencyPathString.Contains("store yellowing"))
@@ -913,6 +946,11 @@ public class AssetImportUpdate : AssetPostprocessor {
                 SetMaterialSmoothness(dependencyPathString, 0.35F);
             }
 
+            if (dependencyPathString.Contains("generic floor concrete"))
+            {
+                SetMaterialSmoothness(dependencyPathString, 0.30F);
+            }
+
             if (dependencyPathString.Contains("mall - terra cotta tile"))
             {
                 SetMaterialSmoothness(dependencyPathString, 0.25F);
@@ -951,7 +989,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
             if (dependencyPathString.Contains("blue mall hanging planter orange"))
             {
-                SetMaterialMetallic(dependencyPathString, 1.0F);
+                SetMaterialMetallic(dependencyPathString, 0.75F);
             }
 
             if (string.IsNullOrEmpty(dependencyPathString)) continue;
@@ -994,12 +1032,10 @@ public class AssetImportUpdate : AssetPostprocessor {
     public static void ApplyAndConfigureNPCAgent(GameObject NPCObject, GameObject proxyObject)
     {
         // only add an agent if the proxy object indicates this NPC is not sitting or a service worker behind a counter
-        if (proxyObject)
+        if (proxyObject && !ManageProxyMapping.GetIsWalking(proxyObject))
         {
-            if (!ManageProxyMapping.GetIsWalking(proxyObject))
-            {
-                return;
-            }
+            //Debug.Log("Not walking: " + proxyObject.name);
+            return;
         }
 
         // add a navigation mesh agent to this person so it can find its way on the navmesh
@@ -1218,6 +1254,13 @@ public class AssetImportUpdate : AssetPostprocessor {
                         }
                     }
 
+                    else if (child.name.Contains("tree"))
+                    {
+                        // randomly rotate to add visual variety
+                        Utils.GeometryUtils.RandomRotateGameObjectAboutY(instancedPrefab);
+                    }
+
+                
                     else if (child.name.Contains("shrub"))
                     {
                         // randomly rotate to add visual variety
@@ -1226,6 +1269,30 @@ public class AssetImportUpdate : AssetPostprocessor {
                         // randomly scale to add visual variety
                         Utils.GeometryUtils.ScaleGameObjectRandomlyWithinRange(instancedPrefab, 0.85f, 1.2f);
 
+                    }
+
+                    else if (child.name.Contains("fountain-main"))
+                    {
+                        // ensure the main fountain is oriented vertically
+                        instancedPrefab.transform.localRotation = new Quaternion(0, 0, 0, 0);
+
+                        // set the particle system settings
+                        ParticleSystem particleSystem = instancedPrefab.GetComponent<ParticleSystem>();
+                        var main = particleSystem.main;
+                        main.startSpeed = 0.5f;
+                        main.startSize3D = true;
+                        main.startSizeX = 1f;
+                        main.startSizeY = 4f;
+                        main.startSizeZ = 1f;
+                        main.gravityModifierMultiplier = 0.09f;
+                        main.simulationSpeed = 0.2f;
+                    }
+
+                    else if (child.name.Contains("fountain-secondary"))
+                    {
+                        // ensure the main fountain is oriented vertically
+                        instancedPrefab.transform.localRotation = new Quaternion(-45, -90, 0, 0);
+                        instancedPrefab.transform.rotation = new Quaternion(-45, -90, 0, 0);
                     }
                 }
 
@@ -1394,11 +1461,11 @@ public class AssetImportUpdate : AssetPostprocessor {
         //Utils.DebugUtils.DebugLog("Previous time: " + prevTime);
         if (Time.time == prevTime)
         {
-            //Utils.DebugUtils.DebugLog("Skipping pre-processing the model again.");
+            Utils.DebugUtils.DebugLog("Skipping pre-processing texture because the pre-processor just ran.");
             return;
         }
 
-        ClearConsole();
+        //ClearConsole();
         Utils.DebugUtils.DebugLog("START Texture PreProcessing...");
 
         postProcessingHits.Clear();
@@ -1456,7 +1523,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         //Utils.DebugUtils.DebugLog("Previous time: " + prevTime);
         if (Time.time == prevTime)
         {
-            //Utils.DebugUtils.DebugLog("Skipping pre-processing the model again.");
+            Utils.DebugUtils.DebugLog("Skipping pre-processing audio because the pre-processor just ran.");
             return;
         }
 
@@ -1522,14 +1589,14 @@ public class AssetImportUpdate : AssetPostprocessor {
         //Utils.DebugUtils.DebugLog("Previous time: " + prevTime);
         if (Time.time == prevTime)
         {
-            //Utils.DebugUtils.DebugLog("Skipping pre-processing the model again.");
+            Utils.DebugUtils.DebugLog("Skipping pre-processing model because the pre-processor just ran.");
             return;
         }
 
         // check if there's a leftover .fbm folder, and if so, delete it
         DeleteFBMFolderOnImport(globalAssetFileDirectory, globalAssetFileName);
 
-        ClearConsole();
+        //ClearConsole();
         Utils.DebugUtils.DebugLog("START Model PreProcessing...");
 
         postProcessingHits.Clear();
@@ -1623,9 +1690,9 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         // it seems that a few post processing hits are needed to fully post-process everything
         // any further is probably not necessary
-        if (!postProcessingRequired || postProcessingHits.Count >= globalMaxPostProcessingHits)
+        if (!postProcessingRequired || postProcessingHits.Count > globalMaxPostProcessingHits)
         {
-            Utils.DebugUtils.DebugLog("Skipping PostProcessing (max allowed reached)");
+            Utils.DebugUtils.DebugLog("Skipping PostProcessing attempt " + postProcessingHits.Count + " (max allowed: " + globalMaxPostProcessingHits + ")");
             return;
         }
 

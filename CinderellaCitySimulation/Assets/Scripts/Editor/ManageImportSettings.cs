@@ -37,31 +37,28 @@ public class ManageImportSettings
         {
             /// typical building or site elements
             /// will receive all material and collider treatments
-            case string assetOrModelName when assetOrModelName.Contains("anchor-broadway-detailing-exterior")
-            || assetOrModelName.Contains("anchor-jcp-detailing-exterior")
-            || assetOrModelName.Contains("anchor-joslins-detailing-exterior")
-            || assetOrModelName.Contains("anchor-mgwards-detailing-exterior")
-            || assetOrModelName.Contains("anchor-denver-detailing-exterior")
-
-            || assetOrModelName.Contains("mall-ceilings")
-            || assetOrModelName.Contains("mall-detailing-interior")
-            || assetOrModelName.Contains("mall-floors-vert")
-            || assetOrModelName.Contains("mall-light-shrouds")
-            || assetOrModelName.Contains("mall-roof")
-            || assetOrModelName.Contains("mall-structure")
-            || assetOrModelName.Contains("mall-walls-detailing-exterior")
-            || assetOrModelName.Contains("mall-walls-interior")
-
+            
+            case string assetOrModelName when 
+            // main mall and anchors
+            assetOrModelName.Contains("ceilings")
+            || assetOrModelName.Contains("detailing-interior")
+            || assetOrModelName.Contains("floors-vert")
+            || assetOrModelName.Contains("light-shrouds")
+            || assetOrModelName.Contains("roof")
+            || assetOrModelName.Contains("structure")
+            || assetOrModelName.Contains("walls-detailing-exterior")
+            || assetOrModelName.Contains("walls-interior")
+            // stores
+            || assetOrModelName.Contains("anchor-broadway")
+            || assetOrModelName.Contains("store-ceilings")
+            || assetOrModelName.Contains("store-detailing")
+            || assetOrModelName.Contains("store-floors")
+            // site
             || assetOrModelName.Contains("site-context-buildings")
             || assetOrModelName.Contains("site-curb-gutter-sidewalk-vert")
             || assetOrModelName.Contains("site-detailing")
             || assetOrModelName.Contains("site-parking-surface")
-            || assetOrModelName.Contains("site-roads")
-            || assetOrModelName.Contains("site-structure")
-
-            || assetOrModelName.Contains("store-ceilings")
-            || assetOrModelName.Contains("store-detailing")
-            || assetOrModelName.Contains("store-floors"):
+            || assetOrModelName.Contains("site-roads"):
                 // pre-processor option flags
                 ImportParams.doSetGlobalScale = true; // always true
                 ImportParams.doInstantiateAndPlaceInCurrentScene = true;
@@ -78,9 +75,9 @@ public class ManageImportSettings
 
             /// special-cased building elements
 
-            case string assetOrModelName when assetOrModelName.Contains("mall-doors-exterior")
-            || assetOrModelName.Contains("mall-doors-windows-interior")
-            || assetOrModelName.Contains("mall-windows-exterior"):
+            case string assetOrModelName when assetOrModelName.Contains("doors-exterior")
+            || assetOrModelName.Contains("doors-windows-interior")
+            || assetOrModelName.Contains("windows-exterior"):
                 // pre-processor option flags
                 ImportParams.doSetGlobalScale = true; // always true
                 ImportParams.doInstantiateAndPlaceInCurrentScene = true;
@@ -95,7 +92,7 @@ public class ManageImportSettings
                 ImportParams.doHideProxyObjects = false;
                 return ImportParams;
 
-            case string assetOrModelName when assetOrModelName.Contains("mall-doors-windows-solid"):
+            case string assetOrModelName when assetOrModelName.Contains("doors-windows-solid"):
                 // pre-processor option flags
                 ImportParams.doSetGlobalScale = true; // always true
                 ImportParams.doInstantiateAndPlaceInCurrentScene = true;
@@ -155,8 +152,7 @@ public class ManageImportSettings
                 ImportParams.doHideProxyObjects = false;
                 return ImportParams;
 
-            case string assetOrModelName when assetOrModelName.Contains("mall-handrails")
-            || assetOrModelName.Contains("site-handrails"):
+            case string assetOrModelName when assetOrModelName.Contains("handrails"):
                 // pre-processor option flags
                 ImportParams.doSetGlobalScale = true; // always true
                 ImportParams.doInstantiateAndPlaceInCurrentScene = true;
@@ -327,7 +323,8 @@ public class ManageImportSettings
             case string name when (name.Contains("doors-exterior")
             || name.Contains("light-shrouds")
             || name.Contains("speakers")
-            || name.Contains("trees")):
+            || name.Contains("trees")
+            || name.Contains("water")):
                 return 0;
             // only navigation static
             case string name when (name.Contains("windows") 
@@ -352,22 +349,22 @@ public class ManageImportSettings
         {
             case string name when name.Contains("furniture"):
                 return 4f;
-            case string name when name.Contains("mall-detailing-interior") 
-            || name.Contains("mall-ceilings")
-            || name.Contains("mall-walls-detailing-exterior")
+            case string name when name.Contains("detailing-interior") 
+            || name.Contains("ceilings")
+            || name.Contains("walls-detailing-exterior")
             || name.Contains("store-detailing"):
                 return 4f;
             case string name when name.Contains("lights") 
             || name.Contains("signage"):
                 return 10f;
-            case string name when name.Contains("mall-floors-vert")
+            case string name when name.Contains("floors-vert")
             || name.Contains("site-curb-gutter-sidewalk-vert"):
                 return 3f;
-            case string name when name.Contains("mall-roof") 
+            case string name when name.Contains("roof") 
             || name.Contains("site-context-buildings")
             || name.Contains("site-roads"):
                 return 0.1f;
-            case string name when name.Contains("mall-walls-interior") 
+            case string name when name.Contains("walls-interior") 
             || name.Contains("store-ceilings")
             || name.Contains("store-floors")
             || name.Contains("site-parking-surface")
