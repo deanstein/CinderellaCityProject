@@ -7,6 +7,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: DefaultMaterial
+    second: {fileID: 2100000, guid: c992582f02e760e409e8196fe018d206, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: LIGHT - fluorescent panel
     second: {fileID: 2100000, guid: 14d23e8f7daf5b74483890ce40c69ddf, type: 2}
   - first:
@@ -17,13 +22,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: LIGHT - store - white
+    second: {fileID: 2100000, guid: 14d69206a54689e4eab98d3024a0e783, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: concrete - sidewalk
     second: {fileID: 2100000, guid: 46749dbabbb325f4789128c168313709, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: mall - ceiling fixture metal
-    second: {fileID: 2100000, guid: 7d423f577d6182d40b9311af35ed030b, type: 2}
+      name: mall - ceiling fixture
+    second: {fileID: 2100000, guid: 2dd95654ceecdbd468631e289e0950eb, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
