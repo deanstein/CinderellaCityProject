@@ -14,11 +14,6 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
     int numberOfDistributedArrays = 8; // also the number of frames before the entire array is updated
     int distributedChildrenListLength = 0;
 
-    // get the player, its position, and its camera
-    GameObject player;
-    Vector3 playerPosition;
-    Camera playerCamera;
-
     // instantiate lists for children
     List<Transform> childrenTransformsList = new List<Transform>();
     List<GameObject> childrenObjectsList = new List<GameObject>();
@@ -27,6 +22,7 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
     List<int> childrenNotInFrameCountsList = new List<int>();
 
     // instantiate arrays for children
+    Transform[] childrenTransforms;
     GameObject[] childrenObjects;
     Vector3[] childrenPositions;
     int[] childrenNotInFrameCounts;
@@ -65,11 +61,11 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
 
     private void Awake()
     {
-        // get all the children of this object - starting with their transforms
-        childrenTransformsList = Utils.GeometryUtils.GetAllChildrenTransformsInTransform(this.transform);
+        // get all the children of this object - including empty transforms (instances or groups)
+        childrenTransforms = this.GetComponentsInChildren<Transform>();
 
-        // get the corresponding gameobjects
-        foreach (Transform childrenTransform in childrenTransformsList)
+        // loop through the gameobjects and get transforms containing one of the desired behaviors
+        foreach (Transform childrenTransform in childrenTransforms)
         {
             if (childrenTransform.GetComponent(toggleComponentTypes[0]) as Behaviour)
             {
@@ -99,14 +95,6 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
     {
         // on enable, set the current count to the max so we immediately update
         frameCount = maxFramesBetweenCheck;
-
-        // get the player, its camera, and its position
-        player = ManageFPSControllers.FPSControllerGlobals.activeFPSController;
-        if (player)
-        {
-            playerCamera = player.GetComponentInChildren<Camera>();
-            playerPosition = player.transform.position;
-        }
     }
 
     // Update is called once per frame
@@ -141,13 +129,13 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
             distributedChildrenPositions[i] = new Vector3(distributedChildrenObjects[i].transform.position.x, distributedChildrenObjects[i].transform.position.y + 1, distributedChildrenObjects[i].transform.position.z);
 
             // skip if there's no player camera available
-            if (!playerCamera)
+            if (!ManageFPSControllers.FPSControllerGlobals.activeFPSControllerCamera)
             {
                 return;
             }
 
             // get the screen space position of this object
-            screenSpacePoint = playerCamera.WorldToViewportPoint(distributedChildrenPositions[i]);
+            screenSpacePoint = ManageFPSControllers.FPSControllerGlobals.activeFPSControllerCamera.WorldToViewportPoint(distributedChildrenPositions[i]);
 
             // determine if the child's position is visible to screen space
             bool isOnScreen = false;
@@ -158,7 +146,7 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
             }
 
             // if we're within range, and the object is visible, enable the components
-            if (Vector3.Distance(player.transform.position, distributedChildrenPositions[i]) < maxDistance && isOnScreen)
+            if (Vector3.Distance(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position, distributedChildrenPositions[i]) < maxDistance && isOnScreen)
             {
                 // first, ensure we're not tracking this object already
                 if (!activeChildrenList.Contains(distributedChildrenObjects[i]))

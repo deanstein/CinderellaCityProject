@@ -25,9 +25,10 @@ public class ManageFPSControllers : MonoBehaviour {
         // all FPSControllers
         public static List<GameObject> allFPSControllers = new List<GameObject>();
 
-        // the current FPSController
+        // the current FPSController and its components
         public static GameObject activeFPSController;
         public static Transform activeFPSControllerTransform;
+        public static Camera activeFPSControllerCamera;
         public static Vector3 activeFPSControllerCameraForward;
         public static bool isActiveFPSControllerOnNavMesh;
         public static Vector3 activeFPSControllerNavMeshPosition;
@@ -64,7 +65,8 @@ public class ManageFPSControllers : MonoBehaviour {
     {
         // record the position of the active FPSController for other scripts to access
         FPSControllerGlobals.activeFPSControllerTransform = this.transform;
-        // record the forward vector of the active FPSController camera for other scripts to access
+        // record the camera and forward vector of the camera for other scripts to access
+        FPSControllerGlobals.activeFPSControllerCamera = this.GetComponentInChildren<Camera>();
         FPSControllerGlobals.activeFPSControllerCameraForward = this.transform.GetChild(0).GetComponent<Camera>().transform.forward;
     }
 
@@ -162,7 +164,7 @@ public class ManageFPSControllers : MonoBehaviour {
 
         // restore the existing post process profile
         existingVolume.profile = existingProfile;
-        blur.enabled.Override(true);
+        // wait a moment, then re-enable blur
     }
 
     // reposition and realign this FPSController to match the given one
@@ -291,6 +293,18 @@ public class ManageFPSControllers : MonoBehaviour {
         }
     }
 
+    public static IEnumerator EnableBlurAfterDelay(GameObject activeFPSController, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        // get the existing post process volume and profile
+        PostProcessVolume existingVolume = activeFPSController.GetComponentInChildren<PostProcessVolume>();
+        PostProcessProfile existingProfile = existingVolume.profile;
+        MotionBlur blur;
+        existingProfile.TryGetSettings(out blur);
+        blur.enabled.Override(false);
+    }
+
     // waits until the player moves a given max distance before restoring gravity
     // prevents the player from falling when time-traveling to an era with no floor at that location
     public void UpdateFPSControllerGravityByState(Vector3 initialPosition, float maxDistance)
@@ -339,6 +353,9 @@ public class ManageFPSControllers : MonoBehaviour {
 
         // record this initial position so we can freeze the player's Y-position here when gravity is off
         FPSControllerGlobals.initialFPSControllerLocation = this.transform.position;
+
+        // enable blur on the post-processing profile after a slight delay
+        StartCoroutine(EnableBlurAfterDelay(this.gameObject, 1));
     }
 
     private void OnDisable()
