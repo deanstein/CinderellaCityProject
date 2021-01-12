@@ -57,11 +57,6 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: mall - wayfinding directory
-    second: {fileID: 2100000, guid: c3b0e46147e75b14fa735b4a12b83811, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
       name: mall - wayfinding garden
     second: {fileID: 2100000, guid: 3f0baa39442402a48bcffce242d37bd0, type: 2}
   - first:
@@ -159,6 +154,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: store - dark smoky mirror
     second: {fileID: 2100000, guid: d518f8a404e7be5469b21a69a17ddef7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - very dark grey
+    second: {fileID: 2100000, guid: ff2d3b31e737ac94482574b29f02650c, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule

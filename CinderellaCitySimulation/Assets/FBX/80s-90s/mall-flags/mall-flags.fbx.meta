@@ -17,6 +17,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - ceiling fixture
+    second: {fileID: 2100000, guid: 6ef2e5e4b506be547aa001cd89d87acf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - ceiling fixture metal
     second: {fileID: 2100000, guid: 0fc7ba03b7032e74fa2a098ed77dba97, type: 2}
   - first:
@@ -215,7 +220,7 @@ ModelImporter:
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
-    normalImportMode: 0
+    normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0

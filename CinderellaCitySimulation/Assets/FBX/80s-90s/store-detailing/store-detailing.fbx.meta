@@ -1,0 +1,509 @@
+fileFormatVersion: 2
+guid: 081f92b535f17664da2d9eec5550c36d
+ModelImporter:
+  serializedVersion: 25
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 80s glass
+    second: {fileID: 2100000, guid: 1dda595aa64b77e47ac82ca0abdd53c5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Fabric - Linen - Colorized
+    second: {fileID: 2100000, guid: bd57d23f2a77a1c43bc3f3421067ed97, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wood Grain - Colorized 1
+    second: {fileID: 2100000, guid: 4f0a151e40ef3fd4baf230ee96063272, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wood Grain - Colorized 2
+    second: {fileID: 2100000, guid: ae86090bc163bab4fb644a69a4d5f056, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: anchor - smooth light brown
+    second: {fileID: 2100000, guid: 30ec2f3c363cb0f42873403391c24501, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: concrete - painted 60s
+    second: {fileID: 2100000, guid: 7b05bdcb563e75240ad0466ec4107746, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: darker drywall
+    second: {fileID: 2100000, guid: ea7908c8adc501a4b9ec272c9c03e85d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: drywall
+    second: {fileID: 2100000, guid: 251b1c6afd14d894aaa5877aceac0160, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: drywall - yellowing
+    second: {fileID: 2100000, guid: 85e8afb2462540f468111a54094cdbb6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - 60s blue light
+    second: {fileID: 2100000, guid: 92fd3bf04e049c442a50b5f8a6720cb9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - brick
+    second: {fileID: 2100000, guid: 89c1380a317636f41b1fff3987de7b09, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - brick - whitewash
+    second: {fileID: 2100000, guid: 0fcfd04348230664f892d4ed2e53a77d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - brick color
+    second: {fileID: 2100000, guid: ad1d27b051416e24c88cac96bf10b705, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - cinder alley brick 2
+    second: {fileID: 2100000, guid: 79d5242058bbacc49b1e88fbd7277fae, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - cinder alley sign brown
+    second: {fileID: 2100000, guid: 50eaad9c226731c43a82508c5db540a0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - dark gold accent
+    second: {fileID: 2100000, guid: 217de660da346874d94d0d4e08b5b8e7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - floor trim
+    second: {fileID: 2100000, guid: b98f8390932ec404fb457d109077b21e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - guardrail
+    second: {fileID: 2100000, guid: 6c787290c9542604292ddb32e11e7f31, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - musicland black glass
+    second: {fileID: 2100000, guid: 1eae7fe02fc6699439a98d4152a08ebd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - parquet floor
+    second: {fileID: 2100000, guid: c53bba7c940a20a4e9eac4ebc5a4e95a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - stucco
+    second: {fileID: 2100000, guid: 73fc090e50d83a643a39baf66d1da60f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - stucco white
+    second: {fileID: 2100000, guid: b9ba8d63bfc789548a83994e25db9e2c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: roof shingles
+    second: {fileID: 2100000, guid: bc03c71772ba0bf4d861f6b3c3399c8a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: silver metallic
+    second: {fileID: 2100000, guid: 97330d618acfd3e43ba586ba1e89deb7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: stone - ashlar 1
+    second: {fileID: 2100000, guid: 12249c45e51dd7848ba1493b34beb888, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - beige 2
+    second: {fileID: 2100000, guid: 49cc22f82b3def941a5f4ad9e7ef9be1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - black
+    second: {fileID: 2100000, guid: 6dcc15b3159fbb74eac962081ab85799, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - black glossy
+    second: {fileID: 2100000, guid: aa9f31fcc83287c40aa52b2d9ad51908, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - brown 1
+    second: {fileID: 2100000, guid: c3ceb74212304bd499948f984139d054, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - brown 2
+    second: {fileID: 2100000, guid: 418ff64771ccca3488720a2442b23003, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - brown 3
+    second: {fileID: 2100000, guid: 70808b5155d374f46bb8e02a5a1739a2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - brown vertical wood panels
+    second: {fileID: 2100000, guid: 710ced244c4d8af4db404f8e4407b497, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - cinder alley brick 1
+    second: {fileID: 2100000, guid: 71914a9da86e8d64083df7c4df024aaf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - cinder alley shingle
+    second: {fileID: 2100000, guid: 47ce6ccf7ec23fe40885d25e4c2bc7f1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - cinder alley wood 1
+    second: {fileID: 2100000, guid: 6c1e1c44a7c84e24daeddb57bf795ba6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - dark blue
+    second: {fileID: 2100000, guid: 3b44bf51f0388ac4c90a577aade24f2f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - dark brown
+    second: {fileID: 2100000, guid: 19293fc51aba4c6468e162dae146b686, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - dark brown 2
+    second: {fileID: 2100000, guid: 0b250892c499d9946a364bdad6400a01, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - dark concrete
+    second: {fileID: 2100000, guid: 4474f801e619a65458009e92a0a6ad35, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - dark desaturated wood
+    second: {fileID: 2100000, guid: c1bef56b2b4f1654083bd83123088475, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - dark green 1
+    second: {fileID: 2100000, guid: bb494500109c95d45a800fba867739ad, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - dark green 2
+    second: {fileID: 2100000, guid: d536c19d2d9d9764892b661d928f579a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - dark grey 1
+    second: {fileID: 2100000, guid: 25ab6c43cdd6f3c499311247b6de611a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - dark wood
+    second: {fileID: 2100000, guid: e026ed37ee0855a4bb87d6ee0422c95c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - dark wood 2
+    second: {fileID: 2100000, guid: 2e822fecab57d4f4383825615d326f26, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - flat planks orangeish
+    second: {fileID: 2100000, guid: c5eaabc0cdf5bfb4386cdca81ab5df45, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - gold metal
+    second: {fileID: 2100000, guid: 358bda09bd9079a4eb2cbe09a374d32f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - gold metal planks
+    second: {fileID: 2100000, guid: 84211f9e590e5cb45a5b6f14aec4701f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - grainy wood
+    second: {fileID: 2100000, guid: 211e69cafb29879418a073a8bf19b956, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - kg mens brown
+    second: {fileID: 2100000, guid: 46be018536bef314a9f7871dedbf710c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - light fake wood
+    second: {fileID: 2100000, guid: 77a98aa8cfb10ff4cb6f84932ec16ced, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - light grey
+    second: {fileID: 2100000, guid: 085770c1def5c0c43a2e988e67ed2c19, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - light salmon
+    second: {fileID: 2100000, guid: b4cd42ab95aecde49862851c7a49fbb9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - liliac
+    second: {fileID: 2100000, guid: b15105690911eef41b3bb58b61160b21, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - mirror
+    second: {fileID: 2100000, guid: ce762517b4ffe6e47bac8ff84b0b9060, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - morrow's nut house pattern
+    second: {fileID: 2100000, guid: d07d72f0b4d76ad479e415466e03b567, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - off white
+    second: {fileID: 2100000, guid: 0d4b485d25689674ab9968951f558b91, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - orange 1
+    second: {fileID: 2100000, guid: 0ea099194ab76864da39ff8ece942482, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - orange 2
+    second: {fileID: 2100000, guid: 6eef1f29203b7134283e4eeececdc401, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - pink 1
+    second: {fileID: 2100000, guid: e4525ff96bafd5043b846d8a3fe5bebc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - purple-grey
+    second: {fileID: 2100000, guid: 128d6334240863d4fbeeeec55ce21f81, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - rectangular tile white 1
+    second: {fileID: 2100000, guid: 7f2c8ac31d4091d459a5581897c60c58, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - red 1
+    second: {fileID: 2100000, guid: 1d2869554f5b15c44b588b6e55c00551, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - red 3
+    second: {fileID: 2100000, guid: 6beceb6dac4fa3d4898a3ae7a61feabc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - red 4
+    second: {fileID: 2100000, guid: 672974d5a4f44484ab783591186aa666, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - red 5
+    second: {fileID: 2100000, guid: 44cfbdc145f10004f85bdc23001ef659, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - red brick 1
+    second: {fileID: 2100000, guid: 7fb9177c5f5bcd84a9bbe4d913ded184, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - red brick 3
+    second: {fileID: 2100000, guid: 1e644850ee2b26c49b42092bb0db0f52, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - red vertical wood paneling
+    second: {fileID: 2100000, guid: ab62c76e7baff1b45b1b39c5a5e5a3b0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - red white stripes
+    second: {fileID: 2100000, guid: 7b5062940fd84104d90696dd8e3d4a51, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - ribbed
+    second: {fileID: 2100000, guid: 8585660c37b63a049930358015c04f18, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - rotated wood
+    second: {fileID: 2100000, guid: a8f06cfa637855e48a1ebc6094d288d5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - smoky mirror
+    second: {fileID: 2100000, guid: 18378cdc0edcdb041805c5737112385b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - teal 2
+    second: {fileID: 2100000, guid: 1d0c81408c120d843a5c2e6bf019a3ab, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - teal dark
+    second: {fileID: 2100000, guid: 3aeb6eaa916759c45b0be0bce04ba83f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - very dark brown reflective
+    second: {fileID: 2100000, guid: bd4a2ae2c741d794bab4be08892e0b95, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - very light grey
+    second: {fileID: 2100000, guid: 4f955099a86b8314ab897271f316f3cc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - walnut
+    second: {fileID: 2100000, guid: 25c0e86710f21f1428fd894482a4adc2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - wood grain painted green
+    second: {fileID: 2100000, guid: 79b1326b70257e54baab033962261c64, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - yellow 2
+    second: {fileID: 2100000, guid: f255e136865d2e9408c172788da20adb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - yellow 3
+    second: {fileID: 2100000, guid: 12d0ad01aca856146802d475ce7890ea, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store -wood orangeish
+    second: {fileID: 2100000, guid: 39835ffbf5029fb4a892427800216ced, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: white
+    second: {fileID: 2100000, guid: 3ac04943b8fc49b449571a78f99d2b09, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 1
+    materialSearch: 0
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 1
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 1
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 4
+    secondaryUVAreaDistortion: 4
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 64
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 1
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

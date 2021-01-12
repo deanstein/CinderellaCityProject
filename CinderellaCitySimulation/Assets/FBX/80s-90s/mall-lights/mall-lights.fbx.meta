@@ -12,8 +12,28 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: LIGHT - cinder alley incandescent
+    second: {fileID: 2100000, guid: 8c7af8fe6e3f36d408e164483cda9327, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: LIGHT - fluorescent panel
     second: {fileID: 2100000, guid: f95af0c4452bfb74494f97171feb3318, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - food court high intensity
+    second: {fileID: 2100000, guid: d4ab78f9eb7031245aed81b3d83c1f96, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - food court incandescent
+    second: {fileID: 2100000, guid: 4ca588dbf4222864ebde0be4919012fa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - food court temp
+    second: {fileID: 2100000, guid: 68f7bb74a2db87b4b9613cab2c67a203, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -32,13 +52,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: LIGHT - incandescent
-    second: {fileID: 2100000, guid: 0e3f0d0c1325cc146aa1c6d3ffcd7b52, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: LIGHT - low intensity white
-    second: {fileID: 2100000, guid: 1958bf664d652ec48aeb3eb58278785f, type: 2}
+      name: LIGHT - low intensity yellow
+    second: {fileID: 2100000, guid: c88ea4ea41dfa32479fcb4a044772677, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -47,13 +62,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: mall - ceiling fixture metal
-    second: {fileID: 2100000, guid: bd4e583b10f3ead42a30b54cacea1f55, type: 2}
+      name: mall - ceiling fixture
+    second: {fileID: 2100000, guid: 89feb008377ba844da658709e79e036d, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: mall - gas lamp glass
-    second: {fileID: 2100000, guid: 429bcb53c5c37f748b5ebf217f413c2f, type: 2}
+    second: {fileID: 2100000, guid: 9e1347dd7a38c7142a7a11232521711f, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -64,6 +79,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: mall - polished concrete
     second: {fileID: 2100000, guid: 45f9b3bdc63f903498c51b6a8b718a20, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - light grey
+    second: {fileID: 2100000, guid: eb4390652899c284e9397563859f8625, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule

@@ -12,8 +12,28 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: LIGHT - store - footlocker
-    second: {fileID: 2100000, guid: abb68d8f3721f164586753c5bd7b702f, type: 2}
+      name: LIGHT - americana shop
+    second: {fileID: 2100000, guid: 6b782c1312d41a1488c0146c957efa75, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - joslins
+    second: {fileID: 2100000, guid: 9a099c3afe2c9774eb173888ae0c04c6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - lerner red
+    second: {fileID: 2100000, guid: ddd1a811879db49488c13d9501f0656f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - orange julius
+    second: {fileID: 2100000, guid: d8bd2f46ae254a548950bcd3a44592b6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - store - footlocker red
+    second: {fileID: 2100000, guid: 678f94950380a3148a7379d524d7c98e, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -32,8 +52,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: LIGHT - store - kims
-    second: {fileID: 2100000, guid: 1d0ba4f7dace017428b139c6b7dd6659, type: 2}
+      name: LIGHT - store - pink
+    second: {fileID: 2100000, guid: e91fff00cddef314591d3e46bc0ba06c, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -52,13 +72,48 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: LIGHT - store - woolworths
+    second: {fileID: 2100000, guid: 2d893a05a4963244a9eb1fb5fc59a66c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - store -dairy queen
+    second: {fileID: 2100000, guid: 819bb0fb3074ea44f808597467b9b704, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - store chick-fil-a red
+    second: {fileID: 2100000, guid: 2ca03f8ef1670074296ee4e60c24e954, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - store corn dog blue
+    second: {fileID: 2100000, guid: ed8b3257a4c8461438718fa9ad2bf36f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - store corn dog yellow
+    second: {fileID: 2100000, guid: 4aa7bd85d91330c499de2c76e2ec6b12, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: LIGHT - store dark blue
     second: {fileID: 2100000, guid: da08f8111a1c52f4881795ddd649bde4, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: LIGHT - store dark green
+    second: {fileID: 2100000, guid: 5045542c0660fb449a5536be69ed0251, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: LIGHT - store fl runner
     second: {fileID: 2100000, guid: 53b25bf79a48328448e74f5e9ed13bed, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - store footlocker orange
+    second: {fileID: 2100000, guid: d8560bb5c4ac4ce4b82e299bd45777d0, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -72,6 +127,16 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: LIGHT - store payless orange
+    second: {fileID: 2100000, guid: 65d0cdf4a71c8a748bda04358b9caa9d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - store payless yellow
+    second: {fileID: 2100000, guid: 0bbaf49c937696c4396be10710f3ee3e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: LIGHT - store pearle vision green
     second: {fileID: 2100000, guid: 4e558aab65dae044c87596d6b8c320e9, type: 2}
   - first:
@@ -79,6 +144,31 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: LIGHT - store rtc sign
     second: {fileID: 2100000, guid: 30f00b5bd4bdeda4d813966e6884380d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - store sportsfan
+    second: {fileID: 2100000, guid: edda398ce7041274e84e1cd16d53e856, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - store yellowing
+    second: {fileID: 2100000, guid: 4b01d8a07f345f0469b86594bab40d1c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - store zeezos blue
+    second: {fileID: 2100000, guid: 19d21ecbc19dc764aa8a4da0593b9a13, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - thom mcan red
+    second: {fileID: 2100000, guid: 23985eb49cc83624ebe097135611121d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - very low intensity white
+    second: {fileID: 2100000, guid: da249b488334b2646ae9b2e5d3d833dd, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -102,6 +192,16 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - gas lamp metal
+    second: {fileID: 2100000, guid: aeabd67d3dc4298409bb3da21e858da6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - KG mens brown
+    second: {fileID: 2100000, guid: 9f30289f7a5d2554e8d53c4f0f2565da, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: store - black
     second: {fileID: 2100000, guid: 8a6e34bb529ce55499e86188d9ca359b, type: 2}
   - first:
@@ -109,6 +209,21 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: store - dark grey
     second: {fileID: 2100000, guid: 70d4f98e5f1570e4e87989bbccde7276, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - gold metal
+    second: {fileID: 2100000, guid: 4e6e0a2914161454b89bf6871a2cc8dc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - mirror
+    second: {fileID: 2100000, guid: 1b77f30f8c85fae44ae68ce405198a2d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - red no tex
+    second: {fileID: 2100000, guid: 72d51e3ebba09744f90ab44a1fe10746, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule

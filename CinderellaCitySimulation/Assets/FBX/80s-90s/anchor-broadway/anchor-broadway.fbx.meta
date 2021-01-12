@@ -7,11 +7,6 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: 60s silver
-    second: {fileID: 2100000, guid: b492cb5c9a79ee1489e9ad5d26dff6cd, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
       name: 80s glass
     second: {fileID: 2100000, guid: 84b04a8407ff5804f93591631163ae3f, type: 2}
   - first:
@@ -22,8 +17,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: _Charcoal_
-    second: {fileID: 2100000, guid: 1dbcb320d0a27644da883d029f9060f7, type: 2}
+      name: LIGHT - store yellowing
+    second: {fileID: 2100000, guid: 8575e5eb48807c8439ff8485cd95a4df, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - very low intensity white
+    second: {fileID: 2100000, guid: f2bf7448782f3944e8f7ad936c63275c, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -62,21 +62,6 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: escalator - step text 1
-    second: {fileID: 2100000, guid: 652ce6b732f8ad6439b7c81b336e8e1e, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: escalator - step text 2
-    second: {fileID: 2100000, guid: 8045304ab70e27b4099984dfa58e660f, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: escalator - step text 3
-    second: {fileID: 2100000, guid: 23a4de4c7362b624d97aefb7f29904d9, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
       name: mall - floor trim
     second: {fileID: 2100000, guid: 96c08da7164eb10428e944ac1c1aafb8, type: 2}
   - first:
@@ -97,6 +82,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: store - black
+    second: {fileID: 2100000, guid: aaa68402a94e6b3499121b9efb6c44bb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: store - generic floor concrete
     second: {fileID: 2100000, guid: cb075bf8ce561344fba53ef3b8d54259, type: 2}
   - first:
@@ -104,11 +94,6 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: store - mirror
     second: {fileID: 2100000, guid: 18639aefcbe586642a944d2083d0c442, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: white
-    second: {fileID: 2100000, guid: 271c5ea2b42e66f4795343211effc990, type: 2}
   materials:
     importMaterials: 1
     materialName: 1
@@ -164,7 +149,7 @@ ModelImporter:
     secondaryUVPackMargin: 64
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
+    normalSmoothAngle: 90
     normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
