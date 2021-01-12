@@ -24,6 +24,8 @@ public class ProxyGlobals
     public static string thirdPartyPrefabPathLowPolyTropical = "Assets/3rdParty/files/Prefabs";
     public static string thirdPartyPrefabPathOddsEnds = "Assets/3rdParty/Odds_N_Ends Series - Tropical Foliage v1.1/PreFabs";
     public static string thirdPartyPrefabPathTreesVariety = "Assets/3rdParty/TreesVariety";
+    // water
+    public static string thirdPartyPrefabPathNeatwolf = "Assets/3rdParty/NeatWolf/Bundle02-WaterBlood/_Water";
 
     // define the pool of people prefabs available to each scene
     public static string[] peoplePrefabPool60s70s = new string[] {
@@ -248,6 +250,27 @@ public class ManageProxyMapping
 
                 case string name when name.Contains("hanging-planter-1"):
                     return ProxyGlobals.thirdPartyPrefabPathTreesVariety + "/plants/potato_plant.prefab";
+
+                default:
+                    return null;
+            }
+        }
+
+        //
+        // WATER
+        //
+        if (objectName.Contains("fountain"))
+        {
+            switch (objectName)
+            {
+                case string name when name.Contains("main"):
+                    return ProxyGlobals.thirdPartyPrefabPathNeatwolf + "/Fountain08.prefab";
+
+                case string name when name.Contains("secondary"):
+                    return ProxyGlobals.thirdPartyPrefabPathNeatwolf + "/Fountain08.prefab";
+
+                case string name when name.Contains("splash"):
+                    return ProxyGlobals.thirdPartyPrefabPathNeatwolf + "/Splashes02.prefab";
 
                 default:
                     return null;
