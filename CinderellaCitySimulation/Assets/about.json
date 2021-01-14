@@ -1,6 +1,23 @@
 {
   "VersionHistory": [
     {
+      "0.6.6.202101": [
+        {          
+          "Content Updates": [
+          "Updated The Denver and Penney's with new details, and a new geometry organization hierarchy, in both 60s70s and 80s90s eras",
+          "Updated all mall and site models to reflect latest geometry and new organization, in 80s90s",
+          "Updated the Broadway Southwest building with new details and signage",
+          "Updated lightmap generation lightings in 80s90s to match 60s70s"
+        ],
+          "Logic Updates": [
+            "Added support for scaling variety and under-scaling for NPCs (people)",
+            "Added support for importing fountain elements and new materials",
+            "Fixed an issue where scaling prefabs to match their proxies would go wrong, resulting in no scaling",
+            "Fixed a silent failure in the import pipeline, resulting in partial imports in some cases",
+            "Fixed an issue that could cause the player to not report its position, and not update the NPCs"
+          ]
+        }
+      ],
       "0.6.5.202012": [
         {          
           "Content Updates": [
