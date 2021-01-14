@@ -268,8 +268,8 @@ public class ManageImportSettings
                 // pre-processor option flags
                 ImportParams.doSetGlobalScale = true; // always true
                 ImportParams.doInstantiateAndPlaceInCurrentScene = true;
-                ImportParams.doSetColliderActive = false;
-                ImportParams.doSetUVActiveAndConfigure = false;
+                ImportParams.doSetColliderActive = true;
+                ImportParams.doSetUVActiveAndConfigure = true;
                 ImportParams.doDeleteReimportMaterialsTextures = true;
                 ImportParams.doAddBehaviorComponents = false;
                 // post-processor option flags

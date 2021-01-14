@@ -276,46 +276,59 @@ public class Utils
         public static float GetMaxGOBoundingBoxDimension(GameObject gameObjectToMeasure)
         {
             // create an array of MeshChunks found within this GameObject so we can get the bounding box size
-            MeshRenderer[] gameObjectMeshRendererArray = gameObjectToMeasure.GetComponentsInChildren<MeshRenderer>();
+            MeshRenderer[] gameObjectMeshRendererArray = gameObjectToMeasure.GetComponentsInChildren<MeshRenderer>(true);
+            MeshFilter[] gameObjectMeshFilterArray = gameObjectToMeasure.GetComponentsInChildren<MeshFilter>(true);
+            SkinnedMeshRenderer[] gameObjectSkinnedMeshRendererArray = gameObjectToMeasure.GetComponentsInChildren<SkinnedMeshRenderer>(true);
 
-            MeshFilter[] gameObjectMeshFilterArray = gameObjectToMeasure.GetComponentsInChildren<MeshFilter>();
+            // instantiate bounds - we don't now what kind of bounds yet
+            Bounds bounds;
 
-            // store the game object's maximum bounding box dimension
-            float gameObjectMaxDimension = 1;
-
-            // for each MeshRenderer found, get the height and add it to the list
-            for (int i = 0; i < gameObjectMeshFilterArray.Length; i++)
+            // assume, for now, that the object to measure has a single mesh of some sort
+            // this could be a mesh renderer, or a skinned mesh renderer
+            if (gameObjectMeshFilterArray.Length > 0)
             {
-                //Utils.DebugUtils.DebugLog("Found a MeshChunk to get bounds info from: " + gameObjectMeshFilterArray[i]);
+                bounds = gameObjectMeshFilterArray[0].sharedMesh.bounds;
+                //DebugUtils.DebugLog("Mesh renderer found for " + gameObjectToMeasure + ". Bounds: " + bounds);
 
-                // if this object has no mesh to measure, return a valid number
-                if (!gameObjectMeshFilterArray[i].sharedMesh)
-                {
-                    return 1;
-                }
-
-                Bounds bounds = gameObjectMeshFilterArray[i].sharedMesh.bounds;
-
-                //Debug.Log("Bounds: " + bounds);
-                float dimX = bounds.extents.x;
-                float dimY = bounds.extents.y;
-                float dimZ = bounds.extents.z;
-                //Utils.DebugUtils.DebugLog("Mesh dimensions for " + gameObjectMeshFilterArray[i] + dimX + "," + dimY + "," + dimZ);
-
-                List<float> XYZList = new List<float>();
-                XYZList.Add(dimX);
-                XYZList.Add(dimY);
-                XYZList.Add(dimZ);
-
-                float maxXYZ = XYZList.Max();
-                //Utils.DebugUtils.DebugLog("Max XYZ dimension for " + gameObjectMeshFilterArray[i] + ": " + maxXYZ);
-
-                // set the max dimension to the max XYZ value
-                gameObjectMaxDimension = maxXYZ;
+                // ensure the object is enabled so it can be measured
+                gameObjectMeshFilterArray[0].gameObject.SetActive(true);
             }
+            else if (gameObjectSkinnedMeshRendererArray.Length > 0)
+            {
+                bounds = gameObjectSkinnedMeshRendererArray[0].bounds;
+                //DebugUtils.DebugLog("Skinned mesh renderer found for " + gameObjectToMeasure + ". Bounds: " + bounds);
+            }
+            else
+            {
+                DebugUtils.DebugLog("ERROR: Failed to get max bounding box dimensions because no meshes of any type were found to measure within " + gameObjectToMeasure.name);
+                return 1;
+            }
+
+            // initialize the game object's maximum bounding box dimension
+            float gameObjectMaxDimension = 0;
+            
+            //Utils.DebugUtils.DebugLog("Found a MeshChunk to get bounds info from: " + gameObjectMeshRendererArray[i]);
+
+            //Debug.Log("Bounds: " + bounds);
+            float dimX = bounds.extents.x;
+            float dimY = bounds.extents.y;
+            float dimZ = bounds.extents.z;
+            //Utils.DebugUtils.DebugLog("Mesh dimensions for " + gameObjectMeshFilterArray[i] + dimX + "," + dimY + "," + dimZ);
+
+            List<float> XYZList = new List<float>();
+            XYZList.Add(dimX);
+            XYZList.Add(dimY);
+            XYZList.Add(dimZ);
+
+            float maxXYZ = XYZList.Max();
+            //Utils.DebugUtils.DebugLog("Max XYZ dimension for " + gameObjectMeshFilterArray[i] + ": " + maxXYZ);
+
+            // set the max dimension to the max XYZ value
+            gameObjectMaxDimension = maxXYZ;
 
             float gameObjectMaxHeight = gameObjectMaxDimension;
 
+            //DebugUtils.DebugLog("Max height of " + gameObjectToMeasure.name + ": " + gameObjectMaxHeight);
             return gameObjectMaxHeight;
         }
 
@@ -327,6 +340,14 @@ public class Utils
             //Utils.DebugUtils.DebugLog("Target height: " + targetHeight);
             float currentHeight = GetMaxGOBoundingBoxDimension(gameObjectToScale);
             //Utils.DebugUtils.DebugLog("Current height: " + currentHeight);
+
+            // run NPCs (people) through an extra set of scaling, to reduce their size if required
+            if (gameObjectToMatch.name.Contains("people"))
+            {
+                float scaleDown = ManageNPCControllers.GetRandomNPCScaleDownFactor(gameObjectToScale);
+                DebugUtils.DebugLog("Applying additional NPC scale down factor: " + scaleDown + " for object: " + gameObjectToScale.name);
+                targetHeight = targetHeight * scaleDown;
+            }
 
             // only scale if the target value is non-zero
             if (targetHeight != 0)
@@ -358,7 +379,7 @@ public class Utils
             gameObjectToRotate.transform.rotation = adjustedRotation;
         }
 
-        // define how to scale a GameObject to match a height
+        // define how to scale a GameObject randomly within a range
         public static void ScaleGameObjectRandomlyWithinRange(GameObject gameObjectToScale, float minScale, float maxScale)
         {
 

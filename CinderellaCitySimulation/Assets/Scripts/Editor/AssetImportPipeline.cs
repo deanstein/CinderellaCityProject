@@ -60,6 +60,10 @@ public class AssetImportUpdate : AssetPostprocessor {
 
     // keep track of the newly-instantiated objects - like trees and people - for counting and culling
     static List<GameObject> instancedPrefabs = new List<GameObject>();
+    // keep track of which newly-instantiated objects were generated from a proxy object
+    static List<GameObject> instancedPrefabsFromProxies = new List<GameObject>();
+    // keep track of which newly-instantiated objects were generated as a random filler
+    static List<GameObject> instancedPrefabsAsRandomFillers = new List<GameObject>();
     // keep track of how many instances had to be deleted because no good random point was found
     static int culledPrefabs = 0;
 
@@ -213,14 +217,25 @@ public class AssetImportUpdate : AssetPostprocessor {
         // test if the asset name matches any of the top-level object names
         foreach (GameObject sceneObject in sceneObjects)
         {
+            // if we find the object already present in the hierarchy
             if (sceneObject.name == gameObjectFromAsset.name)
             {
                 // if import params dictate that this object generates proxy replacements,
                 // delete the object in the hierarchy to force a full refresh
                 if (AssetImportGlobals.ModelImportParamsByName.doInstantiateProxyReplacements)
                 {
+                    // commenting out for now - this is causing more problems than it's worth
+                    // need to manually delete, hoist the scene, and reimport if required
+                    /*
+                    // ensure the scene is hoisted down, if required
+                    HoistSceneObjectsEditor.HoistSceneContainersDown(ManageEditorScenes.GetOpenTimePeriodSceneContainersRequiringHoist());
+
                     Utils.DebugUtils.DebugLog("This object was already present in the model, but was flagged to replace proxy objects, so it's been deleted for a complete refresh.");
                     GameObject.DestroyImmediate(sceneObject);
+                    */
+
+                    // temporarily return until I figure out what to do about the above code
+                    return;
                 }
                 // non-proxy objects don't need to be deleted from the hierarchy
                 else
@@ -230,6 +245,9 @@ public class AssetImportUpdate : AssetPostprocessor {
                 }
             }
         }
+
+        // ensure the scene is hoisted down, if required
+        //HoistSceneObjectsEditor.HoistSceneContainersDown(ManageEditorScenes.GetOpenTimePeriodSceneContainersRequiringHoist());
 
         // otherwise, instantiate as a prefab with the name of the file
         newlyInstantiatedFBXContainer = PrefabUtility.InstantiatePrefab(gameObjectFromAsset, scene) as GameObject;
@@ -536,15 +554,18 @@ public class AssetImportUpdate : AssetPostprocessor {
     // define how to create a component attached to a GameObject, or delete it and create a new one if component already exists
     public static void RemoveComponentIfExisting(GameObject gameObjectForComponent, string componentType)
     {
-        // if this object already has a component of this type, delete it
-        if (gameObjectForComponent.GetComponent(componentType) as Component)
+        if (gameObjectForComponent.GetComponent(componentType))
         {
-            Utils.DebugUtils.DebugLog("<b>Deleted</b> existing behavior component " + componentType + " on " + gameObjectForComponent + ".");
-            Component componentToDelete = gameObjectForComponent.GetComponent(componentType) as Component;
-            //AudioSource audioSourceToDelete = gameObjectForComponent.gameObject.GetComponent<AudioSource>();
+            // if this object already has a component of this type, delete it
+            if (gameObjectForComponent.GetComponent(componentType) as Component)
+            {
+                Utils.DebugUtils.DebugLog("<b>Deleted</b> existing behavior component " + componentType + " on " + gameObjectForComponent + ".");
+                Component componentToDelete = gameObjectForComponent.GetComponent(componentType) as Component;
+                //AudioSource audioSourceToDelete = gameObjectForComponent.gameObject.GetComponent<AudioSource>();
 
-            // delete the existing component
-            UnityEngine.Object.DestroyImmediate(componentToDelete);
+                // delete the existing component
+                UnityEngine.Object.DestroyImmediate(componentToDelete);
+            }
         }
     }
 
@@ -1172,6 +1193,8 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         // reset the lists and counts
         instancedPrefabs.Clear();
+        instancedPrefabsFromProxies.Clear();
+        instancedPrefabsAsRandomFillers.Clear();
         culledPrefabs = 0;
 
         // update the global proxy type variable based on the asset name
@@ -1207,8 +1230,9 @@ public class AssetImportUpdate : AssetPostprocessor {
                 // only do something if the instanced prefab is valid
                 if (instancedPrefab)
                 {
-                    // add this instanced prefab to the global list for tracking
+                    // add this instanced prefab to the global lists for tracking
                     instancedPrefabs.Add(instancedPrefab);
+                    instancedPrefabsFromProxies.Add(instancedPrefab);
 
                     // nest the instanced prefab as a child of the original proxy object
                     instancedPrefab.transform.parent = child.transform;
@@ -1223,13 +1247,12 @@ public class AssetImportUpdate : AssetPostprocessor {
                         for (var i = 0; i < ManageProxyMapping.GetNPCFillerCountBySceneName(SceneManager.GetActiveScene().name); i++)
                         {
                             // create a random point on the navmesh
-                            Vector3 randomPoint = Utils.GeometryUtils.GetRandomPointOnNavMesh(child.transform.localPosition, ProxyGlobals.fillerRadius, true);
+                            Vector3 randomPoint = Utils.GeometryUtils.GetRandomPointOnNavMesh(child.transform.position, ProxyGlobals.fillerRadius, true);
 
                             // determine which pool to get people from given the scene name
                             string[] peoplePrefabPoolForCurrentScene = ManageProxyMapping.GetPeoplePrefabPoolBySceneName(SceneManager.GetActiveScene().name);
 
-                            // if we get a zero vector, the random point generation failed
-                            // so only do something if the randomPoint is valid
+                            // only do something if the randomPoint is valid
                             if (randomPoint != Vector3.zero)
                             {
                                 // instantiate a random person at the point
@@ -1238,8 +1261,9 @@ public class AssetImportUpdate : AssetPostprocessor {
                                 // only do something if the prefab is valid
                                 if (randomInstancedPrefab)
                                 {
-                                    // add this random instanced prefab to the list for tracking
+                                    // add this random instanced prefab to the lists for tracking
                                     instancedPrefabs.Add(randomInstancedPrefab);
+                                    instancedPrefabsAsRandomFillers.Add(randomInstancedPrefab);
 
                                     // feed this into the NPC configurator to indicate there is no proxy to match
                                     GameObject nullProxyObject = null;
@@ -1250,6 +1274,11 @@ public class AssetImportUpdate : AssetPostprocessor {
                                     // tag this instanced prefab as a delete candidate for the next import
                                     randomInstancedPrefab.gameObject.tag = proxyReplacementDeleteTag;
                                 }
+                            }
+                            // if we get a zero vector, the random point generation failed
+                            else
+                            {
+                                Utils.DebugUtils.DebugLog("The provided point for a random filler was Vector3.zero, so no filler was instantiated.");
                             }
                         }
                     }
@@ -1370,7 +1399,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
 
         // log how many prefabs were successfully instanced
-        Utils.DebugUtils.DebugLog("Number of successfully instanced prefabs: " + (instancedPrefabs.Count - culledPrefabs) + " (" + culledPrefabs + " culled)");
+        Utils.DebugUtils.DebugLog("Number of successfully instanced prefabs: " + (instancedPrefabs.Count - culledPrefabs) + " (" + culledPrefabs + " culled), including " + instancedPrefabsFromProxies.Count + " from proxy objects, and " + instancedPrefabsAsRandomFillers.Count + " as random fillers.");
     }
 
     // copies a component and all its settings from one GameObject to another
@@ -1717,6 +1746,9 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         if (AssetImportGlobals.ModelImportParamsByName.doInstantiateProxyReplacements)
         {
+            // ensure the scene is hoisted up, if required
+            //HoistSceneObjectsEditor.HoistSceneContainersDown(ManageEditorScenes.GetOpenTimePeriodSceneContainersRequiringHoist());
+
             InstantiateProxyReplacements(globalAssetFileName);
         }
 

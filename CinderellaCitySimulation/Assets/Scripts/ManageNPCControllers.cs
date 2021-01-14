@@ -116,7 +116,7 @@ public class ManageNPCControllers
     // get the correct gender controller for idling
     public static string GetIdleAnimatorControllerByGender(string nameWithGender)
     {
-        if (nameWithGender.Contains("female") || nameWithGender.Contains("_f_") || nameWithGender.Contains("Girl"))
+        if (StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.femaleDescriptorsList, nameWithGender))
         {
             return NPCControllerGlobals.animatorControllerFilePathFemaleIdle;
         }
@@ -126,16 +126,36 @@ public class ManageNPCControllers
         }
     }
 
-    // get the correct gender controller for idling
+    // get the correct gender controller for walking
     public static string GetWalkingAnimatorControllerByGender(string nameWithGender)
     {
-        if (nameWithGender.Contains("female") || nameWithGender.Contains("_f_") || nameWithGender.Contains("Girl"))
+        if (StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.femaleDescriptorsList, nameWithGender))
         {
             return NPCControllerGlobals.animatorControllerFilePathFemaleWalking;
         }
         else
         {
             return NPCControllerGlobals.animatorControllerFilePathMaleWalking;
+        }
+    }
+
+    // the people prefabs that come from some vendors may over-scale when matched to their proxy's height
+    // mitigate this, while also making the female characters slightly smaller
+    public static float GetRandomNPCScaleDownFactor(GameObject gameObjectToScale)
+    {
+        switch (gameObjectToScale.name)
+        {
+            // if the provided gameobject is named to indicate it's a male
+            case string objectName when StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.maleDescriptorsList, gameObjectToScale.name):
+                return Random.Range(0.89f, 0.92f);
+
+            // if the provided gameobject is named to indicate it's a female
+            case string objectName when StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.femaleDescriptorsList, gameObjectToScale.name):
+                return Random.Range(0.86f, 0.89f);
+
+            // otherwise, don't recommend a scale change
+            default:
+                return 1;
         }
     }
 
@@ -146,13 +166,6 @@ public class ManageNPCControllers
         {
             NPCControllerGlobals.activeNPCControllersArray[i].transform.position = NPCControllerGlobals.initialNPCPositionsArray[i];
         }
-    }
-
-    // TODO: get this to work
-    public static void SetAnimationFrame(Animator animatorToSet, string animationName)
-    {
-        animatorToSet.Play(animationName);
-        animatorToSet.Update(Time.deltaTime);
     }
 }
 

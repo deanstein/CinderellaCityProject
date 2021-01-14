@@ -344,13 +344,14 @@ public class ManageProxyMapping
         // if instancing the prefab was successful, adjust its position, scale, and parent
         if (instancedPrefab)
         {
-            Utils.DebugUtils.DebugLog("<b>Instanced this prefab: </b>" + instancedPrefab);
+            Utils.DebugUtils.DebugLog("<b>Instanced this random filler prefab: </b>" + instancedPrefab);
 
             // move the prefab to the specified location
             instancedPrefab.transform.position = destinationPoint;
 
             // scale the prefab to match a globally-available average height
             Utils.GeometryUtils.ScaleGameObjectToMaxHeight(instancedPrefab, ProxyGlobals.averageProxyHeight);
+            //Utils.DebugUtils.DebugLog("Average proxy height: " + ProxyGlobals.averageProxyHeight);
 
             // nest the prefab below the given parent
             instancedPrefab.transform.parent = parent.transform;
@@ -407,12 +408,12 @@ public class ManageProxyMapping
             // assume that if this is zero, this is the first proxy, so start the average at this height
             if (ProxyGlobals.averageProxyHeight == 0)
             {
-                ProxyGlobals.averageProxyHeight = Utils.GeometryUtils.GetMaxGOBoundingBoxDimension(proxyObject);
+                ProxyGlobals.averageProxyHeight = Utils.GeometryUtils.GetMaxGOBoundingBoxDimension(instancedPrefab);
             }
             // otherwise, account for this proxy's height in the overall average
             else
             {
-                ProxyGlobals.averageProxyHeight = (ProxyGlobals.averageProxyHeight + Utils.GeometryUtils.GetMaxGOBoundingBoxDimension(proxyObject)) / 2;
+                ProxyGlobals.averageProxyHeight = (ProxyGlobals.averageProxyHeight + Utils.GeometryUtils.GetMaxGOBoundingBoxDimension(instancedPrefab)) / 2;
             }
 
             // ensure the instanced prefab rotates about the vertical axis
