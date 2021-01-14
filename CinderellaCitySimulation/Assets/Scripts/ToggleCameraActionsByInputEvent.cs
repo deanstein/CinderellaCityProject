@@ -56,6 +56,15 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
         {
             StartCoroutine(ToggleCameraEffects.ToggleCameraEffectWithTransition(this.gameObject, "Dark", "FlashBlack", 0.4f));
         }
+        // toggle blur on/off
+        else if (Input.GetKeyDown("b"))
+        {          
+            PostProcessVolume existingVolume = this.GetComponent<PostProcessVolume>();
+            PostProcessProfile existingProfile = existingVolume.profile;
+            MotionBlur blur;
+            existingProfile.TryGetSettings(out blur);
+            blur.enabled.Override(!blur.enabled);
+        }
         else if (Input.GetKeyDown("x"))
         {
             TakeScreenshots.CaptureScreenshotOfCurrentCamera();
@@ -192,7 +201,7 @@ public class TakeScreenshots
             // move the player to the camera
             ManageFPSControllers.RelocateAlignFPSControllerToCamera(cameraHost.name);
 
-            // wait for the relocation to take effet
+            // wait for the relocation to take effect
             yield return new WaitForSeconds(1);
 
             // capture a screenshot without UI to the approprite path
