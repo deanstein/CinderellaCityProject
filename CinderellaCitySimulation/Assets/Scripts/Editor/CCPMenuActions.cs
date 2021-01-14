@@ -319,9 +319,6 @@ public class CCPMenuActions : MonoBehaviour
 
         Utils.DebugUtils.DebugLog("Updated the nav mesh in scene: " + EditorSceneManager.GetActiveScene().name);
 
-        // now move the scene container back down
-        HoistSceneObjectsEditor.HoistSceneContainersDown(sceneContainers);
-
         // re-hide the proxy blocker
         AssetImportUpdate.HideProxyObjects("proxy-blocker-npc");
 
@@ -414,6 +411,17 @@ public class CCPMenuActions : MonoBehaviour
 
     /* --------- Editor Debug ---------- */
 #if false
+    [MenuItem("Cinderella City Project/CCP Debug/Get Bounding Box for Selected")]
+    public static void TestMeshBounds()
+    {
+        GameObject[] selectedObjects = Selection.gameObjects;
+        Utils.DebugUtils.DebugLog("Max bounding box dimension " + Utils.GeometryUtils.GetMaxGOBoundingBoxDimension(selectedObjects[0]) + " for " + selectedObjects[0]);
+    }
+    [MenuItem("Cinderella City Project/CCP Debug/Hoist Object Up")]
+    public static void HoistObjectUp()
+    {
+        HoistSceneObjectsEditor.HoistObjectUp(GameObject.Find("proxy-people"));
+    }
     [MenuItem("Cinderella City Project/CCP Debug/Log Current Scene Name")]
     public static void LogCurrentScene()
     {
