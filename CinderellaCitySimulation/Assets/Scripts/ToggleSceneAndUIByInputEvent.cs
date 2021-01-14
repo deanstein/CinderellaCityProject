@@ -22,7 +22,7 @@ public class ToggleSceneAndUIByInputEvent : MonoBehaviour {
     private void OnEnable()
     {
         // when this UI host is toggled, show the temporary time travel notification in some scenarios
-        StartCoroutine(ToggleSceneAndUI.ToggleTimePeriodNotificationTemporarily(1.5f));
+        //StartCoroutine(ToggleSceneAndUI.ToggleTimePeriodNotificationTemporarily(1.5f));
     }
 
     // watch for shortcuts in every frame

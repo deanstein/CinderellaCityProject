@@ -115,12 +115,12 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
             GameObject HUDTimePeriodIndicator = CreateScreenSpaceUIElements.CreateHUDTimePeriodIndicator(HUDCanvas, StringUtils.ConvertSceneNameToFriendlyName(this.gameObject.scene.name));
 
             // create the time period notification
-            GameObject HUDTimePeriodNotificationContainer = CreateScreenSpaceUIElements.CreateHUDTimePeriodNotification(HUDCanvas, StringUtils.ConvertSceneNameToFriendlyName(this.gameObject.scene.name));
+            //GameObject HUDTimePeriodNotificationContainer = CreateScreenSpaceUIElements.CreateHUDTimePeriodNotification(HUDCanvas, StringUtils.ConvertSceneNameToFriendlyName(this.gameObject.scene.name));
 
             // create the game version indicator
             GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(HUDCanvas);
 
-            // if this is the 60s70s scene, note that it's under construction
+            // note that some scenes are under construction
             if (this.gameObject.scene.name.Contains("AltFuture"))
             {
                 CreateScreenSpaceUIElements.CreateHUDUnderConstructionLabel(HUDCanvas, "/// Under Construction ///");
