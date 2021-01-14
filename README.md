@@ -66,9 +66,6 @@ After the simulation loads, you'll find yourself at the Main Menu, where you can
 As this is a work in progress, some issues are known and will be fixed in future updates:
 
 - After running the simulation for several minutes, the music in each era may fail to play correctly, resulting in the music skipping and repeating every frame. Simply time-travel to another era, then back, to solve this.
-- The on-screen label that appears after time-traveling may fail to dismiss in some cases. Simply time-travel to another era, then back, to work around this for now.
-- Walking NPCs will walk through glass and storefronts in the 1980s-1990s era.
-- Bright beads of light will be visible in some areas in the 1980s-1990s era.
 - The Main Menu currently supports only 3 locations, but a scrollable interface will be added in the future to support additional points of interest.
 - The Blue Mall fountain in the 1960s-1970s era is not yet animated.
 - Large areas of both time periods are unfinished.
