@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.IO;
 using System.Reflection;
 
@@ -1044,6 +1045,14 @@ public class AssetImportUpdate : AssetPostprocessor {
             return proxyType;
         }
 
+        if (assetName.Contains("water"))
+        {
+            proxyType = "Water";
+            Utils.DebugUtils.DebugLog("Proxy type: " + proxyType);
+
+            return proxyType;
+        }
+
         else
         {
             return null;
@@ -1306,22 +1315,186 @@ public class AssetImportUpdate : AssetPostprocessor {
                         instancedPrefab.transform.localRotation = new Quaternion(0, 0, 0, 0);
 
                         // set the particle system settings
-                        ParticleSystem particleSystem = instancedPrefab.GetComponent<ParticleSystem>();
-                        var main = particleSystem.main;
-                        main.startSpeed = 0.5f;
-                        main.startSize3D = true;
-                        main.startSizeX = 1f;
-                        main.startSizeY = 4f;
-                        main.startSizeZ = 1f;
-                        main.gravityModifierMultiplier = 0.09f;
-                        main.simulationSpeed = 0.2f;
-                    }
 
+                        // main
+                        ParticleSystem mainParticleSystem = instancedPrefab.GetComponent<ParticleSystem>();
+                        var mainSystem = mainParticleSystem.main;
+                        mainSystem.duration = 1f;
+                        mainSystem.startSpeed = 0.5f;
+                        mainSystem.startLifetime = 0.5f;
+                        mainSystem.startSize3D = true;
+                        mainSystem.startSizeX = 0.5f;
+                        mainSystem.startSizeY = 4.25f;
+                        mainSystem.startSizeZ = 1f;
+                        mainSystem.startColor = new Color(0.7498f, 0.7498f, 0.7498f, 0.2f);
+                        mainSystem.gravityModifierMultiplier = 0.09f;
+                        mainSystem.simulationSpeed = 0.3f;
+                        var shape = mainParticleSystem.shape;
+                        shape.rotation = new Vector3(-0.2f, 0, 0);
+                        shape.enabled = true;
+                        shape.angle = 0.64f;
+                        shape.radius = 0f;
+                        var mainSystemEmitter = mainParticleSystem.emission;
+                        mainSystemEmitter.rateOverTime = 45;
+                        //var mainSystemSizeOverLifetime = mainParticleSystem.sizeOverLifetime;
+                        //AnimationCurve mainCurve = new AnimationCurve();
+                        //mainCurve.AddKey(0.0f, 2.0f);
+                        //mainCurve.AddKey(1.0f, 2.0f);
+                        //mainSystemSizeOverLifetime.size = new ParticleSystem.MinMaxCurve(1.0f, mainCurve);
+
+                        // secondary
+                        ParticleSystem secondaryParticleSystem = instancedPrefab.transform.GetChild(0).GetComponent<ParticleSystem>();
+                        var secondarySystem = secondaryParticleSystem.main;
+                        secondarySystem.startSize3D = true;
+                        secondarySystem.startSizeX = 0.86f;
+                        secondarySystem.startSizeY = 1f;
+                        secondarySystem.startSizeZ = 1f;
+                        secondarySystem.startColor = new Color(0.725f, 0.9098f, 1.0f, 0.588f);
+                        secondarySystem.startLifetime = 2.25f;
+                        secondarySystem.maxParticles = 1000;
+                        var secondaryShape = secondaryParticleSystem.shape;
+                        secondaryShape.position = new Vector3(0, 0, 1.1f);
+                        secondaryShape.rotation = new Vector3(-0.2f, 0, 0);
+                        secondaryShape.angle = 50f;
+                        var secondarySystemEmitter = secondaryParticleSystem.emission;
+                        secondarySystemEmitter.rateOverTime = 300;
+                        var secondarySystemColorOverLifetime = secondaryParticleSystem.colorOverLifetime;
+                        secondarySystemColorOverLifetime.enabled = false;
+                        var secondarySystemSizeOverLifetime = secondaryParticleSystem.sizeOverLifetime;
+                        AnimationCurve secondaryCurve = new AnimationCurve();
+                        secondaryCurve.AddKey(0.0f, 0.0f);
+                        secondaryCurve.AddKey(1.0f, 2.4f);
+                        secondaryCurve.SmoothTangents(0, 1.0f);
+                        secondaryCurve.SmoothTangents(1, 1.0f);
+                        secondarySystemSizeOverLifetime.size = new ParticleSystem.MinMaxCurve(1.0f, secondaryCurve);
+
+                    }
                     else if (child.name.Contains("fountain-secondary"))
                     {
-                        // ensure the main fountain is oriented vertically
-                        instancedPrefab.transform.localRotation = new Quaternion(-45, -90, 0, 0);
-                        instancedPrefab.transform.rotation = new Quaternion(-45, -90, 0, 0);
+                        // set the particle system settings
+
+                        // main
+                        ParticleSystem mainParticleSystem = instancedPrefab.GetComponent<ParticleSystem>();
+                        var mainSystem = mainParticleSystem.main;
+                        mainSystem.startSize3D = true;
+                        mainSystem.startSizeX = 0.1f;
+                        mainSystem.startSizeY = 0.1f;
+                        mainSystem.startSizeZ = 0.1f;
+                        mainSystem.startLifetime = 0.7f;
+                        mainSystem.startSpeed = 2.0f;
+                        mainSystem.startColor = new Color(0.7498f, 0.7498f, 0.7498f, 0.1960f);
+                        var mainShape = mainParticleSystem.shape;
+                        mainShape.enabled = true;
+                        mainShape.rotation = new Vector3(-45, child.transform.eulerAngles.y + 225, 0); // rotate to match the proxy
+                        var mainSystemEmitter = mainParticleSystem.emission;
+                        mainSystemEmitter.enabled = false;
+                        mainSystemEmitter.rateOverTime = 300;
+
+                        // secondary
+                        ParticleSystem secondaryParticleSystem = instancedPrefab.transform.GetChild(0).GetComponent<ParticleSystem>();
+                        var secondarySystem = secondaryParticleSystem.main;
+                        secondarySystem.startSize3D = true;
+                        secondarySystem.startSizeX = 0.1f;
+                        secondarySystem.startSizeY = 0.1f;
+                        secondarySystem.startSizeZ = 0.1f;
+                        secondarySystem.startLifetime = 0.7f;
+                        secondarySystem.startSpeed = 4.5f;
+                        secondarySystem.startColor = new Color(0.725f, 0.9098f, 1.0f, 0.588f);
+                        var secondaryShape = secondaryParticleSystem.shape;
+                        secondaryShape.position = new Vector3(0, 0, -2);
+                        secondaryShape.enabled = true;
+                        secondaryShape.rotation = new Vector3(-45, child.transform.eulerAngles.y + 225, 0); // rotate to match the proxy
+                        var secondaryEmitter = secondaryParticleSystem.emission;
+                        secondaryEmitter.rateOverTime = 900;
+                        ParticleSystemRenderer secondarySystemRenderer = instancedPrefab.GetComponent<ParticleSystemRenderer>();
+                        secondarySystemRenderer.sortingOrder = 1;
+                    }
+                    else if (child.name.Contains("splash-main"))
+                    {
+                        // main
+                        ParticleSystem mainParticleSystem = instancedPrefab.GetComponent<ParticleSystem>();
+                        var mainSystem = mainParticleSystem.main;
+                        mainSystem.startSize3D = true;
+                        mainSystem.startSizeX = 10f;
+                        mainSystem.startSizeY = 10f;
+                        mainSystem.startSizeZ = 0f;
+                        mainSystem.startLifetime = 1.0f;
+                        mainSystem.simulationSpeed = 0.4f;
+                        var mainShape = mainParticleSystem.shape;
+                        mainShape.radius = 0.001f;
+                        var mainShapeEmitter = mainParticleSystem.emission;
+                        mainShapeEmitter.rateOverTime = 3.0f;
+                        mainShape.position = new Vector3(mainShape.position.x, 0.3f, mainShape.position.z);
+                        ParticleSystemRenderer mainParticleSystemRenderer = instancedPrefab.GetComponent<ParticleSystemRenderer>();
+                        mainParticleSystemRenderer.renderMode = ParticleSystemRenderMode.HorizontalBillboard;
+                        mainParticleSystemRenderer.sortingOrder = 1;
+
+                        // secondary
+                        ParticleSystem secondaryParticleSystem = instancedPrefab.GetComponent<ParticleSystem>();
+                        var secondarySystem = secondaryParticleSystem.main;
+                        secondarySystem.startSize3D = true;
+                        secondarySystem.startSizeX = 10f;
+                        secondarySystem.startSizeY = 10f;
+                        secondarySystem.startSizeZ = 0f;
+                        var secondaryShape = secondaryParticleSystem.shape;
+                        secondaryShape.radius = 0.001f;
+                        secondaryShape.position = new Vector3(secondaryShape.position.x, 0.3f, secondaryShape.position.z);
+                        ParticleSystemRenderer secondaryParticleSystemRenderer = instancedPrefab.transform.GetChild(0).GetComponent<ParticleSystemRenderer>();
+                        secondaryParticleSystemRenderer.renderMode = ParticleSystemRenderMode.HorizontalBillboard;
+                        secondaryParticleSystemRenderer.sortingOrder = 1;
+
+                        // tertiary
+                        ParticleSystem tertiaryParticleSystem = instancedPrefab.GetComponent<ParticleSystem>();
+                        var tertiarySystem = tertiaryParticleSystem.main;
+                        tertiarySystem.startSize3D = true;
+                        tertiarySystem.startSizeX = 10f;
+                        tertiarySystem.startSizeY = 10f;
+                        tertiarySystem.startSizeZ = 10f;
+                        var tertiaryShape = tertiaryParticleSystem.shape;
+                        tertiaryShape.radius = 0.001f;
+                        tertiaryShape.position = new Vector3(tertiaryShape.position.x, 0.15f, tertiaryShape.position.z);
+                        ParticleSystemRenderer tertiaryParticleSystemRenderer = instancedPrefab.transform.GetChild(1).GetComponent<ParticleSystemRenderer>();
+                        tertiaryParticleSystemRenderer.enabled = false;
+                        tertiaryParticleSystemRenderer.renderMode = ParticleSystemRenderMode.HorizontalBillboard;
+
+                    }
+                    else if (child.name.Contains("splash-secondary"))
+                    {
+                        // main
+                        ParticleSystem mainParticleSystem = instancedPrefab.GetComponent<ParticleSystem>();
+                        var mainSystem = mainParticleSystem.main;
+                        mainSystem.simulationSpeed = 0.3f;
+                        var mainShape = mainParticleSystem.shape;
+                        mainSystem.startSize3D = true;
+                        mainSystem.startSizeX = 2f;
+                        mainSystem.startSizeY = 2f;
+                        mainSystem.startSizeZ = 2f;
+                        mainShape.radius = 0.001f;
+                        mainShape.position = new Vector3(mainShape.position.x, 0.1f, mainShape.position.z);
+                        ParticleSystemRenderer mainParticleSystemRenderer = instancedPrefab.GetComponent<ParticleSystemRenderer>();
+                        mainParticleSystemRenderer.renderMode = ParticleSystemRenderMode.HorizontalBillboard;
+                        mainParticleSystemRenderer.sortingOrder = 1;
+
+                        // secondary
+                        ParticleSystem secondaryParticleSystem = instancedPrefab.GetComponent<ParticleSystem>();
+                        var secondarySystem = secondaryParticleSystem.main;
+                        var secondaryShape = secondaryParticleSystem.shape;
+                        secondaryShape.radius = 0.001f;
+                        secondaryShape.position = new Vector3(secondaryShape.position.x, 0.2f, secondaryShape.position.z);
+                        ParticleSystemRenderer secondaryParticleSystemRenderer = instancedPrefab.transform.GetChild(0).GetComponent<ParticleSystemRenderer>();
+                        secondaryParticleSystemRenderer.renderMode = ParticleSystemRenderMode.HorizontalBillboard;
+                        secondaryParticleSystemRenderer.sortingOrder = 1;
+
+                        // tertiary
+                        ParticleSystem tertiaryParticleSystem = instancedPrefab.GetComponent<ParticleSystem>();
+                        var tertiarySystem = tertiaryParticleSystem.main;
+                        var tertiaryShape = tertiaryParticleSystem.shape;
+                        tertiaryShape.radius = 0.001f;
+                        tertiaryShape.position = new Vector3(tertiaryShape.position.x, 0f, tertiaryShape.position.z);
+                        ParticleSystemRenderer tertiaryParticleSystemRenderer = instancedPrefab.transform.GetChild(1).GetComponent<ParticleSystemRenderer>();
+                        tertiaryParticleSystemRenderer.enabled = false;
+                        tertiaryParticleSystemRenderer.renderMode = ParticleSystemRenderMode.HorizontalBillboard;
+
                     }
                 }
 

@@ -122,7 +122,7 @@ public class ManageImportSettings
                 ImportParams.doHideProxyObjects = false;
                 return ImportParams;
 
-            case string assetOrModelName when assetOrModelName.Contains("mall-water"):
+            case string assetOrModelName when assetOrModelName.Contains("proxy-water"):
                 // pre-processor option flags
                 ImportParams.doSetGlobalScale = true; // always true
                 ImportParams.doInstantiateAndPlaceInCurrentScene = true;
@@ -133,8 +133,8 @@ public class ManageImportSettings
                 // post-processor option flags
                 ImportParams.doSetMaterialEmission = false;
                 ImportParams.doSetMaterialSmoothnessMetallic = true;
-                ImportParams.doInstantiateProxyReplacements = false;
-                ImportParams.doHideProxyObjects = false;
+                ImportParams.doInstantiateProxyReplacements = true;
+                ImportParams.doHideProxyObjects = true;
                 return ImportParams;
 
             case string assetOrModelName when assetOrModelName.Contains("mall-furniture"):
