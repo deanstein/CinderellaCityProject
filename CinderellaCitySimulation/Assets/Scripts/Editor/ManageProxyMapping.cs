@@ -1,4 +1,4 @@
-﻿using UnityEditor;
+using UnityEditor;
 
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -26,6 +26,7 @@ public class ProxyGlobals
     public static string thirdPartyPrefabPathTreesVariety = "Assets/3rdParty/TreesVariety";
     // water
     public static string thirdPartyPrefabPathNeatwolf = "Assets/3rdParty/NeatWolf/Bundle02-WaterBlood/_Water";
+    public static string thirdPartyPrefabPathWater12Fountain = "Assets/3rdParty/Water 12 FX Particles/Particles/WaterSpot/Prefabs";
 
     // define the pool of people prefabs available to each scene
     public static string[] peoplePrefabPool60s70s = new string[] {
@@ -269,8 +270,22 @@ public class ManageProxyMapping
                 case string name when name.Contains("secondary"):
                     return ProxyGlobals.thirdPartyPrefabPathNeatwolf + "/Fountain08.prefab";
 
-                case string name when name.Contains("splash"):
+                case string name when name.Contains("splash-secondary"):
                     return ProxyGlobals.thirdPartyPrefabPathNeatwolf + "/Splashes02.prefab";
+
+                default:
+                    return null;
+            }
+        }
+        if (objectName.Contains("splash"))
+        {
+            switch (objectName)
+            {
+                case string name when name.Contains("main"):
+                    return ProxyGlobals.thirdPartyPrefabPathNeatwolf + "/Splashes08.prefab";
+
+                case string name when name.Contains("secondary"):
+                    return ProxyGlobals.thirdPartyPrefabPathNeatwolf + "/Splashes08.prefab";
 
                 default:
                     return null;
@@ -402,7 +417,11 @@ public class ManageProxyMapping
             //Utils.DebugUtils.DebugLog("Instanced prefab position: " + instancedPrefab.transform.position);
 
             // further scale the new object to match the proxy's height
-            Utils.GeometryUtils.ScaleGameObjectToMatchOther(instancedPrefab, gameObjectToBeReplaced);
+            // except for water (particle systems)
+            if (!proxyType.Contains("Water"))
+            {
+                Utils.GeometryUtils.ScaleGameObjectToMatchOther(instancedPrefab, gameObjectToBeReplaced);
+            }
 
             // record the scale used for filler replacements to use
             // assume that if this is zero, this is the first proxy, so start the average at this height
@@ -417,8 +436,17 @@ public class ManageProxyMapping
             }
 
             // ensure the instanced prefab rotates about the vertical axis
-            // to match the orientation of the object that's being replaced
-            instancedPrefab.transform.eulerAngles = new Vector3(0,  gameObjectToBeReplaced.transform.eulerAngles.y - 270, 0);
+            // to match the orientation of the proxy object
+            if (proxyType.Contains("Water"))
+            {
+                // water (particle systems) get reset to 0
+                instancedPrefab.transform.eulerAngles = new Vector3(0, 0, 0);
+            }
+            else
+            {
+                // everything else gets adjusted to match the proxy object
+                instancedPrefab.transform.eulerAngles = new Vector3(0, gameObjectToBeReplaced.transform.eulerAngles.y - 270, 0);
+            }
 
             // tag this instanced prefab as a delete candidate for the next import
             instancedPrefab.gameObject.tag = proxyReplacementDeleteTag;
