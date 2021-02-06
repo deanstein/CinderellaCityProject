@@ -29,18 +29,23 @@ public class AudioSourceGlobals
     // initialize speaker parameter sets
     //
 
-    // default speaker settings
+    // default volume levels and max distances
     public static float defaultSpeakerVolumeChatter = 0.03f;
     public static float defaultSpeakerMaxDistanceMallChatter = 500f;
 
     public static float defaultSpeakerVolumeMallCommon = 0.02f;
     public static float defaultSpeakerMaxDistanceMallCommon = 20f;
 
+    public static float defaultSpeakerVolumeMallFountain = 0.08f;
+    public static float defaultSpeakerDistanceMallFountain = 200f;
+
     public static float defaultSpeakerVolumeStore = 0.03f;
     public static float defaultSpeakerMaxDistanceStore = 15f;
 
     // mall - 60s70s
     public static SpeakerParams MallChatter60s70sParams = new SpeakerParams();
+    public static SpeakerParams MallFountain60s70sParams1 = new SpeakerParams();
+    public static SpeakerParams MallFountain60s70sParams2 = new SpeakerParams();
     public static SpeakerParams MallMusic60s70sParams = new SpeakerParams();
 
     // mall - 80s90s
@@ -79,6 +84,10 @@ public class PlayAudioSequencesByName : MonoBehaviour
             // mall - 60s70s
             case string partialName when partialName.Contains("mall-ambient-chatter-80s90s"):
                 return AudioSourceGlobals.MallChatter80s90sParams;
+            case string partialName when partialName.Contains("mall-fountain-60s70s-1"):
+                return AudioSourceGlobals.MallFountain60s70sParams1;
+            case string partialName when partialName.Contains("mall-fountain-60s70s-2"):
+                return AudioSourceGlobals.MallFountain60s70sParams2;
             case string partialName when partialName.Contains("mall-music-60s70s"):
                 return AudioSourceGlobals.MallMusic60s70sParams;
 
@@ -141,6 +150,14 @@ public class PlayAudioSequencesByName : MonoBehaviour
         AudioSourceGlobals.MallChatter60s70sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallChatter;
         AudioSourceGlobals.MallChatter60s70sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeChatter;
         AudioSourceGlobals.MallChatter60s70sParams.clipSequence = new string[] { "80s-90s/Ambient/BDalton/CinCityAmbience" };
+
+        // fountain
+        AudioSourceGlobals.MallFountain60s70sParams1.maxDistance = AudioSourceGlobals.defaultSpeakerDistanceMallFountain;
+        AudioSourceGlobals.MallFountain60s70sParams1.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallFountain;
+        AudioSourceGlobals.MallFountain60s70sParams1.clipSequence = new string[] { "60s-70s/SFX/PartnersInRhyme/fountain-1" };
+        AudioSourceGlobals.MallFountain60s70sParams2.maxDistance = AudioSourceGlobals.defaultSpeakerDistanceMallFountain;
+        AudioSourceGlobals.MallFountain60s70sParams2.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallFountain;
+        AudioSourceGlobals.MallFountain60s70sParams2.clipSequence = new string[] { "60s-70s/SFX/PartnersInRhyme/fountain-1-short" };
 
         // common area music
         AudioSourceGlobals.MallMusic60s70sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallCommon;
