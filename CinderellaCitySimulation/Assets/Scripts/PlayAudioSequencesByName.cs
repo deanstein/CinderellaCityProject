@@ -36,8 +36,8 @@ public class AudioSourceGlobals
     public static float defaultSpeakerVolumeMallCommon = 0.02f;
     public static float defaultSpeakerMaxDistanceMallCommon = 20f;
 
-    public static float defaultSpeakerVolumeMallFountain = 0.08f;
-    public static float defaultSpeakerDistanceMallFountain = 200f;
+    public static float defaultSpeakerVolumeMallFountain = 0.03f;
+    public static float defaultSpeakerDistanceMallFountain = 90f;
 
     public static float defaultSpeakerVolumeStore = 0.03f;
     public static float defaultSpeakerMaxDistanceStore = 15f;
