@@ -1,10 +1,28 @@
 {
   "VersionHistory": [
     {
+      "0.6.7.202102": [
+        {          
+          "Content Updates": [
+          "Added animated fountain elements to 60s70s",
+          "Added more furniture to 80s90s",
+          "Added more plants and trees to 80s90s",
+          "Added fountain speakers to 60s70s",
+          "Added missing display case walls in K-G Men's Store in 80s90s",
+          "Fixed an issue where 80s90s interior walls and interior detailing were not properly separated, resulting in artifacts in Rose Mall",
+          "Fixed an issue where 80s90s exterior detailing included incongruent 60s70s detailing in the food court unexpectedly"
+        ],
+          "Logic Updates": [
+            "Added support for replacing water feature proxies with particle systems",
+            "Added support for customizing particle systems in AssetImportPipeline",
+            "Added support for fountain speakers in AssetImportPipeline"
+          ]
+        }
+      ],
       "0.6.6.202101": [
         {          
           "Content Updates": [
-          "Updated The Denver and Penney's with new details, and a new geometry organization hierarchy, in both 60s70s and 80s90s eras",
+          "Updated The Denver and Penneys with new details and lights, and a new geometry organization hierarchy, in both 60s70s and 80s90s eras",
           "Updated all mall and site models to reflect latest geometry and new organization, in 80s90s",
           "Updated the Broadway Southwest building with new details and signage",
           "Updated lightmap generation lightings in 80s90s to match 60s70s"
