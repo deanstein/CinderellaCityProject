@@ -696,6 +696,26 @@ public class AssetImportUpdate : AssetPostprocessor {
             // add components to children gameObjects
 
         }
+
+        // proxy water
+        if (assetName.Contains("water"))
+        {
+            // add components to the parent gameObject
+
+            // add components to children gameObjects
+
+            // get all the children of this object - including empty transforms (instances or groups)
+            Transform[] childrenTransforms = gameObjectByAssetName.GetComponentsInChildren<Transform>();
+
+            // loop through the transforms and get ones that indicate they will host particle systems
+            foreach (Transform childTransform in childrenTransforms)
+            {
+                if (childTransform.name.Contains("fountain") || childTransform.name.Contains("splash"))
+                {
+                    childTransform.gameObject.AddComponent<AutoResumeParticleSystem>();
+                }
+            }
+        }
     }
 
 
