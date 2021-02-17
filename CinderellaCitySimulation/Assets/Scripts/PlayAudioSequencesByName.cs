@@ -162,7 +162,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
         // common area music
         AudioSourceGlobals.MallMusic60s70sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallCommon;
         AudioSourceGlobals.MallMusic60s70sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallCommon;
-        AudioSourceGlobals.MallMusic60s70sParams.clipSequence = new string[] { "80s-90s/Music/Betamaxx/12. casual menswear", "80s-90s/Music/Betamaxx/6. woolworth", "80s-90s/Music/BDalton/nick"};
+        AudioSourceGlobals.MallMusic60s70sParams.clipSequence = new string[] { "80s-90s/Music/Betamaxx/6. woolworth", "80s-90s/Music/BDalton/nick"};
 
         /// mall - 80s90s ///
 
