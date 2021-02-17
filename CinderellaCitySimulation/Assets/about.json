@@ -8,6 +8,7 @@
             "Increased the saturation of the food court tile color in 80s90s",
             "Removed walking people from seating area of food court due to tight clearances between tables",
             "Decreased the amount of filler people in 80s90s",
+            "Fixed baked lightmap issues in 80s90s",
             "Fixed missing Joslins signage in 80s90s",
             "Removed Betamaxx track from 60s70s due to copyright violation"
         ],
