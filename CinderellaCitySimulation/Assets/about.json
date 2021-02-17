@@ -1,6 +1,22 @@
 {
   "VersionHistory": [
     {
+      "0.6.8.202102": [
+        {          
+          "Content Updates": [
+            "Increased the camera effect saturation in 60s70s and 80s90s",
+            "Increased the saturation of the food court tile color in 80s90s",
+            "Removed walking people from seating area of food court due to tight clearances between tables",
+            "Decreased the amount of filler people in 80s90s",
+            "Fixed missing Joslins signage in 80s90s",
+            "Removed Betamaxx track from 60s70s due to copyright violation"
+        ],
+          "Logic Updates": [
+            "Added support for pausing and playing particle systems when time-traveling",
+            "Added support for attaching pause/play logic to fountain and splash elements in AssetImportPipeline"
+          ]
+        }
+      ],
       "0.6.7.202102": [
         {          
           "Content Updates": [
