@@ -411,6 +411,7 @@ public class CCPMenuActions : MonoBehaviour
 
     /* --------- Editor Debug ---------- */
 #if false
+
     [MenuItem("Cinderella City Project/CCP Debug/Get Bounding Box for Selected")]
     public static void TestMeshBounds()
     {
@@ -422,6 +423,7 @@ public class CCPMenuActions : MonoBehaviour
     {
         HoistSceneObjectsEditor.HoistObjectUp(GameObject.Find("proxy-people"));
     }
+
     [MenuItem("Cinderella City Project/CCP Debug/Log Current Scene Name")]
     public static void LogCurrentScene()
     {

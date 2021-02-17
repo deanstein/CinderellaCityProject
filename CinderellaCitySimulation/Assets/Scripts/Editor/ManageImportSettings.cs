@@ -122,21 +122,6 @@ public class ManageImportSettings
                 ImportParams.doHideProxyObjects = false;
                 return ImportParams;
 
-            case string assetOrModelName when assetOrModelName.Contains("proxy-water"):
-                // pre-processor option flags
-                ImportParams.doSetGlobalScale = true; // always true
-                ImportParams.doInstantiateAndPlaceInCurrentScene = true;
-                ImportParams.doSetColliderActive = true;
-                ImportParams.doSetUVActiveAndConfigure = false;
-                ImportParams.doDeleteReimportMaterialsTextures = true;
-                ImportParams.doAddBehaviorComponents = false;
-                // post-processor option flags
-                ImportParams.doSetMaterialEmission = false;
-                ImportParams.doSetMaterialSmoothnessMetallic = true;
-                ImportParams.doInstantiateProxyReplacements = true;
-                ImportParams.doHideProxyObjects = true;
-                return ImportParams;
-
             case string assetOrModelName when assetOrModelName.Contains("mall-furniture"):
                 // pre-processor option flags
                 ImportParams.doSetGlobalScale = true; // always true
@@ -227,6 +212,21 @@ public class ManageImportSettings
                 // post-processor option flags
                 ImportParams.doSetMaterialEmission = false;
                 ImportParams.doSetMaterialSmoothnessMetallic = false;
+                ImportParams.doInstantiateProxyReplacements = true;
+                ImportParams.doHideProxyObjects = true;
+                return ImportParams;
+
+            case string assetOrModelName when assetOrModelName.Contains("proxy-water"):
+                // pre-processor option flags
+                ImportParams.doSetGlobalScale = true; // always true
+                ImportParams.doInstantiateAndPlaceInCurrentScene = true;
+                ImportParams.doSetColliderActive = true;
+                ImportParams.doSetUVActiveAndConfigure = false;
+                ImportParams.doDeleteReimportMaterialsTextures = true;
+                ImportParams.doAddBehaviorComponents = true;
+                // post-processor option flags
+                ImportParams.doSetMaterialEmission = false;
+                ImportParams.doSetMaterialSmoothnessMetallic = true;
                 ImportParams.doInstantiateProxyReplacements = true;
                 ImportParams.doHideProxyObjects = true;
                 return ImportParams;
