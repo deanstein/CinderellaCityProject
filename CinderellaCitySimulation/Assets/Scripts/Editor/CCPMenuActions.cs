@@ -418,6 +418,7 @@ public class CCPMenuActions : MonoBehaviour
         GameObject[] selectedObjects = Selection.gameObjects;
         Utils.DebugUtils.DebugLog("Max bounding box dimension " + Utils.GeometryUtils.GetMaxGOBoundingBoxDimension(selectedObjects[0]) + " for " + selectedObjects[0]);
     }
+
     [MenuItem("Cinderella City Project/CCP Debug/Hoist Object Up")]
     public static void HoistObjectUp()
     {

@@ -174,4 +174,16 @@ public class HoistSceneObjectsEditor : MonoBehaviour
         }
         return sceneModified;
     }
+
+    // hoist an individual object, not a scene container
+    public static void HoistObjectUp(GameObject objectToHoist)
+    {
+        Vector3 currentPosition = objectToHoist.transform.position;
+
+        // get the new height to add based on this scene container
+        float addNewHeight = HoistSceneObjects.GetHoistHeightBySceneName(objectToHoist.scene.name);
+        Vector3 newPosition = new Vector3(currentPosition.x, currentPosition.y + addNewHeight, currentPosition.z);
+
+        objectToHoist.transform.position = newPosition;
+    }
 }
