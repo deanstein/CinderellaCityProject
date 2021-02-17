@@ -11,7 +11,7 @@ public class ProxyGlobals
     // the number of random filler people to be generated per imported proxy person
     public static int fillerNPCsToGenerateExperimental = 0;
     public static int fillerNPCsToGenerate60s70s = 1;
-    public static int fillerNPCsToGenerate80s90s = 1;
+    public static int fillerNPCsToGenerate80s90s = 0;
 
     // the radius for filler people from the original person's position
     public static int fillerRadius = 10;
