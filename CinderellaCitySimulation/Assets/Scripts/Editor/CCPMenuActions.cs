@@ -123,6 +123,9 @@ public class CCPMenuActions : MonoBehaviour
 
                 string keyWord3 = "blocker-";
                 updateModeSearchKeys.Add(keyWord3);
+
+                string keyWord4 = "proxy-";
+                updateModeSearchKeys.Add(keyWord4);
             }
 
             if (isUpdateModeSite)
