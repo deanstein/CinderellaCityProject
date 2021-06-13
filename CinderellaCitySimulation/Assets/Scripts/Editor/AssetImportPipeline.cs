@@ -867,7 +867,27 @@ public class AssetImportUpdate : AssetPostprocessor {
                 SetCustomMaterialEmissionIntensity(dependencyPathString, 1.0F);
             }
 
+            if (dependencyPathString.Contains("exterior white"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, 1.0F);
+            }
+
+            if (dependencyPathString.Contains("low intensity white"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, 1.0F);
+            }
+
             if (dependencyPathString.Contains("very low intensity white"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, -1.0F);
+            }
+
+            if (dependencyPathString.Contains("gart sports white"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, -1.0F);
+            }
+
+            if (dependencyPathString.Contains("mid-mod exterior fixture"))
             {
                 SetCustomMaterialEmissionIntensity(dependencyPathString, -1.0F);
             }
@@ -882,12 +902,22 @@ public class AssetImportUpdate : AssetPostprocessor {
                 SetCustomMaterialEmissionIntensity(dependencyPathString, -1.0F);
             }
 
+            if (dependencyPathString.Contains("funtastics signage"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, -1.0F);
+            }
+
             if (dependencyPathString.Contains("k-g men's gold"))
             {
                 SetCustomMaterialEmissionIntensity(dependencyPathString, -2.0F);
             }
 
             if (dependencyPathString.Contains("the denver blue"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, -0.2F);
+            }
+
+            if (dependencyPathString.Contains("neusteters brown"))
             {
                 SetCustomMaterialEmissionIntensity(dependencyPathString, -0.2F);
             }
