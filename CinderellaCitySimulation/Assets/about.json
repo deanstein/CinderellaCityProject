@@ -1,12 +1,27 @@
 {
   "VersionHistory": [
     {
+      "0.6.9.202106": [
+        {          
+          "Content Updates": [
+            "Added the Cinema/Neusteters complex to 60s70s", 
+            "Added several new interior brick storefronts to Cinder Alley, in 60s70s and 80s90s",
+            "Added several new storefronts and signage to Rose Mall for 60s70s, including Cricket, Gart Bros, Farrell's, Vogue Optical, Meek's Luggage, Orbach's, K-G Men's Store, and Lerner Shops",
+            "Added Collector's Coin Exchange to Blue Mall for 60s70s",
+            "Updated Joslins to include doors, windows, lights, and more accurate detailing, in both 60s70s and 80s90s eras",
+            "Updated 80s90s to match certain elements of 60s70s "
+        ],
+          "Logic Updates": [
+            "Added support for new light and signage types in AssetImportPipeline"
+          ]
+        }
+      ],
       "0.6.8.202102": [
         {          
           "Content Updates": [
             "Increased the camera effect saturation in 60s70s and 80s90s",
             "Increased the saturation of the food court tile color in 80s90s",
-            "Removed walking people from seating area of food court due to tight clearances between tables",
+            "Removed walking people from seating area of food court in 80s90s due to tight clearances between tables",
             "Decreased the amount of filler people in 80s90s",
             "Fixed baked lightmap issues in 80s90s",
             "Fixed missing Joslins signage in 80s90s",
