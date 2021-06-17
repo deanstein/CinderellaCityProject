@@ -67,7 +67,7 @@ As this is a work in progress, some issues are known and will be fixed in future
 
 - After running the simulation for several minutes, the music in each era may fail to play correctly, resulting in the music skipping and repeating every frame. Simply time-travel to another era, then back, to solve this.
 - The Main Menu currently supports only 3 locations, but a scrollable interface will be added in the future to support additional points of interest.
-- The Blue Mall fountain in the 1960s-1970s era is not yet animated.
+- When running in Windowed mode, maximizing the window breaks the locations of the UI.
 - Large areas of both time periods are unfinished.
 
 
