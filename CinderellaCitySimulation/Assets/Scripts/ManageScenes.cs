@@ -76,6 +76,24 @@ public static class ManageScenes
         return sceneContainer;
     }
 
+    // gets the UI launcher object for the current scene
+    public static GameObject GetUILauncherObject(Scene sceneWithUILauncher)
+    {
+        GameObject containerObject = GetSceneContainerObject(sceneWithUILauncher);
+        GameObject UILauncherObject = null;
+
+        for (int i = 0; i < containerObject.transform.childCount; i++)
+        {
+            if (containerObject.transform.GetChild(i).name.Contains("Launcher"))
+            {
+                UILauncherObject = containerObject.transform.GetChild(i).gameObject;
+            }
+        }
+
+        return UILauncherObject;
+
+    }
+
     // gets the top-level children in this scene's scene container
     public static GameObject[] GetTopLevelChildrenInSceneContainer(Scene sceneWithContainer)
     {
