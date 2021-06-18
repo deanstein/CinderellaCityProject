@@ -16,7 +16,33 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
     string[] loadingScreenBackgroundSlideShowSequence = { "UI/LoadingScreenBackground1", "UI/LoadingScreenBackground2" };
     string[] mainMenuBackgroundSlideShowSequence = { "UI/MainMenuBackground1", "UI/MainMenuBackground2" };
 
-    void Start()
+    int lastScreenWidth = 0;
+    int lastScreenHeight = 0;
+
+    void Update()
+    {
+        // the UI typically only needs to be built once, at start
+        // but if the user changes the screen size, it needs to be rebuilt
+        // so check the screen size each frame, but only build the scene UI if it's new or changed
+        if (lastScreenWidth != Screen.width || lastScreenHeight != Screen.height)
+        {
+            lastScreenWidth = Screen.width;
+            lastScreenHeight = Screen.height;
+            ClearCurrentSceneUI();
+            BuildCurrentSceneUI();
+        }            
+    }
+
+    public void ClearCurrentSceneUI()
+    {
+
+        for (int i = 0; i < this.transform.childCount; i++)
+        {
+            GameObject.DestroyImmediate(this.transform.GetChild(i).gameObject);
+        }
+    }
+
+    public void BuildCurrentSceneUI()
     {
 
         // ensure there's always an EventSystem
