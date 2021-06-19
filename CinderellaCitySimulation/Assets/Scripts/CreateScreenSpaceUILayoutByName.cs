@@ -16,21 +16,39 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
     string[] loadingScreenBackgroundSlideShowSequence = { "UI/LoadingScreenBackground1", "UI/LoadingScreenBackground2" };
     string[] mainMenuBackgroundSlideShowSequence = { "UI/MainMenuBackground1", "UI/MainMenuBackground2" };
 
+    // the current screen resolution will be checked against the last known resolution
+    // to determine whether the UI needs to be rebuilt
     int lastScreenWidth = 0;
     int lastScreenHeight = 0;
 
+    // define how many frames can elapse before the resolution should be checked for changes
+    int maxFramesBetweenCheck = 7;
+    int currentFrameCount = 0;
+
+    private void OnEnable()
+    {
+        // on enable, set the current count to the max so we can immediately update if necessary
+        currentFrameCount = maxFramesBetweenCheck;
+    }
+
     void Update()
     {
+        // increment the frame count
+        currentFrameCount++;
+
         // the UI typically only needs to be built once, at start
         // but if the user changes the screen size, it needs to be rebuilt
-        // so check the screen size each frame, but only build the scene UI if it's new or changed
-        if (lastScreenWidth != Screen.width || lastScreenHeight != Screen.height)
+        // so check the screen size every n frames, but only build the scene UI if it's new or changed
+        if ((lastScreenWidth != Screen.width || lastScreenHeight != Screen.height) && (currentFrameCount > maxFramesBetweenCheck))
         {
             lastScreenWidth = Screen.width;
             lastScreenHeight = Screen.height;
             ClearCurrentSceneUI();
             BuildCurrentSceneUI();
-        }            
+
+            // reset the frame count
+            currentFrameCount = 0;
+        }
     }
 
     public void ClearCurrentSceneUI()
