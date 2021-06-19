@@ -37,7 +37,7 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
     Vector3 screenSpacePoint;
 
     // these "extend" the camera extents (usualy between 0 and 1), to more quickly enable components
-    // when the camera is sweeping around -so the player won't notice the components being enabled
+    // when the camera is sweeping around, so the player won't notice the components being enabled
     public float minScreenSpacePoint = -2;
     public float maxScreenSpacePoint = 3;
 

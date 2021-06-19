@@ -25,7 +25,7 @@ public class UpdateNPCAnimatorByState : MonoBehaviour
 
     private void Update()
     {
-        // if the agent hasn't been enabled, agive it a walking animation
+        // if the agent hasn't been enabled, give it a walking animation
         // so that walking NPCs look normal as they calculate their nav mesh paths
         if (!thisAgent.enabled)
         {
