@@ -812,6 +812,10 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         {
             UIGlobals.isTimeTravelThumbnail = true;
         }
+        else
+        {
+            UIGlobals.isTimeTravelThumbnail = false;
+        }
 
         // make an object to hold the thumbnails
         GameObject thumbnailStack = new GameObject(StringUtils.CleanString(placeName) + "ThumbnailStack");
