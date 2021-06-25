@@ -228,6 +228,20 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         }
     }
 
+    // determine which camera texture to use for the pause menu background image
+    public static Texture2D GetPauseMenuBackgroundImage(string referringSceneName)
+    {
+        switch (referringSceneName)
+        {
+            case string name when name.Contains("60s70s"):
+                return UIGlobals.FPSController60s70sCameraTexture;
+            case string name when name.Contains("80s90s"):
+                return UIGlobals.FPSController80s90sCameraTexture;
+            default:
+                return UIGlobals.outgoingFPSControllerCameraTexture;
+        }
+    }
+
     // get the time travel notification container for each scene
     public static GameObject GetTimePeriodNotificationContainerByName(string sceneName)
     {
@@ -334,9 +348,12 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     // rebuilds the sprite on this gameObject's image component
     public static void RefreshObjectImageSprite(GameObject imageObject)
     {
-        Texture2D thumbnailTexture = AssociateCameraTextureByName(imageObject.name);
-        Sprite updatedThumbnailSprite = Sprite.Create(thumbnailTexture, new Rect(0.0f, 0.0f, thumbnailTexture.width, thumbnailTexture.height), new Vector2(0.5f, 0.5f), 100.0f);
-        imageObject.GetComponent<Image>().sprite = updatedThumbnailSprite;
+        if (imageObject)
+        {
+            Texture2D thumbnailTexture = AssociateCameraTextureByName(imageObject.name);
+            Sprite updatedThumbnailSprite = Sprite.Create(thumbnailTexture, new Rect(0.0f, 0.0f, thumbnailTexture.width, thumbnailTexture.height), new Vector2(0.5f, 0.5f), 100.0f);
+            imageObject.GetComponent<Image>().sprite = updatedThumbnailSprite;
+        }
     }
 
     // forces a refresh of the time period selection thumbnails, in the Pause Menu
@@ -423,7 +440,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         fullScreenBackgroundImage.SetNativeSize();
 
         // determine the texture we should use based on the object's name
-        Texture2D backgroundTexture = AssociateCameraTextureByName(fullScreenBackground.name);
+        Texture2D backgroundTexture = GetPauseMenuBackgroundImage(SceneGlobals.referringSceneName);
 
         // set the sprite to the given texture
         fullScreenBackgroundImage.sprite = Sprite.Create(backgroundTexture, new Rect(0.0f, 0.0f, backgroundTexture.width, backgroundTexture.height), new Vector2(0.5f, 0.5f), 100.0f);
