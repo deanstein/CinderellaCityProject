@@ -14,7 +14,7 @@ public class UIGlobals
     // is used to determine when to generate time-travel specific thumbnails
     public static bool isTimeTravelThumbnail;
 
-    // keep track of the UI elements that get dynamically updated when Pause is ivoked
+    // keep track of the UI elements that get dynamically updated when Pause is invoked
     public static GameObject pauseMenuBackgroundImage;
     public static List<GameObject> timeTravelThumbnails = new List<GameObject>();
 
@@ -177,7 +177,6 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     public static float textButtonLeftMarginScreenWidthRatio = 0.01f;
 
     public static float HUDBottomBarTopMarginScreenHeightRatio = 0.9f;
-    public static float HUDBottomBarBottomMarginScreenHeightRatio = 0.03f;
     public static float HUDBottonBarHeightScreenHeightRatio = 0.08f;
     public static float HUDTimePeriodLabelLeftMarginScreenWidthRatio = 0.85f;
 
@@ -529,11 +528,10 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         introMessageLabelText.fontSize = menuTitleLabelSize;
         introMessageLabelText.alignment = TextAnchor.UpperLeft;
 
-        // resize the text's bounding box needs, before any transforms
-        TransformScreenSpaceObject.ResizeTextExtentsToFitContents(introMessageLabelText);
-
         // position the title text
         TransformScreenSpaceObject.PositionObjectAtCenterofCamera(titleLabel);
+        // resize the text's bounding box needs, before any transforms - for some reason this needs to be called here
+        TransformScreenSpaceObject.ResizeTextExtentsToFitContents(introMessageLabelText);
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(titleLabel, titleContainer, menuTitleTopMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(titleLabel, titleContainer, menuTitleLeftMarginScreenWidthRatio);
         TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(titleContainer, titleLabel, menuTitleBottomMarginScreenHeightRatio);
@@ -568,14 +566,13 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         timePeriodLabelText.fontSize = HUDTimePeriodLabelSize;
         timePeriodLabelText.alignment = TextAnchor.UpperLeft;
 
-        // resize the text's bounding box needs, before any transforms
-        TransformScreenSpaceObject.ResizeTextExtentsToFitContents(timePeriodLabelText);
-
         // position the title text
         TransformScreenSpaceObject.PositionObjectAtCenterofCamera(timePeriodLabel);
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(timePeriodLabel, timePeriodContainer, menuTitleTopMarginScreenHeightRatio);
+        // resize the text's bounding box needs, before any transforms - for some reason this needs to be called here
+        TransformScreenSpaceObject.ResizeTextExtentsToFitContents(timePeriodLabelText);
+        // continue positioning
+        TransformScreenSpaceObject.PositionObjectAtHorizontalCenterlineOfNeighbor(timePeriodLabel, timePeriodContainer);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(timePeriodLabel, timePeriodContainer, menuTitleLeftMarginScreenWidthRatio);
-        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromCameraBottom(timePeriodContainer, HUDBottomBarBottomMarginScreenHeightRatio);
 
         // set parent/child hierarchy
         timePeriodContainer.transform.SetParent(parent.transform);
