@@ -126,6 +126,9 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         {
             Utils.DebugUtils.DebugLog("Building the Pause Menu...");
 
+            // clear the time travel thumbnails, since this may be called multiple times in one session
+            UIGlobals.timeTravelThumbnails.Clear();
+
             // pause menu canvas
             GameObject pauseMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(launcher, "PauseMenu");
 
