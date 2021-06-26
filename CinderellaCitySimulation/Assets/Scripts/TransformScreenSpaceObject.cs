@@ -257,6 +257,33 @@ public static class TransformScreenSpaceObject
         rectTransform.position = newObjectPosition;
     }
 
+    // very similar to centering an object, but accounts for the descender so text is more horizontally centered
+    public static void PositionTextAtHorizontalCenterlineOfNeighbor(GameObject textToPosition, GameObject alignmentObject)
+    {
+        // get the neighbor's position
+        Vector3 neighborPosition = alignmentObject.transform.position;
+
+        // get the text descender height
+        float textDescenderHeight = GetTextDescenderHeight(textToPosition);
+
+        // move the object so it's centered relative to the neighbor
+        Vector3 newObjectPosition = new Vector3(textToPosition.transform.position.x, neighborPosition.y - textDescenderHeight, 0);
+
+        RectTransform rectTransform = textToPosition.GetComponent<RectTransform>();
+        rectTransform.position = newObjectPosition;
+    }
+
+    // get the descender height of the text in pixels
+    public static float GetTextDescenderHeight(GameObject textToMeasure)
+    {
+        RectTransform rectTransform = textToMeasure.GetComponent<RectTransform>();
+
+        float textHeight = rectTransform.rect.height;
+        float textDescenderHeight = textHeight * CreateScreenSpaceUIElements.textDescenderProportion;
+
+        return textDescenderHeight;
+    }
+
     public static void PositionMultiObjectsAtHorizontalCenterlinesOfNeighbors(List<GameObject> screenSpaceObjects, List<GameObject> alignmentObjects)
     {
         for (var i = 0; i < screenSpaceObjects.Count; i++)
@@ -271,6 +298,7 @@ public static class TransformScreenSpaceObject
         Vector3 neighborPosition = alignmentObject.transform.position;
 
         // move the object so it's centered relative to the neighbor
+        // but moved down to account for the text descender
         Vector3 newObjectPosition = new Vector3(neighborPosition.x, screenSpaceObject.transform.position.y, 0);
 
         RectTransform rectTransform = screenSpaceObject.GetComponent<RectTransform>();

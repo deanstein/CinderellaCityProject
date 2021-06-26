@@ -84,11 +84,12 @@ public class StringUtils
         }
         else
         {
-            return "Experimental";
+            return "0000 Experimental";
         }
     }
 
     // return true if this string is found at all in the given array
+    // TODO: move this to Utils?
     public static bool TestIfAnyListItemContainedInString(List<string> listOfStringsToSearchFor, string stringToSearchIn)
     {
         foreach (string searchForString in listOfStringsToSearchFor)
@@ -140,6 +141,9 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
     public static int menuTextButtonLabelSize = 35;
 
+    // the proportion of the text height that the descender is estimated to be
+    public static float textDescenderProportion = 0.12f;
+
     // button sizes (ratio relative to screen size)
     public static float menuButtonScreenWidthRatio = 0.15f;
     public static float menuButtonTopBottomPaddingScreenHeightRatio = 0.01f;
@@ -182,7 +186,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     public static float HUDBottomBarBottomMarginScreenHeightRatio = 0.03f;
 
     public static float versionLabelLeftMarginScreenWidthRatio = 0.008f;
-    public static float versionLabelTopMarginScreenHeightRatio = 0.98f;
+    public static float versionLabelTopMarginScreenHeightRatio = 0.97f;
 
     // create an empty list of GameObjects that need to be dynamically added to their parent
     // this list will be emptied and populated in UI constructors that make nested sets of objects
@@ -589,9 +593,9 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // resize the text's bounding box to fit the text, before any transforms - for some reason this needs to be called here
         TransformScreenSpaceObject.ResizeTextExtentsToFitContents(timePeriodLabelText);
         TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromCameraBottom(timePeriodContainer, HUDBottomBarBottomMarginScreenHeightRatio);
-        TransformScreenSpaceObject.PositionObjectAtHorizontalCenterlineOfNeighbor(timePeriodLabel, timePeriodContainer);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(timePeriodLabel, timePeriodContainer, menuTitleLeftMarginScreenWidthRatio);
         TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromCameraBottom(timePeriodContainer, HUDBottomBarBottomMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionTextAtHorizontalCenterlineOfNeighbor(timePeriodLabel, timePeriodContainer);
 
         // set parent/child hierarchy
         timePeriodContainer.transform.SetParent(parent.transform);
