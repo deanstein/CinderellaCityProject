@@ -176,9 +176,10 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     public static float textButtonBottomMarginScreenHeightRatio = 0.015f;
     public static float textButtonLeftMarginScreenWidthRatio = 0.01f;
 
-    public static float HUDBottomBarTopMarginScreenHeightRatio = 0.9f;
+    public static float HUDBottomBarTopMarginScreenHeightRatio = 0.85f;
     public static float HUDBottonBarHeightScreenHeightRatio = 0.08f;
     public static float HUDTimePeriodLabelLeftMarginScreenWidthRatio = 0.85f;
+    public static float HUDBottomBarBottomMarginScreenHeightRatio = 0.03f;
 
     public static float versionLabelLeftMarginScreenWidthRatio = 0.008f;
     public static float versionLabelTopMarginScreenHeightRatio = 0.98f;
@@ -547,7 +548,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
         // position the title text
         TransformScreenSpaceObject.PositionObjectAtCenterofCamera(titleLabel);
-        // resize the text's bounding box needs, before any transforms - for some reason this needs to be called here
+        // resize the text's bounding box to fit the text, before any transforms - for some reason this needs to be called here
         TransformScreenSpaceObject.ResizeTextExtentsToFitContents(introMessageLabelText);
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(titleLabel, titleContainer, menuTitleTopMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(titleLabel, titleContainer, menuTitleLeftMarginScreenWidthRatio);
@@ -583,13 +584,14 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         timePeriodLabelText.fontSize = HUDTimePeriodLabelSize;
         timePeriodLabelText.alignment = TextAnchor.UpperLeft;
 
-        // position the title text
+        // resize and position
         TransformScreenSpaceObject.PositionObjectAtCenterofCamera(timePeriodLabel);
-        // resize the text's bounding box needs, before any transforms - for some reason this needs to be called here
+        // resize the text's bounding box to fit the text, before any transforms - for some reason this needs to be called here
         TransformScreenSpaceObject.ResizeTextExtentsToFitContents(timePeriodLabelText);
-        // continue positioning
+        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromCameraBottom(timePeriodContainer, HUDBottomBarBottomMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionObjectAtHorizontalCenterlineOfNeighbor(timePeriodLabel, timePeriodContainer);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(timePeriodLabel, timePeriodContainer, menuTitleLeftMarginScreenWidthRatio);
+        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromCameraBottom(timePeriodContainer, HUDBottomBarBottomMarginScreenHeightRatio);
 
         // set parent/child hierarchy
         timePeriodContainer.transform.SetParent(parent.transform);
@@ -623,7 +625,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         underConstructionLabelText.fontSize = menuTitleLabelSize;
         underConstructionLabelText.alignment = TextAnchor.UpperLeft;
 
-        // resize the text's bounding box needs, before any transforms
+        // resize the text's bounding box to fit the text
         Vector2 textSize = TransformScreenSpaceObject.ResizeTextExtentsToFitContents(underConstructionLabelText);
 
         RectTransform rt = timePeriodContainerColor.GetComponent<RectTransform>();
@@ -664,7 +666,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         underConstructionLabelText.fontSize = menuTitleLabelSize;
         underConstructionLabelText.alignment = TextAnchor.UpperLeft;
 
-        // resize the text's bounding box needs, before any transforms
+        // resize the text's bounding box to fit the text
         TransformScreenSpaceObject.ResizeTextExtentsToFitContents(underConstructionLabelText);
 
         // position the title text
@@ -700,7 +702,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         versionLabelText.fontSize = versionLabelSize;
         versionLabelText.alignment = TextAnchor.UpperLeft;
 
-        // resize the text's bounding box needs, before any transforms
+        // resize the text's bounding box to fit the text
         TransformScreenSpaceObject.ResizeTextExtentsToFitContents(versionLabelText);
 
         // position the version text
