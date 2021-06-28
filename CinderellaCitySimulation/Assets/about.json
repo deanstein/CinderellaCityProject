@@ -12,6 +12,8 @@
             "Updated 80s90s to match certain elements of 60s70s "
         ],
           "Logic Updates": [
+            "Fixed issue where menu UI would fail to react when game window was resized",
+            "Added ability to adjust text position in its container to account for descender height",
             "Added support for new light and signage types in AssetImportPipeline"
           ]
         }
