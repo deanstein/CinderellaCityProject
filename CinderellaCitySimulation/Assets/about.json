@@ -13,7 +13,7 @@
         ],
           "Logic Updates": [
             "Fixed issue where menu UI would fail to react when game window was resized",
-            "Added ability to adjust text position in its container to account for descender height",
+            "Added support for adjusting text position in its container to account for descender height",
             "Added support for new light and signage types in AssetImportPipeline"
           ]
         }
