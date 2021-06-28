@@ -52,7 +52,6 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
 
     public void ClearCurrentSceneUI()
     {
-
         for (int i = 0; i < this.transform.childCount; i++)
         {
             GameObject.DestroyImmediate(this.transform.GetChild(i).gameObject);
