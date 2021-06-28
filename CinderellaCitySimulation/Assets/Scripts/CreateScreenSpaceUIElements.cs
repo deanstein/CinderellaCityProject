@@ -186,7 +186,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     public static float HUDBottomBarBottomMarginScreenHeightRatio = 0.03f;
 
     public static float versionLabelLeftMarginScreenWidthRatio = 0.008f;
-    public static float versionLabelTopMarginScreenHeightRatio = 0.97f;
+    public static float versionLabelTopMarginScreenHeightRatio = 0.98f;
 
     // create an empty list of GameObjects that need to be dynamically added to their parent
     // this list will be emptied and populated in UI constructors that make nested sets of objects
