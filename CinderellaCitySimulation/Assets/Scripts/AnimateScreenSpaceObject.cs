@@ -70,7 +70,7 @@ public class AnimateScreenSpaceObject : AutoResumeCoroutines
 
             // center and full-screen the current sprite
             TransformScreenSpaceObject.PositionObjectAtCenterofCamera(imageComponent.gameObject);
-            TransformScreenSpaceObject.ScaleObjectToFillCamera(imageComponent.gameObject);
+            TransformScreenSpaceObject.ScaleImageToFillScreen(imageComponent);
 
             // reset at the end of the list to repeat the sequence
             counter = (counter + 1) % imageSequence.Length;

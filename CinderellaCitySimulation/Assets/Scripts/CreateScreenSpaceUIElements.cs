@@ -455,7 +455,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
         // center and full-screen the image
         TransformScreenSpaceObject.PositionObjectAtCenterofCamera(fullScreenBackgroundImage.gameObject);
-        TransformScreenSpaceObject.ScaleObjectToFillCamera(fullScreenBackgroundImage.gameObject);
+        TransformScreenSpaceObject.ScaleImageToFillScreen(fullScreenBackgroundImage);
 
         // if enabled, add the script to refresh the image sprite when the object is re-enabled
         // this allows for using an image that's generated/updated during gameplay
@@ -550,10 +550,11 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         introMessageLabelText.fontSize = menuTitleLabelSize;
         introMessageLabelText.alignment = TextAnchor.UpperLeft;
 
-        // position the title text
-        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(titleLabel);
-        // resize the text's bounding box to fit the text, before any transforms - for some reason this needs to be called here
+        // resize the text's bounding box to fit the text, before any transforms
         TransformScreenSpaceObject.ResizeTextExtentsToFitContents(introMessageLabelText);
+
+        // position and resize the text and container
+        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(titleLabel);
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(titleLabel, titleContainer, menuTitleTopMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(titleLabel, titleContainer, menuTitleLeftMarginScreenWidthRatio);
         TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(titleContainer, titleLabel, menuTitleBottomMarginScreenHeightRatio);
@@ -588,10 +589,11 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         timePeriodLabelText.fontSize = HUDTimePeriodLabelSize;
         timePeriodLabelText.alignment = TextAnchor.UpperLeft;
 
-        // resize and position
-        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(timePeriodLabel);
-        // resize the text's bounding box to fit the text, before any transforms - for some reason this needs to be called here
+        // resize the text's bounding box to fit the text, before any transforms
         TransformScreenSpaceObject.ResizeTextExtentsToFitContents(timePeriodLabelText);
+
+        // position and resize the text and container
+        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(timePeriodLabel);
         TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromCameraBottom(timePeriodContainer, HUDBottomBarBottomMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(timePeriodLabel, timePeriodContainer, menuTitleLeftMarginScreenWidthRatio);
         TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromCameraBottom(timePeriodContainer, HUDBottomBarBottomMarginScreenHeightRatio);

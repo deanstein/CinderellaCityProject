@@ -266,7 +266,8 @@ public static class TransformScreenSpaceObject
         // get the text descender height
         float textDescenderHeight = GetTextDescenderHeight(textToPosition);
 
-        // move the object so it's centered relative to the neighbor
+        // move the text so it's centered relative to the neighbor
+        // but moved down slightly to account for the text descender
         Vector3 newObjectPosition = new Vector3(textToPosition.transform.position.x, neighborPosition.y - textDescenderHeight, 0);
 
         RectTransform rectTransform = textToPosition.GetComponent<RectTransform>();
@@ -298,7 +299,6 @@ public static class TransformScreenSpaceObject
         Vector3 neighborPosition = alignmentObject.transform.position;
 
         // move the object so it's centered relative to the neighbor
-        // but moved down to account for the text descender
         Vector3 newObjectPosition = new Vector3(neighborPosition.x, screenSpaceObject.transform.position.y, 0);
 
         RectTransform rectTransform = screenSpaceObject.GetComponent<RectTransform>();
@@ -503,48 +503,28 @@ public static class TransformScreenSpaceObject
         rectTransform.localScale = scale;
     }
 
-    public static void ScaleObjectToFillCamera(GameObject screenSpaceObject)
+    // scale images to always fill the entire screen
+    public static void ScaleImageToFillScreen(Image screenSpaceImage)
     {
-        RectTransform rectTransform = screenSpaceObject.GetComponent<RectTransform>();
+        // for some reason this is required
+        RectTransform rectTransform = screenSpaceImage.gameObject.GetComponent<RectTransform>();
+        rectTransform.localScale = new Vector2(1.0f, 1.0f);
 
-        // get the object width and height
-        float objectWidth = rectTransform.rect.width;
-        float objectHeight = rectTransform.rect.height;
+        // get the screen aspect ratio
+        float imageWidth = screenSpaceImage.preferredWidth;
+        float imageHeight = screenSpaceImage.preferredHeight;
+        float screenWidthHeightRatio = imageWidth / imageHeight;
 
-        // get the ratio of the object's width and height
-        float objectWidthHeightRatio = objectWidth / objectHeight;
-        //Utils.DebugUtils.DebugLog("Object width ratio: " + objectWidthHeightRatio);
-
-        // get the ratio of the camera's width and height
-        float screenWidth = Screen.width;
-        float screenHeight = Screen.height;
-
-        float cameraWidthHeightRatio = screenWidth / screenHeight;
-        //Utils.DebugUtils.DebugLog("Screen width ratio: " + Screen.width + "," + Screen.height + " " + cameraWidthHeightRatio);
-
-        // define the two possible scaling factors
-        float cameraToObjectWidthRatio = Screen.width / objectWidth;
-        float cameraToObjectHeightRatio = Screen.height / objectHeight;
-
-        // get the current image scale
-        Vector2 scale = rectTransform.localScale;
-
-        // scale differently depending on how the object width/heigh ratio compares to the camera ratio
-        if (objectWidthHeightRatio >= cameraWidthHeightRatio)
-        { // Image is wider than the camera
-
-            scale *= cameraToObjectHeightRatio;
-            //Utils.DebugUtils.DebugLog("New scale factor (object width ratio > camera width ratio: " + scale);
-        }
-        else
-        { // Image is taller than the camera
-
-            scale *= cameraToObjectWidthRatio;
-            //Utils.DebugUtils.DebugLog("New scale factor (else) " + scale);
+        // get the fitter script, if it exists
+        AspectRatioFitter fitter = screenSpaceImage.gameObject.GetComponent<AspectRatioFitter>();
+        // otherwise, add a fitter script
+        if (fitter == null)
+        {
+            fitter = screenSpaceImage.gameObject.AddComponent<AspectRatioFitter>();
         }
 
-        //transform.position = Vector2.zero; // Optional
-        rectTransform.localScale = scale;
+        // configure the fitter script
+        fitter.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
+        fitter.aspectRatio = screenWidthHeightRatio;
     }
-
 }
