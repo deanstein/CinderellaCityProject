@@ -180,7 +180,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     public static float textButtonBottomMarginScreenHeightRatio = 0.015f;
     public static float textButtonLeftMarginScreenWidthRatio = 0.01f;
 
-    public static float HUDBottomBarTopMarginScreenHeightRatio = 0.85f;
+    public static float HUDBottomBarTopMarginScreenHeightRatio = 0.9f;
     public static float HUDBottonBarHeightScreenHeightRatio = 0.08f;
     public static float HUDTimePeriodLabelLeftMarginScreenWidthRatio = 0.85f;
     public static float HUDBottomBarBottomMarginScreenHeightRatio = 0.03f;
