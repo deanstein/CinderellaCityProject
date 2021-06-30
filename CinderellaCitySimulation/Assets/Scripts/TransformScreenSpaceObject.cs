@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public static class TransformScreenSpaceObject
 {
-    public static float cameraMidPointX = Screen.width / 2;
-    public static float cameraMidPointY = Screen.height / 2;
+    public static float screenMidPointX = Screen.width / 2;
+    public static float screenMidPointY = Screen.height / 2;
 
     public static float GetObjectTopEdgePositionY(GameObject screenSpaceObject)
     {
@@ -60,7 +60,7 @@ public static class TransformScreenSpaceObject
         return objectRightEdgePositionX;
     }
 
-    public static void PositionObjectByHeightRatioFromCameraTop(GameObject screenSpaceObject, float bufferProportion)
+    public static void PositionObjectByHeightRatioFromScreenTop(GameObject screenSpaceObject, float bufferProportion)
     {
         RectTransform rectTransform = screenSpaceObject.GetComponent<RectTransform>();
         float objectHeight = rectTransform.rect.height * rectTransform.localScale.y;
@@ -84,7 +84,7 @@ public static class TransformScreenSpaceObject
         rectTransform.position = newObjectPosition;
     }
 
-    public static void PositionObjectByWidthRatioFromCameraLeft(GameObject screenSpaceObject, float bufferProportion)
+    public static void PositionObjectByWidthRatioFromScreenLeft(GameObject screenSpaceObject, float bufferProportion)
     {
         RectTransform rectTransform = screenSpaceObject.GetComponent<RectTransform>();
         float objectWidth = rectTransform.rect.width * rectTransform.localScale.x;
@@ -218,12 +218,11 @@ public static class TransformScreenSpaceObject
         rectTransform.position = newObjectPosition;
     }
 
-    public static void PositionObjectAtCenterofCamera(GameObject screenSpaceObject)
+    public static void PositionObjectAtCenterofScreen(GameObject screenSpaceObject)
     {
         // get the position at mid-width and mid-height of the screen
         float newPositionX = Screen.width / 2;
         float newPositionY = Screen.height / 2;
-        //Utils.DebugUtils.DebugLog("Camera resolution: " + cameraWidth + ", " + cameraHeight);
 
         // move the object so it's centered
         Vector3 newObjectPosition = new Vector3(newPositionX, newPositionY, 0);
@@ -232,11 +231,10 @@ public static class TransformScreenSpaceObject
         rectTransform.position = newObjectPosition;
     }
 
-    public static void PositionObjectAtCenterofCameraWidth(GameObject screenSpaceObject)
+    public static void PositionObjectAtCenterofScreenWidth(GameObject screenSpaceObject)
     {
         // get the position at mid-width and mid-height of the screen
         float newPositionX = Screen.width / 2;
-        //Utils.DebugUtils.DebugLog("Camera resolution: " + cameraWidth + ", " + cameraHeight);
 
         // move the object so it's centered
         Vector3 newObjectPosition = new Vector3(newPositionX, screenSpaceObject.transform.position.y, 0);
@@ -305,24 +303,24 @@ public static class TransformScreenSpaceObject
         rectTransform.position = newObjectPosition;
     }
 
-    public static void ResizeObjectWidthToMatchCamera(GameObject screenSpaceObject)
+    public static void ResizeObjectWidthToMatchScreen(GameObject screenSpaceObject)
     {
         RectTransform rectTransform = screenSpaceObject.GetComponent<RectTransform>();
         float objectWidth = rectTransform.rect.width;
 
-        // redefine the width as the camera width
+        // redefine the width as the screen width
         rectTransform.sizeDelta = new Vector2 (Screen.width, rectTransform.rect.height);
 
-        // center the object so its new width aligns with the camera borders
-        Vector3 newObjectPosition = new Vector3(cameraMidPointX, rectTransform.position.y, 0);
+        // center the object so its new width aligns with the screen borders
+        Vector3 newObjectPosition = new Vector3(screenMidPointX, rectTransform.position.y, 0);
         rectTransform.position = newObjectPosition;
     }
 
-    public static void ResizeObjectWidthByBufferRatioFromCameraLeft(GameObject screenSpaceObject, float bufferProportion)
+    public static void ResizeObjectWidthByBufferRatioFromScreenLeft(GameObject screenSpaceObject, float bufferProportion)
     {
         // first, center the object in the screen, width-wise
         // this is important so that, if the game window is resized, this function doesn't use the old position for its calculations
-        PositionObjectAtCenterofCameraWidth(screenSpaceObject);
+        PositionObjectAtCenterofScreenWidth(screenSpaceObject);
 
         RectTransform screenSpaceObjectRectTransform = screenSpaceObject.GetComponent<RectTransform>();
 
@@ -331,10 +329,9 @@ public static class TransformScreenSpaceObject
         float screenSpaceObjectLeftEdgePositionX = GetObjectLeftEdgePositionX(screenSpaceObject);
         //Utils.DebugUtils.DebugLog("Screen space object left edge position X: " + screenSpaceObjectLeftEdgePositionX);
 
-        float cameraLeftEdgePositionX = 0;
-        //Utils.DebugUtils.DebugLog("Camera left edge position X: " + cameraLeftEdgePositionX);
+        float screenLeftEdgePositionX = 0;
 
-        float newScreenSpaceObjectLeftEdgePositionX = cameraLeftEdgePositionX + (Screen.width * bufferProportion);
+        float newScreenSpaceObjectLeftEdgePositionX = screenLeftEdgePositionX + (Screen.width * bufferProportion);
         //Utils.DebugUtils.DebugLog("New screen space object left edge position X: " + newScreenSpaceObjectLeftEdgePositionX);
 
         float newScreenSpaceObjectWidth = screenSpaceObjectRectTransform.rect.width + (screenSpaceObjectLeftEdgePositionX - newScreenSpaceObjectLeftEdgePositionX);
@@ -428,7 +425,7 @@ public static class TransformScreenSpaceObject
         screenSpaceObjectRectTransform.position = newObjectPosition;
     }
 
-    public static void ResizeObjectHeightByBufferRatioFromCameraBottom(GameObject screenSpaceObject, float bufferProportion)
+    public static void ResizeObjectHeightByBufferRatioFromScreenBottom(GameObject screenSpaceObject, float bufferProportion)
     {
         RectTransform screenSpaceObjectRectTransform = screenSpaceObject.GetComponent<RectTransform>();
 
@@ -437,10 +434,9 @@ public static class TransformScreenSpaceObject
         float screenSpaceObjectBottomEdgePositionY = GetObjectBottomEdgePositionY(screenSpaceObject);
         //Utils.DebugUtils.DebugLog("Screen space object bottom edge position Y: " + screenSpaceObjectBottomEdgePositionY);
 
-        float cameraBottomEdgePositionY = 0;
-        //Utils.DebugUtils.DebugLog("Alignment object bottom edge position Y: " + cameraBottomEdgePositionY);
+        float screenBottomEdgePositionY = 0;
 
-        float newScreenSpaceObjectBottomEdgePositionY = cameraBottomEdgePositionY + (Screen.height * bufferProportion);
+        float newScreenSpaceObjectBottomEdgePositionY = screenBottomEdgePositionY + (Screen.height * bufferProportion);
         //Utils.DebugUtils.DebugLog("New screen space object bottom edge position Y: " + newScreenSpaceObjectBottomEdgePositionY);
 
         float newScreenSpaceObjectHeight = screenSpaceObjectRectTransform.rect.height + (screenSpaceObjectBottomEdgePositionY - newScreenSpaceObjectBottomEdgePositionY);
@@ -485,7 +481,7 @@ public static class TransformScreenSpaceObject
         return finalSize;
     }
 
-    public static void ScaleObjectByCameraHeightProportion(GameObject screenSpaceObject, float heightProportion)
+    public static void ScaleObjectByScreenHeightProportion(GameObject screenSpaceObject, float heightProportion)
     {
         RectTransform rectTransform = screenSpaceObject.GetComponent<RectTransform>();
 
