@@ -454,7 +454,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         fullScreenBackgroundImage.rectTransform.localScale = new Vector3(1, 1, 1);
 
         // center and full-screen the image
-        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(fullScreenBackgroundImage.gameObject);
+        TransformScreenSpaceObject.PositionObjectAtCenterofScreen(fullScreenBackgroundImage.gameObject);
         TransformScreenSpaceObject.ScaleImageToFillScreen(fullScreenBackgroundImage);
 
         // if enabled, add the script to refresh the image sprite when the object is re-enabled
@@ -507,11 +507,11 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         logoImage.SetNativeSize();
 
         // adjust the scale of the logo
-        TransformScreenSpaceObject.ScaleObjectByCameraHeightProportion(logo, projectLogoHeightScreenHeightRatio);
+        TransformScreenSpaceObject.ScaleObjectByScreenHeightProportion(logo, projectLogoHeightScreenHeightRatio);
 
         // position the logo
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromCameraTop(logo, projectLogoTopMarginScreenHeightRatio);
-        TransformScreenSpaceObject.PositionObjectByWidthRatioFromCameraLeft(logo, projectLogoLeftMarginScreenWidthRatio);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromScreenTop(logo, projectLogoTopMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromScreenLeft(logo, projectLogoLeftMarginScreenWidthRatio);
 
         // position the logo container
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(logoContainer, logo, projectLogoContainerTopPaddingScreenHeightRatio);
@@ -539,8 +539,8 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(titleContainer, topAlignmentObject, logoHeaderBottomMarginScreenHeightRatio);
 
         // resize the title container
-        TransformScreenSpaceObject.ResizeObjectWidthToMatchCamera(titleContainer);
-        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromCameraLeft(titleContainer, navContainerLeftMarginScreenWidthRatio);
+        TransformScreenSpaceObject.ResizeObjectWidthToMatchScreen(titleContainer);
+        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromScreenLeft(titleContainer, navContainerLeftMarginScreenWidthRatio);
 
         // add the title text
         GameObject titleLabel = new GameObject("TitleLabel");
@@ -554,7 +554,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         TransformScreenSpaceObject.ResizeTextExtentsToFitContents(introMessageLabelText);
 
         // position and resize the text and container
-        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(titleLabel);
+        TransformScreenSpaceObject.PositionObjectAtCenterofScreen(titleLabel);
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(titleLabel, titleContainer, menuTitleTopMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(titleLabel, titleContainer, menuTitleLeftMarginScreenWidthRatio);
         TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(titleContainer, titleLabel, menuTitleBottomMarginScreenHeightRatio);
@@ -575,11 +575,11 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         timePeriodContainerColor.color = containerColor;
 
         // position the title container
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromCameraTop(timePeriodContainer, HUDBottomBarTopMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromScreenTop(timePeriodContainer, HUDBottomBarTopMarginScreenHeightRatio);
 
         // resize the title container
-        TransformScreenSpaceObject.ResizeObjectWidthToMatchCamera(timePeriodContainer);
-        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromCameraLeft(timePeriodContainer, HUDTimePeriodLabelLeftMarginScreenWidthRatio);
+        TransformScreenSpaceObject.ResizeObjectWidthToMatchScreen(timePeriodContainer);
+        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromScreenLeft(timePeriodContainer, HUDTimePeriodLabelLeftMarginScreenWidthRatio);
 
         // add the title text
         GameObject timePeriodLabel = new GameObject("TimePeriodLabel");
@@ -593,10 +593,10 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         TransformScreenSpaceObject.ResizeTextExtentsToFitContents(timePeriodLabelText);
 
         // position and resize the text and container
-        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(timePeriodLabel);
-        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromCameraBottom(timePeriodContainer, HUDBottomBarBottomMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectAtCenterofScreen(timePeriodLabel);
+        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromScreenBottom(timePeriodContainer, HUDBottomBarBottomMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(timePeriodLabel, timePeriodContainer, menuTitleLeftMarginScreenWidthRatio);
-        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromCameraBottom(timePeriodContainer, HUDBottomBarBottomMarginScreenHeightRatio);
+        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromScreenBottom(timePeriodContainer, HUDBottomBarBottomMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionTextAtHorizontalCenterlineOfNeighbor(timePeriodLabel, timePeriodContainer);
 
         // set parent/child hierarchy
@@ -621,7 +621,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         timePeriodContainerColor.color = containerColor;
 
         // position the title container
-        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(timePeriodNotificationContainer);
+        TransformScreenSpaceObject.PositionObjectAtCenterofScreen(timePeriodNotificationContainer);
 
         // add the title text
         GameObject underConstructionLabel = new GameObject("TimePeriodNotificationLabel");
@@ -640,7 +640,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         Vector2 newSize = TransformScreenSpaceObject.ResizeObjectFromCenterByMargin(timePeriodNotificationContainer, 0.01f, 0.01f);
 
         // position the title text
-        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(underConstructionLabel);
+        TransformScreenSpaceObject.PositionObjectAtCenterofScreen(underConstructionLabel);
 
         // set parent/child hierarchy
         timePeriodNotificationContainer.transform.SetParent(parent.transform);
@@ -662,7 +662,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         timePeriodContainerColor.color = clearColor;
 
         // position the title container
-        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(UIGlobals.underConstructionLabelContainer);
+        TransformScreenSpaceObject.PositionObjectAtCenterofScreen(UIGlobals.underConstructionLabelContainer);
 
         // add the title text
         GameObject underConstructionLabel = new GameObject("UnderConstructionLabel");
@@ -676,7 +676,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         TransformScreenSpaceObject.ResizeTextExtentsToFitContents(underConstructionLabelText);
 
         // position the title text
-        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(underConstructionLabel);
+        TransformScreenSpaceObject.PositionObjectAtCenterofScreen(underConstructionLabel);
 
         // set parent/child hierarchy
         UIGlobals.underConstructionLabelContainer.transform.SetParent(parent.transform);
@@ -697,7 +697,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         versionLabelContainerColor.color = clearColor;
 
         // position the version container
-        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(versionLabelContainer);
+        TransformScreenSpaceObject.PositionObjectAtCenterofScreen(versionLabelContainer);
 
         // add the version text
         GameObject versionLabel = new GameObject("VersionLabel");
@@ -712,9 +712,9 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         TransformScreenSpaceObject.ResizeTextExtentsToFitContents(versionLabelText);
 
         // position the version text
-        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(versionLabel);
-        TransformScreenSpaceObject.PositionObjectByWidthRatioFromCameraLeft(versionLabel, versionLabelLeftMarginScreenWidthRatio);
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromCameraTop(versionLabel, versionLabelTopMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectAtCenterofScreen(versionLabel);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromScreenLeft(versionLabel, versionLabelLeftMarginScreenWidthRatio);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromScreenTop(versionLabel, versionLabelTopMarginScreenHeightRatio);
 
         // set parent/child hierarchy
         versionLabelContainer.transform.SetParent(parent.transform);
@@ -737,9 +737,9 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(centralNavContainer, topAlignmentObject, navContainerTopMarginScreenHeightRatio);
 
         // resize the central nav container
-        TransformScreenSpaceObject.ResizeObjectWidthToMatchCamera(centralNavContainer);
-        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromCameraLeft(centralNavContainer, navContainerLeftMarginScreenWidthRatio);
-        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromCameraBottom(centralNavContainer, navContainerBottomMarginScreenHeightRatio);
+        TransformScreenSpaceObject.ResizeObjectWidthToMatchScreen(centralNavContainer);
+        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromScreenLeft(centralNavContainer, navContainerLeftMarginScreenWidthRatio);
+        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromScreenBottom(centralNavContainer, navContainerBottomMarginScreenHeightRatio);
 
         return centralNavContainer;
     }
@@ -778,7 +778,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         buttonTextObject.transform.SetParent(buttonContainer.transform);
 
         // move the button
-        TransformScreenSpaceObject.PositionObjectAtCenterofCamera(buttonContainer);
+        TransformScreenSpaceObject.PositionObjectAtCenterofScreen(buttonContainer);
 
         return buttonContainer;
     }
@@ -806,7 +806,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
             // position the time period label
             // note this only positions it horizontally
             // vertical positioning happens later, after the thumbnails are built
-            TransformScreenSpaceObject.PositionObjectAtCenterofCamera(timePeriodLabel);
+            TransformScreenSpaceObject.PositionObjectAtCenterofScreen(timePeriodLabel);
             TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(timePeriodLabel, leftAlignmentObject, timeLabelLeftMarginScreenWidthRatio);
 
             // add this label to the list of labels for alignment
@@ -899,10 +899,10 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
             timePeriodButtonImage.SetNativeSize();
 
             // scale the button to be a proportion of the camera height
-            TransformScreenSpaceObject.ScaleObjectByCameraHeightProportion(timePeriodButton, 0.2f);
+            TransformScreenSpaceObject.ScaleObjectByScreenHeightProportion(timePeriodButton, 0.2f);
 
             // position the button
-            TransformScreenSpaceObject.PositionObjectAtCenterofCamera(timePeriodButton);
+            TransformScreenSpaceObject.PositionObjectAtCenterofScreen(timePeriodButton);
             TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(timePeriodButton, leftAlignmentObject, 0.02f);
 
             // if this is the first item, position it below the place label

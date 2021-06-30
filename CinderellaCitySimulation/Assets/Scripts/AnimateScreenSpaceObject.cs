@@ -69,7 +69,7 @@ public class AnimateScreenSpaceObject : AutoResumeCoroutines
             imageComponent.rectTransform.localScale = new Vector3(1, 1, 1);
 
             // center and full-screen the current sprite
-            TransformScreenSpaceObject.PositionObjectAtCenterofCamera(imageComponent.gameObject);
+            TransformScreenSpaceObject.PositionObjectAtCenterofScreen(imageComponent.gameObject);
             TransformScreenSpaceObject.ScaleImageToFillScreen(imageComponent);
 
             // reset at the end of the list to repeat the sequence
