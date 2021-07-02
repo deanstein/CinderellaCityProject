@@ -2,8 +2,11 @@
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using UnityStandardAssets.Characters.FirstPerson;
-
 using System.Collections;
+
+/// <summary>
+/// Toggles camera operations and effects on certain input events
+/// </summary>
 
 // this script should be attached to FPSCharacter objects that need to watch for shortcuts to adjust camera effects
 public class ToggleCameraActionsByInputEvent : MonoBehaviour {

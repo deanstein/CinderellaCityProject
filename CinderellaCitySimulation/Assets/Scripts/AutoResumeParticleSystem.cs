@@ -1,5 +1,10 @@
 using UnityEngine;
 
+/// <summary>
+/// Auto-resumes particle systems that have been suspended,
+/// for example when a scene containing a fountain is re-enabled
+/// </summary>
+
 public class AutoResumeParticleSystem : MonoBehaviour
 {
     private void OnEnable()

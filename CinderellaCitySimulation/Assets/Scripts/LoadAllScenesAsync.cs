@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Loads all game Scenes into memory, before anything else
+/// This allows the nearly seamless transition between Scenes
+/// </summary>
+
 public class LoadAllScenesAsync : MonoBehaviour {
 
     // create a list to keep track of all active async operations progress

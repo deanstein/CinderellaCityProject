@@ -5,6 +5,10 @@ using UnityEngine.UI;
 
 [RequireComponent(typeof(UnityEngine.UI.Button))]
 
+/// <summary>
+/// Builds and positions all screen-space objects (UI)
+/// </summary>
+
 // holds values other scripts need to access
 public class UIGlobals
 {

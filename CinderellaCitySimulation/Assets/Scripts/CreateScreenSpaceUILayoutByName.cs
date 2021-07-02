@@ -5,6 +5,12 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// Creates bespoke UI layouts, depending on the name of its host object 
+/// for example, the Main Menu, Pause Menu, and Loading Screen host objects
+/// will launch their respective UI element layouts
+/// </summary>
+
 [RequireComponent(typeof(UnityEngine.UI.Button))]
 
 public class CreateScreenSpaceUILayoutByName : MonoBehaviour
@@ -13,6 +19,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
     // then, the correct menu layout or layout combinations will be built based on the launcher's name
 
     // define the background image sequence for each menu or screen
+    // TODO: increase variety and randomize
     string[] loadingScreenBackgroundSlideShowSequence = { "UI/LoadingScreenBackground1", "UI/LoadingScreenBackground2" };
     string[] mainMenuBackgroundSlideShowSequence = { "UI/MainMenuBackground1", "UI/MainMenuBackground2" };
 

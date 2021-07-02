@@ -6,12 +6,19 @@ using UnityEngine.SceneManagement;
 
 [ExecuteInEditMode]
 
+/// <summary>
+/// Renders a camera's view to an image, either on-disk or in-memory
+/// Will self-destruct(delete itself or its own component) after running once, 
+/// because it must run on PreRender(), which happens every frame
+/// it only needs to run in one frame, anything further will cause performance degradation
+/// </summary>
+
+// attach this script to a camera to write an image of the camera's view to the local file system
+// to initiate, reimport an asset in the Editor, or enable the flag to run in game mode
+// this script runs on OnPostRender, then self-destructs (it only needs to run once)
+
 public class RenderCameraToImageSelfDestruct : MonoBehaviour
 {
-    // attach this script to a camera to write an image of the camera's view to the local file system
-    // to initiate, reimport an asset in the Editor, or enable the flag to run in game mode
-    // this script runs on OnPostREnder, then self-destructs (it only needs to run once)
-
     // defaults to false, so will only run in Editor
     // however some scripts may call this to execute once, while the game is running
     public bool runInGameMode = false;

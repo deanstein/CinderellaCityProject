@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.IO;
-using System.Collections;  
-using System.Collections.Generic;
- 
+
+///<summary>
+/// Adds a menu item in Window -> CubeSplitter, which allows for extracting the texture files from a CubeMap for editing
+///</summary>
+
 public class CubeSplitter : EditorWindow
 {
     Cubemap splitCube;

@@ -3,6 +3,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEditor.SceneManagement;
 
+/// <summary>
+/// Toggles between scenes, or loads scenes additively, in the editor environment
+/// </summary>
+
 public static class ManageEditorScenes
 {
     // load the given scenes additively in the Unity Editor, starting from a given loading scene

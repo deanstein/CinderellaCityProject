@@ -1,8 +1,10 @@
 using UnityEngine;
-using UnityEngine.AI;
+
+/// <summary>
+/// Responsible for toggling the agent attached to the player on/off to enable the agent to relocate to the player's position when required.
+/// </summary>
 
 // attach this script to an object that needs to follow the player
-
 public class UpdateFPSAgentByState : MonoBehaviour
 {
     private void Update()

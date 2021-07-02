@@ -1,8 +1,12 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-// this script should be attached to an object that has an animator that should change based on speed
+/// <summary>
+/// Changes a NavMesh agent's animator to various poses 
+/// depending on the speed of the agent
+/// </summary>
 
+// this script should be attached to an object that has an animator that should change based on speed
 public class UpdateNPCAnimatorByState : MonoBehaviour
 {
     // this object's agent and animator

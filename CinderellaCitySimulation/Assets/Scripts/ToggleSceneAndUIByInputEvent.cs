@@ -1,9 +1,11 @@
 using System.Collections;
-
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Rendering.PostProcessing;
-using UnityEngine.UI;
+
+/// <summary>
+/// Toggles entire Scenes and associated UI via certain input events
+/// </summary>
 
 // globals used for fading
 public static class FadeGlobals

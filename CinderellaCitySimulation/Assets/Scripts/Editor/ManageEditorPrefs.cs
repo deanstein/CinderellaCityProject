@@ -2,6 +2,10 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Defines the syntax of EditorPrefs (stored in the registry) as well as protocols for writing new EditorPrefs
+/// </summary>
+
 public static class ManageEditorPrefs
 {
     // collect all editor pref globals so we know what's being saved 

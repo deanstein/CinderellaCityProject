@@ -4,6 +4,10 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
+/// <summary>
+/// Offers a variety of low-level, common operations shared among other scripts
+/// </summary>
+
 public static class ArrayUtilities
 {
     // create a subset from a range of indices

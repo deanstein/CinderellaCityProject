@@ -1,7 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine;
+
+/// <summary>
+/// Toggles geometry on/off via certain input events
+/// </summary>
 
 // this script should be attached to any object that needs to watch for shortcuts to toggle it, or its children, on/off
 // this script also contains general object visibility utils used by other scripts

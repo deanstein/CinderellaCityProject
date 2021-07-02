@@ -2,6 +2,12 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Opens, loads, and manages lists of Scenes 
+/// including any active Scenes, inactive Scenes, 
+/// and the order of "time-traveling" scene sequence 
+/// </summary>
+
 public class SceneGlobals
 {
     // when a scene change is requested, record the outgoing and upcoming scenes for other scripts to access

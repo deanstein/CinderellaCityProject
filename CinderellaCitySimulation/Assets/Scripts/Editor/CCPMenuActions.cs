@@ -7,6 +7,12 @@ using UnityEngine.SceneManagement;
 
 [ExecuteInEditMode]
 [InitializeOnLoad]
+
+/// <summary>
+/// Creates a Cinderella City Project menu in the Unity menu bar
+/// Offers a series of one-click actions that automate several tedious workflows, like updating Nav Meshes and Occlusion Culling for all Scenes.
+/// </summary>
+
 public class CCPMenuActions : MonoBehaviour
 {
     /* ---------- Play ---------- */

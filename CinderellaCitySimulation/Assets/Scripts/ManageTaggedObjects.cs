@@ -3,9 +3,12 @@ using UnityEngine;
 
 using System.Collections.Generic;
 
+/// <summary>
+/// Retrieves and oerates on objects by Tag
+/// </summary>
+
 // this script needs to be attached to the UILauncher in each FPSScene
 // in order to properly tabulate the objects with certain tags
-
 public class ManageTaggedObjects : MonoBehaviour
 {
     public class TaggedObjectGlobals

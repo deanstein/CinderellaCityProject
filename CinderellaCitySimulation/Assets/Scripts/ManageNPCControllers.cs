@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
-
 using UnityEngine;
+
+/// <summary>
+/// Maps 3D mall patrons (non-player characters) to animation controllers, depending on name or gender
+/// </summary>
 
 public class NPCControllerGlobals
 {

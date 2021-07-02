@@ -1,7 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
+/// <summary>
+/// Positions screen space objects (UI) based on the available screen real estate and proportions
+/// </summary>
 
 public static class TransformScreenSpaceObject
 {

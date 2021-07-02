@@ -3,6 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Plays a specific sequence of audio tracks, 
+/// depending on the name of the host object 
+/// (typically a speaker, mechanical device, or NPC)
+/// </summary>
+
 // this script needs to be attached to an object that plays a series of AudioClips
 // NOTE: this script assumes AudioClips have the proper import settings applied (Load in Background, Compressed in Memory, etc) which should be handled by AssetImportPipeline
 // if not, the game may stutter or hang at startup when invoking "Resources.Load()" on an AudioClip

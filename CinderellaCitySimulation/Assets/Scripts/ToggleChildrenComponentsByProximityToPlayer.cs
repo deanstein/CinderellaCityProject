@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
-
 using System.Collections.Generic;
+
+/// <summary>
+/// Enables or disables children GameObject Components (NavMeshAgents, scripts...) 
+/// based on their proximity to the player
+/// Used for dynamic objects like NPCs
+/// </summary>
 
 // this script should be attached to a parent GameObject containing
 // children with components that need to be disabled when too far from the player

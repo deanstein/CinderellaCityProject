@@ -1,10 +1,14 @@
 ﻿
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-// this script needs to be attached to the Sun object in each FPSController scene
+/// <summary>
+/// Adjusts the Sun position and properties of the Pause Menu, 
+/// in order to generate accurate screenshots of disabled Scenes 
+/// for "time traveling" thumbnails
+/// </summary>
 
+// this script needs to be attached to the Sun object in each FPSController scene
 public class ManageSunSettings : MonoBehaviour
 {
     public class SunGlobals

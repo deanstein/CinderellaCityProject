@@ -1,11 +1,12 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
-// animates screen-space objects
-// uses auto-resuming coroutines
+/// <summary>
+/// Animates screen-space objects like UI and background images
+/// Uses auto-resuming coroutines
+/// </summary>
+
 public class AnimateScreenSpaceObject : AutoResumeCoroutines
 {
     // the background slideshow image sequence is passed in from the calling script
