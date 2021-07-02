@@ -2,11 +2,11 @@
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
 using System.Collections.Generic;
 
-// this script is used to "hoist" an object or an entire scene
-// to solve the issue of Occlusion Culling not working because scens are occupying the same space
+/// <summary>
+///  "Hoists" scene containers objects up or down, so they aren't occupying the same space which could cause Occlusion Culling to fail
+/// </summary>
 
 public class HoistSceneObjectsEditor : MonoBehaviour
 {

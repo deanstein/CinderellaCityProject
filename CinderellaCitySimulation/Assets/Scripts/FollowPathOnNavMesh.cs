@@ -1,8 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+
+/// <summary>
+/// Finds destinations and paths on a Navigation Mesh for 3D animated people
+/// </summary>
 
 [RequireComponent(typeof(NavMeshAgent))]
 

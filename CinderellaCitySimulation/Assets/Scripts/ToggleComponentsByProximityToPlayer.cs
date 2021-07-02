@@ -1,5 +1,11 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Enables or disables GameObject Components (AudioSources, scripts...) b
+/// ased on their proximity to the player
+/// Used for stationary objects like speakers
+/// </summary>
+
 // this script should be attached to a parent GameObject containing
 // other children with components that need to be disabled when too far from the player
 

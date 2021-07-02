@@ -1,7 +1,10 @@
 using UnityEditor;
-
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
+/// <summary>
+/// Maps between proxy objects and associated prefabs, like people, vegetation, and fountains
+/// </summary>
 
 public class ProxyGlobals
 {

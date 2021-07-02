@@ -1,11 +1,12 @@
-﻿
-using UnityEditor;
-
+﻿using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Rendering.PostProcessing;
-
 using System.IO;
+
+/// <summary>
+/// Offers various camera actions, including taking screenshots and applying effects
+/// </summary>
 
 public class ManageCameraActions : MonoBehaviour
 {

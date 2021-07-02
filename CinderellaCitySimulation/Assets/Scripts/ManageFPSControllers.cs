@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Rendering.PostProcessing;
-using UnityEngine.SceneManagement;
 using UnityStandardAssets.Characters.FirstPerson;
+
+/// <summary>
+/// Monitors the location, rotation, and behavior of FPS Controllers (player) in Scenes
+/// </summary>
 
 public class ManageFPSControllers : MonoBehaviour {
 

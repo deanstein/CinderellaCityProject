@@ -1,8 +1,12 @@
-﻿// thanks to https://answers.unity.com/questions/851707/onenableondisable-stop-and-resume-coroutines.html
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+
+/// <summary>
+/// Auto-resumes coroutines that have been suspended,
+/// for example, when a Scene is made inactive, then made active again
+/// Thanks to https://answers.unity.com/questions/851707/onenableondisable-stop-and-resume-coroutines.html
+/// </summary>
 
 public abstract class AutoResumeCoroutines : MonoBehaviour
 {

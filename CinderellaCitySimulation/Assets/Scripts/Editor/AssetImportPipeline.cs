@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections;
 using System.IO;
 using System.Reflection;
 
@@ -12,8 +11,12 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
-
 [InitializeOnLoad]
+
+/// <summary>
+/// Applies settings and modifications to imported files (FBX models, audio files, images/graphics...)
+/// Runs automatically when a whitelisted file type is imported(or re-imported) in the Unity Editor
+/// </summary>
 
 public class AssetImportGlobals
 {
@@ -23,7 +26,7 @@ public class AssetImportGlobals
 
 public class AssetImportUpdate : AssetPostprocessor {
 
-    // this script only runs when an asset is updated
+    // this only runs when an asset is updated in the editor
     // when this happens, find out what file was updated
     // and globally store its name, path, etc. for all functions to access
     static String globalAssetFilePath;

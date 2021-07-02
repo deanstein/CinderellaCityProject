@@ -2,6 +2,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Refreshes an image sprite: rebuild a sprite's pixels from the definition on-disk or in-memory
+/// </summary>
+
 public class RefreshImageSprite : MonoBehaviour
 {
     // set a flag as to whether this script should refresh automatically on enable, or only when requested

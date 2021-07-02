@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using UnityEditor;
-using System.Collections;
+
+/// <summary>
+/// Adds a menu option in GameObject -> Render to Cubemap, which creates a Cubemap from the position of an object in space
+/// Each FPS Character Scene should have a "CubemapPosition" object, which needs to be selected when running "Render to Cubemap" - temporary cameras are added to this object in order to generate the Cubemap
+/// </summary>
 
 public class RenderCubemapWizard : ScriptableWizard
 {

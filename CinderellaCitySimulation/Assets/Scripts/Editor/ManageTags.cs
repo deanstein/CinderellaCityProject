@@ -1,7 +1,8 @@
-﻿
-using UnityEngine;
+﻿using UnityEditor;
 
-using UnityEditor;
+/// <summary>
+/// Creates new Tags in the project, or returns existing Tags if available
+/// </summary>
 
 public class ManageTags
 {

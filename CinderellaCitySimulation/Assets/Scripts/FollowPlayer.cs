@@ -1,6 +1,7 @@
 using UnityEngine;
 
-// attach this script to an object that needs to follow the player
+// Responsible for making an object's position match the current player's position at all times
+//attach this script to an object that needs to follow the player
 
 public class FollowPlayer : MonoBehaviour
 {

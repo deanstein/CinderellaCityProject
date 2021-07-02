@@ -1,5 +1,9 @@
 ﻿using UnityEditor;
 
+/// <summary>
+/// Contains import settings for various importable files, used by AssetImportPipeline to apply certain settings to certain files
+/// </summary>
+
 // all import params
 public class ModelImportParams
 {
