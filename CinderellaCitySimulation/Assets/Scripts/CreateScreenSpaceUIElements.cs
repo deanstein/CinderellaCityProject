@@ -137,6 +137,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     public static string labelFont = "AvenirNextLTPro-Demi";
 
     public static int menuTitleLabelSize = 30;
+    public static int toggleLabelSize = 20;
     public static int HUDTimePeriodLabelSize = 40;
     public static int versionLabelSize = 15;
 
@@ -154,6 +155,8 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
     /// spacings ///
 
+    public static float indentationScreenWidthRatio = 0.05f;
+
     public static float projectLogoHeightScreenHeightRatio = 0.15f;
     public static float projectLogoLeftMarginScreenWidthRatio = 0.1f;
     public static float projectLogoTopMarginScreenHeightRatio = 0.1f;
@@ -162,8 +165,12 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     public static float projectLogoContainerRightPaddingScreenWidthRatio = 0.03f;
 
     public static float menuTitleTopMarginScreenHeightRatio = -0.02f;
-    public static float menuTitleBottomMarginScreenHeightRatio = 0.02f;
     public static float menuTitleLeftMarginScreenWidthRatio = -0.02f;
+    public static float menuTitleBottomMarginScreenHeightRatio = 0.02f;
+
+    public static float toggleTopMarginScreenHeightRatio = -0.01f;
+    public static float toggleLeftMarginScreenWidthRatio = -0.01f;
+    public static float toggleBottomMarginScreenHeightRatio = 0.01f;
 
     public static float logoHeaderBottomMarginScreenHeightRatio = 0.05f;
 
@@ -568,6 +575,105 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         titleLabel.transform.SetParent(titleContainer.transform);
 
         return titleContainer;
+    }
+
+    public static GameObject CreateToggleGroupModule(GameObject parent, GameObject topAlignmentObject, string toggleGroupLabel)
+    {
+        // create the toggle group container object
+        GameObject toggleGroupContainer = new GameObject("ToggleGroupContainer");
+        toggleGroupContainer.AddComponent<CanvasRenderer>();
+        Image toggleGroupContainerColor = toggleGroupContainer.AddComponent<Image>();
+        toggleGroupContainerColor.color = containerColor;
+
+        // position the toggle group container
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(toggleGroupContainer, topAlignmentObject, logoHeaderBottomMarginScreenHeightRatio);
+
+        // resize the toggle group container
+        TransformScreenSpaceObject.ResizeObjectWidthToMatchScreen(toggleGroupContainer);
+        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromScreenLeft(toggleGroupContainer, navContainerLeftMarginScreenWidthRatio + indentationScreenWidthRatio);
+
+        // add the toggle group label
+        GameObject groupLabel = new GameObject("ToggleLabel");
+        Text introMessageLabelText = groupLabel.AddComponent<Text>();
+        introMessageLabelText.font = (Font)Resources.Load(labelFont);
+        introMessageLabelText.text = toggleGroupLabel;
+        introMessageLabelText.fontSize = menuTitleLabelSize;
+        introMessageLabelText.alignment = TextAnchor.UpperLeft;
+
+        // resize the text's bounding box to fit the text, before any transforms
+        TransformScreenSpaceObject.ResizeTextExtentsToFitContents(introMessageLabelText);
+
+        // position and resize the text and container
+        TransformScreenSpaceObject.PositionObjectAtCenterofScreen(groupLabel);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(groupLabel, toggleGroupContainer, menuTitleTopMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(groupLabel, toggleGroupContainer, menuTitleLeftMarginScreenWidthRatio);
+        //TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(toggleGroupContainer, groupLabel, menuTitleBottomMarginScreenHeightRatio);
+
+        // set parent/child hierarchy
+        toggleGroupContainer.transform.SetParent(parent.transform);
+        groupLabel.transform.SetParent(toggleGroupContainer.transform);
+
+        return toggleGroupContainer;
+    }
+
+    public static GameObject PopulateToggleGroup(GameObject toggleGroup, List<GameObject> togglesToDisplay)
+    {
+        // resize the group bottom edge to encompass the toggles
+        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(toggleGroup, togglesToDisplay[togglesToDisplay.Count - 1], toggleBottomMarginScreenHeightRatio);
+
+        // reposition the label
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(toggleGroup.transform.GetChild(0).gameObject, toggleGroup, menuTitleTopMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(toggleGroup.transform.GetChild(0).gameObject, toggleGroup, menuTitleLeftMarginScreenWidthRatio);
+
+        // add each of the specified toggles
+        foreach (GameObject toggle in togglesToDisplay)
+        {
+            // set the toggle as a child of the toggle group
+            toggle.transform.SetParent(toggleGroup.transform);
+        }
+
+        return toggleGroup;
+    }
+
+    public static GameObject CreateToggleModule(GameObject parent, GameObject topAlignmentObject, string toggleLabel)
+    {
+        // create the toggle container object
+        GameObject toggleContainer = new GameObject("ToggleContainer");
+        toggleContainer.AddComponent<CanvasRenderer>();
+        Image toggleContainerColor = toggleContainer.AddComponent<Image>();
+        toggleContainerColor.color = containerColor;
+
+        // position the toggle container
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(toggleContainer, topAlignmentObject, logoHeaderBottomMarginScreenHeightRatio);
+
+        // resize the toggle container
+        TransformScreenSpaceObject.ResizeObjectWidthToMatchScreen(toggleContainer);
+        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromNeighborLeft(toggleContainer, parent, toggleLeftMarginScreenWidthRatio);
+
+        // add the toggle
+        //Toggle toggle = new Toggle();
+
+        // add the toggle label
+        GameObject titleLabel = new GameObject("ToggleLabel");
+        Text introMessageLabelText = titleLabel.AddComponent<Text>();
+        introMessageLabelText.font = (Font)Resources.Load(labelFont);
+        introMessageLabelText.text = toggleLabel;
+        introMessageLabelText.fontSize = toggleLabelSize;
+        introMessageLabelText.alignment = TextAnchor.UpperLeft;
+
+        // resize the text's bounding box to fit the text, before any transforms
+        TransformScreenSpaceObject.ResizeTextExtentsToFitContents(introMessageLabelText);
+
+        // position and resize the text and container
+        TransformScreenSpaceObject.PositionObjectAtCenterofScreen(titleLabel);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(titleLabel, toggleContainer, toggleTopMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(titleLabel, toggleContainer, toggleLeftMarginScreenWidthRatio);
+        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(toggleContainer, titleLabel, toggleBottomMarginScreenHeightRatio);
+
+        // set parent/child hierarchy
+        titleLabel.transform.SetParent(toggleContainer.transform);
+
+        return toggleContainer;
     }
 
     public static GameObject CreateHUDTimePeriodIndicator(GameObject parent, string titleString)
