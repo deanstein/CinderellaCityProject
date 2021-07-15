@@ -154,6 +154,46 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
             GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(pauseMenu);
         }
 
+        // visibility toggle menu
+        else if (name.Contains("VisibilityMenuLauncher"))
+        {
+            Utils.DebugUtils.DebugLog("Building the Visibility Menu...");
+
+            // visibility menu canvas
+            GameObject visibilityMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(launcher, "VisibilityMenu");
+
+            // background image
+            GameObject backgroundImage = CreateScreenSpaceUIElements.CreateFullScreenImageFromCameraTexture(visibilityMenu, true);
+
+            // project logo and container
+            GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(visibilityMenu);
+
+            // create the title bar container
+            GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(visibilityMenu, logoHeader, "Visibility Settings");
+
+            ///
+            /// object visibility settings
+            /// 
+
+            // create the object visibility toggle group container
+            GameObject objectVisibilityToggleGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu, titleBarContainer, "Object Visibility");
+
+            // first, create a list of toggles required for each of the object sets
+            List<GameObject> toggles = new List<GameObject>();
+
+            // identify all toggles for this set of visibility options
+            GameObject peopleVisibilityToggle = CreateScreenSpaceUIElements.CreateToggleModule(objectVisibilityToggleGroup, objectVisibilityToggleGroup.transform.GetChild(0).gameObject, "People");
+            toggles.Add(peopleVisibilityToggle);
+            GameObject interiorDetailingVisibilityToggle = CreateScreenSpaceUIElements.CreateToggleModule(objectVisibilityToggleGroup, peopleVisibilityToggle, "Interior Detailing");
+            toggles.Add(interiorDetailingVisibilityToggle);
+
+            // now populate the object visibility toggle group container
+            CreateScreenSpaceUIElements.PopulateToggleGroup(objectVisibilityToggleGroup, toggles);
+
+            // create the game version indicator
+            GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(visibilityMenu);
+        }
+
         // generic UI launcher in FPSController scenes
         // used here to display persistent HUD UI
         else if (name.Contains("UILauncher"))
