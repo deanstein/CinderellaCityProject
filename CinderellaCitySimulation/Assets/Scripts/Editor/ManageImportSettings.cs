@@ -362,7 +362,8 @@ public class ManageImportSettings
             || name.Contains("signage"):
                 return 10f;
             case string name when name.Contains("floors-vert")
-            || name.Contains("site-curb-gutter-sidewalk-vert"):
+            || name.Contains("site-curb-gutter-sidewalk-vert")
+            || name.Contains("site-detailing"):
                 return 3f;
             case string name when name.Contains("roof") 
             || name.Contains("site-context-buildings")
