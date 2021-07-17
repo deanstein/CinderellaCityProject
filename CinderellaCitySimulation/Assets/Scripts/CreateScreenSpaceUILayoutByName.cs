@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 
 /// <summary>
@@ -75,148 +73,46 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         }
 
         // menu UI will be nested under the launcher object
-        GameObject launcher = this.transform.gameObject;
+        GameObject UILauncher = this.transform.gameObject;
 
         // build the menu based on the name of the object this script is attached to
         string name = this.name;
 
+        /*** per-scene UI ***/
+
         // loading screen
         if (name.Contains("LoadingScreenLauncher"))
         {
-            Utils.DebugUtils.DebugLog("Building the loading screen...");
-
-            // the loading screen is responsible for preloading the large scenes so level choice is faster
-
-            // loading screen canvas
-            GameObject loadingScreen = CreateScreenSpaceUIElements.CreateMenuCanvas(launcher, "LoadingScreen");
-
-            // background image slideshow
-            GameObject backgroundSlideShow = CreateScreenSpaceUIElements.CreateFullScreenImageSlideshow(loadingScreen, loadingScreenBackgroundSlideShowSequence);
-
-            // project logo and container
-            GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(loadingScreen);
-
-            // create the title bar container
-            GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(loadingScreen, logoHeader, "Building Cinderella City...");
-
-            // create the game version indicator
-            GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(loadingScreen);
+            BuildLoadingScreen(UILauncher, loadingScreenBackgroundSlideShowSequence);
         }
 
         // the main menu
         else if (name.Contains("MainMenuLauncher"))
         {
-            Utils.DebugUtils.DebugLog("Building the Main Menu...");
-
-            // main menu canvas
-            GameObject mainMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(launcher, "MainMenu");
-
-            // background image slideshow
-            GameObject backgroundSlideShow = CreateScreenSpaceUIElements.CreateFullScreenImageSlideshow(mainMenu, mainMenuBackgroundSlideShowSequence);
-
-            // project logo and container
-            GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(mainMenu);
-
-            // create the title bar container
-            GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(mainMenu, logoHeader, "Choose a time and place:");
-
-            // time & place picker and container
-            GameObject mainMenuCentralNav = CreateScreenSpaceUIElements.CreateMainMenuCentralNav(mainMenu, titleBarContainer);
-
-            // create the game version indicator
-            GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(mainMenu);
+            BuildMainMenu(UILauncher, mainMenuBackgroundSlideShowSequence);
         }
 
         // pause menu
         else if (name.Contains("PauseMenuLauncher"))
         {
-            Utils.DebugUtils.DebugLog("Building the Pause Menu...");
-
-            // clear the time travel thumbnails, since this may be called multiple times in one session
-            UIGlobals.timeTravelThumbnails.Clear();
-
-            // pause menu canvas
-            GameObject pauseMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(launcher, "PauseMenu");
-
-            // background image
-            GameObject backgroundImage = CreateScreenSpaceUIElements.CreateFullScreenImageFromCameraTexture(pauseMenu, true);
-
-            // project logo and container
-            GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(pauseMenu);
-
-            // create the title bar container
-            GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(pauseMenu, logoHeader, "Pause");
-
-            // time travel column and pause menu buttons
-            GameObject pauseMenuCentralNav = CreateScreenSpaceUIElements.CreatePauseMenuCentralNav(pauseMenu, titleBarContainer);
-
-            // create the game version indicator
-            GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(pauseMenu);
-        }
-
-        // visibility toggle menu
-        else if (name.Contains("VisibilityMenuLauncher"))
-        {
-            Utils.DebugUtils.DebugLog("Building the Visibility Menu...");
-
-            // visibility menu canvas
-            GameObject visibilityMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(launcher, "VisibilityMenu");
-
-            // background image
-            GameObject backgroundImage = CreateScreenSpaceUIElements.CreateFullScreenImageFromCameraTexture(visibilityMenu, true);
-
-            // project logo and container
-            GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(visibilityMenu);
-
-            // create the title bar container
-            GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(visibilityMenu, logoHeader, "Visibility Settings");
-
-            ///
-            /// object visibility settings
-            /// 
-
-            // create the object visibility toggle group container
-            GameObject objectVisibilityToggleGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu, titleBarContainer, "Object Visibility");
-
-            // first, create a list of toggles required for each of the object sets
-            List<GameObject> toggles = new List<GameObject>();
-
-            // identify all toggles for this set of visibility options
-            GameObject peopleVisibilityToggle = CreateScreenSpaceUIElements.CreateToggleModule(objectVisibilityToggleGroup, objectVisibilityToggleGroup.transform.GetChild(0).gameObject, "People");
-            toggles.Add(peopleVisibilityToggle);
-            GameObject interiorDetailingVisibilityToggle = CreateScreenSpaceUIElements.CreateToggleModule(objectVisibilityToggleGroup, peopleVisibilityToggle, "Interior Detailing");
-            toggles.Add(interiorDetailingVisibilityToggle);
-
-            // now populate the object visibility toggle group container
-            CreateScreenSpaceUIElements.PopulateToggleGroup(objectVisibilityToggleGroup, toggles);
-
-            // create the game version indicator
-            GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(visibilityMenu);
+            BuildPauseMenu(UILauncher);
         }
 
         // generic UI launcher in FPSController scenes
         // used here to display persistent HUD UI
         else if (name.Contains("UILauncher"))
         {
-            Utils.DebugUtils.DebugLog("Building the Heads Up Display...");
+            BuildTimePeriodHUD(UILauncher);
+        }
 
-            // Heads Up Display canvas
-            GameObject HUDCanvas = CreateScreenSpaceUIElements.CreateMenuCanvas(launcher, "HUD");
+        /*** overlay UI ***/
 
-            // create the time period indicator
-            GameObject HUDTimePeriodIndicator = CreateScreenSpaceUIElements.CreateHUDTimePeriodIndicator(HUDCanvas, StringUtils.ConvertSceneNameToFriendlyName(this.gameObject.scene.name));
-
-            // create the time period notification
-            //GameObject HUDTimePeriodNotificationContainer = CreateScreenSpaceUIElements.CreateHUDTimePeriodNotification(HUDCanvas, StringUtils.ConvertSceneNameToFriendlyName(this.gameObject.scene.name));
-
-            // create the game version indicator
-            GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(HUDCanvas);
-
-            // note that some scenes are under construction
-            if (this.gameObject.scene.name.Contains("AltFuture"))
-            {
-                CreateScreenSpaceUIElements.CreateHUDUnderConstructionLabel(HUDCanvas, "/// Under Construction ///");
-            }
+        // visibility toggle menu
+        // this is typically an overlay menu, but is listed here for testing purposes
+        // when invoked from its own scene
+        else if (name.Contains("VisibilityMenuLauncher"))
+        {
+            BuildVisualizationMenuOverlay(UILauncher);
         }
 
         // otherwise, no UI will be built because the name wasn't found or recognized
@@ -224,6 +120,153 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         {
             Utils.DebugUtils.DebugLog("Unknown UI type! " + name);
         }
+    }
+
+    //
+    // define layouts
+    // 
+
+    /*** per-scene UI ***/
+
+    // loading screen
+    public static GameObject BuildLoadingScreen(GameObject UILauncher, string[] backgroundSlideshowSequence)
+    {
+        Utils.DebugUtils.DebugLog("Building the loading screen...");
+
+        // the loading screen is responsible for preloading the large scenes so level choice is faster
+
+        // loading screen canvas
+        GameObject loadingScreen = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, "LoadingScreen");
+
+        // background image slideshow
+        GameObject backgroundSlideShow = CreateScreenSpaceUIElements.CreateFullScreenImageSlideshow(loadingScreen, backgroundSlideshowSequence);
+
+        // project logo and container
+        GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(loadingScreen);
+
+        // create the title bar container
+        GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(loadingScreen, logoHeader, "Building Cinderella City...");
+
+        // create the game version indicator
+        GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(loadingScreen);
+
+        return loadingScreen;
+    }
+
+    // main menu
+    public static GameObject BuildMainMenu(GameObject UILauncher, string[] backgroundSlideshowSequence)
+    {
+        Utils.DebugUtils.DebugLog("Building the Main Menu...");
+
+        // main menu canvas
+        GameObject mainMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, "MainMenu");
+
+        // background image slideshow
+        GameObject backgroundSlideShow = CreateScreenSpaceUIElements.CreateFullScreenImageSlideshow(mainMenu, backgroundSlideshowSequence);
+
+        // project logo and container
+        GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(mainMenu);
+
+        // create the title bar container
+        GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(mainMenu, logoHeader, "Choose a time and place:");
+
+        // time & place picker and container
+        GameObject mainMenuCentralNav = CreateScreenSpaceUIElements.CreateMainMenuCentralNav(mainMenu, titleBarContainer);
+
+        // create the game version indicator
+        GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(mainMenu);
+
+        return mainMenu;
+    }
+
+    // pause menu
+    public static GameObject BuildPauseMenu(GameObject UILauncher)
+    {
+        Utils.DebugUtils.DebugLog("Building the Pause Menu...");
+
+        // clear the time travel thumbnails, since this may be called multiple times in one session
+        UIGlobals.timeTravelThumbnails.Clear();
+
+        // pause menu canvas
+        GameObject pauseMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, "PauseMenu");
+
+        // background image
+        GameObject backgroundImage = CreateScreenSpaceUIElements.CreateFullScreenImageFromCameraTexture(pauseMenu, true);
+
+        // project logo and container
+        GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(pauseMenu);
+
+        // create the title bar container
+        GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(pauseMenu, logoHeader, "Pause");
+
+        // time travel column and pause menu buttons
+        GameObject pauseMenuCentralNav = CreateScreenSpaceUIElements.CreatePauseMenuCentralNav(pauseMenu, titleBarContainer);
+
+        // create the game version indicator
+        GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(pauseMenu);
+
+        return pauseMenu;
+    }
+
+    /*** overlay UI ***/
+
+    // the heads-up-display
+    public static GameObject BuildTimePeriodHUD(GameObject UILauncher)
+    {
+        Utils.DebugUtils.DebugLog("Building the Heads Up Display...");
+
+        // Heads Up Display canvas
+        GameObject HUDCanvas = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, "HUD");
+
+        // create the time period indicator
+        GameObject HUDTimePeriodIndicator = CreateScreenSpaceUIElements.CreateHUDTimePeriodIndicator(HUDCanvas, StringUtils.ConvertSceneNameToFriendlyName(UILauncher.scene.name));
+
+        // create the game version indicator
+        GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(HUDCanvas);
+
+        // note that some scenes are under construction
+        if (UILauncher.scene.name.Contains("AltFuture"))
+        {
+            CreateScreenSpaceUIElements.CreateHUDUnderConstructionLabel(HUDCanvas, "/// Under Construction ///");
+        }
+
+        return HUDCanvas;
+    }
+
+    // the visualization menu
+    public static GameObject BuildVisualizationMenuOverlay(GameObject UILauncher)
+    {
+        Utils.DebugUtils.DebugLog("Building the Visibility Menu...");
+
+        // visibility menu canvas
+        GameObject visibilityMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, "VisibilityMenu");
+
+        // project logo and container
+        GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(visibilityMenu);
+
+        // create the title bar container
+        GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(visibilityMenu, logoHeader, "Visibility Settings");
+
+        ///
+        /// object visibility settings
+        /// 
+
+        // create the object visibility toggle group container
+        GameObject objectVisibilityToggleGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu, titleBarContainer, "Object Visibility");
+
+        // first, create a list of toggles required for each of the object sets
+        List<GameObject> toggles = new List<GameObject>();
+
+        // identify all toggles for this set of visibility options
+        GameObject peopleVisibilityToggle = CreateScreenSpaceUIElements.CreateToggleModule(objectVisibilityToggleGroup, objectVisibilityToggleGroup.transform.GetChild(0).gameObject, "People");
+        toggles.Add(peopleVisibilityToggle);
+        GameObject interiorDetailingVisibilityToggle = CreateScreenSpaceUIElements.CreateToggleModule(objectVisibilityToggleGroup, peopleVisibilityToggle, "Interior Detailing");
+        toggles.Add(interiorDetailingVisibilityToggle);
+
+        // now populate the object visibility toggle group container
+        CreateScreenSpaceUIElements.PopulateToggleGroup(objectVisibilityToggleGroup, toggles);
+
+        return visibilityMenu;
     }
 }
  
