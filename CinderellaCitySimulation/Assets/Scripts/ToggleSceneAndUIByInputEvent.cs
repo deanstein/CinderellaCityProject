@@ -91,6 +91,15 @@ public class ToggleSceneAndUIByInputEvent : MonoBehaviour {
             // reset the pause flag
             ManageFPSControllers.FPSControllerGlobals.isPausing = false;
         }
+
+        // visibility menu
+        // only accessible from time period scenes
+        if (Input.GetKeyDown("v") &&
+            (StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name) || (SceneManager.GetActiveScene().name.Contains("Experimental"))))
+        {
+            ToggleSceneAndUI.ToggleOverlayMenu(this.gameObject, "VisibilityMenu");
+        }
+
         // if we're already in the pause menu, return to the previous scene (referring scene)
         else if (Input.GetKeyDown(KeyCode.Escape)
             && SceneManager.GetActiveScene().name.Contains("PauseMenu"))
@@ -325,6 +334,28 @@ public class ToggleSceneAndUI
                 UIGlobals.underConstructionLabelContainer.SetActive(true);
             }
         }
+    }
+
+    // toggle an overlay menu by building it or enabling it if it exists
+    public static void ToggleOverlayMenu(GameObject UILauncher, string overlayMenuName)
+    {
+        // get all children of the specified UI launcher
+        Transform[] UILauncherChildren = UILauncher.GetComponentsInChildren<Transform>(true); // true to include inactive children
+
+        // check each child for a matching name
+        foreach (Transform child in UILauncherChildren)
+        {
+            // this menu has already been built, so delete it
+            if (child.name.Contains(overlayMenuName))
+            {
+                GameObject.DestroyImmediate(child.gameObject);
+
+                return;
+            }
+        }
+
+        // if we get here, an overlay menu was not found, so build it
+         CreateScreenSpaceUILayoutByName.BuildVisualizationMenuOverlay(UILauncher);
     }
 
     // coming soon: ability to tween between values over a given number of frames

@@ -34,6 +34,9 @@ public class SceneGlobals
     // TODO: add Alt Future when available
     public static string[] availableTimePeriodFriendlyNames = { "1960s-70s", "1980s-90s" };
 
+    // the experimental scene - used for testing
+    public static string experimentalSceneName = "Experimental";
+
     // the name of the scene that should be displayed while other scenes are loading
     public static string loadingSceneName = "LoadingScreen";
 
