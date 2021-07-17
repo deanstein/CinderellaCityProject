@@ -24,37 +24,36 @@ public class SceneGlobals
         return scenePath;
     }
 
+    /* scene lists */
     // all scene names to load for the full simulation experience
     public static string[] allGameplaySceneNames = { "MainMenu", "PauseMenu", "60s70s", "80s90s" };
-
     // only the first-person (non-menu) scenes
     public static string[] availableTimePeriodSceneNames = { "60s70s", "80s90s" };
-
     // list the friendly names of available time periods, in chronologial order (used for UI labels)
     // TODO: add Alt Future when available
     public static string[] availableTimePeriodFriendlyNames = { "1960s-70s", "1980s-90s" };
-
-    // the experimental scene - used for testing
-    public static string experimentalSceneName = "Experimental";
-
-    // the name of the scene that should be displayed while other scenes are loading
-    public static string loadingSceneName = "LoadingScreen";
-
-    // the name of the scene to set active after all other scenes are loaded
-    public static string startingSceneName = "MainMenu";
-
-    // the pause menu
-    public static string pauseMenu = "PauseMenu";
-
     // convert the friendly names to Scene names
     // uses CleanString to remove spaces, punctuation, and in the case of years, "19"
     // for example: "1980s-1990s" becomes "80s90s"
     // IMPORTANT: Unity Scene names must match the strings in this list exactly
     public static List<string> availableTimePeriodSceneNamesList = StringUtils.ConvertFriendlyNamesToSceneNames(new List<string>(availableTimePeriodFriendlyNames));
-
     // based on the current scene, these are the time period scenes that are disabled
     // used to generate thumbnails for disabled scenes for the Pause Menu
     public static List<string> disabledTimePeriodSceneNames = new List<string>();
+
+    /* individual scenes */
+    // experimental scene - used for testing
+    public static string experimentalSceneName = "Experimental";
+    // the name of the scene that should be displayed while other scenes are loading
+    public static string loadingSceneName = "LoadingScreen";
+    // main menu
+    public static string mainMenuSceneName = "MainMenu";
+    // pause menu
+    public static string pauseMenuName = "PauseMenu";
+    // visibility menu
+    public static string visibilityMenuName = "VisibilityMenu";
+    // scene to set active after all other scenes are loaded
+    public static string startingSceneName = mainMenuSceneName;
 }
 
 public static class ManageScenes

@@ -136,7 +136,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         // the loading screen is responsible for preloading the large scenes so level choice is faster
 
         // loading screen canvas
-        GameObject loadingScreen = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, "LoadingScreen");
+        GameObject loadingScreen = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, SceneGlobals.loadingSceneName);
 
         // background image slideshow
         GameObject backgroundSlideShow = CreateScreenSpaceUIElements.CreateFullScreenImageSlideshow(loadingScreen, backgroundSlideshowSequence);
@@ -159,7 +159,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         Utils.DebugUtils.DebugLog("Building the Main Menu...");
 
         // main menu canvas
-        GameObject mainMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, "MainMenu");
+        GameObject mainMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, SceneGlobals.mainMenuSceneName);
 
         // background image slideshow
         GameObject backgroundSlideShow = CreateScreenSpaceUIElements.CreateFullScreenImageSlideshow(mainMenu, backgroundSlideshowSequence);
@@ -188,7 +188,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         UIGlobals.timeTravelThumbnails.Clear();
 
         // pause menu canvas
-        GameObject pauseMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, "PauseMenu");
+        GameObject pauseMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, SceneGlobals.pauseMenuName);
 
         // background image
         GameObject backgroundImage = CreateScreenSpaceUIElements.CreateFullScreenImageFromCameraTexture(pauseMenu, true);
@@ -239,7 +239,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         Utils.DebugUtils.DebugLog("Building the Visibility Menu...");
 
         // visibility menu canvas
-        GameObject visibilityMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, "VisibilityMenu");
+        GameObject visibilityMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, SceneGlobals.visibilityMenuName);
 
         // project logo and container
         GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(visibilityMenu);
