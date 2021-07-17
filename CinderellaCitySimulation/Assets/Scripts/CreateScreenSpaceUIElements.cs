@@ -168,9 +168,10 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     public static float menuTitleLeftMarginScreenWidthRatio = -0.02f;
     public static float menuTitleBottomMarginScreenHeightRatio = 0.02f;
 
-    public static float toggleTopMarginScreenHeightRatio = -0.01f;
-    public static float toggleLeftMarginScreenWidthRatio = -0.01f;
-    public static float toggleBottomMarginScreenHeightRatio = 0.01f;
+    public static float toggleTopPaddingScreenHeightRatio = -0.01f;
+    public static float toggleLeftPaddingScreenWidthRatio = -0.01f;
+    public static float toggleBottomPaddingScreenHeightRatio = 0.01f;
+    public static float toggleBottomMarginScreenHeightRatio = 0.02f;
 
     public static float logoHeaderBottomMarginScreenHeightRatio = 0.05f;
 
@@ -593,7 +594,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromScreenLeft(toggleGroupContainer, navContainerLeftMarginScreenWidthRatio + indentationScreenWidthRatio);
 
         // add the toggle group label
-        GameObject groupLabel = new GameObject("ToggleLabel");
+        GameObject groupLabel = new GameObject("ToggleGroupLabel");
         Text introMessageLabelText = groupLabel.AddComponent<Text>();
         introMessageLabelText.font = (Font)Resources.Load(labelFont);
         introMessageLabelText.text = toggleGroupLabel;
@@ -607,7 +608,6 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         TransformScreenSpaceObject.PositionObjectAtCenterofScreen(groupLabel);
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(groupLabel, toggleGroupContainer, menuTitleTopMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(groupLabel, toggleGroupContainer, menuTitleLeftMarginScreenWidthRatio);
-        //TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(toggleGroupContainer, groupLabel, menuTitleBottomMarginScreenHeightRatio);
 
         // set parent/child hierarchy
         toggleGroupContainer.transform.SetParent(parent.transform);
@@ -616,42 +616,46 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         return toggleGroupContainer;
     }
 
-    public static GameObject PopulateToggleGroup(GameObject toggleGroup, List<GameObject> togglesToDisplay)
-    {
-        // resize the group bottom edge to encompass the toggles
-        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(toggleGroup, togglesToDisplay[togglesToDisplay.Count - 1], toggleBottomMarginScreenHeightRatio);
-
-        // reposition the label
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(toggleGroup.transform.GetChild(0).gameObject, toggleGroup, menuTitleTopMarginScreenHeightRatio);
-        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(toggleGroup.transform.GetChild(0).gameObject, toggleGroup, menuTitleLeftMarginScreenWidthRatio);
-
-        // add each of the specified toggles
-        foreach (GameObject toggle in togglesToDisplay)
-        {
-            // set the toggle as a child of the toggle group
-            toggle.transform.SetParent(toggleGroup.transform);
-        }
-
-        return toggleGroup;
-    }
-
     public static GameObject CreateToggleModule(GameObject parent, GameObject topAlignmentObject, string toggleLabel)
     {
         // create the toggle container object
-        GameObject toggleContainer = new GameObject("ToggleContainer");
-        toggleContainer.AddComponent<CanvasRenderer>();
-        Image toggleContainerColor = toggleContainer.AddComponent<Image>();
+        GameObject toggleColorContainer = new GameObject("ToggleContainer");
+        toggleColorContainer.AddComponent<CanvasRenderer>();
+        Image toggleContainerColor = toggleColorContainer.AddComponent<Image>();
         toggleContainerColor.color = containerColor;
 
         // position the toggle container
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(toggleContainer, topAlignmentObject, logoHeaderBottomMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(toggleColorContainer, topAlignmentObject, toggleBottomMarginScreenHeightRatio);
 
         // resize the toggle container
-        TransformScreenSpaceObject.ResizeObjectWidthToMatchScreen(toggleContainer);
-        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromNeighborLeft(toggleContainer, parent, toggleLeftMarginScreenWidthRatio);
+        TransformScreenSpaceObject.ResizeObjectWidthToMatchScreen(toggleColorContainer);
+        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromNeighborLeft(toggleColorContainer, parent, menuTitleLeftMarginScreenWidthRatio);
 
-        // add the toggle
-        //Toggle toggle = new Toggle();
+        // contain the toggle elements in an object
+        GameObject toggleObject = new GameObject("ToggleObject");
+
+        // can't seem to access unity's default checkbox
+        // so construct a toggle interface explicitly with a background and a checkmark
+        GameObject toggleCheckboxBackground = new GameObject("ToggleCheckboxBackground");
+        Image toggleObjectBackground = toggleCheckboxBackground.AddComponent<Image>();
+        Vector2 toggleBackgroundSize = new Vector2(toggleLabelSize, toggleLabelSize);
+        toggleObjectBackground.rectTransform.sizeDelta = toggleBackgroundSize;
+        toggleObjectBackground.sprite = (Sprite)Resources.Load("UI/checkbox-background", typeof(Sprite));
+        GameObject toggleCheckboxCheckmark = new GameObject("ToggleCheckboxCheckmark");
+        Image toggleCheckmarkImage = toggleCheckboxCheckmark.AddComponent<Image>();
+        toggleCheckmarkImage.sprite = (Sprite)Resources.Load("UI/checkbox-checkmark", typeof(Sprite));
+
+        // add and configure the toggle
+        Toggle toggle = toggleObject.AddComponent<Toggle>();
+        toggle.graphic = toggleCheckmarkImage;
+
+        // position the toggle background
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(toggleCheckboxBackground, toggleColorContainer, toggleTopPaddingScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(toggleCheckboxBackground, toggleColorContainer, toggleLeftPaddingScreenWidthRatio);
+        TransformScreenSpaceObject.ResizeObjectToMatchNeighborBothDirections(toggleCheckboxCheckmark, toggleCheckboxBackground);
+
+        // center the checkmark
+        TransformScreenSpaceObject.PositionObjectAtCenterpointOfNeighbor(toggleCheckboxCheckmark, toggleCheckboxBackground);
 
         // add the toggle label
         GameObject titleLabel = new GameObject("ToggleLabel");
@@ -666,14 +670,37 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
         // position and resize the text and container
         TransformScreenSpaceObject.PositionObjectAtCenterofScreen(titleLabel);
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(titleLabel, toggleContainer, toggleTopMarginScreenHeightRatio);
-        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(titleLabel, toggleContainer, toggleLeftMarginScreenWidthRatio);
-        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(toggleContainer, titleLabel, toggleBottomMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(titleLabel, toggleColorContainer, toggleTopPaddingScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(titleLabel, toggleCheckboxBackground, -toggleLeftPaddingScreenWidthRatio);
+        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(toggleColorContainer, titleLabel, toggleBottomPaddingScreenHeightRatio);
 
         // set parent/child hierarchy
-        titleLabel.transform.SetParent(toggleContainer.transform);
+        toggleObject.transform.SetParent(toggleColorContainer.transform);
+        titleLabel.transform.SetParent(toggleObject.transform);
+        toggleCheckboxBackground.transform.SetParent(toggleObject.transform);
+        toggleCheckboxCheckmark.transform.SetParent(toggleCheckboxBackground.transform);
+        toggleCheckboxBackground.transform.SetParent(toggle.transform);
 
-        return toggleContainer;
+        return toggleColorContainer;
+    }
+
+    public static GameObject PopulateToggleGroup(GameObject toggleGroup, List<GameObject> togglesToDisplay)
+    {
+        // resize the group bottom edge to encompass the toggles
+        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(toggleGroup, togglesToDisplay[togglesToDisplay.Count - 1], toggleBottomMarginScreenHeightRatio);
+
+        // position the label again to account for the resizing of the group
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(toggleGroup.transform.GetChild(0).gameObject, toggleGroup, menuTitleTopMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(toggleGroup.transform.GetChild(0).gameObject, toggleGroup, menuTitleLeftMarginScreenWidthRatio);
+
+        // add each of the specified toggles to the toggle group
+        foreach (GameObject toggle in togglesToDisplay)
+        {
+            // set the toggle as a child of the toggle group
+            toggle.transform.SetParent(toggleGroup.transform);
+        }
+
+        return toggleGroup;
     }
 
     public static GameObject CreateHUDTimePeriodIndicator(GameObject parent, string titleString)
