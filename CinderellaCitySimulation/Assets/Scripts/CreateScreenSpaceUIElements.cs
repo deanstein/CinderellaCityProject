@@ -358,7 +358,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
             ToggleSceneAndUI.ToggleScriptHostObjectListOn();
 
             // set Pause as active again
-            SceneManager.SetActiveScene(SceneManager.GetSceneByName(SceneGlobals.pauseMenu));
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(SceneGlobals.pauseMenuName));
         }
     }
 
