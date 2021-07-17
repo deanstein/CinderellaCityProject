@@ -258,6 +258,12 @@ public static class TransformScreenSpaceObject
         rectTransform.position = newObjectPosition;
     }
 
+    public static void PositionObjectAtCenterpointOfNeighbor(GameObject screenSpaceObject, GameObject alignmentObject)
+    {
+        PositionObjectAtVerticalCenterlineOfNeighbor(screenSpaceObject, alignmentObject);
+        PositionObjectAtHorizontalCenterlineOfNeighbor(screenSpaceObject, alignmentObject);
+    }
+
     // very similar to centering an object, but accounts for the descender so text is more horizontally centered
     public static void PositionTextAtHorizontalCenterlineOfNeighbor(GameObject textToPosition, GameObject alignmentObject)
     {
@@ -451,6 +457,14 @@ public static class TransformScreenSpaceObject
         // the resize happened from the center, so adjust the position to compensate
         Vector3 newObjectPosition = new Vector3(screenSpaceObjectRectTransform.position.x, screenSpaceObjectRectTransform.position.y - (screenSpaceObjectHeightDelta / 2), 0);
         screenSpaceObjectRectTransform.position = newObjectPosition;
+    }
+
+    public static void ResizeObjectToMatchNeighborBothDirections(GameObject screenSpaceObject, GameObject neighborObject)
+    {
+        RectTransform currentRectTransform = screenSpaceObject.GetComponent<RectTransform>();
+        RectTransform requestedRectTransform = neighborObject.GetComponent<RectTransform>();
+
+        currentRectTransform.sizeDelta = requestedRectTransform.sizeDelta;
     }
 
     public static Vector2 ResizeObjectFromCenterByMargin(GameObject screenSpaceObject, float screenSizeRatioMarginWidth, float screenSizeRatioMarginHeight)
