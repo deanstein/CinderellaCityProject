@@ -160,10 +160,14 @@ In scenes with an FPSController and FirstPersonCharacter (60s70s, 80s90s, AltFut
 
  - **60s70s** (Scene)
  	- **60s70sContainer** (GameObject)
-		- **Sun** (GameObject)
-			 - Requires Scripts:
-			 	- *ManageSunSettings.cs* (ScriptComponent)
-				 	- Responsible for collecting Sun settings for FPSController scenes, and applying them to PauseMenu for accurate inactive screenshots
+		- **Environment** (GameObject)
+			- **Sky Dome** (TimeOfDay object)
+				- 3rd-party sky dome, responsible for the sun, clouds, stars, and moon
+				- Note that a light has been added to the Sun object in the Sky Dome, which is set to the parameters of the old sun
+				- Requires settings:
+					- Ambient color gradient under "Day" section should be set to RGB 130, 130, 130
+				- Requires Scripts:
+					- *ManageSunSettings* (Unity Component)
 		- **60s70sFPSController** (GameObject)
 			- Responsible for the player's movement in space, derived from the Unity standard asset, but modified
 			- Requires Specific Name: '(EraName)FPSController'
