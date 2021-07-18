@@ -12,7 +12,7 @@ public static class ObjectVisibilityGlobals
     public static string[] exteriorWallObjectKeywords = { "mall-walls-detailing-exterior" };
     public static string[] floorObjectKeywords = { "mall-floors-vert", "store-floors" };
     public static string[] lightObjectKeywords = { "mall-lights" };
-    public static string[] interiorDetailingObjectKeywords = { "mall-interior-detailing", "store-interior-detailing" };
+    public static string[] interiorDetailingObjectKeywords = { "mall-detailing-interior", "store-detailing" };
     public static string[] interiorWallObjectKeywords = { "mall-walls-interior", "store-walls" };
     public static string[] peopleObjectKeywords = { "proxy-people" };
     public static string[] roofObjectKeywords = { "mall-roof" };
@@ -53,5 +53,18 @@ public class ObjectVisibility
         }
 
         return isVisible;
+    }
+
+    public static bool GetIsAnyChildObjectVisible(GameObject parentObject)
+    {
+        foreach (Transform child in parentObject.transform)
+        {
+            if (child.gameObject.activeSelf)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
