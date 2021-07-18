@@ -24,6 +24,20 @@ public class SceneGlobals
         return scenePath;
     }
 
+    /* individual scenes */
+    // experimental scene - used for testing
+    public static string experimentalSceneName = "Experimental";
+    // the name of the scene that should be displayed while other scenes are loading
+    public static string loadingSceneName = "LoadingScreen";
+    // main menu
+    public static string mainMenuSceneName = "MainMenu";
+    // pause menu
+    public static string pauseMenuName = "PauseMenu";
+    // visibility menu
+    public static string visibilityMenuName = "VisibilityMenu";
+    // scene to set active after all other scenes are loaded
+    public static string startingSceneName = mainMenuSceneName;
+
     /* scene lists */
     // all scene names to load for the full simulation experience
     public static string[] allGameplaySceneNames = { "MainMenu", "PauseMenu", "60s70s", "80s90s" };
@@ -40,20 +54,6 @@ public class SceneGlobals
     // based on the current scene, these are the time period scenes that are disabled
     // used to generate thumbnails for disabled scenes for the Pause Menu
     public static List<string> disabledTimePeriodSceneNames = new List<string>();
-
-    /* individual scenes */
-    // experimental scene - used for testing
-    public static string experimentalSceneName = "Experimental";
-    // the name of the scene that should be displayed while other scenes are loading
-    public static string loadingSceneName = "LoadingScreen";
-    // main menu
-    public static string mainMenuSceneName = "MainMenu";
-    // pause menu
-    public static string pauseMenuName = "PauseMenu";
-    // visibility menu
-    public static string visibilityMenuName = "VisibilityMenu";
-    // scene to set active after all other scenes are loaded
-    public static string startingSceneName = mainMenuSceneName;
 }
 
 public static class ManageScenes
@@ -112,6 +112,23 @@ public static class ManageScenes
         GameObject[] sceneObjects = Utils.GeometryUtils.GetAllTopLevelChildrenInObject(sceneContainer);
 
         return sceneObjects;
+    }
+
+    // search the top-level children in a scene container, and returns the first object matching the given name
+    // likely cheaper than the default GameObject.Find() function
+    public static GameObject GetTopLevelGameObjectByNameSceneContainer(string objectName)
+    {
+        GameObject activeSceneContainer = GetSceneContainerObject(SceneManager.GetActiveScene());
+
+        foreach (Transform child in activeSceneContainer.transform)
+        {
+            if (child.name.Contains(objectName))
+            {
+                return child.gameObject;
+            }
+        }
+
+        return null;
     }
 
     // gets the disabled time period scene names, given the current scene name

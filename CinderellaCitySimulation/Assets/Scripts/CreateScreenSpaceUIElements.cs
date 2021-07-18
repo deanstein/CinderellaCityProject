@@ -168,6 +168,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     public static float menuTitleLeftMarginScreenWidthRatio = -0.02f;
     public static float menuTitleBottomMarginScreenHeightRatio = 0.02f;
 
+    public static float toggleContainerMaxWidthScreenWidthRatio = 0.1f;
     public static float toggleTopPaddingScreenHeightRatio = -0.01f;
     public static float toggleLeftPaddingScreenWidthRatio = -0.01f;
     public static float toggleBottomPaddingScreenHeightRatio = 0.01f;
@@ -630,6 +631,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // resize the toggle container
         TransformScreenSpaceObject.ResizeObjectWidthToMatchScreen(toggleColorContainer);
         TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromNeighborLeft(toggleColorContainer, parent, menuTitleLeftMarginScreenWidthRatio);
+        TransformScreenSpaceObject.ResizeObjectWidthByWidthRatioTowardRight(toggleColorContainer, toggleContainerMaxWidthScreenWidthRatio);
 
         // contain the toggle elements in an object
         GameObject toggleObject = new GameObject("ToggleObject");
@@ -684,6 +686,20 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         return toggleColorContainer;
     }
 
+    /* specific versions of toggles */
+
+    // visibility toggle: adds the ability to display and modify object visibility states
+    public static GameObject CreateVisibilityToggleModule(GameObject parent, GameObject topAlignmentObject, string toggleLabel, GameObject[] objectsToToggle)
+    {
+        // first, create a vanilla toggle
+        GameObject visibilityToggleModule = CreateToggleModule(parent, topAlignmentObject, toggleLabel);
+
+        // configure the toggle for visibility toggling
+        ConfigureToggleForObjectVisibility(visibilityToggleModule, objectsToToggle);
+
+        return visibilityToggleModule;
+    }
+
     public static GameObject PopulateToggleGroup(GameObject toggleGroup, List<GameObject> togglesToDisplay)
     {
         // resize the group bottom edge to encompass the toggles
@@ -701,6 +717,41 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         }
 
         return toggleGroup;
+    }
+
+    // configure toggles to read and set object visibility states
+    public static void ConfigureToggleForObjectVisibility(GameObject toggleContainer, GameObject[] objectsToToggle)
+    {
+        // get the actual toggle
+        Toggle toggle = toggleContainer.GetComponentInChildren<Toggle>();
+
+        // only configure if there are objects to toggle
+        if (objectsToToggle.Length > 0)
+        {
+            // set the toggle to match the visibility of the requested objects
+            // this assumes the first of the requested objects matches the others' visibility state
+            UpdateToggleStateToMatchObjectVisibility(toggleContainer, objectsToToggle[0].name);
+
+            // set the toggle to invoke changing the visibility of the object
+            toggle.onValueChanged.AddListener(delegate {
+                foreach (GameObject objectToToggle in objectsToToggle)
+                {
+                    ToggleObjects.ToggleGameObjectVisibility(objectToToggle);
+                }
+            });
+        }
+    }
+
+    public static void UpdateToggleStateToMatchObjectVisibility(GameObject toggleContainer, string objectName)
+    {
+        // get the toggle from the toggle container first
+        Toggle toggle = toggleContainer.GetComponentInChildren<Toggle>();
+
+        if (toggle != null)
+        {
+            // set the toggle state to match the visibility state
+            toggle.isOn = ObjectVisibility.GetIsObjectVisible(objectName);
+        }
     }
 
     public static GameObject CreateHUDTimePeriodIndicator(GameObject parent, string titleString)

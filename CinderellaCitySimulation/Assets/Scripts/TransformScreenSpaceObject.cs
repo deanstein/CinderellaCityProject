@@ -325,6 +325,32 @@ public static class TransformScreenSpaceObject
         rectTransform.position = newObjectPosition;
     }
 
+    public static void ResizeObjectWidthByWidthRatioTowardRight(GameObject screenSpaceObject, float bufferProportion)
+    {
+        RectTransform screenSpaceObjectRectTransform = screenSpaceObject.GetComponent<RectTransform>();
+
+        float screenSpaceObjectWidth = screenSpaceObjectRectTransform.rect.width;
+
+        float screenSpaceObjectRightEdgePositionX = GetObjectRightEdgePositionX(screenSpaceObject);
+        //Utils.DebugUtils.DebugLog("Screen space object right edge position X: " + screenSpceObjectRightEdgePositionX);
+
+        float targetRightEdgePositionX = GetObjectLeftEdgePositionX(screenSpaceObject) + (Screen.width * bufferProportion);
+        //Utils.DebugUtils.DebugLog("Alignment object right edge position X: " + neighborObjectRightEdgePositionX);
+
+        float newScreenSpaceObjectRightEdgePositionX = targetRightEdgePositionX + (Screen.width * bufferProportion);
+        //Utils.DebugUtils.DebugLog("New screen space object right edge position X: " + newScreenSpaceObjectRightEdgePositionX);
+
+        float newScreenSpaceObjectWidth = screenSpaceObjectRectTransform.rect.width - (screenSpaceObjectRightEdgePositionX - newScreenSpaceObjectRightEdgePositionX);
+        //Utils.DebugUtils.DebugLog("New screen space object width: " + newScreenSpaceObjectWidth);
+
+        float screenSpaceObjectWidthDelta = newScreenSpaceObjectWidth - screenSpaceObjectWidth;
+        screenSpaceObjectRectTransform.sizeDelta = new Vector2(newScreenSpaceObjectWidth, screenSpaceObjectRectTransform.rect.height);
+
+        // the resize happened from the center, so adjust the position to compensate
+        Vector3 newObjectPosition = new Vector3(screenSpaceObjectRectTransform.position.x + (screenSpaceObjectWidthDelta / 2), screenSpaceObjectRectTransform.position.y, 0);
+        screenSpaceObjectRectTransform.position = newObjectPosition;
+    }
+
     public static void ResizeObjectWidthByBufferRatioFromScreenLeft(GameObject screenSpaceObject, float bufferProportion)
     {
         // first, center the object in the screen, width-wise

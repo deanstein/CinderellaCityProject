@@ -350,12 +350,18 @@ public class ToggleSceneAndUI
             {
                 GameObject.DestroyImmediate(child.gameObject);
 
+                // let the active FPS controller take over control of the cursor again
+                ManageFPSControllers.EnableMouseLockOnActiveFPSController();
+
                 return;
             }
         }
 
         // if we get here, an overlay menu was not found, so build it
          CreateScreenSpaceUILayoutByName.BuildVisualizationMenuOverlay(UILauncher);
+
+        // release the cursor so the user can make selections in the menu
+        ManageFPSControllers.DisableMouseLockOnActiveFPSController();
     }
 
     // coming soon: ability to tween between values over a given number of frames
