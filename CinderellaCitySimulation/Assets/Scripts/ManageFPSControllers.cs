@@ -296,6 +296,18 @@ public class ManageFPSControllers : MonoBehaviour {
         }
     }
 
+    // enables mouse lock only on the active FPS controller
+    public static void EnableMouseLockOnActiveFPSController()
+    {
+        ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.GetComponent<FirstPersonController>().m_MouseLook.SetCursorLock(true);
+    }
+
+    // disables mouse lock only on the active FPS controller
+    public static void DisableMouseLockOnActiveFPSController()
+    {
+        ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.GetComponent<FirstPersonController>().m_MouseLook.SetCursorLock(false);
+    }
+
     public static IEnumerator EnableBlurAfterDelay(GameObject activeFPSController, float delay)
     {
         yield return new WaitForSeconds(delay);

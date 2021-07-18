@@ -257,11 +257,33 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         // first, create a list of toggles required for each of the object sets
         List<GameObject> toggles = new List<GameObject>();
 
-        // identify all toggles for this set of visibility options
-        GameObject peopleVisibilityToggle = CreateScreenSpaceUIElements.CreateToggleModule(objectVisibilityToggleGroup, objectVisibilityToggleGroup.transform.GetChild(0).gameObject, "People");
-        toggles.Add(peopleVisibilityToggle);
-        GameObject interiorDetailingVisibilityToggle = CreateScreenSpaceUIElements.CreateToggleModule(objectVisibilityToggleGroup, peopleVisibilityToggle, "Interior Detailing");
+        // object visibility toggles
+        GameObject ceilingsVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, objectVisibilityToggleGroup.transform.GetChild(0).gameObject, "Ceilings", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.ceilingObjectKeywords));
+        toggles.Add(ceilingsVisibilityToggle);
+
+        GameObject exteriorWallsVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, ceilingsVisibilityToggle, "Exterior Walls", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.exteriorWallObjectKeywords));
+        toggles.Add(exteriorWallsVisibilityToggle);
+
+        GameObject interiorDetailingVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, exteriorWallsVisibilityToggle, "Interior Detailing", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.interiorDetailingObjectKeywords));
         toggles.Add(interiorDetailingVisibilityToggle);
+
+        GameObject interiorWallsVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, interiorDetailingVisibilityToggle, "Interior Walls", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.interiorWallObjectKeywords));
+        toggles.Add(interiorWallsVisibilityToggle);
+
+        GameObject peopleVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, interiorWallsVisibilityToggle, "People", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.peopleObjectKeywords));
+        toggles.Add(peopleVisibilityToggle);
+
+        GameObject roofVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, peopleVisibilityToggle, "Roof", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.roofObjectKeywords));
+        toggles.Add(roofVisibilityToggle);
+
+        GameObject signageVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, roofVisibilityToggle, "Signage", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.signageObjectKeywords));
+        toggles.Add(signageVisibilityToggle);
+
+        GameObject vegetationVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, signageVisibilityToggle, "Vegetation", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.vegetationObjectKeywords));
+        toggles.Add(vegetationVisibilityToggle);
+
+        GameObject waterFeatureVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, vegetationVisibilityToggle, "Water Features", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.waterFeatureObjectKeywords));
+        toggles.Add(waterFeatureVisibilityToggle);
 
         // now populate the object visibility toggle group container
         CreateScreenSpaceUIElements.PopulateToggleGroup(objectVisibilityToggleGroup, toggles);

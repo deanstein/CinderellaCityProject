@@ -28,6 +28,19 @@ public class ToggleObjectsByInputEvent : MonoBehaviour {
 
 public class ToggleObjects
 {
+    // toggle just a single object on or off
+    public static void ToggleGameObjectVisibility(GameObject gameObject)
+    {
+        if (gameObject.activeSelf)
+        {
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            gameObject.SetActive(true);
+        }
+    }
+
     public static void ToggleGameObjectOff(GameObject gameObject)
     {
         foreach (Transform child in gameObject.transform)
@@ -52,6 +65,7 @@ public class ToggleObjects
         }
     }
 
+    // toggle all children but leave the parent alone
     public static void ToggleObjectChildrenVisibility(GameObject parent)
     {
         // loop through all children of this GameObject and make them active or inactive
