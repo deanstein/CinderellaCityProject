@@ -74,6 +74,18 @@ As this is a work in progress, some issues are known and will be fixed in future
 
 The Cinderella City Simulation is a Unity project, requiring a specific folder structure to enable automation of some elements, or to minimize effort when manual (one-time setup) steps are required.
 
+In broad strokes, the Cinderella City Simulation requires the following:
+- The Unity project file
+- 1st-party assets
+	- FBX files comprising different versions of the mall, in strategic pieces
+	- UI sprites and other graphics
+	- Scripts and behaviors
+- 3rd-party assets (not included in the GitHub repo)
+	- Music
+	- People
+	- Vegetation
+	- Packages and code
+
 ## FormIt Model + FBX Assets
 
 The Cinderella City Mall model is built in Autodesk FormIt, and exported in pieces as FBX files.
