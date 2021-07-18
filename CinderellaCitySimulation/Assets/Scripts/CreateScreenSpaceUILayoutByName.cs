@@ -55,14 +55,22 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         currentFrameCount++;
     }
 
+    // delete all the UI objects below the UI launcher host
+    // must do this as two separate for loops and lists
+    // because of a timing quirk when using a traditional for loop
     public void ClearCurrentSceneUI()
     {
-        for (int i = 0; i < this.transform.childCount; i++)
+        List<GameObject> sceneUIObjects = new List<GameObject>();
+
+        foreach (Transform child in this.transform)
         {
-            GameObject.DestroyImmediate(this.transform.GetChild(i).gameObject);
+            sceneUIObjects.Add(child.gameObject);
         }
+
+        sceneUIObjects.ForEach(child => DestroyImmediate(child));
     }
 
+    // build UI based on the name of the current scene
     public void BuildCurrentSceneUI()
     {
 
