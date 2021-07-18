@@ -729,20 +729,20 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         if (objectsToToggle.Length > 0)
         {
             // set the toggle to match the visibility of the requested objects
-            // this assumes the first of the requested objects matches the others' visibility state
-            UpdateToggleStateToMatchObjectVisibility(toggleContainer, objectsToToggle[0].name);
+            // note: this only tests the first object specified - assumes that the other objects match
+            UpdateToggleStateToMatchObjectVisibility(toggleContainer, objectsToToggle[0]);
 
             // set the toggle to invoke changing the visibility of the object
             toggle.onValueChanged.AddListener(delegate {
                 foreach (GameObject objectToToggle in objectsToToggle)
                 {
-                    ToggleObjects.ToggleGameObjectVisibility(objectToToggle);
+                    ToggleObjects.ToggleGameObjectChildrenVisibility(objectToToggle);
                 }
             });
         }
     }
 
-    public static void UpdateToggleStateToMatchObjectVisibility(GameObject toggleContainer, string objectName)
+    public static void UpdateToggleStateToMatchObjectVisibility(GameObject toggleContainer, GameObject objectToMatch)
     {
         // get the toggle from the toggle container first
         Toggle toggle = toggleContainer.GetComponentInChildren<Toggle>();
@@ -750,7 +750,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         if (toggle != null)
         {
             // set the toggle state to match the visibility state
-            toggle.isOn = ObjectVisibility.GetIsObjectVisible(objectName);
+            toggle.isOn = ObjectVisibility.GetIsAnyChildObjectVisible(objectToMatch);
         }
     }
 
