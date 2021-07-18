@@ -16,7 +16,7 @@ public class ToggleObjectsByInputEvent : MonoBehaviour {
         // people
         if (Input.GetKeyDown("p") && this.name.Contains("people"))
         {
-            ToggleObjects.ToggleObjectChildrenVisibility(this.gameObject);
+            ToggleObjects.ToggleGameObjectChildrenVisibility(this.gameObject);
         }
         // reset people to starting location
         if (Input.GetKeyDown("o") && this.name.Contains("people"))
@@ -29,15 +29,17 @@ public class ToggleObjectsByInputEvent : MonoBehaviour {
 public class ToggleObjects
 {
     // toggle just a single object on or off
-    public static void ToggleGameObjectVisibility(GameObject gameObject)
+    public static bool ToggleGameObjectVisibility(GameObject gameObject)
     {
         if (gameObject.activeSelf)
         {
             gameObject.SetActive(false);
+            return false;
         }
         else
         {
             gameObject.SetActive(true);
+            return true;
         }
     }
 
@@ -66,19 +68,17 @@ public class ToggleObjects
     }
 
     // toggle all children but leave the parent alone
-    public static void ToggleObjectChildrenVisibility(GameObject parent)
+    public static void ToggleGameObjectChildrenVisibility(GameObject parent)
     {
         // loop through all children of this GameObject and make them active or inactive
         foreach (Transform child in parent.transform)
         {
-            // If key is pressed and children are on, turn them off
             if (child.gameObject.activeSelf)
             {
                 child.gameObject.SetActive(false);
 
             }
-            // If key is pressed and children are off, turn them on
-            else if (!child.gameObject.activeSelf)
+            else
             {
                 child.gameObject.SetActive(true);
             }
