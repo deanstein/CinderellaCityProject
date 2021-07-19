@@ -91,6 +91,13 @@ public class ToggleSceneAndUIByInputEvent : MonoBehaviour {
             // reset the pause flag
             ManageFPSControllers.FPSControllerGlobals.isPausing = false;
         }
+        // but if we're already in the pause menu, return to the previous scene (referring scene)
+        else if (Input.GetKeyDown(KeyCode.Escape)
+            && SceneManager.GetActiveScene().name.Contains("PauseMenu"))
+        {
+            ManageFPSControllers.FPSControllerGlobals.isTimeTraveling = false;
+            ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, SceneGlobals.referringSceneName);
+        }
 
         // visibility menu
         // only accessible from time period scenes
@@ -98,14 +105,6 @@ public class ToggleSceneAndUIByInputEvent : MonoBehaviour {
             (StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name) || (SceneManager.GetActiveScene().name.Contains("Experimental"))))
         {
             ToggleSceneAndUI.ToggleOverlayMenu(this.gameObject, "VisibilityMenu");
-        }
-
-        // if we're already in the pause menu, return to the previous scene (referring scene)
-        else if (Input.GetKeyDown(KeyCode.Escape)
-            && SceneManager.GetActiveScene().name.Contains("PauseMenu"))
-        {
-            ManageFPSControllers.FPSControllerGlobals.isTimeTraveling = false;
-            ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, SceneGlobals.referringSceneName);
         }
 
         // optionally display or hide the under construction label
@@ -351,7 +350,8 @@ public class ToggleSceneAndUI
                 GameObject.DestroyImmediate(child.gameObject);
 
                 // let the active FPS controller take over control of the cursor again
-                ManageFPSControllers.EnableMouseLockOnActiveFPSController();
+                ManageFPSControllers.EnableCursorLockOnActiveFPSController();
+                ManageFPSControllers.EnableFPSCameraControl();
 
                 return;
             }
@@ -361,7 +361,8 @@ public class ToggleSceneAndUI
          CreateScreenSpaceUILayoutByName.BuildVisualizationMenuOverlay(UILauncher);
 
         // release the cursor so the user can make selections in the menu
-        ManageFPSControllers.DisableMouseLockOnActiveFPSController();
+        ManageFPSControllers.DisableCursorLockOnActiveFPSController();
+        ManageFPSControllers.DisableFPSCameraControl();
     }
 
     // coming soon: ability to tween between values over a given number of frames
