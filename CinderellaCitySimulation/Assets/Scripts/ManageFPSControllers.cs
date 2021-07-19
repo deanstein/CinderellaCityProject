@@ -23,6 +23,7 @@ public class ManageFPSControllers : MonoBehaviour {
         // that doesn't have a surface to stand on in that location
         public static bool isTimeTraveling = false;
 
+        // marked true when an FPSController has initiated the pause menu
         public static bool isPausing = false;
 
         // all FPSControllers
@@ -288,7 +289,7 @@ public class ManageFPSControllers : MonoBehaviour {
     }
 
     // enables the mouse lock on all FPSControllers
-    public static void EnableMouseLockOnAllFPSControllers()
+    public static void EnableCursorLockOnAllFPSControllers()
     {
         foreach(GameObject FPSController in FPSControllerGlobals.allFPSControllers)
         {
@@ -297,15 +298,26 @@ public class ManageFPSControllers : MonoBehaviour {
     }
 
     // enables mouse lock only on the active FPS controller
-    public static void EnableMouseLockOnActiveFPSController()
+    public static void EnableCursorLockOnActiveFPSController()
     {
-        ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.GetComponent<FirstPersonController>().m_MouseLook.SetCursorLock(true);
+        FPSControllerGlobals.activeFPSController.transform.GetComponent<FirstPersonController>().m_MouseLook.SetCursorLock(true);
     }
 
     // disables mouse lock only on the active FPS controller
-    public static void DisableMouseLockOnActiveFPSController()
+    public static void DisableCursorLockOnActiveFPSController()
     {
-        ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.GetComponent<FirstPersonController>().m_MouseLook.SetCursorLock(false);
+        FPSControllerGlobals.activeFPSController.transform.GetComponent<FirstPersonController>().m_MouseLook.SetCursorLock(false);
+    }
+
+    // enable and disable the behavior that affects the camera when the cursor moves
+    // used when an overlay menu is toggled
+    public static void EnableFPSCameraControl()
+    {
+        FPSControllerGlobals.activeFPSController.GetComponent<FirstPersonController>().enabled = true;
+    }
+    public static void DisableFPSCameraControl()
+    {
+        FPSControllerGlobals.activeFPSController.GetComponent<FirstPersonController>().enabled = false;
     }
 
     public static IEnumerator EnableBlurAfterDelay(GameObject activeFPSController, float delay)
@@ -364,7 +376,7 @@ public class ManageFPSControllers : MonoBehaviour {
 
         // lock the cursor so it doesn't display on-screen
         // need to do this on every FPSController - even disabled FPSControllers can keep the cursor visible
-        EnableMouseLockOnAllFPSControllers();
+        EnableCursorLockOnAllFPSControllers();
 
         // record this initial position so we can freeze the player's Y-position here when gravity is off
         FPSControllerGlobals.initialFPSControllerLocation = this.transform.position;
