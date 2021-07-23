@@ -83,34 +83,37 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         // menu UI will be nested under the launcher object
         GameObject UILauncher = this.transform.gameObject;
 
-        // build the menu based on the name of the object this script is attached to
-        string name = this.name;
-
         /*** per-scene UI ***/
 
         // loading screen
-        if (name.Contains("LoadingScreenLauncher"))
+        if (this.name.Contains("LoadingScreenLauncher"))
         {
             BuildLoadingScreen(UILauncher, loadingScreenBackgroundSlideShowSequence);
         }
 
         // the main menu
-        else if (name.Contains("MainMenuLauncher"))
+        else if (this.name.Contains("MainMenuLauncher"))
         {
             BuildMainMenu(UILauncher, mainMenuBackgroundSlideShowSequence);
         }
 
         // pause menu
-        else if (name.Contains("PauseMenuLauncher"))
+        else if (this.name.Contains("PauseMenuLauncher"))
         {
             BuildPauseMenu(UILauncher);
         }
 
         // generic UI launcher in FPSController scenes
         // used here to display persistent HUD UI
-        else if (name.Contains("UILauncher"))
+        else if (this.name.Contains("UILauncher"))
         {
             BuildTimePeriodHUD(UILauncher);
+
+            // if an overlay menu was active, restore it
+            if (OverlayUIVisibilityGlobals.isOverlayMenuActive)
+            {
+                ManageOverlayVisibility.RestoreLastKnownOverlayMenu(UILauncher);
+            }
         }
 
         /*** overlay UI ***/
@@ -118,7 +121,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         // visibility toggle menu
         // this is typically an overlay menu, but is listed here for testing purposes
         // when invoked from its own scene
-        else if (name.Contains("VisibilityMenuLauncher"))
+        else if (this.name.Contains("VisibilityMenuLauncher"))
         {
             BuildVisualizationMenuOverlay(UILauncher);
         }

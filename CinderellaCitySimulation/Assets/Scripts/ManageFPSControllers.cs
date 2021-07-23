@@ -23,7 +23,7 @@ public class ManageFPSControllers : MonoBehaviour {
         // that doesn't have a surface to stand on in that location
         public static bool isTimeTraveling = false;
 
-        // marked true when an FPSController has initiated the pause menu
+        // marked true when an FPS controller is requesting the pause menu
         public static bool isPausing = false;
 
         // all FPSControllers
