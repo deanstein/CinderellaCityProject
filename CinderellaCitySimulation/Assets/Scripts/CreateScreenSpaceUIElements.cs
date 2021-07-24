@@ -217,7 +217,6 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     // write a camera's view to a global texture, depending on which FPSController this is
     public static void AssignCameraTextureToVariableByName()
     {
-
         // use the name of the active FPSController to determine which variable to write the texture to
         switch (ManageFPSControllers.FPSControllerGlobals.activeFPSController.name)
         {
@@ -581,6 +580,9 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
     public static GameObject CreateToggleGroupModule(GameObject parent, GameObject topAlignmentObject, string toggleGroupLabel)
     {
+        // create the object visibility scroll area
+        GameObject objectVisibilityScrollArea = CreateScrollableArea(parent, "vertical");
+
         // create the toggle group container object
         GameObject toggleGroupContainer = new GameObject("ToggleGroupContainer");
         toggleGroupContainer.AddComponent<CanvasRenderer>();
@@ -593,6 +595,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // resize the toggle group container
         TransformScreenSpaceObject.ResizeObjectWidthToMatchScreen(toggleGroupContainer);
         TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromScreenLeft(toggleGroupContainer, navContainerLeftMarginScreenWidthRatio + indentationScreenWidthRatio);
+        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromScreenBottom(toggleGroupContainer, 0.1f);
 
         // add the toggle group label
         GameObject groupLabel = new GameObject("ToggleGroupLabel");
@@ -610,8 +613,12 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(groupLabel, toggleGroupContainer, menuTitleTopMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(groupLabel, toggleGroupContainer, menuTitleLeftMarginScreenWidthRatio);
 
+        // configure the toggle group as a vertical scroll area
+        ConfigureScrollAreaToMatchChildRect(objectVisibilityScrollArea, toggleGroupContainer);
+
         // set parent/child hierarchy
-        toggleGroupContainer.transform.SetParent(parent.transform);
+        objectVisibilityScrollArea.transform.parent = parent.transform;
+        toggleGroupContainer.transform.SetParent(objectVisibilityScrollArea.transform);
         groupLabel.transform.SetParent(toggleGroupContainer.transform);
 
         return toggleGroupContainer;
@@ -752,6 +759,46 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
             // set the toggle state to match the visibility state
             toggle.isOn = ObjectVisibility.GetIsAnyChildObjectVisible(objectToMatch);
         }
+    }
+
+    // create a vanilla scrollable area
+    public static GameObject CreateScrollableArea(GameObject parent, string scrollDirection)
+    {
+        GameObject scrollableArea = new GameObject("ScrollableArea");
+
+        scrollableArea.AddComponent<RectMask2D>();
+        ScrollRect scrollRect = scrollableArea.AddComponent<ScrollRect>();
+        scrollRect.scrollSensitivity = 6;
+
+        // use the name of the active FPSController to determine which variable to write the texture to
+        switch (scrollDirection)
+        {
+            case string scrollDir when scrollDirection.Contains("horizontal"):
+                scrollRect.horizontal = true;
+                return scrollableArea;
+            case string scrollDir when scrollDirection.Contains("vertical"):
+                scrollRect.vertical = true;
+                return scrollableArea;
+            case string scrollDir when scrollDirection.Contains("both"):
+                scrollRect.horizontal = true;
+                scrollRect.vertical = true;
+                return scrollableArea;
+            default:
+                return scrollableArea;
+        }
+    }
+
+    public static void ConfigureScrollAreaToMatchChildRect(GameObject scrollAreaObject, GameObject child)
+    {
+        RectTransform sourceObjectRectTransform = child.GetComponent<RectTransform>();
+        RectTransform targetRectTransform = scrollAreaObject.GetComponent<RectTransform>();
+
+        //scrollAreaObject.transform.position = child.transform.position;
+
+        TransformScreenSpaceObject.MatchRectTransform(child, scrollAreaObject);
+
+        ScrollRect scrollAreaRect = scrollAreaObject.GetComponent<ScrollRect>();
+        scrollAreaRect.content = sourceObjectRectTransform;
     }
 
     public static GameObject CreateHUDTimePeriodIndicator(GameObject parent, string titleString)

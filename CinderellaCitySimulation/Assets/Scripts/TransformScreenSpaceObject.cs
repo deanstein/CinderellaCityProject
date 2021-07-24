@@ -493,6 +493,19 @@ public static class TransformScreenSpaceObject
         currentRectTransform.sizeDelta = requestedRectTransform.sizeDelta;
     }
 
+    public static void MatchRectTransform(GameObject sourceObject, GameObject changeObject)
+    {
+        RectTransform changeObjectRectTransform = changeObject.GetComponent<RectTransform>();
+        RectTransform sourceObjectRectTransform = sourceObject.GetComponent<RectTransform>();
+
+        changeObjectRectTransform.position = sourceObjectRectTransform.position;
+        changeObjectRectTransform.localPosition = sourceObjectRectTransform.localPosition;
+        changeObjectRectTransform.anchorMin = sourceObjectRectTransform.anchorMin;
+        changeObjectRectTransform.anchorMax = sourceObjectRectTransform.anchorMax;
+        changeObjectRectTransform.anchoredPosition = sourceObjectRectTransform.anchoredPosition;
+        changeObjectRectTransform.sizeDelta = sourceObjectRectTransform.sizeDelta;
+    }
+
     public static Vector2 ResizeObjectFromCenterByMargin(GameObject screenSpaceObject, float screenSizeRatioMarginWidth, float screenSizeRatioMarginHeight)
     {
         RectTransform currentRectTransform = screenSpaceObject.GetComponent<RectTransform>();
