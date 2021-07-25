@@ -65,6 +65,70 @@ public class Utils
 
             return nameOrPathWithoutExtension;
         }
+
+        // remove spaces, punctuation, and other characters from a string
+        public static string CleanString(string messyString)
+        {
+            // remove spaces
+            string cleanString = messyString.Replace(" ", "");
+
+            // remove colons
+            cleanString = cleanString.Replace(":", "");
+
+            // remove dashed
+            cleanString = cleanString.Replace("-", "");
+
+            // remove the "19" if used in year syntax
+            cleanString = cleanString.Replace("19", "");
+
+            return cleanString;
+        }
+
+        // converts an array of friendly UI names into Scene names
+        public static List<string> ConvertFriendlyNamesToSceneNames(List<string> friendlyNames)
+        {
+            List<string> convertedNames = new List<string>();
+
+            foreach (string friendlyName in friendlyNames)
+            {
+                string convertedName = CleanString(friendlyName);
+                convertedNames.Add(convertedName);
+            }
+
+            return convertedNames;
+        }
+
+        // gets the index of a friendly name given a scene name
+        public static string ConvertSceneNameToFriendlyName(string sceneName)
+        {
+            // get the index of the scene we're in
+            int sceneIndex = SceneGlobals.availableTimePeriodSceneNamesList.IndexOf(sceneName);
+
+            if (sceneIndex != -1)
+            {
+                // now get the associated friendly name
+                string friendlyName = SceneGlobals.availableTimePeriodFriendlyNames[sceneIndex];
+
+                return friendlyName;
+            }
+            else
+            {
+                return "0000 Experimental";
+            }
+        }
+
+        // return true if this string is found at all in the given array
+        public static bool TestIfAnyListItemContainedInString(List<string> listOfStringsToSearchFor, string stringToSearchIn)
+        {
+            foreach (string searchForString in listOfStringsToSearchFor)
+            {
+                if (stringToSearchIn.Contains(searchForString))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
     public class GeometryUtils

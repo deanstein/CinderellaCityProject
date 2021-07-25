@@ -95,7 +95,7 @@ public static class ManageEditorScenes
         // populate the list of open scene containers requiring hoisting
         foreach (GameObject openTimePeriodSceneContainer in openTimePeriodSceneContainers)
         {
-            if (StringUtils.TestIfAnyListItemContainedInString(timePeriodHoistSceneNames, openTimePeriodSceneContainer.name))
+            if (Utils.StringUtils.TestIfAnyListItemContainedInString(timePeriodHoistSceneNames, openTimePeriodSceneContainer.name))
             {
                 openTimePeriodSceneContainersRequiringHoist.Add(openTimePeriodSceneContainer);
             }

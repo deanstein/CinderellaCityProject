@@ -36,7 +36,7 @@ public class ToggleSceneAndUIByInputEvent : MonoBehaviour {
 
         // time travel requested - previous time period
         if (Input.GetKeyDown("q") &&
-            StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name))
+            Utils.StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name))
         {
             // get the previous time period scene name
             string previousTimePeriodSceneName = ManageScenes.GetNextTimePeriodSceneName("previous");
@@ -48,7 +48,7 @@ public class ToggleSceneAndUIByInputEvent : MonoBehaviour {
 
         // time travel requested - next time period
         if (Input.GetKeyDown("e") &&
-            StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name))
+            Utils.StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name))
         {
             // get the next time period scene name
             string nextTimePeriodSceneName = ManageScenes.GetNextTimePeriodSceneName("next");
@@ -62,7 +62,7 @@ public class ToggleSceneAndUIByInputEvent : MonoBehaviour {
         // main menu
         // only accessible from time period scenes
         if (Input.GetKeyDown("m") &&
-            StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name))
+            Utils.StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name))
         {
             ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "MainMenu");
         }
@@ -70,7 +70,7 @@ public class ToggleSceneAndUIByInputEvent : MonoBehaviour {
         // pause menu
         // only accessible from time period scenes
         if (Input.GetKeyDown(KeyCode.Escape) &&
-            StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name))
+            Utils.StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name))
         {
             // before pausing, we need to capture a screenshot from the active FPSController
             // then update the pause menu background image
@@ -99,17 +99,24 @@ public class ToggleSceneAndUIByInputEvent : MonoBehaviour {
             ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, SceneGlobals.referringSceneName);
         }
 
+        // TODO
+        // if an overlay menu is active, dismiss it
+        //if (Input.GetKeyDown(KeyCode.Escape) && IsOverlayMenuActive)
+        //{
+            //ToggleSceneAndUI.ToggleOverlayMenuOff();
+        //}
+
         // visibility menu
         // only accessible from time period scenes
         if (Input.GetKeyDown("v") &&
-            (StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name) || (SceneManager.GetActiveScene().name.Contains("Experimental"))))
+            (Utils.StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name) || (SceneManager.GetActiveScene().name.Contains("Experimental"))))
         {
             ToggleSceneAndUI.ToggleOverlayMenu(this.gameObject, "VisibilityMenu");
         }
 
         // optionally display or hide the under construction label
         if (Input.GetKeyDown(KeyCode.Slash) &&
-            StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name))
+            Utils.StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name))
         {
             ToggleSceneAndUI.ToggleUnderConstructionLabel();
         }
@@ -348,6 +355,8 @@ public class ToggleSceneAndUI
             if (child.name.Contains(overlayMenuName))
             {
                 GameObject.DestroyImmediate(child.gameObject);
+                OverlayUIVisibilityGlobals.isOverlayMenuActive = false;
+                OverlayUIVisibilityGlobals.activeOverlayMenuName = null;
 
                 // let the active FPS controller take over control of the cursor again
                 ManageFPSControllers.EnableCursorLockOnActiveFPSController();
@@ -358,7 +367,10 @@ public class ToggleSceneAndUI
         }
 
         // if we get here, an overlay menu was not found, so build it
-         CreateScreenSpaceUILayoutByName.BuildVisualizationMenuOverlay(UILauncher);
+        GameObject overlayMenu = CreateScreenSpaceUILayoutByName.BuildVisualizationMenuOverlay(UILauncher);
+
+        OverlayUIVisibilityGlobals.activeOverlayMenuName = overlayMenu.name;
+        OverlayUIVisibilityGlobals.isOverlayMenuActive = true;
 
         // release the cursor so the user can make selections in the menu
         ManageFPSControllers.DisableCursorLockOnActiveFPSController();

@@ -80,32 +80,32 @@ public class ManageNPCControllers
                 return  NPCControllerGlobals.animatorControllerFilePathTalking1;
 
             // walking - male or female
-            case string partialName when StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.maleDescriptorsList, partialName) && partialName.Contains("walking"):
+            case string partialName when Utils.StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.maleDescriptorsList, partialName) && partialName.Contains("walking"):
                 return NPCControllerGlobals.animatorControllerFilePathMaleWalking;
-            case string partialName when StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.femaleDescriptorsList, partialName) && partialName.Contains("walking"):
+            case string partialName when Utils.StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.femaleDescriptorsList, partialName) && partialName.Contains("walking"):
                 return NPCControllerGlobals.animatorControllerFilePathFemaleWalking;
 
             // sitting - male or female
-            case string partialName when StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.maleDescriptorsList, partialName) && partialName.Contains("sitting"):
+            case string partialName when Utils.StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.maleDescriptorsList, partialName) && partialName.Contains("sitting"):
                 return NPCControllerGlobals.animatorControllerFilePathMaleSitting;
-            case string partialName when StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.femaleDescriptorsList, partialName) && partialName.Contains("sitting"):
+            case string partialName when Utils.StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.femaleDescriptorsList, partialName) && partialName.Contains("sitting"):
                 return NPCControllerGlobals.animatorControllerFilePathFemaleSitting;
 
             // listening - male or female
-            case string partialName when StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.maleDescriptorsList, partialName) && partialName.Contains("listening"):
+            case string partialName when Utils.StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.maleDescriptorsList, partialName) && partialName.Contains("listening"):
                 return NPCControllerGlobals.animatorControllerFilePathMaleListening;
-            case string partialName when StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.femaleDescriptorsList, partialName) && partialName.Contains("listening"):
+            case string partialName when Utils.StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.femaleDescriptorsList, partialName) && partialName.Contains("listening"):
                 return NPCControllerGlobals.animatorControllerFilePathFemaleListening;
 
             // idle - male or female
-            case string partialName when StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.maleDescriptorsList, partialName) && partialName.Contains("idle"):
+            case string partialName when Utils.StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.maleDescriptorsList, partialName) && partialName.Contains("idle"):
                 return NPCControllerGlobals.animatorControllerFilePathMaleIdle;
-            case string partialName when StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.femaleDescriptorsList, partialName) && partialName.Contains("idle"):
+            case string partialName when Utils.StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.femaleDescriptorsList, partialName) && partialName.Contains("idle"):
                 return NPCControllerGlobals.animatorControllerFilePathFemaleIdle;
 
             // if no posture specified, default to walking
             default:
-                if (StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.femaleDescriptorsList, objectName))
+                if (Utils.StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.femaleDescriptorsList, objectName))
                 {
                     return NPCControllerGlobals.animatorControllerFilePathFemaleWalking;
                 }
@@ -119,7 +119,7 @@ public class ManageNPCControllers
     // get the correct gender controller for idling
     public static string GetIdleAnimatorControllerByGender(string nameWithGender)
     {
-        if (StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.femaleDescriptorsList, nameWithGender))
+        if (Utils.StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.femaleDescriptorsList, nameWithGender))
         {
             return NPCControllerGlobals.animatorControllerFilePathFemaleIdle;
         }
@@ -132,7 +132,7 @@ public class ManageNPCControllers
     // get the correct gender controller for walking
     public static string GetWalkingAnimatorControllerByGender(string nameWithGender)
     {
-        if (StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.femaleDescriptorsList, nameWithGender))
+        if (Utils.StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.femaleDescriptorsList, nameWithGender))
         {
             return NPCControllerGlobals.animatorControllerFilePathFemaleWalking;
         }
@@ -149,11 +149,11 @@ public class ManageNPCControllers
         switch (gameObjectToScale.name)
         {
             // if the provided gameobject is named to indicate it's a male
-            case string objectName when StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.maleDescriptorsList, gameObjectToScale.name):
+            case string objectName when Utils.StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.maleDescriptorsList, gameObjectToScale.name):
                 return Random.Range(0.89f, 0.92f);
 
             // if the provided gameobject is named to indicate it's a female
-            case string objectName when StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.femaleDescriptorsList, gameObjectToScale.name):
+            case string objectName when Utils.StringUtils.TestIfAnyListItemContainedInString(NPCControllerGlobals.femaleDescriptorsList, gameObjectToScale.name):
                 return Random.Range(0.86f, 0.89f);
 
             // otherwise, don't recommend a scale change

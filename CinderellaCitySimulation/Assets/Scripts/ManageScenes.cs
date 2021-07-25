@@ -51,7 +51,7 @@ public class SceneGlobals
     // uses CleanString to remove spaces, punctuation, and in the case of years, "19"
     // for example: "1980s-1990s" becomes "80s90s"
     // IMPORTANT: Unity Scene names must match the strings in this list exactly
-    public static List<string> availableTimePeriodSceneNamesList = StringUtils.ConvertFriendlyNamesToSceneNames(new List<string>(availableTimePeriodFriendlyNames));
+    public static List<string> availableTimePeriodSceneNamesList = Utils.StringUtils.ConvertFriendlyNamesToSceneNames(new List<string>(availableTimePeriodFriendlyNames));
     // based on the current scene, these are the time period scenes that are disabled
     // used to generate thumbnails for disabled scenes for the Pause Menu
     public static List<string> disabledTimePeriodSceneNames = new List<string>();

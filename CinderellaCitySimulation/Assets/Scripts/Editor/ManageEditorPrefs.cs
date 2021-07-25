@@ -36,7 +36,7 @@ public static class ManageEditorPrefs
     public static void SetCurrentSceneContainerYPosEditorPref()
     {
         // only do something if the current scene name matches one of the available time period scene names
-        if (StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name))
+        if (Utils.StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name))
         {
             // get the current scene container
             GameObject currentSceneContainer = ManageScenes.GetSceneContainerObject(SceneManager.GetActiveScene());
