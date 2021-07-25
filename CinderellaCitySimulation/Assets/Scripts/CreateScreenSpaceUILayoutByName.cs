@@ -271,7 +271,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         // create the object visibility scroll area
         GameObject objectVisibilityScrollArea = CreateScreenSpaceUIElements.CreateScrollableArea(toggleSetContainer, "ObjectVisibility", "vertical");
         // create the object visibility toggle group container
-        GameObject objectVisibilityToggleGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu,  titleBarContainer, "Object Visibility");
+        GameObject objectVisibilityToggleGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu, toggleSetHorizontalScrollArea, "Object Visibility");
 
         // configure scroll area to fit the toggle group
         CreateScreenSpaceUIElements.ConfigureScrollAreaToMatchChildRect(objectVisibilityScrollArea, objectVisibilityToggleGroup);
