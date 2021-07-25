@@ -39,75 +39,6 @@ public class UIGlobals
     public static GameObject timePeriodNotificationContainerExperimental;
 }
 
-public class StringUtils
-{
-    // remove spaces, punctuation, and other characters from a string
-    public static string CleanString(string messyString)
-    {
-        // remove spaces
-        string cleanString = messyString.Replace(" ", "");
-
-        // remove colons
-        cleanString = cleanString.Replace(":", "");
-
-        // remove dashed
-        cleanString = cleanString.Replace("-", "");
-
-        // remove the "19" if used in year syntax
-        cleanString = cleanString.Replace("19", "");
-
-        return cleanString;
-    }
-
-    // converts an array of friendly UI names into Scene names
-    public static List<string> ConvertFriendlyNamesToSceneNames(List<string> friendlyNames)
-    {
-        List<string> convertedNames = new List<string>();
-
-        foreach (string friendlyName in friendlyNames)
-        {
-            string convertedName = CleanString(friendlyName);
-            convertedNames.Add(convertedName);
-        }
-
-        return convertedNames;
-    }
-
-    // gets the index of a friendly name given a scene name
-    public static string ConvertSceneNameToFriendlyName(string sceneName)
-    {
-        // get the index of the scene we're in
-        int sceneIndex = SceneGlobals.availableTimePeriodSceneNamesList.IndexOf(sceneName);
-
-        if (sceneIndex != -1)
-        {
-            // now get the associated friendly name
-            string friendlyName = SceneGlobals.availableTimePeriodFriendlyNames[sceneIndex];
-
-            return friendlyName;
-        }
-        else
-        {
-            return "0000 Experimental";
-        }
-    }
-
-    // return true if this string is found at all in the given array
-    // TODO: move this to Utils?
-    public static bool TestIfAnyListItemContainedInString(List<string> listOfStringsToSearchFor, string stringToSearchIn)
-    {
-        foreach (string searchForString in listOfStringsToSearchFor)
-        {
-            if (stringToSearchIn.Contains(searchForString))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-}
-
-
 public class CreateScreenSpaceUIElements : MonoBehaviour
 {
     // this is a single stack of place/time thumbnails for aligning time labels to
@@ -402,7 +333,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
             // handle buttons that request a time and place
             // check if the button name contains an available time period (scene name)
-            case string name when StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, name):
+            case string name when Utils.StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, name):
                 // buttons need to be named with hyphens delimiting important info
                 string[] nameSplitByDelimiter = name.Split('-');
                 // the place needs to be 1st
@@ -580,9 +511,6 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
     public static GameObject CreateToggleGroupModule(GameObject parent, GameObject topAlignmentObject, string toggleGroupLabel)
     {
-        // create the object visibility scroll area
-        GameObject objectVisibilityScrollArea = CreateScrollableArea(parent, "vertical");
-
         // create the toggle group container object
         GameObject toggleGroupContainer = new GameObject("ToggleGroupContainer");
         toggleGroupContainer.AddComponent<CanvasRenderer>();
@@ -613,12 +541,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(groupLabel, toggleGroupContainer, menuTitleTopMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(groupLabel, toggleGroupContainer, menuTitleLeftMarginScreenWidthRatio);
 
-        // configure the toggle group as a vertical scroll area
-        ConfigureScrollAreaToMatchChildRect(objectVisibilityScrollArea, toggleGroupContainer);
-
         // set parent/child hierarchy
-        objectVisibilityScrollArea.transform.parent = parent.transform;
-        toggleGroupContainer.transform.SetParent(objectVisibilityScrollArea.transform);
         groupLabel.transform.SetParent(toggleGroupContainer.transform);
 
         return toggleGroupContainer;
@@ -762,9 +685,9 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     }
 
     // create a vanilla scrollable area
-    public static GameObject CreateScrollableArea(GameObject parent, string scrollDirection)
+    public static GameObject CreateScrollableArea(GameObject parent, string name, string scrollDirection)
     {
-        GameObject scrollableArea = new GameObject("ScrollableArea");
+        GameObject scrollableArea = new GameObject(name + "ScrollableArea");
 
         scrollableArea.AddComponent<RectMask2D>();
         ScrollRect scrollRect = scrollableArea.AddComponent<ScrollRect>();
@@ -775,9 +698,11 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         {
             case string scrollDir when scrollDirection.Contains("horizontal"):
                 scrollRect.horizontal = true;
+                scrollRect.vertical = false;
                 return scrollableArea;
             case string scrollDir when scrollDirection.Contains("vertical"):
                 scrollRect.vertical = true;
+                scrollRect.horizontal = false;
                 return scrollableArea;
             case string scrollDir when scrollDirection.Contains("both"):
                 scrollRect.horizontal = true;
@@ -982,7 +907,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     public static GameObject CreateTextButton(string text, GameObject parent, Color32 color)
     {
         // create the text label
-        GameObject buttonTextObject = new GameObject(StringUtils.CleanString(text) + "ButtonText");
+        GameObject buttonTextObject = new GameObject(Utils.StringUtils.CleanString(text) + "ButtonText");
         Text buttonText = buttonTextObject.AddComponent<Text>();
         buttonText.font = (Font)Resources.Load(labelFont);
         buttonText.text = text;
@@ -992,7 +917,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         Vector2 textSize = TransformScreenSpaceObject.ResizeTextExtentsToFitContents(buttonText);
 
         // create the button
-        GameObject buttonContainer = new GameObject(StringUtils.CleanString(text) + "Button");
+        GameObject buttonContainer = new GameObject(Utils.StringUtils.CleanString(text) + "Button");
         buttonContainer.AddComponent<CanvasRenderer>();
         buttonContainer.AddComponent<RectTransform>();
 
@@ -1075,10 +1000,10 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         }
 
         // make an object to hold the thumbnails
-        GameObject thumbnailStack = new GameObject(StringUtils.CleanString(placeName) + "ThumbnailStack");
+        GameObject thumbnailStack = new GameObject(Utils.StringUtils.CleanString(placeName) + "ThumbnailStack");
 
         // location text
-        GameObject placeLabel = new GameObject(StringUtils.CleanString(placeName) + "Label");
+        GameObject placeLabel = new GameObject(Utils.StringUtils.CleanString(placeName) + "Label");
         Text placeLabelText = placeLabel.AddComponent<Text>();
         placeLabelText.font = (Font)Resources.Load(labelFont);
         placeLabelText.text = placeName;
@@ -1098,7 +1023,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         for (var i = 0; i < timePeriodNames.Length; i++)
         {
             // combine the place name and time period strings
-            string combinedPlaceTimeNameSpacelessDashed = StringUtils.CleanString(placeName) + "-" + SceneGlobals.availableTimePeriodSceneNamesList[i];
+            string combinedPlaceTimeNameSpacelessDashed = Utils.StringUtils.CleanString(placeName) + "-" + SceneGlobals.availableTimePeriodSceneNamesList[i];
 
             // create the button
             GameObject timePeriodButton = new GameObject(combinedPlaceTimeNameSpacelessDashed + "-Button");
