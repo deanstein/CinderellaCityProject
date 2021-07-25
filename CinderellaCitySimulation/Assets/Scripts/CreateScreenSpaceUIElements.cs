@@ -84,22 +84,24 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     public static float menuButtonScreenWidthRatio = 0.15f;
     public static float menuButtonTopBottomPaddingScreenHeightRatio = 0.01f;
 
-    /// spacings ///
+    /// space/padding/margin ///
 
-    public static float indentationScreenWidthRatio = 0.05f;
+    public static float centralNavPadding = 0.02f;
 
-    public static float projectLogoHeightScreenHeightRatio = 0.15f;
+    public static float projectLogoHeightScreenHeightRatio = 0.18f;
     public static float projectLogoLeftMarginScreenWidthRatio = 0.1f;
-    public static float projectLogoTopMarginScreenHeightRatio = 0.1f;
-    public static float projectLogoContainerTopPaddingScreenHeightRatio = 0.03f;
-    public static float projectLogoContainerBottomPaddingScreenHeightRatio = 0.03f;
-    public static float projectLogoContainerRightPaddingScreenWidthRatio = 0.03f;
+    public static float projectLogoTopMarginScreenHeightRatio = 0.07f;
+    public static float projectLogoContainerTopPaddingScreenHeightRatio = 0.02f;
+    public static float projectLogoContainerBottomPaddingScreenHeightRatio = 0.02f;
+    public static float projectLogoContainerRightPaddingScreenWidthRatio = 0.02f;
 
     public static float menuTitleTopMarginScreenHeightRatio = -0.02f;
     public static float menuTitleLeftMarginScreenWidthRatio = -0.02f;
     public static float menuTitleBottomMarginScreenHeightRatio = 0.02f;
 
+    public static float toggleContainerPadding = 0.01f;
     public static float toggleContainerMaxWidthScreenWidthRatio = 0.1f;
+
     public static float toggleTopPaddingScreenHeightRatio = -0.01f;
     public static float toggleLeftPaddingScreenWidthRatio = -0.01f;
     public static float toggleBottomPaddingScreenHeightRatio = 0.01f;
@@ -117,7 +119,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
     public static float navContainerTopMarginScreenHeightRatio = 0.01f;
     public static float navContainerLeftMarginScreenWidthRatio = 0.1f;
-    public static float navContainerBottomMarginScreenHeightRatio = 0.1f;
+    public static float navContainerBottomMarginScreenHeightRatio = 0.07f;
 
     public static float thumbnailStackBottomMarginScreenHeightRatio = 0.02f;
 
@@ -518,12 +520,13 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         toggleGroupContainerColor.color = containerColor;
 
         // position the toggle group container
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(toggleGroupContainer, topAlignmentObject, logoHeaderBottomMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(toggleGroupContainer, topAlignmentObject, -centralNavPadding);
 
         // resize the toggle group container
         TransformScreenSpaceObject.ResizeObjectWidthToMatchScreen(toggleGroupContainer);
-        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromScreenLeft(toggleGroupContainer, navContainerLeftMarginScreenWidthRatio + indentationScreenWidthRatio);
-        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromScreenBottom(toggleGroupContainer, 0.1f);
+        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromScreenLeft(toggleGroupContainer, navContainerLeftMarginScreenWidthRatio + centralNavPadding);
+        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(toggleGroupContainer, topAlignmentObject, -centralNavPadding);
+        TransformScreenSpaceObject.ResizeObjectWidthByScreenWidthRatioTowardRight(toggleGroupContainer, 0.2f);
 
         // add the toggle group label
         GameObject groupLabel = new GameObject("ToggleGroupLabel");
@@ -560,8 +563,8 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
         // resize the toggle container
         TransformScreenSpaceObject.ResizeObjectWidthToMatchScreen(toggleColorContainer);
-        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromNeighborLeft(toggleColorContainer, parent, menuTitleLeftMarginScreenWidthRatio);
-        TransformScreenSpaceObject.ResizeObjectWidthByWidthRatioTowardRight(toggleColorContainer, toggleContainerMaxWidthScreenWidthRatio);
+        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromNeighborLeft(toggleColorContainer, parent, -toggleContainerPadding);
+        TransformScreenSpaceObject.ResizeObjectWidthByScreenWidthRatioTowardRight(toggleColorContainer, toggleContainerMaxWidthScreenWidthRatio);
 
         // contain the toggle elements in an object
         GameObject toggleObject = new GameObject("ToggleObject");
@@ -635,9 +638,12 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // resize the group bottom edge to encompass the toggles
         TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(toggleGroup, togglesToDisplay[togglesToDisplay.Count - 1], toggleBottomMarginScreenHeightRatio);
 
+        // resize the group right edge to hug the typical toggle width
+        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromNeighborRight(toggleGroup, togglesToDisplay[0], toggleContainerPadding);
+
         // position the label again to account for the resizing of the group
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(toggleGroup.transform.GetChild(0).gameObject, toggleGroup, menuTitleTopMarginScreenHeightRatio);
-        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(toggleGroup.transform.GetChild(0).gameObject, toggleGroup, menuTitleLeftMarginScreenWidthRatio);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(toggleGroup.transform.GetChild(0).gameObject, toggleGroup, -toggleContainerPadding);
 
         // add each of the specified toggles to the toggle group
         foreach (GameObject toggle in togglesToDisplay)
@@ -717,8 +723,6 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     {
         RectTransform sourceObjectRectTransform = child.GetComponent<RectTransform>();
         RectTransform targetRectTransform = scrollAreaObject.GetComponent<RectTransform>();
-
-        //scrollAreaObject.transform.position = child.transform.position;
 
         TransformScreenSpaceObject.MatchRectTransform(child, scrollAreaObject);
 

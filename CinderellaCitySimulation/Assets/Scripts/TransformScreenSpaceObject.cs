@@ -325,7 +325,7 @@ public static class TransformScreenSpaceObject
         rectTransform.position = newObjectPosition;
     }
 
-    public static void ResizeObjectWidthByWidthRatioTowardRight(GameObject screenSpaceObject, float bufferProportion)
+    public static void ResizeObjectWidthByScreenWidthRatioTowardRight(GameObject screenSpaceObject, float bufferProportion)
     {
         RectTransform screenSpaceObjectRectTransform = screenSpaceObject.GetComponent<RectTransform>();
 
