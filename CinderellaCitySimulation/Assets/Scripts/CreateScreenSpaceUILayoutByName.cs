@@ -230,7 +230,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         GameObject HUDCanvas = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, "HUD");
 
         // create the time period indicator
-        GameObject HUDTimePeriodIndicator = CreateScreenSpaceUIElements.CreateHUDTimePeriodIndicator(HUDCanvas, StringUtils.ConvertSceneNameToFriendlyName(UILauncher.scene.name));
+        GameObject HUDTimePeriodIndicator = CreateScreenSpaceUIElements.CreateHUDTimePeriodIndicator(HUDCanvas, Utils.StringUtils.ConvertSceneNameToFriendlyName(UILauncher.scene.name));
 
         // create the game version indicator
         GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(HUDCanvas);
@@ -262,8 +262,29 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         /// object visibility settings
         /// 
 
+        // first, the overall horizontal container
+        GameObject toggleSetHorizontalScrollArea = CreateScreenSpaceUIElements.CreateScrollableArea(visibilityMenu, "VisibilityToggleSet", "horizontal");
+        GameObject toggleSetContainer = CreateScreenSpaceUIElements.CreateCentralNavContainer(visibilityMenu, titleBarContainer);
+
+        CreateScreenSpaceUIElements.ConfigureScrollAreaToMatchChildRect(toggleSetHorizontalScrollArea, toggleSetContainer);
+
+        // create the object visibility scroll area
+        GameObject objectVisibilityScrollArea = CreateScreenSpaceUIElements.CreateScrollableArea(toggleSetContainer, "ObjectVisibility", "vertical");
         // create the object visibility toggle group container
-        GameObject objectVisibilityToggleGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu, titleBarContainer, "Object Visibility");
+        GameObject objectVisibilityToggleGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu,  titleBarContainer, "Object Visibility");
+
+        // configure scroll area to fit the toggle group
+        CreateScreenSpaceUIElements.ConfigureScrollAreaToMatchChildRect(objectVisibilityScrollArea, objectVisibilityToggleGroup);
+
+        bool test = false;
+        if (test)
+        {
+            // put the object visibility toggle group into the horizontal scroll area
+            toggleSetHorizontalScrollArea.transform.SetParent(visibilityMenu.transform);
+            toggleSetContainer.transform.SetParent(toggleSetHorizontalScrollArea.transform);
+            objectVisibilityToggleGroup.transform.SetParent(toggleSetContainer.transform);
+            return visibilityMenu;
+        }
 
         // first, create a list of toggles required for each of the object sets
         List<GameObject> toggles = new List<GameObject>();
@@ -301,6 +322,13 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
 
         // now populate the object visibility toggle group container
         CreateScreenSpaceUIElements.PopulateToggleGroup(objectVisibilityToggleGroup, toggles);
+
+        // set parent/child hierarchy
+        toggleSetHorizontalScrollArea.transform.SetParent(visibilityMenu.transform);
+        toggleSetContainer.transform.SetParent(toggleSetHorizontalScrollArea.transform);
+
+        objectVisibilityScrollArea.transform.parent = toggleSetContainer.transform;
+        objectVisibilityToggleGroup.transform.SetParent(objectVisibilityScrollArea.transform);
 
         return visibilityMenu;
     }
