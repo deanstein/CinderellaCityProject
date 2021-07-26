@@ -8,6 +8,7 @@ using UnityEngine;
 public static class ObjectVisibilityGlobals
 {
     // identify key words in order to toggle visibility of several objects at once
+    public static string[] anchorStoreObjectKeywords = { "anchor-broadway", "anchor-denver", "anchor-joslins", "anchor-penneys", "anchor-wards" };
     public static string[] ceilingObjectKeywords = { "mall-ceilings", "store-ceilings" };
     public static string[] exteriorWallObjectKeywords = { "mall-walls-detailing-exterior" };
     public static string[] floorObjectKeywords = { "mall-floors-vert", "store-floors" };
