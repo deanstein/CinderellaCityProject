@@ -68,6 +68,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     public static string labelFont = "AvenirNextLTPro-Demi";
 
     public static int menuTitleLabelSize = 30;
+    public static int toggleGroupLabelSize = 25;
     public static int toggleLabelSize = 20;
     public static int HUDTimePeriodLabelSize = 40;
     public static int versionLabelSize = 15;
@@ -533,7 +534,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         Text introMessageLabelText = groupLabel.AddComponent<Text>();
         introMessageLabelText.font = (Font)Resources.Load(labelFont);
         introMessageLabelText.text = toggleGroupLabel;
-        introMessageLabelText.fontSize = menuTitleLabelSize;
+        introMessageLabelText.fontSize = toggleGroupLabelSize;
         introMessageLabelText.alignment = TextAnchor.UpperLeft;
 
         // resize the text's bounding box to fit the text, before any transforms
@@ -697,7 +698,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
         scrollableArea.AddComponent<RectMask2D>();
         ScrollRect scrollRect = scrollableArea.AddComponent<ScrollRect>();
-        scrollRect.scrollSensitivity = 6;
+        scrollRect.scrollSensitivity = 10;
 
         // use the name of the active FPSController to determine which variable to write the texture to
         switch (scrollDirection)
