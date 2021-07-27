@@ -8,7 +8,7 @@ using UnityEngine;
 public static class ObjectVisibilityGlobals
 {
     // identify key words in order to toggle visibility of several objects at once
-    public static string[] anchorStoreObjectKeywords = { "anchor-broadway", "anchor-denver", "anchor-joslins", "anchor-penneys", "anchor-wards" };
+    public static string[] anchorStoreObjectKeywords = { "anchor-" };
     public static string[] ceilingObjectKeywords = { "mall-ceilings", "store-ceilings" };
     public static string[] exteriorWallObjectKeywords = { "mall-walls-detailing-exterior" };
     public static string[] floorObjectKeywords = { "mall-floors-vert", "store-floors" };
@@ -31,10 +31,13 @@ public class ObjectVisibility
 
         foreach (string keyword in visibilityKeywords)
         {
-            GameObject foundObject = ManageScenes.GetTopLevelGameObjectByNameSceneContainer(keyword);
-            if (foundObject)
+            GameObject[] foundObjects = ManageScenes.GetTopLevelSceneContainerGameObjectsByName(keyword);
+            if (foundObjects.Length > 0)
             {
-                foundObjectsList.Add(foundObject);
+                for (var i = 0; i < foundObjects.Length; i++)
+                {
+                    foundObjectsList.Add(foundObjects[i]);
+                }
             }
         }
 

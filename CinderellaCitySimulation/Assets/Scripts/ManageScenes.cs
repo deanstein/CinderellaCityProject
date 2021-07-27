@@ -117,19 +117,23 @@ public static class ManageScenes
 
     // search the top-level children in a scene container, and returns the first object matching the given name
     // likely cheaper than the default GameObject.Find() function
-    public static GameObject GetTopLevelGameObjectByNameSceneContainer(string objectName)
+    public static GameObject[] GetTopLevelSceneContainerGameObjectsByName(string objectName)
     {
+
         GameObject activeSceneContainer = GetSceneContainerObject(SceneManager.GetActiveScene());
+        List<GameObject> topLevelMatchingObjects = new List<GameObject>();
 
         foreach (Transform child in activeSceneContainer.transform)
         {
             if (child.name.Contains(objectName))
             {
-                return child.gameObject;
+                topLevelMatchingObjects.Add(child.gameObject);
             }
         }
 
-        return null;
+        GameObject[] topLevelGameObjectArray = topLevelMatchingObjects.ToArray();
+
+        return topLevelGameObjectArray;
     }
 
     // gets the disabled time period scene names, given the current scene name

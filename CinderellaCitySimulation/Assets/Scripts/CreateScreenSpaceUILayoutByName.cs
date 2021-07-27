@@ -290,7 +290,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         List<GameObject> toggles = new List<GameObject>();
 
         // object visibility toggles
-        GameObject anchorStoresVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, objectVisibilityToggleGroup.transform.GetChild(0).gameObject, "Department Stores", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.ceilingObjectKeywords));
+        GameObject anchorStoresVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, objectVisibilityToggleGroup.transform.GetChild(0).gameObject, "Department Stores", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.anchorStoreObjectKeywords));
         toggles.Add(anchorStoresVisibilityToggle);
 
         GameObject ceilingsVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, anchorStoresVisibilityToggle, "Mall: Ceilings", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.ceilingObjectKeywords));
@@ -299,7 +299,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         GameObject exteriorWallsVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, ceilingsVisibilityToggle, "Mall: Exterior Walls", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.exteriorWallObjectKeywords));
         toggles.Add(exteriorWallsVisibilityToggle);
 
-        GameObject floorsVertVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, exteriorWallsVisibilityToggle, "Mall: Floors", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.exteriorWallObjectKeywords));
+        GameObject floorsVertVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, exteriorWallsVisibilityToggle, "Mall: Floors", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.floorObjectKeywords));
         toggles.Add(floorsVertVisibilityToggle);
 
         GameObject interiorDetailingVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, floorsVertVisibilityToggle, "Mall: Interior Detailing", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.interiorDetailingObjectKeywords));
