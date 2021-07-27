@@ -512,7 +512,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         return titleContainer;
     }
 
-    public static GameObject CreateToggleGroupModule(GameObject parent, GameObject topAlignmentObject, string toggleGroupLabel)
+    public static GameObject CreateToggleGroupModule(GameObject parent, GameObject topAlignmentObject, GameObject leftAlignmentObject, string toggleGroupLabel)
     {
         // create the toggle group container object
         GameObject toggleGroupContainer = new GameObject("ToggleGroupContainer");
@@ -525,7 +525,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
         // resize the toggle group container
         TransformScreenSpaceObject.ResizeObjectWidthToMatchScreen(toggleGroupContainer);
-        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromScreenLeft(toggleGroupContainer, navContainerLeftMarginScreenWidthRatio + centralNavPadding);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(toggleGroupContainer, leftAlignmentObject, -centralNavPadding);
         TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(toggleGroupContainer, topAlignmentObject, -centralNavPadding);
         TransformScreenSpaceObject.ResizeObjectWidthByScreenWidthRatioTowardRight(toggleGroupContainer, 0.2f);
 
@@ -692,7 +692,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     }
 
     // create a vanilla scrollable area
-    public static GameObject CreateScrollableArea(GameObject parent, string name, string scrollDirection)
+    public static GameObject CreateScrollableArea(string name, string scrollDirection)
     {
         GameObject scrollableArea = new GameObject(name + "ScrollableArea");
 
