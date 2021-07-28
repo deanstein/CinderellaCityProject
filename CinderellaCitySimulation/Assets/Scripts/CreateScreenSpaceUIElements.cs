@@ -512,7 +512,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         return titleContainer;
     }
 
-    public static GameObject CreateToggleGroupModule(GameObject parent, GameObject topAlignmentObject, GameObject leftAlignmentObject, string toggleGroupLabel)
+    public static GameObject CreateToggleGroupModule(GameObject parent, GameObject topAlignmentObject, GameObject leftAlignmentObject, bool useLeftSideOfAlignmentObject, string toggleGroupLabel)
     {
         // create the toggle group container object
         GameObject toggleGroupContainer = new GameObject("ToggleGroupContainer");
@@ -525,7 +525,16 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
         // resize the toggle group container
         TransformScreenSpaceObject.ResizeObjectWidthToMatchScreen(toggleGroupContainer);
-        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(toggleGroupContainer, leftAlignmentObject, -centralNavPadding);
+
+        if (useLeftSideOfAlignmentObject)
+        {
+            TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(toggleGroupContainer, leftAlignmentObject, -centralNavPadding);
+        }
+        else
+        {
+            TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(toggleGroupContainer, leftAlignmentObject, centralNavPadding);
+        }
+
         TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(toggleGroupContainer, topAlignmentObject, -centralNavPadding);
         TransformScreenSpaceObject.ResizeObjectWidthByScreenWidthRatioTowardRight(toggleGroupContainer, 0.2f);
 
@@ -622,7 +631,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
     /* specific versions of toggles */
 
-    // visibility toggle: adds the ability to display and modify object visibility states
+    // object visibility toggle: display and modify object visibility states
     public static GameObject CreateVisibilityToggleModule(GameObject parent, GameObject topAlignmentObject, string toggleLabel, GameObject[] objectsToToggle)
     {
         // first, create a vanilla toggle
@@ -634,10 +643,30 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         return visibilityToggleModule;
     }
 
+    // camera settings toggle module: control camera settings directly
+    public static GameObject CreateCameraSettingsToggleModule(GameObject parent, GameObject topAlignmentObject, string toggleLabel)
+    {
+        // first, create a vanilla toggle
+        GameObject cameraSettingToggle = CreateToggleModule(parent, topAlignmentObject, toggleLabel);
+
+        // configure the toggle for visibility toggling
+        //ConfigureToggleForObjectVisibility(cameraSettingToggle, objectsToToggle);
+
+        return cameraSettingToggle;
+    }
+
     public static GameObject PopulateToggleGroup(GameObject toggleGroup, List<GameObject> togglesToDisplay)
     {
-        // resize the group bottom edge to encompass the toggles
-        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(toggleGroup, togglesToDisplay[togglesToDisplay.Count - 1], toggleBottomMarginScreenHeightRatio);
+        float lastToggleBottomEdge = TransformScreenSpaceObject.GetObjectBottomEdgePositionY(togglesToDisplay[togglesToDisplay.Count - 1]);
+        float toggleGroupBottomEdge = TransformScreenSpaceObject.GetObjectBottomEdgePositionY(toggleGroup);
+
+        // if there are enough toggles to cause the last toggle to require scrolling,
+        // resize the toggle group container to fit the toggles
+        if (lastToggleBottomEdge < toggleGroupBottomEdge)
+        {
+            // resize the group bottom edge to encompass the toggles
+            TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(toggleGroup, togglesToDisplay[togglesToDisplay.Count - 1], toggleBottomMarginScreenHeightRatio);
+        }
 
         // resize the group right edge to hug the typical toggle width
         TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromNeighborRight(toggleGroup, togglesToDisplay[0], toggleContainerPadding);

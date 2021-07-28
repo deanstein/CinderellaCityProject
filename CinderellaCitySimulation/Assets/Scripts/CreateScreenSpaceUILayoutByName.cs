@@ -272,54 +272,73 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         GameObject objectVisibilityScrollArea = CreateScreenSpaceUIElements.CreateScrollableArea("ObjectVisibility", "vertical");
 
         // create the object visibility toggle group container
-        GameObject objectVisibilityToggleGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu, toggleSetContainer, toggleSetHorizontalScrollArea, "OBJECTS");
+        GameObject objectVisibilityToggleGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu, toggleSetContainer, toggleSetHorizontalScrollArea, true, "OBJECTS");
 
         // configure scroll area to fit the toggle group
         CreateScreenSpaceUIElements.ConfigureScrollAreaToMatchChildRect(objectVisibilityScrollArea, objectVisibilityToggleGroup);
 
         // first, create a list of toggles required for each of the object sets
-        List<GameObject> toggles = new List<GameObject>();
+        List<GameObject> visibilityToggles = new List<GameObject>();
 
         // object visibility toggles
         GameObject anchorStoresVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, objectVisibilityToggleGroup.transform.GetChild(0).gameObject, "Department Stores", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.anchorStoreObjectKeywords));
-        toggles.Add(anchorStoresVisibilityToggle);
+        visibilityToggles.Add(anchorStoresVisibilityToggle);
 
         GameObject ceilingsVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, anchorStoresVisibilityToggle, "Mall: Ceilings", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.ceilingObjectKeywords));
-        toggles.Add(ceilingsVisibilityToggle);
+        visibilityToggles.Add(ceilingsVisibilityToggle);
 
         GameObject exteriorWallsVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, ceilingsVisibilityToggle, "Mall: Exterior Walls", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.exteriorWallObjectKeywords));
-        toggles.Add(exteriorWallsVisibilityToggle);
+        visibilityToggles.Add(exteriorWallsVisibilityToggle);
 
         GameObject floorsVertVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, exteriorWallsVisibilityToggle, "Mall: Floors", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.floorObjectKeywords));
-        toggles.Add(floorsVertVisibilityToggle);
+        visibilityToggles.Add(floorsVertVisibilityToggle);
 
         GameObject interiorDetailingVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, floorsVertVisibilityToggle, "Mall: Interior Detailing", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.interiorDetailingObjectKeywords));
-        toggles.Add(interiorDetailingVisibilityToggle);
+        visibilityToggles.Add(interiorDetailingVisibilityToggle);
 
         GameObject interiorWallsVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, interiorDetailingVisibilityToggle, "Mall: Interior Walls", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.interiorWallObjectKeywords));
-        toggles.Add(interiorWallsVisibilityToggle);
+        visibilityToggles.Add(interiorWallsVisibilityToggle);
 
         GameObject roofVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, interiorWallsVisibilityToggle, "Mall: Roof", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.roofObjectKeywords));
-        toggles.Add(roofVisibilityToggle);
+        visibilityToggles.Add(roofVisibilityToggle);
 
         GameObject signageVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, roofVisibilityToggle, "Mall: Signage", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.signageObjectKeywords));
-        toggles.Add(signageVisibilityToggle);
+        visibilityToggles.Add(signageVisibilityToggle);
 
         GameObject peopleVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, signageVisibilityToggle, "People", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.peopleObjectKeywords));
-        toggles.Add(peopleVisibilityToggle);
+        visibilityToggles.Add(peopleVisibilityToggle);
 
         GameObject vegetationVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, peopleVisibilityToggle, "Vegetation", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.vegetationObjectKeywords));
-        toggles.Add(vegetationVisibilityToggle);
+        visibilityToggles.Add(vegetationVisibilityToggle);
 
         GameObject waterFeatureVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, vegetationVisibilityToggle, "Water Features", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.waterFeatureObjectKeywords));
-        toggles.Add(waterFeatureVisibilityToggle);
+        visibilityToggles.Add(waterFeatureVisibilityToggle);
 
         // now populate the object visibility toggle group container
-        CreateScreenSpaceUIElements.PopulateToggleGroup(objectVisibilityToggleGroup, toggles);
+        CreateScreenSpaceUIElements.PopulateToggleGroup(objectVisibilityToggleGroup, visibilityToggles);
 
         ///
         /// camera settings
-        /// 
+        ///
+
+        // create the object visibility scroll area
+        GameObject cameraSettingsScrollArea = CreateScreenSpaceUIElements.CreateScrollableArea("CameraSettings", "vertical");
+
+        // create the object visibility toggle group container
+        GameObject cameraSettingsToggleGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu, toggleSetContainer, objectVisibilityToggleGroup, false, "CAMERA SETTINGS");
+
+        // configure scroll area to fit the toggle group
+        CreateScreenSpaceUIElements.ConfigureScrollAreaToMatchChildRect(cameraSettingsScrollArea, cameraSettingsToggleGroup);
+
+        // first, create a list of toggles required for each of the object sets
+        List<GameObject> cameraSettingsToggles = new List<GameObject>();
+
+        // object visibility toggles
+        GameObject occlusionCullingToggle = CreateScreenSpaceUIElements.CreateCameraSettingsToggleModule(cameraSettingsToggleGroup, objectVisibilityToggleGroup.transform.GetChild(0).gameObject, "Occlusion Culling");
+        cameraSettingsToggles.Add(occlusionCullingToggle);
+
+        // now populate the object camera settings toggle group container
+        CreateScreenSpaceUIElements.PopulateToggleGroup(cameraSettingsToggleGroup, cameraSettingsToggles);
 
         // set parent/child hierarchy
         toggleSetHorizontalScrollArea.transform.SetParent(visibilityMenu.transform);
@@ -327,6 +346,9 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
 
         objectVisibilityScrollArea.transform.parent = toggleSetContainer.transform;
         objectVisibilityToggleGroup.transform.SetParent(objectVisibilityScrollArea.transform);
+
+        cameraSettingsScrollArea.transform.parent = toggleSetContainer.transform;
+        cameraSettingsToggleGroup.transform.SetParent(cameraSettingsScrollArea.transform);
 
         return visibilityMenu;
     }
