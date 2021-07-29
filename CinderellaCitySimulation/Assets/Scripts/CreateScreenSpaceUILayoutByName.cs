@@ -334,7 +334,9 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         List<GameObject> cameraSettingsToggles = new List<GameObject>();
 
         // object visibility toggles
-        GameObject occlusionCullingToggle = CreateScreenSpaceUIElements.CreateCameraSettingsToggleModule(cameraSettingsToggleGroup, objectVisibilityToggleGroup.transform.GetChild(0).gameObject, "Occlusion Culling");
+        //GameObject occlusionCullingToggle = CreateScreenSpaceUIElements.CreateCameraSettingsToggleModule(cameraSettingsToggleGroup, objectVisibilityToggleGroup.transform.GetChild(0).gameObject, "Occlusion Culling");
+        GameObject occlusionCullingToggle = CreateScreenSpaceUIElements.CreateToggleModule(cameraSettingsToggleGroup, objectVisibilityToggleGroup.transform.GetChild(0).gameObject, "Occlusion Culling");
+        CreateScreenSpaceUIElements.ConfigureTypicalToggle(occlusionCullingToggle, ManageCameraActions.ToggleCurrentCameraOcclusionCullingState, ManageCameraActions.GetCurrentCameraOcclusionCullingState());
         cameraSettingsToggles.Add(occlusionCullingToggle);
 
         // now populate the object camera settings toggle group container

@@ -127,6 +127,39 @@ public class ManageCameraActions : MonoBehaviour
         return screenshotName;
     }
 
+    public static bool GetCurrentCameraOcclusionCullingState()
+    {
+        if (CameraActionGlobals.activeCameraHost == null)
+        {
+            return false;
+        }
+
+        Camera currentCamera = CameraActionGlobals.activeCameraHost.GetComponent<Camera>();
+
+        if (currentCamera.useOcclusionCulling)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public static void ToggleCurrentCameraOcclusionCullingState()
+        {
+            Camera currentCamera = CameraActionGlobals.activeCameraHost.GetComponent<Camera>();
+
+            if (currentCamera.useOcclusionCulling)
+            {
+                currentCamera.useOcclusionCulling = false;
+            }
+            else
+            {
+                currentCamera.useOcclusionCulling = true;
+            }
+        }
+
     // copies all scene screenshots from the computer back to resources, replacing the previous
     public static void ReplaceSceneThumbnailsInResources()
     {
