@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -643,18 +644,6 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         return visibilityToggleModule;
     }
 
-    // camera settings toggle module: control camera settings directly
-    public static GameObject CreateCameraSettingsToggleModule(GameObject parent, GameObject topAlignmentObject, string toggleLabel)
-    {
-        // first, create a vanilla toggle
-        GameObject cameraSettingToggle = CreateToggleModule(parent, topAlignmentObject, toggleLabel);
-
-        // configure the toggle for visibility toggling
-        //ConfigureToggleForObjectVisibility(cameraSettingToggle, objectsToToggle);
-
-        return cameraSettingToggle;
-    }
-
     public static GameObject PopulateToggleGroup(GameObject toggleGroup, List<GameObject> togglesToDisplay)
     {
         float lastToggleBottomEdge = TransformScreenSpaceObject.GetObjectBottomEdgePositionY(togglesToDisplay[togglesToDisplay.Count - 1]);
@@ -683,6 +672,26 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         }
 
         return toggleGroup;
+    }
+
+    // configure a typical checkbox by passing in
+    // functions for the checkbox action and state update
+    public static void ConfigureTypicalToggle(GameObject toggleContainer, Action onValueChangedFunction, bool toggleState)
+    {
+        Toggle toggle = toggleContainer.GetComponentInChildren<Toggle>();
+
+        toggle.isOn = toggleState;
+
+        if (toggle == null)
+        {
+            return;
+        }
+
+        toggle.onValueChanged.AddListener(delegate {
+
+            onValueChangedFunction.Invoke();
+
+        });
     }
 
     // configure toggles to read and set object visibility states
