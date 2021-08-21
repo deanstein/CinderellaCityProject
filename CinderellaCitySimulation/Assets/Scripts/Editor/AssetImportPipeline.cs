@@ -502,6 +502,22 @@ public class AssetImportUpdate : AssetPostprocessor {
         Utils.DebugUtils.DebugLog("<b>Set metallic on Material: </b>" + mat);
     }
 
+    // use the specular shader to set a material to no specular
+    // important for non-reflective materials like concrete, asphalt, etc
+    public static void SetMaterialNoSpecular(string materialFilePath)
+    {
+        // get the material at this path
+        Material mat = (Material)AssetDatabase.LoadAssetAtPath(materialFilePath, typeof(Material));
+
+        if (mat != null)
+        {
+            Shader specularShader = Shader.Find("Standard (Specular setup)");
+            mat.shader = specularShader;
+
+            mat.SetColor("_SpecColor", Color.black);
+        }
+    }
+
     // clean up the automatically-created .fbm folder on import
     // this folder is not necessary because we put materials in a "Materials" folder
     public static void DeleteFBMFolderOnImport(string assetFileDirectory, string assetFileName)
@@ -892,7 +908,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
             if (dependencyPathString.Contains("mid-mod exterior fixture"))
             {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, -1.0F);
+                SetCustomMaterialEmissionIntensity(dependencyPathString, 0F);
             }
 
             if (dependencyPathString.Contains("americana shop"))
@@ -1067,7 +1083,33 @@ public class AssetImportUpdate : AssetPostprocessor {
                 SetMaterialMetallic(dependencyPathString, 0.75F);
             }
 
+            if (dependencyPathString.Contains("bronzed glass"))
+            {
+                SetMaterialSmoothness(dependencyPathString, 0.2F);
+            }
+
             if (string.IsNullOrEmpty(dependencyPathString)) continue;
+        }
+    }
+
+    // turn specular off for certain materials
+    public static void SetMaterialSpecularByName()
+    {
+        // define the asset that was changed as the prefab
+        var prefab = AssetDatabase.LoadMainAssetAtPath(globalAssetFilePath);
+
+        // make changes to this prefab's dependencies (materials)
+        foreach (var dependency in EditorUtility.CollectDependencies(new[] { prefab }))
+        {
+            var dependencyPath = AssetDatabase.GetAssetPath(dependency);
+            var dependencyPathString = dependencyPath.ToString();
+
+            if ((dependencyPathString.Contains("sidewalk") 
+                || dependencyPathString.Contains("asphalt")) 
+                && dependencyPathString.Contains(".mat"))
+            {
+                SetMaterialNoSpecular(dependencyPathString);
+            }
         }
     }
 
@@ -1969,6 +2011,9 @@ public class AssetImportUpdate : AssetPostprocessor {
         {
             SetMaterialSmoothnessMetallicByName();
         }
+
+        // turn off specular on certain materials like concrete, asphalt, etc
+        SetMaterialSpecularByName();
 
         if (AssetImportGlobals.ModelImportParamsByName.doInstantiateProxyReplacements)
         {
