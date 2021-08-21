@@ -81,6 +81,7 @@ public class ManageImportSettings
 
             case string assetOrModelName when assetOrModelName.Contains("doors-exterior")
             || assetOrModelName.Contains("doors-windows-interior")
+            || assetOrModelName.Contains("vents")
             || assetOrModelName.Contains("windows-exterior"):
                 // pre-processor option flags
                 ImportParams.doSetGlobalScale = true; // always true
@@ -324,21 +325,24 @@ public class ManageImportSettings
         switch (assetName)
         {
             // no static editor flags
-            case string name when (name.Contains("doors-exterior")
-            || name.Contains("light-shrouds")
+            case string name when (name.Contains("light-shrouds")
+            || name.Contains("mall-vents")
+            || name.Contains("structure-concealed")
             || name.Contains("speakers")
             || name.Contains("trees")
             || name.Contains("water")):
                 return 0;
             // only navigation static
-            case string name when (name.Contains("windows") 
-            || name.Contains("handrails")
+            case string name when (name.Contains("handrails")
             || name.Contains("furniture")
             || name.Contains("wayfinding")
             || name.Contains("proxy-blocker-npc")) 
             && !name.Contains("solid"):
                 return StaticEditorFlags.NavigationStatic;
-            // if not specified, the default is to get all static editor flags
+            // lightmap static only
+            case string name when (name.Contains("doors-exterior")):
+                return StaticEditorFlags.LightmapStatic;
+            // if not specified, default to all static editor flags
             default:
                 return StaticEditorFlags.BatchingStatic | StaticEditorFlags.LightmapStatic | StaticEditorFlags.NavigationStatic | StaticEditorFlags.OccludeeStatic | StaticEditorFlags.OccluderStatic | StaticEditorFlags.OffMeshLinkGeneration | StaticEditorFlags.ReflectionProbeStatic;
         }
@@ -351,30 +355,33 @@ public class ManageImportSettings
         // assumes a global resolution of 3.2808 (1 texel per foot)
         switch (assetName)
         {
-            case string name when name.Contains("furniture"):
-                return 4f;
-            case string name when name.Contains("detailing-interior") 
-            || name.Contains("ceilings")
-            || name.Contains("walls-detailing-exterior")
-            || name.Contains("store-detailing"):
-                return 4f;
-            case string name when name.Contains("lights") 
+            case string name when name.Contains("lights")
             || name.Contains("signage"):
                 return 10f;
+            case string name when name.Contains("detailing-interior")
+            || name.Contains("walls-detailing-exterior")
+            || name.Contains("store-detailing")
+            || name.Contains("structure-exposed")
+            || name.Contains("doors")
+            || name.Contains("windows"):
+                return 5f;
+            case string name when name.Contains("detailing-interior")
+            || name.Contains("ceilings"):
+                return 4f;
             case string name when name.Contains("floors-vert")
             || name.Contains("site-curb-gutter-sidewalk-vert")
-            || name.Contains("site-detailing"):
+            || name.Contains("site-detailing")
+            || name.Contains("site-structure"):
                 return 3f;
+            case string name when name.Contains("walls-interior")
+            || name.Contains("store-ceilings")
+            || name.Contains("store-floors")
+            || name.Contains("site-parking-surface"):
+                return 0.5f;
             case string name when name.Contains("roof") 
             || name.Contains("site-context-buildings")
             || name.Contains("site-roads"):
                 return 0.1f;
-            case string name when name.Contains("walls-interior") 
-            || name.Contains("store-ceilings")
-            || name.Contains("store-floors")
-            || name.Contains("site-parking-surface")
-            || name.Contains("structure"):
-                return 0.5f;
             case string name when name.Contains("experimental-simple"):
                 return 22f;
             // if not specified, the default is 1 (no change to global resolution for this asset)
