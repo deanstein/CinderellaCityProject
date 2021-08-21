@@ -359,20 +359,21 @@ public class ManageImportSettings
             || name.Contains("signage"):
                 return 10f;
             case string name when name.Contains("detailing-interior")
-            || name.Contains("walls-detailing-exterior")
-            || name.Contains("store-detailing")
-            || name.Contains("structure-exposed")
-            || name.Contains("doors")
-            || name.Contains("windows"):
+            || name.Contains("walls-detailing-exterior"):
                 return 5f;
             case string name when name.Contains("detailing-interior")
-            || name.Contains("ceilings"):
+            || name.Contains("mall-ceilings")
+            || name.Contains("store-detailing"):
                 return 4f;
             case string name when name.Contains("floors-vert")
             || name.Contains("site-curb-gutter-sidewalk-vert")
             || name.Contains("site-detailing")
-            || name.Contains("site-structure"):
+            || name.Contains("site-structure")
+            || name.Contains("structure-exposed"):
                 return 3f;
+            case string name when name.Contains("doors")
+            || name.Contains("windows"):
+                return 2f;
             case string name when name.Contains("walls-interior")
             || name.Contains("store-ceilings")
             || name.Contains("store-floors")
