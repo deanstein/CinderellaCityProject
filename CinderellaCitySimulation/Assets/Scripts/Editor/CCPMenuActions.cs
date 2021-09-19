@@ -391,6 +391,22 @@ public class CCPMenuActions : MonoBehaviour
         }
     }
 
+    [MenuItem("Cinderella City Project/Material Adjustments/Specular/Update for Current Scene")]
+    public static void SetAllMaterialSpecularInCurrentScene()
+    {
+        // get all the scene objects
+        GameObject[] sceneObjects = UpdateModeSelectorMenu.GetSceneObjectsByUpdateMode().ToArray();
+
+        if (sceneObjects.Length > 0)
+        {
+            // set the static flags for each scene object
+            foreach (GameObject sceneObject in sceneObjects)
+            {
+                AssetImportUpdate.SetMaterialSpecularByName(sceneObject);
+            }
+        }
+    }
+
     /* ---------- Batch Operations ---------- */
 
     [MenuItem("Cinderella City Project/Batch Operations/Delete All FBM Folders")]
