@@ -504,18 +504,18 @@ public class AssetImportUpdate : AssetPostprocessor {
 
     // use the specular shader to set a material to no specular
     // important for non-reflective materials like concrete, asphalt, etc
-    public static void SetMaterialNoSpecular(string materialFilePath)
+    // specularValue is applied as RGB, 0-255
+    public static void SetMaterialSpecular(string materialFilePath, byte specularValue)
     {
         // get the material at this path
         Material mat = (Material)AssetDatabase.LoadAssetAtPath(materialFilePath, typeof(Material));
 
-        if (mat != null)
-        {
-            Shader specularShader = Shader.Find("Standard (Specular setup)");
-            mat.shader = specularShader;
+        Shader specularShader = Shader.Find("Standard (Specular setup)");
+        mat.shader = specularShader;
 
-            mat.SetColor("_SpecColor", Color.black);
-        }
+        Color32 specularColor = new Color32(specularValue, specularValue, specularValue, 255);
+
+        mat.SetColor("_SpecColor", specularColor);
     }
 
     // clean up the automatically-created .fbm folder on import
@@ -1093,22 +1093,62 @@ public class AssetImportUpdate : AssetPostprocessor {
     }
 
     // turn specular off for certain materials
-    public static void SetMaterialSpecularByName()
+    public static void SetMaterialSpecularByName(GameObject targetObject)
     {
         // define the asset that was changed as the prefab
-        var prefab = AssetDatabase.LoadMainAssetAtPath(globalAssetFilePath);
+        //var prefab = AssetDatabase.LoadMainAssetAtPath(globalAssetFilePath);
 
         // make changes to this prefab's dependencies (materials)
-        foreach (var dependency in EditorUtility.CollectDependencies(new[] { prefab }))
+        foreach (var dependency in EditorUtility.CollectDependencies(new[] { targetObject }))
         {
             var dependencyPath = AssetDatabase.GetAssetPath(dependency);
             var dependencyPathString = dependencyPath.ToString();
 
-            if ((dependencyPathString.Contains("sidewalk") 
-                || dependencyPathString.Contains("asphalt")) 
-                && dependencyPathString.Contains(".mat"))
+            // only attempt to make this change on an actual material
+            if (dependencyPathString.Contains(".mat"))
             {
-                SetMaterialNoSpecular(dependencyPathString);
+                if (dependencyPathString.Contains("concrete - cast white")
+                    || dependencyPathString.Contains("concrete - cast unpainted")
+                    || dependencyPathString.Contains("concrete - sidewalk")
+                    || dependencyPathString.Contains("railing paint color"))
+                {
+                    SetMaterialSpecular(dependencyPathString, 0);
+                }
+
+                if (dependencyPathString.Contains("brick - painted white aged")
+                    || dependencyPathString.Contains("concrete - foundation wall")
+                    || dependencyPathString.Contains("mall - cmu"))
+                {
+                    SetMaterialSpecular(dependencyPathString, 5);
+                }
+
+                if (dependencyPathString.Contains("mall - upper asphalt"))
+                {
+                    SetMaterialSpecular(dependencyPathString, 20);
+                }
+
+                if (dependencyPathString.Contains("anchor - smooth accent")
+                    || dependencyPathString.Contains("anchor rough accent")
+                    || dependencyPathString.Contains("concrete - painted 60s")
+                    || dependencyPathString.Contains("concrete - painted 80s")
+                    || dependencyPathString.Contains("mall - brick")
+                    || dependencyPathString.Contains("mall - brick light")
+                    || dependencyPathString.Contains("mall - stucco")
+                    || dependencyPathString.Contains("mall - stucco light")
+                    || dependencyPathString.Contains("mall - precast panels")
+                    || dependencyPathString.Contains("mall - loading dock concrete")
+                    || dependencyPathString.Contains("store - stacked brick")
+                    || dependencyPathString.Contains("store - dark brown"))
+                {
+                    SetMaterialSpecular(dependencyPathString, 30);
+                }
+
+                if (dependencyPathString.Contains("concrete - garage painted ceiling")
+                    || dependencyPathString.Contains("drywall - exerior")
+                    || dependencyPathString.Contains("mall - lower asphalt"))
+                {
+                    SetMaterialSpecular(dependencyPathString, 35);
+                }
             }
         }
     }
@@ -2013,7 +2053,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
 
         // turn off specular on certain materials like concrete, asphalt, etc
-        SetMaterialSpecularByName();
+        SetMaterialSpecularByName(globalGameObjectFromAsset);
 
         if (AssetImportGlobals.ModelImportParamsByName.doInstantiateProxyReplacements)
         {

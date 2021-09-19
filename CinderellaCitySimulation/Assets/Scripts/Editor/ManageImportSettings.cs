@@ -359,10 +359,9 @@ public class ManageImportSettings
             || name.Contains("signage"):
                 return 10f;
             case string name when name.Contains("detailing-interior")
-            || name.Contains("walls-detailing-exterior"):
+            || name.Contains("detailing-exterior"):
                 return 5f;
-            case string name when name.Contains("detailing-interior")
-            || name.Contains("mall-ceilings")
+            case string name when name.Contains("mall-ceilings")
             || name.Contains("store-detailing"):
                 return 4f;
             case string name when name.Contains("floors-vert")
