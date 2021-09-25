@@ -355,7 +355,7 @@ public class ManageImportSettings
         // assumes a global resolution of 3.2808 (1 texel per foot)
         switch (assetName)
         {
-            case string name when name.Contains("lights")
+            case string name when name.Contains("mall-lights")
             || name.Contains("signage"):
                 return 10f;
             case string name when name.Contains("detailing-interior")
@@ -376,6 +376,7 @@ public class ManageImportSettings
             case string name when name.Contains("walls-interior")
             || name.Contains("store-ceilings")
             || name.Contains("store-floors")
+            || name.Contains("store-lights")
             || name.Contains("site-parking-surface"):
                 return 0.5f;
             case string name when name.Contains("roof") 
@@ -387,6 +388,45 @@ public class ManageImportSettings
             // if not specified, the default is 1 (no change to global resolution for this asset)
             default:
                 return 1f;
+        }
+    }
+
+    // get the desired specular value (out of 255) for a given material name or path
+    public static int GetMaterialSpecularByName(string materialNameOrPath)
+    {
+        switch (materialNameOrPath)
+        {
+            case string name when name.Contains("concrete - cast white")
+            || name.Contains("concrete - cast unpainted")
+            || name.Contains("concrete - sidewalk")
+            || name.Contains("site-structure")
+            || name.Contains("railing paint color"):
+                return 0;
+            case string name when name.Contains("brick - painted white aged")
+            || name.Contains("concrete - foundation wall")
+            || name.Contains("mall - cmu"):
+                return 5;
+            case string name when name.Contains("mall - upper asphalt"):
+                return 20;
+            case string name when name.Contains("anchor - smooth accent")
+            || name.Contains("anchor rough accent")
+            || name.Contains("concrete - painted 60s")
+            || name.Contains("concrete - painted 80s")
+            || name.Contains("mall - brick")
+            || name.Contains("mall - stucco")
+            || name.Contains("mall - precast panels")
+            || name.Contains("mall - loading dock concrete")
+            || name.Contains("store - stacked brick")
+            || name.Contains("store - dark brown"):
+                return 30;
+            case string name when name.Contains("concrete - garage painted ceiling")
+            || name.Contains("drywall - exerior")
+            || name.Contains("mall - lower asphalt"):
+                return 35;
+            // if not specified, return -1 to indicate to calling functions that
+            // this material is not intended to have a custom specular value
+            default:
+                return -1;
         }
     }
 }

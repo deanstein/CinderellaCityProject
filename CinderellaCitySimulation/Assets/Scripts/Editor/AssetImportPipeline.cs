@@ -876,9 +876,15 @@ public class AssetImportUpdate : AssetPostprocessor {
                 SetCustomMaterialEmissionIntensity(dependencyPathString, 3.0F);
             }
 
-            if (dependencyPathString.Contains("high intensity sodium"))
+            if (dependencyPathString.Contains("high intensity sodium")
+                && !dependencyPathString.Contains("very"))
             {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 2.0F);
+                SetCustomMaterialEmissionIntensity(dependencyPathString, 2.5F);
+            }
+
+            if (dependencyPathString.Contains("very high intensity sodium"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, 3.5F);
             }
 
             if (dependencyPathString.Contains("low intensity yellow"))
@@ -968,7 +974,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
             if (dependencyPathString.Contains("cinder alley incandescent"))
             {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 3.5F);
+                SetCustomMaterialEmissionIntensity(dependencyPathString, 3.75F);
             }
 
             // temporarily reducing the brightness of these until all signage brightness can be adjusted to affset albedo boost,
@@ -1034,7 +1040,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             if (dependencyPathString.Contains("mall - polished concrete cinder alley")
                 || dependencyPathString.Contains("mall - cinder alley scored concrete"))
             {
-                SetMaterialSmoothness(dependencyPathString, 0.35F);
+                SetMaterialSmoothness(dependencyPathString, 0.27F);
             }
 
             if (dependencyPathString.Contains("generic floor concrete"))
@@ -1095,60 +1101,20 @@ public class AssetImportUpdate : AssetPostprocessor {
     // turn specular off for certain materials
     public static void SetMaterialSpecularByName(GameObject targetObject)
     {
-        // define the asset that was changed as the prefab
-        //var prefab = AssetDatabase.LoadMainAssetAtPath(globalAssetFilePath);
-
         // make changes to this prefab's dependencies (materials)
         foreach (var dependency in EditorUtility.CollectDependencies(new[] { targetObject }))
         {
             var dependencyPath = AssetDatabase.GetAssetPath(dependency);
             var dependencyPathString = dependencyPath.ToString();
 
-            // only attempt to make this change on an actual material
-            if (dependencyPathString.Contains(".mat"))
+            // get the desired specular value for this material
+            int specularValue = ManageImportSettings.GetMaterialSpecularByName(dependencyPathString);
+
+            // only attempt to make this change on an actual material,
+            // and only attempt to make this change if the specular value is valid
+            if (dependencyPathString.Contains(".mat") && specularValue != -1)
             {
-                if (dependencyPathString.Contains("concrete - cast white")
-                    || dependencyPathString.Contains("concrete - cast unpainted")
-                    || dependencyPathString.Contains("concrete - sidewalk")
-                    || dependencyPathString.Contains("railing paint color"))
-                {
-                    SetMaterialSpecular(dependencyPathString, 0);
-                }
-
-                if (dependencyPathString.Contains("brick - painted white aged")
-                    || dependencyPathString.Contains("concrete - foundation wall")
-                    || dependencyPathString.Contains("mall - cmu"))
-                {
-                    SetMaterialSpecular(dependencyPathString, 5);
-                }
-
-                if (dependencyPathString.Contains("mall - upper asphalt"))
-                {
-                    SetMaterialSpecular(dependencyPathString, 20);
-                }
-
-                if (dependencyPathString.Contains("anchor - smooth accent")
-                    || dependencyPathString.Contains("anchor rough accent")
-                    || dependencyPathString.Contains("concrete - painted 60s")
-                    || dependencyPathString.Contains("concrete - painted 80s")
-                    || dependencyPathString.Contains("mall - brick")
-                    || dependencyPathString.Contains("mall - brick light")
-                    || dependencyPathString.Contains("mall - stucco")
-                    || dependencyPathString.Contains("mall - stucco light")
-                    || dependencyPathString.Contains("mall - precast panels")
-                    || dependencyPathString.Contains("mall - loading dock concrete")
-                    || dependencyPathString.Contains("store - stacked brick")
-                    || dependencyPathString.Contains("store - dark brown"))
-                {
-                    SetMaterialSpecular(dependencyPathString, 30);
-                }
-
-                if (dependencyPathString.Contains("concrete - garage painted ceiling")
-                    || dependencyPathString.Contains("drywall - exerior")
-                    || dependencyPathString.Contains("mall - lower asphalt"))
-                {
-                    SetMaterialSpecular(dependencyPathString, 35);
-                }
+                SetMaterialSpecular(dependencyPathString, (byte)specularValue);
             }
         }
     }
