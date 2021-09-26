@@ -133,6 +133,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         mi.secondaryUVAngleDistortion = 4;
         mi.secondaryUVAreaDistortion = 4;
         mi.importNormals = ModelImporterNormals.Calculate;
+        mi.normalSmoothingSource = ModelImporterNormalSmoothingSource.None;
     }
 
     // set each mesh renderer in the asset to a certain scale in the lightmap
