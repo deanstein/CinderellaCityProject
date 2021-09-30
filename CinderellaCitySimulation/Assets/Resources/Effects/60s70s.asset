@@ -18,7 +18,7 @@ MonoBehaviour:
     value: 1
   filtering:
     overrideState: 0
-    value: {x: 50, y: 95}
+    value: {x: 49.32231, y: 94.32231}
   minLuminance:
     overrideState: 0
     value: 0
@@ -27,7 +27,7 @@ MonoBehaviour:
     value: 0
   keyValue:
     overrideState: 1
-    value: 1.4
+    value: 1
   eyeAdaptation:
     overrideState: 0
     value: 0
@@ -155,8 +155,8 @@ MonoBehaviour:
     value: {fileID: 0}
     defaultState: 1
   tonemapper:
-    overrideState: 0
-    value: 0
+    overrideState: 1
+    value: 1
   toneCurveToeStrength:
     overrideState: 0
     value: 0
@@ -183,8 +183,8 @@ MonoBehaviour:
     overrideState: 0
     value: 1
   temperature:
-    overrideState: 0
-    value: -0
+    overrideState: 1
+    value: 10
   tint:
     overrideState: 0
     value: 0
@@ -196,16 +196,16 @@ MonoBehaviour:
     value: 0
   saturation:
     overrideState: 1
-    value: 35
+    value: 40
   brightness:
     overrideState: 0
     value: 0
   postExposure:
     overrideState: 1
-    value: 0.75
+    value: 1.4
   contrast:
     overrideState: 1
-    value: 0
+    value: 20
   mixerRedOutRedIn:
     overrideState: 0
     value: 113
