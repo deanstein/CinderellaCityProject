@@ -60,7 +60,7 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
             StartCoroutine(ToggleCameraEffects.ToggleCameraEffectWithTransition(this.gameObject, "Dark", "FlashBlack", 0.4f));
         }
         // toggle blur on/off
-        else if (Input.GetKeyDown("b"))
+        if (Input.GetKeyDown("b"))
         {          
             PostProcessVolume existingVolume = this.GetComponent<PostProcessVolume>();
             PostProcessProfile existingProfile = existingVolume.profile;
@@ -68,13 +68,26 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
             existingProfile.TryGetSettings(out blur);
             blur.enabled.Override(!blur.enabled);
         }
-        else if (Input.GetKeyDown("x"))
+
+        // capture screenshot
+        if (Input.GetKeyDown("x"))
         {
             TakeScreenshots.CaptureScreenshotOfCurrentCamera();
         }
 
+        // record the current position and camera as a view that can be restored
+        if (Input.GetKeyDown("m"))
+        {
+            ManageFPSControllers.GetSerializedFPSControllerRestoreData(ManageFPSControllers.FPSControllerGlobals.activeFPSController);
+        }
+        // restore the position
+        if (Input.GetKeyDown("n"))
+        {
+            ManageFPSControllers.RelocateAlignFPSControllerToMatchRestoreData(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerRestoreData);
+        }
+
         // toggle anti-gravity mode
-        else if (Input.GetKeyDown("g"))
+        if (Input.GetKeyDown("g"))
         {
             // if gravity is on, turn it off, and set the ground force and multiplier to 0
             if (playerRigidBody.useGravity)
@@ -92,7 +105,7 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
             }
         }
         // move up
-        else if (Input.GetKey("r"))
+        if (Input.GetKey("r"))
         {
             // only do something if gravity is off
             if (!playerRigidBody.useGravity)
@@ -116,7 +129,7 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
             }
         }
         // move down
-        else if (Input.GetKey("f"))
+        if (Input.GetKey("f"))
         {
             // only do something if gravity is off
             if (!playerRigidBody.useGravity)

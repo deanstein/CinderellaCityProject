@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -7,11 +8,11 @@ using UnityStandardAssets.Characters.FirstPerson;
 
 /// <summary>
 /// Monitors the location, rotation, and behavior of FPS Controllers (player) in Scenes
+/// this script needs to be attached to each FPSController in each scene
 /// </summary>
 
 public class ManageFPSControllers : MonoBehaviour {
 
-    // this script needs to be attached to each FPSController in each scene
     public class FPSControllerGlobals
     {
         // default FPS Controller gravity values
@@ -36,6 +37,7 @@ public class ManageFPSControllers : MonoBehaviour {
         public static Vector3 activeFPSControllerCameraForward;
         public static bool isActiveFPSControllerOnNavMesh;
         public static Vector3 activeFPSControllerNavMeshPosition;
+        public static FPSControllerRestoreData activeFPSControllerRestoreData;
 
         // this scene's first FPSController location
         // which is used to calculate turning gravity back on after time traveling
@@ -47,6 +49,15 @@ public class ManageFPSControllers : MonoBehaviour {
         public static NavMeshAgent activeFPSControllerNavMeshAgent;
 
         public Texture2D outgoingFPSControllerCameraTexture;
+    }
+
+    [Serializable]
+    public class FPSControllerRestoreData
+    {
+        public float[] restorePosition = new float[3];
+        public float[] restoreRotation = new float[4];
+        public float[] restoreScale = new float[3];
+        public float[] restoreCameraForward = new float[3];
     }
 
     // add this FPSController to the list of available FPSControllers, if it doesn't exist already
@@ -168,7 +179,80 @@ public class ManageFPSControllers : MonoBehaviour {
 
         // restore the existing post process profile
         existingVolume.profile = existingProfile;
-        // wait a moment, then re-enable blur
+    }
+
+    // serialize the FPSController into a JSON object
+    public static string GetSerializedFPSControllerRestoreData(GameObject FPSController)
+    {
+        FPSControllerRestoreData FPSControllerRestoreData = new FPSControllerRestoreData();
+        FPSControllerRestoreData CameraRestoreData = new FPSControllerRestoreData();
+
+        Transform FPSControllerTransform = FPSController.transform;
+        Camera FPSControllerCamera = FPSController.GetComponentInChildren<Camera>();
+        Transform FPSControllerCameraTransform = FPSControllerCamera.transform;
+
+        FPSControllerRestoreData.restorePosition[0] = FPSControllerTransform.position.x;
+        FPSControllerRestoreData.restorePosition[1] = FPSControllerTransform.position.y;
+        FPSControllerRestoreData.restorePosition[2] = FPSControllerTransform.position.z;
+
+        FPSControllerRestoreData.restoreCameraForward[0] = FPSControllerCamera.transform.forward.x;
+        FPSControllerRestoreData.restoreCameraForward[1] = FPSControllerCamera.transform.forward.y;
+        FPSControllerRestoreData.restoreCameraForward[2] = FPSControllerCamera.transform.forward.z;
+
+        string serializedFPSControllerData = JsonUtility.ToJson(FPSControllerRestoreData);
+        Utils.DebugUtils.DebugLog("FPS Controller data: " + serializedFPSControllerData);
+
+        FPSControllerGlobals.activeFPSControllerRestoreData = FPSControllerRestoreData;
+
+        return serializedFPSControllerData;
+    }
+
+    // reposition and realign this FPSController to match the given one
+    public static void RelocateAlignFPSControllerToMatchRestoreData(FPSControllerRestoreData serializedRestoreDataToMatch)
+    {
+        // be sure that the time traveling flag is false to prevent unexpected player hoisting behavior
+        FPSControllerGlobals.isTimeTraveling = false;
+
+        // get the current FPSController
+        GameObject activeFPSController = FPSControllerGlobals.activeFPSController;
+        GameObject activeFirstPersonCharacter = activeFPSController.transform.GetChild(0).gameObject;
+        NavMeshAgent activeAgent = activeFPSController.GetComponentInChildren<NavMeshAgent>();
+
+        // get the existing post process volume and profile
+        PostProcessVolume existingVolume = activeFPSController.GetComponentInChildren<PostProcessVolume>();
+        PostProcessProfile existingProfile = existingVolume.profile;
+
+        // create a temporary profile with no motion blur
+        PostProcessProfile newProfile = new PostProcessProfile();
+        newProfile = existingProfile;
+        MotionBlur blur;
+        newProfile.TryGetSettings(out blur);
+        blur.enabled.Override(false);
+        existingVolume.priority++;
+
+        // temporarily override the existing volume to avoid motion blur when relocating
+        existingVolume.profile = newProfile;
+
+        // need to make sure the camera transform doesn't include a rotation up or down (causes FPSCharacter to tilt)
+        Vector3 currentCameraForward = new Vector3(serializedRestoreDataToMatch.restoreCameraForward[0], serializedRestoreDataToMatch.restoreCameraForward[1], serializedRestoreDataToMatch.restoreCameraForward[2]);
+        Vector3 newCameraForward = new Vector3(currentCameraForward.x, 0, currentCameraForward.z);
+
+        Vector3 newPosition = new Vector3(serializedRestoreDataToMatch.restorePosition[0], serializedRestoreDataToMatch.restorePosition[1], serializedRestoreDataToMatch.restorePosition[2]);
+
+        // match the FPSController's position and rotation to the given restore data
+        activeFPSController.transform.SetPositionAndRotation(newPosition, Quaternion.LookRotation(newCameraForward, Vector3.up));
+
+        // set the FirstPersonCharacter's camera forward direction
+        activeFirstPersonCharacter.GetComponent<Camera>().transform.forward = currentCameraForward;
+
+        // set the FirstPersonCharacter height to the camera height
+        //activeFirstPersonCharacter.transform.position = new Vector3(activeFirstPersonCharacter.transform.position.x, newPosition.y, activeFirstPersonCharacter.transform.position.z);
+
+        // reset the FPSController mouse to avoid incorrect rotation due to interference
+        activeFPSController.transform.GetComponent<FirstPersonController>().MouseReset();
+
+        // restore the existing post process profile
+        existingVolume.profile = existingProfile;
     }
 
     // reposition and realign this FPSController to match the given one
