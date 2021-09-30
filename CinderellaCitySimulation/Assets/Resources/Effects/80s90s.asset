@@ -111,8 +111,8 @@ MonoBehaviour:
     value: {fileID: 0}
     defaultState: 1
   tonemapper:
-    overrideState: 0
-    value: 0
+    overrideState: 1
+    value: 1
   toneCurveToeStrength:
     overrideState: 0
     value: 0
@@ -161,7 +161,7 @@ MonoBehaviour:
     value: 0.38
   contrast:
     overrideState: 1
-    value: 0
+    value: 10
   mixerRedOutRedIn:
     overrideState: 0
     value: 100
