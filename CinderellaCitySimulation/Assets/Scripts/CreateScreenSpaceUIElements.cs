@@ -1042,8 +1042,9 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
             UIGlobals.isTimeTravelThumbnail = false;
         }
 
+        // make a vertical scroll area for the thumbnails
         // make an object to hold the thumbnails
-        GameObject thumbnailStack = new GameObject(Utils.StringUtils.CleanString(placeName) + "ThumbnailStack");
+        GameObject thumbnailStackContainer = new GameObject(Utils.StringUtils.CleanString(placeName) + "ThumbnailStack");
 
         // location text
         GameObject placeLabel = new GameObject(Utils.StringUtils.CleanString(placeName) + "Label");
@@ -1075,7 +1076,6 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
             // set the image
             // note this requires a valid image in the Resources folder path below, with a file name that matches combinedPlaceTimeNameSpaceless
             Image timePeriodButtonImage = timePeriodButton.GetComponent<Image>();
-
 
             // need to set the sprite differently depending on whether this is a time travel thumbnail, or standard time/place thumbnail
 
@@ -1126,22 +1126,22 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
             timePeriodButton.AddComponent<Button>();
             timePeriodButton.GetComponent<Button>().onClick.AddListener(() => { TaskOnClickByName(timePeriodButton.name); }); ;
 
-        // set the parent/child hierarchy
-        timePeriodButton.transform.SetParent(thumbnailStack.transform);
+            // set the parent/child hierarchy
+            timePeriodButton.transform.SetParent(thumbnailStackContainer.transform);
         }
 
         // position the place label centered at the first thumbnail
         TransformScreenSpaceObject.PositionObjectAtVerticalCenterlineOfNeighbor(placeLabel, placeThumbnailsForAlignment[0]);
 
         // set the parent/child hierarchy
-        placeLabel.transform.SetParent(thumbnailStack.transform);
+        placeLabel.transform.SetParent(thumbnailStackContainer.transform);
 
         // due to a problem with parent transforms, 
         // we can't set the parent/child hierarchy of the entire stack yet
         // instead, add this stack to the orphaned object list, and we'll assign its parent later
-        orphanedThumbnailStacks.Add(thumbnailStack);
+        orphanedThumbnailStacks.Add(thumbnailStackContainer);
 
-        return thumbnailStack;
+        return thumbnailStackContainer;
     }
 
     // create the main menu central navigation
@@ -1151,35 +1151,41 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         orphanedThumbnailStacks.Clear();
         timeLabelsForAlignment.Clear();
 
-        // create the central nav container
-        GameObject centralNavContainer = CreateCentralNavContainer(parent, topNeighbor);
+        // put all the thumbnail stacks in a horizontal scroll area
+        // and central nav container
+        GameObject mainMenuHorizontalScrollArea = CreateScreenSpaceUIElements.CreateScrollableArea("MainMenuHorizontalScrollArea", "horizontal");
+        GameObject mainMenuCentralNavContainer = CreateScreenSpaceUIElements.CreateCentralNavContainer(parent, topNeighbor);
+        CreateScreenSpaceUIElements.ConfigureScrollAreaToMatchChildRect(mainMenuHorizontalScrollArea, mainMenuCentralNavContainer);
 
         // create the time label stack
-        GameObject timeLabelStack = CreateTimeLabelStack(centralNavContainer, centralNavContainer, SceneGlobals.availableTimePeriodFriendlyNames);
+        GameObject timeLabelStack = CreateTimeLabelStack(mainMenuCentralNavContainer, mainMenuCentralNavContainer, SceneGlobals.availableTimePeriodFriendlyNames);
 
         // use the first time label for aligning other objects horizontally
         GameObject timeLabelForAlignment = timeLabelStack.transform.GetChild(0).gameObject;
 
         // create each place thumbnail stack, and their associated place labels
-        GameObject blueMallThumbnailStack = CreatePlaceTimeThumbnailStack(centralNavContainer, centralNavContainer, timeLabelForAlignment, "Blue Mall", SceneGlobals.availableTimePeriodFriendlyNames);
+        GameObject blueMallThumbnailStack = CreatePlaceTimeThumbnailStack(mainMenuCentralNavContainer, mainMenuCentralNavContainer, timeLabelForAlignment, "Blue Mall", SceneGlobals.availableTimePeriodFriendlyNames);
 
-        GameObject roseMallThumbnailStack = CreatePlaceTimeThumbnailStack(centralNavContainer, centralNavContainer, blueMallThumbnailStack.transform.GetChild(0).gameObject, "Rose Mall", SceneGlobals.availableTimePeriodFriendlyNames);
+        GameObject roseMallThumbnailStack = CreatePlaceTimeThumbnailStack(mainMenuCentralNavContainer, mainMenuCentralNavContainer, blueMallThumbnailStack.transform.GetChild(0).gameObject, "Rose Mall", SceneGlobals.availableTimePeriodFriendlyNames);
 
-        GameObject goldMallThumbnailStack = CreatePlaceTimeThumbnailStack(centralNavContainer, centralNavContainer, roseMallThumbnailStack.transform.GetChild(0).gameObject, "Gold Mall", SceneGlobals.availableTimePeriodFriendlyNames);
+        GameObject goldMallThumbnailStack = CreatePlaceTimeThumbnailStack(mainMenuCentralNavContainer, mainMenuCentralNavContainer, roseMallThumbnailStack.transform.GetChild(0).gameObject, "Gold Mall", SceneGlobals.availableTimePeriodFriendlyNames);
+
+        GameObject cinderAlleyThumbnailStack = CreatePlaceTimeThumbnailStack(mainMenuCentralNavContainer, mainMenuCentralNavContainer, goldMallThumbnailStack.transform.GetChild(0).gameObject, "Cinder Alley", SceneGlobals.availableTimePeriodFriendlyNames);
 
         // resize the container to align with the last thumbnail in the column
         int thumbnailCount = blueMallThumbnailStack.transform.childCount - 1; // exclude the label
-        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(centralNavContainer, blueMallThumbnailStack.transform.GetChild(thumbnailCount - 1).gameObject, thumbnailStackBottomMarginScreenHeightRatio);
+        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(mainMenuCentralNavContainer, blueMallThumbnailStack.transform.GetChild(thumbnailCount - 1).gameObject, thumbnailStackBottomMarginScreenHeightRatio);
 
         // position the time labels to align horizontally with the place thumbnails
         TransformScreenSpaceObject.PositionMultiObjectsAtHorizontalCenterlinesOfNeighbors(timeLabelsForAlignment, placeThumbnailsForAlignment);
 
         // set the parent/child hierarchy
-        centralNavContainer.transform.SetParent(parent.transform);
-        timeLabelStack.transform.SetParent(centralNavContainer.transform);
-        AssignOrphanedObjectListToParent(orphanedThumbnailStacks, centralNavContainer);
+        mainMenuHorizontalScrollArea.transform.SetParent(parent.transform);
+        mainMenuCentralNavContainer.transform.SetParent(mainMenuHorizontalScrollArea.transform);
+        timeLabelStack.transform.SetParent(mainMenuCentralNavContainer.transform);
+        AssignOrphanedObjectListToParent(orphanedThumbnailStacks, mainMenuCentralNavContainer);
 
-        return centralNavContainer;
+        return mainMenuCentralNavContainer;
     }
 
     public static GameObject CreatePauseMenuCentralNav(GameObject parent, GameObject topNeighbor)
@@ -1189,20 +1195,20 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         timeLabelsForAlignment.Clear();
 
         // create the central nav container
-        GameObject centralNavContainer = CreateCentralNavContainer(parent, topNeighbor);
+        GameObject pauseMenuCentralNavContainer = CreateCentralNavContainer(parent, topNeighbor);
 
         // create the time label stack
-        GameObject timeLabelStack = CreateTimeLabelStack(centralNavContainer, centralNavContainer, SceneGlobals.availableTimePeriodFriendlyNames);
+        GameObject timeLabelStack = CreateTimeLabelStack(pauseMenuCentralNavContainer, pauseMenuCentralNavContainer, SceneGlobals.availableTimePeriodFriendlyNames);
 
         // use the first time label for aligning other objects horizontally
         GameObject timeLabelForAlignment = timeLabelStack.transform.GetChild(0).gameObject;
 
         // create the time travel thumbnail container
-        GameObject timeTravelThumbnailStack = CreatePlaceTimeThumbnailStack(centralNavContainer, centralNavContainer, timeLabelForAlignment, "Time Travel:", SceneGlobals.availableTimePeriodFriendlyNames);
+        GameObject timeTravelThumbnailStack = CreatePlaceTimeThumbnailStack(pauseMenuCentralNavContainer, pauseMenuCentralNavContainer, timeLabelForAlignment, "Time Travel:", SceneGlobals.availableTimePeriodFriendlyNames);
 
         // resize the container to align with the last thumbnail in the column
         int thumbnailCount = timeTravelThumbnailStack.transform.childCount - 1; // exclude the label
-        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(centralNavContainer, timeTravelThumbnailStack.transform.GetChild(thumbnailCount - 1).gameObject, thumbnailStackBottomMarginScreenHeightRatio);
+        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(pauseMenuCentralNavContainer, timeTravelThumbnailStack.transform.GetChild(thumbnailCount - 1).gameObject, thumbnailStackBottomMarginScreenHeightRatio);
 
         // position the time labels to align horizontally with the place thumbnails
         TransformScreenSpaceObject.PositionMultiObjectsAtHorizontalCenterlinesOfNeighbors(timeLabelsForAlignment, placeThumbnailsForAlignment);
@@ -1213,28 +1219,28 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         GameObject buttonAlignmentObject = timeTravelThumbnailStack.transform.GetChild(0).gameObject;
 
         // create the resume button
-        GameObject resumeButton = CreateTextButton("Resume", centralNavContainer, buttonColor);
+        GameObject resumeButton = CreateTextButton("Resume", pauseMenuCentralNavContainer, buttonColor);
         // align and position the main menu button
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(resumeButton, buttonAlignmentObject, 0.0f);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(resumeButton, buttonAlignmentObject, textButtonLeftMarginScreenWidthRatio);
 
         // create the main menu button
-        GameObject mainMenuButton = CreateTextButton("Main Menu", centralNavContainer, buttonColor);
+        GameObject mainMenuButton = CreateTextButton("Main Menu", pauseMenuCentralNavContainer, buttonColor);
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(mainMenuButton, resumeButton, textButtonBottomMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(mainMenuButton, buttonAlignmentObject, textButtonLeftMarginScreenWidthRatio);
 
         // exit button
-        GameObject exitButton = CreateTextButton("Quit", centralNavContainer, buttonColor);
+        GameObject exitButton = CreateTextButton("Quit", pauseMenuCentralNavContainer, buttonColor);
         // align and position the exit button
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(exitButton, mainMenuButton, textButtonBottomMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(exitButton, buttonAlignmentObject, textButtonLeftMarginScreenWidthRatio);
 
         // set the parent/child hierarchy
-        centralNavContainer.transform.SetParent(parent.transform);
-        timeLabelStack.transform.SetParent(centralNavContainer.transform);
-        AssignOrphanedObjectListToParent(orphanedThumbnailStacks, centralNavContainer);
+        pauseMenuCentralNavContainer.transform.SetParent(parent.transform);
+        timeLabelStack.transform.SetParent(pauseMenuCentralNavContainer.transform);
+        AssignOrphanedObjectListToParent(orphanedThumbnailStacks, pauseMenuCentralNavContainer);
 
-        return centralNavContainer;
+        return pauseMenuCentralNavContainer;
     }
 }
 
