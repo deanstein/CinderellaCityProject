@@ -228,6 +228,22 @@ public class ToggleSceneAndUI
         }
     }
 
+    // toggle a gameobject visibility to the opposite state
+    // returns the new state
+    public static bool ToggleSceneObject(GameObject sceneObject)
+    {
+        if (sceneObject.activeSelf)
+        {
+            sceneObject.SetActive(false);
+            return false;
+        }
+        else
+        {
+            sceneObject.SetActive(true);
+            return true;
+        }
+    }
+
     // toggles the "fromScene" off, and toggles the "toScene" on
     public static void ToggleFromSceneToScene(string fromScene, string toScene)
     {
@@ -355,8 +371,8 @@ public class ToggleSceneAndUI
             if (child.name.Contains(overlayMenuName))
             {
                 GameObject.DestroyImmediate(child.gameObject);
-                OverlayUIVisibilityGlobals.isOverlayMenuActive = false;
-                OverlayUIVisibilityGlobals.activeOverlayMenuName = null;
+                UIVisibilityGlobals.isOverlayMenuActive = false;
+                UIVisibilityGlobals.activeOverlayMenuName = null;
 
                 // let the active FPS controller take over control of the cursor again
                 ManageFPSControllers.EnableCursorLockOnActiveFPSController();
@@ -369,8 +385,8 @@ public class ToggleSceneAndUI
         // if we get here, an overlay menu was not found, so build it
         GameObject overlayMenu = CreateScreenSpaceUILayoutByName.BuildVisualizationMenuOverlay(UILauncher);
 
-        OverlayUIVisibilityGlobals.activeOverlayMenuName = overlayMenu.name;
-        OverlayUIVisibilityGlobals.isOverlayMenuActive = true;
+        UIVisibilityGlobals.activeOverlayMenuName = overlayMenu.name;
+        UIVisibilityGlobals.isOverlayMenuActive = true;
 
         // release the cursor so the user can make selections in the menu
         ManageFPSControllers.DisableCursorLockOnActiveFPSController();

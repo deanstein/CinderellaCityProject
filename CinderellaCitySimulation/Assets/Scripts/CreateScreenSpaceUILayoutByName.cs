@@ -110,7 +110,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
             BuildTimePeriodHUD(UILauncher);
 
             // if an overlay menu was active, restore it
-            if (OverlayUIVisibilityGlobals.isOverlayMenuActive)
+            if (UIVisibilityGlobals.isOverlayMenuActive)
             {
                 ManageOverlayVisibility.RestoreLastKnownOverlayMenu(UILauncher);
             }
@@ -227,21 +227,22 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         Utils.DebugUtils.DebugLog("Building the Heads Up Display...");
 
         // Heads Up Display canvas
-        GameObject HUDCanvas = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, "HUD");
+        GameObject HUDCanvasParentObject = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, "HUD");
+        UIVisibilityGlobals.activeHUD = HUDCanvasParentObject;
 
         // create the time period indicator
-        GameObject HUDTimePeriodIndicator = CreateScreenSpaceUIElements.CreateHUDTimePeriodIndicator(HUDCanvas, Utils.StringUtils.ConvertSceneNameToFriendlyName(UILauncher.scene.name));
+        GameObject HUDTimePeriodIndicator = CreateScreenSpaceUIElements.CreateHUDTimePeriodIndicator(HUDCanvasParentObject, Utils.StringUtils.ConvertSceneNameToFriendlyName(UILauncher.scene.name));
 
         // create the game version indicator
-        GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(HUDCanvas);
+        GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(HUDCanvasParentObject);
 
         // note that some scenes are under construction
         if (UILauncher.scene.name.Contains("AltFuture"))
         {
-            CreateScreenSpaceUIElements.CreateHUDUnderConstructionLabel(HUDCanvas, "/// Under Construction ///");
+            CreateScreenSpaceUIElements.CreateHUDUnderConstructionLabel(HUDCanvasParentObject, "/// Under Construction ///");
         }
 
-        return HUDCanvas;
+        return HUDCanvasParentObject;
     }
 
     // the visualization menu
@@ -318,6 +319,30 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         CreateScreenSpaceUIElements.PopulateToggleGroup(objectVisibilityToggleGroup, visibilityToggles);
 
         ///
+        /// UI visibility settings
+        ///
+
+        // create the object visibility scroll area
+        GameObject UIVisibilityScrollArea = CreateScreenSpaceUIElements.CreateScrollableArea("UIVisibilitySettings", "vertical");
+
+        // create the object visibility toggle group container
+        GameObject UIVisibilityToggleGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu, toggleSetContainer, objectVisibilityToggleGroup, false, "USER INTERFACE");
+
+        // configure scroll area to fit the toggle group
+        CreateScreenSpaceUIElements.ConfigureScrollAreaToMatchChildRect(UIVisibilityScrollArea, UIVisibilityToggleGroup);
+
+        // first, create a list of toggles required for each of the object sets
+        List<GameObject> UIVisibilityToggles = new List<GameObject>();
+
+        // show heads-up display elements
+        GameObject showHUDToggle = CreateScreenSpaceUIElements.CreateToggleModule(UIVisibilityToggleGroup, objectVisibilityToggleGroup.transform.GetChild(0).gameObject, "Show HUD");
+        CreateScreenSpaceUIElements.ConfigureTypicalToggle(showHUDToggle, ManageHUDVisibility.ToggleHUDCanvas, UIVisibilityGlobals.isHUDActive);
+        UIVisibilityToggles.Add(showHUDToggle);
+
+        // now populate the object camera settings toggle group container
+        CreateScreenSpaceUIElements.PopulateToggleGroup(UIVisibilityToggleGroup, UIVisibilityToggles);
+
+        ///
         /// camera settings
         ///
 
@@ -325,7 +350,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         GameObject cameraSettingsScrollArea = CreateScreenSpaceUIElements.CreateScrollableArea("CameraSettings", "vertical");
 
         // create the object visibility toggle group container
-        GameObject cameraSettingsToggleGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu, toggleSetContainer, objectVisibilityToggleGroup, false, "CAMERA SETTINGS");
+        GameObject cameraSettingsToggleGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu, toggleSetContainer, UIVisibilityToggleGroup, false, "CAMERA SETTINGS");
 
         // configure scroll area to fit the toggle group
         CreateScreenSpaceUIElements.ConfigureScrollAreaToMatchChildRect(cameraSettingsScrollArea, cameraSettingsToggleGroup);
@@ -333,9 +358,8 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         // first, create a list of toggles required for each of the object sets
         List<GameObject> cameraSettingsToggles = new List<GameObject>();
 
-        // object visibility toggles
-        //GameObject occlusionCullingToggle = CreateScreenSpaceUIElements.CreateCameraSettingsToggleModule(cameraSettingsToggleGroup, objectVisibilityToggleGroup.transform.GetChild(0).gameObject, "Occlusion Culling");
-        GameObject occlusionCullingToggle = CreateScreenSpaceUIElements.CreateToggleModule(cameraSettingsToggleGroup, objectVisibilityToggleGroup.transform.GetChild(0).gameObject, "Occlusion Culling");
+        // occlusion culling
+        GameObject occlusionCullingToggle = CreateScreenSpaceUIElements.CreateToggleModule(cameraSettingsToggleGroup, UIVisibilityToggleGroup.transform.GetChild(0).gameObject, "Occlusion Culling");
         CreateScreenSpaceUIElements.ConfigureTypicalToggle(occlusionCullingToggle, ManageCameraActions.ToggleCurrentCameraOcclusionCullingState, ManageCameraActions.GetCurrentCameraOcclusionCullingState());
         cameraSettingsToggles.Add(occlusionCullingToggle);
 
@@ -348,6 +372,9 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
 
         objectVisibilityScrollArea.transform.parent = toggleSetContainer.transform;
         objectVisibilityToggleGroup.transform.SetParent(objectVisibilityScrollArea.transform);
+
+        UIVisibilityScrollArea.transform.parent = toggleSetContainer.transform;
+        UIVisibilityToggleGroup.transform.SetParent(UIVisibilityScrollArea.transform);
 
         cameraSettingsScrollArea.transform.parent = toggleSetContainer.transform;
         cameraSettingsToggleGroup.transform.SetParent(cameraSettingsScrollArea.transform);
