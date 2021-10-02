@@ -1214,7 +1214,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
         // create the main menu button
         GameObject mainMenuButton = CreateTextButton("Main Menu", pauseMenuCentralNavContainer, UIGlobals.mainMenuTextButtonLabelSize, UIGlobals.buttonColor);
-        resumeButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
+        mainMenuButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
             ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "MainMenu");
         }); ;
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(mainMenuButton, resumeButton, textButtonBottomMarginScreenHeightRatio);
@@ -1222,7 +1222,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
         // exit button
         GameObject exitButton = CreateTextButton("Quit", pauseMenuCentralNavContainer, UIGlobals.mainMenuTextButtonLabelSize, UIGlobals.buttonColor);
-        resumeButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
+        exitButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
             Application.Quit();
         }); ;
         // align and position the exit button

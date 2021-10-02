@@ -60,10 +60,8 @@ public class ManageCameraActions : MonoBehaviour
     public static string GetScreenshotPathByContext()
     {
         // if we're not in the editor, 
-        // or if we're in the editor but not capturing batch screenshots, 
         // set the screenshot path where an end user can find it
-        if ((!Application.isEditor) 
-            || (Application.isEditor && !EditorPrefs.GetBool(CameraActionGlobals.screenshotModeFlag)))
+        if ((!Application.isEditor))
         {
             string screenshotPath = CameraActionGlobals.inGameScreenshotsPath;
 
@@ -89,10 +87,8 @@ public class ManageCameraActions : MonoBehaviour
     public static string GetScreenshotFileNameByContext()
     {
         // if we're not in the editor, 
-        // or if we're in the editor but not capturing batch screenshots, 
         // set the screenshot name for end users
-        if ((!Application.isEditor) 
-            || (Application.isEditor && !EditorPrefs.GetBool(CameraActionGlobals.screenshotModeFlag)))
+        if ((!Application.isEditor))
         {
             string screenshotFileName = GetInGameScreenshotFileName();
 
