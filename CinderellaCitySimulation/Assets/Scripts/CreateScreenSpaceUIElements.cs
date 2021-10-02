@@ -38,13 +38,6 @@ public class UIGlobals
     public static GameObject timePeriodNotificationContainer80s90s;
     public static GameObject timePeriodNotificationContainerAltFuture;
     public static GameObject timePeriodNotificationContainerExperimental;
-}
-
-public class CreateScreenSpaceUIElements : MonoBehaviour
-{
-    // this is a single stack of place/time thumbnails for aligning time labels to
-    public static List<GameObject> placeThumbnailsForAlignment = new List<GameObject>();
-    public static List<GameObject> timeLabelsForAlignment = new List<GameObject>();
 
     /// colors ///
 
@@ -64,6 +57,21 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     public static Color32 clearColor = new Color32(255, 255, 255, 0);
 
     /// sizes ///
+    
+    // fonts and text sizes (pixels)
+    public static int visibilitymenuTextButtonlabelSize = 20;
+    public static int mainMenuTextButtonLabelSize = 35;
+}
+
+public class CreateScreenSpaceUIElements : MonoBehaviour
+{
+    // this is a single stack of place/time thumbnails for aligning time labels to
+    public static List<GameObject> placeThumbnailsForAlignment = new List<GameObject>();
+    public static List<GameObject> timeLabelsForAlignment = new List<GameObject>();
+
+    // TODO: move these into UIGlobals
+
+    /// sizes ///
 
     // fonts and text sizes (pixels)
     public static string labelFont = "AvenirNextLTPro-Demi";
@@ -76,8 +84,6 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
     public static int placeLabelSize = 50;
     public static int timeLabelSize = 50;
-
-    public static int menuTextButtonLabelSize = 35;
 
     // the proportion of the text height that the descender is estimated to be
     public static float textDescenderProportion = 0.12f;
@@ -318,48 +324,27 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         }
     }
 
-    // define what clicking the buttons does, based on the name of the button
-    public static void TaskOnClickByName(string buttonName)
+    // time travel buttons take the player from a menu to a place and time in game
+    public static void TimeTravelButtonAction(string buttonName)
     {
-        switch (buttonName)
+        // buttons need to be named with hyphens delimiting important info
+        string[] nameSplitByDelimiter = buttonName.Split('-');
+        // the place needs to be 1st
+        string playerPosition = nameSplitByDelimiter[0];
+        // the time period needs to be 2nd
+        string timePeriod = nameSplitByDelimiter[1];
+
+        // if the button name indicates a time traveler, don't specify an FPSController location (uses the current FPS location)
+        if (buttonName.Contains("TimeTravel"))
         {
-            // handle buttons that lead to menus and exit
-            case string name when name.Contains("Resume"):
-                ManageFPSControllers.FPSControllerGlobals.isTimeTraveling = false;
-                ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, SceneGlobals.referringSceneName);
-                return;
-            case string name when name.Contains("MainMenu"):
-                ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "MainMenu");
-                return;
-            case string name when name.Contains("Quit"):
-                Application.Quit();
-                return;
-
-            // handle buttons that request a time and place
-            // check if the button name contains an available time period (scene name)
-            case string name when Utils.StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, name):
-                // buttons need to be named with hyphens delimiting important info
-                string[] nameSplitByDelimiter = name.Split('-');
-                // the place needs to be 1st
-                string playerPosition = nameSplitByDelimiter[0];
-                // the time period needs to be 2nd
-                string timePeriod = nameSplitByDelimiter[1];
-
-                // if the button name indicates a time traveler, don't specify an FPSController location (uses the current FPS location)
-                if (name.Contains("TimeTravel"))
-                {
-                    // switch to the correct scene based on the time period and location in the button name
-                    ToggleSceneAndUI.ToggleFromSceneToSceneRelocatePlayerToFPSController(SceneManager.GetActiveScene().name, timePeriod, ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform);
-                }
-                // otherwise, this request includes a specific location in its name, so relocate the player to that camera
-                else
-                {
-                    // switch to the correct scene based on the time period and location in the button name
-                    ToggleSceneAndUI.ToggleFromSceneToSceneRelocatePlayerToCamera(SceneManager.GetActiveScene().name, timePeriod, playerPosition);
-                }
-                return;
-            default:
-                return;
+            // switch to the correct scene based on the time period and location in the button name
+            ToggleSceneAndUI.ToggleFromSceneToSceneRelocatePlayerToFPSController(SceneManager.GetActiveScene().name, timePeriod, ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform);
+        }
+        // otherwise, this request includes a specific location in its name, so relocate the player to that camera
+        else
+        {
+            // switch to the correct scene based on the time period and location in the button name
+            ToggleSceneAndUI.ToggleFromSceneToSceneRelocatePlayerToCamera(SceneManager.GetActiveScene().name, timePeriod, playerPosition);
         }
     }
 
@@ -441,7 +426,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         GameObject logoContainer = new GameObject("LogoHeader");
         logoContainer.AddComponent<CanvasRenderer>();
         Image logoContainerColor = logoContainer.AddComponent<Image>();
-        logoContainerColor.color = containerColor;
+        logoContainerColor.color = UIGlobals.containerColor;
 
         // create the logo object
         GameObject logo = new GameObject("ProjectLogo");
@@ -480,7 +465,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         GameObject titleContainer = new GameObject("TitleContainer");
         titleContainer.AddComponent<CanvasRenderer>();
         Image logoContainerColor = titleContainer.AddComponent<Image>();
-        logoContainerColor.color = containerColor;
+        logoContainerColor.color = UIGlobals.containerColor;
 
         // position the title container
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(titleContainer, topAlignmentObject, logoHeaderBottomMarginScreenHeightRatio);
@@ -519,7 +504,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         GameObject toggleGroupContainer = new GameObject("ToggleGroupContainer");
         toggleGroupContainer.AddComponent<CanvasRenderer>();
         Image toggleGroupContainerColor = toggleGroupContainer.AddComponent<Image>();
-        toggleGroupContainerColor.color = containerColor;
+        toggleGroupContainerColor.color = UIGlobals.containerColor;
 
         // position the toggle group container
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(toggleGroupContainer, topAlignmentObject, -centralNavPadding);
@@ -567,7 +552,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         GameObject toggleColorContainer = new GameObject("ToggleContainer");
         toggleColorContainer.AddComponent<CanvasRenderer>();
         Image toggleContainerColor = toggleColorContainer.AddComponent<Image>();
-        toggleContainerColor.color = containerColor;
+        toggleContainerColor.color = UIGlobals.containerColor;
 
         // position the toggle container
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(toggleColorContainer, topAlignmentObject, toggleBottomMarginScreenHeightRatio);
@@ -775,7 +760,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         GameObject timePeriodContainer = new GameObject("TimePeriodContainer");
         timePeriodContainer.AddComponent<CanvasRenderer>();
         Image timePeriodContainerColor = timePeriodContainer.AddComponent<Image>();
-        timePeriodContainerColor.color = containerColor;
+        timePeriodContainerColor.color = UIGlobals.containerColor;
 
         // position the title container
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromScreenTop(timePeriodContainer, HUDBottomBarTopMarginScreenHeightRatio);
@@ -821,7 +806,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
         // image is needed to create a rect transform
         Image timePeriodContainerColor = timePeriodNotificationContainer.AddComponent<Image>();
-        timePeriodContainerColor.color = containerColor;
+        timePeriodContainerColor.color = UIGlobals.containerColor;
 
         // position the title container
         TransformScreenSpaceObject.PositionObjectAtCenterofScreen(timePeriodNotificationContainer);
@@ -862,7 +847,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         UIGlobals.underConstructionLabelContainer.AddComponent<CanvasRenderer>();
         // image is needed to create a rect transform
         Image timePeriodContainerColor = UIGlobals.underConstructionLabelContainer.AddComponent<Image>();
-        timePeriodContainerColor.color = clearColor;
+        timePeriodContainerColor.color = UIGlobals.clearColor;
 
         // position the title container
         TransformScreenSpaceObject.PositionObjectAtCenterofScreen(UIGlobals.underConstructionLabelContainer);
@@ -897,7 +882,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         versionLabelContainer.AddComponent<CanvasRenderer>();
         // image is needed to create a rect transform
         Image versionLabelContainerColor = versionLabelContainer.AddComponent<Image>();
-        versionLabelContainerColor.color = clearColor;
+        versionLabelContainerColor.color = UIGlobals.clearColor;
 
         // position the version container
         TransformScreenSpaceObject.PositionObjectAtCenterofScreen(versionLabelContainer);
@@ -905,7 +890,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // add the version text
         GameObject versionLabel = new GameObject("VersionLabel");
         Text versionLabelText = versionLabel.AddComponent<Text>();
-        versionLabelText.color = subtleTextColor;
+        versionLabelText.color = UIGlobals.subtleTextColor;
         versionLabelText.font = (Font)Resources.Load(labelFont);
         versionLabelText.text = version;
         versionLabelText.fontSize = versionLabelSize;
@@ -934,7 +919,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
         // set the color of the central nav container
         Image centralNavContainerColor = centralNavContainer.AddComponent<Image>();
-        centralNavContainerColor.color = containerColor;
+        centralNavContainerColor.color = UIGlobals.containerColor;
 
         // position the central nav container
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(centralNavContainer, topAlignmentObject, navContainerTopMarginScreenHeightRatio);
@@ -947,14 +932,14 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         return centralNavContainer;
     }
 
-    public static GameObject CreateTextButton(string text, GameObject parent, Color32 color)
+    public static GameObject CreateTextButton(string text, GameObject parent, int fontSize, Color32 color)
     {
         // create the text label
         GameObject buttonTextObject = new GameObject(Utils.StringUtils.CleanString(text) + "ButtonText");
         Text buttonText = buttonTextObject.AddComponent<Text>();
         buttonText.font = (Font)Resources.Load(labelFont);
         buttonText.text = text;
-        buttonText.fontSize = menuTextButtonLabelSize;
+        buttonText.fontSize = fontSize;
         buttonText.alignment = TextAnchor.MiddleCenter;
 
         Vector2 textSize = TransformScreenSpaceObject.ResizeTextExtentsToFitContents(buttonText);
@@ -972,9 +957,8 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         Image buttonContainerColor = buttonContainer.AddComponent<Image>();
         buttonContainerColor.color = color;
 
-        // configure the button
+        // create the Unity button
         Button button = buttonContainer.AddComponent<Button>();
-        buttonContainer.GetComponent<Button>().onClick.AddListener(() => { TaskOnClickByName(buttonContainer.name); }); ;
 
         // set the parent/child hierarchy
         buttonContainer.transform.SetParent(parent.transform);
@@ -1124,7 +1108,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
             // add the button property
             timePeriodButton.AddComponent<Button>();
-            timePeriodButton.GetComponent<Button>().onClick.AddListener(() => { TaskOnClickByName(timePeriodButton.name); }); ;
+            timePeriodButton.GetComponent<Button>().onClick.AddListener(() => { TimeTravelButtonAction(timePeriodButton.name); }); ;
 
             // set the parent/child hierarchy
             timePeriodButton.transform.SetParent(thumbnailStackContainer.transform);
@@ -1219,18 +1203,28 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         GameObject buttonAlignmentObject = timeTravelThumbnailStack.transform.GetChild(0).gameObject;
 
         // create the resume button
-        GameObject resumeButton = CreateTextButton("Resume", pauseMenuCentralNavContainer, buttonColor);
+        GameObject resumeButton = CreateTextButton("Resume", pauseMenuCentralNavContainer, UIGlobals.mainMenuTextButtonLabelSize, UIGlobals.buttonColor);
+        resumeButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
+            ManageFPSControllers.FPSControllerGlobals.isTimeTraveling = false;
+            ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, SceneGlobals.referringSceneName);
+        }); ;
         // align and position the main menu button
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(resumeButton, buttonAlignmentObject, 0.0f);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(resumeButton, buttonAlignmentObject, textButtonLeftMarginScreenWidthRatio);
 
         // create the main menu button
-        GameObject mainMenuButton = CreateTextButton("Main Menu", pauseMenuCentralNavContainer, buttonColor);
+        GameObject mainMenuButton = CreateTextButton("Main Menu", pauseMenuCentralNavContainer, UIGlobals.mainMenuTextButtonLabelSize, UIGlobals.buttonColor);
+        resumeButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
+            ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "MainMenu");
+        }); ;
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(mainMenuButton, resumeButton, textButtonBottomMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(mainMenuButton, buttonAlignmentObject, textButtonLeftMarginScreenWidthRatio);
 
         // exit button
-        GameObject exitButton = CreateTextButton("Quit", pauseMenuCentralNavContainer, buttonColor);
+        GameObject exitButton = CreateTextButton("Quit", pauseMenuCentralNavContainer, UIGlobals.mainMenuTextButtonLabelSize, UIGlobals.buttonColor);
+        resumeButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
+            Application.Quit();
+        }); ;
         // align and position the exit button
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(exitButton, mainMenuButton, textButtonBottomMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(exitButton, buttonAlignmentObject, textButtonLeftMarginScreenWidthRatio);

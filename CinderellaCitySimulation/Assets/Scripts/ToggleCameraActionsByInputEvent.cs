@@ -72,18 +72,15 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
         // capture screenshot
         if (Input.GetKeyDown("x"))
         {
-            TakeScreenshots.CaptureScreenshotOfCurrentCamera();
+            TakeScreenshots.CaptureScreenshotOfCurrentCamera(ManageCameraActions.GetScreenshotPathByContext());
         }
 
-        // record the current position and camera as a view that can be restored
-        if (Input.GetKeyDown("m"))
+        // record the current position and camera as a JSON object that can be restored
+        if (Input.GetKeyDown("k"))
         {
-            ManageFPSControllers.GetSerializedFPSControllerRestoreData(ManageFPSControllers.FPSControllerGlobals.activeFPSController);
-        }
-        // restore the position
-        if (Input.GetKeyDown("n"))
-        {
-            ManageFPSControllers.RelocateAlignFPSControllerToMatchRestoreData(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerRestoreData);
+           string restoreData = ManageFPSControllers.GetSerializedFPSControllerRestoreData(ManageFPSControllers.FPSControllerGlobals.activeFPSController);
+
+            ManageFPSControllers.FPSControllerRestoreData.WriteFPSControllerRestoreDataToDir(ManageFPSControllers.GetSerializedFPSControllerRestoreData(ManageFPSControllers.FPSControllerGlobals.activeFPSController));
         }
 
         // toggle anti-gravity mode
@@ -185,16 +182,13 @@ public class ToggleCameraEffects
 
 public class TakeScreenshots
 {
-    public static void CaptureScreenshotOfCurrentCamera()
+    public static void CaptureScreenshotOfCurrentCamera(string screenshotPath)
     {
-        // get the correct screenshot path based on the current context
-        string screenshotPath = ManageCameraActions.GetScreenshotPathByContext();
-
         // generate a file name based on the current context
         string screenshotName = ManageCameraActions.GetScreenshotFileNameByContext();
 
         // take the screenshot and store it at the given location
-        ScreenCapture.CaptureScreenshot(screenshotPath + screenshotName);
+        ScreenCapture.CaptureScreenshot(screenshotPath + screenshotName + ManageCameraActions.CameraActionGlobals.screenshotFormat);
 
         Utils.DebugUtils.DebugLog("<b>Saved a screenshot of the current camera at: </b>" + screenshotPath + screenshotName);
     }

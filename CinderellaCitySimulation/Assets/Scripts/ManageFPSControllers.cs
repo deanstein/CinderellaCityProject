@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Rendering.PostProcessing;
@@ -58,6 +59,39 @@ public class ManageFPSControllers : MonoBehaviour {
         public float[] restoreRotation = new float[4];
         public float[] restoreScale = new float[3];
         public float[] restoreCameraForward = new float[3];
+
+        public static void WriteFPSControllerRestoreDataToDir(string restoreData)
+        {
+            string writeDir = ManageCameraActions.CameraActionGlobals.savedViewsPath;
+
+            // if the directory doesn't exist, create it
+            if (!Directory.Exists(writeDir))
+            {
+                Directory.CreateDirectory(writeDir);
+            }
+
+            // use the screenshot naming convention here
+            // since we're saving a screenshot in this dir at the same time
+            string fileName = ManageCameraActions.GetInGameScreenshotFileName();
+
+            // save a screenshot here so that a saved view JSON has some visual reference
+            TakeScreenshots.CaptureScreenshotOfCurrentCamera(writeDir);
+
+            // write the JSON
+            string JSONFilePath = writeDir + ManageCameraActions.GetInGameScreenshotFileName() + ".json";
+            File.WriteAllText(JSONFilePath, restoreData);
+        }
+
+        public static ManageFPSControllers.FPSControllerRestoreData ReadFPSControllerRestoreDataFromClipboard()
+        {
+            // get the clipboard data
+            string clipBoardData = GUIUtility.systemCopyBuffer;
+            ManageFPSControllers.FPSControllerRestoreData restoreData = new ManageFPSControllers.FPSControllerRestoreData();
+
+            restoreData = JsonUtility.FromJson<ManageFPSControllers.FPSControllerRestoreData>(clipBoardData);
+
+            return restoreData;
+        }
     }
 
     // add this FPSController to the list of available FPSControllers, if it doesn't exist already
@@ -200,7 +234,7 @@ public class ManageFPSControllers : MonoBehaviour {
         FPSControllerRestoreData.restoreCameraForward[2] = FPSControllerCamera.transform.forward.z;
 
         string serializedFPSControllerData = JsonUtility.ToJson(FPSControllerRestoreData);
-        Utils.DebugUtils.DebugLog("FPS Controller data: " + serializedFPSControllerData);
+        //Utils.DebugUtils.DebugLog("FPS Controller data: " + serializedFPSControllerData);
 
         FPSControllerGlobals.activeFPSControllerRestoreData = FPSControllerRestoreData;
 
