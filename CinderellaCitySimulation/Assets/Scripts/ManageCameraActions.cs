@@ -44,10 +44,12 @@ public class ManageCameraActions : MonoBehaviour
         public static string cameraEffectsPath = "Effects/"; // in Resources
 
         // in-game only: the subfolder below the persistent data folder where screenshots will be saved
-        public static string inGameScreenshotSubfolder = "/Screenshots/";
+        public static string screenshotsSubfolder = "/Screenshots/";
+        public static string savedViewsSubfolder = "/Saved Views/";
 
         // the two screenshot path options, depending on whether we're in the editor or not
-        public static string inGameScreenshotsPath = Application.persistentDataPath + inGameScreenshotSubfolder;
+        public static string inGameScreenshotsPath = Application.persistentDataPath + screenshotsSubfolder;
+        public static string savedViewsPath = Application.persistentDataPath + savedViewsSubfolder;
         public static string editorScreenshotsPath = UIGlobals.projectUIPath;
 
         // the screenshot file format
@@ -57,8 +59,11 @@ public class ManageCameraActions : MonoBehaviour
     // get a screenshot path based on context (editor or in-game)
     public static string GetScreenshotPathByContext()
     {
-        // if we're not in the editor, set the screenshot path as required
-        if (!Application.isEditor)
+        // if we're not in the editor, 
+        // or if we're in the editor but not capturing batch screenshots, 
+        // set the screenshot path where an end user can find it
+        if ((!Application.isEditor) 
+            || (Application.isEditor && !EditorPrefs.GetBool(CameraActionGlobals.screenshotModeFlag)))
         {
             string screenshotPath = CameraActionGlobals.inGameScreenshotsPath;
 
@@ -70,7 +75,8 @@ public class ManageCameraActions : MonoBehaviour
 
             return screenshotPath;
         }
-        // otherwise, we're in the editor, so the screenshot path is different
+        // otherwise, we're in the editor capturing batch screenshots
+        // so the screenshot path is different
         else
         {
             string screenshotPath = CameraActionGlobals.editorScreenshotsPath;
@@ -82,14 +88,18 @@ public class ManageCameraActions : MonoBehaviour
     // get a screenshot file name based on context (editor or in-game)
     public static string GetScreenshotFileNameByContext()
     {
-        // if we're not in the editor, set the screenshot path as required
-        if (!Application.isEditor)
+        // if we're not in the editor, 
+        // or if we're in the editor but not capturing batch screenshots, 
+        // set the screenshot name for end users
+        if ((!Application.isEditor) 
+            || (Application.isEditor && !EditorPrefs.GetBool(CameraActionGlobals.screenshotModeFlag)))
         {
             string screenshotFileName = GetInGameScreenshotFileName();
 
             return screenshotFileName;
         }
-        // otherwise, we're in the editor, so the screenshot path is different
+        // otherwise, we're in the editor capturing batch screenshots
+        // so the screenshot name is different
         else
         {
             string screenshotFileName = UIGlobals.projectUIPath + (CameraActionGlobals.activeCameraHost);
@@ -122,7 +132,7 @@ public class ManageCameraActions : MonoBehaviour
         string sceneName = SceneManager.GetActiveScene().name;
 
         // combine everything into a final filename
-        string screenshotName = dateStamp + delimeter + timeStamp + delimeter + sceneName + CameraActionGlobals.screenshotFormat;
+        string screenshotName = dateStamp + delimeter + timeStamp + delimeter + sceneName;
 
         return screenshotName;
     }

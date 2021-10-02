@@ -99,11 +99,10 @@ public class ToggleSceneAndUIByInputEvent : MonoBehaviour {
             ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, SceneGlobals.referringSceneName);
         }
 
-        // TODO
-        // if an overlay menu is active, dismiss it
+        // TODO: if an overlay menu is active, dismiss it
         //if (Input.GetKeyDown(KeyCode.Escape) && IsOverlayMenuActive)
         //{
-            //ToggleSceneAndUI.ToggleOverlayMenuOff();
+            //ToggleSceneAndUI.ToggleOverlayMenu(UIGlobals.);
         //}
 
         // visibility menu

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 /// <summary>
 /// Creates bespoke UI layouts, depending on the name of its host object 
@@ -366,6 +367,54 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         // now populate the object camera settings toggle group container
         CreateScreenSpaceUIElements.PopulateToggleGroup(cameraSettingsToggleGroup, cameraSettingsToggles);
 
+        ///
+        /// camera actions
+        ///
+
+        // create the object visibility scroll area
+        GameObject cameraActionsScrollArea = CreateScreenSpaceUIElements.CreateScrollableArea("CameraActions", "vertical");
+
+        // create the object visibility toggle group container
+        GameObject cameraActionsButtonGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu, toggleSetContainer, cameraSettingsToggleGroup, false, "CAMERA ACTIONS");
+
+        // configure scroll area to fit the toggle group
+        CreateScreenSpaceUIElements.ConfigureScrollAreaToMatchChildRect(cameraActionsScrollArea, cameraActionsButtonGroup);
+
+        // first, create a list of buttons required for each of the object sets
+        List<GameObject> cameraActionButtons = new List<GameObject>();
+
+        // take screenshot button
+        GameObject takeScreenshotButton = CreateScreenSpaceUIElements.CreateTextButton("Take Screenshot", cameraActionsButtonGroup, UIGlobals.visibilitymenuTextButtonlabelSize, UIGlobals.containerColor);
+        takeScreenshotButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
+
+            // take the screenshot
+            TakeScreenshots.CaptureScreenshotOfCurrentCamera(ManageCameraActions.CameraActionGlobals.inGameScreenshotsPath);
+
+        }); ;
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(takeScreenshotButton, cameraSettingsToggleGroup.transform.GetChild(1).gameObject, 0.0f);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(takeScreenshotButton, cameraActionsButtonGroup, 0.01f);
+
+        //restoreViewFromClipboardButton.
+        cameraActionButtons.Add(takeScreenshotButton);
+
+        // restore view button
+        GameObject restoreViewFromClipboardButton = CreateScreenSpaceUIElements.CreateTextButton("Restore View", cameraActionsButtonGroup, UIGlobals.visibilitymenuTextButtonlabelSize, UIGlobals.containerColor);
+        restoreViewFromClipboardButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
+
+            // get the restore data from the clipboard
+            ManageFPSControllers.FPSControllerRestoreData restoreData = ManageFPSControllers.FPSControllerRestoreData.ReadFPSControllerRestoreDataFromClipboard();
+
+            ManageFPSControllers.RelocateAlignFPSControllerToMatchRestoreData(restoreData);
+        }); ;
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(restoreViewFromClipboardButton, takeScreenshotButton, 0.01f);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(restoreViewFromClipboardButton, cameraActionsButtonGroup, 0.01f);
+
+        //restoreViewFromClipboardButton.
+        cameraActionButtons.Add(restoreViewFromClipboardButton);
+
+        // now populate the object camera settings toggle group container
+        //CreateScreenSpaceUIElements.PopulateToggleGroup(cameraActionsButtonGroup, cameraActionButtons);
+
         // set parent/child hierarchy
         toggleSetHorizontalScrollArea.transform.SetParent(visibilityMenu.transform);
         toggleSetContainer.transform.SetParent(toggleSetHorizontalScrollArea.transform);
@@ -378,6 +427,9 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
 
         cameraSettingsScrollArea.transform.parent = toggleSetContainer.transform;
         cameraSettingsToggleGroup.transform.SetParent(cameraSettingsScrollArea.transform);
+
+        cameraActionsScrollArea.transform.parent = toggleSetContainer.transform;
+        cameraActionsButtonGroup.transform.SetParent(cameraActionsScrollArea.transform);
 
         return visibilityMenu;
     }
