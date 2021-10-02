@@ -31,9 +31,9 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
     int maxFramesBetweenCheck = 7;
     int currentFrameCount = 0;
 
-    private void Start()
+    private void OnEnable()
     {
-        // every scene gets its UI built at the start
+        ClearCurrentSceneUI();
         BuildCurrentSceneUI();
     }
 
@@ -229,7 +229,9 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
 
         // Heads Up Display canvas
         GameObject HUDCanvasParentObject = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, "HUD");
+
         UIVisibilityGlobals.activeHUD = HUDCanvasParentObject;
+        UIVisibilityGlobals.isHUDActive = true;
 
         // create the time period indicator
         GameObject HUDTimePeriodIndicator = CreateScreenSpaceUIElements.CreateHUDTimePeriodIndicator(HUDCanvasParentObject, Utils.StringUtils.ConvertSceneNameToFriendlyName(UILauncher.scene.name));
@@ -394,7 +396,6 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(takeScreenshotButton, cameraSettingsToggleGroup.transform.GetChild(1).gameObject, 0.0f);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(takeScreenshotButton, cameraActionsButtonGroup, 0.01f);
 
-        //restoreViewFromClipboardButton.
         cameraActionButtons.Add(takeScreenshotButton);
 
         // restore view button
@@ -409,7 +410,6 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(restoreViewFromClipboardButton, takeScreenshotButton, 0.01f);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(restoreViewFromClipboardButton, cameraActionsButtonGroup, 0.01f);
 
-        //restoreViewFromClipboardButton.
         cameraActionButtons.Add(restoreViewFromClipboardButton);
 
         // now populate the object camera settings toggle group container
