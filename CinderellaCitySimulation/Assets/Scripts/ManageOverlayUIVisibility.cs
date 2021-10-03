@@ -14,17 +14,17 @@ public static class UIVisibilityGlobals
 
     // a UI launcher can only ever have one overlay menu active, so keep track of it
     public static bool isOverlayMenuActive = false;
-    public static string activeOverlayMenuName = null;
+    public static GameObject activeOverlayMenu = null;
 }
 
 public class ManageOverlayVisibility
 {
-    public static void RestoreLastKnownOverlayMenu(GameObject UILauncher)
+    public static void DismissActiveOverlayMenu()
     {
-        if (UIVisibilityGlobals.activeOverlayMenuName != null)
-        {
-            ToggleSceneAndUI.ToggleOverlayMenu(UILauncher, UIVisibilityGlobals.activeOverlayMenuName);
-        }
+        Object.Destroy(UIVisibilityGlobals.activeOverlayMenu);
+        UIVisibilityGlobals.isOverlayMenuActive = false;
+
+        ManageFPSControllers.EnableCursorLockOnActiveFPSController();
     }
 }
 

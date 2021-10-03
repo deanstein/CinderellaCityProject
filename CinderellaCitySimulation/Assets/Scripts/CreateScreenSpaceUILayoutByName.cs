@@ -69,6 +69,9 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         }
 
         sceneUIObjects.ForEach(child => DestroyImmediate(child));
+
+        UIVisibilityGlobals.isHUDActive = false;
+        UIVisibilityGlobals.isOverlayMenuActive = false;
     }
 
     // build UI based on the name of the current scene
@@ -109,12 +112,6 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         else if (this.name.Contains("UILauncher"))
         {
             BuildTimePeriodHUD(UILauncher);
-
-            // if an overlay menu was active, restore it
-            if (UIVisibilityGlobals.isOverlayMenuActive)
-            {
-                ManageOverlayVisibility.RestoreLastKnownOverlayMenu(UILauncher);
-            }
         }
 
         /*** overlay UI ***/
@@ -255,6 +252,8 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
 
         // visibility menu canvas
         GameObject visibilityMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, SceneGlobals.visibilityMenuName);
+        UIVisibilityGlobals.isOverlayMenuActive = true;
+        UIVisibilityGlobals.activeOverlayMenu = visibilityMenu;
 
         // project logo and container
         GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(visibilityMenu);
@@ -297,13 +296,19 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         GameObject floorsVertVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, exteriorWallsVisibilityToggle, "Mall: Floors", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.floorObjectKeywords));
         visibilityToggles.Add(floorsVertVisibilityToggle);
 
-        GameObject interiorDetailingVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, floorsVertVisibilityToggle, "Mall: Interior Detailing", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.interiorDetailingObjectKeywords));
+        GameObject furnitureVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, floorsVertVisibilityToggle, "Mall: Furniture", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.furnitureObjectKeywords));
+        visibilityToggles.Add(furnitureVisibilityToggle);
+
+        GameObject interiorDetailingVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, furnitureVisibilityToggle, "Mall: Interior Detailing", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.interiorDetailingObjectKeywords));
         visibilityToggles.Add(interiorDetailingVisibilityToggle);
 
         GameObject interiorWallsVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, interiorDetailingVisibilityToggle, "Mall: Interior Walls", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.interiorWallObjectKeywords));
         visibilityToggles.Add(interiorWallsVisibilityToggle);
 
-        GameObject roofVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, interiorWallsVisibilityToggle, "Mall: Roof", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.roofObjectKeywords));
+        GameObject lightsVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, interiorWallsVisibilityToggle, "Mall: Lights", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.lightsObjectKeyword));
+        visibilityToggles.Add(lightsVisibilityToggle);
+
+        GameObject roofVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, lightsVisibilityToggle, "Mall: Roof", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.roofObjectKeywords));
         visibilityToggles.Add(roofVisibilityToggle);
 
         GameObject signageVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, roofVisibilityToggle, "Mall: Signage", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.signageObjectKeywords));
@@ -389,8 +394,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         GameObject takeScreenshotButton = CreateScreenSpaceUIElements.CreateTextButton("Take Screenshot", cameraActionsButtonGroup, UIGlobals.visibilitymenuTextButtonlabelSize, UIGlobals.containerColor);
         takeScreenshotButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
-            // take the screenshot
-            TakeScreenshots.CaptureScreenshotOfCurrentCamera(ManageCameraActions.CameraActionGlobals.inGameScreenshotsPath);
+            CreateScreenSpaceUIElements.CaptureScreenshotButtonAction();
 
         }); ;
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(takeScreenshotButton, cameraSettingsToggleGroup.transform.GetChild(1).gameObject, 0.0f);
@@ -398,16 +402,28 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
 
         cameraActionButtons.Add(takeScreenshotButton);
 
+        // save view button
+        GameObject saveViewFromClipboardButton = CreateScreenSpaceUIElements.CreateTextButton("Save View", cameraActionsButtonGroup, UIGlobals.visibilitymenuTextButtonlabelSize, UIGlobals.containerColor);
+
+        // 
+        saveViewFromClipboardButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
+
+            CreateScreenSpaceUIElements.SaveViewButtonAction();
+
+        }); ;
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(saveViewFromClipboardButton, takeScreenshotButton, 0.01f);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(saveViewFromClipboardButton, cameraActionsButtonGroup, 0.01f);
+
+        cameraActionButtons.Add(saveViewFromClipboardButton);
+
         // restore view button
         GameObject restoreViewFromClipboardButton = CreateScreenSpaceUIElements.CreateTextButton("Restore View", cameraActionsButtonGroup, UIGlobals.visibilitymenuTextButtonlabelSize, UIGlobals.containerColor);
         restoreViewFromClipboardButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
-            // get the restore data from the clipboard
-            ManageFPSControllers.FPSControllerRestoreData restoreData = ManageFPSControllers.FPSControllerRestoreData.ReadFPSControllerRestoreDataFromClipboard();
+            CreateScreenSpaceUIElements.RestoreViewButtonAction();
 
-            ManageFPSControllers.RelocateAlignFPSControllerToMatchRestoreData(restoreData);
         }); ;
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(restoreViewFromClipboardButton, takeScreenshotButton, 0.01f);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(restoreViewFromClipboardButton, saveViewFromClipboardButton, 0.01f);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(restoreViewFromClipboardButton, cameraActionsButtonGroup, 0.01f);
 
         cameraActionButtons.Add(restoreViewFromClipboardButton);
@@ -430,6 +446,8 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
 
         cameraActionsScrollArea.transform.parent = toggleSetContainer.transform;
         cameraActionsButtonGroup.transform.SetParent(cameraActionsScrollArea.transform);
+
+        ManageFPSControllers.DisableCursorLockOnActiveFPSController();
 
         return visibilityMenu;
     }

@@ -99,18 +99,25 @@ public class ToggleSceneAndUIByInputEvent : MonoBehaviour {
             ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, SceneGlobals.referringSceneName);
         }
 
-        // TODO: if an overlay menu is active, dismiss it
-        //if (Input.GetKeyDown(KeyCode.Escape) && IsOverlayMenuActive)
-        //{
-            //ToggleSceneAndUI.ToggleOverlayMenu(UIGlobals.);
-        //}
+        // dismiss any active overlay menu with ESC
+        if (Input.GetKeyDown(KeyCode.Escape) && UIVisibilityGlobals.activeOverlayMenu != null)
+        {
+            ManageOverlayVisibility.DismissActiveOverlayMenu();
+        }
 
         // visibility menu
         // only accessible from time period scenes
         if (Input.GetKeyDown("v") &&
             (Utils.StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name) || (SceneManager.GetActiveScene().name.Contains("Experimental"))))
         {
-            ToggleSceneAndUI.ToggleOverlayMenu(this.gameObject, "VisibilityMenu");
+            if (UIVisibilityGlobals.isOverlayMenuActive)
+            {
+                ManageOverlayVisibility.DismissActiveOverlayMenu();
+            }
+            else
+            {
+                CreateScreenSpaceUILayoutByName.BuildVisualizationMenuOverlay(this.gameObject);
+            }
         }
 
         // optionally display or hide the under construction label
@@ -371,7 +378,7 @@ public class ToggleSceneAndUI
             {
                 GameObject.DestroyImmediate(child.gameObject);
                 UIVisibilityGlobals.isOverlayMenuActive = false;
-                UIVisibilityGlobals.activeOverlayMenuName = null;
+                UIVisibilityGlobals.activeOverlayMenu = null;
 
                 // let the active FPS controller take over control of the cursor again
                 ManageFPSControllers.EnableCursorLockOnActiveFPSController();
@@ -384,7 +391,7 @@ public class ToggleSceneAndUI
         // if we get here, an overlay menu was not found, so build it
         GameObject overlayMenu = CreateScreenSpaceUILayoutByName.BuildVisualizationMenuOverlay(UILauncher);
 
-        UIVisibilityGlobals.activeOverlayMenuName = overlayMenu.name;
+        UIVisibilityGlobals.activeOverlayMenu = overlayMenu;
         UIVisibilityGlobals.isOverlayMenuActive = true;
 
         // release the cursor so the user can make selections in the menu

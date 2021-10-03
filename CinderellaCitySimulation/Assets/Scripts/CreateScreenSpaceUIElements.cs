@@ -1205,8 +1205,10 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // create the resume button
         GameObject resumeButton = CreateTextButton("Resume", pauseMenuCentralNavContainer, UIGlobals.mainMenuTextButtonLabelSize, UIGlobals.buttonColor);
         resumeButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
+
             ManageFPSControllers.FPSControllerGlobals.isTimeTraveling = false;
             ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, SceneGlobals.referringSceneName);
+
         }); ;
         // align and position the main menu button
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(resumeButton, buttonAlignmentObject, 0.0f);
@@ -1215,7 +1217,9 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // create the main menu button
         GameObject mainMenuButton = CreateTextButton("Main Menu", pauseMenuCentralNavContainer, UIGlobals.mainMenuTextButtonLabelSize, UIGlobals.buttonColor);
         mainMenuButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
+
             ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "MainMenu");
+
         }); ;
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(mainMenuButton, resumeButton, textButtonBottomMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(mainMenuButton, buttonAlignmentObject, textButtonLeftMarginScreenWidthRatio);
@@ -1223,7 +1227,9 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // exit button
         GameObject exitButton = CreateTextButton("Quit", pauseMenuCentralNavContainer, UIGlobals.mainMenuTextButtonLabelSize, UIGlobals.buttonColor);
         exitButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
+
             Application.Quit();
+
         }); ;
         // align and position the exit button
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(exitButton, mainMenuButton, textButtonBottomMarginScreenHeightRatio);
@@ -1235,6 +1241,40 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         AssignOrphanedObjectListToParent(orphanedThumbnailStacks, pauseMenuCentralNavContainer);
 
         return pauseMenuCentralNavContainer;
+    }
+
+    // button actions that are also invoked by shortcuts or other input events
+
+    public static void CaptureScreenshotButtonAction()
+    {
+        // dismiss any active overlay menus
+        ManageOverlayVisibility.DismissActiveOverlayMenu();
+
+        TakeScreenshots.CaptureScreenshotOfCurrentCamera(ManageCameraActions.GetScreenshotPathByContext());
+    }
+    
+    public static void SaveViewButtonAction()
+    {
+        string restoreData = ManageFPSControllers.GetSerializedFPSControllerRestoreData(ManageFPSControllers.FPSControllerGlobals.activeFPSController);
+
+        ManageFPSControllers.FPSControllerRestoreData.WriteFPSControllerRestoreDataToDir(ManageFPSControllers.GetSerializedFPSControllerRestoreData(ManageFPSControllers.FPSControllerGlobals.activeFPSController));
+
+        // dismiss any active overlay menus
+        ManageOverlayVisibility.DismissActiveOverlayMenu();
+    }
+
+    public static void RestoreViewButtonAction()
+    {
+        // get the restore data from the clipboard
+        ManageFPSControllers.FPSControllerRestoreData restoreData = ManageFPSControllers.FPSControllerRestoreData.ReadFPSControllerRestoreDataFromClipboard();
+
+        if (restoreData != null)
+        {
+            ManageFPSControllers.RelocateAlignFPSControllerToMatchRestoreData(restoreData);
+
+            // dismiss any active overlay menus
+            ManageOverlayVisibility.DismissActiveOverlayMenu();
+        }
     }
 }
 
