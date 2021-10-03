@@ -419,12 +419,14 @@ public class ManageFPSControllers : MonoBehaviour {
     public static void EnableCursorLockOnActiveFPSController()
     {
         FPSControllerGlobals.activeFPSController.transform.GetComponent<FirstPersonController>().m_MouseLook.SetCursorLock(true);
+        EnableFPSCameraControl();
     }
 
     // disables mouse lock only on the active FPS controller
     public static void DisableCursorLockOnActiveFPSController()
     {
         FPSControllerGlobals.activeFPSController.transform.GetComponent<FirstPersonController>().m_MouseLook.SetCursorLock(false);
+        DisableFPSCameraControl();
     }
 
     // enable and disable the behavior that affects the camera when the cursor moves

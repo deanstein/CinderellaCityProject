@@ -31,10 +31,20 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
     int maxFramesBetweenCheck = 7;
     int currentFrameCount = 0;
 
+    private void Start()
+    {
+        // every scene gets its UI built at the start
+        BuildCurrentSceneUI();
+    }
+
     private void OnEnable()
     {
-        ClearCurrentSceneUI();
-        BuildCurrentSceneUI();
+        // mark the current scene's HUD as the globally-available HUD
+        // so it can be hidden by other scripts if necessary
+        if (this.name.Contains("UILauncher") && UIVisibilityGlobals.activeHUD)
+        {
+            UIVisibilityGlobals.activeHUD = ManageHUDVisibility.GetActiveHUDCanvas(this.gameObject);
+        }
     }
 
     void Update()
@@ -112,6 +122,10 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         else if (this.name.Contains("UILauncher"))
         {
             BuildTimePeriodHUD(UILauncher);
+
+            // if an overlay menu was active, restore it
+            // used when the game window is resized with an overlay menu active
+            ManageOverlayVisibility.RestoreLastKnownOverlayMenuByName(UILauncher, UIVisibilityGlobals.lastKnownOverlayMenuName);
         }
 
         /*** overlay UI ***/
@@ -254,6 +268,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         GameObject visibilityMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, SceneGlobals.visibilityMenuName);
         UIVisibilityGlobals.isOverlayMenuActive = true;
         UIVisibilityGlobals.activeOverlayMenu = visibilityMenu;
+        UIVisibilityGlobals.lastKnownOverlayMenuName = visibilityMenu.name;
 
         // project logo and container
         GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(visibilityMenu);

@@ -70,7 +70,8 @@ public class ToggleSceneAndUIByInputEvent : MonoBehaviour {
         // pause menu
         // only accessible from time period scenes
         if (Input.GetKeyDown(KeyCode.Escape) &&
-            Utils.StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name))
+            Utils.StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name)
+            && UIVisibilityGlobals.activeOverlayMenu == null)
         {
             // before pausing, we need to capture a screenshot from the active FPSController
             // then update the pause menu background image
@@ -100,7 +101,7 @@ public class ToggleSceneAndUIByInputEvent : MonoBehaviour {
         }
 
         // dismiss any active overlay menu with ESC
-        if (Input.GetKeyDown(KeyCode.Escape) && UIVisibilityGlobals.activeOverlayMenu != null)
+        else if (Input.GetKeyDown(KeyCode.Escape) && UIVisibilityGlobals.activeOverlayMenu != null)
         {
             ManageOverlayVisibility.DismissActiveOverlayMenu();
         }
@@ -362,41 +363,6 @@ public class ToggleSceneAndUI
                 UIGlobals.underConstructionLabelContainer.SetActive(true);
             }
         }
-    }
-
-    // toggle an overlay menu by building it or enabling it if it exists
-    public static void ToggleOverlayMenu(GameObject UILauncher, string overlayMenuName)
-    {
-        // get all children of the specified UI launcher
-        Transform[] UILauncherChildren = UILauncher.GetComponentsInChildren<Transform>(true); // true to include inactive children
-
-        // check each child for a matching name
-        foreach (Transform child in UILauncherChildren)
-        {
-            // this menu has already been built, so delete it
-            if (child.name.Contains(overlayMenuName))
-            {
-                GameObject.DestroyImmediate(child.gameObject);
-                UIVisibilityGlobals.isOverlayMenuActive = false;
-                UIVisibilityGlobals.activeOverlayMenu = null;
-
-                // let the active FPS controller take over control of the cursor again
-                ManageFPSControllers.EnableCursorLockOnActiveFPSController();
-                ManageFPSControllers.EnableFPSCameraControl();
-
-                return;
-            }
-        }
-
-        // if we get here, an overlay menu was not found, so build it
-        GameObject overlayMenu = CreateScreenSpaceUILayoutByName.BuildVisualizationMenuOverlay(UILauncher);
-
-        UIVisibilityGlobals.activeOverlayMenu = overlayMenu;
-        UIVisibilityGlobals.isOverlayMenuActive = true;
-
-        // release the cursor so the user can make selections in the menu
-        ManageFPSControllers.DisableCursorLockOnActiveFPSController();
-        ManageFPSControllers.DisableFPSCameraControl();
     }
 
     // coming soon: ability to tween between values over a given number of frames
