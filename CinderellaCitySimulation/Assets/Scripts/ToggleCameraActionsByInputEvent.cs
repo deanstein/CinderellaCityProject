@@ -72,15 +72,13 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
         // capture screenshot
         if (Input.GetKeyDown("x"))
         {
-            TakeScreenshots.CaptureScreenshotOfCurrentCamera(ManageCameraActions.GetScreenshotPathByContext());
+            CreateScreenSpaceUIElements.CaptureScreenshotButtonAction();
         }
 
         // record the current position and camera as a JSON object that can be restored
         if (Input.GetKeyDown("k"))
         {
-           string restoreData = ManageFPSControllers.GetSerializedFPSControllerRestoreData(ManageFPSControllers.FPSControllerGlobals.activeFPSController);
-
-            ManageFPSControllers.FPSControllerRestoreData.WriteFPSControllerRestoreDataToDir(ManageFPSControllers.GetSerializedFPSControllerRestoreData(ManageFPSControllers.FPSControllerGlobals.activeFPSController));
+            CreateScreenSpaceUIElements.SaveViewButtonAction();
         }
 
         // toggle anti-gravity mode
