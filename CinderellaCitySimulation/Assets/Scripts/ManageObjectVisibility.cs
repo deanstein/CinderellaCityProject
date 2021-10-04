@@ -9,12 +9,12 @@ public static class ObjectVisibilityGlobals
 {
     // identify key words in order to toggle visibility of several objects at once
     public static string[] anchorStoreObjectKeywords = { "anchor-" };
-    public static string[] ceilingObjectKeywords = { "mall-ceilings", "store-ceilings" };
+    public static string[] ceilingObjectKeywords = { "mall-ceilings", "mall-speakers", "store-ceilings" };
     public static string[] exteriorWallObjectKeywords = { "mall-walls-detailing-exterior" };
     public static string[] floorObjectKeywords = { "mall-floors-vert", "store-floors" };
     public static string[] furnitureObjectKeywords = { "mall-furniture" };
     public static string[] lightsObjectKeyword = { "mall-lights" };
-    public static string[] interiorDetailingObjectKeywords = { "mall-detailing-interior", "store-detailing" };
+    public static string[] interiorDetailingObjectKeywords = { "mall-detailing-interior","mall-flags", "store-detailing" };
     public static string[] interiorWallObjectKeywords = { "mall-walls-interior", "store-walls" };
     public static string[] peopleObjectKeywords = { "proxy-people" };
     public static string[] roofObjectKeywords = { "mall-roof" };
