@@ -284,7 +284,7 @@ public class ManageImportSettings
                 ImportParams.doHideProxyObjects = false;
                 return ImportParams;
 
-            case string assetOrModelName when assetOrModelName.Contains("experimental-simple"):
+            case string assetOrModelName when assetOrModelName.Contains("experimental"):
                 // pre-processor option flags
                 ImportParams.doSetGlobalScale = true; // always true
                 ImportParams.doInstantiateAndPlaceInCurrentScene = true;
@@ -384,7 +384,7 @@ public class ManageImportSettings
             || name.Contains("site-roads"):
                 return 0.1f;
             case string name when name.Contains("experimental-simple"):
-                return 22f;
+                return 1f;
             // if not specified, the default is 1 (no change to global resolution for this asset)
             default:
                 return 1f;
