@@ -133,7 +133,8 @@ public class AssetImportUpdate : AssetPostprocessor {
         mi.secondaryUVAngleDistortion = 4;
         mi.secondaryUVAreaDistortion = 4;
         mi.importNormals = ModelImporterNormals.Calculate;
-        mi.normalSmoothingSource = ModelImporterNormalSmoothingSource.None;
+        mi.normalSmoothingSource = ModelImporterNormalSmoothingSource.FromAngle;
+        mi.normalSmoothingAngle = 15.0f;
     }
 
     // set each mesh renderer in the asset to a certain scale in the lightmap
@@ -201,16 +202,14 @@ public class AssetImportUpdate : AssetPostprocessor {
     }
 
     // define how to instantiate the asset (typically an FBX file) in the scene
-    void InstantiateAndPlaceAssetAsGameObject(string assetFilePath, Scene scene)
+    void InstantiateAndPlaceAssetAsGameObject(GameObject gameObjectFromAsset, Scene scene)
     {
-        GameObject gameObjectFromAsset = (GameObject)AssetDatabase.LoadAssetAtPath(assetFilePath, typeof(GameObject));
-
         // if the game object is null, this is a new file... so refresh the asset database and try again
         if (!gameObjectFromAsset)
         {
             //Utils.DebugUtils.DebugLog("Game object from asset not valid (yet): " + assetFilePath);
             AssetDatabase.Refresh();
-            gameObjectFromAsset = (GameObject)AssetDatabase.LoadAssetAtPath(assetFilePath, typeof(GameObject));
+            gameObjectFromAsset = (GameObject)AssetDatabase.LoadAssetAtPath(globalAssetFilePath, typeof(GameObject));
 
             return;
         }
@@ -1943,7 +1942,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         if (AssetImportGlobals.ModelImportParamsByName.doInstantiateAndPlaceInCurrentScene)
         {
-            InstantiateAndPlaceAssetAsGameObject(globalAssetFilePath, currentScene);
+            InstantiateAndPlaceAssetAsGameObject(globalGameObjectFromAsset, currentScene);
         }
 
         if (AssetImportGlobals.ModelImportParamsByName.doSetColliderActive)
