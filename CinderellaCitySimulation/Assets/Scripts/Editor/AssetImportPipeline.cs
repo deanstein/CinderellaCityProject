@@ -907,6 +907,11 @@ public class AssetImportUpdate : AssetPostprocessor {
                 SetCustomMaterialEmissionIntensity(dependencyPathString, -1.0F);
             }
 
+            if (dependencyPathString.Contains("low intensity black"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, -1.0F);
+            }
+
             if (dependencyPathString.Contains("gart sports white"))
             {
                 SetCustomMaterialEmissionIntensity(dependencyPathString, -1.0F);
