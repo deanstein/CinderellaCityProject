@@ -53,7 +53,6 @@ public class ManageImportSettings
             || assetOrModelName.Contains("walls-detailing-exterior")
             || assetOrModelName.Contains("walls-interior")
             // stores
-            || assetOrModelName.Contains("anchor-broadway")
             || assetOrModelName.Contains("store-ceilings")
             || assetOrModelName.Contains("store-detailing")
             || assetOrModelName.Contains("store-floors")
@@ -417,10 +416,12 @@ public class ManageImportSettings
             || name.Contains("mall - precast panels")
             || name.Contains("mall - loading dock concrete")
             || name.Contains("store - stacked brick")
-            || name.Contains("store - dark brown"):
+            || name.Contains("store - dark brown")
+            || name.Contains("store - neusteters travertine"):
                 return 30;
             case string name when name.Contains("concrete - garage painted ceiling")
             || name.Contains("drywall - exerior")
+            || name.Contains("mall - CMU painted")
             || name.Contains("mall - lower asphalt"):
                 return 35;
             // if not specified, return -1 to indicate to calling functions that
