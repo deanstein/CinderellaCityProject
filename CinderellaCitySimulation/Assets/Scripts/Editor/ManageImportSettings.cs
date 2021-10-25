@@ -407,10 +407,12 @@ public class ManageImportSettings
                 return 5;
             case string name when name.Contains("mall - upper asphalt"):
                 return 20;
-            case string name when name.Contains("anchor - smooth accent")
+            case string name when name.Contains("acoustic tile")
+            || name.Contains("anchor smooth accent")
             || name.Contains("anchor rough accent")
             || name.Contains("concrete - painted 60s")
             || name.Contains("concrete - painted 80s")
+            || name.Contains("drywall")
             || name.Contains("mall - brick")
             || name.Contains("mall - stucco")
             || name.Contains("mall - precast panels")
