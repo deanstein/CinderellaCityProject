@@ -1,6 +1,30 @@
 {
   "VersionHistory": [
     {
+      "0.7.0.202112": [
+        {          
+          "Content Updates": [
+            "Added a new Visibility Menu to toggle select GameObject visibility",
+            "Added new sky and cloud system via 3rd-party 'Time of Day' package; replaced old 'Sun' object with 'SkyDome' object and associated settings",
+            "Added hanging planters on interior walls of 60s70s Gold Mall",
+            "Added interior lights to several stores in 60s70s and 80s90s",
+            "Added interior lights to remaining anchor stores: Joslins in 60s70s and 80s90s, and Broadway Southwest in 80s90s",
+            "Added new stores to 60s70s Blue Mall, including Frank Baldwin - Printer, Coffee & Donuts, and Rich Burger",
+            "Added new stores to 60s70s Gold Mall, including Helzberg's Jewelers, Wells Music, Spencer's, Stuart's, and The Gap",
+            "Added new stores to 80s90s Blue Mall, including Framed Impressions, Dardano's Leather, Book Store, and So-Fro Fabrics",
+            "Added new stores to 80s90s Gold Mall, including Electronics Boutique, Wells Music, and Spencer Gifts",
+            "Added new stores to 80s90s Rose Mall, including Stride Rite and County Seat",
+            "Updated signage for several stores in 80s90s Rose Mall for better accuracy, including B. Dalton, Stage, Thom McAn, and Nina B.",
+            "Reduced specular on several materials like concrete, stucco, and asphalt",
+            "Set windows and doors to accept lightmaps",
+            "Set 60s70s to dusk"
+        ],
+          "Logic Updates": [
+            "Added ability to toggle GameObjects on/off via new Visibility Menu",
+            "Added ability to set custom material specular values in AssetImportPipeline and ManageImportSettings"
+          ]
+        }
+      ],
       "0.6.9.202106": [
         {          
           "Content Updates": [
