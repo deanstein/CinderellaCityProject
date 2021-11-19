@@ -62,7 +62,7 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
 
     // the max number of times we check and if the object is out of view, disable its components
     // this prevents moving objects from stopping right in front of the camera when components are disabled
-    public int maxNotInFrameCount = 250;
+    public int maxNotInFrameCount = 150;
 
     private void Awake()
     {
