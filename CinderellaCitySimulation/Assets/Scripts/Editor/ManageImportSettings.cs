@@ -141,6 +141,21 @@ public class ManageImportSettings
                 ImportParams.doHideProxyObjects = false;
                 return ImportParams;
 
+            case string assetOrModelName when assetOrModelName.Contains("store-fixtures"):
+                // pre-processor option flags
+                ImportParams.doSetGlobalScale = true; // always true
+                ImportParams.doInstantiateAndPlaceInCurrentScene = true;
+                ImportParams.doSetColliderActive = true;
+                ImportParams.doSetUVActiveAndConfigure = false;
+                ImportParams.doDeleteReimportMaterialsTextures = true;
+                ImportParams.doAddBehaviorComponents = false;
+                // post-processor option flags
+                ImportParams.doSetMaterialEmission = true;
+                ImportParams.doSetMaterialSmoothnessMetallic = true;
+                ImportParams.doInstantiateProxyReplacements = false;
+                ImportParams.doHideProxyObjects = false;
+                return ImportParams;
+
             case string assetOrModelName when assetOrModelName.Contains("handrails"):
                 // pre-processor option flags
                 ImportParams.doSetGlobalScale = true; // always true
@@ -326,6 +341,7 @@ public class ManageImportSettings
             // no static editor flags
             case string name when (name.Contains("light-shrouds")
             || name.Contains("mall-vents")
+            || name.Contains("store-fixtures")
             || name.Contains("structure-concealed")
             || name.Contains("speakers")
             || name.Contains("trees")
