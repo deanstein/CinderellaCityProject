@@ -1,4 +1,4 @@
-![Main Preview](README_intro.jpg)
+![Main Preview](README_intro.png)
 
 
 # The Cinderella City Project
@@ -7,14 +7,33 @@ The Cinderella City Project is a digital reconstruction of a historic shopping c
 The real Cinderella City Mall existed in Englewood, Colorado from 1968 to 1998.
 
 - [Read about the project and donate on Ko-Fi](https://www.ko-fi.com/cinderellacityproject)
-- [Check out photos and videos on Instagram](https://instagram.com/cinderellacityproject)
+- See historic photos and project graphics on [Instagram](https://instagram.com/cinderellacityproject) or [Facebook](https://www.facebook.com/cinderellacityproject)
 
+## Press Coverage
+**Recent** 
+
+[Fight to Save the Final Remains of Cinderella City](https://www.westword.com/news/englewood-citycenter-development-and-fight-to-save-cinderella-citys-final-remains-11853344) (*Westword*, 2021-02-19)
+
+[One Denverite is Creating a Virtual tour of the Iconic Cinderella City Mall](https://www.5280.com/2020/04/one-denverite-is-creating-a-virtual-tour-of-the-iconic-cinderella-city-mall/) (*5280*, 2020-04-23)
+
+[Cinderella City Virtual Video Game Project Update](https://www.westword.com/news/cinderella-city-virtual-video-game-project-update-2020-11516741) (*Westword*, 2020-01-28)
+
+**Archive**
+
+[A Giant Fairytale Mall in Colorado Is Being Brought Back to Virtual Life](http://veryfamousmagazine.com/fairytale-mall-colorado-virtual-life/) (*Very Famous Magazine*, 2018-11-01)
+
+[Cinderella City Vintage Photos Helping to Turn famed Mall Into video Game](https://www.westword.com/news/cinderella-city-vintage-photos-helping-to-turn-famed-mall-into-video-game-10303551) (*Westword*, 2018-06-28)
+
+[Bringing Cinderella City Back to virtual Life for its 50th Anniversary](https://www.westword.com/news/bringing-cinderella-city-back-to-virtual-life-for-its-50th-anniversary-10069280) (*Westword*, 2018-03-16)
+
+[Cinderella City Project Video Preview new Effects, Music by Dead Mall](https://www.westword.com/news/cinderella-city-project-video-preview-new-effects-music-by-dead-mall-10983679) (*Westword*, 2018-01-16)
+ 
 
 # Cinderella City Simulation
 
 The Cinderella City Simulation is at the heart of the Cinderella City Project. 
 
-Modeled in Autodesk FormIt, and brought to life in Unity, the simulation illustrates distinct time periods of Cinderella City's three-decade life, including the colorful 1960s-1970s, and the staid 1980s-1990s. Eventually, the simulation will also offer an "Alternate Future" interactive exhibit showing how the shopping center could have been adaptively reused in 1998 in lieu of demolition.
+Modeled in [Autodesk FormIt](https://formit.autodesk.com/), and brought to life in [Unity](https://unity.com/), the simulation illustrates distinct time periods of Cinderella City's three-decade life, including the colorful 1960s-1970s, and the staid 1980s-1990s. Eventually, the simulation will also offer an "Alternate Future" interactive exhibit showing how the shopping center could have been adaptively reused in 1998 in lieu of demolition.
 
 While experiencing the mall in each era, the player can "time travel" to other time periods while maintaining the current position in space, to see how the world of retail and design changed over 30 years.
 
@@ -27,7 +46,7 @@ When released, the Cinderella City Simulation will support a variety of platform
 
 The Cinderella City Simulation is under development, but in-progress builds are available for intrepid mall fans to try out.
 
-The latest ready-to-play builds from the development branch can be found at the top of the [Releases page](https://github.com/deanstein/CinderellaCityProject/releases).
+The latest ready-to-play builds from the development branch can be found at the top of the **[Releases page](https://github.com/deanstein/CinderellaCityProject/releases)**.
 
 - Click "Assets" below the release notes at the link above.
 - Download the .zip file ending in "_Win." 
@@ -122,7 +141,9 @@ Each scene needs to have one "Container" object that contains all objects in the
 Scene structure example:
 - **60s70s** (Scene)
 	- **60s70sContainer** (GameObject) // used for toggling scenes on or off by disabling all children
-		- Sun (GameObject)
+		- Environment
+			- SkyDome (3rd-party GameObject)
+			- Test Camera (used to validate the SkyDome settings with a camera, since the Editor view is inaccurate)
 		- FPSController (GameObject)
 		- UILauncher (GameObject)
 		- Geometry group 1 (GameObject)
