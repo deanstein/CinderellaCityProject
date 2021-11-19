@@ -807,7 +807,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             //
 
             // all LIGHTs get their color and texture set as emission color/texture
-            if (dependencyPathString.Contains("LIGHT - "))
+            if (dependencyPathString.Contains("LIGHT - ") || dependencyPathString.Contains("artwork - "))
             {
                 SetStandardMaterialEmission(dependencyPathString);
             }
@@ -984,8 +984,15 @@ public class AssetImportUpdate : AssetPostprocessor {
 
             // temporarily reducing the brightness of these until all signage brightness can be adjusted to affset albedo boost,
             // or if using Baked Lightmap instead of Shadowmask, which will make things brighter without an albedo boost override
-            if (dependencyPathString.Contains("store rtc sign") ||
-                dependencyPathString.Contains("store fl runner"))
+            if (dependencyPathString.Contains("store rtc sign")  ||
+                dependencyPathString.Contains("store fl runner") ||
+                dependencyPathString.Contains("rich burger icon"))
+            {
+                SetCustomMaterialEmissionIntensity(dependencyPathString, -1.0F);
+            }
+
+            // all artwork should get a small amount of self-illumination so it doesn't appear dim
+            if (dependencyPathString.Contains("artwork"))
             {
                 SetCustomMaterialEmissionIntensity(dependencyPathString, -1.0F);
             }
