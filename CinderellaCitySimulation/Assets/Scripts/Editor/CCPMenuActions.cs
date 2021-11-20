@@ -402,7 +402,7 @@ public class CCPMenuActions : MonoBehaviour
             // set the static flags for each scene object
             foreach (GameObject sceneObject in sceneObjects)
             {
-                AssetImportUpdate.SetMaterialSpecularByName(sceneObject);
+                AssetImportUpdate.SetAllDependentMaterialsSpecularByName(sceneObject);
             }
         }
     }
