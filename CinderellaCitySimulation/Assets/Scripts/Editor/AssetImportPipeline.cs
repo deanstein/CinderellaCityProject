@@ -37,6 +37,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
     // get the gameobject from the asset path, if it's available
     static GameObject globalGameObjectFromAsset = (GameObject) AssetDatabase.LoadAssetAtPath(globalAssetFilePath, typeof(GameObject));
+    static UnityEngine.Object globalMainGameObjectFromAsset = AssetDatabase.LoadMainAssetAtPath(globalAssetFilePath);
 
     // if the model just updated isn't already in the scene, we need to keep track of it
     // in order to maintain parent/child hierarchy in the post-processor
@@ -757,9 +758,6 @@ public class AssetImportUpdate : AssetPostprocessor {
             return;
         }
 
-        // get the model import params for this object
-        ModelImportParams ImportParams = ManageImportSettings.GetModelImportParamsByName(gameObject.name);
-
         // get the appropriate flags for this asset
         var staticFlags = ManageImportSettings.GetStaticFlagsByName(gameObject.name);
         Utils.DebugUtils.DebugLog("Setting static flags for " + gameObject.name);
@@ -789,386 +787,100 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
     }
 
-    //define how to look for materials with certain names and add emission to them
-    static void SetMaterialEmissionByName()
+    // set emission on specific dependent materials in the target object
+    static void SetAllDependentMaterialsEmissionByName(UnityEngine.Object targetObject)
     {
-        // define the asset that was changed as the prefab
+        // TODO: use the passed in targetObject
         var prefab = AssetDatabase.LoadMainAssetAtPath(globalAssetFilePath);
 
         // make changes to this prefab's dependencies (materials)
+
         foreach (var dependency in EditorUtility.CollectDependencies(new[] { prefab }))
         {
             var dependencyPath = AssetDatabase.GetAssetPath(dependency);
-            var dependencyPathString = dependencyPath.ToString();
+            string dependencyPathString = dependencyPath.ToString();
             //Utils.DebugUtils.DebugLog("Dependency path: " + dependencyPathString);
 
-            //
-            // apply general rules
-            //
-
-            // all LIGHTs get their color and texture set as emission color/texture
-            if (dependencyPathString.Contains("LIGHT - ") || dependencyPathString.Contains("artwork - "))
+            // limit changes to materials only
+            if (dependencyPathString.Contains(".mat"))
             {
-                SetStandardMaterialEmission(dependencyPathString);
-            }
+                // all LIGHTs get their color and texture set as emission color/texture
+                if (dependencyPathString.Contains("LIGHT - ")
+                || dependencyPathString.Contains("artwork - "))
+                {
+                    SetStandardMaterialEmission(dependencyPathString);
 
-            //
-            // look for certain materials, and modify them further
-            //
+                    // some materials may be overridden with a custom emission value
+                    float materialEmissionOverride = ManageImportSettings.GetMaterialEmissionByName(dependencyPathString);
 
-            if (dependencyPathString.Contains("emission test"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 1.0F);
-            }
-
-            if (dependencyPathString.Contains("wayfinding directory"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 1.0F);
-            }
-
-            if (dependencyPathString.Contains("blue mall columns"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 3.8F);
-            }
-
-            if (dependencyPathString.Contains("blue mall ceiling"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 2.25F);
-            }
-
-            if (dependencyPathString.Contains("blue mall cove"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 2.25F);
-            }
-
-            if (dependencyPathString.Contains("blue mall fountain planter intense"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 3.25F);
-            }
-
-            if (dependencyPathString.Contains("blue mall hanging planter orange"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, -3.25F);
-            }
-
-            if (dependencyPathString.Contains("blue mall illuminated ring"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 0.75F);
-            }
-
-            if (dependencyPathString.Contains("fluorescent panel"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 2.0F);
-            }
-
-            if (dependencyPathString.Contains("green fluor"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 2.5F);
-            }
-
-            if (dependencyPathString.Contains("high intensity white"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 3.0F);
-            }
-
-            if (dependencyPathString.Contains("high intensity green"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 3.0F);
-            }
-
-            if (dependencyPathString.Contains("high intensity sodium")
-                && !dependencyPathString.Contains("very"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 2.5F);
-            }
-
-            if (dependencyPathString.Contains("very high intensity sodium"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 3.5F);
-            }
-
-            if (dependencyPathString.Contains("low intensity yellow"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 1.0F);
-            }
-
-            if (dependencyPathString.Contains("exterior white"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 1.0F);
-            }
-
-            if (dependencyPathString.Contains("low intensity white"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 1.0F);
-            }
-
-            if (dependencyPathString.Contains("very low intensity white"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, -1.0F);
-            }
-
-            if (dependencyPathString.Contains("low intensity black"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, -1.0F);
-            }
-
-            if (dependencyPathString.Contains("gart sports white"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, -1.0F);
-            }
-
-            if (dependencyPathString.Contains("mid-mod exterior fixture"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 0F);
-            }
-
-            if (dependencyPathString.Contains("americana shop"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, -1.0F);
-            }
-
-            if (dependencyPathString.Contains("woolworth's red"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, -1.0F);
-            }
-
-            if (dependencyPathString.Contains("funtastics signage"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, -1.0F);
-            }
-
-            if (dependencyPathString.Contains("k-g men's gold"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, -2.0F);
-            }
-
-            if (dependencyPathString.Contains("the denver blue"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, -0.2F);
-            }
-
-            if (dependencyPathString.Contains("neusteters brown"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, -0.2F);
-            }
-
-            if (dependencyPathString.Contains("penney's white"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 0.7F);
-            }
-
-            if (dependencyPathString.Contains("display case"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 2.0F);
-            }
-
-            if (dependencyPathString.Contains("store yellowing"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, -0.50F);
-            }
-
-            if (dependencyPathString.Contains("food court high intensity"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 3.25F);
-            }
-
-            if (dependencyPathString.Contains("food court incandescent"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 2.0F);
-            }
-
-            if (dependencyPathString.Contains("cinder alley incandescent"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, 3.75F);
-            }
-
-            // temporarily reducing the brightness of these until all signage brightness can be adjusted to affset albedo boost,
-            // or if using Baked Lightmap instead of Shadowmask, which will make things brighter without an albedo boost override
-            if (dependencyPathString.Contains("store rtc sign")  ||
-                dependencyPathString.Contains("store fl runner") ||
-                dependencyPathString.Contains("rich burger icon"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, -1.0F);
-            }
-
-            // all artwork should get a small amount of self-illumination so it doesn't appear dim
-            if (dependencyPathString.Contains("artwork"))
-            {
-                SetCustomMaterialEmissionIntensity(dependencyPathString, -1.0F);
+                    if (materialEmissionOverride != 0.001f)
+                    {
+                        SetCustomMaterialEmissionIntensity(dependencyPathString, materialEmissionOverride);
+                    }
+                }
             }
 
             if (string.IsNullOrEmpty(dependencyPath)) continue;
         }
     }
 
-    // define how to look for materials with certain names and configure their smoothness
-    public static void SetMaterialSmoothnessMetallicByName()
+    // set smoothness and metallic on specific dependent materials in the target object
+    public static void SetAllDependentMaterialsSmoothnessMetallicByName(GameObject targetObject)
     {
-        // define the asset that was changed as the prefab
+        // TODO: use the passed in targetObject
         var prefab = AssetDatabase.LoadMainAssetAtPath(globalAssetFilePath);
 
-        // make changes to this prefab's dependencies (materials)
         foreach (var dependency in EditorUtility.CollectDependencies(new[] { prefab }))
         {
             var dependencyPath = AssetDatabase.GetAssetPath(dependency);
-            var dependencyPathString = dependencyPath.ToString();
+            string dependencyPathString = dependencyPath.ToString();
             //Utils.DebugUtils.DebugLog("Dependency path: " + dependencyPathString);
 
-            //
-            // apply general rules
-            //
-
-            if (dependencyPathString.Contains("glass")
-                || dependencyPathString.Contains("mirror"))
+            // limit changes to materials only
+            if (dependencyPathString.Contains(".mat"))
             {
-                SetMaterialSmoothness(dependencyPathString, 1.0F);
-            }
+                float materialMetallic = ManageImportSettings.GetMaterialMetallicByName(dependencyPathString);
+                float materialSmoothness = ManageImportSettings.GetMaterialSmoothnessByName(dependencyPathString);
 
-            if (dependencyPathString.Contains("glossy"))
-            {
-                SetMaterialSmoothness(dependencyPathString, 0.8F);
-            }
+                if (materialSmoothness != -1)
+                {
+                    SetMaterialSmoothness(dependencyPathString, materialSmoothness);
+                }
 
-            if (dependencyPathString.Contains("metal") && dependencyPathString.Contains(".mat"))
-            {
-                SetMaterialSmoothness(dependencyPathString, 0.5F);
-                SetMaterialMetallic(dependencyPathString, 0.5F);
-            }
 
-            //
-            // look for certain materials and set their smoothness and metallic values
-            //
-
-            if (dependencyPathString.Contains("mall - parquet floor"))
-            {
-                SetMaterialSmoothness(dependencyPathString, 0.5F);
-            }
-
-            if (dependencyPathString.Contains("mall - polished concrete"))
-            {
-                SetMaterialSmoothness(dependencyPathString, 0.45F);
-            }
-
-            if (dependencyPathString.Contains("mall - polished concrete cinder alley")
-                || dependencyPathString.Contains("mall - cinder alley scored concrete"))
-            {
-                SetMaterialSmoothness(dependencyPathString, 0.27F);
-            }
-
-            if (dependencyPathString.Contains("generic floor concrete"))
-            {
-                SetMaterialSmoothness(dependencyPathString, 0.30F);
-            }
-
-            if (dependencyPathString.Contains("mall - terra cotta tile"))
-            {
-                SetMaterialSmoothness(dependencyPathString, 0.25F);
-            }
-
-            if (dependencyPathString.Contains("mall - terra cotta tile special"))
-            {
-                SetMaterialSmoothness(dependencyPathString, 0.2F);
-            }
-
-            if (dependencyPathString.Contains("mall - shamrock floor brick"))
-            {
-                SetMaterialSmoothness(dependencyPathString, 0.35F);
-                SetMaterialMetallic(dependencyPathString, 0.14F);
-            }
-
-            if (dependencyPathString.Contains("mall - shamrock planter brick"))
-            {
-                SetMaterialSmoothness(dependencyPathString, 0.075F);
-            }
-
-            if (dependencyPathString.Contains("mall - stair terrazzo"))
-            {
-                SetMaterialSmoothness(dependencyPathString, 0.2F);
-            }
-
-            if (dependencyPathString.Contains("food court tile"))
-            {
-                SetMaterialSmoothness(dependencyPathString, 0.2F);
-            }
-
-            if (dependencyPathString.Contains("mall - food court ceiling"))
-            {
-                SetMaterialSmoothness(dependencyPathString, 0.6F);
-            }
-
-            if (dependencyPathString.Contains("blue mall hanging planter orange"))
-            {
-                SetMaterialMetallic(dependencyPathString, 0.75F);
-            }
-
-            if (dependencyPathString.Contains("bronzed glass"))
-            {
-                SetMaterialSmoothness(dependencyPathString, 0.2F);
+                if (materialMetallic != -1)
+                {
+                    SetMaterialMetallic(dependencyPathString, materialMetallic);
+                }
             }
 
             if (string.IsNullOrEmpty(dependencyPathString)) continue;
         }
     }
 
-    // turn specular off for certain materials
-    public static void SetMaterialSpecularByName(GameObject targetObject)
+    // set specular on specific dependent materials in the target object
+    public static void SetAllDependentMaterialsSpecularByName(UnityEngine.Object targetObject)
     {
+        // TODO: use the passed in targetObject
+        var prefab = AssetDatabase.LoadMainAssetAtPath(globalAssetFilePath);
+
         // make changes to this prefab's dependencies (materials)
         foreach (var dependency in EditorUtility.CollectDependencies(new[] { targetObject }))
         {
             var dependencyPath = AssetDatabase.GetAssetPath(dependency);
-            var dependencyPathString = dependencyPath.ToString();
+            string dependencyPathString = dependencyPath.ToString();
 
             // get the desired specular value for this material
-            int specularValue = ManageImportSettings.GetMaterialSpecularByName(dependencyPathString);
+            int materialSpecular = ManageImportSettings.GetMaterialSpecularByName(dependencyPathString);
 
-            // only attempt to make this change on an actual material,
-            // and only attempt to make this change if the specular value is valid
-            if (dependencyPathString.Contains(".mat") && specularValue != -1)
+            // limit changes to materials only
+            if (dependencyPathString.Contains(".mat"))
             {
-                SetMaterialSpecular(dependencyPathString, (byte)specularValue);
+                if (materialSpecular != -1)
+                {
+                    SetMaterialSpecular(dependencyPathString, (byte)materialSpecular);
+                }
             }
-        }
-    }
-
-    // define the proxyType based on this asset's name
-    public static string GetProxyTypeByName(string assetName)
-    {
-        if (assetName.Contains("proxy-trees-veg"))
-        {
-            proxyType = "TreesVeg";
-            Utils.DebugUtils.DebugLog("Proxy type: " + proxyType);
-
-            return proxyType;
-        }
-
-        if (assetName.Contains("cameras"))
-        {
-            proxyType = "Cameras";
-            Utils.DebugUtils.DebugLog("Proxy type: " + proxyType);
-
-            return proxyType;
-        }
-
-        if (assetName.Contains("proxy-people"))
-        {
-            proxyType = "People";
-            Utils.DebugUtils.DebugLog("Proxy type: " + proxyType);
-
-            return proxyType;
-        }
-
-        if (assetName.Contains("water"))
-        {
-            proxyType = "Water";
-            Utils.DebugUtils.DebugLog("Proxy type: " + proxyType);
-
-            return proxyType;
-        }
-
-        else
-        {
-            return null;
         }
     }
 
@@ -1320,7 +1032,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         culledPrefabs = 0;
 
         // update the global proxy type variable based on the asset name
-        string proxyType = GetProxyTypeByName(assetName);
+        string proxyType = ManageImportSettings.GetProxyTypeByName(assetName);
 
         // define the delete tag to look for, based on the proxyType, then delete existing proxy replacements
         string proxyReplacementDeleteTag = ManageTags.GetOrCreateTagByProxyType(proxyType);
@@ -2022,22 +1734,19 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         if (AssetImportGlobals.ModelImportParamsByName.doSetMaterialEmission)
         {
-            SetMaterialEmissionByName();
+            SetAllDependentMaterialsEmissionByName(globalGameObjectFromAsset);
         }
 
         if (AssetImportGlobals.ModelImportParamsByName.doSetMaterialSmoothnessMetallic)
         {
-            SetMaterialSmoothnessMetallicByName();
+            SetAllDependentMaterialsSmoothnessMetallicByName(globalGameObjectFromAsset);
         }
 
         // turn off specular on certain materials like concrete, asphalt, etc
-        SetMaterialSpecularByName(globalGameObjectFromAsset);
+        SetAllDependentMaterialsSpecularByName(globalGameObjectFromAsset);
 
         if (AssetImportGlobals.ModelImportParamsByName.doInstantiateProxyReplacements)
         {
-            // ensure the scene is hoisted up, if required
-            //HoistSceneObjectsEditor.HoistSceneContainersDown(ManageEditorScenes.GetOpenTimePeriodSceneContainersRequiringHoist());
-
             InstantiateProxyReplacements(globalAssetFileName);
         }
 

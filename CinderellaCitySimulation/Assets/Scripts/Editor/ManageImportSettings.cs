@@ -308,7 +308,7 @@ public class ManageImportSettings
                 ImportParams.doAddBehaviorComponents = false;
                 // post-processor option flags
                 ImportParams.doSetMaterialEmission = true;
-                ImportParams.doSetMaterialSmoothnessMetallic = false;
+                ImportParams.doSetMaterialSmoothnessMetallic = true;
                 ImportParams.doInstantiateProxyReplacements = false;
                 ImportParams.doHideProxyObjects = false;
                 return ImportParams;
@@ -403,6 +403,180 @@ public class ManageImportSettings
             // if not specified, the default is 1 (no change to global resolution for this asset)
             default:
                 return 1f;
+        }
+    }
+
+    // get the replacement proxy type based on an asset name
+    public static string GetProxyTypeByName(string assetName)
+    {
+        switch (assetName)
+        {
+            case string name when name.Contains("proxy-trees-veg"):
+                return "TreesVeg";
+            case string name when name.Contains("cameras"):
+                return "Cameras";
+            case string name when name.Contains("proxy-people"):
+                return "People";
+            case string name when name.Contains("water"):
+                return "Water";
+            default:
+                return null;
+        }
+    }
+
+    // get the desired material emission value given a name or path
+    public static float GetMaterialEmissionByName(string materialNameOrPath)
+    {
+        switch (materialNameOrPath)
+        {
+            // test case
+            case string name when name.Contains("emission test"):
+                return 1.0f;
+            // general cases
+            case string name when name.Contains("blue mall ceiling"):
+                return 2.25f;
+            case string name when name.Contains("blue mall columns"):
+                return 3.8f;
+            case string name when name.Contains("blue mall cove"):
+                return 2.25f;
+            case string name when name.Contains("blue mall fountain planter intense"):
+                return 3.25f;
+            case string name when name.Contains("blue mall hanging planter orange"):
+                return -3.25f;
+            case string name when name.Contains("blue mall illuminated ring"):
+                return 0.75f;
+            case string name when name.Contains("cinder alley incandescent"):
+                return 3.75f;
+            case string name when name.Contains("display case"):
+                return 2.0f;
+            case string name when name.Contains("exterior white"):
+                return 1.0f;
+            case string name when name.Contains("food court high intensity"):
+                return 3.25f;
+            case string name when name.Contains("food court incandescent"):
+                return 2.0f;
+            case string name when name.Contains("fluorescent panel"):
+                return 2.0f;
+            case string name when name.Contains("green fluor"):
+                return 2.5f;
+            case string name when name.Contains("high intensity sodium")
+            && !name.Contains("very"):
+                return 2.5f;
+            case string name when name.Contains("high intensity white"):
+                return 3.0f;
+            case string name when name.Contains("low intensity black"):
+                return -1.0f;
+            case string name when name.Contains("low intensity yellow"):
+                return 1.0f;
+            case string name when name.Contains("low intensity white"):
+                return 1.0f;
+            case string name when name.Contains("mid-mod exterior fixture"):
+                return 0f;
+            case string name when name.Contains("very high intensity sodium"):
+                return 3.5f;
+            case string name when name.Contains("very low intensity white"):
+                return -1.0f;
+            case string name when name.Contains("wayfinding directory"):
+                return 1.0f;
+            // stores
+            case string name when name.Contains("americana shop"):
+                return -1.0f;
+            case string name when name.Contains("the denver blue"):
+                return -0.2f;
+            case string name when name.Contains("funtastics signage"):
+                return -1.0f;
+            case string name when name.Contains("gart sports white"):
+                return -1.0f;
+            case string name when name.Contains("k-g men's gold"):
+                return -2.0f;
+            case string name when name.Contains("neusteters brown"):
+                return -0.2f;
+            case string name when name.Contains("penney's white"):
+                return 0.7f;
+            case string name when name.Contains("store yellowing"):
+                return -0.50f;
+            case string name when name.Contains("woolworth's red"):
+                return -1.0f;
+            // store sign graphics
+            case string name when name.Contains("store rtc sign")
+            || name.Contains("store fl runner")
+            || name.Contains("rich burger icon"):
+                return -1.0f;
+            // artwork - gets a small amount of illumination so it doesn't appear dim
+            case string name when name.Contains("artwork"):
+                return -1.0f;
+            // if not specified, return a specific number to indicate to calling functions 
+            // that this material is not intended to have emission
+            default:
+                return 0.001f;
+        }
+    }
+
+    // get the desired metallic for a given material or path
+    public static float GetMaterialMetallicByName(string materialNameOrPath)
+    {
+        switch (materialNameOrPath)
+        {
+            // general rules
+            case string name when name.Contains("metal"):
+                return 0.5f;
+            // specific materials
+            case string name when name.Contains("blue mall hanging planter orange"):
+                return 0.75f;
+            case string name when name.Contains("mall - shamrock floor brick"):
+                return 0.14f;
+            // if not specified, return -1 to indicate to calling functions that
+            // this material is not intended to have a custom specular value
+            default:
+                return -1;
+        }
+    }
+
+    // get the desired smoothness for a given material or path
+    public static float GetMaterialSmoothnessByName(string materialNameOrPath)
+    {
+        switch (materialNameOrPath)
+        {
+            // general rules
+            case string name when name.Contains("glass")
+            || name.Contains("mirror"):
+                return 1.0f;
+            case string name when name.Contains("glossy"):
+                return 0.8f;
+            case string name when name.Contains("metal"):
+                return 0.5f;
+            // specific materials
+            case string name when name.Contains("blue mall hanging planter orange"):
+                return 0f;
+            case string name when name.Contains("bronzed glass"):
+                return 0.2f;
+            case string name when name.Contains("food court tile"):
+                return 0.2f;
+            case string name when name.Contains("generic floor concrete"):
+                return 0.3f;
+            case string name when name.Contains("mall - food court ceiling"):
+                return 0.6f;
+            case string name when name.Contains("mall - parquet floor"):
+                return 0.5f;
+            case string name when name.Contains("mall - polished concrete"):
+                return 0.45f;
+            case string name when name.Contains("mall - polished concrete cinder alley")
+            || name.Contains("mall - cinder alley scored concrete"):
+                return 0.27f;
+            case string name when name.Contains("mall - polished concrete"):
+                return 0.45f;
+            case string name when name.Contains("mall - shamrock floor brick"):
+                return 0.35f;
+            case string name when name.Contains("mall - shamrock planter brick"):
+                return 0.075f;
+            case string name when name.Contains("mall - stair terrazzo"):
+                return 0.2f;
+            case string name when name.Contains("mall - terra cotta tile special"):
+                return 0.2f;
+            // if not specified, return -1 to indicate to calling functions that
+            // this material is not intended to have a custom specular value
+            default:
+                return -1;
         }
     }
 
