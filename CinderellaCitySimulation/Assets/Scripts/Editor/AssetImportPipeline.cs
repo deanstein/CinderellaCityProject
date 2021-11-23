@@ -28,15 +28,14 @@ public class AssetImportGlobals
 public class AssetImportUpdate : AssetPostprocessor {
 
     // get information on the file that was updated
-    static String globalAssetFilePath;
-    static String globalAssetFileNameAndExtension;
-    static String globalAssetFileName;
-    static String globalAssetFileDirectory;
-    static String globalAssetTexturesDirectory;
-
-    // later, in the post-processor, get the GameObject from the changed asset
-    static GameObject globalGameObjectFromAsset;
-    static UnityEngine.Object[] globalGameObjectDependencies;
+    static String importedAssetFilePath;
+    static String importedAssetFileNameAndExtension;
+    static String importedAssetFileName;
+    static String importedAssetFileDirectory;
+    static String importedAssetTexturesDirectory;
+    // FBX files will have a corresponding GameObject in the scene
+    static GameObject importedAssetGameObject;
+    static UnityEngine.Object[] importedAssetGameObjectDependencies;
 
     // if the model just updated isn't already in the scene, we need to keep track of it
     // in order to maintain parent/child hierarchy in the post-processor
@@ -209,7 +208,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         {
             //Utils.DebugUtils.DebugLog("Game object from asset not valid (yet): " + assetFilePath);
             AssetDatabase.Refresh();
-            gameObjectFromAsset = (GameObject)AssetDatabase.LoadAssetAtPath(globalAssetFilePath, typeof(GameObject));
+            gameObjectFromAsset = (GameObject)AssetDatabase.LoadAssetAtPath(importedAssetFilePath, typeof(GameObject));
 
             return;
         }
@@ -289,7 +288,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // get the material and texture dependencies and delete them
         //var prefab = AssetDatabase.LoadMainAssetAtPath(assetFilePath);
         //foreach (var dependency in EditorUtility.CollectDependencies(new[] { prefab }))
-        foreach (var dependencyPath in AssetDatabase.GetDependencies(globalAssetFilePath, false))
+        foreach (var dependencyPath in AssetDatabase.GetDependencies(importedAssetFilePath, false))
         {
             //var dependencyPath = AssetDatabase.GetAssetPath(dependency);
             var dependencyPathString = dependencyPath.ToString();
@@ -297,7 +296,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
             // if there are materials or textures detected in the path, delete them
             // note that we also check that the path includes the file name to avoid other assets from being affected
-            if ((dependencyPathString.Contains(".mat") || dependencyPathString.Contains(".jpg") || dependencyPathString.Contains(".jpeg") || dependencyPathString.Contains(".png")) && dependencyPathString.Contains(globalAssetFileName))
+            if ((dependencyPathString.Contains(".mat") || dependencyPathString.Contains(".jpg") || dependencyPathString.Contains(".jpeg") || dependencyPathString.Contains(".png")) && dependencyPathString.Contains(importedAssetFileName))
             {
                 UnityEngine.Windows.File.Delete(dependencyPathString);
                 UnityEngine.Windows.File.Delete(dependencyPathString + ".meta");
@@ -334,8 +333,8 @@ public class AssetImportUpdate : AssetPostprocessor {
         // the old .FBM folder will be deleted in the post-processor
 
         // textures will be extracted to a "Textures" folder next to the asset
-        string assetTexturesDirectory = globalAssetFileDirectory + "Textures";
-        globalAssetTexturesDirectory = assetTexturesDirectory;
+        string assetTexturesDirectory = importedAssetFileDirectory + "Textures";
+        importedAssetTexturesDirectory = assetTexturesDirectory;
 
         // re-extract textures
         Utils.DebugUtils.DebugLog("Re-importing textures...");
@@ -408,7 +407,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         string fileName = "metallicMap-" + scale + "-" + scale + "-" + scale + ".png";
 
         // define the path where this texture will be stored
-        string filePath = globalAssetTexturesDirectory + "/" + fileName;
+        string filePath = importedAssetTexturesDirectory + "/" + fileName;
 
         // only make a new texture if it doesn't exist yet
         // note that this texture does not get cleaned up in DeleteReimportMaterialsTextures
@@ -436,9 +435,9 @@ public class AssetImportUpdate : AssetPostprocessor {
             }
 
             // create the required textures folder before trying to write to it
-            if (!Directory.Exists(globalAssetTexturesDirectory))
+            if (!Directory.Exists(importedAssetTexturesDirectory))
             {
-                Directory.CreateDirectory(globalAssetTexturesDirectory);
+                Directory.CreateDirectory(importedAssetTexturesDirectory);
             }
 
             // write the texture to the file system
@@ -527,8 +526,8 @@ public class AssetImportUpdate : AssetPostprocessor {
         {
             Utils.DebugUtils.DebugLog("<b>Deleting a leftover .FBM folder: </b>" + FBMFolderPath);
             //Utils.DebugUtils.DebugLog(assetFileDirectory + assetFileName + ".fbm");
-            UnityEngine.Windows.Directory.Delete(globalAssetFileDirectory + globalAssetFileName + ".fbm");
-            UnityEngine.Windows.File.Delete(globalAssetFileDirectory + globalAssetFileName + ".fbm.meta");
+            UnityEngine.Windows.Directory.Delete(importedAssetFileDirectory + importedAssetFileName + ".fbm");
+            UnityEngine.Windows.File.Delete(importedAssetFileDirectory + importedAssetFileName + ".fbm.meta");
         }
     }
 
@@ -792,7 +791,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // if the target object and the last-updated asset import object are the same,
         // use the global game object dependencies that have already been calculated
         // otherwise, get the dependencies from the provided object
-        UnityEngine.Object[] targetDependencies = (targetObject == globalGameObjectFromAsset) ? globalGameObjectDependencies : EditorUtility.CollectDependencies(new UnityEngine.Object[] { targetObject });
+        UnityEngine.Object[] targetDependencies = (targetObject == importedAssetGameObject) ? importedAssetGameObjectDependencies : EditorUtility.CollectDependencies(new UnityEngine.Object[] { targetObject });
 
         foreach (var dependency in targetDependencies)
         {
@@ -829,7 +828,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // if the target object and the last-updated asset import object are the same,
         // use the global game object dependencies that have already been calculated
         // otherwise, get the dependencies from the provided object
-        UnityEngine.Object[] targetDependencies = (targetObject == globalGameObjectFromAsset) ? globalGameObjectDependencies : EditorUtility.CollectDependencies(new UnityEngine.Object[] { targetObject });
+        UnityEngine.Object[] targetDependencies = (targetObject == importedAssetGameObject) ? importedAssetGameObjectDependencies : EditorUtility.CollectDependencies(new UnityEngine.Object[] { targetObject });
 
         foreach (var dependency in targetDependencies)
         {
@@ -865,7 +864,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // if the target object and the last-updated asset import object are the same,
         // use the global game object dependencies that have already been calculated
         // otherwise, get the dependencies from the provided object
-        UnityEngine.Object[] targetDependencies = (targetObject == globalGameObjectFromAsset) ? globalGameObjectDependencies : EditorUtility.CollectDependencies(new UnityEngine.Object[] { targetObject });
+        UnityEngine.Object[] targetDependencies = (targetObject == importedAssetGameObject) ? importedAssetGameObjectDependencies : EditorUtility.CollectDependencies(new UnityEngine.Object[] { targetObject });
 
         // make changes to this prefab's dependencies (materials)
         foreach (var dependency in targetDependencies)
@@ -1506,19 +1505,19 @@ public class AssetImportUpdate : AssetPostprocessor {
         Utils.DebugUtils.DebugLog("Modified file: " + assetFilePath);
 
         // make the asset path available globally
-        globalAssetFilePath = assetFilePath;
+        importedAssetFilePath = assetFilePath;
 
         // get the file name + extension
         String assetFileNameAndExtension = Path.GetFileName(assetFilePath);
-        globalAssetFileNameAndExtension = assetFileNameAndExtension;
+        importedAssetFileNameAndExtension = assetFileNameAndExtension;
 
         // get the file name only
         String assetFileName = assetFileNameAndExtension.Substring(0, assetFileNameAndExtension.Length - 4);
-        globalAssetFileName = assetFileName;
+        importedAssetFileName = assetFileName;
 
         // get the file's directory only
         String assetFileDirectory = assetFilePath.Substring(0, assetFilePath.Length - assetFileNameAndExtension.Length);
-        globalAssetFileDirectory = assetFileDirectory;
+        importedAssetFileDirectory = assetFileDirectory;
 
         //
         // whitelist of files to get modifications
@@ -1568,19 +1567,19 @@ public class AssetImportUpdate : AssetPostprocessor {
         Utils.DebugUtils.DebugLog(assetFilePath);
 
         // make the asset path available globally
-        globalAssetFilePath = assetFilePath;
+        importedAssetFilePath = assetFilePath;
 
         // get the file name + extension
         String assetFileNameAndExtension = Path.GetFileName(assetFilePath);
-        globalAssetFileNameAndExtension = assetFileNameAndExtension;
+        importedAssetFileNameAndExtension = assetFileNameAndExtension;
 
         // get the file name only
         String assetFileName = assetFileNameAndExtension.Substring(0, assetFileNameAndExtension.Length - 4);
-        globalAssetFileName = assetFileName;
+        importedAssetFileName = assetFileName;
 
         // get the file's directory only
         String assetFileDirectory = assetFilePath.Substring(0, assetFilePath.Length - assetFileNameAndExtension.Length);
-        globalAssetFileDirectory = assetFileDirectory;
+        importedAssetFileDirectory = assetFileDirectory;
 
         //
         // whitelist of files to get modifications
@@ -1624,7 +1623,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
 
         // check if there's a leftover .fbm folder, and if so, delete it
-        DeleteFBMFolderOnImport(globalAssetFileDirectory, globalAssetFileName);
+        DeleteFBMFolderOnImport(importedAssetFileDirectory, importedAssetFileName);
 
         //ClearConsole();
         Utils.DebugUtils.DebugLog("START Model PreProcessing...");
@@ -1637,24 +1636,24 @@ public class AssetImportUpdate : AssetPostprocessor {
         Utils.DebugUtils.DebugLog("Modified file: " + assetFilePath);
 
         // make the asset path available globally
-        globalAssetFilePath = assetFilePath;
+        importedAssetFilePath = assetFilePath;
 
         // get the file name + extension
         String assetFileNameAndExtension = Path.GetFileName(assetFilePath);
-        globalAssetFileNameAndExtension = assetFileNameAndExtension;
+        importedAssetFileNameAndExtension = assetFileNameAndExtension;
         // get the file name only
         String assetFileName = assetFileNameAndExtension.Substring(0, assetFileNameAndExtension.Length - 4);
-        globalAssetFileName = assetFileName;
+        importedAssetFileName = assetFileName;
         // get the file's directory only
         String assetFileDirectory = assetFilePath.Substring(0, assetFilePath.Length - assetFileNameAndExtension.Length);
-        globalAssetFileDirectory = assetFileDirectory;
+        importedAssetFileDirectory = assetFileDirectory;
 
         //
         // get the model import parameters based on the name
         // 
 
         // get the model import settings 
-        AssetImportGlobals.ModelImportParamsByName = ManageImportSettings.GetModelImportParamsByName(globalAssetFilePath);
+        AssetImportGlobals.ModelImportParamsByName = ManageImportSettings.GetModelImportParamsByName(importedAssetFilePath);
 
         //
         // now execute all AssetImportUpdate PreProcessor option flags marked as true
@@ -1667,7 +1666,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         if (AssetImportGlobals.ModelImportParamsByName.doInstantiateAndPlaceInCurrentScene)
         {
-            InstantiateAndPlaceAssetAsGameObject(globalGameObjectFromAsset, currentScene);
+            InstantiateAndPlaceAssetAsGameObject(importedAssetGameObject, currentScene);
         }
 
         if (AssetImportGlobals.ModelImportParamsByName.doSetColliderActive)
@@ -1682,12 +1681,12 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         if (AssetImportGlobals.ModelImportParamsByName.doDeleteReimportMaterialsTextures)
         {
-            DeleteReimportMaterialsTextures(globalAssetFilePath);
+            DeleteReimportMaterialsTextures(importedAssetFilePath);
         }
 
         if (AssetImportGlobals.ModelImportParamsByName.doAddBehaviorComponents)
         {
-            AddBehaviorComponentsByName(globalAssetFileName);
+            AddBehaviorComponentsByName(importedAssetFileName);
         }
 
         // since pre-processing is done, mark post-processing as required
@@ -1707,7 +1706,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         string[] movedFromAssetPaths)
     {
         // check if there's a leftover .fbm folder, and if so, delete it
-        DeleteFBMFolderOnImport(globalAssetFileDirectory, globalAssetFileName);
+        DeleteFBMFolderOnImport(importedAssetFileDirectory, importedAssetFileName);
 
         // if post processing isn't required, skip
         if (!postProcessingRequired)
@@ -1731,8 +1730,8 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         // get the game object and its dependencies
         // for some reason this needs to happen in the post-processor
-        globalGameObjectFromAsset = (GameObject)AssetDatabase.LoadAssetAtPath(globalAssetFilePath, typeof(GameObject));
-        globalGameObjectDependencies = EditorUtility.CollectDependencies(new UnityEngine.Object[] { globalGameObjectFromAsset });
+        importedAssetGameObject = (GameObject)AssetDatabase.LoadAssetAtPath(importedAssetFilePath, typeof(GameObject));
+        importedAssetGameObjectDependencies = EditorUtility.CollectDependencies(new UnityEngine.Object[] { importedAssetGameObject });
 
         //
         // execute all AssetImportUpdate PostProcessor option flags marked as true
@@ -1740,25 +1739,25 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         if (AssetImportGlobals.ModelImportParamsByName.doSetMaterialEmission)
         {
-            SetAllDependentMaterialsEmissionByName(globalGameObjectFromAsset);
+            SetAllDependentMaterialsEmissionByName(importedAssetGameObject);
         }
 
         if (AssetImportGlobals.ModelImportParamsByName.doSetMaterialSmoothnessMetallic)
         {
-            SetAllDependentMaterialsSmoothnessMetallicByName(globalGameObjectFromAsset);
+            SetAllDependentMaterialsSmoothnessMetallicByName(importedAssetGameObject);
         }
 
         // turn off specular on certain materials like concrete, asphalt, etc
-        SetAllDependentMaterialsSpecularByName(globalGameObjectFromAsset);
+        SetAllDependentMaterialsSpecularByName(importedAssetGameObject);
 
         if (AssetImportGlobals.ModelImportParamsByName.doInstantiateProxyReplacements)
         {
-            InstantiateProxyReplacements(globalAssetFileName);
+            InstantiateProxyReplacements(importedAssetFileName);
         }
 
         if (AssetImportGlobals.ModelImportParamsByName.doHideProxyObjects)
         {
-            HideProxyObjects(globalAssetFileName);
+            HideProxyObjects(importedAssetFileName);
         }
 
         // these never worked reliably, so they've been deprecated (now invoked manually via CCP menu)
@@ -1770,12 +1769,12 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         if (AssetImportGlobals.ModelImportParamsByName.doSetCustomLightmapSettings)
         {
-            SetCustomLightmapSettingsByName(globalGameObjectFromAsset);
+            SetCustomLightmapSettingsByName(importedAssetGameObject);
         }
 
         if (AssetImportGlobals.ModelImportParamsByName.doSetStaticFlags)
         {
-            SetStaticFlagsByName(globalGameObjectFromAsset);
+            SetStaticFlagsByName(importedAssetGameObject);
         }
 
         // newly-instantiated objects need to be set as a child of the scene container
