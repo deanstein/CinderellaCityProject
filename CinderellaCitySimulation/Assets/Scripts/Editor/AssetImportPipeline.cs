@@ -24,20 +24,19 @@ public class AssetImportGlobals
     public static ModelImportParams ModelImportParamsByName;
 }
 
+// this only runs when an asset is updated in the editor
 public class AssetImportUpdate : AssetPostprocessor {
 
-    // this only runs when an asset is updated in the editor
-    // when this happens, find out what file was updated
-    // and globally store its name, path, etc. for all functions to access
+    // get information on the file that was updated
     static String globalAssetFilePath;
     static String globalAssetFileNameAndExtension;
     static String globalAssetFileName;
     static String globalAssetFileDirectory;
     static String globalAssetTexturesDirectory;
 
-    // get the gameobject from the asset path, if it's available
-    static GameObject globalGameObjectFromAsset = (GameObject) AssetDatabase.LoadAssetAtPath(globalAssetFilePath, typeof(GameObject));
-    static UnityEngine.Object globalMainGameObjectFromAsset = AssetDatabase.LoadMainAssetAtPath(globalAssetFilePath);
+    // later, in the post-processor, get the GameObject from the changed asset
+    static GameObject globalGameObjectFromAsset;
+    static UnityEngine.Object[] globalGameObjectDependencies;
 
     // if the model just updated isn't already in the scene, we need to keep track of it
     // in order to maintain parent/child hierarchy in the post-processor
@@ -788,14 +787,14 @@ public class AssetImportUpdate : AssetPostprocessor {
     }
 
     // set emission on specific dependent materials in the target object
-    static void SetAllDependentMaterialsEmissionByName(UnityEngine.Object targetObject)
+    static void SetAllDependentMaterialsEmissionByName(GameObject targetObject)
     {
-        // TODO: use the passed in targetObject
-        var prefab = AssetDatabase.LoadMainAssetAtPath(globalAssetFilePath);
+        // if the target object and the last-updated asset import object are the same,
+        // use the global game object dependencies that have already been calculated
+        // otherwise, get the dependencies from the provided object
+        UnityEngine.Object[] targetDependencies = (targetObject == globalGameObjectFromAsset) ? globalGameObjectDependencies : EditorUtility.CollectDependencies(new UnityEngine.Object[] { targetObject });
 
-        // make changes to this prefab's dependencies (materials)
-
-        foreach (var dependency in EditorUtility.CollectDependencies(new[] { prefab }))
+        foreach (var dependency in targetDependencies)
         {
             var dependencyPath = AssetDatabase.GetAssetPath(dependency);
             string dependencyPathString = dependencyPath.ToString();
@@ -827,10 +826,12 @@ public class AssetImportUpdate : AssetPostprocessor {
     // set smoothness and metallic on specific dependent materials in the target object
     public static void SetAllDependentMaterialsSmoothnessMetallicByName(GameObject targetObject)
     {
-        // TODO: use the passed in targetObject
-        var prefab = AssetDatabase.LoadMainAssetAtPath(globalAssetFilePath);
+        // if the target object and the last-updated asset import object are the same,
+        // use the global game object dependencies that have already been calculated
+        // otherwise, get the dependencies from the provided object
+        UnityEngine.Object[] targetDependencies = (targetObject == globalGameObjectFromAsset) ? globalGameObjectDependencies : EditorUtility.CollectDependencies(new UnityEngine.Object[] { targetObject });
 
-        foreach (var dependency in EditorUtility.CollectDependencies(new[] { prefab }))
+        foreach (var dependency in targetDependencies)
         {
             var dependencyPath = AssetDatabase.GetAssetPath(dependency);
             string dependencyPathString = dependencyPath.ToString();
@@ -859,13 +860,15 @@ public class AssetImportUpdate : AssetPostprocessor {
     }
 
     // set specular on specific dependent materials in the target object
-    public static void SetAllDependentMaterialsSpecularByName(UnityEngine.Object targetObject)
+    public static void SetAllDependentMaterialsSpecularByName(GameObject targetObject)
     {
-        // TODO: use the passed in targetObject
-        var prefab = AssetDatabase.LoadMainAssetAtPath(globalAssetFilePath);
+        // if the target object and the last-updated asset import object are the same,
+        // use the global game object dependencies that have already been calculated
+        // otherwise, get the dependencies from the provided object
+        UnityEngine.Object[] targetDependencies = (targetObject == globalGameObjectFromAsset) ? globalGameObjectDependencies : EditorUtility.CollectDependencies(new UnityEngine.Object[] { targetObject });
 
         // make changes to this prefab's dependencies (materials)
-        foreach (var dependency in EditorUtility.CollectDependencies(new[] { targetObject }))
+        foreach (var dependency in targetDependencies)
         {
             var dependencyPath = AssetDatabase.GetAssetPath(dependency);
             string dependencyPathString = dependencyPath.ToString();
@@ -1639,11 +1642,9 @@ public class AssetImportUpdate : AssetPostprocessor {
         // get the file name + extension
         String assetFileNameAndExtension = Path.GetFileName(assetFilePath);
         globalAssetFileNameAndExtension = assetFileNameAndExtension;
-
         // get the file name only
         String assetFileName = assetFileNameAndExtension.Substring(0, assetFileNameAndExtension.Length - 4);
         globalAssetFileName = assetFileName;
-
         // get the file's directory only
         String assetFileDirectory = assetFilePath.Substring(0, assetFilePath.Length - assetFileNameAndExtension.Length);
         globalAssetFileDirectory = assetFileDirectory;
@@ -1727,6 +1728,11 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         // add to the list of post processing hits, so we know how many times we've been here
         postProcessingHits.Add(true);
+
+        // get the game object and its dependencies
+        // for some reason this needs to happen in the post-processor
+        globalGameObjectFromAsset = (GameObject)AssetDatabase.LoadAssetAtPath(globalAssetFilePath, typeof(GameObject));
+        globalGameObjectDependencies = EditorUtility.CollectDependencies(new UnityEngine.Object[] { globalGameObjectFromAsset });
 
         //
         // execute all AssetImportUpdate PostProcessor option flags marked as true
