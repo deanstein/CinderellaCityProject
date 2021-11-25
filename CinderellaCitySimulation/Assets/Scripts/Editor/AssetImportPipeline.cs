@@ -15,7 +15,7 @@ using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Applies settings and modifications to imported files (FBX models, audio files, images/graphics...)
-/// Runs automatically when a whitelisted file type is imported(or re-imported) in the Unity Editor
+/// Runs automatically when a whitelisted file type is imported (or reimported) in the Unity Editor
 /// </summary>
 
 public class AssetImportGlobals
@@ -58,7 +58,7 @@ public class AssetImportUpdate : AssetPostprocessor {
     // proxy replacements as required
     static bool proxyReplacementProcessingRequired = false;
 
-    // instantiate proxy strings
+    // certain proxies get replaced in a certain way or by a specific prefab
     static string proxyType;
 
     // keep track of the newly-instantiated objects - like trees and people - for counting and culling
@@ -74,20 +74,6 @@ public class AssetImportUpdate : AssetPostprocessor {
     // note that if an object was just instantiated in the scene, this max hit value gets incremented by 1
     static int globalMaxPostProcessingHits = 2;
     static List<bool> postProcessingHits = new List<bool>();
-
-    //
-    // TODO: move these into ManageImportSettings
-    //
-
-    // master pre-processor option flags
-    // ... for audio clips
-    static bool doSetClipImportSettings = false;
-    // ... for textures and images
-    static bool doSetTextureToSpriteImportSettings = false;
-
-    //
-    // end TODO
-    //
 
     // set up callbacks
     public AssetImportUpdate()
@@ -1507,38 +1493,14 @@ public class AssetImportUpdate : AssetPostprocessor {
         // make the asset path available globally
         importedAssetFilePath = assetFilePath;
 
-        // get the file name + extension
-        String assetFileNameAndExtension = Path.GetFileName(assetFilePath);
-        importedAssetFileNameAndExtension = assetFileNameAndExtension;
-
-        // get the file name only
-        String assetFileName = assetFileNameAndExtension.Substring(0, assetFileNameAndExtension.Length - 4);
-        importedAssetFileName = assetFileName;
-
-        // get the file's directory only
-        String assetFileDirectory = assetFilePath.Substring(0, assetFilePath.Length - assetFileNameAndExtension.Length);
-        importedAssetFileDirectory = assetFileDirectory;
-
-        //
-        // whitelist of files to get modifications
-        // only files explicitly mentioned below will get changed
-        // each file should state its preference for all available pre- and post-processor flags as defined above
-        //
-
-        // all items in the UI folder should be converted to a sprite
-        if (assetFilePath.Contains("resources/ui"))
-        {
-            // pre-processor option flags
-            doSetTextureToSpriteImportSettings = true;
-
-            // post-processor option flags
-        }
+        // get texture import params based on name
+        TextureImportParams importParams = ManageImportSettings.GetTextureImportParamsByPath(assetFilePath);
 
         //
         // now execute all AssetImportUpdate PreProcessor option flags marked as true
         //
 
-        if (doSetTextureToSpriteImportSettings)
+        if (importParams.doSetTextureToSpriteImportSettings)
         {
             SetTextureToSpriteImportSettings(textureImporter);
         }
@@ -1569,41 +1531,14 @@ public class AssetImportUpdate : AssetPostprocessor {
         // make the asset path available globally
         importedAssetFilePath = assetFilePath;
 
-        // get the file name + extension
-        String assetFileNameAndExtension = Path.GetFileName(assetFilePath);
-        importedAssetFileNameAndExtension = assetFileNameAndExtension;
-
-        // get the file name only
-        String assetFileName = assetFileNameAndExtension.Substring(0, assetFileNameAndExtension.Length - 4);
-        importedAssetFileName = assetFileName;
-
-        // get the file's directory only
-        String assetFileDirectory = assetFilePath.Substring(0, assetFilePath.Length - assetFileNameAndExtension.Length);
-        importedAssetFileDirectory = assetFileDirectory;
-
-        //
-        // whitelist of files to get modifications
-        // only files explicitly mentioned below will get changed
-        // each file should state its preference for all available pre- and post-processor flags as defined above
-        //
-
-        // all audio assets need to be compressed for performance
-        if (assetFilePath.Contains(".m4a")
-            || (assetFilePath.Contains(".mp3"))
-            || (assetFilePath.Contains(".wav"))
-            || (assetFilePath.Contains(".ogg")))
-        {
-            // pre-processor option flags
-            doSetClipImportSettings = true;
-
-            // post-processor option flags
-        }
+        // get audio import params based on name
+        AudioImportParams importParams = ManageImportSettings.GetAudioImportParamsByPath(assetFilePath);
 
         //
         // now execute all AssetImportUpdate PreProcessor option flags marked as true
         //
 
-        if (doSetClipImportSettings)
+        if (importParams.doSetClipImportSettings)
         {
             SetClipImportSettings(audioImporter);
         }
