@@ -1,4 +1,4 @@
-﻿using UnityEditor;
+using UnityEditor;
 
 /// <summary>
 /// Contains import settings for various importable files, used by AssetImportPipeline to apply certain settings to certain files
@@ -28,6 +28,16 @@ public class ModelImportParams
     public bool doSetStaticFlags = false;
     public bool doRebuildNavMesh = false;
     public bool doSetCustomLightmapSettings = false;
+}
+
+public class TextureImportParams
+{
+    public bool doSetTextureToSpriteImportSettings = false;
+}
+
+public class AudioImportParams
+{
+    public bool doSetClipImportSettings = false;
 }
 
 // return import settings based on the asset name
@@ -330,6 +340,41 @@ public class ManageImportSettings
                 ImportParams.doInstantiateProxyReplacements = false;
                 ImportParams.doHideProxyObjects = false;
                 return ImportParams;
+        }
+    }
+
+    public static TextureImportParams GetTextureImportParamsByPath(string texturePath)
+    {
+        TextureImportParams importParams = new TextureImportParams();
+
+        switch (texturePath)
+        {
+            case string path when path.Contains("resources/ui"):
+
+                importParams.doSetTextureToSpriteImportSettings = true;
+
+                return importParams;
+            default:
+                return importParams;
+        }
+    }
+
+    public static AudioImportParams GetAudioImportParamsByPath(string audioPath)
+    {
+        AudioImportParams importParams = new AudioImportParams();
+
+        switch (audioPath)
+        {
+            case string path when (audioPath.Contains(".m4a")
+            || (audioPath.Contains(".mp3"))
+            || (audioPath.Contains(".wav"))
+            || (audioPath.Contains(".ogg"))):
+
+                importParams.doSetClipImportSettings = true;
+
+                return importParams;
+            default:
+                return importParams;
         }
     }
 
