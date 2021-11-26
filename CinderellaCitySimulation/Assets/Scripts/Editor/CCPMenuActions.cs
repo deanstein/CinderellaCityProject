@@ -45,15 +45,30 @@ public class CCPMenuActions : MonoBehaviour
     [MenuItem("Cinderella City Project/Open Scene/Main Menu")]
     public static void OpenMainMenuScene()
     {
-        string mainMenuScenePath = SceneGlobals.GetScenePathByName("MainMenu");
+        string mainMenuScenePath = SceneGlobals.GetScenePathByName(SceneGlobals.mainMenuSceneName);
         EditorSceneManager.OpenScene(mainMenuScenePath);
     }
 
     [MenuItem("Cinderella City Project/Open Scene/Visibility Menu")]
     public static void OpenVisibilityMenuScene()
     {
-        string visibilityMenuScenePath = SceneGlobals.GetScenePathByName("VisibilityMenu");
+        string visibilityMenuScenePath = SceneGlobals.GetScenePathByName(SceneGlobals.visibilityMenuSceneName);
         EditorSceneManager.OpenScene(visibilityMenuScenePath);
+    }
+
+
+    [MenuItem("Cinderella City Project/Open Scene/How to Play")]
+    public static void OpenHowToPlayScene()
+    {
+        string howToPlayScenePath = SceneGlobals.GetScenePathByName(SceneGlobals.howToPlaySceneName);
+        EditorSceneManager.OpenScene(howToPlayScenePath);
+    }
+
+    [MenuItem("Cinderella City Project/Open Scene/Credits")]
+    public static void OpenCreditsScene()
+    {
+        string creditsScenePath = SceneGlobals.GetScenePathByName(SceneGlobals.creditsSceneName);
+        EditorSceneManager.OpenScene(creditsScenePath);
     }
 
     [MenuItem("Cinderella City Project/Open Scene/60s70s")]
