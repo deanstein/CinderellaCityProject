@@ -87,7 +87,6 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
     // build UI based on the name of the current scene
     public void BuildCurrentSceneUI()
     {
-
         // ensure there's always an EventSystem
         if (GameObject.Find("EventSystem") == null)
         {
@@ -115,6 +114,18 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         else if (this.name.Contains("PauseMenuLauncher"))
         {
             BuildPauseMenu(UILauncher);
+        }
+
+        // the how-to-play screen
+        else if (this.name.Contains("HowToPlayScreenLauncher"))
+        {
+            BuildHowToPlayScreen(UILauncher);
+        }
+
+        // the credits screen
+        else if (this.name.Contains("CreditsScreenLauncher"))
+        {
+            BuildCreditsScreen(UILauncher);
         }
 
         // generic UI launcher in FPSController scenes
@@ -200,6 +211,58 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(mainMenu);
 
         return mainMenu;
+    }
+
+    // how to play, including shortcuts/controls
+    public static GameObject BuildHowToPlayScreen(GameObject UILauncher)
+    {
+        Utils.DebugUtils.DebugLog("Building the How-to-Play Screen...");
+
+        // define the background image path
+        string backgroundImagePath = "UI/HowToPlayScreenBackground";
+
+        // canvas
+        GameObject howToPlayScreenCanvas = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, SceneGlobals.howToPlayScreenName);
+
+        // background image slideshow
+        GameObject backgroundImage = CreateScreenSpaceUIElements.CreateFullScreenImageBackground(howToPlayScreenCanvas, backgroundImagePath);
+
+        // project logo and container
+        GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(howToPlayScreenCanvas);
+
+        // create the title bar container
+        GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(howToPlayScreenCanvas, logoHeader, "How to Play");
+
+        // create the game version indicator
+        GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(howToPlayScreenCanvas);
+
+        return howToPlayScreenCanvas;
+    }
+
+    // credits
+    public static GameObject BuildCreditsScreen(GameObject UILauncher)
+    {
+        Utils.DebugUtils.DebugLog("Building the Credits Screen...");
+
+        // define the background image path
+        string backgroundImagePath = "UI/CreditsScreenBackground";
+
+        // canvas
+        GameObject creditsScreenCanvas = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, SceneGlobals.mainMenuSceneName);
+
+        // background image
+        GameObject backgroundImage = CreateScreenSpaceUIElements.CreateFullScreenImageBackground(creditsScreenCanvas, backgroundImagePath);
+
+        // project logo and container
+        GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(creditsScreenCanvas);
+
+        // create the title bar container
+        GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(creditsScreenCanvas, logoHeader, "Credits");
+
+        // create the game version indicator
+        GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(creditsScreenCanvas);
+
+        return creditsScreenCanvas;
     }
 
     // pause menu
