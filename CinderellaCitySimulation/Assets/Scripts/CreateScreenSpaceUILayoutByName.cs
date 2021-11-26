@@ -222,7 +222,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         string backgroundImagePath = "UI/HowToPlayScreenBackground";
 
         // canvas
-        GameObject howToPlayScreenCanvas = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, SceneGlobals.howToPlayScreenName);
+        GameObject howToPlayScreenCanvas = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, SceneGlobals.howToPlaySceneName);
 
         // background image slideshow
         GameObject backgroundImage = CreateScreenSpaceUIElements.CreateFullScreenImageBackground(howToPlayScreenCanvas, backgroundImagePath);
@@ -328,7 +328,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         Utils.DebugUtils.DebugLog("Building the Visibility Menu...");
 
         // visibility menu canvas
-        GameObject visibilityMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, SceneGlobals.visibilityMenuName);
+        GameObject visibilityMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, SceneGlobals.visibilityMenuSceneName);
         UIVisibilityGlobals.isOverlayMenuActive = true;
         UIVisibilityGlobals.activeOverlayMenu = visibilityMenu;
         UIVisibilityGlobals.lastKnownOverlayMenuName = visibilityMenu.name;

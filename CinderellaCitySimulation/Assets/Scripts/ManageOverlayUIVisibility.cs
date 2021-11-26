@@ -27,7 +27,7 @@ public class ManageOverlayVisibility
         {
             switch (overlayMenuName)
             {
-                case string name when name.Contains(SceneGlobals.visibilityMenuName):
+                case string name when name.Contains(SceneGlobals.visibilityMenuSceneName):
                     return CreateScreenSpaceUILayoutByName.BuildVisualizationMenuOverlay(UILauncher);
                 default:
                     return null;
