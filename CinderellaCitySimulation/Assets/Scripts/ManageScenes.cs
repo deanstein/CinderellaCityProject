@@ -29,12 +29,13 @@ public class SceneGlobals
     public static string experimentalSceneName = "Experimental";
     // the name of the scene that should be displayed while other scenes are loading
     public static string loadingSceneName = "LoadingScreen";
-    // main menu
+    // menu names
     public static string mainMenuSceneName = "MainMenu";
-    // pause menu
     public static string pauseMenuName = "PauseMenu";
-    // visibility menu
     public static string visibilityMenuName = "VisibilityMenu";
+    // static screen names
+    public static string howToPlayScreenName = "HowToPlay";
+    public static string creditsScreenName = "Credits";
     // scene to set active after all other scenes are loaded
     public static string startingSceneName = mainMenuSceneName;
 

@@ -403,6 +403,31 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         return fullScreenBackground;
     }
 
+    public static GameObject CreateFullScreenImageBackground(GameObject parent, string imagePath)
+    {
+        // create the background object
+        GameObject fullScreenBackgroundImage = new GameObject("BackgroundImage");
+        fullScreenBackgroundImage.AddComponent<Image>();
+
+        // set the image
+        Image imageComponent = fullScreenBackgroundImage.GetComponent<Image>();
+
+        imageComponent.sprite = (Sprite)Resources.Load(imagePath, typeof(Sprite));
+        imageComponent.preserveAspect = true;
+        imageComponent.SetNativeSize();
+
+        // reset the scale before centering and full-screening
+        imageComponent.rectTransform.localScale = new Vector3(1, 1, 1);
+
+        // center and full-screen the sprite
+        TransformScreenSpaceObject.PositionObjectAtCenterofScreen(imageComponent.gameObject);
+        TransformScreenSpaceObject.ScaleImageToFillScreen(imageComponent);
+
+        fullScreenBackgroundImage.transform.parent = parent.transform;
+
+        return fullScreenBackgroundImage;
+    }
+
     public static GameObject CreateFullScreenImageSlideshow(GameObject parent, string[] imageSequence)
     {
         // create the background object
