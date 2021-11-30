@@ -748,12 +748,15 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         ScrollRect scrollRect = scrollableArea.AddComponent<ScrollRect>();
         scrollRect.scrollSensitivity = 10;
 
-        // use the name of the active FPSController to determine which variable to write the texture to
         switch (scrollDirection)
         {
             case string scrollDir when scrollDirection.Contains("horizontal"):
                 scrollRect.horizontal = true;
                 scrollRect.vertical = false;
+                // horizontally-enabled scroll areas
+                // get a special script to scroll based on cursor location
+                ScrollByCursorPosition scrollScript = scrollableArea.AddComponent<ScrollByCursorPosition>();
+                scrollScript.scrollDirection = "x";
                 return scrollableArea;
             case string scrollDir when scrollDirection.Contains("vertical"):
                 scrollRect.vertical = true;
@@ -762,6 +765,10 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
             case string scrollDir when scrollDirection.Contains("both"):
                 scrollRect.horizontal = true;
                 scrollRect.vertical = true;
+                // horizontally-enabled scroll areas
+                // get a special script to scroll based on cursor location
+                ScrollByCursorPosition mixedScrollScript = scrollableArea.AddComponent<ScrollByCursorPosition>();
+                mixedScrollScript.scrollDirection = "x";
                 return scrollableArea;
             default:
                 return scrollableArea;
