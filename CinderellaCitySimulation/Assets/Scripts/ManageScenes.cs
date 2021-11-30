@@ -29,19 +29,20 @@ public class SceneGlobals
     public static string experimentalSceneName = "Experimental";
     // the name of the scene that should be displayed while other scenes are loading
     public static string loadingSceneName = "LoadingScreen";
-    // menu names
+    // menu scene names
     public static string mainMenuSceneName = "MainMenu";
     public static string pauseMenuName = "PauseMenu";
     public static string visibilityMenuSceneName = "VisibilityMenu";
-    // static screen names
+    // static screen scene names
     public static string howToPlaySceneName = "HowToPlay";
     public static string creditsSceneName = "Credits";
+
     // scene to set active after all other scenes are loaded
     public static string startingSceneName = mainMenuSceneName;
 
     /* scene lists */
     // all scene names to load for the full simulation experience
-    public static string[] allGameplaySceneNames = { "MainMenu", "PauseMenu", "60s70s", "80s90s" };
+    public static string[] allGameplaySceneNames = { mainMenuSceneName, pauseMenuName, "60s70s", "80s90s" };
     // only the first-person (non-menu) scenes
     public static string[] availableTimePeriodSceneNames = { "60s70s", "80s90s" };
     // list the friendly names of available time periods, in chronologial order (used for UI labels)
