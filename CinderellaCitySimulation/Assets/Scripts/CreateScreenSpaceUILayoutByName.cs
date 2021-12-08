@@ -475,22 +475,18 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
 
         }); ;
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(takeScreenshotButton, cameraSettingsToggleGroup.transform.GetChild(1).gameObject, 0.0f);
-        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(takeScreenshotButton, cameraActionsButtonGroup, 0.01f);
-
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(takeScreenshotButton, cameraActionsButtonGroup, -UIGlobals.toggleContainerPadding);
         cameraActionButtons.Add(takeScreenshotButton);
 
         // save view button
         GameObject saveViewFromClipboardButton = CreateScreenSpaceUIElements.CreateTextButton("Save View", cameraActionsButtonGroup, UIGlobals.visibilitymenuTextButtonlabelSize, UIGlobals.containerColor);
-
-        // 
         saveViewFromClipboardButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
             CreateScreenSpaceUIElements.SaveViewButtonAction();
 
         }); ;
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(saveViewFromClipboardButton, takeScreenshotButton, 0.01f);
-        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(saveViewFromClipboardButton, cameraActionsButtonGroup, 0.01f);
-
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(saveViewFromClipboardButton, takeScreenshotButton, UIGlobals.toggleContainerPadding);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(saveViewFromClipboardButton, cameraActionsButtonGroup, -UIGlobals.toggleContainerPadding);
         cameraActionButtons.Add(saveViewFromClipboardButton);
 
         // restore view button
@@ -500,13 +496,17 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
             CreateScreenSpaceUIElements.RestoreViewButtonAction();
 
         }); ;
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(restoreViewFromClipboardButton, saveViewFromClipboardButton, 0.01f);
-        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(restoreViewFromClipboardButton, cameraActionsButtonGroup, 0.01f);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(restoreViewFromClipboardButton, saveViewFromClipboardButton, UIGlobals.toggleContainerPadding);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(restoreViewFromClipboardButton, cameraActionsButtonGroup, -UIGlobals.toggleContainerPadding);
 
         cameraActionButtons.Add(restoreViewFromClipboardButton);
 
-        // now populate the object camera settings toggle group container
-        //CreateScreenSpaceUIElements.PopulateToggleGroup(cameraActionsButtonGroup, cameraActionButtons);
+        // resize the button group container to the right side of the buttons
+        // TODO: why is this not working properly?
+        //TransformScreenSpaceObject.ResizeObjectWidthByScreenWidthRatioTowardRight(cameraActionsButtonGroup, 0.1f);
+
+        // resize the horizontal scroll area to just past the last sub-element
+        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromNeighborRight(toggleSetContainer, cameraActionsButtonGroup, UIGlobals.toggleContainerPadding);
 
         // set parent/child hierarchy
         toggleSetHorizontalScrollArea.transform.SetParent(visibilityMenu.transform);

@@ -61,6 +61,10 @@ public class UIGlobals
     // fonts and text sizes (pixels)
     public static int visibilitymenuTextButtonlabelSize = 20;
     public static int mainMenuTextButtonLabelSize = 35;
+
+    /// spacing, padding, margins ///
+    public static float toggleContainerPadding = 0.01f;
+    public static float toggleContainerMaxWidthScreenWidthRatio = 0.1f;
 }
 
 public class CreateScreenSpaceUIElements : MonoBehaviour
@@ -106,9 +110,6 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     public static float menuTitleTopMarginScreenHeightRatio = -0.02f;
     public static float menuTitleLeftMarginScreenWidthRatio = -0.02f;
     public static float menuTitleBottomMarginScreenHeightRatio = 0.02f;
-
-    public static float toggleContainerPadding = 0.01f;
-    public static float toggleContainerMaxWidthScreenWidthRatio = 0.1f;
 
     public static float toggleTopPaddingScreenHeightRatio = -0.01f;
     public static float toggleLeftPaddingScreenWidthRatio = -0.01f;
@@ -584,8 +585,8 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
         // resize the toggle container
         TransformScreenSpaceObject.ResizeObjectWidthToMatchScreen(toggleColorContainer);
-        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromNeighborLeft(toggleColorContainer, parent, -toggleContainerPadding);
-        TransformScreenSpaceObject.ResizeObjectWidthByScreenWidthRatioTowardRight(toggleColorContainer, toggleContainerMaxWidthScreenWidthRatio);
+        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromNeighborLeft(toggleColorContainer, parent, -UIGlobals.toggleContainerPadding);
+        TransformScreenSpaceObject.ResizeObjectWidthByScreenWidthRatioTowardRight(toggleColorContainer, UIGlobals.toggleContainerMaxWidthScreenWidthRatio);
 
         // contain the toggle elements in an object
         GameObject toggleObject = new GameObject("ToggleObject");
@@ -668,11 +669,11 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         }
 
         // resize the group right edge to hug the typical toggle width
-        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromNeighborRight(toggleGroup, togglesToDisplay[0], toggleContainerPadding);
+        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromNeighborRight(toggleGroup, togglesToDisplay[0], UIGlobals.toggleContainerPadding);
 
         // position the label again to account for the resizing of the group
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(toggleGroup.transform.GetChild(0).gameObject, toggleGroup, menuTitleTopMarginScreenHeightRatio);
-        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(toggleGroup.transform.GetChild(0).gameObject, toggleGroup, -toggleContainerPadding);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(toggleGroup.transform.GetChild(0).gameObject, toggleGroup, -UIGlobals.toggleContainerPadding);
 
         // add each of the specified toggles to the toggle group
         foreach (GameObject toggle in togglesToDisplay)
