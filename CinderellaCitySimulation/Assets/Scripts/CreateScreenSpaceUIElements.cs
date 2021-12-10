@@ -57,10 +57,24 @@ public class UIGlobals
     public static Color32 clearColor = new Color32(255, 255, 255, 0);
 
     /// sizes ///
-    
+
     // fonts and text sizes (pixels)
-    public static int visibilitymenuTextButtonlabelSize = 20;
+    public static string labelFont = "AvenirNextLTPro-Demi";
+    // the proportion of the text height that the descender is estimated to be
+    public static float textDescenderProportion = 0.12f;
+
+    public static int HUDTimePeriodLabelSize = 40;
+    public static int versionLabelSize = 15;
+
+    public static int menuTitleLabelSize = 30;
     public static int mainMenuTextButtonLabelSize = 35;
+    public static int placeLabelSize = 50;
+    public static int timeLabelSize = 50;
+
+    public static int toggleGroupLabelSize = 25;
+    public static int toggleLabelSize = 20;
+
+    public static int visibilitymenuTextButtonlabelSize = 20;
 
     /// spacing, padding, margins ///
 
@@ -80,23 +94,6 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     public static List<GameObject> timeLabelsForAlignment = new List<GameObject>();
 
     // TODO: move these into UIGlobals
-
-    /// sizes ///
-
-    // fonts and text sizes (pixels)
-    public static string labelFont = "AvenirNextLTPro-Demi";
-
-    public static int menuTitleLabelSize = 30;
-    public static int toggleGroupLabelSize = 25;
-    public static int toggleLabelSize = 20;
-    public static int HUDTimePeriodLabelSize = 40;
-    public static int versionLabelSize = 15;
-
-    public static int placeLabelSize = 50;
-    public static int timeLabelSize = 50;
-
-    // the proportion of the text height that the descender is estimated to be
-    public static float textDescenderProportion = 0.12f;
 
     /// space/padding/margin ///
 
@@ -505,9 +502,9 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // add the title text
         GameObject titleLabel = new GameObject("TitleLabel");
         Text introMessageLabelText = titleLabel.AddComponent<Text>();
-        introMessageLabelText.font = (Font)Resources.Load(labelFont);
+        introMessageLabelText.font = (Font)Resources.Load(UIGlobals.labelFont);
         introMessageLabelText.text = titleString;
-        introMessageLabelText.fontSize = menuTitleLabelSize;
+        introMessageLabelText.fontSize = UIGlobals.menuTitleLabelSize;
         introMessageLabelText.alignment = TextAnchor.UpperLeft;
 
         // resize the text's bounding box to fit the text, before any transforms
@@ -555,9 +552,9 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // add the toggle group label
         GameObject groupLabel = new GameObject("ToggleGroupLabel");
         Text introMessageLabelText = groupLabel.AddComponent<Text>();
-        introMessageLabelText.font = (Font)Resources.Load(labelFont);
+        introMessageLabelText.font = (Font)Resources.Load(UIGlobals.labelFont);
         introMessageLabelText.text = toggleGroupLabel;
-        introMessageLabelText.fontSize = toggleGroupLabelSize;
+        introMessageLabelText.fontSize = UIGlobals.toggleGroupLabelSize;
         introMessageLabelText.alignment = TextAnchor.UpperLeft;
 
         // resize the text's bounding box to fit the text, before any transforms
@@ -597,7 +594,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // so construct a toggle interface explicitly with a background and a checkmark
         GameObject toggleCheckboxBackground = new GameObject("ToggleCheckboxBackground");
         Image toggleObjectBackground = toggleCheckboxBackground.AddComponent<Image>();
-        Vector2 toggleBackgroundSize = new Vector2(toggleLabelSize, toggleLabelSize);
+        Vector2 toggleBackgroundSize = new Vector2(UIGlobals.toggleLabelSize, UIGlobals.toggleLabelSize);
         toggleObjectBackground.rectTransform.sizeDelta = toggleBackgroundSize;
         toggleObjectBackground.sprite = (Sprite)Resources.Load("UI/checkbox-background", typeof(Sprite));
         GameObject toggleCheckboxCheckmark = new GameObject("ToggleCheckboxCheckmark");
@@ -619,9 +616,9 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // add the toggle label
         GameObject titleLabel = new GameObject("ToggleLabel");
         Text introMessageLabelText = titleLabel.AddComponent<Text>();
-        introMessageLabelText.font = (Font)Resources.Load(labelFont);
+        introMessageLabelText.font = (Font)Resources.Load(UIGlobals.labelFont);
         introMessageLabelText.text = toggleLabel;
-        introMessageLabelText.fontSize = toggleLabelSize;
+        introMessageLabelText.fontSize = UIGlobals.toggleLabelSize;
         introMessageLabelText.alignment = TextAnchor.UpperLeft;
 
         // resize the text's bounding box to fit the text, before any transforms
@@ -807,9 +804,9 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // add the title text
         GameObject timePeriodLabel = new GameObject("TimePeriodLabel");
         Text timePeriodLabelText = timePeriodLabel.AddComponent<Text>();
-        timePeriodLabelText.font = (Font)Resources.Load(labelFont);
+        timePeriodLabelText.font = (Font)Resources.Load(UIGlobals.labelFont);
         timePeriodLabelText.text = titleString;
-        timePeriodLabelText.fontSize = HUDTimePeriodLabelSize;
+        timePeriodLabelText.fontSize = UIGlobals.HUDTimePeriodLabelSize;
         timePeriodLabelText.alignment = TextAnchor.UpperLeft;
 
         // resize the text's bounding box to fit the text, before any transforms
@@ -849,9 +846,9 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // add the title text
         GameObject underConstructionLabel = new GameObject("TimePeriodNotificationLabel");
         Text underConstructionLabelText = underConstructionLabel.AddComponent<Text>();
-        underConstructionLabelText.font = (Font)Resources.Load(labelFont);
+        underConstructionLabelText.font = (Font)Resources.Load(UIGlobals.labelFont);
         underConstructionLabelText.text = notificationText;
-        underConstructionLabelText.fontSize = menuTitleLabelSize;
+        underConstructionLabelText.fontSize = UIGlobals.menuTitleLabelSize;
         underConstructionLabelText.alignment = TextAnchor.UpperLeft;
 
         // resize the text's bounding box to fit the text
@@ -890,9 +887,9 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // add the title text
         GameObject underConstructionLabel = new GameObject("UnderConstructionLabel");
         Text underConstructionLabelText = underConstructionLabel.AddComponent<Text>();
-        underConstructionLabelText.font = (Font)Resources.Load(labelFont);
+        underConstructionLabelText.font = (Font)Resources.Load(UIGlobals.labelFont);
         underConstructionLabelText.text = message;
-        underConstructionLabelText.fontSize = menuTitleLabelSize;
+        underConstructionLabelText.fontSize = UIGlobals.menuTitleLabelSize;
         underConstructionLabelText.alignment = TextAnchor.UpperLeft;
 
         // resize the text's bounding box to fit the text
@@ -926,9 +923,9 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         GameObject versionLabel = new GameObject("VersionLabel");
         Text versionLabelText = versionLabel.AddComponent<Text>();
         versionLabelText.color = UIGlobals.subtleTextColor;
-        versionLabelText.font = (Font)Resources.Load(labelFont);
+        versionLabelText.font = (Font)Resources.Load(UIGlobals.labelFont);
         versionLabelText.text = version;
-        versionLabelText.fontSize = versionLabelSize;
+        versionLabelText.fontSize = UIGlobals.versionLabelSize;
         versionLabelText.alignment = TextAnchor.UpperLeft;
 
         // resize the text's bounding box to fit the text
@@ -972,7 +969,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // create the text label
         GameObject buttonTextObject = new GameObject(Utils.StringUtils.CleanString(text) + "ButtonText");
         Text buttonText = buttonTextObject.AddComponent<Text>();
-        buttonText.font = (Font)Resources.Load(labelFont);
+        buttonText.font = (Font)Resources.Load(UIGlobals.labelFont);
         buttonText.text = text;
         buttonText.fontSize = fontSize;
         buttonText.alignment = TextAnchor.MiddleCenter;
@@ -1017,9 +1014,9 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
             GameObject timePeriodLabel = new GameObject(timePeriod + "Label");
 
             Text timePeriodLabelText = timePeriodLabel.AddComponent<Text>();
-            timePeriodLabelText.font = (Font)Resources.Load(labelFont);
+            timePeriodLabelText.font = (Font)Resources.Load(UIGlobals.labelFont);
             timePeriodLabelText.text = timePeriod;
-            timePeriodLabelText.fontSize = timeLabelSize;
+            timePeriodLabelText.fontSize = UIGlobals.timeLabelSize;
             timePeriodLabelText.alignment = TextAnchor.MiddleCenter;
 
             // get the text's dimensions to match only the space it needs, before any transforms
@@ -1068,9 +1065,9 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // location text
         GameObject placeLabel = new GameObject(Utils.StringUtils.CleanString(placeName) + "Label");
         Text placeLabelText = placeLabel.AddComponent<Text>();
-        placeLabelText.font = (Font)Resources.Load(labelFont);
+        placeLabelText.font = (Font)Resources.Load(UIGlobals.labelFont);
         placeLabelText.text = placeName;
-        placeLabelText.fontSize = placeLabelSize;
+        placeLabelText.fontSize = UIGlobals.placeLabelSize;
         placeLabelText.alignment = TextAnchor.MiddleCenter;
 
         // adjust the text's rectTransform to ensure objects aligning to it fit closely
@@ -1195,7 +1192,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         int thumbnailCount = blueMallThumbnailStack.transform.childCount - 1; // exclude the label
         TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(mainMenuCentralNavContainer, blueMallThumbnailStack.transform.GetChild(thumbnailCount - 1).gameObject, thumbnailStackBottomMarginScreenHeightRatio);
 
-        // resize the content below the scroll area to just past the last sub-element
+        // resize the content within the scroll area to just past the last sub-element
         TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromNeighborRight(mainMenuCentralNavContainer, cinderAlleyThumbnailStack.transform.GetChild(1).gameObject, UIGlobals.toggleContainerPadding);
 
         // position the time labels to align horizontally with the place thumbnails
