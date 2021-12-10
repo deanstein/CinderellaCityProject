@@ -57,7 +57,7 @@ public class ScrollByCursorPosition : MonoBehaviour
                 {
                     float remappedSpeed = Utils.MathUtils.RemapRange(relativeMousePosition.x, scrollPosThresholdUpper, 1.0f, 0.0f, maxScrollSpeed);
 
-                    Vector2 pos = new Vector2(thisScrollRect.content.localPosition.x - remappedSpeed, 0f);
+                    Vector2 pos = new Vector2(thisScrollRect.content.localPosition.x - remappedSpeed, thisScrollRect.content.localPosition.y);
                     thisScrollRect.content.localPosition = pos;
                 }
                 // horizontal scroll - to the left
@@ -68,7 +68,7 @@ public class ScrollByCursorPosition : MonoBehaviour
                 {
                     float remappedSpeed = Utils.MathUtils.RemapRange(relativeMousePosition.x, 0.0f, scrollPosThresholdLower, maxScrollSpeed, 0.0f);
 
-                    Vector2 pos = new Vector2(thisScrollRect.content.localPosition.x + remappedSpeed, 0f);
+                    Vector2 pos = new Vector2(thisScrollRect.content.localPosition.x + remappedSpeed, thisScrollRect.content.localPosition.y);
                     thisScrollRect.content.localPosition = pos;
                 }
                 return;

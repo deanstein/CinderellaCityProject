@@ -1172,7 +1172,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
         // put all the thumbnail stacks in a horizontal scroll area
         // and central nav container
-        GameObject mainMenuHorizontalScrollArea = CreateScreenSpaceUIElements.CreateScrollableArea("MainMenuHorizontalScrollArea", "horizontal");
+        GameObject mainMenuHorizontalScrollArea = CreateScreenSpaceUIElements.CreateScrollableArea("MainMenuHorizontalScrollArea", "both");
         GameObject mainMenuCentralNavContainer = CreateScreenSpaceUIElements.CreateCentralNavContainer(parent, topNeighbor);
         CreateScreenSpaceUIElements.ConfigureScrollAreaToMatchChildRect(mainMenuHorizontalScrollArea, mainMenuCentralNavContainer);
 
@@ -1194,6 +1194,9 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // resize the container to align with the last thumbnail in the column
         int thumbnailCount = blueMallThumbnailStack.transform.childCount - 1; // exclude the label
         TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(mainMenuCentralNavContainer, blueMallThumbnailStack.transform.GetChild(thumbnailCount - 1).gameObject, thumbnailStackBottomMarginScreenHeightRatio);
+
+        // resize the content below the scroll area to just past the last sub-element
+        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromNeighborRight(mainMenuCentralNavContainer, cinderAlleyThumbnailStack.transform.GetChild(1).gameObject, UIGlobals.toggleContainerPadding);
 
         // position the time labels to align horizontally with the place thumbnails
         TransformScreenSpaceObject.PositionMultiObjectsAtHorizontalCenterlinesOfNeighbors(timeLabelsForAlignment, placeThumbnailsForAlignment);
