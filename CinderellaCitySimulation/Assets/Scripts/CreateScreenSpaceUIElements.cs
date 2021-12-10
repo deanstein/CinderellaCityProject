@@ -63,6 +63,12 @@ public class UIGlobals
     public static int mainMenuTextButtonLabelSize = 35;
 
     /// spacing, padding, margins ///
+
+    // button sizes (ratio relative to screen size)
+    public static float menuButtonScreenWidthRatio = 0.15f;
+    public static float menuButtonTopBottomPaddingScreenHeightRatio = 0.01f;
+
+    // sets of toggles or buttons
     public static float toggleContainerPadding = 0.01f;
     public static float toggleContainerMaxWidthScreenWidthRatio = 0.1f;
 }
@@ -91,10 +97,6 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
     // the proportion of the text height that the descender is estimated to be
     public static float textDescenderProportion = 0.12f;
-
-    // button sizes (ratio relative to screen size)
-    public static float menuButtonScreenWidthRatio = 0.15f;
-    public static float menuButtonTopBottomPaddingScreenHeightRatio = 0.01f;
 
     /// space/padding/margin ///
 
@@ -524,7 +526,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         return titleContainer;
     }
 
-    public static GameObject CreateToggleGroupModule(GameObject parent, GameObject topAlignmentObject, GameObject leftAlignmentObject, bool useLeftSideOfAlignmentObject, string toggleGroupLabel)
+    public static GameObject CreateToggleGroupModule(GameObject parent, GameObject topAlignmentObject, GameObject leftAlignmentObject, bool useLeftSideOfAlignmentObject, float screenWidthRatio, string toggleGroupLabel)
     {
         // create the toggle group container object
         GameObject toggleGroupContainer = new GameObject("ToggleGroupContainer");
@@ -548,7 +550,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         }
 
         TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(toggleGroupContainer, topAlignmentObject, -centralNavPadding);
-        TransformScreenSpaceObject.ResizeObjectWidthByScreenWidthRatioTowardRight(toggleGroupContainer, 0.2f);
+        TransformScreenSpaceObject.ResizeObjectWidthByScreenWidthRatioTowardRight(toggleGroupContainer, screenWidthRatio);
 
         // add the toggle group label
         GameObject groupLabel = new GameObject("ToggleGroupLabel");
@@ -564,7 +566,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // position and resize the text and container
         TransformScreenSpaceObject.PositionObjectAtCenterofScreen(groupLabel);
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(groupLabel, toggleGroupContainer, menuTitleTopMarginScreenHeightRatio);
-        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(groupLabel, toggleGroupContainer, menuTitleLeftMarginScreenWidthRatio);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(groupLabel, toggleGroupContainer, -UIGlobals.toggleContainerPadding);
 
         // set parent/child hierarchy
         groupLabel.transform.SetParent(toggleGroupContainer.transform);
@@ -984,7 +986,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
         // resize the button background to encapsulate the text, plus padding
         RectTransform buttonRect = buttonContainer.GetComponent<RectTransform>();
-        buttonRect.sizeDelta = new Vector2(Mathf.Round((menuButtonScreenWidthRatio * Screen.width)), Mathf.Round(textSize.y + (2 * (menuButtonTopBottomPaddingScreenHeightRatio * Screen.height))));
+        buttonRect.sizeDelta = new Vector2(Mathf.Round((UIGlobals.menuButtonScreenWidthRatio * Screen.width)), Mathf.Round(textSize.y + (2 * (UIGlobals.menuButtonTopBottomPaddingScreenHeightRatio * Screen.height))));
 
         // set the color of the button
         Image buttonContainerColor = buttonContainer.AddComponent<Image>();
