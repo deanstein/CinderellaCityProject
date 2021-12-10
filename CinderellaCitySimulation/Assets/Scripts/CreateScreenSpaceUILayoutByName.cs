@@ -352,7 +352,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         GameObject objectVisibilityScrollArea = CreateScreenSpaceUIElements.CreateScrollableArea("ObjectVisibility", "vertical");
 
         // create the object visibility toggle group container
-        GameObject objectVisibilityToggleGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu, toggleSetContainer, toggleSetHorizontalScrollArea, true, "OBJECTS");
+        GameObject objectVisibilityToggleGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu, toggleSetContainer, toggleSetHorizontalScrollArea, true, 0.2f /* gets resized later */, "OBJECTS");
 
         // configure scroll area to fit the toggle group
         CreateScreenSpaceUIElements.ConfigureScrollAreaToMatchChildRect(objectVisibilityScrollArea, objectVisibilityToggleGroup);
@@ -411,7 +411,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         GameObject UIVisibilityScrollArea = CreateScreenSpaceUIElements.CreateScrollableArea("UIVisibilitySettings", "vertical");
 
         // create the object visibility toggle group container
-        GameObject UIVisibilityToggleGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu, toggleSetContainer, objectVisibilityToggleGroup, false, "USER INTERFACE");
+        GameObject UIVisibilityToggleGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu, toggleSetContainer, objectVisibilityToggleGroup, false, 0.2f /* gets resized later */, "USER INTERFACE");
 
         // configure scroll area to fit the toggle group
         CreateScreenSpaceUIElements.ConfigureScrollAreaToMatchChildRect(UIVisibilityScrollArea, UIVisibilityToggleGroup);
@@ -435,7 +435,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         GameObject cameraSettingsScrollArea = CreateScreenSpaceUIElements.CreateScrollableArea("CameraSettings", "vertical");
 
         // create the object visibility toggle group container
-        GameObject cameraSettingsToggleGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu, toggleSetContainer, UIVisibilityToggleGroup, false, "CAMERA SETTINGS");
+        GameObject cameraSettingsToggleGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu, toggleSetContainer, UIVisibilityToggleGroup, false, 0.2f /* gets resized later */, "CAMERA SETTINGS");
 
         // configure scroll area to fit the toggle group
         CreateScreenSpaceUIElements.ConfigureScrollAreaToMatchChildRect(cameraSettingsScrollArea, cameraSettingsToggleGroup);
@@ -459,7 +459,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         GameObject cameraActionsScrollArea = CreateScreenSpaceUIElements.CreateScrollableArea("CameraActions", "vertical");
 
         // create the object visibility toggle group container
-        GameObject cameraActionsButtonGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu, toggleSetContainer, cameraSettingsToggleGroup, false, "CAMERA ACTIONS");
+        GameObject cameraActionsButtonGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu, toggleSetContainer, cameraSettingsToggleGroup, false, 0.1f, "CAMERA ACTIONS");
 
         // configure scroll area to fit the toggle group
         CreateScreenSpaceUIElements.ConfigureScrollAreaToMatchChildRect(cameraActionsScrollArea, cameraActionsButtonGroup);
@@ -475,7 +475,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
 
         }); ;
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(takeScreenshotButton, cameraSettingsToggleGroup.transform.GetChild(1).gameObject, 0.0f);
-        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(takeScreenshotButton, cameraActionsButtonGroup, -UIGlobals.toggleContainerPadding);
+        TransformScreenSpaceObject.PositionObjectAtVerticalCenterlineOfNeighbor(takeScreenshotButton, cameraActionsButtonGroup);
         cameraActionButtons.Add(takeScreenshotButton);
 
         // save view button
@@ -486,7 +486,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
 
         }); ;
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(saveViewFromClipboardButton, takeScreenshotButton, UIGlobals.toggleContainerPadding);
-        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(saveViewFromClipboardButton, cameraActionsButtonGroup, -UIGlobals.toggleContainerPadding);
+        TransformScreenSpaceObject.PositionObjectAtVerticalCenterlineOfNeighbor(saveViewFromClipboardButton, takeScreenshotButton);
         cameraActionButtons.Add(saveViewFromClipboardButton);
 
         // restore view button
@@ -497,13 +497,8 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
 
         }); ;
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(restoreViewFromClipboardButton, saveViewFromClipboardButton, UIGlobals.toggleContainerPadding);
-        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(restoreViewFromClipboardButton, cameraActionsButtonGroup, -UIGlobals.toggleContainerPadding);
-
+        TransformScreenSpaceObject.PositionObjectAtVerticalCenterlineOfNeighbor(restoreViewFromClipboardButton, saveViewFromClipboardButton);
         cameraActionButtons.Add(restoreViewFromClipboardButton);
-
-        // resize the button group container to the right side of the buttons
-        // TODO: why is this not working properly?
-        //TransformScreenSpaceObject.ResizeObjectWidthByScreenWidthRatioTowardRight(cameraActionsButtonGroup, 0.1f);
 
         // resize the horizontal scroll area to just past the last sub-element
         TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromNeighborRight(toggleSetContainer, cameraActionsButtonGroup, UIGlobals.toggleContainerPadding);
