@@ -58,23 +58,23 @@ public class UIGlobals
 
     /// sizes ///
 
-    // fonts and text sizes (pixels)
+    // fonts and text sizes
     public static string labelFont = "AvenirNextLTPro-Demi";
     // the proportion of the text height that the descender is estimated to be
     public static float textDescenderProportion = 0.12f;
 
-    public static int HUDTimePeriodLabelSize = 40;
-    public static int versionLabelSize = 15;
+    public static float HUDTimePeriodLabelSize = 0.037f;
+    public static float versionLabelSize = 0.014f;
 
-    public static int menuTitleLabelSize = 30;
-    public static int mainMenuTextButtonLabelSize = 35;
-    public static int placeLabelSize = 50;
-    public static int timeLabelSize = 50;
+    public static float menuTitleLabelSize = 0.028f;
+    public static float mainMenuTextButtonLabelSize = 0.032f;
+    public static float placeLabelSize = 0.046f;
+    public static float timeLabelSize = 0.046f;
 
-    public static int toggleGroupLabelSize = 25;
-    public static int toggleLabelSize = 20;
+    public static float toggleGroupLabelSize = 0.023f;
+    public static float toggleLabelSize = 0.019f;
 
-    public static int visibilitymenuTextButtonlabelSize = 20;
+    public static int visibilityMenuTextButtonlabelSize = 20;
 
     /// spacing, padding, margins ///
 
@@ -141,6 +141,15 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
     public static float versionLabelLeftMarginScreenWidthRatio = 0.008f;
     public static float versionLabelTopMarginScreenHeightRatio = 0.98f;
+
+    // fonts need to scale with the screen resolution
+    // but need to be specified in pixel values
+    public static int ConvertFontHeightRatioToPixelValue(float heightRatio)
+    {
+        float pixelValue = Screen.height * heightRatio;
+
+        return Mathf.RoundToInt(pixelValue);
+    }
 
     // create an empty list of GameObjects that need to be dynamically added to their parent
     // this list will be emptied and populated in UI constructors that make nested sets of objects
@@ -504,7 +513,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         Text introMessageLabelText = titleLabel.AddComponent<Text>();
         introMessageLabelText.font = (Font)Resources.Load(UIGlobals.labelFont);
         introMessageLabelText.text = titleString;
-        introMessageLabelText.fontSize = UIGlobals.menuTitleLabelSize;
+        introMessageLabelText.fontSize = ConvertFontHeightRatioToPixelValue(UIGlobals.menuTitleLabelSize);
         introMessageLabelText.alignment = TextAnchor.UpperLeft;
 
         // resize the text's bounding box to fit the text, before any transforms
@@ -554,7 +563,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         Text introMessageLabelText = groupLabel.AddComponent<Text>();
         introMessageLabelText.font = (Font)Resources.Load(UIGlobals.labelFont);
         introMessageLabelText.text = toggleGroupLabel;
-        introMessageLabelText.fontSize = UIGlobals.toggleGroupLabelSize;
+        introMessageLabelText.fontSize = ConvertFontHeightRatioToPixelValue(UIGlobals.toggleGroupLabelSize);
         introMessageLabelText.alignment = TextAnchor.UpperLeft;
 
         // resize the text's bounding box to fit the text, before any transforms
@@ -594,7 +603,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // so construct a toggle interface explicitly with a background and a checkmark
         GameObject toggleCheckboxBackground = new GameObject("ToggleCheckboxBackground");
         Image toggleObjectBackground = toggleCheckboxBackground.AddComponent<Image>();
-        Vector2 toggleBackgroundSize = new Vector2(UIGlobals.toggleLabelSize, UIGlobals.toggleLabelSize);
+        Vector2 toggleBackgroundSize = new Vector2(ConvertFontHeightRatioToPixelValue(UIGlobals.toggleLabelSize), ConvertFontHeightRatioToPixelValue(UIGlobals.toggleLabelSize));
         toggleObjectBackground.rectTransform.sizeDelta = toggleBackgroundSize;
         toggleObjectBackground.sprite = (Sprite)Resources.Load("UI/checkbox-background", typeof(Sprite));
         GameObject toggleCheckboxCheckmark = new GameObject("ToggleCheckboxCheckmark");
@@ -618,7 +627,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         Text introMessageLabelText = titleLabel.AddComponent<Text>();
         introMessageLabelText.font = (Font)Resources.Load(UIGlobals.labelFont);
         introMessageLabelText.text = toggleLabel;
-        introMessageLabelText.fontSize = UIGlobals.toggleLabelSize;
+        introMessageLabelText.fontSize = ConvertFontHeightRatioToPixelValue(UIGlobals.toggleLabelSize);
         introMessageLabelText.alignment = TextAnchor.UpperLeft;
 
         // resize the text's bounding box to fit the text, before any transforms
@@ -806,7 +815,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         Text timePeriodLabelText = timePeriodLabel.AddComponent<Text>();
         timePeriodLabelText.font = (Font)Resources.Load(UIGlobals.labelFont);
         timePeriodLabelText.text = titleString;
-        timePeriodLabelText.fontSize = UIGlobals.HUDTimePeriodLabelSize;
+        timePeriodLabelText.fontSize = ConvertFontHeightRatioToPixelValue(UIGlobals.HUDTimePeriodLabelSize);
         timePeriodLabelText.alignment = TextAnchor.UpperLeft;
 
         // resize the text's bounding box to fit the text, before any transforms
@@ -848,7 +857,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         Text underConstructionLabelText = underConstructionLabel.AddComponent<Text>();
         underConstructionLabelText.font = (Font)Resources.Load(UIGlobals.labelFont);
         underConstructionLabelText.text = notificationText;
-        underConstructionLabelText.fontSize = UIGlobals.menuTitleLabelSize;
+        underConstructionLabelText.fontSize = ConvertFontHeightRatioToPixelValue(UIGlobals.menuTitleLabelSize);
         underConstructionLabelText.alignment = TextAnchor.UpperLeft;
 
         // resize the text's bounding box to fit the text
@@ -889,7 +898,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         Text underConstructionLabelText = underConstructionLabel.AddComponent<Text>();
         underConstructionLabelText.font = (Font)Resources.Load(UIGlobals.labelFont);
         underConstructionLabelText.text = message;
-        underConstructionLabelText.fontSize = UIGlobals.menuTitleLabelSize;
+        underConstructionLabelText.fontSize = ConvertFontHeightRatioToPixelValue(UIGlobals.menuTitleLabelSize);
         underConstructionLabelText.alignment = TextAnchor.UpperLeft;
 
         // resize the text's bounding box to fit the text
@@ -925,7 +934,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         versionLabelText.color = UIGlobals.subtleTextColor;
         versionLabelText.font = (Font)Resources.Load(UIGlobals.labelFont);
         versionLabelText.text = version;
-        versionLabelText.fontSize = UIGlobals.versionLabelSize;
+        versionLabelText.fontSize = ConvertFontHeightRatioToPixelValue(UIGlobals.versionLabelSize);
         versionLabelText.alignment = TextAnchor.UpperLeft;
 
         // resize the text's bounding box to fit the text
@@ -1016,7 +1025,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
             Text timePeriodLabelText = timePeriodLabel.AddComponent<Text>();
             timePeriodLabelText.font = (Font)Resources.Load(UIGlobals.labelFont);
             timePeriodLabelText.text = timePeriod;
-            timePeriodLabelText.fontSize = UIGlobals.timeLabelSize;
+            timePeriodLabelText.fontSize = ConvertFontHeightRatioToPixelValue(UIGlobals.timeLabelSize);
             timePeriodLabelText.alignment = TextAnchor.MiddleCenter;
 
             // get the text's dimensions to match only the space it needs, before any transforms
@@ -1067,7 +1076,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         Text placeLabelText = placeLabel.AddComponent<Text>();
         placeLabelText.font = (Font)Resources.Load(UIGlobals.labelFont);
         placeLabelText.text = placeName;
-        placeLabelText.fontSize = UIGlobals.placeLabelSize;
+        placeLabelText.fontSize = ConvertFontHeightRatioToPixelValue(UIGlobals.placeLabelSize);
         placeLabelText.alignment = TextAnchor.MiddleCenter;
 
         // adjust the text's rectTransform to ensure objects aligning to it fit closely
@@ -1238,7 +1247,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         GameObject buttonAlignmentObject = timeTravelThumbnailStack.transform.GetChild(0).gameObject;
 
         // create the resume button
-        GameObject resumeButton = CreateTextButton("Resume", pauseMenuCentralNavContainer, UIGlobals.mainMenuTextButtonLabelSize, UIGlobals.buttonColor);
+        GameObject resumeButton = CreateTextButton("Resume", pauseMenuCentralNavContainer, ConvertFontHeightRatioToPixelValue(UIGlobals.mainMenuTextButtonLabelSize), UIGlobals.buttonColor);
         resumeButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
             ManageFPSControllers.FPSControllerGlobals.isTimeTraveling = false;
@@ -1250,7 +1259,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(resumeButton, buttonAlignmentObject, textButtonLeftMarginScreenWidthRatio);
 
         // create the main menu button
-        GameObject mainMenuButton = CreateTextButton("Main Menu", pauseMenuCentralNavContainer, UIGlobals.mainMenuTextButtonLabelSize, UIGlobals.buttonColor);
+        GameObject mainMenuButton = CreateTextButton("Main Menu", pauseMenuCentralNavContainer, ConvertFontHeightRatioToPixelValue(UIGlobals.mainMenuTextButtonLabelSize), UIGlobals.buttonColor);
         mainMenuButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
             ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "MainMenu");
@@ -1260,7 +1269,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(mainMenuButton, buttonAlignmentObject, textButtonLeftMarginScreenWidthRatio);
 
         // exit button
-        GameObject exitButton = CreateTextButton("Quit", pauseMenuCentralNavContainer, UIGlobals.mainMenuTextButtonLabelSize, UIGlobals.buttonColor);
+        GameObject exitButton = CreateTextButton("Quit", pauseMenuCentralNavContainer, ConvertFontHeightRatioToPixelValue(UIGlobals.mainMenuTextButtonLabelSize), UIGlobals.buttonColor);
         exitButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
             Application.Quit();

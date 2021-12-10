@@ -468,7 +468,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         List<GameObject> cameraActionButtons = new List<GameObject>();
 
         // take screenshot button
-        GameObject takeScreenshotButton = CreateScreenSpaceUIElements.CreateTextButton("Take Screenshot", cameraActionsButtonGroup, UIGlobals.visibilitymenuTextButtonlabelSize, UIGlobals.containerColor);
+        GameObject takeScreenshotButton = CreateScreenSpaceUIElements.CreateTextButton("Take Screenshot", cameraActionsButtonGroup, CreateScreenSpaceUIElements.ConvertFontHeightRatioToPixelValue(UIGlobals.visibilityMenuTextButtonlabelSize), UIGlobals.containerColor);
         takeScreenshotButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
             CreateScreenSpaceUIElements.CaptureScreenshotButtonAction();
@@ -479,7 +479,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         cameraActionButtons.Add(takeScreenshotButton);
 
         // save view button
-        GameObject saveViewFromClipboardButton = CreateScreenSpaceUIElements.CreateTextButton("Save View", cameraActionsButtonGroup, UIGlobals.visibilitymenuTextButtonlabelSize, UIGlobals.containerColor);
+        GameObject saveViewFromClipboardButton = CreateScreenSpaceUIElements.CreateTextButton("Save View", cameraActionsButtonGroup, CreateScreenSpaceUIElements.ConvertFontHeightRatioToPixelValue(UIGlobals.visibilityMenuTextButtonlabelSize), UIGlobals.containerColor);
         saveViewFromClipboardButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
             CreateScreenSpaceUIElements.SaveViewButtonAction();
@@ -490,7 +490,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         cameraActionButtons.Add(saveViewFromClipboardButton);
 
         // restore view button
-        GameObject restoreViewFromClipboardButton = CreateScreenSpaceUIElements.CreateTextButton("Restore View", cameraActionsButtonGroup, UIGlobals.visibilitymenuTextButtonlabelSize, UIGlobals.containerColor);
+        GameObject restoreViewFromClipboardButton = CreateScreenSpaceUIElements.CreateTextButton("Restore View", cameraActionsButtonGroup, CreateScreenSpaceUIElements.ConvertFontHeightRatioToPixelValue(UIGlobals.visibilityMenuTextButtonlabelSize), UIGlobals.containerColor);
         restoreViewFromClipboardButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
             CreateScreenSpaceUIElements.RestoreViewButtonAction();
