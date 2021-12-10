@@ -287,7 +287,7 @@ public static class TransformScreenSpaceObject
         RectTransform rectTransform = textToMeasure.GetComponent<RectTransform>();
 
         float textHeight = rectTransform.rect.height;
-        float textDescenderHeight = textHeight * CreateScreenSpaceUIElements.textDescenderProportion;
+        float textDescenderHeight = textHeight * UIGlobals.textDescenderProportion;
 
         return textDescenderHeight;
     }
