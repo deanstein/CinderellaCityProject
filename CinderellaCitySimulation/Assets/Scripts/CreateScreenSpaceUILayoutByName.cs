@@ -501,7 +501,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         cameraActionButtons.Add(restoreViewFromClipboardButton);
 
         // resize the content within the scroll area to just past the last sub-element
-        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromNeighborRight(toggleSetContainer, cameraActionsButtonGroup, UIGlobals.toggleContainerPadding);
+        TransformScreenSpaceObject.ResizeParentContainerToFitLastChild(toggleSetContainer, cameraActionsButtonGroup, UIGlobals.toggleContainerPadding, "right");
 
         // set parent/child hierarchy
         toggleSetHorizontalScrollArea.transform.SetParent(visibilityMenu.transform);

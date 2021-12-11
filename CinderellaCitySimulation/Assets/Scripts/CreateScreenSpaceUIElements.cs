@@ -74,7 +74,7 @@ public class UIGlobals
     public static float toggleGroupLabelSize = 0.023f;
     public static float toggleLabelSize = 0.019f;
 
-    public static int visibilityMenuTextButtonlabelSize = 20;
+    public static float visibilityMenuTextButtonlabelSize = 0.019f;
 
     /// spacing, padding, margins ///
 
@@ -665,16 +665,8 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
     public static GameObject PopulateToggleGroup(GameObject toggleGroup, List<GameObject> togglesToDisplay)
     {
-        float lastToggleBottomEdge = TransformScreenSpaceObject.GetObjectBottomEdgePositionY(togglesToDisplay[togglesToDisplay.Count - 1]);
-        float toggleGroupBottomEdge = TransformScreenSpaceObject.GetObjectBottomEdgePositionY(toggleGroup);
-
-        // if there are enough toggles to cause the last toggle to require scrolling,
-        // resize the toggle group container to fit the toggles
-        if (lastToggleBottomEdge < toggleGroupBottomEdge)
-        {
-            // resize the group bottom edge to encompass the toggles
-            TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(toggleGroup, togglesToDisplay[togglesToDisplay.Count - 1], toggleBottomMarginScreenHeightRatio);
-        }
+        // resize the toggle group to fit the last toggle, if applicable
+        TransformScreenSpaceObject.ResizeParentContainerToFitLastChild(toggleGroup, togglesToDisplay[togglesToDisplay.Count - 1], toggleBottomMarginScreenHeightRatio, "down");
 
         // resize the group right edge to hug the typical toggle width
         TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromNeighborRight(toggleGroup, togglesToDisplay[0], UIGlobals.toggleContainerPadding);
@@ -1202,7 +1194,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(mainMenuCentralNavContainer, blueMallThumbnailStack.transform.GetChild(thumbnailCount - 1).gameObject, thumbnailStackBottomMarginScreenHeightRatio);
 
         // resize the content within the scroll area to just past the last sub-element
-        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromNeighborRight(mainMenuCentralNavContainer, cinderAlleyThumbnailStack.transform.GetChild(1).gameObject, UIGlobals.toggleContainerPadding);
+        TransformScreenSpaceObject.ResizeParentContainerToFitLastChild(mainMenuCentralNavContainer, cinderAlleyThumbnailStack.transform.GetChild(1).gameObject, UIGlobals.toggleContainerPadding, "right");
 
         // position the time labels to align horizontally with the place thumbnails
         TransformScreenSpaceObject.PositionMultiObjectsAtHorizontalCenterlinesOfNeighbors(timeLabelsForAlignment, placeThumbnailsForAlignment);
