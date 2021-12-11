@@ -63,6 +63,68 @@ public static class TransformScreenSpaceObject
         return objectRightEdgePositionX;
     }
 
+    // for cases where the contents of a scroll area may need to be resized
+    // to encapsulate the last child, resizing when not necessary causes issues
+    // so set a flag to determine whether resizing needs to happen or not
+    public static bool GetIsChildObjectBeyondParentBoundary(GameObject parentObject, GameObject childObject, string testDirection)
+    {
+        switch (testDirection)
+        {
+            case string dir when dir.Contains("down"):
+
+                float parentBottomEdgeYPos = GetObjectBottomEdgePositionY(parentObject);
+                float childBottomEdgeYPos = GetObjectBottomEdgePositionY(childObject);
+
+                if (childBottomEdgeYPos < parentBottomEdgeYPos)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            case string dir when dir.Contains("right"):
+
+                float parentRightEdgeXPos = GetObjectRightEdgePositionX(parentObject);
+                float childRightEdgeXPos = GetObjectRightEdgePositionX(childObject);
+
+                if (childRightEdgeXPos > parentRightEdgeXPos)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            default:
+                return false;
+        }
+    }
+
+    // for scrolling elements like toggle containers and menu nav containers,
+    // resize the container if the child is beyond the container's bounds
+    // so the scroll area scrolls as expected
+    public static void ResizeParentContainerToFitLastChild(GameObject parent, GameObject child, float marginRatio, string direction)
+    {
+        // determine if resizing is necessary
+        bool needsResized = GetIsChildObjectBeyondParentBoundary(parent, child, direction);
+
+        if (needsResized)
+        {
+            switch (direction)
+            {
+                case string dir when dir.Contains("down"):
+                    ResizeObjectHeightByBufferRatioFromNeighborBottom(parent, child, marginRatio);
+                    return;
+                case string dir when dir.Contains("right"):
+                    ResizeObjectWidthByBufferRatioFromNeighborRight(parent, child, marginRatio);
+                    return;
+            }
+        }
+    }
+
     public static void PositionObjectByHeightRatioFromScreenTop(GameObject screenSpaceObject, float bufferProportion)
     {
         RectTransform rectTransform = screenSpaceObject.GetComponent<RectTransform>();
