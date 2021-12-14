@@ -206,6 +206,9 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         // time & place picker and container
         GameObject mainMenuCentralNav = CreateScreenSpaceUIElements.CreateMainMenuCentralNav(mainMenu, titleBarContainer);
 
+        // bottom menu bar
+        GameObject bottomMenubar = CreateScreenSpaceUIElements.CreateBottomMenuBar(mainMenu);
+
         // create the game version indicator
         GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(mainMenu);
 

@@ -71,12 +71,22 @@ public class UIGlobals
     public static float placeLabelSize = 0.03f;
     public static float timeLabelSize = 0.035f;
 
+    public static float HUDBottomBarTopMarginScreenHeightRatio = 0.9f;
+    public static float HUDTimePeriodLabelLeftMarginScreenWidthRatio = 0.85f;
+    public static float HUDBottomBarBottomMarginScreenHeightRatio = 0.03f;
+
+    public static float bottomMenuBarHeightRatio = 0.07f;
+    public static float bottomMenuBarMarginWidthRatio = 0.03f;
+    public static float bottomMenuBarLeftRightMarginWidthRatio = (1 - HUDTimePeriodLabelLeftMarginScreenWidthRatio) +  bottomMenuBarMarginWidthRatio;
+
     public static float toggleGroupLabelSize = 0.023f;
     public static float toggleLabelSize = 0.019f;
 
     public static float visibilityMenuTextButtonlabelSize = 0.019f;
 
-    /// spacing, padding, margins ///
+    public static float navContainerTopMarginScreenHeightRatio = 0.01f;
+    public static float navContainerLeftMarginScreenWidthRatio = 0.1f;
+    public static float navContainerBottomMarginScreenHeightRatio = bottomMenuBarHeightRatio + navContainerTopMarginScreenHeightRatio + HUDBottomBarBottomMarginScreenHeightRatio;
 
     // button sizes (ratio relative to screen size)
     public static float menuButtonScreenWidthRatio = 0.15f;
@@ -125,19 +135,10 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     public static float timePlaceThumbnailHeightScreenHeightRatio = 0.2f;
     public static float timePlaceThumbnailBottomMarginScreenHeightRatio = 0.01f;
 
-    public static float navContainerTopMarginScreenHeightRatio = 0.01f;
-    public static float navContainerLeftMarginScreenWidthRatio = 0.1f;
-    public static float navContainerBottomMarginScreenHeightRatio = 0.07f;
-
     public static float thumbnailStackBottomMarginScreenHeightRatio = 0.02f;
 
     public static float textButtonBottomMarginScreenHeightRatio = 0.015f;
     public static float textButtonLeftMarginScreenWidthRatio = 0.01f;
-
-    public static float HUDBottomBarTopMarginScreenHeightRatio = 0.9f;
-    public static float HUDBottonBarHeightScreenHeightRatio = 0.08f;
-    public static float HUDTimePeriodLabelLeftMarginScreenWidthRatio = 0.85f;
-    public static float HUDBottomBarBottomMarginScreenHeightRatio = 0.03f;
 
     public static float versionLabelLeftMarginScreenWidthRatio = 0.008f;
     public static float versionLabelTopMarginScreenHeightRatio = 0.98f;
@@ -506,7 +507,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
         // resize the title container
         TransformScreenSpaceObject.ResizeObjectWidthToMatchScreen(titleContainer);
-        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromScreenLeft(titleContainer, navContainerLeftMarginScreenWidthRatio);
+        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromScreenLeft(titleContainer, UIGlobals.navContainerLeftMarginScreenWidthRatio);
 
         // add the title text
         GameObject titleLabel = new GameObject("TitleLabel");
@@ -530,6 +531,52 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         titleLabel.transform.SetParent(titleContainer.transform);
 
         return titleContainer;
+    }
+
+    public static GameObject CreateBottomMenuBar(GameObject parent)
+    {
+        // create the menu bar object
+        GameObject menuBarContainer = new GameObject("MenuBarContainer");
+        menuBarContainer.AddComponent<CanvasRenderer>();
+        Image logoContainerColor = menuBarContainer.AddComponent<Image>();
+        logoContainerColor.color = UIGlobals.containerColor;
+
+        // position the menu bar
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromScreenTop(menuBarContainer, 1 - (UIGlobals.bottomMenuBarHeightRatio + UIGlobals.HUDBottomBarBottomMarginScreenHeightRatio));
+
+        // resize the menu bar
+        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromScreenBottom(menuBarContainer, UIGlobals.HUDBottomBarBottomMarginScreenHeightRatio);
+        TransformScreenSpaceObject.ResizeObjectWidthToMatchScreen(menuBarContainer);
+        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromScreenLeft(menuBarContainer, UIGlobals.navContainerLeftMarginScreenWidthRatio);
+   
+        // set parent/child hierarchy
+        menuBarContainer.transform.SetParent(parent.transform);
+
+        return menuBarContainer;
+    }
+
+    // similar to the above menu bar, but for in-game play (HUD)
+    public static GameObject CreateBottomMenuBarHUD(GameObject parent)
+    {
+        // create the menu bar object
+        GameObject menuBarContainer = new GameObject("MenuBarContainer");
+        menuBarContainer.AddComponent<CanvasRenderer>();
+        Image logoContainerColor = menuBarContainer.AddComponent<Image>();
+        logoContainerColor.color = UIGlobals.containerColor;
+
+        // position the menu bar
+        TransformScreenSpaceObject.PositionObjectAtCenterofScreen(menuBarContainer);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromScreenTop(menuBarContainer, 1 - UIGlobals.bottomMenuBarHeightRatio);
+
+        // resize the menu bar
+        TransformScreenSpaceObject.ResizeObjectWidthToMatchScreen(menuBarContainer);
+        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromScreenLeft(menuBarContainer, UIGlobals.bottomMenuBarLeftRightMarginWidthRatio);
+        TransformScreenSpaceObject.ResizeObjectWidthFromCenter(menuBarContainer, UIGlobals.bottomMenuBarLeftRightMarginWidthRatio);
+
+        // set parent/child hierarchy
+        menuBarContainer.transform.SetParent(parent.transform);
+
+        return menuBarContainer;
     }
 
     public static GameObject CreateToggleGroupModule(GameObject parent, GameObject topAlignmentObject, GameObject leftAlignmentObject, bool useLeftSideOfAlignmentObject, float screenWidthRatio, string toggleGroupLabel)
@@ -796,11 +843,11 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         timePeriodContainerColor.color = UIGlobals.containerColor;
 
         // position the title container
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromScreenTop(timePeriodContainer, HUDBottomBarTopMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromScreenTop(timePeriodContainer, UIGlobals.HUDBottomBarTopMarginScreenHeightRatio);
 
         // resize the title container
         TransformScreenSpaceObject.ResizeObjectWidthToMatchScreen(timePeriodContainer);
-        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromScreenLeft(timePeriodContainer, HUDTimePeriodLabelLeftMarginScreenWidthRatio);
+        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromScreenLeft(timePeriodContainer, UIGlobals.HUDTimePeriodLabelLeftMarginScreenWidthRatio);
 
         // add the title text
         GameObject timePeriodLabel = new GameObject("TimePeriodLabel");
@@ -815,9 +862,9 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
         // position and resize the text and container
         TransformScreenSpaceObject.PositionObjectAtCenterofScreen(timePeriodLabel);
-        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromScreenBottom(timePeriodContainer, HUDBottomBarBottomMarginScreenHeightRatio);
+        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromScreenBottom(timePeriodContainer, UIGlobals.HUDBottomBarBottomMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(timePeriodLabel, timePeriodContainer, menuTitleLeftMarginScreenWidthRatio);
-        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromScreenBottom(timePeriodContainer, HUDBottomBarBottomMarginScreenHeightRatio);
+        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromScreenBottom(timePeriodContainer, UIGlobals.HUDBottomBarBottomMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionTextAtHorizontalCenterlineOfNeighbor(timePeriodLabel, timePeriodContainer);
 
         // set parent/child hierarchy
@@ -955,12 +1002,12 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         centralNavContainerColor.color = UIGlobals.containerColor;
 
         // position the central nav container
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(centralNavContainer, topAlignmentObject, navContainerTopMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(centralNavContainer, topAlignmentObject, UIGlobals.navContainerTopMarginScreenHeightRatio);
 
         // resize the central nav container
         TransformScreenSpaceObject.ResizeObjectWidthToMatchScreen(centralNavContainer);
-        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromScreenLeft(centralNavContainer, navContainerLeftMarginScreenWidthRatio);
-        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromScreenBottom(centralNavContainer, navContainerBottomMarginScreenHeightRatio);
+        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromScreenLeft(centralNavContainer, UIGlobals.navContainerLeftMarginScreenWidthRatio);
+        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromScreenBottom(centralNavContainer, UIGlobals.navContainerBottomMarginScreenHeightRatio);
 
         return centralNavContainer;
     }
