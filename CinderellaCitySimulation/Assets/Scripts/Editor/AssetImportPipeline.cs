@@ -195,8 +195,6 @@ public class AssetImportUpdate : AssetPostprocessor {
             //Utils.DebugUtils.DebugLog("Game object from asset not valid (yet): " + assetFilePath);
             AssetDatabase.Refresh();
             gameObjectFromAsset = (GameObject)AssetDatabase.LoadAssetAtPath(importedAssetFilePath, typeof(GameObject));
-
-            return;
         }
 
         // skip instantiating if this asset already exists in this scene
@@ -213,18 +211,8 @@ public class AssetImportUpdate : AssetPostprocessor {
                 // delete the object in the hierarchy to force a full refresh
                 if (AssetImportGlobals.ModelImportParamsByName.doInstantiateProxyReplacements)
                 {
-                    // commenting out for now - this is causing more problems than it's worth
-                    // need to manually delete, hoist the scene, and reimport if required
-                    /*
-                    // ensure the scene is hoisted down, if required
-                    HoistSceneObjectsEditor.HoistSceneContainersDown(ManageEditorScenes.GetOpenTimePeriodSceneContainersRequiringHoist());
-
                     Utils.DebugUtils.DebugLog("This object was already present in the model, but was flagged to replace proxy objects, so it's been deleted for a complete refresh.");
                     GameObject.DestroyImmediate(sceneObject);
-                    */
-
-                    // temporarily return until I figure out what to do about the above code
-                    return;
                 }
                 // non-proxy objects don't need to be deleted from the hierarchy
                 else
@@ -234,9 +222,6 @@ public class AssetImportUpdate : AssetPostprocessor {
                 }
             }
         }
-
-        // ensure the scene is hoisted down, if required
-        //HoistSceneObjectsEditor.HoistSceneContainersDown(ManageEditorScenes.GetOpenTimePeriodSceneContainersRequiringHoist());
 
         // otherwise, instantiate as a prefab with the name of the file
         newlyInstantiatedFBXContainer = PrefabUtility.InstantiatePrefab(gameObjectFromAsset, scene) as GameObject;
@@ -1337,7 +1322,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             }
 
             // camera thumbnail objects - these are used to generate thumbnails
-            else if (child.name.Contains("Camera-Thumbnail"))
+            else if (child.name.Contains(ManageCameraActions.CameraActionGlobals.thumbnailCameraKeyword))
             {
                 // get the current scene
                 Scene currentScene = EditorSceneManager.GetActiveScene();
@@ -1351,7 +1336,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
                 // create a new object to host the camera
                 // include the name of the current scene (assumes reimporting into the correct scene)
-                GameObject cameraObject = new GameObject(cameraName + "-" + currentScene.name);
+                GameObject cameraObject = new GameObject(cameraName);
 
                 // create a camera
                 var camera = cameraObject.AddComponent<Camera>();
@@ -1362,22 +1347,26 @@ public class AssetImportUpdate : AssetPostprocessor {
                 camera.useOcclusionCulling = false;
 
                 // make the camera a sibling of the original camera geometry
+                cameraObject.transform.SetPositionAndRotation(child.transform.position, child.transform.rotation);
                 cameraObject.transform.parent = child.transform.parent;
                 // match the position and rotation
-                cameraObject.transform.SetPositionAndRotation(child.transform.localPosition, child.transform.localRotation);
 
                 // tag this camera object as a delete candidate for the next import
                 cameraObject.tag = proxyReplacementDeleteTag;
 
-                // make the camera looks at the plane
+                // make the camera look at the plane
                 // this assumes the only child of the camera is a plane (a FormIt Group with LCS at the center of the plane)
-                cameraObject.transform.LookAt(child.GetChild(0).transform.position);
+                cameraObject.transform.LookAt(child.GetChild(1).transform.position);
 
                 // copy the PostProcessing effects from the Main Camera
-                PostProcessVolume existingVolume = Camera.main.GetComponent<PostProcessVolume>();
-                PostProcessLayer existingLayer = Camera.main.GetComponent<PostProcessLayer>();
-                CopyComponent<PostProcessVolume>(existingVolume, cameraObject);
-                CopyComponent<PostProcessLayer>(existingLayer, cameraObject);
+                // this only applies to "real" FPS scenes, not the main menu, so exclude main menu
+                if (SceneManager.GetActiveScene().name != "MainMenu")
+                {
+                    PostProcessVolume existingVolume = Camera.main.GetComponent<PostProcessVolume>();
+                    PostProcessLayer existingLayer = Camera.main.GetComponent<PostProcessLayer>();
+                    CopyComponent<PostProcessVolume>(existingVolume, cameraObject);
+                    CopyComponent<PostProcessLayer>(existingLayer, cameraObject);
+                }
 
                 // disable the camera to prevent performance issues
                 camera.enabled = false;
