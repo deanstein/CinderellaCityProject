@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Rendering.PostProcessing;
+using System.Collections.Generic;
 using System.IO;
 
 /// <summary>
@@ -21,9 +22,6 @@ public class ManageCameraActions : MonoBehaviour
         // all cameras used for guided tour waypoints
         public static GameObject[] allPointOfInterestCameras;
 
-        // number of seconds to wait for a thumbnail camera to be captured
-        public static int thumbnailCameraCaptureDelay = 1;
-
         // record the highest known camera effect priority
         public static float highestKnownCameraEffectPriority = 0;
 
@@ -32,6 +30,16 @@ public class ManageCameraActions : MonoBehaviour
 
         // gets the currently-active camera effect
         public static string activeCameraEffect;
+
+        //
+        // thumbnail cameras - geometry-based camera objects from FormIt
+        //
+
+        public static string proxyCamerasObjectName = "proxy-cameras";
+        public static string thumbnailCameraKeyword = "Camera-Thumbnail-";
+
+        // number of seconds to wait for a thumbnail camera to be captured
+        public static int thumbnailCameraCaptureDelay = 1;
 
         //
         // define paths and file names
@@ -105,6 +113,8 @@ public class ManageCameraActions : MonoBehaviour
     }
 
     // get all the thumbnail cameras in this scene
+    // these were previously created from geometry-based cameras and tagged appropriately
+    // so find them by tag
     public static GameObject[] GetAllThumbnailCamerasInScene()
     {
         GameObject[] allThumbnailCameras = GameObject.FindGameObjectsWithTag(ManageTaggedObjects.TaggedObjectGlobals.deleteProxyReplacementTagPrefix + "Cameras");
@@ -153,18 +163,18 @@ public class ManageCameraActions : MonoBehaviour
     }
 
     public static void ToggleCurrentCameraOcclusionCullingState()
-        {
-            Camera currentCamera = CameraActionGlobals.activeCameraHost.GetComponent<Camera>();
+    {
+        Camera currentCamera = CameraActionGlobals.activeCameraHost.GetComponent<Camera>();
 
-            if (currentCamera.useOcclusionCulling)
-            {
-                currentCamera.useOcclusionCulling = false;
-            }
-            else
-            {
-                currentCamera.useOcclusionCulling = true;
-            }
+        if (currentCamera.useOcclusionCulling)
+        {
+            currentCamera.useOcclusionCulling = false;
         }
+        else
+        {
+            currentCamera.useOcclusionCulling = true;
+        }
+    }
 
     // copies all scene screenshots from the computer back to resources, replacing the previous
     public static void ReplaceSceneThumbnailsInResources()
@@ -177,8 +187,8 @@ public class ManageCameraActions : MonoBehaviour
         foreach (GameObject thumbnailCamera in thumbnailCameras)
         {
             // determine the temporary and final (resources) file path based on this camera's name
-            string temporaryFilePath = CameraActionGlobals.inGameScreenshotsPath + thumbnailCamera.name + CameraActionGlobals.screenshotFormat;
-            string resourcesFilePath = UIGlobals.projectUIPath + thumbnailCamera.name + CameraActionGlobals.screenshotFormat;
+            string temporaryFilePath = CameraActionGlobals.inGameScreenshotsPath + thumbnailCamera.name + "-" + SceneManager.GetActiveScene().name + CameraActionGlobals.screenshotFormat;
+            string resourcesFilePath = UIGlobals.projectUIPath + thumbnailCamera.name + "-" + SceneManager.GetActiveScene().name + CameraActionGlobals.screenshotFormat;
 
             Utils.DebugUtils.DebugLog("<b>Replacing</b> " + temporaryFilePath + " <b>with</b> " + resourcesFilePath);
 

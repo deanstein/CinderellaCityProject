@@ -1040,7 +1040,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     }
 
     // create the stacked thumbnails for a place, across time periods
-    public static GameObject CreatePlaceTimeThumbnailStack(GameObject parent, GameObject topAlignmentObject, GameObject leftAlignmentObject, string placeName, string[] timePeriodNames)
+    public static GameObject CreatePlaceTimeThumbnailStack(GameObject parent, GameObject topAlignmentObject, GameObject leftAlignmentObject, string placeName, string partialScreenshotName, string[] timePeriodNames)
     {
         // clear the list of thumbnail objects from the previous stack created
         // this list will be used to set parents and as alignment guides for other objects
@@ -1088,11 +1088,10 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
             // create the button
             GameObject timePeriodButton = new GameObject(combinedPlaceTimeNameSpacelessDashed + "-Button");
-            timePeriodButton.AddComponent<Image>();
+            Image timePeriodButtonImage = timePeriodButton.AddComponent<Image>();
 
             // set the image
-            // note this requires a valid image in the Resources folder path below, with a file name that matches combinedPlaceTimeNameSpaceless
-            Image timePeriodButtonImage = timePeriodButton.GetComponent<Image>();
+            // note this requires a valid image in the Resources folder path below, with a provided name that matches the screenshot name
 
             // need to set the sprite differently depending on whether this is a time travel thumbnail, or standard time/place thumbnail
 
@@ -1112,7 +1111,8 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
             // otherwise, standard time periods look for their sprite in the file system
             else
             {
-                timePeriodButtonImage.sprite = (Sprite)Resources.Load("UI/Camera-Thumbnail-" + combinedPlaceTimeNameSpacelessDashed, typeof(Sprite));
+                string finalScreenshotName = partialScreenshotName + "-" + SceneGlobals.availableTimePeriodSceneNamesList[i];
+                timePeriodButtonImage.sprite = (Sprite)Resources.Load("UI/" + finalScreenshotName, typeof(Sprite));
             }
 
             timePeriodButtonImage.preserveAspect = true;
@@ -1180,21 +1180,77 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // use the first time label for aligning other objects horizontally
         GameObject timeLabelForAlignment = timeLabelStack.transform.GetChild(0).gameObject;
 
-        // create each place thumbnail stack, and their associated place labels
-        GameObject blueMallThumbnailStack = CreatePlaceTimeThumbnailStack(mainMenuCentralNavContainer, mainMenuCentralNavContainer, timeLabelForAlignment, "Blue Mall", SceneGlobals.availableTimePeriodFriendlyNames);
+        // the Main Menu needs to have the proxy-cameras.fbx in the scene
+        // so we can get all camera objects and make thumbnails from them
+        GameObject[] thumbnailCameraObjects = ManageCameraActions.GetAllThumbnailCamerasInScene();
 
-        GameObject roseMallThumbnailStack = CreatePlaceTimeThumbnailStack(mainMenuCentralNavContainer, mainMenuCentralNavContainer, blueMallThumbnailStack.transform.GetChild(0).gameObject, "Rose Mall", SceneGlobals.availableTimePeriodFriendlyNames);
+        // certain thumbnails should be drawn before others, so set up lists to distinguish
+        List<string> highlightPlaceNames = new List<string>();
+        List<string> highlightPlaceScreenshotNames = new List<string>();
 
-        GameObject goldMallThumbnailStack = CreatePlaceTimeThumbnailStack(mainMenuCentralNavContainer, mainMenuCentralNavContainer, roseMallThumbnailStack.transform.GetChild(0).gameObject, "Gold Mall", SceneGlobals.availableTimePeriodFriendlyNames);
+        List<string> remainingPlaceNames = new List<string>();
+        List<string> remainingPlaceScreenshotNames = new List<string>();
 
-        GameObject cinderAlleyThumbnailStack = CreatePlaceTimeThumbnailStack(mainMenuCentralNavContainer, mainMenuCentralNavContainer, goldMallThumbnailStack.transform.GetChild(0).gameObject, "Cinder Alley", SceneGlobals.availableTimePeriodFriendlyNames);
+        // for each thumbnail camera object, create the place/time thumbnail stack
+        foreach (GameObject cameraObject in thumbnailCameraObjects)
+        {
+            string objectName = cameraObject.name;
+            string screenshotName = objectName;
+            string[] objectNameSplitArray = objectName.Split(char.Parse("-"));
+            string placeName = objectNameSplitArray[2];
+
+            // "highlight" thumbnails (for main parts of the mall) should be drawn first
+            bool isHighlightPlace = false;
+
+            if (objectNameSplitArray.Length >= 4)
+            {
+                isHighlightPlace = objectNameSplitArray[3].Contains("Highlight");
+            }   
+
+            if (isHighlightPlace)
+            {
+                highlightPlaceNames.Add(placeName);
+                highlightPlaceScreenshotNames.Add(screenshotName);
+            }
+            else
+            {
+                remainingPlaceNames.Add(placeName);
+                remainingPlaceScreenshotNames.Add(screenshotName);
+            }
+        }
+
+        // keep track of the last-built thumbnail stack, 
+        // so the next uses it as the left alignment object
+        GameObject lastBuiltThumbnailStack = null;
+
+        // dynamically create the highlight thumbnails
+        for (var i = 0; i < highlightPlaceNames.Count; i++)
+        {
+            // the left alignment object is different for the first item
+            GameObject leftAlignmentObject = null;
+            if (i == 0)
+            {
+                leftAlignmentObject = timeLabelForAlignment;
+            }
+            else
+            {
+                leftAlignmentObject = lastBuiltThumbnailStack.transform.GetChild(0).gameObject;
+            }
+
+            lastBuiltThumbnailStack = CreatePlaceTimeThumbnailStack(mainMenuCentralNavContainer, mainMenuCentralNavContainer, leftAlignmentObject, highlightPlaceNames[i], highlightPlaceScreenshotNames[i], SceneGlobals.availableTimePeriodFriendlyNames);
+        }
+
+        // dynamically create the remaining thumbnails
+        for (var i = 0; i < remainingPlaceNames.Count; i++)
+        {
+            lastBuiltThumbnailStack = CreatePlaceTimeThumbnailStack(mainMenuCentralNavContainer, mainMenuCentralNavContainer, lastBuiltThumbnailStack.transform.GetChild(0).gameObject, remainingPlaceNames[i], remainingPlaceScreenshotNames[i], SceneGlobals.availableTimePeriodFriendlyNames);
+        }
 
         // resize the container to align with the last thumbnail in the column
-        int thumbnailCount = blueMallThumbnailStack.transform.childCount - 1; // exclude the label
-        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(mainMenuCentralNavContainer, blueMallThumbnailStack.transform.GetChild(thumbnailCount - 1).gameObject, thumbnailStackBottomMarginScreenHeightRatio);
+        TransformScreenSpaceObject.ResizeParentContainerToFitLastChild(mainMenuCentralNavContainer, lastBuiltThumbnailStack.transform.GetChild(lastBuiltThumbnailStack.transform.childCount - 2 /* excludes the label */).gameObject, thumbnailStackBottomMarginScreenHeightRatio, "down");
 
         // resize the content within the scroll area to just past the last sub-element
-        TransformScreenSpaceObject.ResizeParentContainerToFitLastChild(mainMenuCentralNavContainer, cinderAlleyThumbnailStack.transform.GetChild(1).gameObject, UIGlobals.toggleContainerPadding, "right");
+        TransformScreenSpaceObject.ResizeParentContainerToFitLastChild(mainMenuCentralNavContainer, lastBuiltThumbnailStack.transform.GetChild(1).gameObject, UIGlobals.toggleContainerPadding, "right");
 
         // position the time labels to align horizontally with the place thumbnails
         TransformScreenSpaceObject.PositionMultiObjectsAtHorizontalCenterlinesOfNeighbors(timeLabelsForAlignment, placeThumbnailsForAlignment);
@@ -1224,7 +1280,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         GameObject timeLabelForAlignment = timeLabelStack.transform.GetChild(0).gameObject;
 
         // create the time travel thumbnail container
-        GameObject timeTravelThumbnailStack = CreatePlaceTimeThumbnailStack(pauseMenuCentralNavContainer, pauseMenuCentralNavContainer, timeLabelForAlignment, "Time Travel:", SceneGlobals.availableTimePeriodFriendlyNames);
+        GameObject timeTravelThumbnailStack = CreatePlaceTimeThumbnailStack(pauseMenuCentralNavContainer, pauseMenuCentralNavContainer, timeLabelForAlignment, "Time Travel:", "", SceneGlobals.availableTimePeriodFriendlyNames);
 
         // resize the container to align with the last thumbnail in the column
         int thumbnailCount = timeTravelThumbnailStack.transform.childCount - 1; // exclude the label
