@@ -1,6 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.SceneManagement;
 using UnityStandardAssets.Characters.FirstPerson;
 using System.Collections;
 
@@ -17,7 +18,7 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
         ManageCameraActions.CameraActionGlobals.highestKnownCameraEffectPriority += this.GetComponent<PostProcessVolume>().priority;
     }
 
-    private void OnEnable()
+    private void Start()
     {
 #if UNITY_EDITOR
         // if we're in screenshot mode, update all the cameras in this scene
@@ -204,7 +205,7 @@ public class TakeScreenshots
             string screenshotPath = ManageCameraActions.CameraActionGlobals.inGameScreenshotsPath;
 
             // generate a file name based on the current context
-            string screenshotName = cameraHost.name + ManageCameraActions.CameraActionGlobals.screenshotFormat;
+            string screenshotName = cameraHost.name + "-" + SceneManager.GetActiveScene().name + ManageCameraActions.CameraActionGlobals.screenshotFormat;
 
             // move the player to the camera
             ManageFPSControllers.RelocateAlignFPSControllerToCamera(cameraHost.name);
