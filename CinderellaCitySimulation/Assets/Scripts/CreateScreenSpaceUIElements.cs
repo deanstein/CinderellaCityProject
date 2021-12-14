@@ -68,8 +68,8 @@ public class UIGlobals
 
     public static float menuTitleLabelSize = 0.028f;
     public static float mainMenuTextButtonLabelSize = 0.032f;
-    public static float placeLabelSize = 0.046f;
-    public static float timeLabelSize = 0.046f;
+    public static float placeLabelSize = 0.03f;
+    public static float timeLabelSize = 0.035f;
 
     public static float toggleGroupLabelSize = 0.023f;
     public static float toggleLabelSize = 0.019f;
