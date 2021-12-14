@@ -400,7 +400,8 @@ public class ManageImportSettings
             && !name.Contains("solid"):
                 return StaticEditorFlags.NavigationStatic;
             // lightmap static only
-            case string name when (name.Contains("doors-exterior")):
+            case string name when (name.Contains("doors-exterior")
+            || name.Contains("Environment")):
                 return StaticEditorFlags.LightmapStatic;
             // if not specified, default to all static editor flags
             default:
