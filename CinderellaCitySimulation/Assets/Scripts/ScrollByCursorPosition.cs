@@ -13,7 +13,7 @@ public class ScrollByCursorPosition : MonoBehaviour
     static ScrollRect thisScrollRect;
     static RectTransform thisRect;
 
-    static readonly float maxScrollSpeed = 30.0f;
+    static readonly float maxScrollSpeed = 50.0f;
     // normalized distance from rect edge at which scrolling starts
     static readonly float scrollPosThresholdLower = 0.25f; 
     static readonly float scrollPosThresholdUpper = 1 - scrollPosThresholdLower;
