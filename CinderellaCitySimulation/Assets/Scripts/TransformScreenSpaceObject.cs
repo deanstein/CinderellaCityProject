@@ -387,6 +387,19 @@ public static class TransformScreenSpaceObject
         rectTransform.position = newObjectPosition;
     }
 
+    public static void ResizeObjectWidthFromCenter(GameObject screenSpaceObject, float screenWidthRatio)
+    {
+        RectTransform rectTransform = screenSpaceObject.GetComponent<RectTransform>();
+        float objectWidth = rectTransform.rect.width;
+
+        // redefine the width as the screen width
+        rectTransform.sizeDelta = new Vector2(Screen.width * screenWidthRatio, rectTransform.rect.height);
+
+        // center the object so its new width aligns with the screen borders
+        Vector3 newObjectPosition = new Vector3(screenMidPointX, rectTransform.position.y, 0);
+        rectTransform.position = newObjectPosition;
+    }
+
     public static void ResizeObjectWidthByScreenWidthRatioTowardRight(GameObject screenSpaceObject, float bufferProportion)
     {
         RectTransform screenSpaceObjectRectTransform = screenSpaceObject.GetComponent<RectTransform>();
