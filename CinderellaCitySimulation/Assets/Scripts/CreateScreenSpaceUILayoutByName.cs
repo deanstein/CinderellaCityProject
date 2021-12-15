@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 /// <summary>
@@ -208,6 +209,28 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
 
         // bottom menu bar
         GameObject bottomMenubar = CreateScreenSpaceUIElements.CreateBottomMenuBar(mainMenu);
+
+        // the buttons in the bottom menu bar
+        List<GameObject> menuBarButtons = new List<GameObject>();
+
+        GameObject howToPlayButton = CreateScreenSpaceUIElements.CreateTextButton("How to Play", mainMenu, UIGlobals.visibilityMenuTextButtonlabelSize, UIGlobals.buttonColor);
+        menuBarButtons.Add(howToPlayButton);
+        howToPlayButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
+
+            ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, SceneGlobals.howToPlaySceneName);
+
+        }); ;
+
+        GameObject creditsButton = CreateScreenSpaceUIElements.CreateTextButton("Credits", mainMenu, UIGlobals.visibilityMenuTextButtonlabelSize, UIGlobals.buttonColor);
+        menuBarButtons.Add(creditsButton);
+        creditsButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
+
+            ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, SceneGlobals.creditsSceneName);
+
+        }); ;
+
+        // populate the menu bar with the buttons
+        CreateScreenSpaceUIElements.PopulateMenuBar(bottomMenubar, menuBarButtons);
 
         // create the game version indicator
         GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(mainMenu);
@@ -471,7 +494,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         List<GameObject> cameraActionButtons = new List<GameObject>();
 
         // take screenshot button
-        GameObject takeScreenshotButton = CreateScreenSpaceUIElements.CreateTextButton("Take Screenshot", cameraActionsButtonGroup, CreateScreenSpaceUIElements.ConvertFontHeightRatioToPixelValue(UIGlobals.visibilityMenuTextButtonlabelSize), UIGlobals.containerColor);
+        GameObject takeScreenshotButton = CreateScreenSpaceUIElements.CreateTextButton("Take Screenshot", cameraActionsButtonGroup, UIGlobals.visibilityMenuTextButtonlabelSize, UIGlobals.containerColor);
         takeScreenshotButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
             CreateScreenSpaceUIElements.CaptureScreenshotButtonAction();
@@ -482,7 +505,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         cameraActionButtons.Add(takeScreenshotButton);
 
         // save view button
-        GameObject saveViewFromClipboardButton = CreateScreenSpaceUIElements.CreateTextButton("Save View", cameraActionsButtonGroup, CreateScreenSpaceUIElements.ConvertFontHeightRatioToPixelValue(UIGlobals.visibilityMenuTextButtonlabelSize), UIGlobals.containerColor);
+        GameObject saveViewFromClipboardButton = CreateScreenSpaceUIElements.CreateTextButton("Save View", cameraActionsButtonGroup, UIGlobals.visibilityMenuTextButtonlabelSize, UIGlobals.containerColor);
         saveViewFromClipboardButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
             CreateScreenSpaceUIElements.SaveViewButtonAction();
@@ -493,7 +516,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         cameraActionButtons.Add(saveViewFromClipboardButton);
 
         // restore view button
-        GameObject restoreViewFromClipboardButton = CreateScreenSpaceUIElements.CreateTextButton("Restore View", cameraActionsButtonGroup, CreateScreenSpaceUIElements.ConvertFontHeightRatioToPixelValue(UIGlobals.visibilityMenuTextButtonlabelSize), UIGlobals.containerColor);
+        GameObject restoreViewFromClipboardButton = CreateScreenSpaceUIElements.CreateTextButton("Restore View", cameraActionsButtonGroup, UIGlobals.visibilityMenuTextButtonlabelSize, UIGlobals.containerColor);
         restoreViewFromClipboardButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
             CreateScreenSpaceUIElements.RestoreViewButtonAction();
