@@ -34,8 +34,8 @@ public class SceneGlobals
     public static string pauseMenuName = "PauseMenu";
     public static string visibilityMenuSceneName = "VisibilityMenu";
     // static screen scene names
-    public static string howToPlaySceneName = "HowToPlay";
-    public static string creditsSceneName = "Credits";
+    public static string howToPlaySceneName = "HowToPlayScreen";
+    public static string creditsSceneName = "CreditsScreen";
 
     // scene to set active after all other scenes are loaded
     public static string startingSceneName = mainMenuSceneName;

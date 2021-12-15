@@ -92,6 +92,9 @@ public class UIGlobals
     public static float menuButtonScreenWidthRatio = 0.15f;
     public static float menuButtonTopBottomPaddingScreenHeightRatio = 0.01f;
 
+    public static float textButtonBottomMarginScreenHeightRatio = 0.015f;
+    public static float textButtonLeftMarginScreenWidthRatio = 0.01f;
+
     // sets of toggles or buttons
     public static float toggleContainerPadding = 0.01f;
     public static float toggleContainerMaxWidthScreenWidthRatio = 0.1f;
@@ -136,9 +139,6 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     public static float timePlaceThumbnailBottomMarginScreenHeightRatio = 0.01f;
 
     public static float thumbnailStackBottomMarginScreenHeightRatio = 0.02f;
-
-    public static float textButtonBottomMarginScreenHeightRatio = 0.015f;
-    public static float textButtonLeftMarginScreenWidthRatio = 0.01f;
 
     public static float versionLabelLeftMarginScreenWidthRatio = 0.008f;
     public static float versionLabelTopMarginScreenHeightRatio = 0.98f;
@@ -732,6 +732,30 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         return toggleGroup;
     }
 
+    public static GameObject PopulateMenuBar(GameObject menuBar, List<GameObject> buttonsToDisplay)
+    {
+        // add each of the specified toggles to the toggle group
+        for (var i = 0; i < buttonsToDisplay.Count; i++)
+        {
+            // the first button will use the menu bar itself as the left alignment object
+            if (i == 0)
+            {
+                TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(buttonsToDisplay[i], menuBar, -UIGlobals.textButtonLeftMarginScreenWidthRatio);
+            }
+            else
+            {
+                TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(buttonsToDisplay[i], buttonsToDisplay[i - 1], UIGlobals.textButtonLeftMarginScreenWidthRatio);
+            }
+
+            TransformScreenSpaceObject.PositionObjectAtHorizontalCenterlineOfNeighbor(buttonsToDisplay[i], menuBar);
+
+            // set the toggle as a child of the toggle group
+            buttonsToDisplay[i].transform.SetParent(menuBar.transform);
+        }
+
+        return menuBar;
+    }
+
     // configure a typical checkbox by passing in
     // functions for the checkbox action and state update
     public static void ConfigureTypicalToggle(GameObject toggleContainer, Action onValueChangedFunction, bool toggleState)
@@ -790,7 +814,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     // create a vanilla scrollable area
     public static GameObject CreateScrollableArea(string name, string scrollDirection)
     {
-        GameObject scrollableArea = new GameObject(name + "ScrollableArea");
+        GameObject scrollableArea = new GameObject(name);
 
         scrollableArea.AddComponent<RectMask2D>();
         ScrollRect scrollRect = scrollableArea.AddComponent<ScrollRect>();
@@ -1012,14 +1036,14 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         return centralNavContainer;
     }
 
-    public static GameObject CreateTextButton(string text, GameObject parent, int fontSize, Color32 color)
+    public static GameObject CreateTextButton(string text, GameObject parent, float fontScreenHeightRatio, Color32 color)
     {
         // create the text label
         GameObject buttonTextObject = new GameObject(Utils.StringUtils.CleanString(text) + "ButtonText");
         Text buttonText = buttonTextObject.AddComponent<Text>();
         buttonText.font = (Font)Resources.Load(UIGlobals.labelFont);
         buttonText.text = text;
-        buttonText.fontSize = fontSize;
+        buttonText.fontSize = ConvertFontHeightRatioToPixelValue(fontScreenHeightRatio);
         buttonText.alignment = TextAnchor.MiddleCenter;
 
         Vector2 textSize = TransformScreenSpaceObject.ResizeTextExtentsToFitContents(buttonText);
@@ -1342,7 +1366,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         GameObject buttonAlignmentObject = timeTravelThumbnailStack.transform.GetChild(0).gameObject;
 
         // create the resume button
-        GameObject resumeButton = CreateTextButton("Resume", pauseMenuCentralNavContainer, ConvertFontHeightRatioToPixelValue(UIGlobals.mainMenuTextButtonLabelSize), UIGlobals.buttonColor);
+        GameObject resumeButton = CreateTextButton("Resume", pauseMenuCentralNavContainer, UIGlobals.mainMenuTextButtonLabelSize, UIGlobals.buttonColor);
         resumeButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
             ManageFPSControllers.FPSControllerGlobals.isTimeTraveling = false;
@@ -1351,7 +1375,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         }); ;
         // align and position the main menu button
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(resumeButton, buttonAlignmentObject, 0.0f);
-        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(resumeButton, buttonAlignmentObject, textButtonLeftMarginScreenWidthRatio);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(resumeButton, buttonAlignmentObject, UIGlobals.textButtonLeftMarginScreenWidthRatio);
 
         // create the main menu button
         GameObject mainMenuButton = CreateTextButton("Main Menu", pauseMenuCentralNavContainer, ConvertFontHeightRatioToPixelValue(UIGlobals.mainMenuTextButtonLabelSize), UIGlobals.buttonColor);
@@ -1360,19 +1384,19 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
             ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "MainMenu");
 
         }); ;
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(mainMenuButton, resumeButton, textButtonBottomMarginScreenHeightRatio);
-        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(mainMenuButton, buttonAlignmentObject, textButtonLeftMarginScreenWidthRatio);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(mainMenuButton, resumeButton, UIGlobals.textButtonBottomMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(mainMenuButton, buttonAlignmentObject, UIGlobals.textButtonLeftMarginScreenWidthRatio);
 
         // exit button
-        GameObject exitButton = CreateTextButton("Quit", pauseMenuCentralNavContainer, ConvertFontHeightRatioToPixelValue(UIGlobals.mainMenuTextButtonLabelSize), UIGlobals.buttonColor);
+        GameObject exitButton = CreateTextButton("Quit", pauseMenuCentralNavContainer, UIGlobals.mainMenuTextButtonLabelSize, UIGlobals.buttonColor);
         exitButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
             Application.Quit();
 
         }); ;
         // align and position the exit button
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(exitButton, mainMenuButton, textButtonBottomMarginScreenHeightRatio);
-        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(exitButton, buttonAlignmentObject, textButtonLeftMarginScreenWidthRatio);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(exitButton, mainMenuButton, UIGlobals.textButtonBottomMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(exitButton, buttonAlignmentObject, UIGlobals.textButtonLeftMarginScreenWidthRatio);
 
         // set the parent/child hierarchy
         pauseMenuCentralNavContainer.transform.SetParent(parent.transform);
