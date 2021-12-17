@@ -10,20 +10,6 @@ using UnityEngine.SceneManagement;
 
 public class SceneGlobals
 {
-    // when a scene change is requested, record the outgoing and upcoming scenes for other scripts to access
-    public static string referringSceneName;
-    public static string upcomingSceneName;
-
-    // the pause menu will record the last known time period scene name when Pause was invoked
-    public static string lastKnownTimePeriodSceneName;
-
-    // construct a path to a scene from its name
-    public static string GetScenePathByName(string sceneName)
-    {
-        string scenePath = "Assets/Scenes/" + sceneName + ".unity";
-        return scenePath;
-    }
-
     /* individual scenes */
     // experimental scene - used for testing
     public static string experimentalSceneName = "Experimental";
@@ -36,18 +22,28 @@ public class SceneGlobals
     // static screen scene names
     public static string howToPlaySceneName = "HowToPlayScreen";
     public static string creditsSceneName = "CreditsScreen";
-
     // scene to set active after all other scenes are loaded
     public static string startingSceneName = mainMenuSceneName;
+    // when a scene change is requested, record the outgoing and upcoming scenes for other scripts to access
+    public static string referringSceneName;
+    public static string upcomingSceneName;
+    // the pause menu will record the last known time period scene name when Pause was invoked
+    public static string lastKnownTimePeriodSceneName;
 
     /* scene lists */
     // all scene names to load for the full simulation experience
-    public static string[] allGameplaySceneNames = { mainMenuSceneName, pauseMenuName, "60s70s", "80s90s" };
+    public static string[] allGameplaySceneNames = { mainMenuSceneName, pauseMenuName, howToPlaySceneName, creditsSceneName, "60s70s", "80s90s" };
+    // only the menu scenes - used for testing menus without overhead of loading first-person scenes
+    public static string[] allMenuSceneNames = { mainMenuSceneName, pauseMenuName, howToPlaySceneName, creditsSceneName };
     // only the first-person (non-menu) scenes
     public static string[] availableTimePeriodSceneNames = { "60s70s", "80s90s" };
     // list the friendly names of available time periods, in chronologial order (used for UI labels)
     // TODO: add Alt Future when available
     public static string[] availableTimePeriodFriendlyNames = { "1960s-70s", "1980s-90s" };
+    // for testing purposes, set this to true to skip loading heavy first-person scenes
+    public static bool loadMenusOnly = true;
+    // the scenes to load when the game starts will differ depending on the above flag
+    public static string[] scenesToLoad = loadMenusOnly ? allMenuSceneNames : allGameplaySceneNames;
 
     // convert the friendly names to Scene names
     // uses CleanString to remove spaces, punctuation, and in the case of years, "19"
@@ -57,6 +53,13 @@ public class SceneGlobals
     // based on the current scene, these are the time period scenes that are disabled
     // used to generate thumbnails for disabled scenes for the Pause Menu
     public static List<string> disabledTimePeriodSceneNames = new List<string>();
+
+    // construct a path to a scene from its name
+    public static string GetScenePathByName(string sceneName)
+    {
+        string scenePath = "Assets/Scenes/" + sceneName + ".unity";
+        return scenePath;
+    }
 }
 
 public static class ManageScenes
