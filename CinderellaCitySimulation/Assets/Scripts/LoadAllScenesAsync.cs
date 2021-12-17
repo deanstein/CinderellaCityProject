@@ -13,14 +13,14 @@ public class LoadAllScenesAsync : MonoBehaviour {
     // create a list to keep track of all active async operations progress
     static List<AsyncOperation> asyncOperations = new List<AsyncOperation>();
 
-    // this bool gets set to True only when all scenes are loaded
+    // set to true only when all specified scenes are loaded
     bool allLoaded;
 
     // initialization
     void Start ()
     {
-        // load all the scenes
-        ManageScenes.LoadScenesAsync(SceneGlobals.allGameplaySceneNames, asyncOperations);
+        // load the specified scenes
+        ManageScenes.LoadScenesAsync(SceneGlobals.scenesToLoad, asyncOperations);
 
         // switch to the MainMenu when all scenes are ready
         StartCoroutine(SetActiveSceneWhenReady());
@@ -41,13 +41,13 @@ public class LoadAllScenesAsync : MonoBehaviour {
             // when the async operation is done, turn off its objects
             if (asyncOperations[i].isDone)
             {
-                ToggleSceneAndUI.ToggleSceneObjectsOff(SceneGlobals.allGameplaySceneNames[i]);
+                ToggleSceneAndUI.ToggleSceneObjectsOff(SceneGlobals.scenesToLoad[i]);
             }
         }
 
         // if the amount of async operations matches the scene list, and all scenes are loaded,
         // set the flag that all scenes are loaded
-        if ((scenesLoaded.Count == SceneGlobals.allGameplaySceneNames.Length) && scenesLoaded.TrueForAll(b => b))
+        if ((scenesLoaded.Count == SceneGlobals.scenesToLoad.Length) && scenesLoaded.TrueForAll(b => b))
         {
             allLoaded = true;
         }
