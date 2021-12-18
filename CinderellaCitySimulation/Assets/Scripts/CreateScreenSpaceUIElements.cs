@@ -505,7 +505,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         logoContainerColor.color = UIGlobals.containerColor;
 
         // create the back button - this may or may not be used depending on the flag
-        GameObject backButton = CreateTextButton("<  Back", parent, UIGlobals.menuTitleLabelSize, 0, UIGlobals.buttonColor);
+        GameObject backButton = CreateTextButton("<  Back", UIGlobals.menuTitleLabelSize, UIGlobals.menuTitleBottomMarginScreenHeightRatio, 0, UIGlobals.buttonColor);
         float backButtonWidth = backButton.GetComponent<RectTransform>().rect.width;
         backButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
@@ -540,6 +540,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(titleLabel, titleContainer, UIGlobals.menuTitleTopMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(titleLabel, titleContainer, UIGlobals.menuTitleLeftMarginScreenWidthRatio);
         TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(titleContainer, titleLabel, UIGlobals.menuTitleBottomMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionTextAtHorizontalCenterlineOfNeighbor(titleLabel, titleContainer);
 
         // don't show the back button if it's not necessary
         if (!showBackButton)
@@ -1058,7 +1059,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         return centralNavContainer;
     }
 
-    public static GameObject CreateTextButton(string text, GameObject parent, float fontScreenHeightRatio, float screenWidthRatio, Color32 color)
+    public static GameObject CreateTextButton(string text, float fontScreenHeightRatio, float topBottomMarginScreenHeightRatio, float screenWidthRatio, Color32 color)
     {
         // create the text label
         GameObject buttonTextObject = new GameObject(Utils.StringUtils.CleanString(text) + "ButtonText");
@@ -1079,7 +1080,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         RectTransform buttonRect = buttonContainer.GetComponent<RectTransform>();
         // if 0 is passed in as the width, use the text width plus some padding
         float buttonWidth = screenWidthRatio == 0f ? textSize.x + (2 * (UIGlobals.menuButtonSidePaddingScreenWidthRatio * Screen.width)) : screenWidthRatio * Screen.width;
-        buttonRect.sizeDelta = new Vector2(Mathf.Round(buttonWidth), Mathf.Round(textSize.y + (2 * (UIGlobals.menuButtonTopBottomPaddingScreenHeightRatio * Screen.height))));
+        buttonRect.sizeDelta = new Vector2(Mathf.Round(buttonWidth), Mathf.Round(textSize.y + (2 * (topBottomMarginScreenHeightRatio * Screen.height))));
 
         // set the color of the button
         Image buttonContainerColor = buttonContainer.AddComponent<Image>();
@@ -1089,7 +1090,6 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         Button button = buttonContainer.AddComponent<Button>();
 
         // set the parent/child hierarchy
-        buttonContainer.transform.SetParent(parent.transform);
         buttonTextObject.transform.SetParent(buttonContainer.transform);
 
         // move the button
@@ -1390,7 +1390,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         GameObject buttonAlignmentObject = timeTravelThumbnailStack.transform.GetChild(0).gameObject;
 
         // create the resume button
-        GameObject resumeButton = CreateTextButton("Resume", pauseMenuCentralNavContainer, UIGlobals.mainMenuTextButtonLabelSize, UIGlobals.menuButtonScreenWidthRatio, UIGlobals.buttonColor);
+        GameObject resumeButton = CreateTextButton("Resume", UIGlobals.mainMenuTextButtonLabelSize, UIGlobals.menuButtonTopBottomPaddingScreenHeightRatio, UIGlobals.menuButtonScreenWidthRatio, UIGlobals.buttonColor);
         resumeButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
             ManageFPSControllers.FPSControllerGlobals.isTimeTraveling = false;
@@ -1402,7 +1402,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(resumeButton, buttonAlignmentObject, UIGlobals.textButtonLeftMarginScreenWidthRatio);
 
         // create the main menu button
-        GameObject mainMenuButton = CreateTextButton("Main Menu", pauseMenuCentralNavContainer, UIGlobals.mainMenuTextButtonLabelSize, UIGlobals.menuButtonScreenWidthRatio, UIGlobals.buttonColor);
+        GameObject mainMenuButton = CreateTextButton("Main Menu", UIGlobals.mainMenuTextButtonLabelSize, UIGlobals.menuButtonTopBottomPaddingScreenHeightRatio, UIGlobals.menuButtonScreenWidthRatio, UIGlobals.buttonColor);
         mainMenuButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
             ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "MainMenu");
@@ -1412,7 +1412,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(mainMenuButton, buttonAlignmentObject, UIGlobals.textButtonLeftMarginScreenWidthRatio);
 
         // exit button
-        GameObject exitButton = CreateTextButton("Quit", pauseMenuCentralNavContainer, UIGlobals.mainMenuTextButtonLabelSize, UIGlobals.menuButtonScreenWidthRatio, UIGlobals.buttonColor);
+        GameObject exitButton = CreateTextButton("Quit", UIGlobals.mainMenuTextButtonLabelSize, UIGlobals.menuButtonTopBottomPaddingScreenHeightRatio, UIGlobals.menuButtonScreenWidthRatio, UIGlobals.buttonColor);
         exitButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
             Application.Quit();
@@ -1426,6 +1426,9 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         pauseMenuCentralNavContainer.transform.SetParent(parent.transform);
         timeLabelStack.transform.SetParent(pauseMenuCentralNavContainer.transform);
         AssignOrphanedObjectListToParent(orphanedThumbnailStacks, pauseMenuCentralNavContainer);
+        resumeButton.transform.SetParent(pauseMenuCentralNavContainer.transform);
+        mainMenuButton.transform.SetParent(pauseMenuCentralNavContainer.transform);
+        exitButton.transform.SetParent(pauseMenuCentralNavContainer.transform);
 
         return pauseMenuCentralNavContainer;
     }
