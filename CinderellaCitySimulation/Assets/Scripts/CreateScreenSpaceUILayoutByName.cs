@@ -213,7 +213,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         // the buttons in the bottom menu bar
         List<GameObject> menuBarButtons = new List<GameObject>();
 
-        GameObject howToPlayButton = CreateScreenSpaceUIElements.CreateTextButton("How to Play", mainMenu, UIGlobals.visibilityMenuTextButtonlabelSize, UIGlobals.bottomMenuBarButtonScreenWidthRatio, UIGlobals.buttonColor);
+        GameObject howToPlayButton = CreateScreenSpaceUIElements.CreateTextButton("How to Play", UIGlobals.visibilityMenuTextButtonlabelSize, UIGlobals.menuButtonTopBottomPaddingScreenHeightRatio, UIGlobals.bottomMenuBarButtonScreenWidthRatio, UIGlobals.buttonColor);
         menuBarButtons.Add(howToPlayButton);
         howToPlayButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
@@ -221,7 +221,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
 
         }); ;
 
-        GameObject creditsButton = CreateScreenSpaceUIElements.CreateTextButton("Credits", mainMenu, UIGlobals.visibilityMenuTextButtonlabelSize, UIGlobals.bottomMenuBarButtonScreenWidthRatio, UIGlobals.buttonColor);
+        GameObject creditsButton = CreateScreenSpaceUIElements.CreateTextButton("Credits", UIGlobals.visibilityMenuTextButtonlabelSize, UIGlobals.menuButtonTopBottomPaddingScreenHeightRatio, UIGlobals.bottomMenuBarButtonScreenWidthRatio, UIGlobals.buttonColor);
         menuBarButtons.Add(creditsButton);
         creditsButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
@@ -256,7 +256,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(howToPlayScreenCanvas);
 
         // create the title bar container
-        GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(howToPlayScreenCanvas, logoHeader, "How to Play", true);
+        GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(howToPlayScreenCanvas, logoHeader, "How to play:", true);
 
         // create the game version indicator
         GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(howToPlayScreenCanvas);
@@ -282,7 +282,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(creditsScreenCanvas);
 
         // create the title bar container
-        GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(creditsScreenCanvas, logoHeader, "Credits", true);
+        GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(creditsScreenCanvas, logoHeader, "Credits:", true);
 
         // create the game version indicator
         GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(creditsScreenCanvas);
@@ -494,7 +494,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         List<GameObject> cameraActionButtons = new List<GameObject>();
 
         // take screenshot button
-        GameObject takeScreenshotButton = CreateScreenSpaceUIElements.CreateTextButton("Take Screenshot", cameraActionsButtonGroup, UIGlobals.visibilityMenuTextButtonlabelSize, UIGlobals.menuButtonScreenWidthRatio, UIGlobals.containerColor);
+        GameObject takeScreenshotButton = CreateScreenSpaceUIElements.CreateTextButton("Take Screenshot", UIGlobals.visibilityMenuTextButtonlabelSize, UIGlobals.menuButtonTopBottomPaddingScreenHeightRatio, UIGlobals.menuButtonScreenWidthRatio, UIGlobals.containerColor);
         takeScreenshotButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
             CreateScreenSpaceUIElements.CaptureScreenshotButtonAction();
@@ -505,7 +505,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         cameraActionButtons.Add(takeScreenshotButton);
 
         // save view button
-        GameObject saveViewFromClipboardButton = CreateScreenSpaceUIElements.CreateTextButton("Save View", cameraActionsButtonGroup, UIGlobals.visibilityMenuTextButtonlabelSize, UIGlobals.menuButtonScreenWidthRatio, UIGlobals.containerColor);
+        GameObject saveViewFromClipboardButton = CreateScreenSpaceUIElements.CreateTextButton("Save View", UIGlobals.menuButtonTopBottomPaddingScreenHeightRatio, UIGlobals.visibilityMenuTextButtonlabelSize, UIGlobals.menuButtonScreenWidthRatio, UIGlobals.containerColor);
         saveViewFromClipboardButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
             CreateScreenSpaceUIElements.SaveViewButtonAction();
@@ -516,7 +516,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         cameraActionButtons.Add(saveViewFromClipboardButton);
 
         // restore view button
-        GameObject restoreViewFromClipboardButton = CreateScreenSpaceUIElements.CreateTextButton("Restore View", cameraActionsButtonGroup, UIGlobals.visibilityMenuTextButtonlabelSize, UIGlobals.menuButtonScreenWidthRatio, UIGlobals.containerColor);
+        GameObject restoreViewFromClipboardButton = CreateScreenSpaceUIElements.CreateTextButton("Restore View", UIGlobals.menuButtonTopBottomPaddingScreenHeightRatio, UIGlobals.visibilityMenuTextButtonlabelSize, UIGlobals.menuButtonScreenWidthRatio, UIGlobals.containerColor);
         restoreViewFromClipboardButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
             CreateScreenSpaceUIElements.RestoreViewButtonAction();
@@ -544,6 +544,10 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
 
         cameraActionsScrollArea.transform.parent = toggleSetContainer.transform;
         cameraActionsButtonGroup.transform.SetParent(cameraActionsScrollArea.transform);
+
+        takeScreenshotButton.transform.SetParent(cameraActionsButtonGroup.transform);
+        saveViewFromClipboardButton.transform.SetParent(cameraActionsButtonGroup.transform);
+        restoreViewFromClipboardButton.transform.SetParent(cameraActionsButtonGroup.transform);
 
         ManageFPSControllers.DisableCursorLockOnActiveFPSController();
 
