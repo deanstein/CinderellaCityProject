@@ -91,6 +91,9 @@ public class UIGlobals
     // button sizes (ratio relative to screen size)
     public static float menuButtonScreenWidthRatio = 0.15f;
     public static float menuButtonTopBottomPaddingScreenHeightRatio = 0.01f;
+    public static float menuButtonSidePaddingScreenWidthRatio = 0.01f;
+
+    public static float bottomMenuBarButtonScreenWidthRatio = 0.08f;
 
     public static float textButtonBottomMarginScreenHeightRatio = 0.015f;
     public static float textButtonLeftMarginScreenWidthRatio = 0.01f;
@@ -1036,7 +1039,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         return centralNavContainer;
     }
 
-    public static GameObject CreateTextButton(string text, GameObject parent, float fontScreenHeightRatio, Color32 color)
+    public static GameObject CreateTextButton(string text, GameObject parent, float fontScreenHeightRatio, float screenWidthRatio, Color32 color)
     {
         // create the text label
         GameObject buttonTextObject = new GameObject(Utils.StringUtils.CleanString(text) + "ButtonText");
@@ -1055,7 +1058,10 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
         // resize the button background to encapsulate the text, plus padding
         RectTransform buttonRect = buttonContainer.GetComponent<RectTransform>();
-        buttonRect.sizeDelta = new Vector2(Mathf.Round((UIGlobals.menuButtonScreenWidthRatio * Screen.width)), Mathf.Round(textSize.y + (2 * (UIGlobals.menuButtonTopBottomPaddingScreenHeightRatio * Screen.height))));
+        // if 0 is passed in as the width, use the text width plus some padding
+        float buttonWidth = screenWidthRatio == 0f ? textSize.x + (2 * (UIGlobals.menuButtonSidePaddingScreenWidthRatio * Screen.width)) : screenWidthRatio * Screen.width;
+        Debug.Log(buttonWidth);
+        buttonRect.sizeDelta = new Vector2(Mathf.Round(buttonWidth), Mathf.Round(textSize.y + (2 * (UIGlobals.menuButtonTopBottomPaddingScreenHeightRatio * Screen.height))));
 
         // set the color of the button
         Image buttonContainerColor = buttonContainer.AddComponent<Image>();
@@ -1366,7 +1372,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         GameObject buttonAlignmentObject = timeTravelThumbnailStack.transform.GetChild(0).gameObject;
 
         // create the resume button
-        GameObject resumeButton = CreateTextButton("Resume", pauseMenuCentralNavContainer, UIGlobals.mainMenuTextButtonLabelSize, UIGlobals.buttonColor);
+        GameObject resumeButton = CreateTextButton("Resume", pauseMenuCentralNavContainer, UIGlobals.mainMenuTextButtonLabelSize, UIGlobals.menuButtonScreenWidthRatio, UIGlobals.buttonColor);
         resumeButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
             ManageFPSControllers.FPSControllerGlobals.isTimeTraveling = false;
@@ -1378,7 +1384,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(resumeButton, buttonAlignmentObject, UIGlobals.textButtonLeftMarginScreenWidthRatio);
 
         // create the main menu button
-        GameObject mainMenuButton = CreateTextButton("Main Menu", pauseMenuCentralNavContainer, ConvertFontHeightRatioToPixelValue(UIGlobals.mainMenuTextButtonLabelSize), UIGlobals.buttonColor);
+        GameObject mainMenuButton = CreateTextButton("Main Menu", pauseMenuCentralNavContainer, UIGlobals.mainMenuTextButtonLabelSize, UIGlobals.menuButtonScreenWidthRatio, UIGlobals.buttonColor);
         mainMenuButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
             ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "MainMenu");
@@ -1388,7 +1394,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(mainMenuButton, buttonAlignmentObject, UIGlobals.textButtonLeftMarginScreenWidthRatio);
 
         // exit button
-        GameObject exitButton = CreateTextButton("Quit", pauseMenuCentralNavContainer, UIGlobals.mainMenuTextButtonLabelSize, UIGlobals.buttonColor);
+        GameObject exitButton = CreateTextButton("Quit", pauseMenuCentralNavContainer, UIGlobals.mainMenuTextButtonLabelSize, UIGlobals.menuButtonScreenWidthRatio, UIGlobals.buttonColor);
         exitButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
             Application.Quit();
