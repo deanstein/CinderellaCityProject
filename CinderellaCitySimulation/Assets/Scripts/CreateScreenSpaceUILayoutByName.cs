@@ -179,7 +179,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(loadingScreen);
 
         // create the title bar container
-        GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(loadingScreen, logoHeader, "Building Cinderella City...");
+        GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(loadingScreen, logoHeader, "Building Cinderella City...", false);
 
         // create the game version indicator
         GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(loadingScreen);
@@ -202,7 +202,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(mainMenu);
 
         // create the title bar container
-        GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(mainMenu, logoHeader, "Choose a time and place:");
+        GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(mainMenu, logoHeader, "Choose a time and place:", false);
 
         // time & place picker and container
         GameObject mainMenuCentralNav = CreateScreenSpaceUIElements.CreateMainMenuCentralNav(mainMenu, titleBarContainer);
@@ -256,7 +256,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(howToPlayScreenCanvas);
 
         // create the title bar container
-        GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(howToPlayScreenCanvas, logoHeader, "How to Play");
+        GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(howToPlayScreenCanvas, logoHeader, "How to Play", true);
 
         // create the game version indicator
         GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(howToPlayScreenCanvas);
@@ -282,7 +282,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(creditsScreenCanvas);
 
         // create the title bar container
-        GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(creditsScreenCanvas, logoHeader, "Credits");
+        GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(creditsScreenCanvas, logoHeader, "Credits", true);
 
         // create the game version indicator
         GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(creditsScreenCanvas);
@@ -308,7 +308,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(pauseMenu);
 
         // create the title bar container
-        GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(pauseMenu, logoHeader, "Pause");
+        GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(pauseMenu, logoHeader, "Pause", true);
 
         // time travel column and pause menu buttons
         GameObject pauseMenuCentralNav = CreateScreenSpaceUIElements.CreatePauseMenuCentralNav(pauseMenu, titleBarContainer);
@@ -362,7 +362,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(visibilityMenu);
 
         // create the title bar container
-        GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(visibilityMenu, logoHeader, "Visibility Settings");
+        GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(visibilityMenu, logoHeader, "Visibility Settings", true);
 
         // put all the possible toggles in a horizontal scroll area
         // and central nav container

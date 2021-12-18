@@ -67,6 +67,9 @@ public class UIGlobals
     public static float versionLabelSize = 0.014f;
 
     public static float menuTitleLabelSize = 0.028f;
+    public static float menuTitleTopMarginScreenHeightRatio = -0.02f;
+    public static float menuTitleLeftMarginScreenWidthRatio = -0.02f;
+    public static float menuTitleBottomMarginScreenHeightRatio = 0.02f;
     public static float mainMenuTextButtonLabelSize = 0.032f;
     public static float placeLabelSize = 0.03f;
     public static float timeLabelSize = 0.035f;
@@ -121,10 +124,6 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     public static float projectLogoContainerTopPaddingScreenHeightRatio = 0.02f;
     public static float projectLogoContainerBottomPaddingScreenHeightRatio = 0.02f;
     public static float projectLogoContainerRightPaddingScreenWidthRatio = 0.02f;
-
-    public static float menuTitleTopMarginScreenHeightRatio = -0.02f;
-    public static float menuTitleLeftMarginScreenWidthRatio = -0.02f;
-    public static float menuTitleBottomMarginScreenHeightRatio = 0.02f;
 
     public static float toggleTopPaddingScreenHeightRatio = -0.01f;
     public static float toggleLeftPaddingScreenWidthRatio = -0.01f;
@@ -497,7 +496,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         return logoContainer;
     }
 
-    public static GameObject CreateMenuTitleBar(GameObject parent, GameObject topAlignmentObject, string titleString)
+    public static GameObject CreateMenuTitleBar(GameObject parent, GameObject topAlignmentObject, string titleString, bool showBackButton)
     {
         // create the title container object
         GameObject titleContainer = new GameObject("TitleContainer");
@@ -505,12 +504,25 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         Image logoContainerColor = titleContainer.AddComponent<Image>();
         logoContainerColor.color = UIGlobals.containerColor;
 
-        // position the title container
+        // create the back button - this may or may not be used depending on the flag
+        GameObject backButton = CreateTextButton("<  Back", parent, UIGlobals.menuTitleLabelSize, 0, UIGlobals.buttonColor);
+        float backButtonWidth = backButton.GetComponent<RectTransform>().rect.width;
+        backButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
+
+            ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, SceneGlobals.referringSceneName);
+
+        }); ;
+
+        // position the title container and button
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(titleContainer, topAlignmentObject, logoHeaderBottomMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(backButton, topAlignmentObject, logoHeaderBottomMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromScreenLeft(backButton, UIGlobals.navContainerLeftMarginScreenWidthRatio);
 
         // resize the title container
         TransformScreenSpaceObject.ResizeObjectWidthToMatchScreen(titleContainer);
-        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromScreenLeft(titleContainer, UIGlobals.navContainerLeftMarginScreenWidthRatio);
+        // the left margin depends on whether the back button should be shown or not
+        float leftMargin = showBackButton ? UIGlobals.navContainerLeftMarginScreenWidthRatio + (backButtonWidth / Screen.width) + UIGlobals.textButtonLeftMarginScreenWidthRatio : UIGlobals.navContainerLeftMarginScreenWidthRatio;
+        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromScreenLeft(titleContainer, leftMargin);
 
         // add the title text
         GameObject titleLabel = new GameObject("TitleLabel");
@@ -525,13 +537,20 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
         // position and resize the text and container
         TransformScreenSpaceObject.PositionObjectAtCenterofScreen(titleLabel);
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(titleLabel, titleContainer, menuTitleTopMarginScreenHeightRatio);
-        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(titleLabel, titleContainer, menuTitleLeftMarginScreenWidthRatio);
-        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(titleContainer, titleLabel, menuTitleBottomMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(titleLabel, titleContainer, UIGlobals.menuTitleTopMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(titleLabel, titleContainer, UIGlobals.menuTitleLeftMarginScreenWidthRatio);
+        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(titleContainer, titleLabel, UIGlobals.menuTitleBottomMarginScreenHeightRatio);
+
+        // don't show the back button if it's not necessary
+        if (!showBackButton)
+        {
+            backButton.SetActive(false);
+        }
 
         // set parent/child hierarchy
         titleContainer.transform.SetParent(parent.transform);
         titleLabel.transform.SetParent(titleContainer.transform);
+        backButton.transform.SetParent(titleContainer.transform);
 
         return titleContainer;
     }
@@ -621,7 +640,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
         // position and resize the text and container
         TransformScreenSpaceObject.PositionObjectAtCenterofScreen(groupLabel);
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(groupLabel, toggleGroupContainer, menuTitleTopMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(groupLabel, toggleGroupContainer, UIGlobals.menuTitleTopMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(groupLabel, toggleGroupContainer, -UIGlobals.toggleContainerPadding);
 
         // set parent/child hierarchy
@@ -722,7 +741,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromNeighborRight(toggleGroup, togglesToDisplay[0], UIGlobals.toggleContainerPadding);
 
         // position the label again to account for the resizing of the group
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(toggleGroup.transform.GetChild(0).gameObject, toggleGroup, menuTitleTopMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(toggleGroup.transform.GetChild(0).gameObject, toggleGroup, UIGlobals.menuTitleTopMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(toggleGroup.transform.GetChild(0).gameObject, toggleGroup, -UIGlobals.toggleContainerPadding);
 
         // add each of the specified toggles to the toggle group
@@ -890,7 +909,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // position and resize the text and container
         TransformScreenSpaceObject.PositionObjectAtCenterofScreen(timePeriodLabel);
         TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromScreenBottom(timePeriodContainer, UIGlobals.HUDBottomBarBottomMarginScreenHeightRatio);
-        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(timePeriodLabel, timePeriodContainer, menuTitleLeftMarginScreenWidthRatio);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(timePeriodLabel, timePeriodContainer, UIGlobals.menuTitleLeftMarginScreenWidthRatio);
         TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromScreenBottom(timePeriodContainer, UIGlobals.HUDBottomBarBottomMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionTextAtHorizontalCenterlineOfNeighbor(timePeriodLabel, timePeriodContainer);
 
@@ -1060,7 +1079,6 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         RectTransform buttonRect = buttonContainer.GetComponent<RectTransform>();
         // if 0 is passed in as the width, use the text width plus some padding
         float buttonWidth = screenWidthRatio == 0f ? textSize.x + (2 * (UIGlobals.menuButtonSidePaddingScreenWidthRatio * Screen.width)) : screenWidthRatio * Screen.width;
-        Debug.Log(buttonWidth);
         buttonRect.sizeDelta = new Vector2(Mathf.Round(buttonWidth), Mathf.Round(textSize.y + (2 * (UIGlobals.menuButtonTopBottomPaddingScreenHeightRatio * Screen.height))));
 
         // set the color of the button
