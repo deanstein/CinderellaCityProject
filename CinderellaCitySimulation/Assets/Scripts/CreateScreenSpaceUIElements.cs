@@ -15,6 +15,8 @@ public class UIGlobals
 {
     // all UI sprites stored in a file live here
     public static string projectUIPath = "Assets/Resources/UI/";
+    // used for Resources.Load, which already starts in Assets/Resources
+    public static string relativeUIPath = "UI/";
 
     // is used to determine when to generate time-travel specific thumbnails
     public static bool isTimeTravelThumbnail;
@@ -600,6 +602,116 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         menuBarContainer.transform.SetParent(parent.transform);
 
         return menuBarContainer;
+    }
+
+    public static GameObject CreateTextItemModule(GameObject parent, GameObject topAlignmentObject, string creditListItemText)
+    {
+        // create the text item container object
+        GameObject textItemColorContainer = new GameObject("TextItemContainer");
+        textItemColorContainer.AddComponent<CanvasRenderer>();
+        Image textItemContainerColor = textItemColorContainer.AddComponent<Image>();
+        textItemContainerColor.color = UIGlobals.containerColor;
+
+        // position the text item container
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(textItemColorContainer, topAlignmentObject, toggleBottomMarginScreenHeightRatio);
+
+        // resize the text item container
+        TransformScreenSpaceObject.ResizeObjectWidthToMatchScreen(textItemColorContainer);
+        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromNeighborLeft(textItemColorContainer, parent, -UIGlobals.toggleContainerPadding);
+        TransformScreenSpaceObject.ResizeObjectWidthByScreenWidthRatioTowardRight(textItemColorContainer, UIGlobals.toggleContainerMaxWidthScreenWidthRatio);
+
+        // add the text item label
+        GameObject textItemLabel = new GameObject("TextItemLabel");
+        Text textItemLabelText = textItemLabel.AddComponent<Text>();
+        textItemLabelText.font = (Font)Resources.Load(UIGlobals.labelFont);
+        textItemLabelText.text = creditListItemText;
+        textItemLabelText.fontSize = ConvertFontHeightRatioToPixelValue(UIGlobals.toggleLabelSize);
+        textItemLabelText.alignment = TextAnchor.UpperLeft;
+
+        // resize the text's bounding box to fit the text, before any transforms
+        TransformScreenSpaceObject.ResizeTextExtentsToFitContents(textItemLabelText);
+
+        // position and resize the text and container
+        TransformScreenSpaceObject.PositionObjectAtCenterofScreen(textItemLabel);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(textItemLabel, textItemColorContainer, toggleTopPaddingScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(textItemLabel, textItemColorContainer, toggleLeftPaddingScreenWidthRatio);
+        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(textItemColorContainer, textItemLabel, toggleBottomPaddingScreenHeightRatio);
+
+        // set parent/child hierarchy
+        textItemLabel.transform.SetParent(textItemColorContainer.transform);
+
+        return textItemColorContainer;
+    }
+
+    public static List<GameObject> CreateCreditItemsFromList(List<string> creditsList, GameObject creditsGroup)
+    {
+        List<GameObject> createdCreditItems = new List<GameObject>();
+
+        // start at index 1, because index 0 is the name of the list
+        for (int i = 1; i < creditsList.Count; i++)
+        {
+            // the first item gets a different top alignment object
+            if (i == 1)
+            {
+                GameObject creditItem = CreateTextItemModule(creditsGroup, creditsGroup.transform.GetChild(0).gameObject, creditsList[i]);
+                createdCreditItems.Add(creditItem);
+            }
+            else
+            {
+                GameObject creditItem = CreateTextItemModule(creditsGroup, createdCreditItems[i - 2], creditsList[i]);
+                createdCreditItems.Add(creditItem);
+            }
+        }
+
+        return createdCreditItems;
+    }
+
+    public static GameObject CreateCreditsGroupModule(GameObject topAlignmentObject, GameObject leftAlignmentObject, bool useLeftSideOfAlignmentObject, float screenWidthRatio, string creditsGroupLabel)
+    {
+        // create the credits group container object
+        GameObject creditsGroupContainer = new GameObject("CreditsGroupContainer");
+        creditsGroupContainer.AddComponent<CanvasRenderer>();
+        Image creditsGroupContainerColor = creditsGroupContainer.AddComponent<Image>();
+        creditsGroupContainerColor.color = UIGlobals.containerColor;
+
+        // position the credits group container
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(creditsGroupContainer, topAlignmentObject, -centralNavPadding);
+
+        // resize the toggle group container
+        TransformScreenSpaceObject.ResizeObjectWidthToMatchScreen(creditsGroupContainer);
+
+        if (useLeftSideOfAlignmentObject)
+        {
+            TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(creditsGroupContainer, leftAlignmentObject, -centralNavPadding);
+        }
+        else
+        {
+            TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(creditsGroupContainer, leftAlignmentObject, centralNavPadding);
+        }
+
+        TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromNeighborBottom(creditsGroupContainer, topAlignmentObject, -centralNavPadding);
+        TransformScreenSpaceObject.ResizeObjectWidthByScreenWidthRatioTowardRight(creditsGroupContainer, screenWidthRatio);
+
+        // add the credits group label
+        GameObject groupLabel = new GameObject("CreditsGroupLabel");
+        Text groupLabelText = groupLabel.AddComponent<Text>();
+        groupLabelText.font = (Font)Resources.Load(UIGlobals.labelFont);
+        groupLabelText.text = creditsGroupLabel;
+        groupLabelText.fontSize = ConvertFontHeightRatioToPixelValue(UIGlobals.toggleGroupLabelSize);
+        groupLabelText.alignment = TextAnchor.UpperLeft;
+
+        // resize the text's bounding box to fit the text, before any transforms
+        TransformScreenSpaceObject.ResizeTextExtentsToFitContents(groupLabelText);
+
+        // position and resize the text and container
+        TransformScreenSpaceObject.PositionObjectAtCenterofScreen(groupLabel);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(groupLabel, creditsGroupContainer, UIGlobals.menuTitleTopMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(groupLabel, creditsGroupContainer, -UIGlobals.toggleContainerPadding);
+
+        // set parent/child hierarchy
+        groupLabel.transform.SetParent(creditsGroupContainer.transform);
+
+        return creditsGroupContainer;
     }
 
     public static GameObject CreateToggleGroupModule(GameObject parent, GameObject topAlignmentObject, GameObject leftAlignmentObject, bool useLeftSideOfAlignmentObject, float screenWidthRatio, string toggleGroupLabel)
