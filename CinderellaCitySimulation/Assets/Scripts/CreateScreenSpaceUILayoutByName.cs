@@ -273,7 +273,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         string backgroundImagePath = "UI/CreditsScreenBackground";
 
         // canvas
-        GameObject creditsScreenCanvas = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, SceneGlobals.mainMenuSceneName);
+        GameObject creditsScreenCanvas = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, SceneGlobals.creditsSceneName);
 
         // background image
         GameObject backgroundImage = CreateScreenSpaceUIElements.CreateFullScreenImageBackground(creditsScreenCanvas, backgroundImagePath);
@@ -284,8 +284,81 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         // create the title bar container
         GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(creditsScreenCanvas, logoHeader, "Credits:", true);
 
+        // put all credits content in a horizontal scroll area
+        // and central nav container
+        GameObject creditsContentHorizontalScrollArea = CreateScreenSpaceUIElements.CreateScrollableArea("CreditsContent", "horizontal");
+        GameObject creditsContentContainer = CreateScreenSpaceUIElements.CreateCentralNavContainer(creditsScreenCanvas, titleBarContainer);
+        CreateScreenSpaceUIElements.ConfigureScrollAreaToMatchChildRect(creditsContentHorizontalScrollArea, creditsContentContainer);
+
+        // get the list of lists from the CSV file
+        List<List<string>> creditsLists = ReadCSV.GetCreditsListsFromCSV();
+
+        // keep track of the created credits group modules
+        List<GameObject> createdCreditsGroupModules = new List<GameObject>();
+
+        for (int i = 0; i < creditsLists.Count; i++)
+        {
+            // the first item gets a different left alignment object
+            if (i == 0)
+            {
+                GameObject creditsGroup = CreateScreenSpaceUIElements.CreateCreditsGroupModule(creditsContentContainer, creditsContentContainer, true, UIGlobals.toggleContainerMaxWidthScreenWidthRatio, creditsLists[i][0]);
+                createdCreditsGroupModules.Add(creditsGroup);
+
+                // create a text item for each of the credits in this list
+                List<GameObject> createdCreditItems = CreateScreenSpaceUIElements.CreateCreditItemsFromList(creditsLists[i], creditsGroup);
+
+                /*
+                // create a credit item for each of the specified credits in this list
+                // first, clear the list of credit items
+                createdCreditItems.Clear();
+
+                // start at index 1, because index 0 is the name of the list
+                for (int j = 1; j < creditsLists[i].Count; j++)
+                {
+                    // the first item gets a different top alignment object
+                    if (j == 1)
+                    {
+                        GameObject creditItem = CreateScreenSpaceUIElements.CreateTextItemModule(creditsGroup, creditsGroup.transform.GetChild(0).gameObject, creditsLists[i][j]);
+                        createdCreditItems.Add(creditItem);
+                    }
+                    else
+                    {
+                        GameObject creditItem = CreateScreenSpaceUIElements.CreateTextItemModule(creditsGroup, createdCreditItems[j], creditsLists[i][j]);
+                    createdCreditItems.Add(creditItem);
+                    }
+
+                }
+                */
+
+                // for each of the items in the credits list, create a text item
+                CreateScreenSpaceUIElements.PopulateToggleGroup(creditsGroup, createdCreditItems);
+            }
+            else
+            {
+                GameObject creditsGroup = CreateScreenSpaceUIElements.CreateCreditsGroupModule(creditsContentContainer, createdCreditsGroupModules[i - 1], false, UIGlobals.toggleContainerMaxWidthScreenWidthRatio, creditsLists[i][0]);
+                createdCreditsGroupModules.Add(creditsGroup);
+
+                // create a text item for each of the credits in this list
+                List<GameObject> createdCreditItems = CreateScreenSpaceUIElements.CreateCreditItemsFromList(creditsLists[i], creditsGroup);
+                // for each of the items in the credits list, create a text item
+                CreateScreenSpaceUIElements.PopulateToggleGroup(creditsGroup, createdCreditItems);
+            }
+        }
+
+        // resize the content within the scroll area to just past the last sub-element
+        TransformScreenSpaceObject.ResizeParentContainerToFitLastChild(creditsContentContainer, createdCreditsGroupModules[createdCreditsGroupModules.Count - 1], UIGlobals.toggleContainerPadding, "right");
+
         // create the game version indicator
         GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(creditsScreenCanvas);
+
+        // set parent/child hierarchy
+        creditsContentHorizontalScrollArea.transform.SetParent(creditsScreenCanvas.transform);
+        creditsContentContainer.transform.SetParent(creditsContentHorizontalScrollArea.transform);
+
+        foreach (GameObject creditsGroupModule in createdCreditsGroupModules)
+        {
+            creditsGroupModule.transform.SetParent(creditsContentContainer.transform);
+        }
 
         return creditsScreenCanvas;
     }
