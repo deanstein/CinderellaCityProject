@@ -847,6 +847,12 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
     public static GameObject PopulateToggleGroup(GameObject toggleGroup, List<GameObject> togglesToDisplay)
     {
+        // create the object visibility scroll area
+        GameObject toggleGroupScrollArea = CreateScrollableArea("ToggleGroupScrollArea", "vertical");
+
+        // configure scroll area to fit the toggle group
+        ConfigureScrollAreaToMatchChildRect(toggleGroupScrollArea, toggleGroup);
+
         // resize the toggle group to fit the last toggle, if applicable
         TransformScreenSpaceObject.ResizeParentContainerToFitLastChild(toggleGroup, togglesToDisplay[togglesToDisplay.Count - 1], toggleBottomMarginScreenHeightRatio, "down");
 
@@ -864,7 +870,26 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
             toggle.transform.SetParent(toggleGroup.transform);
         }
 
+        TransformScreenSpaceObject.ResizeParentContainerToFitLastChild(toggleGroup, togglesToDisplay[togglesToDisplay.Count - 1], UIGlobals.toggleContainerPadding, "down");
+
+        // temporarily set the scroll area as a child of the container so it can be
+        // properly set as the parent later
+        toggleGroupScrollArea.transform.SetParent(toggleGroup.transform);
+
         return toggleGroup;
+    }
+
+    // assigns the correct scroll area hierarchy for a content group
+    public static void SetContentGroupHierarchy(GameObject contentGroupParent, GameObject contentGroupModule)
+    {
+        // get the scroll area
+        ScrollRect creditsGroupModuleScrollRect = contentGroupModule.GetComponentInChildren<ScrollRect>();
+
+        // set the scroll area's parent as the content container parent
+        creditsGroupModuleScrollRect.transform.SetParent(contentGroupParent.transform);
+
+        // set the group module as a child of the scroll area
+        contentGroupModule.transform.SetParent(creditsGroupModuleScrollRect.transform);
     }
 
     public static GameObject PopulateMenuBar(GameObject menuBar, List<GameObject> buttonsToDisplay)
