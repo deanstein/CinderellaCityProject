@@ -286,7 +286,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
 
         // put all credits content in a horizontal scroll area
         // and central nav container
-        GameObject creditsContentHorizontalScrollArea = CreateScreenSpaceUIElements.CreateScrollableArea("CreditsContent", "horizontal");
+        GameObject creditsContentHorizontalScrollArea = CreateScreenSpaceUIElements.CreateScrollableArea("CreditsContentScrollArea", "horizontal");
         GameObject creditsContentContainer = CreateScreenSpaceUIElements.CreateCentralNavContainer(creditsScreenCanvas, titleBarContainer);
         CreateScreenSpaceUIElements.ConfigureScrollAreaToMatchChildRect(creditsContentHorizontalScrollArea, creditsContentContainer);
 
@@ -306,29 +306,6 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
 
                 // create a text item for each of the credits in this list
                 List<GameObject> createdCreditItems = CreateScreenSpaceUIElements.CreateCreditItemsFromList(creditsLists[i], creditsGroup);
-
-                /*
-                // create a credit item for each of the specified credits in this list
-                // first, clear the list of credit items
-                createdCreditItems.Clear();
-
-                // start at index 1, because index 0 is the name of the list
-                for (int j = 1; j < creditsLists[i].Count; j++)
-                {
-                    // the first item gets a different top alignment object
-                    if (j == 1)
-                    {
-                        GameObject creditItem = CreateScreenSpaceUIElements.CreateTextItemModule(creditsGroup, creditsGroup.transform.GetChild(0).gameObject, creditsLists[i][j]);
-                        createdCreditItems.Add(creditItem);
-                    }
-                    else
-                    {
-                        GameObject creditItem = CreateScreenSpaceUIElements.CreateTextItemModule(creditsGroup, createdCreditItems[j], creditsLists[i][j]);
-                    createdCreditItems.Add(creditItem);
-                    }
-
-                }
-                */
 
                 // for each of the items in the credits list, create a text item
                 CreateScreenSpaceUIElements.PopulateToggleGroup(creditsGroup, createdCreditItems);
@@ -357,7 +334,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
 
         foreach (GameObject creditsGroupModule in createdCreditsGroupModules)
         {
-            creditsGroupModule.transform.SetParent(creditsContentContainer.transform);
+            CreateScreenSpaceUIElements.SetContentGroupHierarchy(creditsContentContainer, creditsGroupModule);
         }
 
         return creditsScreenCanvas;
@@ -447,14 +424,8 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         /// object visibility settings
         /// 
 
-        // create the object visibility scroll area
-        GameObject objectVisibilityScrollArea = CreateScreenSpaceUIElements.CreateScrollableArea("ObjectVisibility", "vertical");
-
         // create the object visibility toggle group container
         GameObject objectVisibilityToggleGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu, toggleSetContainer, toggleSetHorizontalScrollArea, true, 0.2f /* gets resized later */, "OBJECTS");
-
-        // configure scroll area to fit the toggle group
-        CreateScreenSpaceUIElements.ConfigureScrollAreaToMatchChildRect(objectVisibilityScrollArea, objectVisibilityToggleGroup);
 
         // first, create a list of toggles required for each of the object sets
         List<GameObject> visibilityToggles = new List<GameObject>();
@@ -506,14 +477,8 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         /// UI visibility settings
         ///
 
-        // create the object visibility scroll area
-        GameObject UIVisibilityScrollArea = CreateScreenSpaceUIElements.CreateScrollableArea("UIVisibilitySettings", "vertical");
-
         // create the object visibility toggle group container
         GameObject UIVisibilityToggleGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu, toggleSetContainer, objectVisibilityToggleGroup, false, 0.2f /* gets resized later */, "USER INTERFACE");
-
-        // configure scroll area to fit the toggle group
-        CreateScreenSpaceUIElements.ConfigureScrollAreaToMatchChildRect(UIVisibilityScrollArea, UIVisibilityToggleGroup);
 
         // first, create a list of toggles required for each of the object sets
         List<GameObject> UIVisibilityToggles = new List<GameObject>();
@@ -530,14 +495,8 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         /// camera settings
         ///
 
-        // create the object visibility scroll area
-        GameObject cameraSettingsScrollArea = CreateScreenSpaceUIElements.CreateScrollableArea("CameraSettings", "vertical");
-
         // create the object visibility toggle group container
         GameObject cameraSettingsToggleGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu, toggleSetContainer, UIVisibilityToggleGroup, false, 0.2f /* gets resized later */, "CAMERA SETTINGS");
-
-        // configure scroll area to fit the toggle group
-        CreateScreenSpaceUIElements.ConfigureScrollAreaToMatchChildRect(cameraSettingsScrollArea, cameraSettingsToggleGroup);
 
         // first, create a list of toggles required for each of the object sets
         List<GameObject> cameraSettingsToggles = new List<GameObject>();
@@ -554,14 +513,8 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         /// camera actions
         ///
 
-        // create the object visibility scroll area
-        GameObject cameraActionsScrollArea = CreateScreenSpaceUIElements.CreateScrollableArea("CameraActions", "vertical");
-
         // create the object visibility toggle group container
         GameObject cameraActionsButtonGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu, toggleSetContainer, cameraSettingsToggleGroup, false, 0.1f, "CAMERA ACTIONS");
-
-        // configure scroll area to fit the toggle group
-        CreateScreenSpaceUIElements.ConfigureScrollAreaToMatchChildRect(cameraActionsScrollArea, cameraActionsButtonGroup);
 
         // first, create a list of buttons required for each of the object sets
         List<GameObject> cameraActionButtons = new List<GameObject>();
@@ -578,7 +531,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         cameraActionButtons.Add(takeScreenshotButton);
 
         // save view button
-        GameObject saveViewFromClipboardButton = CreateScreenSpaceUIElements.CreateTextButton("Save View", UIGlobals.menuButtonTopBottomPaddingScreenHeightRatio, UIGlobals.visibilityMenuTextButtonlabelSize, UIGlobals.menuButtonScreenWidthRatio, UIGlobals.containerColor);
+        GameObject saveViewFromClipboardButton = CreateScreenSpaceUIElements.CreateTextButton("Save View",  UIGlobals.visibilityMenuTextButtonlabelSize, UIGlobals.menuButtonTopBottomPaddingScreenHeightRatio, UIGlobals.menuButtonScreenWidthRatio, UIGlobals.containerColor);
         saveViewFromClipboardButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
             CreateScreenSpaceUIElements.SaveViewButtonAction();
@@ -589,7 +542,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         cameraActionButtons.Add(saveViewFromClipboardButton);
 
         // restore view button
-        GameObject restoreViewFromClipboardButton = CreateScreenSpaceUIElements.CreateTextButton("Restore View", UIGlobals.menuButtonTopBottomPaddingScreenHeightRatio, UIGlobals.visibilityMenuTextButtonlabelSize, UIGlobals.menuButtonScreenWidthRatio, UIGlobals.containerColor);
+        GameObject restoreViewFromClipboardButton = CreateScreenSpaceUIElements.CreateTextButton("Restore View",  UIGlobals.visibilityMenuTextButtonlabelSize, UIGlobals.menuButtonTopBottomPaddingScreenHeightRatio, UIGlobals.menuButtonScreenWidthRatio, UIGlobals.containerColor);
         restoreViewFromClipboardButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
             CreateScreenSpaceUIElements.RestoreViewButtonAction();
@@ -599,6 +552,9 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         TransformScreenSpaceObject.PositionObjectAtVerticalCenterlineOfNeighbor(restoreViewFromClipboardButton, saveViewFromClipboardButton);
         cameraActionButtons.Add(restoreViewFromClipboardButton);
 
+        // now populate the object camera settings toggle group container
+        CreateScreenSpaceUIElements.PopulateToggleGroup(cameraActionsButtonGroup, cameraActionButtons);
+
         // resize the content within the scroll area to just past the last sub-element
         TransformScreenSpaceObject.ResizeParentContainerToFitLastChild(toggleSetContainer, cameraActionsButtonGroup, UIGlobals.toggleContainerPadding, "right");
 
@@ -606,17 +562,13 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         toggleSetHorizontalScrollArea.transform.SetParent(visibilityMenu.transform);
         toggleSetContainer.transform.SetParent(toggleSetHorizontalScrollArea.transform);
 
-        objectVisibilityScrollArea.transform.parent = toggleSetContainer.transform;
-        objectVisibilityToggleGroup.transform.SetParent(objectVisibilityScrollArea.transform);
+        CreateScreenSpaceUIElements.SetContentGroupHierarchy(toggleSetContainer, objectVisibilityToggleGroup);
 
-        UIVisibilityScrollArea.transform.parent = toggleSetContainer.transform;
-        UIVisibilityToggleGroup.transform.SetParent(UIVisibilityScrollArea.transform);
+        CreateScreenSpaceUIElements.SetContentGroupHierarchy(toggleSetContainer, UIVisibilityToggleGroup);
 
-        cameraSettingsScrollArea.transform.parent = toggleSetContainer.transform;
-        cameraSettingsToggleGroup.transform.SetParent(cameraSettingsScrollArea.transform);
+        CreateScreenSpaceUIElements.SetContentGroupHierarchy(toggleSetContainer, cameraSettingsToggleGroup);
 
-        cameraActionsScrollArea.transform.parent = toggleSetContainer.transform;
-        cameraActionsButtonGroup.transform.SetParent(cameraActionsScrollArea.transform);
+        CreateScreenSpaceUIElements.SetContentGroupHierarchy(toggleSetContainer, cameraActionsButtonGroup);
 
         takeScreenshotButton.transform.SetParent(cameraActionsButtonGroup.transform);
         saveViewFromClipboardButton.transform.SetParent(cameraActionsButtonGroup.transform);
