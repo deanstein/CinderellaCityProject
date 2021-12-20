@@ -518,12 +518,12 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // position the title container and button
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(titleContainer, topAlignmentObject, logoHeaderBottomMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(backButton, topAlignmentObject, logoHeaderBottomMarginScreenHeightRatio);
-        TransformScreenSpaceObject.PositionObjectByWidthRatioFromScreenLeft(backButton, UIGlobals.navContainerLeftMarginScreenWidthRatio);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromScreenLeft(backButton, UIGlobals.navContainerLeftMarginScreenWidthRatio - (backButtonWidth / Screen.width));
 
         // resize the title container
         TransformScreenSpaceObject.ResizeObjectWidthToMatchScreen(titleContainer);
         // the left margin depends on whether the back button should be shown or not
-        float leftMargin = showBackButton ? UIGlobals.navContainerLeftMarginScreenWidthRatio + (backButtonWidth / Screen.width) + UIGlobals.textButtonLeftMarginScreenWidthRatio : UIGlobals.navContainerLeftMarginScreenWidthRatio;
+        float leftMargin = UIGlobals.navContainerLeftMarginScreenWidthRatio;
         TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromScreenLeft(titleContainer, leftMargin);
 
         // add the title text
