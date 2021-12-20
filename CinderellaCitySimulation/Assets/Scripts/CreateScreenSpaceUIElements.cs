@@ -845,41 +845,42 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         return visibilityToggleModule;
     }
 
-    public static GameObject PopulateToggleGroup(GameObject toggleGroup, List<GameObject> togglesToDisplay)
+    // populate a content group with all of its children content objects
+    public static GameObject PopulateContentGroup(GameObject contentGroup, List<GameObject> contentObjectsToDisplay)
     {
-        // create the object visibility scroll area
-        GameObject toggleGroupScrollArea = CreateScrollableArea("ToggleGroupScrollArea", "vertical");
+        // create the content group scroll area
+        GameObject contentGroupScrollArea = CreateScrollableArea("ContentGroupScrollArea", "vertical");
 
-        // configure scroll area to fit the toggle group
-        ConfigureScrollAreaToMatchChildRect(toggleGroupScrollArea, toggleGroup);
+        // configure scroll area to fit the content group
+        ConfigureScrollAreaToMatchChildRect(contentGroupScrollArea, contentGroup);
 
-        // resize the toggle group to fit the last toggle, if applicable
-        TransformScreenSpaceObject.ResizeParentContainerToFitLastChild(toggleGroup, togglesToDisplay[togglesToDisplay.Count - 1], toggleBottomMarginScreenHeightRatio, "down");
+        // resize the content group to fit the last toggle, if applicable
+        TransformScreenSpaceObject.ResizeParentContainerToFitLastChild(contentGroup, contentObjectsToDisplay[contentObjectsToDisplay.Count - 1], toggleBottomMarginScreenHeightRatio, "down");
 
-        // resize the group right edge to hug the typical toggle width
-        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromNeighborRight(toggleGroup, togglesToDisplay[0], UIGlobals.toggleContainerPadding);
+        // resize the group right edge to hug the typical content width
+        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromNeighborRight(contentGroup, contentObjectsToDisplay[0], UIGlobals.toggleContainerPadding);
 
         // position the label again to account for the resizing of the group
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(toggleGroup.transform.GetChild(0).gameObject, toggleGroup, UIGlobals.menuTitleTopMarginScreenHeightRatio);
-        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(toggleGroup.transform.GetChild(0).gameObject, toggleGroup, -UIGlobals.toggleContainerPadding);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(contentGroup.transform.GetChild(0).gameObject, contentGroup, UIGlobals.menuTitleTopMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(contentGroup.transform.GetChild(0).gameObject, contentGroup, -UIGlobals.toggleContainerPadding);
 
-        // add each of the specified toggles to the toggle group
-        foreach (GameObject toggle in togglesToDisplay)
+        // add each of the specified content objects to the content group
+        foreach (GameObject contentObject in contentObjectsToDisplay)
         {
             // set the toggle as a child of the toggle group
-            toggle.transform.SetParent(toggleGroup.transform);
+            contentObject.transform.SetParent(contentGroup.transform);
         }
 
-        TransformScreenSpaceObject.ResizeParentContainerToFitLastChild(toggleGroup, togglesToDisplay[togglesToDisplay.Count - 1], UIGlobals.toggleContainerPadding, "down");
+        TransformScreenSpaceObject.ResizeParentContainerToFitLastChild(contentGroup, contentObjectsToDisplay[contentObjectsToDisplay.Count - 1], UIGlobals.toggleContainerPadding, "down");
 
         // temporarily set the scroll area as a child of the container so it can be
         // properly set as the parent later
-        toggleGroupScrollArea.transform.SetParent(toggleGroup.transform);
+        contentGroupScrollArea.transform.SetParent(contentGroup.transform);
 
-        return toggleGroup;
+        return contentGroup;
     }
 
-    // assigns the correct scroll area hierarchy for a content group
+    // assign the correct scroll area hierarchy for a content group
     public static void SetContentGroupHierarchy(GameObject contentGroupParent, GameObject contentGroupModule)
     {
         // get the scroll area

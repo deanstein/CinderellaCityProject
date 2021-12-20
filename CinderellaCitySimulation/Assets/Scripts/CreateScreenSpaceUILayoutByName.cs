@@ -308,7 +308,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
                 List<GameObject> createdCreditItems = CreateScreenSpaceUIElements.CreateCreditItemsFromList(creditsLists[i], creditsGroup);
 
                 // for each of the items in the credits list, create a text item
-                CreateScreenSpaceUIElements.PopulateToggleGroup(creditsGroup, createdCreditItems);
+                CreateScreenSpaceUIElements.PopulateContentGroup(creditsGroup, createdCreditItems);
             }
             else
             {
@@ -318,7 +318,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
                 // create a text item for each of the credits in this list
                 List<GameObject> createdCreditItems = CreateScreenSpaceUIElements.CreateCreditItemsFromList(creditsLists[i], creditsGroup);
                 // for each of the items in the credits list, create a text item
-                CreateScreenSpaceUIElements.PopulateToggleGroup(creditsGroup, createdCreditItems);
+                CreateScreenSpaceUIElements.PopulateContentGroup(creditsGroup, createdCreditItems);
             }
         }
 
@@ -471,7 +471,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         visibilityToggles.Add(waterFeatureVisibilityToggle);
 
         // now populate the object visibility toggle group container
-        CreateScreenSpaceUIElements.PopulateToggleGroup(objectVisibilityToggleGroup, visibilityToggles);
+        CreateScreenSpaceUIElements.PopulateContentGroup(objectVisibilityToggleGroup, visibilityToggles);
 
         ///
         /// UI visibility settings
@@ -489,7 +489,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         UIVisibilityToggles.Add(showHUDToggle);
 
         // now populate the object camera settings toggle group container
-        CreateScreenSpaceUIElements.PopulateToggleGroup(UIVisibilityToggleGroup, UIVisibilityToggles);
+        CreateScreenSpaceUIElements.PopulateContentGroup(UIVisibilityToggleGroup, UIVisibilityToggles);
 
         ///
         /// camera settings
@@ -507,7 +507,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         cameraSettingsToggles.Add(occlusionCullingToggle);
 
         // now populate the object camera settings toggle group container
-        CreateScreenSpaceUIElements.PopulateToggleGroup(cameraSettingsToggleGroup, cameraSettingsToggles);
+        CreateScreenSpaceUIElements.PopulateContentGroup(cameraSettingsToggleGroup, cameraSettingsToggles);
 
         ///
         /// camera actions
@@ -553,7 +553,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         cameraActionButtons.Add(restoreViewFromClipboardButton);
 
         // now populate the object camera settings toggle group container
-        CreateScreenSpaceUIElements.PopulateToggleGroup(cameraActionsButtonGroup, cameraActionButtons);
+        CreateScreenSpaceUIElements.PopulateContentGroup(cameraActionsButtonGroup, cameraActionButtons);
 
         // resize the content within the scroll area to just past the last sub-element
         TransformScreenSpaceObject.ResizeParentContainerToFitLastChild(toggleSetContainer, cameraActionsButtonGroup, UIGlobals.toggleContainerPadding, "right");
