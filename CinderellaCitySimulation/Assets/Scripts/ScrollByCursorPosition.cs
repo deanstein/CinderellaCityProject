@@ -18,7 +18,7 @@ public class ScrollByCursorPosition : MonoBehaviour
     static readonly float scrollPosThresholdLower = 0.25f; 
     static readonly float scrollPosThresholdUpper = 1 - scrollPosThresholdLower;
 
-    private void Start()
+    private void OnEnable()
     {
         thisScrollRect = this.GetComponent<ScrollRect>();
         thisRect = thisScrollRect.GetComponent<RectTransform>();
