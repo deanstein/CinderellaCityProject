@@ -129,24 +129,30 @@ public class AssetImportUpdate : AssetPostprocessor {
         // if that happens, the gameObject from asset will be null, so skip this to prevent errors
         if (gameObject == null)
         {
+            Utils.DebugUtils.DebugLog("This GameObject was null, so skipping set custom lightmapping operation: " + gameObject.name);
+
             return;
         }
 
+        // the scene name will be checked downstream, 
+        // since the 60s70s scene requires additional overrides
+        string sceneName = EditorSceneManager.GetActiveScene().name;
+
         // get all the children transforms
-        Transform[] allChildrenTransforms = gameObject.GetComponentsInChildren<Transform>();
+        Renderer[] allChildrenRenderers = gameObject.GetComponentsInChildren<Renderer>();
 
         //  modify the lightmap settings for each of the renderers
-        foreach (Transform child in allChildrenTransforms)
+        foreach (Renderer childRenderer in allChildrenRenderers)
         {
-            // only try if there's a renderer on this transform
-            if (child.GetComponent<Renderer>() != null)
+            Material mat = childRenderer.sharedMaterial;
+
+            // only try if there's a valid material on this transform
+            if (mat != null)
             {
-                // get the renderer
-                Renderer rend = child.GetComponent<Renderer>();
-                SerializedObject so = new SerializedObject(rend);
+                SerializedObject so = new SerializedObject(childRenderer);
 
                 float existingResolution = so.FindProperty("m_ScaleInLightmap").floatValue;
-                float newResolution = ManageImportSettings.GetShadowMapResolutionMultiplierByName(gameObject.name);
+                float newResolution = ManageImportSettings.GetShadowMapResolutionOverrideByMaterialName(sceneName, gameObject.name, mat.name, ManageImportSettings.GetShadowMapResolutionMultiplierByName(gameObject.name));
 
                 //Utils.DebugUtils.DebugLog("Changing resolution of " + gameObject.name + " child " + child.name + " to " + newResolution);
 

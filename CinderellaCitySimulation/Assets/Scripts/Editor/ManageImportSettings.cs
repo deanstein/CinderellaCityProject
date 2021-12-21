@@ -1,4 +1,4 @@
-using UnityEditor;
+﻿using UnityEditor;
 
 /// <summary>
 /// Contains import settings for various importable files, used by AssetImportPipeline to apply certain settings to certain files
@@ -449,6 +449,39 @@ public class ManageImportSettings
             // if not specified, the default is 1 (no change to global resolution for this asset)
             default:
                 return 1f;
+        }
+    }
+
+    // overrides the result of the above function in certain cases
+    public static float GetShadowMapResolutionOverrideByMaterialName(string sceneName, string assetName, string materialName, float originalValue)
+    {
+        switch (sceneName)
+        {
+            // currently, only the 60s70s era requires higher lightmap overrides
+            // for cases like the Blue Mall columns and exterior brick at sunset
+            case string nameOfScene when nameOfScene.Contains("60s70s")
+            || nameOfScene.Contains("Experimental"):
+                // only certain asset names need to be overridden
+                switch (assetName)
+                {
+                    // only these assets should be affected
+                    case string nameOfAsset when nameOfAsset.Contains("mall-detailing-interior")
+                    || nameOfAsset.Contains("mall-walls-detailing-exterior"):
+                        switch (materialName)
+                        {
+                            // only these materials should be affected
+                            // values assume a global resolution of 3.2808 (1 texel per foot)
+                            case string nameOfMaterial when nameOfMaterial.Contains("mall - blue column yellow tile")
+                            || nameOfMaterial.Contains("mall - brick"):
+                                return 20f;
+                            default:
+                                return originalValue;
+                        }
+                    default:
+                        return originalValue;
+                }
+            default:
+                return originalValue;
         }
     }
 
