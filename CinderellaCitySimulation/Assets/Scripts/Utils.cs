@@ -8,7 +8,7 @@ using UnityEngine.AI;
 /// Offers a variety of low-level, common operations shared among other scripts
 /// </summary>
 
-public static class ArrayUtilities
+public static class ArrayUtils
 {
     // create a subset from a range of indices
     public static T[] RangeSubset<T>(this T[] array, int startIndex, int length)
@@ -27,6 +27,20 @@ public static class ArrayUtilities
             subset[i] = array[indices[i]];
         }
         return subset;
+    }
+
+    public static string[] ShuffleArray(string[] texts)
+    {
+        // Knuth shuffle algorithm :: courtesy of Wikipedia
+        for (int t = 0; t < texts.Length; t++)
+        {
+            string tmp = texts[t];
+            int r = UnityEngine.Random.Range(t, texts.Length);
+            texts[t] = texts[r];
+            texts[r] = tmp;
+        }
+
+        return texts;
     }
 }
 
@@ -50,7 +64,7 @@ public class FileDirUtils
     }
 
     // remove a 3-letter extension and the dot from a name or path
-    public static string RemoveNameOrPathExtension(string nameOrPathWithExtension)
+    public static string RemoveExtension(string nameOrPathWithExtension)
     {
         string nameOrPathWithoutExtension = nameOrPathWithExtension.Substring(0, nameOrPathWithExtension.Length - 4);
 
@@ -72,7 +86,7 @@ public class FileDirUtils
 
         foreach (string filePath in filePaths)
         {
-            finalPathsList.Add(FileDirUtils.ConvertProjectPathToRelativePath(FileDirUtils.RemoveNameOrPathExtension(filePath)));
+            finalPathsList.Add(FileDirUtils.ConvertProjectPathToRelativePath(FileDirUtils.RemoveExtension(filePath)));
         }
 
         return finalPathsList.ToArray();

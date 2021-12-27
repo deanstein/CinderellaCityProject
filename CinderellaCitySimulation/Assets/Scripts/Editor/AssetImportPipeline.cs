@@ -526,7 +526,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             {
                 // determine the FBM dir, which would be at the same level as the object
                 // but with an .fbm extension instead
-                string prefabPathWithoutExtension = FileDirUtils.RemoveNameOrPathExtension(prefabPathBySceneObject);
+                string prefabPathWithoutExtension = FileDirUtils.RemoveExtension(prefabPathBySceneObject);
                 string FBMFolderPath = prefabPathWithoutExtension + ".fbm";
 
                 // if the folder exists, delete it
