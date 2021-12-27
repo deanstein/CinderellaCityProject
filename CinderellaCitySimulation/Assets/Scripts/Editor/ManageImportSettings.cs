@@ -526,6 +526,8 @@ public class ManageImportSettings
                 return 0.75f;
             case string name when name.Contains("cinder alley incandescent"):
                 return 3.75f;
+            case string name when name.Contains("cinderella city signage neon"):
+                return 3.5f;
             case string name when name.Contains("display case"):
                 return 2.0f;
             case string name when name.Contains("exterior white"):
