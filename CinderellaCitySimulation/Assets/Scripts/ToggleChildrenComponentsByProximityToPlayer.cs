@@ -112,18 +112,18 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
         // and increment the frame count
         if (distributedListIndexEnd < childrenObjects.Length - 1)
         {
-            distributedChildrenObjects = ArrayUtilities.RangeSubset(childrenObjects, distributedListIndexStart, distributedChildrenListLength);
-            distributedChildrenPositions = ArrayUtilities.RangeSubset(childrenPositions, distributedListIndexStart, distributedChildrenListLength);
-            distributedChildrenNotInFrameCounts = ArrayUtilities.RangeSubset(childrenNotInFrameCounts, distributedListIndexStart, distributedChildrenListLength);
+            distributedChildrenObjects = ArrayUtils.RangeSubset(childrenObjects, distributedListIndexStart, distributedChildrenListLength);
+            distributedChildrenPositions = ArrayUtils.RangeSubset(childrenPositions, distributedListIndexStart, distributedChildrenListLength);
+            distributedChildrenNotInFrameCounts = ArrayUtils.RangeSubset(childrenNotInFrameCounts, distributedListIndexStart, distributedChildrenListLength);
             frameCount++;
         }
         // check if we're at the end of the array, and adjust the last index to stay in bounds
         // and reset the frame count
         else
         {
-            distributedChildrenObjects = ArrayUtilities.RangeSubset(childrenObjects, distributedListIndexStart, distributedChildrenListLength - (distributedListIndexEnd - childrenObjects.Length));
-            distributedChildrenPositions = ArrayUtilities.RangeSubset(childrenPositions, distributedListIndexStart, distributedChildrenListLength - (distributedListIndexEnd - childrenPositions.Length));
-            distributedChildrenNotInFrameCounts = ArrayUtilities.RangeSubset(childrenNotInFrameCounts, distributedListIndexStart, distributedChildrenListLength - (distributedListIndexEnd - childrenNotInFrameCounts.Length));
+            distributedChildrenObjects = ArrayUtils.RangeSubset(childrenObjects, distributedListIndexStart, distributedChildrenListLength - (distributedListIndexEnd - childrenObjects.Length));
+            distributedChildrenPositions = ArrayUtils.RangeSubset(childrenPositions, distributedListIndexStart, distributedChildrenListLength - (distributedListIndexEnd - childrenPositions.Length));
+            distributedChildrenNotInFrameCounts = ArrayUtils.RangeSubset(childrenNotInFrameCounts, distributedListIndexStart, distributedChildrenListLength - (distributedListIndexEnd - childrenNotInFrameCounts.Length));
             frameCount = 0;
         }
 

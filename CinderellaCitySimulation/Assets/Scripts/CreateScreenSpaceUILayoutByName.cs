@@ -97,7 +97,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         if (this.name.Contains("LoadingScreenLauncher"))
         {
             // get all available images in the loading screen backgrounds dir
-            string[] loadingScreenBackgroundImages = FileDirUtils.ConvertPathsToRelativeAndRemoveExtensions(FileDirUtils.GetAllFilesInDirOfTypes(UIGlobals.loadingScreenBackgroundsPath, UIGlobals.supportedImageTypes));
+            string[] loadingScreenBackgroundImages = ArrayUtils.ShuffleArray(FileDirUtils.ConvertPathsToRelativeAndRemoveExtensions(FileDirUtils.GetAllFilesInDirOfTypes(UIGlobals.loadingScreenBackgroundsPath, UIGlobals.supportedImageTypes)));
 
             BuildLoadingScreen(UILauncher, loadingScreenBackgroundImages);
         }
@@ -106,7 +106,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         else if (this.name.Contains("MainMenuLauncher"))
         {
             // get all available images in the main menu backgrounds dir
-            string[] mainMenuBackgroundImages = FileDirUtils.ConvertPathsToRelativeAndRemoveExtensions(FileDirUtils.GetAllFilesInDirOfTypes(UIGlobals.mainMenuBackgroundsPath, UIGlobals.supportedImageTypes));
+            string[] mainMenuBackgroundImages = ArrayUtils.ShuffleArray(FileDirUtils.ConvertPathsToRelativeAndRemoveExtensions(FileDirUtils.GetAllFilesInDirOfTypes(UIGlobals.mainMenuBackgroundsPath, UIGlobals.supportedImageTypes)));
 
             BuildMainMenu(UILauncher, mainMenuBackgroundImages);
         }
