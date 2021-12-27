@@ -41,7 +41,7 @@ public class SceneGlobals
     // TODO: add Alt Future when available
     public static string[] availableTimePeriodFriendlyNames = { "1960s-70s", "1980s-90s" };
     // for testing purposes, set this to true to skip loading heavy first-person scenes
-    public static bool loadMenusOnly = true;
+    public static bool loadMenusOnly = false;
     // the scenes to load when the game starts will differ depending on the above flag
     public static string[] scenesToLoad = loadMenusOnly ? allMenuSceneNames : allGameplaySceneNames;
 
