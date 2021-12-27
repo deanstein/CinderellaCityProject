@@ -16,7 +16,14 @@ public class UIGlobals
     // all UI sprites stored in a file live here
     public static string projectUIPath = "Assets/Resources/UI/";
     // used for Resources.Load, which already starts in Assets/Resources
-    public static string relativeUIPath = "UI/";
+    public static string relativeUIPath = FileDirUtils.ConvertProjectPathToRelativePath(projectUIPath);
+
+    // the image types to look for when getting all images from a folder
+    public static string[] supportedImageTypes = { "jpg", "png" };
+
+    // subfolders in the UI directory that hold specific types of content
+    public static string loadingScreenBackgroundsPath = projectUIPath + "LoadingScreenBackgrounds";
+    public static string mainMenuBackgroundsPath = projectUIPath + "MainMenuBackgrounds";
 
     // is used to determine when to generate time-travel specific thumbnails
     public static bool isTimeTravelThumbnail;

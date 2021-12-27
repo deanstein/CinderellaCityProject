@@ -17,11 +17,6 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
     // this script needs to be attached to a "launcher" - an empty gameobject in the appropriate scene
     // then, the correct menu layout or layout combinations will be built based on the launcher's name
 
-    // define the background image sequence for each menu or screen
-    // TODO: increase variety and randomize
-    string[] loadingScreenBackgroundSlideShowSequence = { "UI/LoadingScreenBackground1", "UI/LoadingScreenBackground2" };
-    string[] mainMenuBackgroundSlideShowSequence = { "UI/MainMenuBackground1", "UI/MainMenuBackground2" };
-
     // the current screen resolution will be checked against the last known resolution
     // to determine whether the UI needs to be rebuilt
     int lastScreenWidth = Screen.width;
@@ -101,13 +96,19 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         // loading screen
         if (this.name.Contains("LoadingScreenLauncher"))
         {
-            BuildLoadingScreen(UILauncher, loadingScreenBackgroundSlideShowSequence);
+            // get all available images in the loading screen backgrounds dir
+            string[] loadingScreenBackgroundImages = FileDirUtils.ConvertPathsToRelativeAndRemoveExtensions(FileDirUtils.GetAllFilesInDirOfTypes(UIGlobals.loadingScreenBackgroundsPath, UIGlobals.supportedImageTypes));
+
+            BuildLoadingScreen(UILauncher, loadingScreenBackgroundImages);
         }
 
         // the main menu
         else if (this.name.Contains("MainMenuLauncher"))
         {
-            BuildMainMenu(UILauncher, mainMenuBackgroundSlideShowSequence);
+            // get all available images in the main menu backgrounds dir
+            string[] mainMenuBackgroundImages = FileDirUtils.ConvertPathsToRelativeAndRemoveExtensions(FileDirUtils.GetAllFilesInDirOfTypes(UIGlobals.mainMenuBackgroundsPath, UIGlobals.supportedImageTypes));
+
+            BuildMainMenu(UILauncher, mainMenuBackgroundImages);
         }
 
         // pause menu
