@@ -30,6 +30,56 @@ public static class ArrayUtilities
     }
 }
 
+public class FileDirUtils
+{
+    public static string[] GetAllFilesInDirOfTypes(string dirPath, string[] fileTypes)
+    {
+        List<string> filePathsList = new List<string>();
+
+        foreach (string fileType in fileTypes)
+        {
+            string formattedFileType = "*." + fileType;
+            string[] filePaths = System.IO.Directory.GetFiles(dirPath, formattedFileType);
+            foreach (string filePath in filePaths)
+            {
+                filePathsList.Add(filePath);
+            }
+        }
+
+        return filePathsList.ToArray();
+    }
+
+    // remove a 3-letter extension and the dot from a name or path
+    public static string RemoveNameOrPathExtension(string nameOrPathWithExtension)
+    {
+        string nameOrPathWithoutExtension = nameOrPathWithExtension.Substring(0, nameOrPathWithExtension.Length - 4);
+
+        return nameOrPathWithoutExtension;
+    }
+
+    // eliminate "Assets/Resources/" from a path
+    public static string ConvertProjectPathToRelativePath(string projectPath)
+    {
+        string projectPathPrefix = "Assets/Resources/";
+        string relativePath = projectPath.Substring(projectPathPrefix.Length, ((projectPath.Length) - projectPathPrefix.Length));
+
+        return relativePath;
+    }
+
+    public static string[] ConvertPathsToRelativeAndRemoveExtensions(string[] filePaths)
+    {
+        List<string> finalPathsList = new List<string>();
+
+        foreach (string filePath in filePaths)
+        {
+            finalPathsList.Add(FileDirUtils.ConvertProjectPathToRelativePath(FileDirUtils.RemoveNameOrPathExtension(filePath)));
+        }
+
+        return finalPathsList.ToArray();
+    }
+}
+
+// TODO: move these out of Utils to top-level classes
 public class Utils
 {
     public class DebugUtils
@@ -49,23 +99,6 @@ public class Utils
 
     public class StringUtils
     {
-        // convert a file path to a directory 
-        // by cutting off the extension (assumed to be 3 characters)
-        public static string ConvertFilePathToDirectory(string filePathWithExtension, string fileName)
-        {
-            String directoryPath = filePathWithExtension.Substring(0, filePathWithExtension.Length - (fileName.Length + 4));
-
-            return directoryPath;
-        }
-
-        // remove a 3-letter extension and the dot from a name or path
-        public static string RemoveNameOrPathExtension(string nameOrPathWithExtension)
-        {
-            string nameOrPathWithoutExtension = nameOrPathWithExtension.Substring(0, nameOrPathWithExtension.Length - 4);
-
-            return nameOrPathWithoutExtension;
-        }
-
         // remove spaces, punctuation, and other characters from a string
         public static string CleanString(string messyString)
         {
@@ -75,7 +108,7 @@ public class Utils
             // remove colons
             cleanString = cleanString.Replace(":", "");
 
-            // remove dashed
+            // remove dashes
             cleanString = cleanString.Replace("-", "");
 
             // remove the "19" if used in year syntax
