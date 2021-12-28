@@ -15,6 +15,12 @@ EditorBuildSettings:
     path: Assets/Scenes/PauseMenu.unity
     guid: 299117a530571d547997454c424f4bbd
   - enabled: 1
+    path: Assets/Scenes/HowToPlayScreen.unity
+    guid: 0fca4d45e32a79846be616e9c08a7b70
+  - enabled: 1
+    path: Assets/Scenes/CreditsScreen.unity
+    guid: 98137af84747e4346a366d8c201563b6
+  - enabled: 1
     path: Assets/Scenes/60s70s.unity
     guid: c1494b8d6b1430544af8c34a2af0dddb
   - enabled: 1
