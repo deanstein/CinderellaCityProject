@@ -17,6 +17,9 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
     // this script needs to be attached to a "launcher" - an empty gameobject in the appropriate scene
     // then, the correct menu layout or layout combinations will be built based on the launcher's name
 
+    // the background image sequence, if required, is created once, then stored here
+    string[] backgroundImageSequence = { };
+
     // the current screen resolution will be checked against the last known resolution
     // to determine whether the UI needs to be rebuilt
     int lastScreenWidth = Screen.width;
@@ -97,18 +100,18 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         if (this.name.Contains("LoadingScreenLauncher"))
         {
             // get all available images in the loading screen backgrounds dir
-            string[] loadingScreenBackgroundImages = ArrayUtils.ShuffleArray(FileDirUtils.ConvertPathsToRelativeAndRemoveExtensions(FileDirUtils.GetAllFilesInDirOfTypes(UIGlobals.projectUIPath + UIGlobals.loadingScreenBackgroundsSubdir, UIGlobals.supportedImageTypes)));
+            backgroundImageSequence = backgroundImageSequence.Length > 0 ? backgroundImageSequence : ArrayUtils.ShuffleArray(FileDirUtils.ConvertPathsToRelativeAndRemoveExtensions(FileDirUtils.GetAllFilesInDirOfTypes(UIGlobals.projectUIPath + UIGlobals.loadingScreenBackgroundsSubdir, UIGlobals.supportedImageTypes)));
 
-            BuildLoadingScreen(UILauncher, loadingScreenBackgroundImages);
+            BuildLoadingScreen(UILauncher, backgroundImageSequence);
         }
 
         // the main menu
         else if (this.name.Contains("MainMenuLauncher"))
         {
             // get all available images in the main menu backgrounds dir
-            string[] mainMenuBackgroundImages = ArrayUtils.ShuffleArray(FileDirUtils.ConvertPathsToRelativeAndRemoveExtensions(FileDirUtils.GetAllFilesInDirOfTypes(UIGlobals.projectUIPath + UIGlobals.mainMenuBackgroundsSubdir, UIGlobals.supportedImageTypes)));
+            backgroundImageSequence = backgroundImageSequence.Length > 0 ? backgroundImageSequence : ArrayUtils.ShuffleArray(FileDirUtils.ConvertPathsToRelativeAndRemoveExtensions(FileDirUtils.GetAllFilesInDirOfTypes(UIGlobals.projectUIPath + UIGlobals.mainMenuBackgroundsSubdir, UIGlobals.supportedImageTypes)));
 
-            BuildMainMenu(UILauncher, mainMenuBackgroundImages);
+            BuildMainMenu(UILauncher, backgroundImageSequence);
         }
 
         // pause menu
