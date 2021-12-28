@@ -13,17 +13,20 @@ using UnityEngine.UI;
 // holds values other scripts need to access
 public class UIGlobals
 {
+    // all files accessed at run-time must be stored in a Resources folder
+    public static string projectResourcesPath = "Assets/Resources/";
     // all UI sprites stored in a file live here
-    public static string projectUIPath = "Assets/Resources/UI/";
+    public static string projectUIPath = projectResourcesPath + "UI/";
     // used for Resources.Load, which already starts in Assets/Resources
     public static string relativeUIPath = FileDirUtils.ConvertProjectPathToRelativePath(projectUIPath);
 
+    // subfolders in the UI directory that hold specific types of content
+    public static string loadingScreenBackgroundsSubdir = "LoadingScreenBackgrounds/";
+    public static string mainMenuBackgroundsSubdir = "MainMenuBackgrounds/";
+    public static string mainMenuThumbnailsSubdir = "MainMenuThumbnails/";
+
     // the image types to look for when getting all images from a folder
     public static string[] supportedImageTypes = { "jpg", "png" };
-
-    // subfolders in the UI directory that hold specific types of content
-    public static string loadingScreenBackgroundsPath = projectUIPath + "LoadingScreenBackgrounds";
-    public static string mainMenuBackgroundsPath = projectUIPath + "MainMenuBackgrounds";
 
     // is used to determine when to generate time-travel specific thumbnails
     public static bool isTimeTravelThumbnail;
@@ -480,7 +483,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
         // set the logo image
         Image logoImage = logo.GetComponent<Image>();
-        logoImage.sprite = (Sprite)Resources.Load("UI/CCP logo", typeof(Sprite));
+        logoImage.sprite = (Sprite)Resources.Load(UIGlobals.relativeUIPath + "CCP logo", typeof(Sprite));
         logoImage.preserveAspect = true;
         logoImage.SetNativeSize();
 
@@ -794,10 +797,10 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         Image toggleObjectBackground = toggleCheckboxBackground.AddComponent<Image>();
         Vector2 toggleBackgroundSize = new Vector2(ConvertFontHeightRatioToPixelValue(UIGlobals.toggleLabelSize), ConvertFontHeightRatioToPixelValue(UIGlobals.toggleLabelSize));
         toggleObjectBackground.rectTransform.sizeDelta = toggleBackgroundSize;
-        toggleObjectBackground.sprite = (Sprite)Resources.Load("UI/checkbox-background", typeof(Sprite));
+        toggleObjectBackground.sprite = (Sprite)Resources.Load(UIGlobals.relativeUIPath + "checkbox-background", typeof(Sprite));
         GameObject toggleCheckboxCheckmark = new GameObject("ToggleCheckboxCheckmark");
         Image toggleCheckmarkImage = toggleCheckboxCheckmark.AddComponent<Image>();
-        toggleCheckmarkImage.sprite = (Sprite)Resources.Load("UI/checkbox-checkmark", typeof(Sprite));
+        toggleCheckmarkImage.sprite = (Sprite)Resources.Load(UIGlobals.relativeUIPath + "checkbox-checkmark", typeof(Sprite));
 
         // add and configure the toggle
         Toggle toggle = toggleObject.AddComponent<Toggle>();
@@ -1352,7 +1355,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
             else
             {
                 string finalScreenshotName = partialScreenshotName + "-" + SceneGlobals.availableTimePeriodSceneNamesList[i];
-                timePeriodButtonImage.sprite = (Sprite)Resources.Load("UI/" + finalScreenshotName, typeof(Sprite));
+                timePeriodButtonImage.sprite = (Sprite)Resources.Load(UIGlobals.relativeUIPath + UIGlobals.mainMenuThumbnailsSubdir + finalScreenshotName, typeof(Sprite));
             }
 
             timePeriodButtonImage.preserveAspect = true;
