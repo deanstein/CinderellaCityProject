@@ -74,8 +74,7 @@ public class FileDirUtils
     // eliminate "Assets/Resources/" from a path
     public static string ConvertProjectPathToRelativePath(string projectPath)
     {
-        string projectPathPrefix = "Assets/Resources/";
-        string relativePath = projectPath.Substring(projectPathPrefix.Length, ((projectPath.Length) - projectPathPrefix.Length));
+        string relativePath = projectPath.Substring(UIGlobals.projectResourcesPath.Length, ((projectPath.Length) - UIGlobals.projectResourcesPath.Length));
 
         return relativePath;
     }

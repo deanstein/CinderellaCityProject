@@ -188,7 +188,7 @@ public class ManageCameraActions : MonoBehaviour
         {
             // determine the temporary and final (resources) file path based on this camera's name
             string temporaryFilePath = CameraActionGlobals.inGameScreenshotsPath + thumbnailCamera.name + "-" + SceneManager.GetActiveScene().name + CameraActionGlobals.screenshotFormat;
-            string resourcesFilePath = UIGlobals.projectUIPath + thumbnailCamera.name + "-" + SceneManager.GetActiveScene().name + CameraActionGlobals.screenshotFormat;
+            string resourcesFilePath = UIGlobals.projectUIPath + UIGlobals.mainMenuThumbnailsSubdir + thumbnailCamera.name + "-" + SceneManager.GetActiveScene().name + CameraActionGlobals.screenshotFormat;
 
             Utils.DebugUtils.DebugLog("<b>Replacing</b> " + temporaryFilePath + " <b>with</b> " + resourcesFilePath);
 
