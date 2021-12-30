@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -15,7 +13,7 @@ using UnityEngine;
 
 // the object this script is attached to should have these components
 [RequireComponent(typeof(AudioSource))]
-[RequireComponent(typeof(ToggleComponentsByProximityToPlayer))]
+[RequireComponent(typeof(CanDisableComponents))]
 
 // define the type of data/parameters that a set of speakers can get and set
 [System.Serializable]
@@ -69,7 +67,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
 {
     // define components to be accessed or modified
     AudioSource thisAudioSourceComponent;
-    ToggleComponentsByProximityToPlayer thisToggleComponentByProximityScript;
+    CanDisableComponents thisCanToggleComponentsScript;
 
     // used for synchronizing a slave and a master audiosource
     private float masterSlaveInitialSyncTime = 0.0f;
@@ -83,7 +81,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
     private bool needsFastForwarding = true;
 
     // return speaker parameters by object name
-    public SpeakerParams AssociateSpeakerParamsByName(string name)
+    public static SpeakerParams AssociateSpeakerParamsByName(string name)
     {
         switch (name)
         {
@@ -118,7 +116,6 @@ public class PlayAudioSequencesByName : MonoBehaviour
         }
     }
 
-    //[RequireComponent(ToggleComponentByProximityToPlayer)]
     private void Awake()
     {
         // set options for this object's AudioSource component
@@ -139,10 +136,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
         thisAudioSourceComponent.bypassListenerEffects = true;
         thisAudioSourceComponent.bypassReverbZones = true;
 
-        // set options for this object's ToggleComponentByProximity script component
-        //Utils.DebugUtils.DebugLog("This speaker host is trying to access proximty component: " + this.name);
-        thisToggleComponentByProximityScript = this.GetComponent<ToggleComponentsByProximityToPlayer>();
-        thisToggleComponentByProximityScript.maxDistance = AssociateSpeakerParamsByName(this.name).maxDistance;
+        thisCanToggleComponentsScript = this.GetComponent<CanDisableComponents>();
 
         // 
         // assign AudioSource data per type
@@ -210,6 +204,11 @@ public class PlayAudioSequencesByName : MonoBehaviour
         // execute the AutoResumeCoRoutine OnEnable() first
         //base.OnEnable();
 
+        if (!ManageFPSControllers.FPSControllerGlobals.activeFPSController)
+        {
+            return;
+        }
+
         // if no master audio source for this type, this AudioSource should be considered the master
         if (!AssociateSpeakerParamsByName(this.name).masterAudioSource)
         {
@@ -217,7 +216,8 @@ public class PlayAudioSequencesByName : MonoBehaviour
             AssociateSpeakerParamsByName(this.name).masterAudioSource = thisAudioSourceComponent;
 
             // ensure this master cannot be disabled until checks are made in update()
-            thisToggleComponentByProximityScript.isExcepted = true;
+            //thisToggleComponentByProximityScript.isExcepted = true;
+            thisCanToggleComponentsScript.canDisableComponents = false;
 
            StartCoroutine(PlayMasterClipSequenceInOrder(AssociateSpeakerParamsByName(this.name).clipSequence));
 
@@ -323,7 +323,6 @@ public class PlayAudioSequencesByName : MonoBehaviour
 
             // if we're at the end of the list, reset to return to the beginning
             counter = (counter + 1) % clipNames.Length;
-            //AssociateSpeakerParamsByName(this.name).currentClipIndex = counter;
 
             yield return new WaitForSeconds(remainingClipTime);
         }
@@ -374,7 +373,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
         return remainingClipTime;
     }
 
-    // fast-forward a master AudioSource to keep up with game tmie
+    // fast-forward a master AudioSource to keep up with game time
     float FastForwardMasterAudioSourceToMatchGameTime(AudioSource audioSourceComponentToFastForward)
     {
         if (audioSourceComponentToFastForward.clip)
@@ -404,20 +403,12 @@ public class PlayAudioSequencesByName : MonoBehaviour
         // if so, we cannot disable it when it gets out of range, so except it from the proximity script
         if (AssociateSpeakerParamsByName(this.name).masterAudioSource == thisAudioSourceComponent && AssociateSpeakerParamsByName(this.name).activeSlaveCount > 0)
         {
-            thisToggleComponentByProximityScript.isExcepted = true;
+            thisCanToggleComponentsScript.canDisableComponents = false;
         }
         // if no active slaves, allow it to be disabled when it gets out of range
         else if (AssociateSpeakerParamsByName(this.name).masterAudioSource == thisAudioSourceComponent && AssociateSpeakerParamsByName(this.name).activeSlaveCount == 0)
         {
-            thisToggleComponentByProximityScript.isExcepted = false;
-
-            // clean up master AudioSources that once had slaves but are now out-of-range
-            // note that due to latency, we add a buffer (10) so that the distance calculation doesn't accidentally shut down newly-started master AudioSources
-            if (Vector3.Distance(this.gameObject.transform.position, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position) > AssociateSpeakerParamsByName(this.name).maxDistance + 10 && this.GetComponent<AudioSource>().enabled)
-            {
-                thisToggleComponentByProximityScript.OnTriggerExit(ManageFPSControllers.FPSControllerGlobals.activeFPSController.GetComponent<Collider>());
-                AssociateSpeakerParamsByName(this.name).masterAudioSource = null;
-            }
+            thisCanToggleComponentsScript.canDisableComponents = true;
         }
     }
 }

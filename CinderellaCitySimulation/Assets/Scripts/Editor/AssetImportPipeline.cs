@@ -628,14 +628,20 @@ public class AssetImportUpdate : AssetPostprocessor {
         // speakers
         if (assetName.Contains("speakers"))
         {
-            // add components to the parent gameObject
+            /* add components to the parent gameObject */
 
-            // add components to children gameObjects
+            // add the script to disable components of this object's children by proximity to the player
+            AddCustomScriptComponentToGameObject(gameObjectByAssetName, "ToggleChildrenComponentsByProximityToPlayer");
+            ToggleChildrenComponentsByProximityToPlayer toggleComponentByProximityScript = gameObjectByAssetName.GetComponent<ToggleChildrenComponentsByProximityToPlayer>();
+            toggleComponentByProximityScript.maxDistance = 20f;
+            toggleComponentByProximityScript.checkIfInFrame = false;
+            toggleComponentByProximityScript.toggleComponentTypes = new string[] { "AudioSource", "PlayAudioSequencesByName" };
+
+            /* add components to children gameObjects */
 
             // delete the existing script host objects
             string speakerScriptHostDeleteTag = ManageTags.GetOrCreateTagByScriptHostType("Speakers");
             ManageTaggedObjects.DeleteObjectsByTag(speakerScriptHostDeleteTag);
-
 
             // get all the children of this object - including empty transforms (instances or groups)
             Transform[] childrenTransforms = gameObjectByAssetName.GetComponentsInChildren<Transform>();
@@ -644,12 +650,11 @@ public class AssetImportUpdate : AssetPostprocessor {
             // loop through the transforms and get ones containing a speaker
             foreach (Transform childTransform in childrenTransforms)
             {
-                if (childTransform.name.Contains("speaker"))
+                if (childTransform.name.Contains("speaker-"))
                 {
                     childrenRequiringAudioSource.Add(childTransform);
                 }
             }
-
 
             foreach (Transform child in childrenRequiringAudioSource)
             {
@@ -663,10 +668,7 @@ public class AssetImportUpdate : AssetPostprocessor {
                 // add the required scripts and behaviors
                 AddUnityEngineComponentToGameObject(scriptHostObject, "AudioSource");
                 AddCustomScriptComponentToGameObject(scriptHostObject, "PlayAudioSequencesByName");
-                AddCustomScriptComponentToGameObject(scriptHostObject, "ToggleComponentsByProximityToPlayer");
-
-                ToggleComponentsByProximityToPlayer ToggleComponentByProximityScript = scriptHostObject.GetComponent<ToggleComponentsByProximityToPlayer>();
-                ToggleComponentByProximityScript.toggleComponentTypes = new string[] { "AudioSource", "PlayAudioSequencesByName" };
+                AddCustomScriptComponentToGameObject(scriptHostObject, "CanDisableComponents");
 
                 // mark this object as a delete candidate
                 scriptHostObject.tag = speakerScriptHostDeleteTag;
@@ -676,7 +678,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // proxy people
         if (assetName.Contains("proxy-people"))
         {
-            // add components to the parent gameObject
+            /* add components to the parent gameObject */
 
             // add the script to toggle this entire game object by input event
             AddCustomScriptComponentToGameObject(gameObjectByAssetName, "ToggleObjectsByInputEvent");
@@ -686,18 +688,19 @@ public class AssetImportUpdate : AssetPostprocessor {
             AddCustomScriptComponentToGameObject(gameObjectByAssetName, "ToggleChildrenComponentsByProximityToPlayer");
             ToggleChildrenComponentsByProximityToPlayer toggleComponentByProximityScript = gameObjectByAssetName.GetComponent<ToggleChildrenComponentsByProximityToPlayer>();
             toggleComponentByProximityScript.maxDistance = NPCControllerGlobals.maxDistanceBeforeSuspend;
+            toggleComponentByProximityScript.checkIfInFrame = true;
             toggleComponentByProximityScript.toggleComponentTypes = new string[] { "NavMeshAgent", "FollowPathOnNavMesh" };
 
-            // add components to children gameObjects
+            /* add components to children gameObjects */
 
         }
 
         // proxy water
         if (assetName.Contains("water"))
         {
-            // add components to the parent gameObject
+            /* add components to the parent gameObject */
 
-            // add components to children gameObjects
+            /* add components to children gameObjects */
 
             // get all the children of this object - including empty transforms (instances or groups)
             Transform[] childrenTransforms = gameObjectByAssetName.GetComponentsInChildren<Transform>();
@@ -715,7 +718,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
 
     //
-    // ><><><><><><><><><><><><>
+    // <><><><><><><><><><><><><>
     //
     // these functions must be called in the post-processor
     // some may run multiple times in one import due to Unity post-processor behavior
