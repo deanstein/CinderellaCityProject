@@ -38,6 +38,11 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
     Vector3[] distributedChildrenPositions;
     int[] distributedChildrenNotInFrameCounts;
 
+    // some use cases, like NPCs, need to also check if they are in frame of the player's camera
+    // others, like speakers, don't care about this
+    // this is set by AssetImportPipeline
+    public bool checkIfInFrame;
+
     // the screen-space position of an object in world space
     Vector3 screenSpacePoint;
 
@@ -128,10 +133,13 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
         }
 
         // update every child's position, and check if they are within range
-        for (var i = 0; i < distributedChildrenPositions.Length; i++)
+        for (int i = 0; i < distributedChildrenObjects.Length; i++)
         {
             // update this child's position
-            distributedChildrenPositions[i] = new Vector3(distributedChildrenObjects[i].transform.position.x, distributedChildrenObjects[i].transform.position.y + 1, distributedChildrenObjects[i].transform.position.z);
+            distributedChildrenPositions[i] = distributedChildrenObjects[i].transform.position;
+
+            // if this is a speaker object, its max distance may be different
+            maxDistance = distributedChildrenObjects[i].name.Contains("speaker-") ? PlayAudioSequencesByName.AssociateSpeakerParamsByName(distributedChildrenObjects[i].name).maxDistance : maxDistance;
 
             // skip if there's no player camera available
             if (!ManageFPSControllers.FPSControllerGlobals.activeFPSControllerCamera)
@@ -139,19 +147,26 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
                 return;
             }
 
-            // get the screen space position of this object
-            screenSpacePoint = ManageFPSControllers.FPSControllerGlobals.activeFPSControllerCamera.WorldToViewportPoint(distributedChildrenPositions[i]);
+            // determine if the child is within the specified max distance of the player
+            bool isWithinRange = Vector3.Distance(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position, distributedChildrenPositions[i]) < maxDistance;
 
-            // determine if the child's position is visible to screen space
-            bool isOnScreen = false;
-
-            if (screenSpacePoint.z > -1 && screenSpacePoint.x > -1 && screenSpacePoint.x < 2 && screenSpacePoint.y > -1 && screenSpacePoint.y < 2)
+            // update the isOnScreen bool only if the checkIfInFrame flag is set
+            // otherwise, isOnScreen will be set to match isWithinrange
+            bool isInFrame;
+            if (checkIfInFrame)
             {
-                isOnScreen = true;
+                // get the screen space position of this object
+                screenSpacePoint = ManageFPSControllers.FPSControllerGlobals.activeFPSControllerCamera.WorldToViewportPoint(distributedChildrenPositions[i]);
+
+                isInFrame = screenSpacePoint.z > -1 && screenSpacePoint.x > -1 && screenSpacePoint.x < 2 && screenSpacePoint.y > -1 && screenSpacePoint.y < 2;
+            }
+            else
+            {
+                isInFrame = isWithinRange;
             }
 
             // if we're within range, and the object is visible, enable the components
-            if (Vector3.Distance(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position, distributedChildrenPositions[i]) < maxDistance && isOnScreen)
+            if (isWithinRange && isInFrame)
             {
                 // first, ensure we're not tracking this object already
                 if (!activeChildrenList.Contains(distributedChildrenObjects[i]))
@@ -164,14 +179,41 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
             // otherwise, disable the components
             else
             {
+                Debug.Log("Test before! " + distributedChildrenNotInFrameCounts[i]);
                 distributedChildrenNotInFrameCounts[i]++;
+                Debug.Log("Test after! " + distributedChildrenNotInFrameCounts[i]);
+
+                bool isOutOfFrame;
+                if (checkIfInFrame)
+                {
+                    isOutOfFrame = distributedChildrenNotInFrameCounts[i] >= maxNotInFrameCount;
+                }
+                else
+                {
+                    isOutOfFrame = true;
+                }
 
                 // check if this object is being tracked as active, and if it's been out of frame for enough time
-                if (activeChildrenList.Contains(distributedChildrenObjects[i]) && distributedChildrenNotInFrameCounts[i] >= maxNotInFrameCount)
+                if (activeChildrenList.Contains(distributedChildrenObjects[i]) && isOutOfFrame)
                 {
-                    DisableComponents(distributedChildrenObjects[i]);
-                    activeChildrenList.Remove(distributedChildrenObjects[i]);
-                    distributedChildrenNotInFrameCounts[i] = 0;
+                    // check for the CanDisableComponents script, if attached
+                    CanDisableComponents thisDisableComponentsScript = distributedChildrenObjects[i].GetComponent<CanDisableComponents>();
+                    if (thisDisableComponentsScript)
+                    {
+                        // only disable the object if the canDisableComponents script allows it
+                        if (thisDisableComponentsScript.canDisableComponents == true)
+                        {
+                            DisableComponents(distributedChildrenObjects[i]);
+                            activeChildrenList.Remove(distributedChildrenObjects[i]);
+                            distributedChildrenNotInFrameCounts[i] = 0;
+                        }
+                    }
+                    else
+                    {
+                        DisableComponents(distributedChildrenObjects[i]);
+                        activeChildrenList.Remove(distributedChildrenObjects[i]);
+                        distributedChildrenNotInFrameCounts[i] = 0;
+                    }
                 }
             }
         }
@@ -181,12 +223,13 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
     {
         foreach (string componentType in toggleComponentTypes)
         {
-            if (hostObject.GetComponent(componentType) as Behaviour)
+            Behaviour behaviorComponent = hostObject.GetComponent(componentType) as Behaviour;
+
+            if (behaviorComponent)
             {
-                if (!(hostObject.GetComponent(componentType) as Behaviour).enabled)
+                if (!behaviorComponent.enabled)
                 {
-                    //Utils.DebugUtils.DebugLog("Enabled " + componentType + " on " + this.name);
-                    (hostObject.GetComponent(componentType) as Behaviour).enabled = true;
+                    behaviorComponent.enabled = true;
                 }
             }
 
@@ -197,12 +240,17 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
     {
         foreach (string componentType in toggleComponentTypes)
         {
-            if (hostObject.GetComponent(componentType) as Behaviour)
+            Behaviour behaviorComponent = hostObject.GetComponent(componentType) as Behaviour;
+
+            if (behaviorComponent)
             {
-                if ((hostObject.GetComponent(componentType) as Behaviour).enabled)
+                if (behaviorComponent.enabled)
                 {
-                    //Utils.DebugUtils.DebugLog("Enabled " + componentType + " on " + this.name);
-                    (hostObject.GetComponent(componentType) as Behaviour).enabled = false;
+                    behaviorComponent.enabled = false;
+                }
+                else
+                {
+                    behaviorComponent.enabled = false;
                 }
             }
         }
