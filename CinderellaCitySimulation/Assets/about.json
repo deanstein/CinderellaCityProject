@@ -1,7 +1,7 @@
 {
   "VersionHistory": [
     {
-      "0.7.0.202112": [
+      "0.7.0.202201": [
         {          
           "Environment Updates": [
             "Added new stores to 60s70s Blue Mall, including Orange Julius, Frank Baldwin - Printer, Coffee & Donuts, Waldenbooks, and Rich Burger",
@@ -28,14 +28,20 @@
             "Added a Credits screen and a stub for a How to Play screen",
             "Added a bottom bar in Main Menu for access to Credits and How to Play screens",
             "Added additional start locations to Main Menu",
-            "Added ability to scroll horizontally by cursor position in Main Menu, Visibility Menu, and Credits screen"
+            "Added ability to scroll horizontally by cursor position in Main Menu, Visibility Menu, and Credits screen",
+            "Added more variety in background image sequences for Loading screen and Main Menu",
+            "Added randomizer/shuffle for background image sequences"
         ],
           "Code Updates": [
             "Added ability to toggle GameObjects on/off by name for new Visibility Menu",
             "Added ability to scroll horizontally by cursor position",
+            "Added ability to get all images from a directory for background image sequences",
+            "Added ability to shuffle the contents of an array",
             "Added ability to read and handle data from CSV files",
             "Added ability to set custom material specular values in AssetImportPipeline and ManageImportSettings",
             "Added ability to override lightmap resolution settings based on material name",
+            "Improved reliability of speaker playlist functionality",
+            "Improved efficiency of player proximity calculations for NPCs and speakers",
             "Improved efficiency of setting lightmap resolution by removing certain operations from for loop",
             "Moved more import rules to ManageImportSettings from AssetImportPipeline"
         ]
