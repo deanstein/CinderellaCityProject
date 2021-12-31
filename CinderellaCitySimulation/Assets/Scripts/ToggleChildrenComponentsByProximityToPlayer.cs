@@ -135,8 +135,12 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
         // update every child's position, and check if they are within range
         for (int i = 0; i < distributedChildrenObjects.Length; i++)
         {
+            // use this to reference and update the values in the original array
+            int originalIndex = distributedListIndexStart + i;
+
             // update this child's position
             distributedChildrenPositions[i] = distributedChildrenObjects[i].transform.position;
+            childrenPositions[originalIndex] = distributedChildrenPositions[i]; // update the original array
 
             // if this is a speaker object, its max distance may be different
             maxDistance = distributedChildrenObjects[i].name.Contains("speaker-") ? PlayAudioSequencesByName.AssociateSpeakerParamsByName(distributedChildrenObjects[i].name).maxDistance : maxDistance;
@@ -173,15 +177,14 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
                 {
                     EnableComponents(distributedChildrenObjects[i]);
                     activeChildrenList.Add(distributedChildrenObjects[i]);
-                    distributedChildrenNotInFrameCounts[i] = 0;
+                    childrenNotInFrameCounts[originalIndex] = 0; // update the original array
                 }
             }
             // otherwise, disable the components
             else
             {
-                Debug.Log("Test before! " + distributedChildrenNotInFrameCounts[i]);
                 distributedChildrenNotInFrameCounts[i]++;
-                Debug.Log("Test after! " + distributedChildrenNotInFrameCounts[i]);
+                childrenNotInFrameCounts[originalIndex] = distributedChildrenNotInFrameCounts[i]; // update the original array
 
                 bool isOutOfFrame;
                 if (checkIfInFrame)
@@ -205,14 +208,14 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
                         {
                             DisableComponents(distributedChildrenObjects[i]);
                             activeChildrenList.Remove(distributedChildrenObjects[i]);
-                            distributedChildrenNotInFrameCounts[i] = 0;
+                            childrenNotInFrameCounts[originalIndex] = 0; // update the original array
                         }
                     }
                     else
                     {
                         DisableComponents(distributedChildrenObjects[i]);
                         activeChildrenList.Remove(distributedChildrenObjects[i]);
-                        distributedChildrenNotInFrameCounts[i] = 0;
+                        childrenNotInFrameCounts[originalIndex] = 0; // update the original array
                     }
                 }
             }
