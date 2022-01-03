@@ -550,18 +550,16 @@ public class AssetImportUpdate : AssetPostprocessor {
     // define how to create a component attached to a GameObject, or delete it and create a new one if component already exists
     public static void RemoveComponentIfExisting(GameObject gameObjectForComponent, string componentType)
     {
-        if (gameObjectForComponent.GetComponent(componentType))
+        bool hasComponent = (gameObjectForComponent != null && gameObjectForComponent.GetComponent(componentType) as Component != null);
+        // if this object already has a component of this type, delete it
+        if (hasComponent)
         {
-            // if this object already has a component of this type, delete it
-            if (gameObjectForComponent.GetComponent(componentType) as Component)
-            {
-                Utils.DebugUtils.DebugLog("<b>Deleted</b> existing behavior component " + componentType + " on " + gameObjectForComponent + ".");
-                Component componentToDelete = gameObjectForComponent.GetComponent(componentType) as Component;
-                //AudioSource audioSourceToDelete = gameObjectForComponent.gameObject.GetComponent<AudioSource>();
+            Utils.DebugUtils.DebugLog("<b>Deleted</b> existing behavior component " + componentType + " on " + gameObjectForComponent + ".");
+            Component componentToDelete = gameObjectForComponent.GetComponent(componentType) as Component;
+            //AudioSource audioSourceToDelete = gameObjectForComponent.gameObject.GetComponent<AudioSource>();
 
-                // delete the existing component
-                UnityEngine.Object.DestroyImmediate(componentToDelete);
-            }
+            // delete the existing component
+            UnityEngine.Object.DestroyImmediate(componentToDelete);
         }
     }
 
