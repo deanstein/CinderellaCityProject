@@ -452,7 +452,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         return fullScreenBackgroundImage;
     }
 
-    public static GameObject CreateFullScreenImageSlideshow(GameObject parent, string[] imageSequence)
+    public static GameObject CreateFullScreenImageSlideshow(GameObject parent, Sprite[] imageSequence)
     {
         // create the background object
         GameObject fullScreenBackgroundSlideShow = new GameObject("BackgroundSlideShow");
@@ -464,7 +464,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
         // this script will sequence, transform, and animate the background images as required
         AnimateScreenSpaceObject AnimateScreenSpaceObjectScript = fullScreenBackgroundSlideShow.AddComponent<AnimateScreenSpaceObject>();
-        AnimateScreenSpaceObjectScript.mainMenuBackgroundSlideShowSequence = imageSequence;
+        AnimateScreenSpaceObjectScript.backgroundSlideShowSequence = imageSequence;
 
         return fullScreenBackgroundSlideShow;
     }

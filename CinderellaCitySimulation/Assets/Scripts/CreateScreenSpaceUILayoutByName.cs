@@ -18,7 +18,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
     // then, the correct menu layout or layout combinations will be built based on the launcher's name
 
     // the background image sequence, if required, is created once, then stored here
-    string[] backgroundImageSequence = { };
+    Sprite[] backgroundImageSequence = { };
 
     // the current screen resolution will be checked against the last known resolution
     // to determine whether the UI needs to be rebuilt
@@ -100,7 +100,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         if (this.name.Contains("LoadingScreenLauncher"))
         {
             // get all available images in the loading screen backgrounds dir
-            backgroundImageSequence = backgroundImageSequence.Length > 0 ? backgroundImageSequence : ArrayUtils.ShuffleArray(FileDirUtils.ConvertPathsToRelativeAndRemoveExtensions(FileDirUtils.GetAllFilesInDirOfTypes(UIGlobals.projectUIPath + UIGlobals.loadingScreenBackgroundsSubdir, UIGlobals.supportedImageTypes)));
+            backgroundImageSequence = backgroundImageSequence.Length > 0 ? backgroundImageSequence : ArrayUtils.ShuffleArray(Resources.LoadAll<Sprite>(FileDirUtils.ConvertProjectPathToRelativePath(UIGlobals.projectUIPath + UIGlobals.loadingScreenBackgroundsSubdir)));
 
             BuildLoadingScreen(UILauncher, backgroundImageSequence);
         }
@@ -109,7 +109,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         else if (this.name.Contains("MainMenuLauncher"))
         {
             // get all available images in the main menu backgrounds dir
-            backgroundImageSequence = backgroundImageSequence.Length > 0 ? backgroundImageSequence : ArrayUtils.ShuffleArray(FileDirUtils.ConvertPathsToRelativeAndRemoveExtensions(FileDirUtils.GetAllFilesInDirOfTypes(UIGlobals.projectUIPath + UIGlobals.mainMenuBackgroundsSubdir, UIGlobals.supportedImageTypes)));
+            backgroundImageSequence = backgroundImageSequence.Length > 0 ? backgroundImageSequence : ArrayUtils.ShuffleArray(Resources.LoadAll<Sprite>(FileDirUtils.ConvertProjectPathToRelativePath(UIGlobals.projectUIPath + UIGlobals.mainMenuBackgroundsSubdir)));
 
             BuildMainMenu(UILauncher, backgroundImageSequence);
         }
@@ -167,7 +167,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
     /*** per-scene UI ***/
 
     // loading screen
-    public static GameObject BuildLoadingScreen(GameObject UILauncher, string[] backgroundSlideshowSequence)
+    public static GameObject BuildLoadingScreen(GameObject UILauncher, Sprite[] backgroundSlideshowSequence)
     {
         Utils.DebugUtils.DebugLog("Building the loading screen...");
 
@@ -192,7 +192,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
     }
 
     // main menu
-    public static GameObject BuildMainMenu(GameObject UILauncher, string[] backgroundSlideshowSequence)
+    public static GameObject BuildMainMenu(GameObject UILauncher, Sprite[] backgroundSlideshowSequence)
     {
         Utils.DebugUtils.DebugLog("Building the Main Menu...");
 

@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class AnimateScreenSpaceObject : AutoResumeCoroutines
 {
     // the background slideshow image sequence is passed in from the calling script
-    public string[] mainMenuBackgroundSlideShowSequence;
+    public Sprite[] backgroundSlideShowSequence;
 
     /// define screen space object animation speeds
 
@@ -22,10 +22,10 @@ public class AnimateScreenSpaceObject : AutoResumeCoroutines
 
     private void Start()
     {
-        // the main menu
+        // start the auto-resume coroutine
         if (this.name.Contains("BackgroundSlideShow"))
         {
-            StartAutoResumeCoroutine(PlayFullScreenSpriteSequence(this.GetComponent<Image>(), mainMenuBackgroundSlideShowSequence, 5));
+            StartAutoResumeCoroutine(PlayFullScreenSpriteSequence(this.GetComponent<Image>(), backgroundSlideShowSequence, 5));
         }
     }
 
@@ -41,7 +41,7 @@ public class AnimateScreenSpaceObject : AutoResumeCoroutines
     // move the screenspace object continuously
     public static void MoveObjectContinuously(GameObject gameObject, Vector3 vector)
     {
-        gameObject.transform.localPosition += vector * Time.deltaTime;
+        gameObject.transform.localPosition += vector * Time.smoothDeltaTime;
     }
 
     // scale the screenspace object continuously
@@ -54,7 +54,7 @@ public class AnimateScreenSpaceObject : AutoResumeCoroutines
     }
 
     // play a sequence of sprites on an image component, switching images periodically
-    public IEnumerator PlayFullScreenSpriteSequence(Image imageComponent, string[] imageSequence, float displayTime)
+    public IEnumerator PlayFullScreenSpriteSequence(Image imageComponent, Sprite[] imageSequence, float displayTime)
     {
         // for each image in the array, display it for a certain amount of time, then show the next one
         Utils.DebugUtils.DebugLog("Playing image sequence...");
@@ -62,7 +62,7 @@ public class AnimateScreenSpaceObject : AutoResumeCoroutines
         while (true)
         {
             // get the current sprite in the list and set it as the sprite for this image component
-            imageComponent.sprite = (Sprite)Resources.Load(imageSequence[counter], typeof(Sprite));
+            imageComponent.sprite = imageSequence[counter];
             imageComponent.preserveAspect = true;
             imageComponent.SetNativeSize();
 
