@@ -29,12 +29,12 @@ public static class ArrayUtils
         return subset;
     }
 
-    public static string[] ShuffleArray(string[] texts)
+    public static T[] ShuffleArray<T>(this T[] texts)
     {
         // Knuth shuffle algorithm :: courtesy of Wikipedia
         for (int t = 0; t < texts.Length; t++)
         {
-            string tmp = texts[t];
+            T tmp = texts[t];
             int r = UnityEngine.Random.Range(t, texts.Length);
             texts[t] = texts[r];
             texts[r] = tmp;
