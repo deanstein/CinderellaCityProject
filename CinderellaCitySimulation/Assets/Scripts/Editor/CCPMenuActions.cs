@@ -278,7 +278,6 @@ public class CCPMenuActions : MonoBehaviour
             return true;
         }
 
-
         private const string isUpdateModeSiteMenuItem = "Cinderella City Project/Set Update Modes/Site";
         private const string isUpdateModeSiteKey = "CCP.IsUpdateModeSite";
         public static bool isUpdateModeSite;
@@ -297,82 +296,7 @@ public class CCPMenuActions : MonoBehaviour
         }
     }
 
-
-
     /* ---------- Update Data ---------- */
-
-    [MenuItem("Cinderella City Project/Thumbnail Screenshots/Update for Current Scene")]
-    public static void CaptureThisSceneThumbnailScreenshots()
-    {
-        // ensure the required directory is available
-        if (!Directory.Exists(ManageCameraActions.CameraActionGlobals.inGameScreenshotsPath))
-        {
-            Directory.CreateDirectory(ManageCameraActions.CameraActionGlobals.inGameScreenshotsPath);
-        }
-
-        // set the camera actions script to know that we're in screenshot mode
-        // this enables the script to start the process OnEnable()
-        EditorPrefs.SetBool(ManageCameraActions.CameraActionGlobals.screenshotModeFlag, true);
-
-        // in play mode, all screenshots are captured
-        // and when the application stops, the screenshots are copied to the correct directory
-        EditorApplication.EnterPlaymode();
-    }
-
-    [MenuItem("Cinderella City Project/Occlusion Culling/Update for All Scenes")]
-    public static void UpdateOcclusionCulling()
-    {
-        // load all scenes additively
-        ManageEditorScenes.LoadEditorScenesAdditively(SceneGlobals.loadingSceneName, SceneGlobals.allGameplaySceneNames);
-
-        HoistCurrentEditorSceneContainersUp();
-
-        // compute the static occlusion culling after the scenes are moved to intervals
-        StaticOcclusionCulling.Compute();
-    }
-
-    [MenuItem("Cinderella City Project/Nav Meshes/Update for Current Scene")]
-    public static void RebuildCurrentSceneNavMesh()
-    {
-        // get this scene's container
-        GameObject sceneContainer = ManageScenes.GetSceneContainerObject(EditorSceneManager.GetActiveScene());
-        List<GameObject> sceneContainers = new List<GameObject>();
-        sceneContainers.Add(sceneContainer);
-
-        // first, move this scene container as appropriate
-        HoistSceneObjectsEditor.HoistSceneContainersUp(sceneContainers);
-
-        // ensure that "blocker" objects are enabled before building the nav mesh
-        AssetImportUpdate.UnhideProxyObjects("proxy-blocker-npc");
-
-        // build the nav mesh
-        UnityEditor.AI.NavMeshBuilder.BuildNavMesh();
-
-        Utils.DebugUtils.DebugLog("Updated the nav mesh in scene: " + EditorSceneManager.GetActiveScene().name);
-
-        // re-hide the proxy blocker
-        AssetImportUpdate.HideProxyObjects("proxy-blocker-npc");
-
-        EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene());
-    }
-
-    [MenuItem("Cinderella City Project/Nav Meshes/Update for All Scenes")]
-    public static void RebuildAllNavMeshes()
-    {
-        foreach (string sceneName in SceneGlobals.availableTimePeriodSceneNames)
-        {
-            // open the scene if it's not open already
-            if (sceneName != EditorSceneManager.GetActiveScene().name)
-            {
-                EditorSceneManager.OpenScene(SceneGlobals.GetScenePathByName(sceneName));
-
-            }
-
-            // otherwise, we're already in the requested scene, so build the nav mesh
-
-            RebuildCurrentSceneNavMesh();
-        }
-    }
 
     [MenuItem("Cinderella City Project/Static Flags/Update for Current Scene")]
     public static void SetAllStaticFlagsInCurrentScene()
@@ -420,6 +344,79 @@ public class CCPMenuActions : MonoBehaviour
                 AssetImportUpdate.SetAllDependentMaterialsSpecularByName(sceneObject);
             }
         }
+    }
+
+    [MenuItem("Cinderella City Project/Nav Meshes/Update for Current Scene")]
+    public static void RebuildCurrentSceneNavMesh()
+    {
+        // get this scene's container
+        GameObject sceneContainer = ManageScenes.GetSceneContainerObject(EditorSceneManager.GetActiveScene());
+        List<GameObject> sceneContainers = new List<GameObject>();
+        sceneContainers.Add(sceneContainer);
+
+        // first, move this scene container as appropriate
+        HoistSceneObjectsEditor.HoistSceneContainersUp(sceneContainers);
+
+        // ensure that "blocker" objects are enabled before building the nav mesh
+        AssetImportUpdate.UnhideProxyObjects("proxy-blocker-npc");
+
+        // build the nav mesh
+        UnityEditor.AI.NavMeshBuilder.BuildNavMesh();
+
+        Utils.DebugUtils.DebugLog("Updated the nav mesh in scene: " + EditorSceneManager.GetActiveScene().name);
+
+        // re-hide the proxy blocker
+        AssetImportUpdate.HideProxyObjects("proxy-blocker-npc");
+
+        EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene());
+    }
+
+    [MenuItem("Cinderella City Project/Nav Meshes/Update for All Scenes")]
+    public static void RebuildAllNavMeshes()
+    {
+        foreach (string sceneName in SceneGlobals.availableTimePeriodSceneNames)
+        {
+            // open the scene if it's not open already
+            if (sceneName != EditorSceneManager.GetActiveScene().name)
+            {
+                EditorSceneManager.OpenScene(SceneGlobals.GetScenePathByName(sceneName));
+
+            }
+
+            // otherwise, we're already in the requested scene, so build the nav mesh
+
+            RebuildCurrentSceneNavMesh();
+        }
+    }
+
+    [MenuItem("Cinderella City Project/Occlusion Culling/Update for All Scenes")]
+    public static void UpdateOcclusionCulling()
+    {
+        // load all scenes additively
+        ManageEditorScenes.LoadEditorScenesAdditively(SceneGlobals.loadingSceneName, SceneGlobals.allGameplaySceneNames);
+
+        HoistCurrentEditorSceneContainersUp();
+
+        // compute the static occlusion culling after the scenes are moved to intervals
+        StaticOcclusionCulling.Compute();
+    }
+
+    [MenuItem("Cinderella City Project/Thumbnail Screenshots/Update for Current Scene")]
+    public static void CaptureThisSceneThumbnailScreenshots()
+    {
+        // ensure the required directory is available
+        if (!Directory.Exists(ManageCameraActions.CameraActionGlobals.inGameScreenshotsPath))
+        {
+            Directory.CreateDirectory(ManageCameraActions.CameraActionGlobals.inGameScreenshotsPath);
+        }
+
+        // set the camera actions script to know that we're in screenshot mode
+        // this enables the script to start the process OnEnable()
+        EditorPrefs.SetBool(ManageCameraActions.CameraActionGlobals.screenshotModeFlag, true);
+
+        // in play mode, all screenshots are captured
+        // and when the application stops, the screenshots are copied to the correct directory
+        EditorApplication.EnterPlaymode();
     }
 
     /* ---------- Batch Operations ---------- */
