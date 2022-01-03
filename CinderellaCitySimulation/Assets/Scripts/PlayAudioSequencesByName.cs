@@ -52,6 +52,9 @@ public class AudioSourceGlobals
     public static SpeakerParams MallFountain60s70sParams2 = new SpeakerParams();
     public static SpeakerParams MallMusic60s70sParams = new SpeakerParams();
 
+    // stores - 60s70s
+    public static SpeakerParams StoreMusicMusicland60s70sParams = new SpeakerParams();
+
     // mall - 80s90s
     public static SpeakerParams MallChatter80s90sParams = new SpeakerParams();
     public static SpeakerParams MallMusic80s90sParams = new SpeakerParams();
@@ -95,6 +98,10 @@ public class PlayAudioSequencesByName : MonoBehaviour
             case string partialName when partialName.Contains("mall-music-60s70s"):
                 return AudioSourceGlobals.MallMusic60s70sParams;
 
+            // stores - 60s70s
+            case string partialName when partialName.Contains("store-music-musicland-60s70s"):
+                return AudioSourceGlobals.StoreMusicMusicland60s70sParams;
+
             // mall - 80s90s
             case string partialName when partialName.Contains("mall-ambient-chatter-80s90s"):
                 return AudioSourceGlobals.MallChatter80s90sParams;
@@ -110,6 +117,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
                 return AudioSourceGlobals.StoreMusicGeneric80s90sParams;
             case string partialName when partialName.Contains("store-music-musicland-80s90s"):
                 return AudioSourceGlobals.StoreMusicMusicland80s90sParams;
+
             default:
                 Utils.DebugUtils.DebugLog("Failed to associate speaker params with this speaker: " + name);
                 return null;
@@ -163,6 +171,13 @@ public class PlayAudioSequencesByName : MonoBehaviour
         AudioSourceGlobals.MallMusic60s70sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallCommon;
         AudioSourceGlobals.MallMusic60s70sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallCommon;
         AudioSourceGlobals.MallMusic60s70sParams.clipSequence = new string[] { "80s-90s/Music/Betamaxx/6. woolworth", "80s-90s/Music/BDalton/nick"};
+
+        /// stores - 60s70s ///
+
+        // store - musicland
+        AudioSourceGlobals.StoreMusicMusicland60s70sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore;
+        AudioSourceGlobals.StoreMusicMusicland60s70sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore;
+        AudioSourceGlobals.StoreMusicMusicland60s70sParams.clipSequence = new string[] { "80s-90s/Music/Betamaxx/6. woolworth", "80s-90s/Music/BDalton/nick" };
 
         /// mall - 80s90s ///
 
