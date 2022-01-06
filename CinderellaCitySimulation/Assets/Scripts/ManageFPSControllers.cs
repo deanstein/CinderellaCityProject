@@ -167,14 +167,18 @@ public class ManageFPSControllers : MonoBehaviour {
         // temporarily override the existing volume to avoid motion blur when relocating
         existingVolume.profile = newProfile;
 
-        // get all the cameras in the scene
-        Camera[] cameras = FindObjectsOfType<Camera>();
+        GameObject[] cameras = GameObject.FindGameObjectsWithTag(ManageTaggedObjects.TaggedObjectGlobals.deleteProxyReplacementTagPrefix + "Cameras");
 
-        foreach (Camera camera in cameras)
+        foreach (GameObject camera in cameras)
         {
-            if (camera.name.Contains(cameraPartialName))
+            // split the camera name at the hyphens
+            string[] cameraNameSplit = camera.name.Split(char.Parse("-"));
+            // assume that the true location name is the third value (Camera-Thumbnail-Location)
+            string cameraPositionName = cameraNameSplit[2];
+
+            if (cameraPositionName == cameraPartialName)
             {
-                Utils.DebugUtils.DebugLog("Found a matching camera: " + camera.name);
+                Utils.DebugUtils.DebugLog("Found a matching camera: " + cameraPositionName);
 
                 // need to make sure the camera transform doesn't include a rotation up or down (causes FPSCharacter to tilt)
                 Vector3 currentCameraForward = camera.transform.forward;

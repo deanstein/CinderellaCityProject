@@ -1327,10 +1327,10 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         for (var i = 0; i < timePeriodNames.Length; i++)
         {
             // combine the place name and time period strings
-            string combinedPlaceTimeNameSpacelessDashed = Utils.StringUtils.CleanString(placeName) + "-" + SceneGlobals.availableTimePeriodSceneNamesList[i];
+            string combinedPlaceTimeName = placeName + "-" + SceneGlobals.availableTimePeriodSceneNamesList[i];
 
             // create the button
-            GameObject timePeriodButton = new GameObject(combinedPlaceTimeNameSpacelessDashed + "-Button");
+            GameObject timePeriodButton = new GameObject(combinedPlaceTimeName + "-Button");
             Image timePeriodButtonImage = timePeriodButton.AddComponent<Image>();
 
             // set the image
