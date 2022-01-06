@@ -590,16 +590,19 @@ public class AssetImportUpdate : AssetPostprocessor {
     // adds custom components to a GameObject
     public static void AddCustomScriptComponentToGameObject(GameObject gameObjectForComponent, string scriptName)
     {
-        // define the type of script based on the name
-        Type customScriptComponentType = Type.GetType(scriptName + ", Assembly-CSharp");
+        if (gameObjectForComponent)
+        {
+            // define the type of script based on the name
+            Type customScriptComponentType = Type.GetType(scriptName + ", Assembly-CSharp");
 
-        // first, remove the component if it exists already
-        RemoveComponentIfExisting(gameObjectForComponent, scriptName);
+            // first, remove the component if it exists already
+            RemoveComponentIfExisting(gameObjectForComponent, scriptName);
 
-        // now add the component
-        Component customScriptComponent = gameObjectForComponent.AddComponent(customScriptComponentType);
+            // now add the component
+            Component customScriptComponent = gameObjectForComponent.AddComponent(customScriptComponentType);
 
-        Utils.DebugUtils.DebugLog("<b>Added</b> " + scriptName + " component to " + gameObjectForComponent);
+            Utils.DebugUtils.DebugLog("<b>Added</b> " + scriptName + " component to " + gameObjectForComponent);
+        }
     }
 
     // adds custom components to a GameObject's children
@@ -764,7 +767,7 @@ public class AssetImportUpdate : AssetPostprocessor {
     }
 
     // set emission on specific dependent materials in the target object
-    static void SetAllDependentMaterialsEmissionByName(GameObject targetObject)
+    public static void SetAllDependentMaterialsEmissionByName(GameObject targetObject)
     {
         // if the target object and the last-updated asset import object are the same,
         // use the global game object dependencies that have already been calculated

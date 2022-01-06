@@ -346,6 +346,22 @@ public class CCPMenuActions : MonoBehaviour
         }
     }
 
+    [MenuItem("Cinderella City Project/Material Adjustments/Emission/Update for Current Scene")]
+    public static void SetAllMaterialEmissionInCurrentScene()
+    {
+        // get all the scene objects
+        GameObject[] sceneObjects = UpdateModeSelectorMenu.GetSceneObjectsByUpdateMode().ToArray();
+
+        if (sceneObjects.Length > 0)
+        {
+            // set the static flags for each scene object
+            foreach (GameObject sceneObject in sceneObjects)
+            {
+                AssetImportUpdate.SetAllDependentMaterialsEmissionByName(sceneObject);
+            }
+        }
+    }
+
     [MenuItem("Cinderella City Project/Nav Meshes/Update for Current Scene")]
     public static void RebuildCurrentSceneNavMesh()
     {
