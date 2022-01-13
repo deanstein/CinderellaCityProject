@@ -16,6 +16,9 @@ public class ManageFPSControllers : MonoBehaviour {
 
     public class FPSControllerGlobals
     {
+        // default FPS Controller height
+        public static float defaultFPSControllerHeight = 2.28f;
+
         // default FPS Controller gravity values
         public static float defaultFPSControllerGravityMultiplier = 2f;
         public static float defaultFPSControllerStickToGroundForce = 10f;
@@ -204,9 +207,6 @@ public class ManageFPSControllers : MonoBehaviour {
 
                 // set the FirstPersonCharacter's camera forward direction
                 activeFirstPersonCharacter.GetComponent<Camera>().transform.forward = currentCameraForward;
-
-                // set the FirstPersonCharacter height to the camera height
-                activeFirstPersonCharacter.transform.position = new Vector3(activeFirstPersonCharacter.transform.position.x, camera.transform.position.y, activeFirstPersonCharacter.transform.position.z);
 
                 // reset the FPSController mouse to avoid incorrect rotation due to interference
                 activeFPSController.transform.GetComponent<FirstPersonController>().MouseReset();
@@ -480,6 +480,13 @@ public class ManageFPSControllers : MonoBehaviour {
                 FPSControllerGlobals.isTimeTraveling = false;
             }
         }
+    }
+
+    private void Start()
+    {
+        // set the default height for the FPS controller
+        CharacterController thisCharacterController = this.GetComponent<CharacterController>();
+        thisCharacterController.height = FPSControllerGlobals.defaultFPSControllerHeight;
     }
 
     private void OnEnable()
