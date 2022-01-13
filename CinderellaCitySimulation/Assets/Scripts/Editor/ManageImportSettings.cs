@@ -386,6 +386,7 @@ public class ManageImportSettings
             // no static editor flags
             case string name when (name.Contains("light-shrouds")
             || name.Contains("mall-vents")
+            || name.Contains("proxy-people")
             || name.Contains("store-fixtures")
             || name.Contains("structure-concealed")
             || name.Contains("speakers")
@@ -444,8 +445,8 @@ public class ManageImportSettings
             || name.Contains("site-context-buildings")
             || name.Contains("site-roads"):
                 return 0.1f;
-            case string name when name.Contains("experimental-simple"):
-                return 1f;
+            case string name when name.Contains("experimental-lightbleed"):
+                return 5f;
             // if not specified, the default is 1 (no change to global resolution for this asset)
             default:
                 return 1f;
@@ -471,9 +472,17 @@ public class ManageImportSettings
                         {
                             // only these materials should be affected
                             // values assume a global resolution of 3.2808 (1 texel per foot)
+                            case string nameOfMaterial when nameOfMaterial.Contains("anchor - smooth light brown"):
+                                return 1f;
                             case string nameOfMaterial when nameOfMaterial.Contains("mall - blue column yellow tile")
                             || nameOfMaterial.Contains("mall - brick"):
                                 return 20f;
+                            case string nameOfMaterial when nameOfMaterial.Contains("mall - blue wood"):
+                                return 15f;
+                            case string nameOfMaterial when nameOfMaterial.Contains("mall - yellow wood"):
+                                return 10f;
+                            case string nameOfMaterial when nameOfMaterial.Contains("soffit"):
+                                return 8f;
                             default:
                                 return originalValue;
                         }
@@ -521,13 +530,17 @@ public class ManageImportSettings
             case string name when name.Contains("blue mall fountain planter intense"):
                 return 3.25f;
             case string name when name.Contains("blue mall hanging planter orange"):
-                return -3.25f;
+                return -1.75f;
             case string name when name.Contains("blue mall illuminated ring"):
                 return 0.75f;
             case string name when name.Contains("cinder alley incandescent"):
                 return 3.75f;
+            case string name when name.Contains("cinderella city signage background"):
+                return -1.0f;
             case string name when name.Contains("cinderella city signage neon"):
-                return 3.5f;
+                return 3.25f;
+            case string name when name.Contains("directory white"):
+                return -1.1f;
             case string name when name.Contains("display case"):
                 return 2.0f;
             case string name when name.Contains("exterior white"):
@@ -561,7 +574,9 @@ public class ManageImportSettings
                 return 1.0f;
             // stores
             case string name when name.Contains("americana shop"):
-                return -1.0f;
+                return -2.0f;
+            case string name when name.Contains("coles yellow"):
+                return -2.0f;
             case string name when name.Contains("the denver blue"):
                 return -0.2f;
             case string name when name.Contains("funtastics signage"):
@@ -572,6 +587,8 @@ public class ManageImportSettings
                 return -2.0f;
             case string name when name.Contains("neusteters brown"):
                 return -0.2f;
+            case string name when name.Contains("no illumination"):
+                return -2.0f;
             case string name when name.Contains("penney's white"):
                 return 0.7f;
             case string name when name.Contains("store yellowing"):
@@ -607,7 +624,7 @@ public class ManageImportSettings
             case string name when name.Contains("mall - shamrock floor brick"):
                 return 0.14f;
             // if not specified, return -1 to indicate to calling functions that
-            // this material is not intended to have a custom specular value
+            // this material is not intended to have a custom metallic value
             default:
                 return -1;
         }
@@ -655,7 +672,7 @@ public class ManageImportSettings
             case string name when name.Contains("mall - terra cotta tile special"):
                 return 0.2f;
             // if not specified, return -1 to indicate to calling functions that
-            // this material is not intended to have a custom specular value
+            // this material is not intended to have a custom smoothness value
             default:
                 return -1;
         }
@@ -684,6 +701,7 @@ public class ManageImportSettings
             || name.Contains("concrete - painted 60s")
             || name.Contains("concrete - painted 80s")
             || name.Contains("drywall")
+            || name.Contains("LIGHT - blue mall hanging planter orange")
             || name.Contains("mall - brick")
             || name.Contains("mall - stucco")
             || name.Contains("mall - precast panels")
