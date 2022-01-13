@@ -15,7 +15,7 @@ public class ScrollByCursorPosition : MonoBehaviour
 
     static readonly float maxScrollSpeed = 50.0f;
     // normalized distance from rect edge at which scrolling starts
-    static readonly float scrollPosThresholdLower = 0.25f; 
+    static readonly float scrollPosThresholdLower = 0.18f; 
     static readonly float scrollPosThresholdUpper = 1 - scrollPosThresholdLower;
 
     private void OnEnable()
