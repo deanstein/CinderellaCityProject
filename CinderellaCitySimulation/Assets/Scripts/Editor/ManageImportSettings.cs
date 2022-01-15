@@ -645,7 +645,7 @@ public class ManageImportSettings
                 return 0.5f;
             // specific materials
             case string name when name.Contains("blue mall hanging planter orange"):
-                return 0f;
+                return 0.3f;
             case string name when name.Contains("bronzed glass"):
                 return 0.2f;
             case string name when name.Contains("food court tile"):
@@ -693,6 +693,8 @@ public class ManageImportSettings
             || name.Contains("concrete - foundation wall")
             || name.Contains("mall - cmu"):
                 return 5;
+            case string name when name.Contains("LIGHT - blue mall hanging planter orange"):
+                return 10;
             case string name when name.Contains("mall - upper asphalt"):
                 return 20;
             case string name when name.Contains("acoustic tile")
@@ -701,7 +703,6 @@ public class ManageImportSettings
             || name.Contains("concrete - painted 60s")
             || name.Contains("concrete - painted 80s")
             || name.Contains("drywall")
-            || name.Contains("LIGHT - blue mall hanging planter orange")
             || name.Contains("mall - brick")
             || name.Contains("mall - stucco")
             || name.Contains("mall - precast panels")
