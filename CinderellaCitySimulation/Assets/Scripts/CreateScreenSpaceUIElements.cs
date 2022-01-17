@@ -359,7 +359,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         string timePeriod = nameSplitByDelimiter[1];
 
         // if the button name indicates a time traveler, don't specify an FPSController location (uses the current FPS location)
-        if (buttonName.Contains("TimeTravel"))
+        if (buttonName.Contains("Time Travel"))
         {
             // switch to the correct scene based on the time period and location in the button name
             ToggleSceneAndUI.ToggleFromSceneToSceneRelocatePlayerToFPSController(SceneManager.GetActiveScene().name, timePeriod, ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform);
