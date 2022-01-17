@@ -346,6 +346,25 @@ public class CCPMenuActions : MonoBehaviour
         }
     }
 
+    /* this doesn't work yet because the texture path assumes the asset was just imported
+
+    [MenuItem("Cinderella City Project/Material Adjustments/Smoothness and Metallic/Update for Current Scene")]
+    public static void SetAllMaterialSmoothnessMetallicInCurrentScene()
+    {
+        // get all the scene objects
+        GameObject[] sceneObjects = UpdateModeSelectorMenu.GetSceneObjectsByUpdateMode().ToArray();
+
+        if (sceneObjects.Length > 0)
+        {
+            // set the static flags for each scene object
+            foreach (GameObject sceneObject in sceneObjects)
+            {
+                AssetImportUpdate.SetAllDependentMaterialsSmoothnessMetallicByName(sceneObject);
+            }
+        }
+    }
+    */
+
     [MenuItem("Cinderella City Project/Material Adjustments/Emission/Update for Current Scene")]
     public static void SetAllMaterialEmissionInCurrentScene()
     {
