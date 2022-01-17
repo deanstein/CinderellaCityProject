@@ -556,6 +556,8 @@ public class ManageImportSettings
             case string name when name.Contains("high intensity sodium")
             && !name.Contains("very"):
                 return 2.5f;
+            case string name when name.Contains("high intensity green"):
+                return 3.0f;
             case string name when name.Contains("high intensity white"):
                 return 3.0f;
             case string name when name.Contains("low intensity black"):
@@ -620,7 +622,7 @@ public class ManageImportSettings
                 return 0.5f;
             // specific materials
             case string name when name.Contains("blue mall hanging planter orange"):
-                return 0.75f;
+                return 0f;
             case string name when name.Contains("mall - shamrock floor brick"):
                 return 0.14f;
             // if not specified, return -1 to indicate to calling functions that
@@ -644,8 +646,8 @@ public class ManageImportSettings
             case string name when name.Contains("metal"):
                 return 0.5f;
             // specific materials
-            case string name when name.Contains("blue mall hanging planter orange"):
-                return 0.3f;
+            case string name when name.Contains("f"):
+                return 0f;
             case string name when name.Contains("bronzed glass"):
                 return 0.2f;
             case string name when name.Contains("food court tile"):
@@ -693,8 +695,6 @@ public class ManageImportSettings
             || name.Contains("concrete - foundation wall")
             || name.Contains("mall - cmu"):
                 return 5;
-            case string name when name.Contains("LIGHT - blue mall hanging planter orange"):
-                return 10;
             case string name when name.Contains("mall - upper asphalt"):
                 return 20;
             case string name when name.Contains("acoustic tile")
