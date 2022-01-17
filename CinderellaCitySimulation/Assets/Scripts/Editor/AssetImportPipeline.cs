@@ -388,7 +388,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         // only make a new texture if it doesn't exist yet
         // note that this texture does not get cleaned up in DeleteReimportMaterialsTextures
-        // so it's likely already made and can be reusedused
+        // so it's likely already made and can be reused
         if (!AssetDatabase.LoadAssetAtPath(filePath, typeof(Texture)))
         {
             //Utils.DebugUtils.DebugLog("No MetallicGlossMap detected. Creating one.");
