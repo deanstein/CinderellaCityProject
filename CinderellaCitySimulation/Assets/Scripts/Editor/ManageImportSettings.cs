@@ -564,7 +564,8 @@ public class ManageImportSettings
                 return -1.0f;
             case string name when name.Contains("low intensity yellow"):
                 return 1.0f;
-            case string name when name.Contains("low intensity white"):
+            case string name when name.Contains("low intensity white")
+            && !name.Contains("very"):
                 return 1.0f;
             case string name when name.Contains("mid-mod exterior fixture"):
                 return 0f;
