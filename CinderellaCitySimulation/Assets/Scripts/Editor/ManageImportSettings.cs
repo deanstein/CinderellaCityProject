@@ -467,13 +467,14 @@ public class ManageImportSettings
                 {
                     // only these assets should be affected
                     case string nameOfAsset when nameOfAsset.Contains("mall-detailing-interior")
-                    || nameOfAsset.Contains("mall-walls-detailing-exterior"):
+                    || nameOfAsset.Contains("mall-walls-detailing-exterior")
+                    || nameOfAsset.Contains("store-detailing"):
                         switch (materialName)
                         {
                             // only these materials should be affected
                             // values assume a global resolution of 3.2808 (1 texel per foot)
                             case string nameOfMaterial when nameOfMaterial.Contains("anchor - smooth light brown"):
-                                return 1f;
+                                return 10f;
                             case string nameOfMaterial when nameOfMaterial.Contains("mall - blue column yellow tile")
                             || nameOfMaterial.Contains("mall - brick"):
                                 return 20f;
