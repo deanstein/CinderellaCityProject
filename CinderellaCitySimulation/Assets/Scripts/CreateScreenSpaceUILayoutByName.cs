@@ -233,6 +233,14 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
 
         }); ;
 
+        // exit button
+        GameObject exitButton = CreateScreenSpaceUIElements.CreateTextButton("Exit", UIGlobals.visibilityMenuTextButtonlabelSize, UIGlobals.menuButtonTopBottomPaddingScreenHeightRatio, UIGlobals.bottomMenuBarButtonScreenWidthRatio, UIGlobals.buttonColor);
+        menuBarButtons.Add(exitButton);
+        exitButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
+
+            Application.Quit();
+        });
+
         // populate the menu bar with the buttons
         CreateScreenSpaceUIElements.PopulateMenuBar(bottomMenubar, menuBarButtons);
 
