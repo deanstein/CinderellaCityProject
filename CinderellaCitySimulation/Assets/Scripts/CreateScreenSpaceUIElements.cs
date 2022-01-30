@@ -1426,6 +1426,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // the Main Menu needs to have the proxy-cameras.fbx in the scene
         // so we can get all camera objects and make thumbnails from them
         GameObject[] thumbnailCameraObjects = ManageCameraActions.GetAllThumbnailCamerasInScene();
+        Array.Sort(thumbnailCameraObjects, (a, b) => a.name.CompareTo(b.name));
 
         // certain thumbnails should be drawn before others, so set up lists to distinguish
         List<string> highlightPlaceNames = new List<string>();
