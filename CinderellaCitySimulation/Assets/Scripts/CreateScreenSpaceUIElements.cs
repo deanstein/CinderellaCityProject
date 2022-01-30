@@ -26,9 +26,6 @@ public class UIGlobals
     public static string mainMenuBackgroundsSubdir = "MainMenuBackgrounds/";
     public static string mainMenuThumbnailsSubdir = "MainMenuThumbnails/";
 
-    // the image types to look for when getting all images from a folder
-    public static string[] supportedImageTypes = { "jpg", "png" };
-
     // is used to determine when to generate time-travel specific thumbnails
     public static bool isTimeTravelThumbnail;
 
