@@ -201,7 +201,7 @@ public class TakeScreenshots
         // relocate the player to each of these camera host locations, and take a screenshot
         foreach (GameObject cameraHost in cameraHostObjects)
         {
-            // get the correct screenshot path based on the current context
+            // the screenshot path is initially stored in a temp directory
             string screenshotPath = ManageCameraActions.CameraActionGlobals.inGameScreenshotsPath;
 
             // generate a file name based on the current context
