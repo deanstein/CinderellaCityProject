@@ -523,5 +523,16 @@ public class CCPMenuActions : MonoBehaviour
     {
         UpdateModeSelectorMenu.GetSceneObjectsByUpdateMode();
     }
+
+    [MenuItem("Cinderella City Project/CCP Debug/Get All Thumbnails to Delete")]
+    public static void GetAllThumbanilsToDeleteTest()
+    {
+        string[] extensionsToDelete = { "png", "meta" };
+        string[] filesToDelete = FileDirUtils.GetAllFilesInDirOfTypes(UIGlobals.projectUIPath + UIGlobals.mainMenuThumbnailsSubdir, extensionsToDelete);
+        foreach (string fileToDelete in filesToDelete)
+        {
+            Utils.DebugUtils.DebugLog(fileToDelete);
+        }
+    }
 #endif
 }
