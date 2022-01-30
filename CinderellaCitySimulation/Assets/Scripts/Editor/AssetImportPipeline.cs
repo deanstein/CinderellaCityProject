@@ -210,22 +210,10 @@ public class AssetImportUpdate : AssetPostprocessor {
         // test if the asset name matches any of the top-level object names
         foreach (GameObject sceneObject in sceneObjects)
         {
-            // if we find the object already present in the hierarchy
             if (sceneObject.name == gameObjectFromAsset.name)
             {
-                // if import params dictate that this object generates proxy replacements,
-                // delete the object in the hierarchy to force a full refresh
-                if (AssetImportGlobals.ModelImportParamsByName.doInstantiateProxyReplacements)
-                {
-                    Utils.DebugUtils.DebugLog("This object was already present in the model, but was flagged to replace proxy objects, so it's been deleted for a complete refresh.");
-                    GameObject.DestroyImmediate(sceneObject);
-                }
-                // non-proxy objects don't need to be deleted from the hierarchy
-                else
-                {
-                    Utils.DebugUtils.DebugLog("This object is already present in the model.");
-                    return;
-                }
+                Utils.DebugUtils.DebugLog("This object is already present in the model.");
+                return;
             }
         }
 
