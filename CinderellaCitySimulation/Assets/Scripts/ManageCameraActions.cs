@@ -55,9 +55,10 @@ public class ManageCameraActions : MonoBehaviour
         public static string screenshotsSubfolder = "/Screenshots/";
         public static string savedViewsSubfolder = "/Saved Views/";
 
-        // the two screenshot path options, depending on whether we're in the editor or not
+        // screenshot and saved views path while in-game (not in editor)
         public static string inGameScreenshotsPath = Application.persistentDataPath + screenshotsSubfolder;
         public static string savedViewsPath = Application.persistentDataPath + savedViewsSubfolder;
+        // editor only
         public static string editorScreenshotsPath = UIGlobals.projectUIPath;
 
         // the screenshot file format
@@ -181,6 +182,16 @@ public class ManageCameraActions : MonoBehaviour
     {
 #if UNITY_EDITOR
         GameObject[] thumbnailCameras = GetAllThumbnailCamerasInScene();
+
+        // first, delete all existing thumbnail images in the project UI path
+        // in case some thumbnails were renamed, we don't want zombies left over in this path
+        string[] extensionsToDelete = { "png", "meta" };
+        string[] filesToDelete = FileDirUtils.GetAllFilesInDirOfTypes(UIGlobals.projectUIPath + UIGlobals.mainMenuThumbnailsSubdir, extensionsToDelete);
+
+        foreach (string fileToDelete in filesToDelete)
+        {
+            UnityEngine.Windows.File.Delete(fileToDelete);
+        }
 
         // for each thumbnail camera, copy the corresponding screenshot
         // from the game path to the resources path
