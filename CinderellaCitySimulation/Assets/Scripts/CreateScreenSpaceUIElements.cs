@@ -1551,7 +1551,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
             ManageFPSControllers.FPSControllerGlobals.isTimeTraveling = false;
             ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, SceneGlobals.referringSceneName);
 
-        }); ;
+        });
         // align and position the main menu button
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(resumeButton, buttonAlignmentObject, 0.0f);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(resumeButton, buttonAlignmentObject, UIGlobals.textButtonLeftMarginScreenWidthRatio);
@@ -1562,17 +1562,17 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
             ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "MainMenu");
 
-        }); ;
+        });
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(mainMenuButton, resumeButton, UIGlobals.textButtonBottomMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(mainMenuButton, buttonAlignmentObject, UIGlobals.textButtonLeftMarginScreenWidthRatio);
 
         // exit button
-        GameObject exitButton = CreateTextButton("Quit", UIGlobals.mainMenuTextButtonLabelSize, UIGlobals.menuButtonTopBottomPaddingScreenHeightRatio, UIGlobals.menuButtonScreenWidthRatio, UIGlobals.buttonColor);
+        GameObject exitButton = CreateTextButton("Exit", UIGlobals.mainMenuTextButtonLabelSize, UIGlobals.menuButtonTopBottomPaddingScreenHeightRatio, UIGlobals.menuButtonScreenWidthRatio, UIGlobals.buttonColor);
         exitButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
             Application.Quit();
 
-        }); ;
+        });
         // align and position the exit button
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(exitButton, mainMenuButton, UIGlobals.textButtonBottomMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborRight(exitButton, buttonAlignmentObject, UIGlobals.textButtonLeftMarginScreenWidthRatio);
