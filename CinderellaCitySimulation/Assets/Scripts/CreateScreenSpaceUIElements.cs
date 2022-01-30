@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -1426,6 +1427,11 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // the Main Menu needs to have the proxy-cameras.fbx in the scene
         // so we can get all camera objects and make thumbnails from them
         GameObject[] thumbnailCameraObjects = ManageCameraActions.GetAllThumbnailCamerasInScene();
+        // only return the cameras belonging to the main menu
+        var filteredObjects = from GameObject go in thumbnailCameraObjects where go.scene.name == SceneGlobals.mainMenuSceneName select go;
+        List<GameObject> filteredObjectsList = filteredObjects.ToList<GameObject>();
+        thumbnailCameraObjects = filteredObjectsList.ToArray();
+        // sort by name
         Array.Sort(thumbnailCameraObjects, (a, b) => a.name.CompareTo(b.name));
 
         // certain thumbnails should be drawn before others, so set up lists to distinguish
