@@ -526,7 +526,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // position the title container and button
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(titleContainer, topAlignmentObject, logoHeaderBottomMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(backButton, topAlignmentObject, logoHeaderBottomMarginScreenHeightRatio);
-        TransformScreenSpaceObject.PositionObjectByWidthRatioFromScreenLeft(backButton, UIGlobals.navContainerLeftMarginScreenWidthRatio - (backButtonWidth / Screen.width));
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromScreenLeft(backButton, UIGlobals.navContainerLeftMarginScreenWidthRatio - (backButtonWidth / Screen.width) - (UIGlobals.menuButtonSidePaddingScreenWidthRatio / 2));
 
         // resize the title container
         TransformScreenSpaceObject.ResizeObjectWidthToMatchScreen(titleContainer);
