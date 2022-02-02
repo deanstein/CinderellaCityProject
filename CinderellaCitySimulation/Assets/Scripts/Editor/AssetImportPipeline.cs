@@ -1039,9 +1039,6 @@ public class AssetImportUpdate : AssetPostprocessor {
                     instancedPrefabs.Add(instancedPrefab);
                     instancedPrefabsFromProxies.Add(instancedPrefab);
 
-                    // nest the instanced prefab as a child of the original proxy object
-                    instancedPrefab.transform.parent = child.transform;
-
                     // special rules if we're replacing proxy people
                     if (child.name.Contains("people"))
                     {
@@ -1092,9 +1089,7 @@ public class AssetImportUpdate : AssetPostprocessor {
                     {
                         // randomly rotate to add visual variety
                         Utils.GeometryUtils.RandomRotateGameObjectAboutY(instancedPrefab);
-                    }
-
-                
+                    }             
                     else if (child.name.Contains("shrub"))
                     {
                         // randomly rotate to add visual variety
@@ -1104,7 +1099,6 @@ public class AssetImportUpdate : AssetPostprocessor {
                         Utils.GeometryUtils.ScaleGameObjectRandomlyWithinRange(instancedPrefab, 0.85f, 1.2f);
 
                     }
-
                     else if (child.name.Contains("fountain-main"))
                     {
                         // ensure the main fountain is oriented vertically
@@ -1292,25 +1286,27 @@ public class AssetImportUpdate : AssetPostprocessor {
                         tertiaryParticleSystemRenderer.renderMode = ParticleSystemRenderMode.HorizontalBillboard;
 
                     }
-                }
 
-                // some people may have been placed at Vector3.zero, meaning we couldn't
-                // find a good random spot for them - so they should be deleted
-                foreach (GameObject instanceToTest in instancedPrefabs)
-                {
-                    if (instanceToTest != null)
-                    {
-                        //Debug.Log("Instanced prefab position: " + instanceToTest.transform.position);
-                    }
+                    Debug.Log("Position: " + instancedPrefab.transform.GetChild(0).position);
 
-                    if (instanceToTest != null && instanceToTest.transform.position == Vector3.zero)
+                    // some proxies may have been placed at Vector3.zero, meaning we couldn't
+                    // find a good random spot for them - so they should be deleted
+                    if (instancedPrefab.transform.position == Vector3.zero)
                     {
-                        Utils.DebugUtils.DebugLog("<b>Culling </b>" + instanceToTest.name + " because it was found at the world origin.");
+                        Utils.DebugUtils.DebugLog("<b>Culling </b>" + instancedPrefab.name + " because it was found at the world origin.");
 
                         // count this as a culled instance
                         culledPrefabs++;
                         // delete the object
-                        UnityEngine.GameObject.DestroyImmediate(instanceToTest);
+                        UnityEngine.GameObject.DestroyImmediate(instancedPrefab);
+                    }
+
+                    // nest the instanced prefab as a child of the original proxy object,
+                    // but only if it wasn't culled already
+                    // this needs to happen at the very end because otherwise the culling fails due to transform interference
+                    if (instancedPrefab)
+                    {
+                        instancedPrefab.transform.parent = child.transform;
                     }
                 }
 
