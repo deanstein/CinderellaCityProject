@@ -20,7 +20,7 @@ using UnityEngine;
 public class SpeakerParams
 {
     public AudioSource masterAudioSource;
-    public string[] clipSequence;
+    public AudioClip[] clipSequence;
     public int currentClipIndex = 0;
     public int activeSlaveCount = 0;
     public float speakerVolume = 0; // initialize at 0 to prevent a frame of extra-loud music
@@ -157,61 +157,61 @@ public class PlayAudioSequencesByName : MonoBehaviour
         // ambient chatter
         AudioSourceGlobals.MallChatter60s70sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallChatter;
         AudioSourceGlobals.MallChatter60s70sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeChatter;
-        AudioSourceGlobals.MallChatter60s70sParams.clipSequence = new string[] { "80s-90s/Ambient/BDalton/CinCityAmbience" };
+        AudioSourceGlobals.MallChatter60s70sParams.clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-ambient-chatter"));
 
         // fountain
         AudioSourceGlobals.MallFountain60s70sParams1.maxDistance = AudioSourceGlobals.defaultSpeakerDistanceMallFountain;
         AudioSourceGlobals.MallFountain60s70sParams1.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallFountain;
-        AudioSourceGlobals.MallFountain60s70sParams1.clipSequence = new string[] { "60s-70s/SFX/PartnersInRhyme/fountain-1" };
+        AudioSourceGlobals.MallFountain60s70sParams1.clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-fountain-1"));
         AudioSourceGlobals.MallFountain60s70sParams2.maxDistance = AudioSourceGlobals.defaultSpeakerDistanceMallFountain;
         AudioSourceGlobals.MallFountain60s70sParams2.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallFountain;
-        AudioSourceGlobals.MallFountain60s70sParams2.clipSequence = new string[] { "60s-70s/SFX/PartnersInRhyme/fountain-1-short" };
+        AudioSourceGlobals.MallFountain60s70sParams2.clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-fountain-2"));
 
         // common area music
         AudioSourceGlobals.MallMusic60s70sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallCommon;
         AudioSourceGlobals.MallMusic60s70sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallCommon;
-        AudioSourceGlobals.MallMusic60s70sParams.clipSequence = new string[] { "80s-90s/Music/Betamaxx/6. woolworth", "80s-90s/Music/BDalton/nick"};
+        AudioSourceGlobals.MallMusic60s70sParams.clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-mall-60s70s"));
 
         /// stores - 60s70s ///
 
         // store - musicland
         AudioSourceGlobals.StoreMusicMusicland60s70sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore;
         AudioSourceGlobals.StoreMusicMusicland60s70sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore;
-        AudioSourceGlobals.StoreMusicMusicland60s70sParams.clipSequence = new string[] { "80s-90s/Music/Betamaxx/6. woolworth", "80s-90s/Music/BDalton/nick" };
+        AudioSourceGlobals.StoreMusicMusicland60s70sParams.clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-store-musicland-60s70s"));
 
         /// mall - 80s90s ///
 
         // ambient chatter
         AudioSourceGlobals.MallChatter80s90sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallChatter;
         AudioSourceGlobals.MallChatter80s90sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeChatter;
-        AudioSourceGlobals.MallChatter80s90sParams.clipSequence = new string[] { "80s-90s/Ambient/BDalton/CinCityAmbience" };
+        AudioSourceGlobals.MallChatter80s90sParams.clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-ambient-chatter"));
 
         // common area music
         AudioSourceGlobals.MallMusic80s90sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallCommon;
         AudioSourceGlobals.MallMusic80s90sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallCommon;
-        AudioSourceGlobals.MallMusic80s90sParams.clipSequence = new string[] { "80s-90s/Music/Betamaxx/13. montgomery ward", "80s-90s/Music/Betamaxx/8. mall walking", "80s-90s/Music/Betamaxx/1. grand opening", "80s-90s/Music/Betamaxx/2. gold circle", "80s-90s/Music/Betamaxx/7. crystal fountain", "80s-90s/Music/Betamaxx/11. retail dystopia" };
+        AudioSourceGlobals.MallMusic80s90sParams.clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-mall-80s90s"));
 
         /// stores - 80s90s ///
-        
+
         // store - consumer beauty
         AudioSourceGlobals.StoreMusicConsumerBeauty80s90sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore;
         AudioSourceGlobals.StoreMusicConsumerBeauty80s90sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore;
-        AudioSourceGlobals.StoreMusicConsumerBeauty80s90sParams.clipSequence = new string[] { "80s-90s/Music/DeadMall/05 Thunderhead" };
+        AudioSourceGlobals.StoreMusicConsumerBeauty80s90sParams.clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-store-consumer-beauty-80s90s"));
 
         // store - dolcis
         AudioSourceGlobals.StoreMusicDolcis80s90sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore;
         AudioSourceGlobals.StoreMusicDolcis80s90sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore;
-        AudioSourceGlobals.StoreMusicDolcis80s90sParams.clipSequence = new string[] { "80s-90s/Music/Betamaxx/5. kauffmans", "80s-90s/Music/Betamaxx/10. lazarus" };
+        AudioSourceGlobals.StoreMusicDolcis80s90sParams.clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-store-dolcis-80s90s"));
 
         // store - generic
         AudioSourceGlobals.StoreMusicGeneric80s90sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore;
         AudioSourceGlobals.StoreMusicGeneric80s90sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore;
-        AudioSourceGlobals.StoreMusicGeneric80s90sParams.clipSequence = new string[] { "80s-90s/Music/Betamaxx/9. a'gaci", "80s-90s/Music/Betamaxx/14. smoking section" };
+        AudioSourceGlobals.StoreMusicGeneric80s90sParams.clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-store-generic-80s90s"));
 
         // store - musicland
         AudioSourceGlobals.StoreMusicMusicland80s90sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore;
         AudioSourceGlobals.StoreMusicMusicland80s90sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore;
-        AudioSourceGlobals.StoreMusicMusicland80s90sParams.clipSequence = new string[] { "80s-90s/Music/DeadMall/01 Wheels", "80s-90s/Music/DeadMall/09 Pressure" };        
+        AudioSourceGlobals.StoreMusicMusicland80s90sParams.clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-store-musicland-80s90s"));
     }
 
     void OnEnable()
@@ -277,7 +277,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
     }
 
     // specify and play master speaker clip sequences
-    IEnumerator PlayMasterClipSequenceInOrder(string[] clipNames)
+    IEnumerator PlayMasterClipSequenceInOrder(AudioClip[] audioClips)
     {
         // for each clip in the array, play it, and wait until the end to play the next
         int counter = AssociateSpeakerParamsByName(this.name).currentClipIndex;
@@ -286,7 +286,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
             // set this object as the master audio source
             AudioSource masterAudioSource = thisAudioSourceComponent;
             // set and play the clip based on the list of clip names
-            masterAudioSource.clip = (AudioClip)Resources.Load(clipNames[counter]);
+            masterAudioSource.clip = audioClips[counter];
             masterAudioSource.Play();
             Utils.DebugUtils.DebugLog("Playing master music " + masterAudioSource.clip.name + " on " + masterAudioSource);
 
@@ -309,7 +309,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
             }
 
             // if we're at the end of the list, reset to return to the beginning
-            counter = (counter + 1) % clipNames.Length;
+            counter = (counter + 1) % audioClips.Length;
             AssociateSpeakerParamsByName(this.name).currentClipIndex = counter;
 
             yield return new WaitForSeconds(remainingClipTime);
@@ -317,7 +317,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
     }
 
     // play slave speaker sequences
-    IEnumerator PlaySlaveClipSequence(string[] clipNames)
+    IEnumerator PlaySlaveClipSequence(AudioClip[] audioclips)
     {
         // for each clip in the array, play it, and wait until the end to play the next
         int counter = AssociateSpeakerParamsByName(this.name).currentClipIndex;
@@ -337,7 +337,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
             float remainingClipTime = CalculateRemainingClipTime(slaveAudioSource);
 
             // if we're at the end of the list, reset to return to the beginning
-            counter = (counter + 1) % clipNames.Length;
+            counter = (counter + 1) % audioclips.Length;
 
             yield return new WaitForSeconds(remainingClipTime);
         }
