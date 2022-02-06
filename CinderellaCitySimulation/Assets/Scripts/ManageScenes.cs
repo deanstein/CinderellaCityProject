@@ -141,6 +141,12 @@ public static class ManageScenes
         return topLevelGameObjectArray;
     }
 
+    // determines if the current scene is an FPS/time period scene
+    public static bool GetIsActiveSceneTimePeriodScene()
+    {
+        return Utils.StringUtils.TestIfAnyListItemContainedInString(new List<string>(SceneGlobals.availableTimePeriodSceneNames), SceneManager.GetActiveScene().name) || SceneManager.GetActiveScene().name == SceneGlobals.experimentalSceneName;
+    }
+
     // gets the disabled time period scene names, given the current scene name
     public static List<string> GetDisabledTimePeriodSceneNames(string currentSceneName)
     {
