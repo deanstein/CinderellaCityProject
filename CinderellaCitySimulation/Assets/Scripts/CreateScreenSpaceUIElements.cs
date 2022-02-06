@@ -519,7 +519,18 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         float backButtonWidth = backButton.GetComponent<RectTransform>().rect.width;
         backButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
-            ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, SceneGlobals.referringSceneName);
+            // if the current scene is an FPS/time period scene, 
+            // assume the back button is part of an overlay
+            // so dismiss all overlay menus
+            if (ManageScenes.GetIsActiveSceneTimePeriodScene())
+            {
+                ManageOverlayVisibility.DismissActiveOverlayMenu();
+            }
+            // otherwise, return to the referring scene
+            else
+            {
+                ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, SceneGlobals.referringSceneName);
+            }
 
         }); ;
 
