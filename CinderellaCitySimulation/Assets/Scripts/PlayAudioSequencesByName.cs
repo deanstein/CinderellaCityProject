@@ -407,7 +407,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
     void Update()
     {
         // sync only if it's time to sync, and if there is a valid master and slave to sync between
-        if (Time.time > masterSlaveInitialSyncTime && AssociateSpeakerParamsByName(this.name).masterAudioSource != thisAudioSourceComponent && (AssociateSpeakerParamsByName(this.name).masterAudioSource && thisAudioSourceComponent))
+        if (Time.time > masterSlaveInitialSyncTime)
         {
             StartCoroutine(SyncAudioSources(AssociateSpeakerParamsByName(this.name).masterAudioSource, thisAudioSourceComponent));
 
