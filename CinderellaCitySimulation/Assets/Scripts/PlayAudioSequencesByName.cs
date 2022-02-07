@@ -358,7 +358,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
         // ensure the slave's time is reasonably in-sync with the master's time
         if (Mathf.Abs(slaveAudioSource.time - masterAudioSource.time) > maxMasterSlaveTimeDelta)
         {
-            slaveAudioSource.time = masterAudioSource.time;
+            slaveAudioSource.timeSamples = masterAudioSource.timeSamples;
             slaveAudioSource.Play();
 
             Utils.DebugUtils.DebugLog("Synchronized AudioSource time between master: " + masterAudioSource + " and slave: " + slaveAudioSource + " at " + Time.time);
