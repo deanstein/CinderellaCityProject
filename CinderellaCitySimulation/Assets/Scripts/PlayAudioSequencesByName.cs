@@ -46,24 +46,28 @@ public class AudioSourceGlobals
     public static float defaultSpeakerVolumeStore = 0.03f;
     public static float defaultSpeakerMaxDistanceStore = 15f;
 
+    // define the available types of mall audio sources
+    // only one can exist per type, so all speakers of one type are following the same params
+
     // mall - 60s70s
-    public static SpeakerParams MallChatter60s70sParams = new SpeakerParams();
-    public static SpeakerParams MallFountain60s70sParams1 = new SpeakerParams();
-    public static SpeakerParams MallFountain60s70sParams2 = new SpeakerParams();
-    public static SpeakerParams MallMusic60s70sParams = new SpeakerParams();
+    public static SpeakerParams MallChatter60s70sParams = null;
+    public static SpeakerParams MallFountain60s70sParams1 = null;
+    public static SpeakerParams MallFountain60s70sParams2 = null;
+    public static SpeakerParams MallMusic60s70sParams = null;
 
     // stores - 60s70s
-    public static SpeakerParams StoreMusicMusicland60s70sParams = new SpeakerParams();
+    public static SpeakerParams StoreMusicMusicland60s70sParams = null;
 
     // mall - 80s90s
-    public static SpeakerParams MallChatter80s90sParams = new SpeakerParams();
-    public static SpeakerParams MallMusic80s90sParams = new SpeakerParams();
+    public static SpeakerParams MallChatter80s90sParams = null;
+    public static SpeakerParams MallMusic80s90sParams = null;
 
     // stores - 80s90s
-    public static SpeakerParams StoreMusicConsumerBeauty80s90sParams = new SpeakerParams();
-    public static SpeakerParams StoreMusicDolcis80s90sParams = new SpeakerParams();
-    public static SpeakerParams StoreMusicGeneric80s90sParams = new SpeakerParams();
-    public static SpeakerParams StoreMusicMusicland80s90sParams = new SpeakerParams();
+    public static SpeakerParams StoreMusicConsumerBeauty80s90sParams = null;
+    public static SpeakerParams StoreMusicDolcis80s90sParams = null;
+    public static SpeakerParams StoreMusicGeneric80s90sParams = null;
+    public static SpeakerParams StoreMusicMusicland80s90sParams = null;
+
 }
 
 public class PlayAudioSequencesByName : MonoBehaviour
@@ -71,6 +75,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
     // define components to be accessed or modified
     AudioSource thisAudioSourceComponent;
     CanDisableComponents thisCanToggleComponentsScript;
+    SpeakerParams thisSpeakerParams;
 
     // used for synchronizing a slave and a master audiosource
     private float masterSlaveInitialSyncTime = 0.0f;
@@ -84,38 +89,137 @@ public class PlayAudioSequencesByName : MonoBehaviour
     private bool needsFastForwarding = true;
 
     // return speaker parameters by object name
+    // most audio source distances and volumes are assigned to defaults, but can be overridden here
+    // primarily, this is used for differentiating audio sequences (playlists) between speakers
     public static SpeakerParams AssociateSpeakerParamsByName(string name)
     {
         switch (name)
         {
             // mall - 60s70s
-            case string partialName when partialName.Contains("mall-ambient-chatter-80s90s"):
-                return AudioSourceGlobals.MallChatter80s90sParams;
+
+            // ambient chatter
+            case string partialName when partialName.Contains("mall-ambient-chatter-60s70s"):
+
+                AudioSourceGlobals.MallChatter60s70sParams = AudioSourceGlobals.MallChatter60s70sParams ?? new SpeakerParams
+                {
+                    maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallChatter,
+                    speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeChatter,
+                    clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-ambient-chatter"))
+                };
+                return AudioSourceGlobals.MallChatter60s70sParams;
+
+            // fountain type 1
             case string partialName when partialName.Contains("mall-fountain-60s70s-1"):
+
+                AudioSourceGlobals.MallFountain60s70sParams1 = AudioSourceGlobals.MallFountain60s70sParams1 ?? new SpeakerParams
+                {
+                    maxDistance = AudioSourceGlobals.defaultSpeakerDistanceMallFountain,
+                    speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallFountain,
+                    clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-fountain-1"))
+                };
                 return AudioSourceGlobals.MallFountain60s70sParams1;
+            
+            // fountain type 2
             case string partialName when partialName.Contains("mall-fountain-60s70s-2"):
+
+                AudioSourceGlobals.MallFountain60s70sParams2 = AudioSourceGlobals.MallFountain60s70sParams2 ?? new SpeakerParams
+                {
+                    maxDistance = AudioSourceGlobals.defaultSpeakerDistanceMallFountain,
+                    speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallFountain,
+                    clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-fountain-2"))
+                };
                 return AudioSourceGlobals.MallFountain60s70sParams2;
+
+            // common area music
             case string partialName when partialName.Contains("mall-music-60s70s"):
+
+                AudioSourceGlobals.MallMusic60s70sParams = AudioSourceGlobals.MallMusic60s70sParams ?? new SpeakerParams
+                {
+                    maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallCommon,
+                    speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallCommon,
+                    clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-mall-60s70s"))
+                };
                 return AudioSourceGlobals.MallMusic60s70sParams;
 
             // stores - 60s70s
+
+            // store - musicland
             case string partialName when partialName.Contains("store-music-musicland-60s70s"):
+
+                AudioSourceGlobals.StoreMusicMusicland60s70sParams = AudioSourceGlobals.StoreMusicMusicland60s70sParams ?? new SpeakerParams
+                {
+                    maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore,
+                    speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore,
+                    clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-store-musicland-60s70s"))
+                };
                 return AudioSourceGlobals.StoreMusicMusicland60s70sParams;
 
             // mall - 80s90s
+
+            // ambient chatter
             case string partialName when partialName.Contains("mall-ambient-chatter-80s90s"):
+
+                AudioSourceGlobals.MallChatter80s90sParams = AudioSourceGlobals.MallChatter80s90sParams ?? new SpeakerParams
+                {
+                    maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallChatter,
+                    speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeChatter,
+                    clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-ambient-chatter"))
+                };
                 return AudioSourceGlobals.MallChatter80s90sParams;
+
+            // common area music
             case string partialName when partialName.Contains("mall-music-80s90s"):
+
+                AudioSourceGlobals.MallMusic80s90sParams = AudioSourceGlobals.MallMusic80s90sParams ?? new SpeakerParams
+                {
+                    maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallCommon,
+                    speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallCommon,
+                    clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-mall-80s90s"))
+                };
                 return AudioSourceGlobals.MallMusic80s90sParams;
+
+            // store - consumer beauty
             case string partialName when partialName.Contains("store-music-consumer-beauty-80s90s"):
+
+                AudioSourceGlobals.StoreMusicConsumerBeauty80s90sParams = AudioSourceGlobals.StoreMusicConsumerBeauty80s90sParams ?? new SpeakerParams
+                {
+                    maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore,
+                    speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore,
+                    clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-store-consumer-beauty-80s90s"))
+                };
                 return AudioSourceGlobals.StoreMusicConsumerBeauty80s90sParams;
 
-            // stores - 80s90s
+            // store - dolcis
             case string partialName when partialName.Contains("store-music-dolcis-80s90s"):
+
+                AudioSourceGlobals.StoreMusicDolcis80s90sParams = AudioSourceGlobals.StoreMusicDolcis80s90sParams ?? new SpeakerParams
+                {
+                    maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore,
+                    speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore,
+                    clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-store-dolcis-80s90s"))
+                };
                 return AudioSourceGlobals.StoreMusicDolcis80s90sParams;
+            
+            // store - generic
             case string partialName when partialName.Contains("store-music-generic-80s90s"):
+
+                AudioSourceGlobals.StoreMusicGeneric80s90sParams = AudioSourceGlobals.StoreMusicGeneric80s90sParams ?? new SpeakerParams
+                {
+                    maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore,
+                    speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore,
+                    clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-store-generic-80s90s"))
+                };
                 return AudioSourceGlobals.StoreMusicGeneric80s90sParams;
+
+            // store - musicland
             case string partialName when partialName.Contains("store-music-musicland-80s90s"):
+
+                AudioSourceGlobals.StoreMusicMusicland80s90sParams = AudioSourceGlobals.StoreMusicMusicland80s90sParams ?? new SpeakerParams
+                {
+                    maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore,
+                    speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore,
+                    clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-store-musicland-80s90s"))
+                };
                 return AudioSourceGlobals.StoreMusicMusicland80s90sParams;
 
             default:
@@ -126,16 +230,18 @@ public class PlayAudioSequencesByName : MonoBehaviour
 
     private void Awake()
     {
-        // set options for this object's AudioSource component
+        // scripts and params for this speaker
         thisAudioSourceComponent = this.GetComponent<AudioSource>();
+        thisCanToggleComponentsScript = this.GetComponent<CanDisableComponents>();
+        thisSpeakerParams = AssociateSpeakerParamsByName(this.name);
 
-        if (!thisAudioSourceComponent || (AssociateSpeakerParamsByName(this.name) == null))
+        if (!thisAudioSourceComponent || (thisSpeakerParams == null))
         {
             return;
         }
 
-        thisAudioSourceComponent.volume = AssociateSpeakerParamsByName(this.name).speakerVolume;
-        thisAudioSourceComponent.maxDistance = AssociateSpeakerParamsByName(this.name).maxDistance;
+        thisAudioSourceComponent.volume = thisSpeakerParams.speakerVolume;
+        thisAudioSourceComponent.maxDistance = thisSpeakerParams.maxDistance;
         thisAudioSourceComponent.spatialBlend = 1.0F;
         thisAudioSourceComponent.dopplerLevel = 0F;
         thisAudioSourceComponent.rolloffMode = AudioRolloffMode.Custom;
@@ -143,75 +249,6 @@ public class PlayAudioSequencesByName : MonoBehaviour
         thisAudioSourceComponent.bypassEffects = true;
         thisAudioSourceComponent.bypassListenerEffects = true;
         thisAudioSourceComponent.bypassReverbZones = true;
-
-        thisCanToggleComponentsScript = this.GetComponent<CanDisableComponents>();
-
-        // 
-        // assign AudioSource data per type
-        // most audio source distances and volumes are assigned to defaults, but can be overridden here
-        // primarily, this is used for differentiating audio sequences (playlists) between speakers
-        //
-
-        /// mall - 60s70s ///
-
-        // ambient chatter
-        AudioSourceGlobals.MallChatter60s70sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallChatter;
-        AudioSourceGlobals.MallChatter60s70sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeChatter;
-        AudioSourceGlobals.MallChatter60s70sParams.clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-ambient-chatter"));
-
-        // fountain
-        AudioSourceGlobals.MallFountain60s70sParams1.maxDistance = AudioSourceGlobals.defaultSpeakerDistanceMallFountain;
-        AudioSourceGlobals.MallFountain60s70sParams1.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallFountain;
-        AudioSourceGlobals.MallFountain60s70sParams1.clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-fountain-1"));
-        AudioSourceGlobals.MallFountain60s70sParams2.maxDistance = AudioSourceGlobals.defaultSpeakerDistanceMallFountain;
-        AudioSourceGlobals.MallFountain60s70sParams2.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallFountain;
-        AudioSourceGlobals.MallFountain60s70sParams2.clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-fountain-2"));
-
-        // common area music
-        AudioSourceGlobals.MallMusic60s70sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallCommon;
-        AudioSourceGlobals.MallMusic60s70sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallCommon;
-        AudioSourceGlobals.MallMusic60s70sParams.clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-mall-60s70s"));
-
-        /// stores - 60s70s ///
-
-        // store - musicland
-        AudioSourceGlobals.StoreMusicMusicland60s70sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore;
-        AudioSourceGlobals.StoreMusicMusicland60s70sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore;
-        AudioSourceGlobals.StoreMusicMusicland60s70sParams.clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-store-musicland-60s70s"));
-
-        /// mall - 80s90s ///
-
-        // ambient chatter
-        AudioSourceGlobals.MallChatter80s90sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallChatter;
-        AudioSourceGlobals.MallChatter80s90sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeChatter;
-        AudioSourceGlobals.MallChatter80s90sParams.clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-ambient-chatter"));
-
-        // common area music
-        AudioSourceGlobals.MallMusic80s90sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallCommon;
-        AudioSourceGlobals.MallMusic80s90sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallCommon;
-        AudioSourceGlobals.MallMusic80s90sParams.clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-mall-80s90s"));
-
-        /// stores - 80s90s ///
-
-        // store - consumer beauty
-        AudioSourceGlobals.StoreMusicConsumerBeauty80s90sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore;
-        AudioSourceGlobals.StoreMusicConsumerBeauty80s90sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore;
-        AudioSourceGlobals.StoreMusicConsumerBeauty80s90sParams.clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-store-consumer-beauty-80s90s"));
-
-        // store - dolcis
-        AudioSourceGlobals.StoreMusicDolcis80s90sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore;
-        AudioSourceGlobals.StoreMusicDolcis80s90sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore;
-        AudioSourceGlobals.StoreMusicDolcis80s90sParams.clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-store-dolcis-80s90s"));
-
-        // store - generic
-        AudioSourceGlobals.StoreMusicGeneric80s90sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore;
-        AudioSourceGlobals.StoreMusicGeneric80s90sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore;
-        AudioSourceGlobals.StoreMusicGeneric80s90sParams.clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-store-generic-80s90s"));
-
-        // store - musicland
-        AudioSourceGlobals.StoreMusicMusicland80s90sParams.maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore;
-        AudioSourceGlobals.StoreMusicMusicland80s90sParams.speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore;
-        AudioSourceGlobals.StoreMusicMusicland80s90sParams.clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-store-musicland-80s90s"));
     }
 
     void OnEnable()
@@ -225,16 +262,16 @@ public class PlayAudioSequencesByName : MonoBehaviour
         }
 
         // if no master audio source for this type, this AudioSource should be considered the master
-        if (!AssociateSpeakerParamsByName(this.name).masterAudioSource)
+        if (!thisSpeakerParams.masterAudioSource)
         {
             // set this speaker AudioSource as the Master AudioSource for this type
-            AssociateSpeakerParamsByName(this.name).masterAudioSource = thisAudioSourceComponent;
+            thisSpeakerParams.masterAudioSource = thisAudioSourceComponent;
 
             // ensure this master cannot be disabled until checks are made in update()
             //thisToggleComponentByProximityScript.isExcepted = true;
             thisCanToggleComponentsScript.canDisableComponents = false;
 
-           StartCoroutine(PlayMasterClipSequenceInOrder(AssociateSpeakerParamsByName(this.name).clipSequence));
+           StartCoroutine(PlayMasterClipSequenceInOrder(thisSpeakerParams.clipSequence));
 
            needsFastForwarding = false;
         }
@@ -242,9 +279,9 @@ public class PlayAudioSequencesByName : MonoBehaviour
         else
         {
             // increase the count so we know when there are slaves relying on a master
-            AssociateSpeakerParamsByName(this.name).activeSlaveCount++;
+            thisSpeakerParams.activeSlaveCount++;
 
-            StartCoroutine(PlaySlaveClipSequence(AssociateSpeakerParamsByName(this.name).clipSequence));
+            StartCoroutine(PlaySlaveClipSequence(thisSpeakerParams.clipSequence));
         }
     }
 
@@ -254,25 +291,25 @@ public class PlayAudioSequencesByName : MonoBehaviour
         //base.OnDisable();
 
         // check if this is the master AudioSource
-        if (thisAudioSourceComponent == AssociateSpeakerParamsByName(this.name).masterAudioSource)
+        if (thisAudioSourceComponent == thisSpeakerParams.masterAudioSource)
         {
             //look up the current clip index, and subtract it by one to avoid skipping tracks when re-enabled
-            if (AssociateSpeakerParamsByName(this.name).currentClipIndex > 0)
+            if (thisSpeakerParams.currentClipIndex > 0)
             {
-                AssociateSpeakerParamsByName(this.name).currentClipIndex--;
+                thisSpeakerParams.currentClipIndex--;
             }
 
             // set the flag that fast-forwarding should happen on next enable
             needsFastForwarding = true;
 
             // set the master audio source for this type as null, so the next instance of this type is considered the new master
-            AssociateSpeakerParamsByName(this.name).masterAudioSource = null;
+            thisSpeakerParams.masterAudioSource = null;
         }
         // otherwise, this must be a slave AudioSource
         else
         {
             // decrease the count so we can keep track of active slaves
-            AssociateSpeakerParamsByName(this.name).activeSlaveCount--;
+            thisSpeakerParams.activeSlaveCount--;
         }
     }
 
@@ -280,7 +317,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
     IEnumerator PlayMasterClipSequenceInOrder(AudioClip[] audioClips)
     {
         // for each clip in the array, play it, and wait until the end to play the next
-        int counter = AssociateSpeakerParamsByName(this.name).currentClipIndex;
+        int counter = thisSpeakerParams.currentClipIndex;
         while (true)
         {
             // set this object as the master audio source
@@ -310,7 +347,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
 
             // if we're at the end of the list, reset to return to the beginning
             counter = (counter + 1) % audioClips.Length;
-            AssociateSpeakerParamsByName(this.name).currentClipIndex = counter;
+            thisSpeakerParams.currentClipIndex = counter;
 
             yield return new WaitForSeconds(remainingClipTime);
         }
@@ -320,11 +357,11 @@ public class PlayAudioSequencesByName : MonoBehaviour
     IEnumerator PlaySlaveClipSequence(AudioClip[] audioclips)
     {
         // for each clip in the array, play it, and wait until the end to play the next
-        int counter = AssociateSpeakerParamsByName(this.name).currentClipIndex;
+        int counter = thisSpeakerParams.currentClipIndex;
         while (true)
         {
             // get the corresponding master AudioSource based on this object's name
-            AudioSource masterAudioSource = AssociateSpeakerParamsByName(this.name).masterAudioSource;
+            AudioSource masterAudioSource = thisSpeakerParams.masterAudioSource;
             // this object is the slave
             AudioSource slaveAudioSource = thisAudioSourceComponent;
             // set and sync the master and slave audio source clips
@@ -407,21 +444,21 @@ public class PlayAudioSequencesByName : MonoBehaviour
     void Update()
     {
         // sync only if it's time to sync, and if there is a valid master and slave to sync between
-        if (Time.time > masterSlaveInitialSyncTime)
+        if (Time.time > masterSlaveInitialSyncTime && thisSpeakerParams.masterAudioSource != null)
         {
-            StartCoroutine(SyncAudioSources(AssociateSpeakerParamsByName(this.name).masterAudioSource, thisAudioSourceComponent));
+            StartCoroutine(SyncAudioSources(thisSpeakerParams.masterAudioSource, thisAudioSourceComponent));
 
             masterSlaveInitialSyncTime += masterSlaveSyncPeriod;
         }
 
         // if this is a master, check if it has active slaves
         // if so, we cannot disable it when it gets out of range, so except it from the proximity script
-        if (AssociateSpeakerParamsByName(this.name).masterAudioSource == thisAudioSourceComponent && AssociateSpeakerParamsByName(this.name).activeSlaveCount > 0)
+        if (thisSpeakerParams.masterAudioSource == thisAudioSourceComponent && thisSpeakerParams.activeSlaveCount > 0)
         {
             thisCanToggleComponentsScript.canDisableComponents = false;
         }
         // if no active slaves, allow it to be disabled when it gets out of range
-        else if (AssociateSpeakerParamsByName(this.name).masterAudioSource == thisAudioSourceComponent && AssociateSpeakerParamsByName(this.name).activeSlaveCount == 0)
+        else if (thisSpeakerParams.masterAudioSource == thisAudioSourceComponent && thisSpeakerParams.activeSlaveCount == 0)
         {
             thisCanToggleComponentsScript.canDisableComponents = true;
         }
