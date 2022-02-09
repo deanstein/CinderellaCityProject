@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -19,12 +20,14 @@ using UnityEngine;
 [System.Serializable]
 public class SpeakerParams
 {
+    public string keyName = "";
     public AudioSource masterAudioSource;
     public AudioClip[] clipSequence;
-    public int currentClipIndex = 0;
+    public int lastKnownClipIndex = 0;
+    public float lastKnownClipTime = 0f;
     public int activeSlaveCount = 0;
     public float speakerVolume = 0; // initialize at 0 to prevent a frame of extra-loud music
-    public float maxDistance;
+    public float maxDistance = 0f;
 }
 
 public class AudioSourceGlobals
@@ -46,28 +49,8 @@ public class AudioSourceGlobals
     public static float defaultSpeakerVolumeStore = 0.03f;
     public static float defaultSpeakerMaxDistanceStore = 15f;
 
-    // define the available types of mall audio sources
-    // only one can exist per type, so all speakers of one type are following the same params
-
-    // mall - 60s70s
-    public static SpeakerParams MallChatter60s70sParams = null;
-    public static SpeakerParams MallFountain60s70sParams1 = null;
-    public static SpeakerParams MallFountain60s70sParams2 = null;
-    public static SpeakerParams MallMusic60s70sParams = null;
-
-    // stores - 60s70s
-    public static SpeakerParams StoreMusicMusicland60s70sParams = null;
-
-    // mall - 80s90s
-    public static SpeakerParams MallChatter80s90sParams = null;
-    public static SpeakerParams MallMusic80s90sParams = null;
-
-    // stores - 80s90s
-    public static SpeakerParams StoreMusicConsumerBeauty80s90sParams = null;
-    public static SpeakerParams StoreMusicDolcis80s90sParams = null;
-    public static SpeakerParams StoreMusicGeneric80s90sParams = null;
-    public static SpeakerParams StoreMusicMusicland80s90sParams = null;
-
+    // only one set of params can exist for each type, so keep track of them here
+    public static List<SpeakerParams> allKnownSpeakerParams = new List<SpeakerParams>();
 }
 
 public class PlayAudioSequencesByName : MonoBehaviour
@@ -86,13 +69,16 @@ public class PlayAudioSequencesByName : MonoBehaviour
     // when the scene is changed, the object was disabled/re-enabled and the clip should be fast-forwarded
     // if the song is simply changing, start the next song without fast-forwarding
     // mark this true so fast-forwarding happens on first load
-    private bool needsFastForwarding = true;
+    private bool isResumingMaster = true;
 
     // return speaker parameters by object name
     // most audio source distances and volumes are assigned to defaults, but can be overridden here
     // primarily, this is used for differentiating audio sequences (playlists) between speakers
     public static SpeakerParams AssociateSpeakerParamsByName(string name)
     {
+        string thisKeyName = "";
+        SpeakerParams matchingParams = null;
+
         switch (name)
         {
             // mall - 60s70s
@@ -100,127 +86,216 @@ public class PlayAudioSequencesByName : MonoBehaviour
             // ambient chatter
             case string partialName when partialName.Contains("mall-ambient-chatter-60s70s"):
 
-                AudioSourceGlobals.MallChatter60s70sParams = AudioSourceGlobals.MallChatter60s70sParams ?? new SpeakerParams
+                thisKeyName = "mall-ambient-chatter-60s70s";
+                matchingParams = GetSpeakerParamsIfKnown(thisKeyName);
+                // if these params do not exist, create them and add them to the list
+                if (matchingParams == null)
                 {
-                    maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallChatter,
-                    speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeChatter,
-                    clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-ambient-chatter"))
-                };
-                return AudioSourceGlobals.MallChatter60s70sParams;
+                    matchingParams = new SpeakerParams
+                    {
+                        keyName = thisKeyName,
+                        maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallChatter,
+                        speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeChatter,
+                        clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-ambient-chatter"))
+                    };
+                    AudioSourceGlobals.allKnownSpeakerParams.Add(matchingParams);
+                }
+
+                return matchingParams;
 
             // fountain type 1
             case string partialName when partialName.Contains("mall-fountain-60s70s-1"):
 
-                AudioSourceGlobals.MallFountain60s70sParams1 = AudioSourceGlobals.MallFountain60s70sParams1 ?? new SpeakerParams
+                thisKeyName = "mall-fountain-60s70s-1";
+                matchingParams = GetSpeakerParamsIfKnown(thisKeyName);
+                // if these params do not exist, create them and add them to the list
+                if (matchingParams == null)
                 {
-                    maxDistance = AudioSourceGlobals.defaultSpeakerDistanceMallFountain,
-                    speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallFountain,
-                    clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-fountain-1"))
-                };
-                return AudioSourceGlobals.MallFountain60s70sParams1;
+                    matchingParams = new SpeakerParams
+                    {
+                        keyName = thisKeyName,
+                        maxDistance = AudioSourceGlobals.defaultSpeakerDistanceMallFountain,
+                        speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallFountain,
+                        clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-fountain-1"))
+                    };
+                    AudioSourceGlobals.allKnownSpeakerParams.Add(matchingParams);
+                }
+                return matchingParams;
             
             // fountain type 2
             case string partialName when partialName.Contains("mall-fountain-60s70s-2"):
 
-                AudioSourceGlobals.MallFountain60s70sParams2 = AudioSourceGlobals.MallFountain60s70sParams2 ?? new SpeakerParams
+                thisKeyName = "mall-fountain-60s70s-2";
+                matchingParams = GetSpeakerParamsIfKnown(thisKeyName);
+                // if these params do not exist, create them and add them to the list
+                if (matchingParams == null)
                 {
-                    maxDistance = AudioSourceGlobals.defaultSpeakerDistanceMallFountain,
-                    speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallFountain,
-                    clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-fountain-2"))
-                };
-                return AudioSourceGlobals.MallFountain60s70sParams2;
+                    matchingParams = new SpeakerParams
+                    {
+                        keyName = thisKeyName,
+                        maxDistance = AudioSourceGlobals.defaultSpeakerDistanceMallFountain,
+                        speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallFountain,
+                        clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-fountain-2"))
+                    };
+                    AudioSourceGlobals.allKnownSpeakerParams.Add(matchingParams);
+                }
+                return matchingParams;
 
             // common area music
             case string partialName when partialName.Contains("mall-music-60s70s"):
 
-                AudioSourceGlobals.MallMusic60s70sParams = AudioSourceGlobals.MallMusic60s70sParams ?? new SpeakerParams
+                thisKeyName = "mall-music-60s70s";
+                matchingParams = GetSpeakerParamsIfKnown(thisKeyName);
+                // if these params do not exist, create them and add them to the list
+                if (matchingParams == null)
                 {
-                    maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallCommon,
-                    speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallCommon,
-                    clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-mall-60s70s"))
-                };
-                return AudioSourceGlobals.MallMusic60s70sParams;
+                    matchingParams = new SpeakerParams
+                    {
+                        keyName = thisKeyName,
+                        maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallCommon,
+                        speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallCommon,
+                        clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-mall-60s70s"))
+                    };
+                    AudioSourceGlobals.allKnownSpeakerParams.Add(matchingParams);
+                }
+                return matchingParams;
 
             // stores - 60s70s
 
             // store - musicland
             case string partialName when partialName.Contains("store-music-musicland-60s70s"):
 
-                AudioSourceGlobals.StoreMusicMusicland60s70sParams = AudioSourceGlobals.StoreMusicMusicland60s70sParams ?? new SpeakerParams
+                thisKeyName = "store-music-musicland-60s70s";
+                matchingParams = GetSpeakerParamsIfKnown(thisKeyName);
+                // if these params do not exist, create them and add them to the list
+                if (matchingParams == null)
                 {
-                    maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore,
-                    speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore,
-                    clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-store-musicland-60s70s"))
-                };
-                return AudioSourceGlobals.StoreMusicMusicland60s70sParams;
+                    matchingParams = new SpeakerParams
+                    {
+                        keyName = thisKeyName,
+                        maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore,
+                        speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore,
+                        clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-store-musicland-60s70s"))
+                    };
+                    AudioSourceGlobals.allKnownSpeakerParams.Add(matchingParams);
+                }
+                return matchingParams;
 
             // mall - 80s90s
 
             // ambient chatter
             case string partialName when partialName.Contains("mall-ambient-chatter-80s90s"):
 
-                AudioSourceGlobals.MallChatter80s90sParams = AudioSourceGlobals.MallChatter80s90sParams ?? new SpeakerParams
+                thisKeyName = "mall-ambient-chatter-80s90s";
+                matchingParams = GetSpeakerParamsIfKnown(thisKeyName);
+                // if these params do not exist, create them and add them to the list
+                if (matchingParams == null)
                 {
-                    maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallChatter,
-                    speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeChatter,
-                    clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-ambient-chatter"))
-                };
-                return AudioSourceGlobals.MallChatter80s90sParams;
+                    matchingParams = new SpeakerParams
+                    {
+                        keyName = thisKeyName,
+                        maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallChatter,
+                        speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeChatter,
+                        clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-ambient-chatter"))
+                    };
+                    AudioSourceGlobals.allKnownSpeakerParams.Add(matchingParams);
+                }
+                return matchingParams;
 
             // common area music
             case string partialName when partialName.Contains("mall-music-80s90s"):
 
-                AudioSourceGlobals.MallMusic80s90sParams = AudioSourceGlobals.MallMusic80s90sParams ?? new SpeakerParams
+                thisKeyName = "mall-music-80s90s";
+                matchingParams = GetSpeakerParamsIfKnown(thisKeyName);
+                // if these params do not exist, create them and add them to the list
+                if (matchingParams == null)
                 {
-                    maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallCommon,
-                    speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallCommon,
-                    clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-mall-80s90s"))
-                };
-                return AudioSourceGlobals.MallMusic80s90sParams;
+                    matchingParams = new SpeakerParams
+                    {
+                        keyName = thisKeyName,
+                        maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallCommon,
+                        speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallCommon,
+                        clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-mall-80s90s"))
+                    };
+                    AudioSourceGlobals.allKnownSpeakerParams.Add(matchingParams);
+                }
+                return matchingParams;
 
             // store - consumer beauty
             case string partialName when partialName.Contains("store-music-consumer-beauty-80s90s"):
 
-                AudioSourceGlobals.StoreMusicConsumerBeauty80s90sParams = AudioSourceGlobals.StoreMusicConsumerBeauty80s90sParams ?? new SpeakerParams
+                thisKeyName = "store-music-consumer-beauty-80s90s";
+                matchingParams = GetSpeakerParamsIfKnown(thisKeyName);
+                // if these params do not exist, create them and add them to the list
+                if (matchingParams == null)
                 {
-                    maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore,
-                    speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore,
-                    clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-store-consumer-beauty-80s90s"))
-                };
-                return AudioSourceGlobals.StoreMusicConsumerBeauty80s90sParams;
+                    matchingParams = new SpeakerParams
+                    {
+                        keyName = thisKeyName,
+                        maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore,
+                        speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore,
+                        clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-store-consumer-beauty-80s90s"))
+                    };
+                    AudioSourceGlobals.allKnownSpeakerParams.Add(matchingParams);
+                }
+                return matchingParams;
 
             // store - dolcis
             case string partialName when partialName.Contains("store-music-dolcis-80s90s"):
 
-                AudioSourceGlobals.StoreMusicDolcis80s90sParams = AudioSourceGlobals.StoreMusicDolcis80s90sParams ?? new SpeakerParams
+                thisKeyName = "store-music-dolcis-80s90s";
+                matchingParams = GetSpeakerParamsIfKnown(thisKeyName);
+                // if these params do not exist, create them and add them to the list
+                if (matchingParams == null)
                 {
-                    maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore,
-                    speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore,
-                    clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-store-dolcis-80s90s"))
-                };
-                return AudioSourceGlobals.StoreMusicDolcis80s90sParams;
+                    matchingParams = new SpeakerParams
+                    {
+                        keyName = thisKeyName,
+                        maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore,
+                        speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore,
+                        clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-store-dolcis-80s90s"))
+                    };
+                    AudioSourceGlobals.allKnownSpeakerParams.Add(matchingParams);
+                }
+                return matchingParams;
             
             // store - generic
             case string partialName when partialName.Contains("store-music-generic-80s90s"):
 
-                AudioSourceGlobals.StoreMusicGeneric80s90sParams = AudioSourceGlobals.StoreMusicGeneric80s90sParams ?? new SpeakerParams
+                thisKeyName = "store-music-generic-80s90s";
+                matchingParams = GetSpeakerParamsIfKnown(thisKeyName);
+                // if these params do not exist, create them and add them to the list
+                if (matchingParams == null)
                 {
-                    maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore,
-                    speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore,
-                    clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-store-generic-80s90s"))
-                };
-                return AudioSourceGlobals.StoreMusicGeneric80s90sParams;
+                    matchingParams = new SpeakerParams
+                    {
+                        keyName = thisKeyName,
+                        maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore,
+                        speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore,
+                        clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-store-generic-80s90s"))
+                    };
+                    AudioSourceGlobals.allKnownSpeakerParams.Add(matchingParams);
+                }
+                return matchingParams;
 
             // store - musicland
             case string partialName when partialName.Contains("store-music-musicland-80s90s"):
 
-                AudioSourceGlobals.StoreMusicMusicland80s90sParams = AudioSourceGlobals.StoreMusicMusicland80s90sParams ?? new SpeakerParams
+                thisKeyName = "store-music-musicland-80s90s";
+                matchingParams = GetSpeakerParamsIfKnown(thisKeyName);
+                // if these params do not exist, create them and add them to the list
+                if (matchingParams == null)
                 {
-                    maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore,
-                    speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore,
-                    clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-store-musicland-80s90s"))
-                };
-                return AudioSourceGlobals.StoreMusicMusicland80s90sParams;
+                    matchingParams = new SpeakerParams
+                    {
+                        keyName = thisKeyName,
+                        maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceStore,
+                        speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeStore,
+                        clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-store-musicland-80s90s"))
+                    };
+                    AudioSourceGlobals.allKnownSpeakerParams.Add(matchingParams);
+                }
+                return matchingParams;
 
             default:
                 Utils.DebugUtils.DebugLog("Failed to associate speaker params with this speaker: " + name);
@@ -268,12 +343,11 @@ public class PlayAudioSequencesByName : MonoBehaviour
             thisSpeakerParams.masterAudioSource = thisAudioSourceComponent;
 
             // ensure this master cannot be disabled until checks are made in update()
-            //thisToggleComponentByProximityScript.isExcepted = true;
             thisCanToggleComponentsScript.canDisableComponents = false;
 
-           StartCoroutine(PlayMasterClipSequenceInOrder(thisSpeakerParams.clipSequence));
+            StartCoroutine(PlayMasterClipSequence(thisSpeakerParams.clipSequence));
 
-           needsFastForwarding = false;
+            isResumingMaster = false;
         }
         // otherwise, this must be a slave AudioSource
         else
@@ -294,13 +368,13 @@ public class PlayAudioSequencesByName : MonoBehaviour
         if (thisAudioSourceComponent == thisSpeakerParams.masterAudioSource)
         {
             //look up the current clip index, and subtract it by one to avoid skipping tracks when re-enabled
-            if (thisSpeakerParams.currentClipIndex > 0)
+            if (thisSpeakerParams.lastKnownClipIndex > 0)
             {
-                thisSpeakerParams.currentClipIndex--;
+                thisSpeakerParams.lastKnownClipIndex--;
             }
 
             // set the flag that fast-forwarding should happen on next enable
-            needsFastForwarding = true;
+            isResumingMaster = true;
 
             // set the master audio source for this type as null, so the next instance of this type is considered the new master
             thisSpeakerParams.masterAudioSource = null;
@@ -313,41 +387,55 @@ public class PlayAudioSequencesByName : MonoBehaviour
         }
     }
 
+    // retrieve the known speaker params if it exists in the list
+    public static SpeakerParams GetSpeakerParamsIfKnown(string keyName)
+    {
+        SpeakerParams matchingParams = null;
+
+        foreach (SpeakerParams knownParams in AudioSourceGlobals.allKnownSpeakerParams)
+        {
+            if (knownParams.keyName == keyName)
+            {
+                matchingParams = knownParams;
+            }
+        }
+
+        return matchingParams;
+    }
+
     // specify and play master speaker clip sequences
-    IEnumerator PlayMasterClipSequenceInOrder(AudioClip[] audioClips)
+    IEnumerator PlayMasterClipSequence(AudioClip[] audioClips)
     {
         // for each clip in the array, play it, and wait until the end to play the next
-        int counter = thisSpeakerParams.currentClipIndex;
         while (true)
         {
             // set this object as the master audio source
             AudioSource masterAudioSource = thisAudioSourceComponent;
             // set and play the clip based on the list of clip names
-            masterAudioSource.clip = audioClips[counter];
+            masterAudioSource.clip = audioClips[thisSpeakerParams.lastKnownClipIndex];
             masterAudioSource.Play();
             Utils.DebugUtils.DebugLog("Playing master music " + masterAudioSource.clip.name + " on " + masterAudioSource);
 
             float remainingClipTime;
 
             // fast forward time if the flag is set
-            if (needsFastForwarding)
+            if (isResumingMaster)
             {
                 // calculate how much time is left in the clip to accurately set the WaitForSeconds
                 remainingClipTime = FastForwardMasterAudioSourceToMatchGameTime(masterAudioSource);
-                needsFastForwarding = false;
+                isResumingMaster = false;
                 //Utils.DebugUtils.DebugLog("Clip was set to fast forward.");
             }
             // otherwise the remaining clip time is just the clip's length
             else
             {
                 remainingClipTime = masterAudioSource.clip.length;
-                needsFastForwarding = false;
+                isResumingMaster = false;
                 //Utils.DebugUtils.DebugLog("Clip was NOT set to fast forward.");
             }
 
             // if we're at the end of the list, reset to return to the beginning
-            counter = (counter + 1) % audioClips.Length;
-            thisSpeakerParams.currentClipIndex = counter;
+            thisSpeakerParams.lastKnownClipIndex = (thisSpeakerParams.lastKnownClipIndex + 1) % audioClips.Length;
 
             yield return new WaitForSeconds(remainingClipTime);
         }
@@ -357,7 +445,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
     IEnumerator PlaySlaveClipSequence(AudioClip[] audioclips)
     {
         // for each clip in the array, play it, and wait until the end to play the next
-        int counter = thisSpeakerParams.currentClipIndex;
+        int counter = thisSpeakerParams.lastKnownClipIndex;
         while (true)
         {
             // get the corresponding master AudioSource based on this object's name
