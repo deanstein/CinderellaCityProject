@@ -318,15 +318,12 @@ public class PlayAudioSequencesByName : MonoBehaviour
 
     void OnEnable()
     {
-        // execute the AutoResumeCoRoutine OnEnable() first
-        //base.OnEnable();
-
         if (!ManageFPSControllers.FPSControllerGlobals.activeFPSController)
         {
             return;
         }
 
-        // if no master audio source for this type, this AudioSource should be considered the master
+        // if this is a master audiosource, resume at the clip and time the last-known master was playing
         if (!thisSpeakerParams.masterAudioSource)
         {
             // set this speaker AudioSource as the Master AudioSource for this type
@@ -338,23 +335,20 @@ public class PlayAudioSequencesByName : MonoBehaviour
             StartCoroutine(PlayMasterClipSequence(thisSpeakerParams.clipSequence));
             SynchronizeAllSlavesWithMaster(thisAudioSourceComponent);
         }
-        // otherwise, this must be a slave AudioSource
+        // otherwise, this must be a subordinate audiosource
         else
         {
             // keep track of the active slaves
             thisSpeakerParams.activeSlaveAudioSources.Add(thisAudioSourceComponent);
 
+            // sync with master
             SyncAudioSources(thisSpeakerParams.masterAudioSource, thisAudioSourceComponent);
-            //PlaySlaveClipSequence();
         }
     }
 
     void OnDisable()
     {
-        // execute the AutoResumeCoRoutine OnDisable() first
-        //base.OnDisable();
-
-        // check if this is the master AudioSource
+        // if this is a master audiosource, record the last-known clip and time for the next master to resume
         if (thisAudioSourceComponent == thisSpeakerParams.masterAudioSource)
         {
             thisSpeakerParams.lastKnownClip = thisAudioSourceComponent.clip;
@@ -366,10 +360,10 @@ public class PlayAudioSequencesByName : MonoBehaviour
             // set the master audio source for this type as null, so the next instance of this type is considered the new master
             thisSpeakerParams.masterAudioSource = null;
         }
-        // otherwise, this must be a slave AudioSource
+        // otherwise, this must be a subordinate audiosource
         else
         {
-            // decrease the count so we can keep track of active slaves
+            // keep track of active subordinates
             thisSpeakerParams.activeSlaveAudioSources.Remove(thisAudioSourceComponent);
         }
     }
