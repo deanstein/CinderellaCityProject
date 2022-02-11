@@ -22,10 +22,11 @@ public class SpeakerParams
 {
     public string keyName = "";
     public AudioSource masterAudioSource;
+    public List<AudioSource> activeSlaveAudioSources = new List<AudioSource>();
     public AudioClip[] clipSequence;
     public int lastKnownClipIndex = 0;
+    public AudioClip lastKnownClip;
     public float lastKnownClipTime = 0f;
-    public int activeSlaveCount = 0;
     public float speakerVolume = 0; // initialize at 0 to prevent a frame of extra-loud music
     public float maxDistance = 0f;
 }
@@ -59,17 +60,6 @@ public class PlayAudioSequencesByName : MonoBehaviour
     AudioSource thisAudioSourceComponent;
     CanDisableComponents thisCanToggleComponentsScript;
     SpeakerParams thisSpeakerParams;
-
-    // used for synchronizing a slave and a master audiosource
-    private float masterSlaveInitialSyncTime = 0.0f;
-    public static float maxMasterSlaveTimeDelta = 0.05f; // max out-of-sync a slave and master can get
-    public float masterSlaveSyncPeriod = 1.0f;
-
-    // used to differentiate between a scene change and a song change
-    // when the scene is changed, the object was disabled/re-enabled and the clip should be fast-forwarded
-    // if the song is simply changing, start the next song without fast-forwarding
-    // mark this true so fast-forwarding happens on first load
-    private bool isResumingMaster = true;
 
     // return speaker parameters by object name
     // most audio source distances and volumes are assigned to defaults, but can be overridden here
@@ -154,7 +144,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
                         keyName = thisKeyName,
                         maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallCommon,
                         speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallCommon,
-                        clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-mall-60s70s"))
+                        clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-mall-experimental"))
                     };
                     AudioSourceGlobals.allKnownSpeakerParams.Add(matchingParams);
                 }
@@ -346,16 +336,16 @@ public class PlayAudioSequencesByName : MonoBehaviour
             thisCanToggleComponentsScript.canDisableComponents = false;
 
             StartCoroutine(PlayMasterClipSequence(thisSpeakerParams.clipSequence));
-
-            isResumingMaster = false;
+            SynchronizeAllSlavesWithMaster(thisAudioSourceComponent);
         }
         // otherwise, this must be a slave AudioSource
         else
         {
-            // increase the count so we know when there are slaves relying on a master
-            thisSpeakerParams.activeSlaveCount++;
+            // keep track of the active slaves
+            thisSpeakerParams.activeSlaveAudioSources.Add(thisAudioSourceComponent);
 
-            StartCoroutine(PlaySlaveClipSequence(thisSpeakerParams.clipSequence));
+            SyncAudioSources(thisSpeakerParams.masterAudioSource, thisAudioSourceComponent);
+            //PlaySlaveClipSequence();
         }
     }
 
@@ -367,14 +357,11 @@ public class PlayAudioSequencesByName : MonoBehaviour
         // check if this is the master AudioSource
         if (thisAudioSourceComponent == thisSpeakerParams.masterAudioSource)
         {
-            //look up the current clip index, and subtract it by one to avoid skipping tracks when re-enabled
-            if (thisSpeakerParams.lastKnownClipIndex > 0)
-            {
-                thisSpeakerParams.lastKnownClipIndex--;
-            }
-
-            // set the flag that fast-forwarding should happen on next enable
-            isResumingMaster = true;
+            thisSpeakerParams.lastKnownClip = thisAudioSourceComponent.clip;
+            thisSpeakerParams.lastKnownClipIndex = System.Array.IndexOf(thisSpeakerParams.clipSequence, thisAudioSourceComponent.clip);
+            thisSpeakerParams.lastKnownClipTime = thisAudioSourceComponent.time;
+            // TODO: why is this always zero?!
+            Utils.DebugUtils.DebugLog("Last known clip time: " + thisSpeakerParams.masterAudioSource.time + " " + thisSpeakerParams.lastKnownClipTime);
 
             // set the master audio source for this type as null, so the next instance of this type is considered the new master
             thisSpeakerParams.masterAudioSource = null;
@@ -383,7 +370,24 @@ public class PlayAudioSequencesByName : MonoBehaviour
         else
         {
             // decrease the count so we can keep track of active slaves
-            thisSpeakerParams.activeSlaveCount--;
+            thisSpeakerParams.activeSlaveAudioSources.Remove(thisAudioSourceComponent);
+        }
+    }
+
+
+    // Update is called once per frame
+    void Update()
+    {
+        // if this is a master, check if it has active slaves
+        // if so, we cannot disable it when it gets out of range, so except it from the proximity script
+        if (thisSpeakerParams.masterAudioSource == thisAudioSourceComponent && thisSpeakerParams.activeSlaveAudioSources.Count > 0)
+        {
+            thisCanToggleComponentsScript.canDisableComponents = false;
+        }
+        // if no active slaves, allow it to be disabled when it gets out of range
+        else if (thisSpeakerParams.masterAudioSource == thisAudioSourceComponent && thisSpeakerParams.activeSlaveAudioSources.Count == 0)
+        {
+            thisCanToggleComponentsScript.canDisableComponents = true;
         }
     }
 
@@ -412,27 +416,14 @@ public class PlayAudioSequencesByName : MonoBehaviour
             // set this object as the master audio source
             AudioSource masterAudioSource = thisAudioSourceComponent;
             // set and play the clip based on the list of clip names
-            masterAudioSource.clip = audioClips[thisSpeakerParams.lastKnownClipIndex];
+            masterAudioSource.clip = thisSpeakerParams.clipSequence[thisSpeakerParams.lastKnownClipIndex];
             masterAudioSource.Play();
+            masterAudioSource.time = thisSpeakerParams.lastKnownClipTime;
             Utils.DebugUtils.DebugLog("Playing master music " + masterAudioSource.clip.name + " on " + masterAudioSource);
 
-            float remainingClipTime;
+            SynchronizeAllSlavesWithMaster(masterAudioSource);
 
-            // fast forward time if the flag is set
-            if (isResumingMaster)
-            {
-                // calculate how much time is left in the clip to accurately set the WaitForSeconds
-                remainingClipTime = FastForwardMasterAudioSourceToMatchGameTime(masterAudioSource);
-                isResumingMaster = false;
-                //Utils.DebugUtils.DebugLog("Clip was set to fast forward.");
-            }
-            // otherwise the remaining clip time is just the clip's length
-            else
-            {
-                remainingClipTime = masterAudioSource.clip.length;
-                isResumingMaster = false;
-                //Utils.DebugUtils.DebugLog("Clip was NOT set to fast forward.");
-            }
+            float remainingClipTime = masterAudioSource.clip.length - masterAudioSource.time;
 
             // if we're at the end of the list, reset to return to the beginning
             thisSpeakerParams.lastKnownClipIndex = (thisSpeakerParams.lastKnownClipIndex + 1) % audioClips.Length;
@@ -442,113 +433,39 @@ public class PlayAudioSequencesByName : MonoBehaviour
     }
 
     // play slave speaker sequences
-    IEnumerator PlaySlaveClipSequence(AudioClip[] audioclips)
+    void PlaySlaveClipSequence()
     {
-        // for each clip in the array, play it, and wait until the end to play the next
-        int counter = thisSpeakerParams.lastKnownClipIndex;
-        while (true)
-        {
-            // get the corresponding master AudioSource based on this object's name
-            AudioSource masterAudioSource = thisSpeakerParams.masterAudioSource;
-            // this object is the slave
-            AudioSource slaveAudioSource = thisAudioSourceComponent;
-            // set and sync the master and slave audio source clips
-            slaveAudioSource.clip = masterAudioSource.clip;
-            slaveAudioSource.time = masterAudioSource.time;
-            slaveAudioSource.Play();
-            Utils.DebugUtils.DebugLog("Playing slave music " + masterAudioSource.clip.name + " on " + slaveAudioSource);
-
-            // calculate how much time is left in the clip to accurately set the WaitForSeconds
-            float remainingClipTime = CalculateRemainingClipTime(slaveAudioSource);
-
-            // if we're at the end of the list, reset to return to the beginning
-            counter = (counter + 1) % audioclips.Length;
-
-            yield return new WaitForSeconds(remainingClipTime);
-        }
+        // get the corresponding master AudioSource based on this object's name
+        AudioSource masterAudioSource = thisSpeakerParams.masterAudioSource;
+        // this object is the slave
+        AudioSource slaveAudioSource = thisAudioSourceComponent;
+        // set and sync the master and slave audio source clips
+        slaveAudioSource.clip = masterAudioSource.clip;
+        slaveAudioSource.time = masterAudioSource.time;
+        slaveAudioSource.Play();
+        Utils.DebugUtils.DebugLog("Playing slave music " + masterAudioSource.clip.name + " on " + slaveAudioSource);
     }
 
     // synchronize two AudioSources
-    IEnumerator SyncAudioSources(AudioSource masterAudioSource, AudioSource slaveAudioSource)
+    void SyncAudioSources(AudioSource masterAudioSource, AudioSource slaveAudioSource)
     {
         //Utils.DebugUtils.DebugLog"Master AudioSource (from sync): " + masterAudioSource);
 
-        // ensure the slave's clip name matches the master clip
-        if (masterAudioSource.clip.name != slaveAudioSource.clip.name)
-        {
-            Utils.DebugUtils.DebugLog("Corrected mismatched clips. Master: " + masterAudioSource.clip.name + " Slave: " + slaveAudioSource.clip.name);
-            slaveAudioSource.clip = masterAudioSource.clip;
-        }
+        slaveAudioSource.clip = masterAudioSource.clip;
+        slaveAudioSource.time = masterAudioSource.time;
+        slaveAudioSource.Play();
 
-        // ensure the slave's time is reasonably in-sync with the master's time
-        if (Mathf.Abs(slaveAudioSource.time - masterAudioSource.time) > maxMasterSlaveTimeDelta)
-        {
-            slaveAudioSource.timeSamples = masterAudioSource.timeSamples;
-            slaveAudioSource.Play();
-
-            Utils.DebugUtils.DebugLog("Synchronized AudioSource time between master: " + masterAudioSource + " and slave: " + slaveAudioSource + " at " + Time.time);
-            //Debug.Log("Master audiosource clip: " + masterAudioSource.clip + " and time: " + masterAudioSource.time + " Slave audiosource clip: " + slaveAudioSource.clip + " and time: " +  slaveAudioSource.time);
-        }
-
-        yield return null;
+        Utils.DebugUtils.DebugLog("Synchronized master: " + masterAudioSource.name + " and slave: " + slaveAudioSource.name);
     }
 
-    // determine how many multiples of the current clip length can fit into the time since game started
-    float CalculateFastForwardClipTime(AudioSource audioSourceComponent)
+    void SynchronizeAllSlavesWithMaster(AudioSource masterAudioSource)
     {
-        float fastForwardTimeAmount = Time.time % audioSourceComponent.clip.length;
+        SpeakerParams masterParams = AssociateSpeakerParamsByName(masterAudioSource.name);
+        List<AudioSource> slaveAudioSources = masterParams.activeSlaveAudioSources;
 
-        return fastForwardTimeAmount;
-    }
-
-    // determine how much remaining clip time is left in order to set a WaitForSeconds accurately
-    float CalculateRemainingClipTime(AudioSource audioSourceComponent)
-    {
-
-        float fastForwardTimeAmount = CalculateFastForwardClipTime(audioSourceComponent);
-
-        // the remaining clip time - used to update the WaitForSeconds
-        float remainingClipTime = audioSourceComponent.clip.length - fastForwardTimeAmount;
-
-        return remainingClipTime;
-    }
-
-    // fast-forward a master AudioSource to keep up with game time
-    float FastForwardMasterAudioSourceToMatchGameTime(AudioSource audioSourceComponentToFastForward)
-    {
-        if (audioSourceComponentToFastForward.clip)
+        foreach (AudioSource slaveAudiosource in slaveAudioSources)
         {
-            float remainingClipTime = CalculateRemainingClipTime(audioSourceComponentToFastForward);
-
-            // set the current audiosource to the fast-forwarded time amount
-            audioSourceComponentToFastForward.time = CalculateFastForwardClipTime(audioSourceComponentToFastForward);
-
-            return remainingClipTime;
-        }
-        return 0;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        // sync only if it's time to sync, and if there is a valid master and slave to sync between
-        if (Time.time > masterSlaveInitialSyncTime && thisSpeakerParams.masterAudioSource != null)
-        {
-            StartCoroutine(SyncAudioSources(thisSpeakerParams.masterAudioSource, thisAudioSourceComponent));
-
-            masterSlaveInitialSyncTime += masterSlaveSyncPeriod;
-        }
-
-        // if this is a master, check if it has active slaves
-        // if so, we cannot disable it when it gets out of range, so except it from the proximity script
-        if (thisSpeakerParams.masterAudioSource == thisAudioSourceComponent && thisSpeakerParams.activeSlaveCount > 0)
-        {
-            thisCanToggleComponentsScript.canDisableComponents = false;
-        }
-        // if no active slaves, allow it to be disabled when it gets out of range
-        else if (thisSpeakerParams.masterAudioSource == thisAudioSourceComponent && thisSpeakerParams.activeSlaveCount == 0)
-        {
-            thisCanToggleComponentsScript.canDisableComponents = true;
+            SyncAudioSources(masterAudioSource, slaveAudiosource);
         }
     }
 }
