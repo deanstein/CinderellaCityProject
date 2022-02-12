@@ -88,8 +88,6 @@ After the simulation loads, you'll find yourself at the Main Menu, where you can
 
 As this is a work in progress, some issues are known and will be fixed in future updates:
 
-- After running the simulation for several minutes, the music in each era may fail to play correctly, resulting in the music skipping and repeating every frame. Simply time-travel to another era, then back, to solve this.
-- The Main Menu currently supports only 3 locations, but a scrollable interface will be added in the future to support additional points of interest.
 - Large areas of both time periods are unfinished.
 
 
