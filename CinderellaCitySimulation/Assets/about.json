@@ -1,7 +1,7 @@
 {
   "VersionHistory": [
     {
-      "0.7.0.202201": [
+      "0.7.0.202202": [
         {          
           "Environment Updates": [
             "Added new stores to 60s70s Blue Mall, including Orange Julius, Frank Baldwin - Printer, Coffee & Donuts, Waldenbooks, Royal Optical, Dardano's Leather Shop, Carousel Snack Bar, Bri-tone Camera, General Nutrition Centers, Siet's Clogs, Randall's Formalwear, and Rich Burger",
@@ -21,6 +21,7 @@
             "Added more sitting people to various 60s70s seating areas",
             "Added more queued people to 60s70s and 80s90s",
             "Added more groups of standing people to 60s70s and 80s90s",
+            "Added randomizer/shuffle to mall and store music clip sequences",
             "Updated signage for several stores in 80s90s Rose Mall for better accuracy, including B. Dalton, Stage, Thom McAn, and Nina B.",
             "Fixed issues with fitting of terra-cotta tile elements at column bases and storefronts",
             "Reduced specular on several materials like concrete, stucco, and asphalt",
@@ -53,6 +54,9 @@
             "Improved efficiency of player proximity calculations for NPCs and speakers",
             "Improved efficiency of setting lightmap resolution by removing certain operations from for loop",
             "Moved more import rules to ManageImportSettings from AssetImportPipeline",
+            "Fixed an issue where speaker synchronizing could result in unexpected frame looping",
+            "Fixed an issue where playing the next song in a clip sequence could result in a playback gap or the song briefly repeating unexpectedly",
+            "Fixed an issue where playing the next song in a clip sequence or starting a clip sequence over would result in an editor error about an invalid seek position",
             "Fixed an issue where Main Menu thumbnails would put the player's camera at an incorrect height"
           ]
         }
