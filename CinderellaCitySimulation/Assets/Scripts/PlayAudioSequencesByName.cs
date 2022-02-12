@@ -29,6 +29,7 @@ public class SpeakerParams
     public float lastKnownClipTime = 0f;
     public float speakerVolume = 0; // initialize at 0 to prevent a frame of extra-loud music
     public float maxDistance = 0f;
+    public bool isResuming = false;
 }
 
 public class AudioSourceGlobals
@@ -332,8 +333,12 @@ public class PlayAudioSequencesByName : MonoBehaviour
             // ensure this master cannot be disabled until checks are made in update()
             thisCanToggleComponentsScript.canDisableComponents = false;
 
+            // play and sync all slaves
             StartCoroutine(PlayMasterClipSequence(thisSpeakerParams.clipSequence));
             SynchronizeAllSlavesWithMaster(thisAudioSourceComponent);
+
+            // set isResuming as false so when the next song plays, it starts at time 0 without errors
+            thisSpeakerParams.isResuming = false;
         }
         // otherwise, this must be a subordinate audiosource
         else
@@ -352,13 +357,15 @@ public class PlayAudioSequencesByName : MonoBehaviour
         if (thisAudioSourceComponent == thisSpeakerParams.masterAudioSource)
         {
             thisSpeakerParams.lastKnownClip = thisAudioSourceComponent.clip;
+            //thisSpeakerParams.lastKnownClipTime = thisAudioSourceComponent.time;
             thisSpeakerParams.lastKnownClipIndex = System.Array.IndexOf(thisSpeakerParams.clipSequence, thisAudioSourceComponent.clip);
-            thisSpeakerParams.lastKnownClipTime = thisAudioSourceComponent.time;
-            // TODO: why is this always zero?!
-            Utils.DebugUtils.DebugLog("Last known clip time: " + thisSpeakerParams.masterAudioSource.time + " " + thisSpeakerParams.lastKnownClipTime);
+            // the audiosource time should be set here too, but that must happen in Update() for some reason
 
-            // set the master audio source for this type as null, so the next instance of this type is considered the new master
+            // set the master audio source for this type as null
+            // so the next instance of this type is considered the new master
             thisSpeakerParams.masterAudioSource = null;
+            // set isResuming to true, so the track can be resumed at its last-known seek position
+            thisSpeakerParams.isResuming = true;
         }
         // otherwise, this must be a subordinate audiosource
         else
@@ -383,6 +390,11 @@ public class PlayAudioSequencesByName : MonoBehaviour
         {
             thisCanToggleComponentsScript.canDisableComponents = true;
         }
+
+        // need to record the last-known clip time in case this speaker is disabled
+        // and the next master needs to resume
+        // for some reason, this can't be done in OnDisable()
+        thisSpeakerParams.lastKnownClipTime = thisAudioSourceComponent.time;
     }
 
     // retrieve the known speaker params if it exists in the list
@@ -411,45 +423,32 @@ public class PlayAudioSequencesByName : MonoBehaviour
             AudioSource masterAudioSource = thisAudioSourceComponent;
             // set and play the clip based on the list of clip names
             masterAudioSource.clip = thisSpeakerParams.clipSequence[thisSpeakerParams.lastKnownClipIndex];
+            // if resuming, use the last-known time; otherwise, start at the beginning (new song)
+            masterAudioSource.time = thisSpeakerParams.isResuming ? thisSpeakerParams.lastKnownClipTime : 0f;
             masterAudioSource.Play();
-            masterAudioSource.time = thisSpeakerParams.lastKnownClipTime;
+
             Utils.DebugUtils.DebugLog("Playing master music " + masterAudioSource.clip.name + " on " + masterAudioSource);
 
+            // sync all suborinates
             SynchronizeAllSlavesWithMaster(masterAudioSource);
 
-            float remainingClipTime = masterAudioSource.clip.length - masterAudioSource.time;
-
-            // if we're at the end of the list, reset to return to the beginning
+            // if we're at the end of the list, reset the index to return to the beginning
             thisSpeakerParams.lastKnownClipIndex = (thisSpeakerParams.lastKnownClipIndex + 1) % audioClips.Length;
 
+            // wait until the clip is over to proceed to the next
+            float remainingClipTime = masterAudioSource.clip.length - masterAudioSource.time;
             yield return new WaitForSeconds(remainingClipTime);
         }
-    }
-
-    // play slave speaker sequences
-    void PlaySlaveClipSequence()
-    {
-        // get the corresponding master AudioSource based on this object's name
-        AudioSource masterAudioSource = thisSpeakerParams.masterAudioSource;
-        // this object is the slave
-        AudioSource slaveAudioSource = thisAudioSourceComponent;
-        // set and sync the master and slave audio source clips
-        slaveAudioSource.clip = masterAudioSource.clip;
-        slaveAudioSource.time = masterAudioSource.time;
-        slaveAudioSource.Play();
-        Utils.DebugUtils.DebugLog("Playing slave music " + masterAudioSource.clip.name + " on " + slaveAudioSource);
     }
 
     // synchronize two AudioSources
     void SyncAudioSources(AudioSource masterAudioSource, AudioSource slaveAudioSource)
     {
-        //Utils.DebugUtils.DebugLog"Master AudioSource (from sync): " + masterAudioSource);
-
         slaveAudioSource.clip = masterAudioSource.clip;
         slaveAudioSource.time = masterAudioSource.time;
         slaveAudioSource.Play();
 
-        Utils.DebugUtils.DebugLog("Synchronized master: " + masterAudioSource.name + " and slave: " + slaveAudioSource.name);
+        //Utils.DebugUtils.DebugLog("Synchronized master: " + masterAudioSource.name + "(" + masterAudioSource.time + ")" + " and slave: " + slaveAudioSource.name + "(" + slaveAudioSource.time + ")");
     }
 
     void SynchronizeAllSlavesWithMaster(AudioSource masterAudioSource)
