@@ -12,6 +12,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: DefaultMaterial
+    second: {fileID: 2100000, guid: 63a953bdf936c0848b0773fca58efc4c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Fabric - Linen - Colorized
     second: {fileID: 2100000, guid: bd57d23f2a77a1c43bc3f3421067ed97, type: 2}
   - first:
@@ -23,7 +28,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Wood Grain - Colorized 2
-    second: {fileID: 2100000, guid: ae86090bc163bab4fb644a69a4d5f056, type: 2}
+    second: {fileID: 2100000, guid: 902f630139989eb41a9529a73f622f3c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wood Grain - colorized Front Page
+    second: {fileID: 2100000, guid: 245342b516ec5f24a9b78f6a44dd61e5, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -32,8 +42,43 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: cinder alley - dark brown wall
+    second: {fileID: 2100000, guid: db090fdf50fdd654d9a0da7138c348f0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cinder alley - white stucco
+    second: {fileID: 2100000, guid: 573f71d8c938aeb4ea7b39c168447283, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: clear
+    second: {fileID: 2100000, guid: ae133624fa948d643b0e92240ce3cb3f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: concrete - collectors key exchange
+    second: {fileID: 2100000, guid: e86a22a695b47fb4fb405d37b39cc691, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: concrete - collectors key exchange dark
+    second: {fileID: 2100000, guid: b107ae3c06727d747bbddb3fc6c2ae47, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: concrete - columns
+    second: {fileID: 2100000, guid: 18926984457a6ac43bdb4e0c4aa7611a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: concrete - painted 60s
     second: {fileID: 2100000, guid: 7b05bdcb563e75240ad0466ec4107746, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: concrete - painted 80s
+    second: {fileID: 2100000, guid: d5552e3d5eff7f743ba915d1b9b71e4d, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -52,8 +97,28 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: hummel's counter yellow
+    second: {fileID: 2100000, guid: d0e3fcf551be83c479ea098da2eca9ec, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - 60s blue light
     second: {fileID: 2100000, guid: 92fd3bf04e049c442a50b5f8a6720cb9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - 60s dark trim
+    second: {fileID: 2100000, guid: 5c2348a114466ee4882abe7b986c3c5c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - basement vacant black
+    second: {fileID: 2100000, guid: 017f3baabcaf8fa4ab673dfb20ac4104, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - basement vacant green
+    second: {fileID: 2100000, guid: 7cf1f18237a719d43a2958b51b03b917, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -87,8 +152,23 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - expansion joint
+    second: {fileID: 2100000, guid: 6239e4bcafff1894b9845914485adb7e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - floor trim
     second: {fileID: 2100000, guid: b98f8390932ec404fb457d109077b21e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - food court beige
+    second: {fileID: 2100000, guid: d6425edf2471f324fb467d3ade81f785, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - food court tile
+    second: {fileID: 2100000, guid: eaa58daee0e28994eafb8f068d98ef7e, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -97,13 +177,28 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - mezz panel
+    second: {fileID: 2100000, guid: 0d008078812edbb4a99706b8fd664a41, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - musicland black glass
     second: {fileID: 2100000, guid: 1eae7fe02fc6699439a98d4152a08ebd, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - office wood vertical
+    second: {fileID: 2100000, guid: c4e9d23c95874254796bd28ef5b5699a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - parquet floor
     second: {fileID: 2100000, guid: c53bba7c940a20a4e9eac4ebc5a4e95a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - shamrock floor brick
+    second: {fileID: 2100000, guid: 20103779e3728974087a7bb9ba318137, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -122,13 +217,38 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: roof shingles cinder alley 2
+    second: {fileID: 2100000, guid: cd62825ccf63a594d88e59a11fe88fb3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: roof shingles cinder alley 2 whiteout
+    second: {fileID: 2100000, guid: 39482d8a1dc5efb4499e28f5549f6f44, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: silver metallic
     second: {fileID: 2100000, guid: 97330d618acfd3e43ba586ba1e89deb7, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: soil - interior
+    second: {fileID: 2100000, guid: 2b0f51bc70a36bb4c824540aa1e77a43, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: stoer - dark red tile
+    second: {fileID: 2100000, guid: e0ef91ae9e54b06439f1bac4f8edb1fe, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: stone - ashlar 1
     second: {fileID: 2100000, guid: 12249c45e51dd7848ba1493b34beb888, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - beige 1
+    second: {fileID: 2100000, guid: 28cb20ab269b67e4c97d41f4d36c78ae, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -167,6 +287,16 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: store - canvas blue
+    second: {fileID: 2100000, guid: c6855bde29bd706418205e397c1b4ded, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - canvas green
+    second: {fileID: 2100000, guid: 28d27087fa5dfb6498879279f7868e96, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: store - cinder alley brick 1
     second: {fileID: 2100000, guid: 71914a9da86e8d64083df7c4df024aaf, type: 2}
   - first:
@@ -179,6 +309,36 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: store - cinder alley wood 1
     second: {fileID: 2100000, guid: 6c1e1c44a7c84e24daeddb57bf795ba6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - cinder ally architextures 5a
+    second: {fileID: 2100000, guid: 6fa71cf99e2384f4d8c1381dd96a5dbd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - cinder ally architextures 5a whiteout
+    second: {fileID: 2100000, guid: 79b3d142732e69b43ad87736b6b052e4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - cinder ally architextures 5b
+    second: {fileID: 2100000, guid: 0116ea8ea8b991e4da66cd71c8b7e4f3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - cinder ally architextures 5b whiteout
+    second: {fileID: 2100000, guid: 23fdaac858e8f9144b3fb1a117443fcf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - cinder ally architextures 5c
+    second: {fileID: 2100000, guid: 6b86a8d89b84cc64f904309042d598b4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - cinder ally architextures 5d
+    second: {fileID: 2100000, guid: 599afeffadf66eb41aad35f68745462a, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -217,8 +377,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: store - dark grey
+    second: {fileID: 2100000, guid: 1836296a8ce4da743a17667fe197ea35, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: store - dark grey 1
     second: {fileID: 2100000, guid: 25ab6c43cdd6f3c499311247b6de611a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - dark smoky mirror
+    second: {fileID: 2100000, guid: 036bef42ffe7dc841808f0986f31ae60, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -232,8 +402,58 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: store - darker wood grain
+    second: {fileID: 2100000, guid: b38dbfcb2d3fdab49ad843362c0e344e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - desaturated wood painted beige
+    second: {fileID: 2100000, guid: e9986707f417b5647a3cb1c1e61be03b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - flat planks dark
+    second: {fileID: 2100000, guid: 67881b2b0ec7f364c8e740daa7d43861, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: store - flat planks orangeish
     second: {fileID: 2100000, guid: c5eaabc0cdf5bfb4386cdca81ab5df45, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - footlocker graphic 2 - curved wall
+    second: {fileID: 2100000, guid: fe3195b25718aca40a288e511119c615, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - footlocker graphic 2 - triangle wall
+    second: {fileID: 2100000, guid: ee1392e6833b66b4fa324c0c6b75a3cb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - front page canopy
+    second: {fileID: 2100000, guid: 1ba3e56d8f1e8ed43aead7e316878196, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - funtastics dark yellow
+    second: {fileID: 2100000, guid: 35c50931fbd48b44f8bed35d507851a5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - funtastics light yellow
+    second: {fileID: 2100000, guid: 12e19d2d4ac709547b354277578e84c6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - funtastics red
+    second: {fileID: 2100000, guid: 92252f6171452ed4095586aac2d78eee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - gap dark orange
+    second: {fileID: 2100000, guid: d8cd7d6d02b561644bfaf7282c9eac91, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -267,8 +487,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: store - light pink tile
+    second: {fileID: 2100000, guid: 23b5dbd0b7c413840bff5fb5d099ff27, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: store - light salmon
     second: {fileID: 2100000, guid: b4cd42ab95aecde49862851c7a49fbb9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - light wood grain
+    second: {fileID: 2100000, guid: a5d8d4492af921942abbcd877c7f9589, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -322,6 +552,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: store - red 2
+    second: {fileID: 2100000, guid: 25c0b7590f687b840881d4fb5874f5b1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: store - red 3
     second: {fileID: 2100000, guid: 6beceb6dac4fa3d4898a3ae7a61feabc, type: 2}
   - first:
@@ -347,6 +582,21 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: store - red brown 1
+    second: {fileID: 2100000, guid: 5a7abe87599615d44988896c07901437, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - red shingles
+    second: {fileID: 2100000, guid: c82ed4cc5105c3a44a55d0b41b9580f5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - red tile
+    second: {fileID: 2100000, guid: 2a00de7801a17f345ae43856487a27e4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: store - red vertical wood paneling
     second: {fileID: 2100000, guid: ab62c76e7baff1b45b1b39c5a5e5a3b0, type: 2}
   - first:
@@ -367,8 +617,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: store - rotated wood bright
+    second: {fileID: 2100000, guid: 11b3e1c86213f3e40a4acb17fc9ab197, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: store - smoky mirror
     second: {fileID: 2100000, guid: 18378cdc0edcdb041805c5737112385b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - teal
+    second: {fileID: 2100000, guid: b97914d20aee3924aa38544e6322e4c4, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -387,6 +647,16 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: store - very dark grey
+    second: {fileID: 2100000, guid: f27cc58e50d08be4dac44378f822189a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - very light green
+    second: {fileID: 2100000, guid: d4431cb3cbce4d648a3924bc4a9a6d95, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: store - very light grey
     second: {fileID: 2100000, guid: 4f955099a86b8314ab897271f316f3cc, type: 2}
   - first:
@@ -394,6 +664,16 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: store - walnut
     second: {fileID: 2100000, guid: 25c0e86710f21f1428fd894482a4adc2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - white no tex
+    second: {fileID: 2100000, guid: c4098c4e890f5ef4c9c433448da0456b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - white tile
+    second: {fileID: 2100000, guid: 0901c6b6eaf99e74bbfbb37aa9716db5, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -412,6 +692,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: store - yellow tile
+    second: {fileID: 2100000, guid: f34fde9f2346c5244a06a524633af054, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: store -wood orangeish
     second: {fileID: 2100000, guid: 39835ffbf5029fb4a892427800216ced, type: 2}
   - first:
@@ -419,6 +704,21 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: white
     second: {fileID: 2100000, guid: 3ac04943b8fc49b449571a78f99d2b09, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wood grain - colorized cinder alley dark
+    second: {fileID: 2100000, guid: 0bb7bf4c0ca0fec43a44df6e9c01ceda, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wood grain - colorized cinder alley funtastics yellow
+    second: {fileID: 2100000, guid: 5f680229405abb84baec522f9840f562, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wood grain - colorized cinder alley whiteout
+    second: {fileID: 2100000, guid: 109d65dcc4308cf46b88bdfd3aae7998, type: 2}
   materials:
     importMaterials: 1
     materialName: 1
@@ -474,13 +774,13 @@ ModelImporter:
     secondaryUVPackMargin: 64
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
+    normalSmoothAngle: 15
     normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
-    normalSmoothingSource: 0
+    normalSmoothingSource: 2
   referencedClips: []
   importAnimation: 1
   copyAvatar: 0

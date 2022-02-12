@@ -12,6 +12,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: concrete - cast white
+    second: {fileID: 2100000, guid: d7179cb24fe189e47af4a48e924d05ca, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: concrete - columns
     second: {fileID: 2100000, guid: cbe020fe74b67714980ad7f1b6c9e64a, type: 2}
   - first:
@@ -94,6 +99,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: soffit
     second: {fileID: 2100000, guid: 86ac5d4adf5c100459b2b52915e6c497, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: soffit - red
+    second: {fileID: 2100000, guid: 6214f5d8f3459df46aa3268885796737, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -194,13 +204,13 @@ ModelImporter:
     secondaryUVPackMargin: 64
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
+    normalSmoothAngle: 15
     normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
-    normalSmoothingSource: 0
+    normalSmoothingSource: 2
   referencedClips: []
   importAnimation: 1
   copyAvatar: 0

@@ -17,6 +17,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: LIGHT - cinder alley sign yellow
+    second: {fileID: 2100000, guid: 39b4166aa3f9ec641b7447c624be9de2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: LIGHT - joslins
     second: {fileID: 2100000, guid: 9a099c3afe2c9774eb173888ae0c04c6, type: 2}
   - first:
@@ -212,6 +217,21 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: store - funtastics signage green
+    second: {fileID: 2100000, guid: bfe8bb21a5a83f74e8a55944e9a9afff, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - funtastics signage red
+    second: {fileID: 2100000, guid: a56a7d2178b4c8b478a6b95f4b7b726c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - funtastics signage yellow
+    second: {fileID: 2100000, guid: 5bdcd0c837579334faa32bd67bb43d1e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: store - gold metal
     second: {fileID: 2100000, guid: 4e6e0a2914161454b89bf6871a2cc8dc, type: 2}
   - first:
@@ -289,13 +309,13 @@ ModelImporter:
     secondaryUVPackMargin: 64
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
+    normalSmoothAngle: 15
     normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
-    normalSmoothingSource: 0
+    normalSmoothingSource: 2
   referencedClips: []
   importAnimation: 1
   copyAvatar: 0
