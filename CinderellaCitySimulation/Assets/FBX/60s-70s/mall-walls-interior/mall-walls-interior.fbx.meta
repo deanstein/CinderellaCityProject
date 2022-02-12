@@ -22,6 +22,16 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - 60s rose dark
+    second: {fileID: 2100000, guid: e2e236b2b96f3f549b240ffc933986a9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - 60s shamrock dark
+    second: {fileID: 2100000, guid: b6352fa6f44c2a54785b32492dc6d9df, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - brick
     second: {fileID: 2100000, guid: 78a2f444f15e1884992aada06272086e, type: 2}
   - first:
@@ -47,8 +57,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: store - dark desaturated wood
+    second: {fileID: 2100000, guid: 6e10c3cfee1ff5a44b577de6b007a968, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: store - dark grey 1
     second: {fileID: 2100000, guid: 28a04ae3a65ac2446a2b22effffa23f3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - gap dark orange
+    second: {fileID: 2100000, guid: 78f3274f7ed26374fa7b9dd517721b07, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -77,8 +97,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: store - rich burger
+    second: {fileID: 2100000, guid: 73fdba67a191b93499f534ccfc0db1ab, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: store - teal dark
     second: {fileID: 2100000, guid: 3bb94abc532b8454598610cd5b61d009, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - yellow 3
+    second: {fileID: 2100000, guid: 9b64210b77b7c3a4b8ed7208cbe9e9c3, type: 2}
   materials:
     importMaterials: 1
     materialName: 1
@@ -134,13 +164,13 @@ ModelImporter:
     secondaryUVPackMargin: 64
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
+    normalSmoothAngle: 15
     normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
-    normalSmoothingSource: 0
+    normalSmoothingSource: 2
   referencedClips: []
   importAnimation: 1
   copyAvatar: 0

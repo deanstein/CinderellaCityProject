@@ -7,8 +7,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: 80s glass
+    second: {fileID: 2100000, guid: 98989fe9042cca64ebf5ac9c5bd25b05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: DefaultMaterial
     second: {fileID: 2100000, guid: f82e2d9de0577994991aeea35cb45df6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - directory white
+    second: {fileID: 2100000, guid: 181aa8f1b8e900e4096bb7e78383c143, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -17,13 +27,48 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - 60s blue signage
+    second: {fileID: 2100000, guid: ec9f8d24609593d4b8d7064fa4aae525, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - 60s dark trim
+    second: {fileID: 2100000, guid: 1d03ea5ec58263f4fbfaa3c77627be76, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - 60s gold signage
+    second: {fileID: 2100000, guid: e662a6f929454694ebd906a80a6aae66, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - 60s rose signage
+    second: {fileID: 2100000, guid: 5a0f83444b518364da5b578bf8228f88, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - 60s shamrock signage
+    second: {fileID: 2100000, guid: 264309ce09888154d9f327a439a4c449, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - brown reflective
+    second: {fileID: 2100000, guid: d2e13fd61fe60b44d918504757461769, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - wayfinding shamrock lowercase
-    second: {fileID: 2100000, guid: 711e504fa84ad374698c4bfb0f523cc3, type: 2}
+    second: {fileID: 2100000, guid: 8e519edd79e3917449e7512d5763d931, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: mall - wayfinding shamrock retro
     second: {fileID: 2100000, guid: 03c77fc44118363439a3938c2e11e818, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: silver metallic
+    second: {fileID: 2100000, guid: f0b0e46c21df2ef47a8fe58f0798c5d5, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -89,13 +134,13 @@ ModelImporter:
     secondaryUVPackMargin: 64
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
+    normalSmoothAngle: 15
     normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
-    normalSmoothingSource: 0
+    normalSmoothingSource: 2
   referencedClips: []
   importAnimation: 1
   copyAvatar: 0

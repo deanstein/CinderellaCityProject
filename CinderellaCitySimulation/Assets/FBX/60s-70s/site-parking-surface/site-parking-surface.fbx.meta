@@ -22,6 +22,26 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: concrete - sidewalk
+    second: {fileID: 2100000, guid: b0b6c1c6a1ecc644d81ec8522f0576a0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - concrete deck
+    second: {fileID: 2100000, guid: 80622cbbfe589e949970e2638ecb5313, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - loading dock concrete
+    second: {fileID: 2100000, guid: 93a9e04c5ea2deb4683ee56040f45fe2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - lower asphalt
+    second: {fileID: 2100000, guid: 7a8a26cb18161c348b5ff843de377a6a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - parking deck
     second: {fileID: 2100000, guid: d48ccec03e222794ab395b1496445772, type: 2}
   - first:
@@ -29,6 +49,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: mall - parking deck 1
     second: {fileID: 2100000, guid: 5a04f6e046f51c142a05591fa349d4e7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - upper asphalt
+    second: {fileID: 2100000, guid: 2d55b318d4c545a4cb6835e76af3ceb3, type: 2}
   materials:
     importMaterials: 1
     materialName: 1
@@ -84,13 +109,13 @@ ModelImporter:
     secondaryUVPackMargin: 64
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
+    normalSmoothAngle: 15
     normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
-    normalSmoothingSource: 0
+    normalSmoothingSource: 2
   referencedClips: []
   importAnimation: 1
   copyAvatar: 0
