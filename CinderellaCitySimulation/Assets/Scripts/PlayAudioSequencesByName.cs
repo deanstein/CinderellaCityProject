@@ -57,7 +57,7 @@ public class AudioSourceGlobals
 
 public class PlayAudioSequencesByName : MonoBehaviour
 {
-    // define components to be accessed or modified
+    // the audio source, scripts, and speaker parameters for this script instance
     AudioSource thisAudioSourceComponent;
     CanDisableComponents thisCanToggleComponentsScript;
     SpeakerParams thisSpeakerParams;
@@ -296,16 +296,18 @@ public class PlayAudioSequencesByName : MonoBehaviour
 
     private void Awake()
     {
-        // scripts and params for this speaker
+        // record the audio source, scripts, and speaker parameters for this script instance
         thisAudioSourceComponent = this.GetComponent<AudioSource>();
         thisCanToggleComponentsScript = this.GetComponent<CanDisableComponents>();
         thisSpeakerParams = AssociateSpeakerParamsByName(this.name);
 
+        // don't proceed if either no audio source or speaker params are available
         if (!thisAudioSourceComponent || (thisSpeakerParams == null))
         {
             return;
         }
 
+        // set default audiosource settings
         thisAudioSourceComponent.volume = thisSpeakerParams.speakerVolume;
         thisAudioSourceComponent.maxDistance = thisSpeakerParams.maxDistance;
         thisAudioSourceComponent.spatialBlend = 1.0F;
@@ -393,7 +395,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
 
         // need to record the last-known clip time in case this speaker is disabled
         // and the next master needs to resume
-        // for some reason, this can't be done in OnDisable()
+        // for some reason, this cannot be done in OnDisable() (always results in .time of 0)
         thisSpeakerParams.lastKnownClipTime = thisAudioSourceComponent.time;
     }
 
@@ -447,8 +449,6 @@ public class PlayAudioSequencesByName : MonoBehaviour
         slaveAudioSource.clip = masterAudioSource.clip;
         slaveAudioSource.time = masterAudioSource.time;
         slaveAudioSource.Play();
-
-        //Utils.DebugUtils.DebugLog("Synchronized master: " + masterAudioSource.name + "(" + masterAudioSource.time + ")" + " and slave: " + slaveAudioSource.name + "(" + slaveAudioSource.time + ")");
     }
 
     void SynchronizeAllSlavesWithMaster(AudioSource masterAudioSource)
