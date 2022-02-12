@@ -13,7 +13,7 @@ public class ProxyGlobals
 
     // the number of random filler people to be generated per imported proxy person
     public static int fillerNPCsToGenerateExperimental = 0;
-    public static int fillerNPCsToGenerate60s70s = 1;
+    public static int fillerNPCsToGenerate60s70s = 0;
     public static int fillerNPCsToGenerate80s90s = 0;
 
     // the radius for filler people from the original person's position
@@ -413,9 +413,9 @@ public class ManageProxyMapping
             Utils.DebugUtils.DebugLog("<b>Instanced this prefab: </b>" + instancedPrefab);
 
             // give the new prefab the same parent, position, and scale as the proxy
-            instancedPrefab.transform.parent = gameObjectToBeReplaced.transform.parent;
             instancedPrefab.transform.position = gameObjectToBeReplaced.transform.position;
             instancedPrefab.transform.localScale = gameObjectToBeReplaced.transform.localScale;
+            instancedPrefab.transform.parent = gameObjectToBeReplaced.transform.parent;
             //Utils.DebugUtils.DebugLog("GameObject to be replaced position " + gameObjectToBeReplaced.transform.position);
             //Utils.DebugUtils.DebugLog("Instanced prefab position: " + instancedPrefab.transform.position);
 
