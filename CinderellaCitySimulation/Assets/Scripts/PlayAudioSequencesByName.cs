@@ -145,7 +145,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
                         keyName = thisKeyName,
                         maxDistance = AudioSourceGlobals.defaultSpeakerMaxDistanceMallCommon,
                         speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallCommon,
-                        clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-mall-experimental"))
+                        clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-mall-60s70s"))
                     };
                     AudioSourceGlobals.allKnownSpeakerParams.Add(matchingParams);
                 }
