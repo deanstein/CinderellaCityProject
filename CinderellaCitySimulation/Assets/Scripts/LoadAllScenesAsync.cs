@@ -19,6 +19,10 @@ public class LoadAllScenesAsync : MonoBehaviour {
     // initialization
     void Start ()
     {
+        // limit frame rate to prevent very fast computers from moving objects too quickly
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 60;
+
         // load the specified scenes
         ManageScenes.LoadScenesAsync(SceneGlobals.scenesToLoad, asyncOperations);
 
