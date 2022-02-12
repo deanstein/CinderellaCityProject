@@ -12,6 +12,16 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: LIGHT - blue mall hanging planter orange
+    second: {fileID: 2100000, guid: 1b0cddec30541354c9b8b8c92a393201, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - blue mall illuminated ring
+    second: {fileID: 2100000, guid: 330e0865d7a703e448feb9dbf33d3b4b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - 60s blue dark
     second: {fileID: 2100000, guid: 2c08c1af587191c4fadbf220218a9ec5, type: 2}
   - first:
@@ -27,6 +37,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - 60s hanging planter bottom ring
+    second: {fileID: 2100000, guid: 645eb01f22f0f2b4594e43d3263c7dc3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - blue column yellow tile
     second: {fileID: 2100000, guid: ee267a9fbad86654b9abe085f09339d4, type: 2}
   - first:
@@ -34,6 +49,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: mall - blue mall light fixture metal
     second: {fileID: 2100000, guid: 7c931036cb5967140a8727905567eeee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - blue mall light fixture mirror
+    second: {fileID: 2100000, guid: 931034b4eb937e24c8b32456c6db80fd, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -114,13 +134,13 @@ ModelImporter:
     secondaryUVPackMargin: 64
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
+    normalSmoothAngle: 15
     normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
-    normalSmoothingSource: 0
+    normalSmoothingSource: 2
   referencedClips: []
   importAnimation: 1
   copyAvatar: 0
