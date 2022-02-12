@@ -27,6 +27,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: LIGHT - very high intensity sodium
+    second: {fileID: 2100000, guid: d1c745aa437e11f4c9fb3ca93f3fe653, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: concrete - sidewalk
     second: {fileID: 2100000, guid: 46749dbabbb325f4789128c168313709, type: 2}
   - first:
@@ -44,6 +49,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: mall - goose neck fixture metal
     second: {fileID: 2100000, guid: a7a954fac12266c4db50965dc7ade134, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: railing paint color
+    second: {fileID: 2100000, guid: 47531c375d5ef7a4d9ec5c7fdd3d1d33, type: 2}
   materials:
     importMaterials: 1
     materialName: 1
@@ -105,7 +115,7 @@ ModelImporter:
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
-    normalSmoothingSource: 0
+    normalSmoothingSource: 3
   referencedClips: []
   importAnimation: 1
   copyAvatar: 0

@@ -34,6 +34,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: concrete - sidewalk
     second: {fileID: 2100000, guid: bc6168d94175cad48bbe965d3530b74e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - lower asphalt
+    second: {fileID: 2100000, guid: b7507a6e1e3a6804bb8d5f7176050e30, type: 2}
   materials:
     importMaterials: 1
     materialName: 1
@@ -95,7 +100,7 @@ ModelImporter:
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
-    normalSmoothingSource: 0
+    normalSmoothingSource: 3
   referencedClips: []
   importAnimation: 1
   copyAvatar: 0

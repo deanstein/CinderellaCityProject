@@ -27,8 +27,28 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - concrete deck
+    second: {fileID: 2100000, guid: 3e5e3937cfa76c14c8953d31568d87d5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - loading dock concrete
+    second: {fileID: 2100000, guid: cc2bb3a92d45ab1459150040e1da204e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - lower asphalt
+    second: {fileID: 2100000, guid: fe99155be129f4f4a93430563af6d6b9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - parking deck
     second: {fileID: 2100000, guid: 90b9972884d3485419e070adf43c37b4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - upper asphalt
+    second: {fileID: 2100000, guid: d021fd9a3aeadef42b2ab0c47a86c7ea, type: 2}
   materials:
     importMaterials: 1
     materialName: 1
@@ -84,13 +104,13 @@ ModelImporter:
     secondaryUVPackMargin: 64
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
+    normalSmoothAngle: 15
     normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
-    normalSmoothingSource: 0
+    normalSmoothingSource: 2
   referencedClips: []
   importAnimation: 1
   copyAvatar: 0

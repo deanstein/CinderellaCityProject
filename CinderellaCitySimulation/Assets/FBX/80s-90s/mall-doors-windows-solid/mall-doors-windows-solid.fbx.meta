@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: 80s glass
-    second: {fileID: 2100000, guid: c36b7d618afcd444284b5f0ef9a25b0d, type: 2}
+    second: {fileID: 2100000, guid: 7127b5fead8814f48be8ef696b83573c, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -27,6 +27,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - 60s dark trim
+    second: {fileID: 2100000, guid: 2cea5aabed6000e4b83d903b7f16ba46, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - 80s metal trim
     second: {fileID: 2100000, guid: d65b651ee94cb7d43add16e52d6d0ef7, type: 2}
   - first:
@@ -34,6 +39,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: mall - brick color
     second: {fileID: 2100000, guid: 24eeffa6d373ffd4d90bc15c612a1bb2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - ceiling fixture
+    second: {fileID: 2100000, guid: 4b7142bcd3b31e84f95834534620faf4, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -47,18 +57,43 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - food court beige light
+    second: {fileID: 2100000, guid: 75f00446868856f42872f5dba17cccf9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - stucco
     second: {fileID: 2100000, guid: 61dd29d6ca45b0e4787107e6bfb50150, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: silver metallic
-    second: {fileID: 2100000, guid: 3777ce13ddc744a448c423197752cfbb, type: 2}
+    second: {fileID: 2100000, guid: 04e4cb7b3bb758c46b52a33ad3500989, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - carousel brown door
+    second: {fileID: 2100000, guid: f05f1bcbcd7aeda4d9c7f296509c30da, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: store - dark brown
     second: {fileID: 2100000, guid: c0df8c4257abbf047a719ebb82165d2a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - dark brown vertical wood panels
+    second: {fileID: 2100000, guid: 7663f1810cf606b41a0280a19babff6e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - dark desaturated wood
+    second: {fileID: 2100000, guid: 5db36f6296b1369478e144c691809130, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - dark vertical panels whiteout
+    second: {fileID: 2100000, guid: 67a674e85e6c90f4f9d1ea407142961e, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -134,13 +169,13 @@ ModelImporter:
     secondaryUVPackMargin: 64
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
+    normalSmoothAngle: 15
     normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
-    normalSmoothingSource: 0
+    normalSmoothingSource: 2
   referencedClips: []
   importAnimation: 1
   copyAvatar: 0
