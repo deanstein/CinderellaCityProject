@@ -32,6 +32,21 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - 60s dark trim
+    second: {fileID: 2100000, guid: 2b8494caf5d76c3429b3393db8d813d0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - 60s shamrock dark
+    second: {fileID: 2100000, guid: 4f43b2e9a4049fb4d97fab956dd72e7c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - 60s shamrock very dark
+    second: {fileID: 2100000, guid: c01353946ab0b534e966b75552991d4b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - 70s cinder alley
     second: {fileID: 2100000, guid: baed3b3e89fab3d49874d87308b8a735, type: 2}
   - first:
@@ -57,8 +72,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - textured ceiling grey
+    second: {fileID: 2100000, guid: 5cdd384c2ddc1934e8af0cc019f6a738, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: soffit
     second: {fileID: 2100000, guid: 7ed9633762a9ec0419b3b53f64008637, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wood grain - colorized cinder alley dark
+    second: {fileID: 2100000, guid: 5255e612a8392fb458cf6fbec76f014d, type: 2}
   materials:
     importMaterials: 1
     materialName: 1
@@ -114,13 +139,13 @@ ModelImporter:
     secondaryUVPackMargin: 64
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
+    normalSmoothAngle: 15
     normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
-    normalSmoothingSource: 0
+    normalSmoothingSource: 2
   referencedClips: []
   importAnimation: 1
   copyAvatar: 0

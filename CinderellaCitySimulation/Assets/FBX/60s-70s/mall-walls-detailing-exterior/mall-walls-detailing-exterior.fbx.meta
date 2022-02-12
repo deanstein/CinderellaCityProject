@@ -22,6 +22,16 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: concrete - cast unpainted
+    second: {fileID: 2100000, guid: c1ec2431faab70641a1f73db64ddd0a8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: concrete - collectors key exchange
+    second: {fileID: 2100000, guid: 6e80da4f059abf64f826e1478bfe839c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: concrete - columns
     second: {fileID: 2100000, guid: 4f44471651c4f484e8be124f10b3afe5, type: 2}
   - first:
@@ -77,6 +87,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - brick greenish
+    second: {fileID: 2100000, guid: eb750707a2f45dd43ba2c35d4858f287, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - brick light
     second: {fileID: 2100000, guid: 2d4264a3aecdd674b8d53acc0029230c, type: 2}
   - first:
@@ -102,8 +117,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - stucco white
+    second: {fileID: 2100000, guid: 2d490d1cf706d6645974be70abf32de4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: roof - gravel
     second: {fileID: 2100000, guid: ae3dd403f8920124784989270256c0b6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: roof shingles dark
+    second: {fileID: 2100000, guid: 7b31b4817c72a9c41a364c16d2d6d2b3, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -122,8 +147,23 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: store - gano downs background
+    second: {fileID: 2100000, guid: bbe9143b702e6f843a5aeba1019420a6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: store - green white stripes
     second: {fileID: 2100000, guid: ce75570271690064dab11384564df11f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - red white stripes small
+    second: {fileID: 2100000, guid: c02ce564e992a554281adb02b1546375, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - rich burger
+    second: {fileID: 2100000, guid: 7d92c630239f00f4494cb188c5674bf5, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -189,13 +229,13 @@ ModelImporter:
     secondaryUVPackMargin: 64
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
+    normalSmoothAngle: 15
     normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
-    normalSmoothingSource: 0
+    normalSmoothingSource: 2
   referencedClips: []
   importAnimation: 1
   copyAvatar: 0

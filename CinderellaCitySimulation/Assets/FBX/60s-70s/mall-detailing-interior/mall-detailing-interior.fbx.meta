@@ -17,6 +17,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: cinder alley - dark brown wall
+    second: {fileID: 2100000, guid: fadc6248196d41a4f8a46eae32238980, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: drywall
     second: {fileID: 2100000, guid: 9cab8ccdf6c70a142aad455065f73cad, type: 2}
   - first:
@@ -52,6 +57,21 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - 60s shamrock dark
+    second: {fileID: 2100000, guid: dd177b61f3df7544c84daab61745b767, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - 60s shamrock very dark
+    second: {fileID: 2100000, guid: 3dcdbd05b4277244fb1f6cb6770baf49, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - 60s shamrock very light
+    second: {fileID: 2100000, guid: a124e35aee32dda43bc22efbc5ec88a5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - blue column yellow tile
     second: {fileID: 2100000, guid: c09fbc33789c28547b80f33fe016abe5, type: 2}
   - first:
@@ -77,6 +97,26 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - brown trim
+    second: {fileID: 2100000, guid: 05d0a55bd81ae334388b3ac669988615, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - cinder alley brick 6
+    second: {fileID: 2100000, guid: 3b46d1887ad6cbc4bbe8db3491d6228d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - dark floor brick
+    second: {fileID: 2100000, guid: 9f8d115ec54826b4fbe1cfafbc94154a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - dark gold accent
+    second: {fileID: 2100000, guid: 66115b2f20b1d3548a88809c76c6b73b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - floor trim
     second: {fileID: 2100000, guid: 77dd91f2e51dcbb4eb9b0e1940fd3839, type: 2}
   - first:
@@ -89,6 +129,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: mall - fountain toe kick metal
     second: {fileID: 2100000, guid: 02040e78b46cf1247b2140e165164e01, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - gas lamp metal
+    second: {fileID: 2100000, guid: 4a1ad04df2f9e194fa94d3b03181c048, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -132,8 +177,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: store - brown 1
+    second: {fileID: 2100000, guid: a4054e9a6ebc82b4fb8ca898b92ad4bd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: store - brown vertical wood panels
     second: {fileID: 2100000, guid: 71dea4bb31956d147aa33324878c40b5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - cinder ally architextures 5c
+    second: {fileID: 2100000, guid: 7050ec79dc5f682409ddd1c23a5a1641, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -162,8 +217,28 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: store - fontius accent
+    second: {fileID: 2100000, guid: 6217d65bc1b0de64bbcedc4a9ccaa74f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - fontius dark accent
+    second: {fileID: 2100000, guid: ff917180d5af14a459c79565a6589c23, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: store - grainy wood
     second: {fileID: 2100000, guid: 0f3d5288d9e4ea144be726889863f5a7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - kg mens brown
+    second: {fileID: 2100000, guid: 8c7ed24c8e9af96498a0d48bbfe3618a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - less dark desaturated dark
+    second: {fileID: 2100000, guid: ba7293a948ecbec458b96aa24b82de56, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -197,6 +272,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: store - rotated wood planks
+    second: {fileID: 2100000, guid: 37859ac126d29fc419dc7426a5f8f820, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: store - smoky mirror
     second: {fileID: 2100000, guid: 83f9fb83310d5ab4c99ead09c98ea0d9, type: 2}
   - first:
@@ -209,6 +289,16 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: store - very dark brown reflective
     second: {fileID: 2100000, guid: 9f8cdb41fa30f8b458df09bedc9dc8b5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - vogue dark brown
+    second: {fileID: 2100000, guid: 3d7dc876701fffe4c9e46a23041d9b4b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: white
+    second: {fileID: 2100000, guid: 016697683ac33894cb25f92d4937ef35, type: 2}
   materials:
     importMaterials: 1
     materialName: 1
@@ -264,13 +354,13 @@ ModelImporter:
     secondaryUVPackMargin: 64
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
+    normalSmoothAngle: 15
     normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
-    normalSmoothingSource: 0
+    normalSmoothingSource: 2
   referencedClips: []
   importAnimation: 1
   copyAvatar: 0

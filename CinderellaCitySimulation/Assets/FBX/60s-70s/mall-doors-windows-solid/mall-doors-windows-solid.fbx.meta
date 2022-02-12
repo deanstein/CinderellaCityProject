@@ -7,6 +7,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: 80s glass
+    second: {fileID: 2100000, guid: ab0ef923a54109346a77cdb657963ebf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: concrete - painted 60s
     second: {fileID: 2100000, guid: 2188fe397ae95004da1ffd873075a116, type: 2}
   - first:
@@ -32,6 +37,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - ceiling fixture
+    second: {fileID: 2100000, guid: 18bae6817b98d8f4895b30e97358627a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - ceiling fixture metal
     second: {fileID: 2100000, guid: 0b6768080471f594a9b3532a82b038a5, type: 2}
   - first:
@@ -47,8 +57,28 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: painted 60s color
+    second: {fileID: 2100000, guid: 695341b06f7590c4abbd668b0d5e5f59, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - carousel brown door
+    second: {fileID: 2100000, guid: 8431b8afbd0b4424698d59c2ba81cf13, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: store - dark brown
     second: {fileID: 2100000, guid: f4233cca271ebc24080b3c86b2437a73, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - dark brown vertical wood panels
+    second: {fileID: 2100000, guid: 224f7f8a0485ba64f963c2532d49fffd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - dark desaturated wood
+    second: {fileID: 2100000, guid: ef9c00f793ac98346b0dfa20063af5df, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -114,13 +144,13 @@ ModelImporter:
     secondaryUVPackMargin: 64
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
+    normalSmoothAngle: 15
     normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
-    normalSmoothingSource: 0
+    normalSmoothingSource: 2
   referencedClips: []
   importAnimation: 1
   copyAvatar: 0

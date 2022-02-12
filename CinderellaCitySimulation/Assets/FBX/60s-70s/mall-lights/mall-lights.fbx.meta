@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: DefaultMaterial
-    second: {fileID: 2100000, guid: d5e597966c275c54dae894ea3a7acad7, type: 2}
+    second: {fileID: 2100000, guid: fd9e72dc85f5e4b498fb09ce9b8e66ed, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -28,12 +28,22 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: LIGHT - blue mall fountain planter intense
-    second: {fileID: 2100000, guid: 8c939eb89e7adff4dbb90c9fdbfcd42d, type: 2}
+    second: {fileID: 2100000, guid: b1feff11277c4df44a0eb00fa28c9770, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - blue mall hanging planter orange
+    second: {fileID: 2100000, guid: 461b6cf5417827c41ba03168028c5919, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LIGHT - blue mall illuminated ring
+    second: {fileID: 2100000, guid: 133803fe48882f6419dbeff0b20f1c05, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: LIGHT - cinder alley incandescent
-    second: {fileID: 2100000, guid: eb0e5e52b5ac54746a85e1eed3a1c5f3, type: 2}
+    second: {fileID: 2100000, guid: 7efd68a4b3c8d084087e7995600a4a0a, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -78,7 +88,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: LIGHT - store - white
-    second: {fileID: 2100000, guid: 2cec3f9b656a7e242823bad774dd5fae, type: 2}
+    second: {fileID: 2100000, guid: 808502a6ace247b4aa550f4867016577, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -87,8 +97,28 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - 60s dark trim
+    second: {fileID: 2100000, guid: 147c12ec25e6b6741972cf81d3c3c988, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - 60s hanging planter bottom ring
+    second: {fileID: 2100000, guid: c2295f106b0bbf041b902728e4a6164a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - blue mall light fixture metal
     second: {fileID: 2100000, guid: 5c8f8d786d3d9fc40b8eb86e9469041e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - blue mall light fixture mirror
+    second: {fileID: 2100000, guid: 7e358010c1245c6438f96e1b97615200, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - ceiling fixture
+    second: {fileID: 2100000, guid: f643eefdd65146e44a513d9df73c3c46, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -98,17 +128,22 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: mall - gas lamp glass
-    second: {fileID: 2100000, guid: 1fd869863dae63a4fbd62a65f3918f23, type: 2}
+    second: {fileID: 2100000, guid: 317681e7ced698c4d95e7ed873547e88, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: mall - gas lamp metal
-    second: {fileID: 2100000, guid: 1a7a31ed0c9e22842afb06fb35a1a364, type: 2}
+    second: {fileID: 2100000, guid: 82cc8bbfa15451c47b56d01ea7bbdd3d, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: mall - polished concrete
     second: {fileID: 2100000, guid: d1976e4af063264498823572b34993a7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - polished concrete cinder alley
+    second: {fileID: 2100000, guid: 9b380373a0cfceb42b288752bf406b2c, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -179,13 +214,13 @@ ModelImporter:
     secondaryUVPackMargin: 64
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
+    normalSmoothAngle: 15
     normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
-    normalSmoothingSource: 0
+    normalSmoothingSource: 2
   referencedClips: []
   importAnimation: 1
   copyAvatar: 0
