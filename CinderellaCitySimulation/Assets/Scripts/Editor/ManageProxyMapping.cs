@@ -19,6 +19,10 @@ public class ProxyGlobals
     // the radius for filler people from the original person's position
     public static int fillerRadius = 10;
 
+    // the distance away (in meters) from the origin a proxy must be to get classified as misplaced
+    // this means we were unable to find a spot for it, so it was moved to the origin for garbage collection
+    public static float proxyOriginTolerance = 0.01f;
+
     // identify folder paths to third-party asset packages
     // people
     public static string thirdPartyPrefabPathCitizensPro = "Assets/3rdParty/Citizens PRO/People Prefabs";

@@ -1287,11 +1287,13 @@ public class AssetImportUpdate : AssetPostprocessor {
 
                     }
 
-                    Debug.Log("Position: " + instancedPrefab.transform.GetChild(0).position);
+                    //Utils.DebugUtils.DebugLog("Position: " + instancedPrefab.transform.GetChild(0).position);
 
-                    // some proxies may have been placed at Vector3.zero, meaning we couldn't
+                    // some proxies may have been placed at the origin, meaning we couldn't
                     // find a good random spot for them - so they should be deleted
-                    if (instancedPrefab.transform.position == Vector3.zero)
+                    // use the max proxy-to-origin tolerance to ensure values very close to 0 are considered
+                    if (Math.Abs(instancedPrefab.transform.GetChild(0).position.x) < ProxyGlobals.proxyOriginTolerance
+                        && Math.Abs(instancedPrefab.transform.GetChild(0).position.z) < ProxyGlobals.proxyOriginTolerance)
                     {
                         Utils.DebugUtils.DebugLog("<b>Culling </b>" + instancedPrefab.name + " because it was found at the world origin.");
 
