@@ -190,7 +190,11 @@ public class ManageCameraActions : MonoBehaviour
 
         foreach (string fileToDelete in filesToDelete)
         {
-            UnityEngine.Windows.File.Delete(fileToDelete);
+            // only delete screenshots from the current scene
+            if (fileToDelete.Contains(SceneManager.GetActiveScene().name))
+            {
+                UnityEngine.Windows.File.Delete(fileToDelete);
+            }
         }
 
         // for each thumbnail camera, copy the corresponding screenshot
