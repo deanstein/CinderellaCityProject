@@ -1292,8 +1292,9 @@ public class AssetImportUpdate : AssetPostprocessor {
                     // some proxies may have been placed at the origin, meaning we couldn't
                     // find a good random spot for them - so they should be deleted
                     // use the max proxy-to-origin tolerance to ensure values very close to 0 are considered
-                    if (Math.Abs(instancedPrefab.transform.GetChild(0).position.x) < ProxyGlobals.proxyOriginTolerance
-                        && Math.Abs(instancedPrefab.transform.GetChild(0).position.z) < ProxyGlobals.proxyOriginTolerance)
+                    Transform transformToTest = instancedPrefab.transform.childCount > 0 ? instancedPrefab.transform.GetChild(0) : instancedPrefab.transform;
+                    if (Math.Abs(transformToTest.position.x) < ProxyGlobals.proxyOriginTolerance
+                        && Math.Abs(transformToTest.position.z) < ProxyGlobals.proxyOriginTolerance)
                     {
                         Utils.DebugUtils.DebugLog("<b>Culling </b>" + instancedPrefab.name + " because it was found at the world origin.");
 
@@ -1672,6 +1673,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         if (AssetImportGlobals.ModelImportParamsByName.doInstantiateProxyReplacements)
         {
+            AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
             InstantiateProxyReplacements(importedAssetFileName);
         }
 
