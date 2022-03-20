@@ -172,6 +172,9 @@ public class ManageFPSControllers : MonoBehaviour {
 
         GameObject[] cameras = GameObject.FindGameObjectsWithTag(ManageTaggedObjects.TaggedObjectGlobals.deleteProxyReplacementTagPrefix + "Cameras");
 
+        // keep track of whether a camera is matched in the upcoming for loop
+        bool matchingCameraFound = false;
+
         foreach (GameObject camera in cameras)
         {
             // split the camera name at the hyphens
@@ -179,8 +182,9 @@ public class ManageFPSControllers : MonoBehaviour {
             // assume that the true location name is the third value (Camera-Thumbnail-Location)
             string cameraPositionName = cameraNameSplit[2];
 
-            if (cameraPositionName == cameraPartialName)
+            if (cameraPartialName.Contains(cameraPositionName))
             {
+                matchingCameraFound = true;
                 Utils.DebugUtils.DebugLog("Found a matching camera: " + cameraPositionName);
 
                 // need to make sure the camera transform doesn't include a rotation up or down (causes FPSCharacter to tilt)
@@ -213,6 +217,12 @@ public class ManageFPSControllers : MonoBehaviour {
 
                 break;
             }
+        }
+
+        // alert if a matching camera wasn't found
+        if (!matchingCameraFound)
+        {
+            Utils.DebugUtils.DebugLog("Failed to find a matching camera for: " + cameraPartialName);
         }
 
         // restore the existing post process profile
