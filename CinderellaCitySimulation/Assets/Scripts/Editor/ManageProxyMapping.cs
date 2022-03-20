@@ -226,11 +226,20 @@ public class ManageProxyMapping
                     return ProxyGlobals.thirdPartyPrefabPathTreesVariety + "/plants/grape_plant.prefab";
 
                 // 1980s-1990s
+                case string name when name.Contains("broadway"):
+                    return ProxyGlobals.thirdPartyPrefabPathTreesVariety + "/birch/birch 1.prefab";
+
                 case string name when name.Contains("center-court") && !objectName.Contains("center-court-small"):
                     return ProxyGlobals.thirdPartyPrefabPathTreesVariety + "/oak/oak 3.prefab";
 
                 case string name when name.Contains("center-court-small"):
                     return ProxyGlobals.thirdPartyPrefabPathTreesVariety + "/birch/birch 2.prefab";
+
+                case string name when name.Contains("coniferous-1"):
+                    return ProxyGlobals.thirdPartyPrefabPathTreesVariety + "/spruce/spruce 3.prefab";
+
+                case string name when name.Contains("coniferous-2"):
+                    return ProxyGlobals.thirdPartyPrefabPathTreesVariety + "/spruce/spruce 1.prefab";
 
                 case string name when name.Contains("shamrock"):
                     return ProxyGlobals.thirdPartyPrefabPathTreesVariety + "/birch/birch 5.prefab";
@@ -255,6 +264,12 @@ public class ManageProxyMapping
 
                 case string name when name.Contains("shrub-palm"):                   
                     return ProxyGlobals.thirdPartyPrefabPathGlasswork + "/Plant_Banana_V2_Standard.prefab";
+
+                case string name when name.Contains("shrub-shamrock-1"):
+                    return ProxyGlobals.thirdPartyPrefabPathOddsEnds + "/plant_Monstera.prefab";
+
+                case string name when name.Contains("shrub-shamrock-2"):
+                    return ProxyGlobals.thirdPartyPrefabPathTreesVariety + "/plants/beet_plant.prefab";
 
                 case string name when name.Contains("hanging-planter-1"):
                     return ProxyGlobals.thirdPartyPrefabPathTreesVariety + "/plants/potato_plant.prefab";
