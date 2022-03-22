@@ -12,6 +12,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: LIGHT - low intensity white
+    second: {fileID: 2100000, guid: be7bfad0e7aeee640b153815cc3fe444, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: LIGHT - neusteters brown
     second: {fileID: 2100000, guid: 982c6a6fc0b44e843b69852c22363ee2, type: 2}
   - first:
@@ -19,6 +24,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: store - black
     second: {fileID: 2100000, guid: 2e54c22702249e143b442a0fd3dda564, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - black ironwork
+    second: {fileID: 2100000, guid: 74e0d31593238fc44a9fd1363d5b5c6a, type: 2}
   materials:
     importMaterials: 1
     materialName: 1
@@ -74,13 +84,13 @@ ModelImporter:
     secondaryUVPackMargin: 64
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
+    normalSmoothAngle: 15
     normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
-    normalSmoothingSource: 0
+    normalSmoothingSource: 2
   referencedClips: []
   importAnimation: 1
   copyAvatar: 0
