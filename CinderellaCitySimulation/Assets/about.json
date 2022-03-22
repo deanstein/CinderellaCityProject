@@ -1,6 +1,28 @@
 {
   "VersionHistory": [
     {
+      "0.7.1.202203": [
+        {    
+          "Environment Updates": [
+            "Added new stores to 60s70s Shamrock Mall, including ABC Kiddie Shop, Tommy Wong's, and Tobaccoland",
+            "Added new stores to 80s90s Shamrock mall, including Tobaccoland, Wells Music, Knock on Wood, Pet City, Mile Hi Hobbies, and several unmarked stores",
+            "Added new stores to 80s90s Gold Mall, including Village Inn and Walgreens",
+            "Added new common area lighting and details to 60s70s Shamrock Mall",
+            "Added new common area details and plants to 80s90s Shamrock Mall",
+            "Added missing railings around the Broadway Southwest building in 80s90s",
+            "Added new trees at mall entrances, around Broadway Southwest, and at the back of Montgomery Ward in 80s90s",
+            "Added new trees at the back of The Denver in 60s70s",
+            "Added new music variety to 60s70s and 80s90s",
+            "Added new exterior details and windows to the south side of 60s70s and 80s90s Gold Mall",
+            "Updated Woolworth's storefront for improved accuracy in 60s70s",
+            "Fixed an issue where Woolworth's storefront in both 60s70s and 80s90s exhibited inaccurate lighting",
+            "Fixed an issue in 80s90s where the store and mall floors were not in sync causing Z-fighting in front of new stores"
+          ],
+          "UI Updates": [
+            "Added more collaborators to the Credits screen"
+        ]
+        }
+      ],
       "0.7.0.202202": [
         {          
           "Environment Updates": [
