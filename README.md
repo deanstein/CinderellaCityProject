@@ -8,6 +8,7 @@ The real Cinderella City Mall existed in Englewood, Colorado from 1968 to 1998.
 
 ## Quick Links
 
+- [Sign the petition to save the last remaining Cinderella City building from demolition](https://www.change.org/p/save-the-englewood-civic-center-from-demolition-by-adapting-it-into-the-new-heart-of-the-neighborhood)
 - [Read about the project and donate on Ko-Fi](https://www.ko-fi.com/cinderellacityproject)
 - [See historic photos and the latest simulation progress on Instagram](https://instagram.com/cinderellacityproject) or [Facebook](https://www.facebook.com/cinderellacityproject)
 - [See videos on YouTube](https://www.youtube.com/c/TheCinderellaCityProject)
