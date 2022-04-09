@@ -13,6 +13,7 @@ public static class ObjectVisibilityGlobals
     public static string[] exteriorWallObjectKeywords = { "mall-walls-detailing-exterior" };
     public static string[] floorObjectKeywords = { "mall-floors-vert", "store-floors" };
     public static string[] furnitureObjectKeywords = { "mall-furniture" };
+    public static string[] historicPhotographObjectKeywords = { "proxy-cameras-photos" };
     public static string[] lightsObjectKeyword = { "mall-lights" };
     public static string[] interiorDetailingObjectKeywords = { "mall-detailing-interior","mall-flags", "store-detailing" };
     public static string[] interiorWallObjectKeywords = { "mall-walls-interior", "store-walls" };

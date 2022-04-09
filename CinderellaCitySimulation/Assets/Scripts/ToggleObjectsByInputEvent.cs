@@ -14,14 +14,20 @@ public class ToggleObjectsByInputEvent : MonoBehaviour {
         /// object visibility shortcuts ///
 
         // people
-        if (Input.GetKeyDown("p") && this.name.Contains("people"))
+        if (Input.GetKeyDown("p") && this.name.Contains(ObjectVisibilityGlobals.peopleObjectKeywords[0]))
         {
             ToggleObjects.ToggleGameObjectChildrenVisibility(this.gameObject);
         }
         // reset people to starting location
-        if (Input.GetKeyDown("o") && this.name.Contains("people"))
+        if (Input.GetKeyDown("o") && this.name.Contains(ObjectVisibilityGlobals.peopleObjectKeywords[0]))
         {
             ManageNPCControllers.ResetAllNPCsToOriginalLocation();
+        }
+
+        // proxy cameras - historic photographs
+        if (Input.GetKeyDown("h") && this.name.Contains(ObjectVisibilityGlobals.historicPhotographObjectKeywords[0]))
+        {
+            //ManageNPCControllers.ResetAllNPCsToOriginalLocation();
         }
     }
 }
