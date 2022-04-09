@@ -65,7 +65,7 @@ public class ObjectVisibility
     {
         foreach (Transform child in parentObject.transform)
         {
-            if (child.gameObject.activeSelf)
+            if (child.gameObject.activeSelf && !child.GetComponentInChildren<Camera>())// exclude cameras)
             {
                 return true;
             }
