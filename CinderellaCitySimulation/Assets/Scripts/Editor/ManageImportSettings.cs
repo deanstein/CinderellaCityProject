@@ -206,7 +206,7 @@ public class ManageImportSettings
                 ImportParams.doInstantiateAndPlaceInCurrentScene = true;
                 ImportParams.doSetColliderActive = false;
                 ImportParams.doSetUVActiveAndConfigure = false;
-                ImportParams.doDeleteReimportMaterialsTextures = false;
+                ImportParams.doDeleteReimportMaterialsTextures = true;
                 ImportParams.doAddBehaviorComponents = false;
                 // post-processor option flags
                 ImportParams.doSetMaterialEmission = false;
@@ -502,8 +502,13 @@ public class ManageImportSettings
         {
             case string name when name.Contains("proxy-trees-veg"):
                 return "TreesVeg";
-            case string name when name.Contains("cameras"):
+                // for now, legacy cameras are known as just cameras
+                // so be sure to not include historic photo cameras
+            case string name when name.Contains(ManageCameraActions.CameraActionGlobals.proxyCamerasObjectName) &&
+            !name.Contains(ManageCameraActions.CameraActionGlobals.proxyCamerasPhotosObjectName):
                 return "Cameras";
+            case string name when name.Contains(ManageCameraActions.CameraActionGlobals.proxyCamerasPhotosObjectName):
+                return "CamerasPhotos";
             case string name when name.Contains("proxy-people"):
                 return "People";
             case string name when name.Contains("water"):

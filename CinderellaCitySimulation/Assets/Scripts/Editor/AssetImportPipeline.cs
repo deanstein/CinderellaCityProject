@@ -1319,7 +1319,8 @@ public class AssetImportUpdate : AssetPostprocessor {
             }
 
             // camera thumbnail objects - these are used to generate thumbnails
-            else if (child.name.Contains(ManageCameraActions.CameraActionGlobals.thumbnailCameraKeyword))
+            // also import cameras for historic photographs so we can jump to them
+            else if (child.name.Contains(ManageCameraActions.CameraActionGlobals.thumbnailCameraKeyword) || child.name.Contains(ManageCameraActions.CameraActionGlobals.historicPhotoCameraKeyword))
             {
                 // get the current scene
                 Scene currentScene = EditorSceneManager.GetActiveScene();
