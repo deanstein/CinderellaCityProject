@@ -36,7 +36,10 @@ public class ManageCameraActions : MonoBehaviour
         //
 
         public static string proxyCamerasObjectName = "proxy-cameras";
+        public static string proxyCamerasPhotosObjectName = "proxy-cameras-photos";
+        // FormIt object names to trigger camera generation
         public static string thumbnailCameraKeyword = "Camera-Thumbnail-";
+        public static string historicPhotoCameraKeyword = "Photo Object";
 
         // number of seconds to wait for a thumbnail camera to be captured
         public static int thumbnailCameraCaptureDelay = 1;
