@@ -19,6 +19,7 @@ public class ModelImportParams
     public bool doSetMaterialEmission = false;
     public bool doSetMaterialSmoothnessMetallic = false;
     public bool doInstantiateProxyReplacements = false;
+    public bool doHideInitially = false;
     public bool doHideProxyObjects = false;
 
     // these import params are deprecated, for now,
@@ -200,7 +201,22 @@ public class ManageImportSettings
 
             /// proxy objects which either get replaced or augmented on import
 
-            case string assetOrModelName when assetOrModelName.Contains("proxy-cameras"):
+            case string assetOrModelName when assetOrModelName.Contains("proxy-cameras") && !assetOrModelName.Contains("proxy-cameras-photos"):
+                // pre-processor option flags
+                ImportParams.doSetGlobalScale = true; // always true
+                ImportParams.doInstantiateAndPlaceInCurrentScene = true;
+                ImportParams.doSetColliderActive = false;
+                ImportParams.doSetUVActiveAndConfigure = false;
+                ImportParams.doDeleteReimportMaterialsTextures = false;
+                ImportParams.doAddBehaviorComponents = false;
+                // post-processor option flags
+                ImportParams.doSetMaterialEmission = false;
+                ImportParams.doSetMaterialSmoothnessMetallic = false;
+                ImportParams.doInstantiateProxyReplacements = true;
+                ImportParams.doHideProxyObjects = true;
+                return ImportParams;
+
+            case string assetOrModelName when assetOrModelName.Contains("proxy-cameras-photos"):
                 // pre-processor option flags
                 ImportParams.doSetGlobalScale = true; // always true
                 ImportParams.doInstantiateAndPlaceInCurrentScene = true;
@@ -212,7 +228,8 @@ public class ManageImportSettings
                 ImportParams.doSetMaterialEmission = false;
                 ImportParams.doSetMaterialSmoothnessMetallic = false;
                 ImportParams.doInstantiateProxyReplacements = true;
-                ImportParams.doHideProxyObjects = true;
+                ImportParams.doHideProxyObjects = false;
+                ImportParams.doHideInitially = true;
                 return ImportParams;
 
             case string assetOrModelName when assetOrModelName.Contains("proxy-people"):

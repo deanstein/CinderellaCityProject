@@ -1344,10 +1344,10 @@ public class AssetImportUpdate : AssetPostprocessor {
                 camera.allowMSAA = false;
                 camera.useOcclusionCulling = false;
 
-                // make the camera a sibling of the original camera geometry
-                cameraObject.transform.SetPositionAndRotation(child.transform.position, child.transform.rotation);
-                cameraObject.transform.parent = child.transform.parent;
                 // match the position and rotation
+                cameraObject.transform.SetPositionAndRotation(child.transform.position, child.transform.rotation);
+                // make the camera a sibling of the original camera geometry
+                cameraObject.transform.parent = child.transform.parent;
 
                 // tag this camera object as a delete candidate for the next import
                 cameraObject.tag = proxyReplacementDeleteTag;
@@ -1639,7 +1639,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         // it seems that a few post processing hits are needed to fully post-process everything
         // any further is probably not necessary
-        if (!postProcessingRequired || postProcessingHits.Count > globalMaxPostProcessingHits)
+        if (!postProcessingRequired || postProcessingHits.Count >= globalMaxPostProcessingHits)
         {
             Utils.DebugUtils.DebugLog("Skipping PostProcessing attempt " + postProcessingHits.Count + " (max allowed: " + globalMaxPostProcessingHits + ")");
             return;
@@ -1676,6 +1676,11 @@ public class AssetImportUpdate : AssetPostprocessor {
         {
             AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
             InstantiateProxyReplacements(importedAssetFileName);
+        }
+
+        if (AssetImportGlobals.ModelImportParamsByName.doHideInitially)
+        {
+            ToggleObjects.ToggleGameObjectOff(importedAssetGameObject);
         }
 
         if (AssetImportGlobals.ModelImportParamsByName.doHideProxyObjects)
