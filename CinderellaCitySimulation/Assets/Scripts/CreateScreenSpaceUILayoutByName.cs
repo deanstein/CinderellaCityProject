@@ -486,11 +486,41 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         CreateScreenSpaceUIElements.PopulateContentGroup(objectVisibilityToggleGroup, visibilityToggles);
 
         ///
+        /// point of interest / historic photograph visibility settings
+        /// 
+
+        // create the object visibility toggle group container
+        GameObject pointOfInterestVisibilityToggleGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu, toggleSetContainer, objectVisibilityToggleGroup, false, 0.2f /* gets resized later */, "POINTS OF INTEREST");
+
+        // first, create a list of toggles required for each of the object sets
+        List<GameObject> pointsOfInterestToggles = new List<GameObject>();
+
+        // historic photograph toggle
+        GameObject historicPhotographsToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(pointOfInterestVisibilityToggleGroup, pointOfInterestVisibilityToggleGroup.transform.GetChild(0).gameObject, "Historic Photographs", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords));
+        pointsOfInterestToggles.Add(historicPhotographsToggle);
+
+        // force all toggles to opaque
+        GameObject historicPhotographsOpacityToggle = CreateScreenSpaceUIElements.CreateToggleModule(pointOfInterestVisibilityToggleGroup, historicPhotographsToggle, "Force 100% Photograph Opacity");
+        // get the actual toggle
+        Toggle toggle = historicPhotographsOpacityToggle.GetComponentInChildren<Toggle>();
+        // set the toggle to invoke changing the visibility of the object
+        toggle.onValueChanged.AddListener(delegate {
+
+            // call some new function that loops through all 
+            // historic photo objects and changes their transparency
+
+        });
+        pointsOfInterestToggles.Add(historicPhotographsOpacityToggle);
+
+        // now populate the object visibility toggle group container
+        CreateScreenSpaceUIElements.PopulateContentGroup(pointOfInterestVisibilityToggleGroup, pointsOfInterestToggles);
+
+        ///
         /// UI visibility settings
         ///
 
         // create the object visibility toggle group container
-        GameObject UIVisibilityToggleGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu, toggleSetContainer, objectVisibilityToggleGroup, false, 0.2f /* gets resized later */, "USER INTERFACE");
+        GameObject UIVisibilityToggleGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu, toggleSetContainer, pointOfInterestVisibilityToggleGroup, false, 0.2f /* gets resized later */, "USER INTERFACE");
 
         // first, create a list of toggles required for each of the object sets
         List<GameObject> UIVisibilityToggles = new List<GameObject>();
@@ -525,7 +555,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         /// camera actions
         ///
 
-        // create the object visibility toggle group container
+        // create the camera actions toggle group container
         GameObject cameraActionsButtonGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(visibilityMenu, toggleSetContainer, cameraSettingsToggleGroup, false, 0.1f, "CAMERA ACTIONS");
 
         // first, create a list of buttons required for each of the object sets
@@ -575,6 +605,8 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         toggleSetContainer.transform.SetParent(toggleSetHorizontalScrollArea.transform);
 
         CreateScreenSpaceUIElements.SetContentGroupHierarchy(toggleSetContainer, objectVisibilityToggleGroup);
+
+        CreateScreenSpaceUIElements.SetContentGroupHierarchy(toggleSetContainer, pointOfInterestVisibilityToggleGroup);
 
         CreateScreenSpaceUIElements.SetContentGroupHierarchy(toggleSetContainer, UIVisibilityToggleGroup);
 
