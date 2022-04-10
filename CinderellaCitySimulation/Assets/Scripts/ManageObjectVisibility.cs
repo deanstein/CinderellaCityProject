@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// Provides access to object visibility keywords, top-level object finding, and object visibility checks
@@ -22,6 +23,9 @@ public static class ObjectVisibilityGlobals
     public static string[] signageObjectKeywords = { "mall-signage" };
     public static string[] vegetationObjectKeywords = { "proxy-trees-veg" };
     public static string[] waterFeatureObjectKeywords = { "proxy-water" };
+
+    // a list of known historic photo transparency values
+    public static List<float> historicPhotoTransparencyValues = new List<float>();
 }
 
 public class ObjectVisibility
@@ -72,5 +76,61 @@ public class ObjectVisibility
         }
 
         return false;
+    }
+
+    public static void ToggleHistoricPhotoTransparencies(bool toggleState)
+    {
+        // we may need to temporarily enable the photos, so keep track of that
+        bool wasDisabled = false;
+
+        // get the top-level historic photo gameobject
+        GameObject historicPhotoParentObject = GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords)[0];
+
+        Renderer[] historicPhotoRenderers = historicPhotoParentObject.GetComponentsInChildren<Renderer>();
+
+        // if no renderers found, the photos are disabled, so enable them
+        if (historicPhotoRenderers.Length == 0)
+        {
+            wasDisabled = true;
+
+            ToggleObjects.ToggleGameObjectChildrenVisibility(historicPhotoParentObject);
+
+            // find the renderers again
+            historicPhotoRenderers = historicPhotoParentObject.GetComponentsInChildren<Renderer>();
+        }
+
+        for (var i = 0; i < historicPhotoRenderers.Length; i++)
+        {
+            // if toggle is on, record existing alpha then set to 1
+            if (toggleState)
+            {
+                Color color = historicPhotoRenderers[i].material.color;
+
+                // record the existing transparency value so we can reset later if requested
+                ObjectVisibilityGlobals.historicPhotoTransparencyValues.Add(color.a);
+
+                color.a = 1.0f;
+                historicPhotoRenderers[i].material.color = color;
+            }
+            // if toggle is off, set new alpha from the recorded alpha
+            else
+            {
+                Color color = historicPhotoRenderers[i].material.color;
+                color.a = ObjectVisibilityGlobals.historicPhotoTransparencyValues[i];
+
+                historicPhotoRenderers[i].material.color = color;
+            }
+        }
+
+        if (!toggleState)
+        {
+            ObjectVisibilityGlobals.historicPhotoTransparencyValues.Clear();
+        }
+
+        // if the historic photos object was disabled, disable it again
+        if (wasDisabled)
+        {
+            ToggleObjects.ToggleGameObjectChildrenVisibility(historicPhotoParentObject);
+        }
     }
 }
