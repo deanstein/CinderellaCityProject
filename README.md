@@ -8,7 +8,7 @@ The real Cinderella City Mall existed in Englewood, Colorado from 1968 to 1998.
 
 ## Upcoming Events
 
-- [April 26th, 2022: Once Upon a Time at Cinderella City](https://www.eventbrite.com/e/historic-englewood-lecture-series-cinderella-city-mall-tickets-317428927467)
+- [April 26, 2022: Once Upon a Time at Cinderella City](https://www.eventbrite.com/e/historic-englewood-lecture-series-cinderella-city-mall-tickets-317428927467)
 
 ## Quick Links
 
