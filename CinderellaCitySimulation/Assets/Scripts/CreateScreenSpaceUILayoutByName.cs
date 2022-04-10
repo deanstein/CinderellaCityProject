@@ -499,15 +499,15 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         GameObject historicPhotographsToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(pointOfInterestVisibilityToggleGroup, pointOfInterestVisibilityToggleGroup.transform.GetChild(0).gameObject, "Historic Photographs", ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords));
         pointsOfInterestToggles.Add(historicPhotographsToggle);
 
-        // force all toggles to opaque
-        GameObject historicPhotographsOpacityToggle = CreateScreenSpaceUIElements.CreateToggleModule(pointOfInterestVisibilityToggleGroup, historicPhotographsToggle, "Force 100% Photograph Opacity");
+        // force all historic photos to opaque
+        GameObject historicPhotographsOpacityToggle = CreateScreenSpaceUIElements.CreateToggleModule(pointOfInterestVisibilityToggleGroup, historicPhotographsToggle, "Force 100% Photo Opacity");
         // get the actual toggle
         Toggle toggle = historicPhotographsOpacityToggle.GetComponentInChildren<Toggle>();
         // set the toggle to invoke changing the visibility of the object
         toggle.onValueChanged.AddListener(delegate {
 
-            // call some new function that loops through all 
-            // historic photo objects and changes their transparency
+            // toggle all historic photo transparencies based on the toggle state
+            ObjectVisibility.ToggleHistoricPhotoTransparencies(toggle.isOn);
 
         });
         pointsOfInterestToggles.Add(historicPhotographsOpacityToggle);
