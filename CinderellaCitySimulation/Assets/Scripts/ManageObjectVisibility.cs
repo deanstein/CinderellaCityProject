@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -20,6 +20,7 @@ public static class ObjectVisibilityGlobals
     public static string[] peopleObjectKeywords = { "proxy-people" };
     public static string[] roofObjectKeywords = { "mall-roof" };
     public static string[] signageObjectKeywords = { "mall-signage" };
+    public static string[] speakerObjectKeywords = { "speakers" };
     public static string[] vegetationObjectKeywords = { "proxy-trees-veg" };
     public static string[] waterFeatureObjectKeywords = { "proxy-water" };
 

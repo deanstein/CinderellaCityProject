@@ -37,6 +37,11 @@ public class AudioSourceGlobals
     //
     // initialize speaker parameter sets
     //
+    public static string mallAmbientChatter60s70sKeyName = "mall-ambient-chatter-60s70s";
+    public static string mallMusic60s70sKeyName = "mall-music-60s70s";
+
+    public static string mallAmbientChatter80s90sKeyName = "mall-ambient-chatter-80s90s";
+    public static string mallMusic80s90sKeyName = "mall-music-80s90s";
 
     // default volume levels and max distances
     public static float defaultSpeakerVolumeChatter = 0.03f;
@@ -75,9 +80,9 @@ public class PlayAudioSequencesByName : MonoBehaviour
             // mall - 60s70s
 
             // ambient chatter
-            case string partialName when partialName.Contains("mall-ambient-chatter-60s70s"):
+            case string partialName when partialName.Contains(AudioSourceGlobals.mallAmbientChatter60s70sKeyName):
 
-                thisKeyName = "mall-ambient-chatter-60s70s";
+                thisKeyName = AudioSourceGlobals.mallAmbientChatter60s70sKeyName;
                 matchingParams = GetSpeakerParamsIfKnown(thisKeyName);
                 // if these params do not exist, create them and add them to the list
                 if (matchingParams == null)
@@ -133,9 +138,9 @@ public class PlayAudioSequencesByName : MonoBehaviour
                 return matchingParams;
 
             // common area music
-            case string partialName when partialName.Contains("mall-music-60s70s"):
+            case string partialName when partialName.Contains(AudioSourceGlobals.mallMusic60s70sKeyName):
 
-                thisKeyName = "mall-music-60s70s";
+                thisKeyName = AudioSourceGlobals.mallMusic60s70sKeyName;
                 matchingParams = GetSpeakerParamsIfKnown(thisKeyName);
                 // if these params do not exist, create them and add them to the list
                 if (matchingParams == null)
@@ -194,9 +199,9 @@ public class PlayAudioSequencesByName : MonoBehaviour
                 return matchingParams;
 
             // common area music
-            case string partialName when partialName.Contains("mall-music-80s90s"):
+            case string partialName when partialName.Contains(AudioSourceGlobals.mallMusic80s90sKeyName):
 
-                thisKeyName = "mall-music-80s90s";
+                thisKeyName = AudioSourceGlobals.mallMusic80s90sKeyName;
                 matchingParams = GetSpeakerParamsIfKnown(thisKeyName);
                 // if these params do not exist, create them and add them to the list
                 if (matchingParams == null)
@@ -415,6 +420,50 @@ public class PlayAudioSequencesByName : MonoBehaviour
         return matchingParams;
     }
 
+    public static SpeakerParams GetAmbientChatterSpeakerParamsByScene(string sceneName)
+    {
+        SpeakerParams matchingParams = null;
+
+        switch (sceneName)
+        {
+            case string partialName when partialName.Contains("60s70s") ||
+            partialName.Contains(SceneGlobals.experimentalSceneName):
+
+                matchingParams = AssociateSpeakerParamsByName(AudioSourceGlobals.mallAmbientChatter60s70sKeyName);
+                return matchingParams;
+
+            case string partialName when partialName.Contains("80s90s"):
+
+                matchingParams = AssociateSpeakerParamsByName(AudioSourceGlobals.mallAmbientChatter80s90sKeyName);
+                return matchingParams;
+
+            default:
+                return null;
+        }
+    }
+
+    public static SpeakerParams GetMallMusicSpeakerParamsByScene(string sceneName)
+    {
+        SpeakerParams matchingParams = null;
+
+        switch (sceneName)
+        {
+            case string partialName when partialName.Contains("60s70s") ||
+            partialName.Contains(SceneGlobals.experimentalSceneName):
+
+                matchingParams = AssociateSpeakerParamsByName(AudioSourceGlobals.mallMusic60s70sKeyName);
+                return matchingParams;
+
+            case string partialName when partialName.Contains("80s90s"):
+
+                matchingParams = AssociateSpeakerParamsByName(AudioSourceGlobals.mallMusic80s90sKeyName);
+                return matchingParams;
+
+            default:
+                return null;
+        }
+    }
+
     // specify and play master speaker clip sequences
     IEnumerator PlayMasterClipSequence(AudioClip[] audioClips)
     {
@@ -443,11 +492,52 @@ public class PlayAudioSequencesByName : MonoBehaviour
         }
     }
 
+    // go to the previous track given a speaker type
+    public static void PlayPreviousTrack(SpeakerParams speakerParamsToChange)
+    {
+        GameObject speakerObject = ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.speakerObjectKeywords)[0];
+        speakerObject.SetActive(false);
+        speakerParamsToChange.lastKnownClipIndex--;
+        speakerParamsToChange.lastKnownClip = speakerParamsToChange.clipSequence[speakerParamsToChange.lastKnownClipIndex];
+        speakerObject.SetActive(true);
+    }
+
+    // go to the next track given a speaker type
+    public static void PlayNextTrack(SpeakerParams speakerParamsToChange)
+    {
+        GameObject speakerObject = ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.speakerObjectKeywords)[0];
+        speakerObject.SetActive(false);
+        speakerParamsToChange.lastKnownClipIndex++;
+        speakerParamsToChange.lastKnownClip = speakerParamsToChange.clipSequence[speakerParamsToChange.lastKnownClipIndex];
+        speakerObject.SetActive(true);
+    }
+
+    public static void MuteSpeakers(SpeakerParams speakerParamsToMute)
+    {
+
+        GameObject speakerObject = ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.speakerObjectKeywords)[0];
+
+        // if the master is already muted, un-mute it
+        if (speakerParamsToMute.masterAudioSource.volume == 0)
+        {
+            speakerParamsToMute.masterAudioSource.volume = speakerParamsToMute.speakerVolume;
+        }
+        // otherwise, mute it
+        else
+        {
+            speakerParamsToMute.masterAudioSource.volume = 0;
+        }
+
+        speakerObject.SetActive(false);
+        speakerObject.SetActive(true);
+    }
+
     // synchronize two AudioSources
     void SyncAudioSources(AudioSource masterAudioSource, AudioSource slaveAudioSource)
     {
         slaveAudioSource.clip = masterAudioSource.clip;
         slaveAudioSource.time = masterAudioSource.time;
+        slaveAudioSource.volume = masterAudioSource.volume;
         slaveAudioSource.Play();
     }
 
