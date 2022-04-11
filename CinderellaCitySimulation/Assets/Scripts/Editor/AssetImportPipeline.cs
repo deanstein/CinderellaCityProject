@@ -816,7 +816,6 @@ public class AssetImportUpdate : AssetPostprocessor {
                     SetMaterialSmoothness(dependencyPathString, materialSmoothness);
                 }
 
-
                 if (materialMetallic != -1)
                 {
                     SetMaterialMetallic(dependencyPathString, materialMetallic);
