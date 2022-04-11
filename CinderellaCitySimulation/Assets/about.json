@@ -8,6 +8,7 @@
             "Added missing lights to Tobaccoland in 60s70s",
             "Added missing lights to Mile Hi Hobbies in 80s90s",
             "Added new music from Dead Pisces and FWIENZY to 60s70s and 80s90s",
+            "Fixed an issue where metallic and gloss settings were lost for most materials",
             "Fixed an issue with the Tobaccoland storefront in 60s70s"
           ],
           "UI Updates": [
@@ -23,7 +24,9 @@
             "Added ability to change mall music tracks and mute mall music entirely",
             "Added historic photo object support in AssetImportPipeline",
             "Added the ability to toggle historic photos",
-            "Added the ability to toggle historic photos opacity between 100% and their defined percentage"
+            "Added the ability to toggle historic photos opacity between 100% and their defined percentage",
+            "Finished adding ability to set material smoothness and metallic from CCP menu",
+            "Fixed an issue where metallic and gloss were not applied to most materials due to typo in ManageImportSettings"s
           ]
         }
       ],
