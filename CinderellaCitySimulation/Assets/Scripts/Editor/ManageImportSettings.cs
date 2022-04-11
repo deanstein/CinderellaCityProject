@@ -670,8 +670,6 @@ public class ManageImportSettings
             case string name when name.Contains("metal"):
                 return 0.5f;
             // specific materials
-            case string name when name.Contains("f"):
-                return 0f;
             case string name when name.Contains("bronzed glass"):
                 return 0.2f;
             case string name when name.Contains("food court tile"):
