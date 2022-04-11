@@ -1,6 +1,32 @@
 {
   "VersionHistory": [
     {
+      "0.7.2.202204": [
+        {    
+          "Environment Updates": [
+            "Added world-space historic photographs to 60s70s and 80s90s",
+            "Added missing lights to Tobaccoland in 60s70s",
+            "Added missing lights to Mile Hi Hobbies in 80s90s",
+            "Added new music from Dead Pisces and FWIENZY to 60s70s and 80s90s",
+            "Fixed an issue with the Tobaccoland storefront in 60s70s"
+          ],
+          "UI Updates": [
+            "Added Audio Settings menu with ability to change and mute mall music",
+            "Added Points of Interest toggle group in Visibility Menu",
+            "Added toggle for historic photographs",
+            "Added toggle for historic photographs opacity",
+            "Added more collaborators to the Credits screen",
+            "Improved legibility of the 'CC' graphic in the Once Upon a Time at Cinderella City logo"
+          ],
+          "Code Updates": [
+            "Added Audio Settings menu with mall music settings",
+            "Added ability to change mall music tracks and mute mall music entirely",
+            "Added historic photo object support in AssetImportPipeline",
+            "Added the ability to toggle historic photos",
+            "Added the ability to toggle historic photos opacity between 100% and their defined percentage"
+          ]
+        }
+      ],
       "0.7.1.202203": [
         {    
           "Environment Updates": [
@@ -14,6 +40,7 @@
             "Added new trees at the back of The Denver in 60s70s",
             "Added new music variety to 60s70s and 80s90s",
             "Added new exterior details and windows to the south side of 60s70s and 80s90s Gold Mall",
+            "Updated Main Menu thumbnails",
             "Updated Woolworth's storefront for improved accuracy in 60s70s",
             "Fixed an issue where Woolworth's storefront in both 60s70s and 80s90s exhibited inaccurate lighting",
             "Fixed an issue in 80s90s where the store and mall floors were not in sync causing Z-fighting in front of new stores"
