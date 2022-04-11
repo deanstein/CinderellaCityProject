@@ -121,6 +121,21 @@ public class ToggleSceneAndUIByInputEvent : MonoBehaviour {
             }
         }
 
+        // audio menu
+        // only accessible from time period scenes
+        if (Input.GetKeyDown("u") &&
+            (Utils.StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name) || (SceneManager.GetActiveScene().name.Contains("Experimental"))))
+        {
+            if (UIVisibilityGlobals.isOverlayMenuActive)
+            {
+                ManageOverlayVisibility.DismissActiveOverlayMenu();
+            }
+            else
+            {
+                CreateScreenSpaceUILayoutByName.BuildAudioMenuOverlay(this.gameObject);
+            }
+        }
+
         // optionally display or hide the under construction label
         if (Input.GetKeyDown(KeyCode.Slash) &&
             Utils.StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name))

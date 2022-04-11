@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -622,6 +622,108 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         ManageFPSControllers.DisableCursorLockOnActiveFPSController();
 
         return visibilityMenu;
+    }
+
+    // the audio settings menu
+    public static GameObject BuildAudioMenuOverlay(GameObject UILauncher)
+    {
+        Utils.DebugUtils.DebugLog("Building the Audio Menu...");
+
+        // audio menu canvas
+        GameObject audioMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, SceneGlobals.visibilityMenuSceneName);
+        UIVisibilityGlobals.isOverlayMenuActive = true;
+        UIVisibilityGlobals.activeOverlayMenu = audioMenu;
+        UIVisibilityGlobals.lastKnownOverlayMenuName = audioMenu.name;
+
+        // project logo and container
+        GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(audioMenu);
+
+        // create the title bar container
+        GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(audioMenu, logoHeader, "Audio Settings", true);
+
+        // put all the possible toggles in a horizontal scroll area
+        // and central nav container
+        GameObject toggleSetHorizontalScrollArea = CreateScreenSpaceUIElements.CreateScrollableArea("AudioToggleSet", "horizontal");
+        GameObject toggleSetContainer = CreateScreenSpaceUIElements.CreateCentralNavContainer(audioMenu, titleBarContainer);
+        CreateScreenSpaceUIElements.ConfigureScrollAreaToMatchChildRect(toggleSetHorizontalScrollArea, toggleSetContainer);
+
+        ///
+        /// mall music actions
+        ///
+
+        // create the camera actions toggle group container
+        GameObject mallMusicActionsButtonGroup = CreateScreenSpaceUIElements.CreateToggleGroupModule(audioMenu, toggleSetContainer, toggleSetHorizontalScrollArea, true, 0.1f, "MALL MUSIC");
+
+        // first, create a list of buttons required for each of the object sets
+        List<GameObject> mallMusicActionButtons = new List<GameObject>();
+
+        // mute/unmute button
+        GameObject mallMusicMuteUnmuteButton = CreateScreenSpaceUIElements.CreateTextButton("Mute/Unmute", UIGlobals.visibilityMenuTextButtonlabelSize, UIGlobals.menuTitleBottomMarginScreenHeightRatio, UIGlobals.menuButtonScreenWidthRatio, UIGlobals.containerColor);
+        mallMusicMuteUnmuteButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
+
+            // get the correct params
+            SpeakerParams musicParams = PlayAudioSequencesByName.GetMallMusicSpeakerParamsByScene(SceneManager.GetActiveScene().name);
+            // mute
+            PlayAudioSequencesByName.MuteSpeakers(musicParams);
+
+        }); ;
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(mallMusicMuteUnmuteButton, mallMusicActionsButtonGroup.transform.GetChild(0).gameObject, UIGlobals.menuButtonTopBottomPaddingScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectAtVerticalCenterlineOfNeighbor(mallMusicMuteUnmuteButton, mallMusicActionsButtonGroup);
+        mallMusicActionButtons.Add(mallMusicMuteUnmuteButton);
+
+        // previous track button
+        GameObject previousTrackButton = CreateScreenSpaceUIElements.CreateTextButton("Previous Track", UIGlobals.visibilityMenuTextButtonlabelSize, UIGlobals.menuButtonTopBottomPaddingScreenHeightRatio, UIGlobals.menuButtonScreenWidthRatio, UIGlobals.containerColor);
+        previousTrackButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
+
+            // get the correct params
+            SpeakerParams musicParams = PlayAudioSequencesByName.GetMallMusicSpeakerParamsByScene(SceneManager.GetActiveScene().name);
+            // previous track
+            PlayAudioSequencesByName.PlayPreviousTrack(musicParams);
+
+        }); ;
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(previousTrackButton, mallMusicMuteUnmuteButton, UIGlobals.toggleContainerPadding);
+        TransformScreenSpaceObject.PositionObjectAtVerticalCenterlineOfNeighbor(previousTrackButton, mallMusicMuteUnmuteButton);
+        mallMusicActionButtons.Add(previousTrackButton);
+
+        // next track button
+        GameObject nextTrackButton = CreateScreenSpaceUIElements.CreateTextButton("Next Track", UIGlobals.visibilityMenuTextButtonlabelSize, UIGlobals.menuButtonTopBottomPaddingScreenHeightRatio, UIGlobals.menuButtonScreenWidthRatio, UIGlobals.containerColor);
+        nextTrackButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
+
+            // get the correct params
+            SpeakerParams musicParams = PlayAudioSequencesByName.GetMallMusicSpeakerParamsByScene(SceneManager.GetActiveScene().name);
+            // next track
+            PlayAudioSequencesByName.PlayNextTrack(musicParams);
+
+        }); ;
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(nextTrackButton, previousTrackButton, UIGlobals.toggleContainerPadding);
+        TransformScreenSpaceObject.PositionObjectAtVerticalCenterlineOfNeighbor(nextTrackButton, previousTrackButton);
+        mallMusicActionButtons.Add(nextTrackButton);
+
+        // now populate the object camera settings toggle group container
+        CreateScreenSpaceUIElements.PopulateContentGroup(mallMusicActionsButtonGroup, mallMusicActionButtons);
+
+        // resize the content within the scroll area to just past the last sub-element
+        TransformScreenSpaceObject.ResizeParentContainerToFitLastChild(toggleSetContainer, mallMusicActionsButtonGroup, UIGlobals.toggleContainerPadding, "right");
+
+        // set parent/child hierarchy
+        toggleSetHorizontalScrollArea.transform.SetParent(audioMenu.transform);
+        toggleSetContainer.transform.SetParent(toggleSetHorizontalScrollArea.transform);
+
+        CreateScreenSpaceUIElements.SetContentGroupHierarchy(toggleSetContainer, mallMusicActionsButtonGroup);
+
+        mallMusicMuteUnmuteButton.transform.SetParent(mallMusicActionsButtonGroup.transform);
+        previousTrackButton.transform.SetParent(mallMusicActionsButtonGroup.transform);
+        nextTrackButton.transform.SetParent(mallMusicActionsButtonGroup.transform);
+
+        TransformScreenSpaceObject.PositionObjectAtVerticalCenterlineOfNeighbor(mallMusicMuteUnmuteButton, mallMusicActionsButtonGroup);
+        TransformScreenSpaceObject.PositionObjectAtVerticalCenterlineOfNeighbor(previousTrackButton, mallMusicMuteUnmuteButton);
+        TransformScreenSpaceObject.PositionObjectAtVerticalCenterlineOfNeighbor(nextTrackButton, previousTrackButton);
+
+        ManageFPSControllers.DisableCursorLockOnActiveFPSController();
+
+        return audioMenu;
+
+
     }
 }
  
