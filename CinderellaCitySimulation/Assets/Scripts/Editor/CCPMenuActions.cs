@@ -346,8 +346,6 @@ public class CCPMenuActions : MonoBehaviour
         }
     }
 
-    /* this doesn't work yet because the texture path assumes the asset was just imported
-
     [MenuItem("Cinderella City Project/Material Adjustments/Smoothness and Metallic/Update for Current Scene")]
     public static void SetAllMaterialSmoothnessMetallicInCurrentScene()
     {
@@ -363,7 +361,7 @@ public class CCPMenuActions : MonoBehaviour
             }
         }
     }
-    */
+
 
     [MenuItem("Cinderella City Project/Material Adjustments/Emission/Update for Current Scene")]
     public static void SetAllMaterialEmissionInCurrentScene()

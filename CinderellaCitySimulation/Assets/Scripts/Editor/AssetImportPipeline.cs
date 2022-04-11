@@ -96,6 +96,26 @@ public class AssetImportUpdate : AssetPostprocessor {
         method.Invoke(new object(), null);
     }
 
+    // get the textures path for an asset given the asset's file path
+    static string GetTexturesPathFromMaterialPath(string materialPath)
+    {
+        // the material path is one folder adjacent to the textures path
+        // so split the path by slashes and go up one level
+        string[] splitPath = materialPath.Split(new char[] { '/' });
+        string[] newSplitPathArray = splitPath.RangeSubset(0, splitPath.Length - 2);
+
+        string newPath = "";
+
+        foreach (string pathSection in newSplitPathArray)
+        {
+            newPath = newPath + pathSection + "/";
+        }
+
+        newPath = newPath + "Textures";
+
+        return newPath;
+    }
+
     // define how to set the scale of the imported model
     // should be called on all imported objects for consistency
     void SetGlobalScale(ModelImporter mi)
@@ -366,13 +386,14 @@ public class AssetImportUpdate : AssetPostprocessor {
     }
 
     // define how to create a greyscale new texture given a scale factor from 0 (black) to 1 (white)
-    public static string CreateGreyscaleTexture(float scale)
+    public static string CreateGreyscaleTexture(string materialFilePath, float scale)
     {
         // name the metallic map based on its rgb values
         string fileName = "metallicMap-" + scale + "-" + scale + "-" + scale + ".png";
-
-        // define the path where this texture will be stored
-        string filePath = importedAssetTexturesDirectory + "/" + fileName;
+        // determine the textures dir for this material and the new texture's file path
+        // if this is during an import process, use the known asset import textures dir, otherwise determine the textures dir
+        string texturesDir = importedAssetTexturesDirectory != null ? importedAssetTexturesDirectory : AssetImportUpdate.GetTexturesPathFromMaterialPath(materialFilePath);
+        string filePath = texturesDir + "/" + fileName;
 
         // only make a new texture if it doesn't exist yet
         // note that this texture does not get cleaned up in DeleteReimportMaterialsTextures
@@ -400,9 +421,9 @@ public class AssetImportUpdate : AssetPostprocessor {
             }
 
             // create the required textures folder before trying to write to it
-            if (!Directory.Exists(importedAssetTexturesDirectory))
+            if (!Directory.Exists(texturesDir))
             {
-                Directory.CreateDirectory(importedAssetTexturesDirectory);
+                Directory.CreateDirectory(texturesDir);
             }
 
             // write the texture to the file system
@@ -416,7 +437,6 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
 
         return filePath;
-        //return newTexture;
     }
 
 
@@ -443,7 +463,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // Materials may get Metallic set to a non-0 value in a separate function
 
         // create the black texture
-        string metallicGlossTexturePath = CreateGreyscaleTexture(0.0f);
+        string metallicGlossTexturePath = CreateGreyscaleTexture(materialFilePath, 0.0f);
         Texture blackTexture = (Texture)AssetDatabase.LoadAssetAtPath(metallicGlossTexturePath, typeof(Texture));
 
         // set the MetallicGlossMap as the black texture
@@ -457,7 +477,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         Material mat = (Material)AssetDatabase.LoadAssetAtPath(materialFilePath, typeof(Material));
 
         // create a greyscale texture based on the specified metallic value
-        string metallicGlossTexturePath = CreateGreyscaleTexture(metallic);
+        string metallicGlossTexturePath = CreateGreyscaleTexture(materialFilePath, metallic);
         Texture metallicGlossTexture = (Texture)AssetDatabase.LoadAssetAtPath(metallicGlossTexturePath, typeof(Texture));
 
         // set the MetallicGlossMap as the black texture
