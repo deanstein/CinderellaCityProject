@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 /// <summary>
 /// Provides access to object visibility keywords, top-level object finding, and object visibility checks
@@ -24,6 +23,8 @@ public static class ObjectVisibilityGlobals
     public static string[] vegetationObjectKeywords = { "proxy-trees-veg" };
     public static string[] waterFeatureObjectKeywords = { "proxy-water" };
 
+    // used for updating the checkbox when historic photos are forced to opaque
+    public static bool areHistoricPhotosForcedOpaque = false;
     // a list of known historic photo transparency values
     public static List<float> historicPhotoTransparencyValues = new List<float>();
 }
@@ -80,18 +81,21 @@ public class ObjectVisibility
 
     public static void ToggleHistoricPhotoTransparencies(bool toggleState)
     {
-        // we may need to temporarily enable the photos, so keep track of that
-        bool wasDisabled = false;
+        ObjectVisibilityGlobals.areHistoricPhotosForcedOpaque = toggleState;
+
+        // were the photos disabled to begin with?
+        bool setToDisabledWhenComplete = false;
 
         // get the top-level historic photo gameobject
         GameObject historicPhotoParentObject = GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords)[0];
 
         Renderer[] historicPhotoRenderers = historicPhotoParentObject.GetComponentsInChildren<Renderer>();
 
-        // if no renderers found, the photos are disabled, so enable them
+        // if no renderers found, the photos are disabled, 
+        // so enable them temporarily to change their properties
         if (historicPhotoRenderers.Length == 0)
         {
-            wasDisabled = true;
+            setToDisabledWhenComplete = true;
 
             ToggleObjects.ToggleGameObjectChildrenVisibility(historicPhotoParentObject);
 
@@ -128,7 +132,7 @@ public class ObjectVisibility
         }
 
         // if the historic photos object was disabled, disable it again
-        if (wasDisabled)
+        if (setToDisabledWhenComplete)
         {
             ToggleObjects.ToggleGameObjectChildrenVisibility(historicPhotoParentObject);
         }

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -503,6 +503,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         GameObject historicPhotographsOpacityToggle = CreateScreenSpaceUIElements.CreateToggleModule(pointOfInterestVisibilityToggleGroup, historicPhotographsToggle, "Force 100% Photo Opacity");
         // get the actual toggle
         Toggle toggle = historicPhotographsOpacityToggle.GetComponentInChildren<Toggle>();
+        toggle.isOn = ObjectVisibilityGlobals.areHistoricPhotosForcedOpaque;
         // set the toggle to invoke changing the visibility of the object
         toggle.onValueChanged.AddListener(delegate {
 
