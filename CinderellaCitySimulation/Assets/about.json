@@ -8,7 +8,7 @@
             "Added missing lights to Tobaccoland in 60s70s",
             "Added missing lights to Mile Hi Hobbies in 80s90s",
             "Added new music from Dead Pisces and FWIENZY to 60s70s and 80s90s",
-            "Fixed an issue where metallic and gloss settings were lost for most materials",
+            "Fixed an issue where metallic and smoothness settings were lost for most materials",
             "Fixed an issue with the Tobaccoland storefront in 60s70s"
           ],
           "UI Updates": [
