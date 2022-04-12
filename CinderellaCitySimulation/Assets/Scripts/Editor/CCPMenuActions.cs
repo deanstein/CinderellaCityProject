@@ -27,7 +27,15 @@ public class CCPMenuActions : MonoBehaviour
         EditorApplication.EnterPlaymode();
     }
 
-    /* ---------- Open Scene ---------- */ 
+    /* ---------- Mark Scene Dirty ---------- */
+
+    [MenuItem("Cinderella City Project/Mark Current Scene Dirty")]
+    public static void MarkCurrentSceneDirty()
+    {
+        EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+    }
+
+    /* ---------- Open Scene ---------- */
 
     [MenuItem("Cinderella City Project/Open Scene/Open All Scenes Additively")]
     public static void OpenAllScenesAdditively()
@@ -125,6 +133,16 @@ public class CCPMenuActions : MonoBehaviour
         List<GameObject> timePeriodSceneContainers = ManageEditorScenes.GetOpenTimePeriodSceneContainers();
 
         HoistSceneObjectsEditor.HoistSceneContainersDown(timePeriodSceneContainers);
+    }
+
+    /* ---------- Object Visibility Menu ---------- */
+
+    [MenuItem("Cinderella City Project/Object Visibility/Toggle Historic Photos")]
+    public static void ToggleHistoricPhotosOn()
+    {
+        GameObject historicPhotoParentObject = ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords)[0];
+
+        ToggleObjects.ToggleGameObjectChildrenVisibility(historicPhotoParentObject);
     }
 
     /* ---------- Update Mode Menu ---------- */
