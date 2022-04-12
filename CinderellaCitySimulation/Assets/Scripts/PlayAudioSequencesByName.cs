@@ -499,6 +499,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
         speakerObject.SetActive(false);
         speakerParamsToChange.lastKnownClipIndex--;
         speakerParamsToChange.lastKnownClip = speakerParamsToChange.clipSequence[speakerParamsToChange.lastKnownClipIndex];
+        speakerParamsToChange.lastKnownClipTime = 0f;
         speakerObject.SetActive(true);
     }
 
@@ -509,6 +510,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
         speakerObject.SetActive(false);
         speakerParamsToChange.lastKnownClipIndex++;
         speakerParamsToChange.lastKnownClip = speakerParamsToChange.clipSequence[speakerParamsToChange.lastKnownClipIndex];
+        speakerParamsToChange.lastKnownClipTime = 0f;
         speakerObject.SetActive(true);
     }
 
