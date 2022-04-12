@@ -17,7 +17,8 @@
             "Added toggle for historic photographs",
             "Added toggle for historic photographs opacity",
             "Added more collaborators to the Credits screen",
-            "Improved legibility of the 'CC' graphic in the Once Upon a Time at Cinderella City logo"
+            "Improved legibility of the 'CC' carriage graphic in the Once Upon a Time at Cinderella City logo",
+            "Updated Main Menu thumbnails to show proper floor gloss"
           ],
           "Code Updates": [
             "Added Audio Settings menu with mall music settings",
@@ -26,7 +27,7 @@
             "Added the ability to toggle historic photos",
             "Added the ability to toggle historic photos opacity between 100% and their defined percentage",
             "Finished adding ability to set material smoothness and metallic from CCP menu",
-            "Fixed an issue where metallic and gloss were not applied to most materials due to typo in ManageImportSettings"s
+            "Fixed an issue where metallic and smoothness were not applied to most materials due to typo in ManageImportSettings"
           ]
         }
       ],
