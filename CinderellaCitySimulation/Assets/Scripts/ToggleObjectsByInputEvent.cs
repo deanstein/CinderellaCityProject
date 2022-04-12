@@ -23,12 +23,6 @@ public class ToggleObjectsByInputEvent : MonoBehaviour {
         {
             ManageNPCControllers.ResetAllNPCsToOriginalLocation();
         }
-
-        // proxy cameras - historic photographs
-        if (Input.GetKeyDown("h") && this.name.Contains(ObjectVisibilityGlobals.historicPhotographObjectKeywords[0]))
-        {
-            //ManageNPCControllers.ResetAllNPCsToOriginalLocation();
-        }
     }
 }
 
