@@ -403,6 +403,7 @@ public class ManageImportSettings
             // no static editor flags
             case string name when (name.Contains("light-shrouds")
             || name.Contains("mall-vents")
+            || name.Contains("proxy-cameras")
             || name.Contains("proxy-people")
             || name.Contains("store-fixtures")
             || name.Contains("structure-concealed")
