@@ -116,19 +116,6 @@ public class AssetImportUpdate : AssetPostprocessor {
         return newPath;
     }
 
-    // define how to set the scale of the imported model
-    // should be called on all imported objects for consistency
-    void SetGlobalScale(ModelImporter mi)
-    {
-        mi.globalScale = globalScale;
-    }
-
-    // define how to set colliders for the imported model
-    void SetColliderActive(ModelImporter mi)
-    {
-        mi.addCollider = true;
-    }
-
     // define how to enable UVs and configure them
     void SetUVActiveAndConfigure(ModelImporter mi)
     {
@@ -1602,7 +1589,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         if (AssetImportGlobals.ModelImportParamsByName.doSetGlobalScale)
         {
-            SetGlobalScale(modelImporter);
+            modelImporter.globalScale = globalScale;
         }
 
         if (AssetImportGlobals.ModelImportParamsByName.doInstantiateAndPlaceInCurrentScene)
@@ -1612,7 +1599,11 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         if (AssetImportGlobals.ModelImportParamsByName.doSetColliderActive)
         {
-            SetColliderActive(modelImporter);
+            modelImporter.addCollider = true;
+        }
+        else
+        {
+            modelImporter.addCollider = false;
         }
 
         if (AssetImportGlobals.ModelImportParamsByName.doSetUVActiveAndConfigure)
