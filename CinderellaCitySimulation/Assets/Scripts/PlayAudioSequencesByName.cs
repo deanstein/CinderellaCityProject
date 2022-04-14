@@ -498,6 +498,11 @@ public class PlayAudioSequencesByName : MonoBehaviour
         GameObject speakerObject = ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.speakerObjectKeywords)[0];
         speakerObject.SetActive(false);
         speakerParamsToChange.lastKnownClipIndex--;
+        // if already at the beginning, previous goes to end of list
+        if (speakerParamsToChange.lastKnownClipIndex < 0)
+        {
+            speakerParamsToChange.lastKnownClipIndex = speakerParamsToChange.clipSequence.Length - 1;
+        }
         speakerParamsToChange.lastKnownClip = speakerParamsToChange.clipSequence[speakerParamsToChange.lastKnownClipIndex];
         speakerParamsToChange.lastKnownClipTime = 0f;
         speakerObject.SetActive(true);
@@ -509,6 +514,11 @@ public class PlayAudioSequencesByName : MonoBehaviour
         GameObject speakerObject = ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.speakerObjectKeywords)[0];
         speakerObject.SetActive(false);
         speakerParamsToChange.lastKnownClipIndex++;
+        // if already at the end, next goes to beginning of list
+        if (speakerParamsToChange.lastKnownClipIndex > speakerParamsToChange.clipSequence.Length - 1)
+        {
+            speakerParamsToChange.lastKnownClipIndex = 0;
+        }
         speakerParamsToChange.lastKnownClip = speakerParamsToChange.clipSequence[speakerParamsToChange.lastKnownClipIndex];
         speakerParamsToChange.lastKnownClipTime = 0f;
         speakerObject.SetActive(true);
