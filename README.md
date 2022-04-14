@@ -88,6 +88,7 @@ After the simulation loads, you'll find yourself at the Main Menu, where you can
 		- You can also time-travel from here, with a visual showing what the other eras look like at this point in space
 	- M to go to the Main Menu
 	- V to go to the Visualization Menu
+	- U to go to the Audio Menu
 
 
 # Known Issues
