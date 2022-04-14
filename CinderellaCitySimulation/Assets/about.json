@@ -1,21 +1,34 @@
 {
   "VersionHistory": [
     {
+      "0.7.3.202205": [
+        {    
+          "Environment Updates": [
+            "Fixed an issue with the Tobaccoland storefront in 60s70s",
+            "Fixed missing lights to Tobaccoland in 60s70s",
+            "Fixed missing lights to Tobaccoland and Mile Hi Hobbies in 80s90s"
+          ],
+          "UI Updates": [
+            ""
+          ],
+          "Code Updates": [
+            ""
+          ]
+        }
+      ],
       "0.7.2.202204": [
         {    
           "Environment Updates": [
             "Added world-space historic photographs to 60s70s and 80s90s",
-            "Added missing lights to Tobaccoland in 60s70s",
-            "Added missing lights to Mile Hi Hobbies in 80s90s",
             "Added new music from Dead Pisces and FWIENZY to 60s70s and 80s90s",
             "Fixed an issue where metallic and smoothness settings were lost for most materials",
-            "Fixed an issue with the Tobaccoland storefront in 60s70s"
+            "Fixed an issue where 80s90s Broadway Southwest main entrance doors were inaccessible"
           ],
           "UI Updates": [
-            "Added Audio Settings menu with ability to change and mute mall music",
             "Added Points of Interest toggle group in Visibility Menu",
             "Added toggle for historic photographs",
             "Added toggle for historic photographs opacity",
+            "Added Audio Settings menu with ability to change and mute mall music",
             "Added more collaborators to the Credits screen",
             "Improved legibility of the 'CC' carriage graphic in the Once Upon a Time at Cinderella City logo",
             "Updated Main Menu thumbnails to show proper floor gloss"
@@ -25,9 +38,10 @@
             "Added ability to change mall music tracks and mute mall music entirely",
             "Added historic photo object support in AssetImportPipeline",
             "Added the ability to toggle historic photos",
-            "Added the ability to toggle historic photos opacity between 100% and their defined percentage",
+            "Added the ability to toggle historic photos opacity between 100% and their default percentage",
             "Finished adding ability to set material smoothness and metallic from CCP menu",
-            "Fixed an issue where metallic and smoothness were not applied to most materials due to typo in ManageImportSettings"
+            "Fixed an issue in ManageImportSettings where metallic and smoothness were not applied to most materials due to typo",
+            "Fixed an issue in AssetImportPipeline where old collider flags weren't cleared when an object changed to not require collider flags"
           ]
         }
       ],
