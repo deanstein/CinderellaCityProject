@@ -1,14 +1,9 @@
 ![Main Preview](README_intro.png)
 
-
 # The Cinderella City Project
 The Cinderella City Project is a digital reconstruction of a historic shopping center for a virtual reality history experience. 
 
 The real Cinderella City Mall existed in Englewood, Colorado from 1968 to 1998.
-
-## Upcoming Events
-
-- [April 26, 2022: Once Upon a Time at Cinderella City](https://www.eventbrite.com/e/historic-englewood-lecture-series-cinderella-city-mall-tickets-317428927467)
 
 ## Quick Links
 
@@ -20,6 +15,8 @@ The real Cinderella City Mall existed in Englewood, Colorado from 1968 to 1998.
 
 ## Press Coverage
 **Recent** 
+
+- [Once Upon a Time at Cinderella City: Project Update](https://www.westword.com/news/cinderella-city-famous-colorado-mall-virtual-online-project-update-13955248) (*Westword*, 2022-04-26)
 
 - [Fight to Save the Final Remains of Cinderella City](https://www.westword.com/news/englewood-citycenter-development-and-fight-to-save-cinderella-citys-final-remains-11853344) (*Westword*, 2021-02-19)
 
