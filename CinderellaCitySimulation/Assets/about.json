@@ -1,9 +1,22 @@
 {
   "VersionHistory": [
     {
-      "0.7.3.202205": [
+      "0.7.3.202207": [
         {    
           "Environment Updates": [
+            "Added entrance and storefront details to Woolworth's lower garage entrance and surrounding areas outside of Shamrock Mall in both eras",
+            "Added Pet City to 60s70s Shamrock Mall",
+            "Added the Greater Englewood Chamber of Commerce signage to north side of 80s90s Gold Mall",
+            "Added basic layout elements to Chick-Fil-A in 80s90s Food Court",
+            "Added oranges to Orange Julius display case and updated Orange Julius storefront wood texture in 80s90s Food Court",
+            "Added benches and trash cans to 80s90s Blue Mall",
+            "Added shrubs to planting areas in the 80s90s Food Court",
+            "Added new store details to Chick-Fil-A in 80s90s Food Court ",
+            "Fixed inaccuracies with Denver Dry Goods and Montgomery Wards entrances in both eras",
+            "Added 'Plus Computer Center' to 80s90s Radio Shack exterior signage",
+            "Enhanced brick floor, planter, and column materials in 80s90s Shamrock Mall, Food Court, and Cinder Alley",
+            "Enhanced the wood parquet flooring in 80s90s",
+            "Fixed inaccuracies with windows and doors on the exterior of north Gold Mall in both eras",
             "Reduced the size of some historic photographs",
             "Fixed an issue with the Tobaccoland storefront in 60s70s",
             "Fixed missing lights in Tobaccoland in 60s70s",
