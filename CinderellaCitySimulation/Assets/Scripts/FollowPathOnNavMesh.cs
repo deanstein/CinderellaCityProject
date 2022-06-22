@@ -8,6 +8,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 
 // this script needs to be attached to an object that should follow a defined path
+// for example, an NPC or the player when in guided tour mode
 
 public class FollowPathOnNavMesh : MonoBehaviour
 {
@@ -16,15 +17,141 @@ public class FollowPathOnNavMesh : MonoBehaviour
     public UpdateNPCAnimatorByState thisAnimatorUpdateScript;
     public Vector3 initialDestination;
     public NavMeshPath path;
+    public bool isNPC;
 
     // variables related to the test for whether the NPC is on a collision course with the player
-    bool doCheckIsNPCApproachingPlayer = true;
+    // this is only used for NPCs
     int numberOfFramesApproachingPlayer = 0;
-    int maxNumberOfFramesApproachingPlayer = 45;
-    float dotProductThresholdFar = -0.96f;
-    float dotProductThresholdClose = -0.93f;
-    float maxDistanceForFarCheck = 7.0f;
-    float maxDistanceForCloseCheck = 2.0f;
+    readonly int maxNumberOfFramesApproachingPlayer = 45;
+    readonly float dotProductThresholdFar = -0.96f;
+    readonly float dotProductThresholdClose = -0.93f;
+    readonly float maxDistanceForFarCheck = 7.0f;
+    readonly float maxDistanceForCloseCheck = 2.0f;
+
+    private void OnEnable()
+    {
+        // keep track of how many NPCControllers are active and pathfinding
+        if (isNPC)
+        {
+            NPCControllerGlobals.activeNPCControllersCount++;
+            //Utils.DebugUtils.DebugLog("Active NPCControllers following paths: " + NPCControllerGlobals.activeNPCControllers);
+        }
+
+        // if a path was previously recorded, use it
+        if (path != null)
+        {
+            this.GetComponent<NavMeshAgent>().path = path;
+        }
+
+    }
+
+    private void Awake()
+    {
+        thisAgent = this.GetComponent<NavMeshAgent>();
+        thisAnimatorUpdateScript = this.GetComponent<UpdateNPCAnimatorByState>();
+
+        // record this NPC and its position for other scripts to reference later
+        NPCControllerGlobals.activeNPCControllersList.Add(this.gameObject);
+        NPCControllerGlobals.initialNPCPositionsList.Add(this.transform.position);
+    }
+
+    void Start()
+    {
+        // determine if this is a non-playable character or not
+        isNPC = GetIsNPC();
+
+        if (isNPC)
+        {
+            // if the NPC arrays haven't been converted yet, convert them
+            if (NPCControllerGlobals.initialNPCPositionsArray == null)
+            {
+                NPCControllerGlobals.initialNPCPositionsArray = NPCControllerGlobals.initialNPCPositionsList.ToArray();
+            }
+            if (NPCControllerGlobals.activeNPCControllersArray == null)
+            {
+                NPCControllerGlobals.activeNPCControllersArray = NPCControllerGlobals.activeNPCControllersList.ToArray();
+            }
+
+            initialDestination = Utils.GeometryUtils.GetRandomPointOnNavMeshFromPool(this.transform.position, NPCControllerGlobals.initialNPCPositionsArray, 0, NPCControllerGlobals.maxDestinationDistance, true);
+
+            SetAgentOnPath(thisAgent, initialDestination);
+        }
+        else
+        {
+            // for first-person character
+            initialDestination = Utils.GeometryUtils.GetRandomPointOnNavMeshFromPool(this.transform.position, NPCControllerGlobals.initialNPCPositionsArray, 0, NPCControllerGlobals.maxDestinationDistance, true);
+
+            SetAgentOnPath(thisAgent, initialDestination);
+        }
+    }
+
+    private void Update()
+    {
+        if (!thisAgent.pathPending)
+        {
+            float currentVelocity = thisAgent.velocity.magnitude;
+
+            // this agent's next destination will depend on whether it's an NPC or not
+            Vector3 nextDestination = isNPC ? Utils.GeometryUtils.GetRandomPointOnNavMeshFromPool(this.transform.position, NPCControllerGlobals.initialNPCPositionsArray, NPCControllerGlobals.minDiscardDistance, NPCControllerGlobals.maxDiscardDistance, true) : new Vector3(0, 0, 0);
+
+            // if this is an NPC, check if it's on a collision course with the player 
+            if (isNPC)
+            {
+                // if this NPC appears to be on a collision course with the player,
+                // get a different destination so the NPC doesn't continue walking into the player
+                if (GetIsNPCApproachingPlayer(this.gameObject, ManageFPSControllers.FPSControllerGlobals.activeFPSController))
+                {
+                    SetAgentOnPath(thisAgent, nextDestination);
+                }
+
+
+                // if this agent's speed gets too low, it's likely colliding badly with others
+                // to prevent a traffic jam, find a different random point from the pool to switch directions
+                if (currentVelocity > 0f && currentVelocity < NPCControllerGlobals.minimumSpeedBeforeRepath)
+                {
+                    SetAgentOnPath(thisAgent, nextDestination);
+
+                    // optional: visualize the path with a red line in the editor
+                    //Debug.DrawLine(this.transform.position, thisAgent.destination, Color.red, Time.deltaTime);
+                }
+            }
+
+            // if the agent gets within range of the destination, consider it arrived
+            // this prevents the agent from fighting with another for the same point in space
+            if (thisAgent.remainingDistance <= NPCControllerGlobals.defaultNPCStoppingDistance)
+            {
+                SetAgentOnPath(thisAgent, nextDestination);
+
+                //Utils.DebugUtils.DebugLog("Agent " + thisAgent.gameObject.name + " reached its destination.");
+            }
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (isNPC)
+        {
+            // keep track of how many NPCControllers are active and pathfinding
+            NPCControllerGlobals.activeNPCControllersCount--;
+        }
+
+        // remember the path so this agent can resume it when enabled
+        path = this.GetComponent<NavMeshAgent>().path;
+    }
+
+    // returns true if this agent is *not* the player
+    private bool GetIsNPC()
+    {
+        if (this.gameObject == ManageFPSControllers.FPSControllerGlobals.activeFPSController)
+        {
+            Utils.DebugUtils.DebugLog("This agent is the player: " + this.name);
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
 
     // returns true if the NPC on a collision course with the player
     private bool GetIsNPCApproachingPlayer(GameObject NPCObject, GameObject FPSController)
@@ -66,113 +193,23 @@ public class FollowPathOnNavMesh : MonoBehaviour
         }
     }
 
-    private void OnEnable()
+    // set a given agent's path to a given destination point
+    private void SetAgentOnPath(NavMeshAgent agent, Vector3 desinationPoint)
     {
-        // keep track of how many NPCControllers are active and pathfinding
-        NPCControllerGlobals.activeNPCControllersCount++;
-        //Utils.DebugUtils.DebugLog("Active NPCControllers following paths: " + NPCControllerGlobals.activeNPCControllers);
-
-        // if a path was previously recorded, use it
-        if (path != null)
-        {
-            this.GetComponent<NavMeshAgent>().path = path;
-        }
-
-    }
-
-    private void Awake()
-    {
-        thisAgent = this.GetComponent<NavMeshAgent>();
-        thisAnimatorUpdateScript = this.GetComponent<UpdateNPCAnimatorByState>();
-
-        // record this NPC and its position for other scripts to reference later
-        NPCControllerGlobals.activeNPCControllersList.Add(this.gameObject);
-        NPCControllerGlobals.initialNPCPositionsList.Add(this.transform.position);
-    }
-
-    void Start()
-    {
-        // if the NPC arrays haven't been converted yet, convert them
-        if (NPCControllerGlobals.initialNPCPositionsArray == null)
-        {
-            NPCControllerGlobals.initialNPCPositionsArray = NPCControllerGlobals.initialNPCPositionsList.ToArray();
-        }
-        if (NPCControllerGlobals.activeNPCControllersArray == null)
-        {
-            NPCControllerGlobals.activeNPCControllersArray = NPCControllerGlobals.activeNPCControllersList.ToArray();
-        }
-
         // instantiate an empty path that it will follow
         path = new NavMeshPath();
 
-        // set the destination
-        initialDestination = Utils.GeometryUtils.GetRandomPointOnNavMeshFromPool(this.transform.position, NPCControllerGlobals.initialNPCPositionsArray, 0, NPCControllerGlobals.maxDestinationDistance, true);
-
         // find a path to the destination
-        bool pathSuccess = NavMesh.CalculatePath(this.gameObject.transform.position, initialDestination, NavMesh.AllAreas, path);
+        bool pathSuccess = NavMesh.CalculatePath(this.gameObject.transform.position, desinationPoint, NavMesh.AllAreas, path);
 
         // if a path was created, set this agent to use it
         if (pathSuccess)
         {
-            thisAgent.GetComponent<NavMeshAgent>().SetPath(path);
+            agent.GetComponent<NavMeshAgent>().SetPath(path);
         }
         else
         {
             Utils.DebugUtils.DebugLog("Agent " + thisAgent.transform.gameObject.name + " failed to find a path.");
         }
-    }
-
-    private void Update()
-    {
-        if (!thisAgent.pathPending)
-        {
-            float currentVelocity = thisAgent.velocity.magnitude;
-
-            // optionally check if the NPC is on a collision course with the player and adjust
-            if (doCheckIsNPCApproachingPlayer)
-            {
-                // if this NPC appears to be on a collision course with the player,
-                // get a different destination so the NPC doesn't continue walking into the player
-                if (GetIsNPCApproachingPlayer(this.gameObject, ManageFPSControllers.FPSControllerGlobals.activeFPSController))
-                {
-                    NavMesh.CalculatePath(this.gameObject.transform.position, Utils.GeometryUtils.GetRandomPointOnNavMeshFromPool(this.transform.position, NPCControllerGlobals.initialNPCPositionsArray, NPCControllerGlobals.minDiscardDistance, NPCControllerGlobals.maxDiscardDistance, true), NavMesh.AllAreas, path);
-
-                    thisAgent.SetPath(path);
-                }
-            }
-
-            // if this agent's speed gets too low, it's likely colliding badly with others
-            // to prevent a traffic jam, find a different random point from the pool to switch directions
-            if (currentVelocity > 0f && currentVelocity < NPCControllerGlobals.minimumSpeedBeforeRepath)
-            {
-                NavMesh.CalculatePath(this.gameObject.transform.position, Utils.GeometryUtils.GetRandomPointOnNavMeshFromPool(this.transform.position, NPCControllerGlobals.initialNPCPositionsArray, NPCControllerGlobals.minDiscardDistance, NPCControllerGlobals.maxDiscardDistance, true), NavMesh.AllAreas, path);
-
-                thisAgent.SetPath(path);
-
-                // optional: visualize the path with a red line in the editor
-                //Debug.DrawLine(this.transform.position, thisAgent.destination, Color.red, Time.deltaTime);
-            }
-
-            // if the agent gets within range of the destination, consider it arrived
-            // this prevents the agent from fighting with another for the same point in space
-            else if (thisAgent.remainingDistance <= NPCControllerGlobals.defaultNPCStoppingDistance)
-            {
-                // reached the destination - now set another one
-                NavMesh.CalculatePath(this.gameObject.transform.position, Utils.GeometryUtils.GetRandomPointOnNavMeshFromPool(this.transform.position, NPCControllerGlobals.initialNPCPositionsArray, 0, NPCControllerGlobals.maxDestinationDistance, true), NavMesh.AllAreas, path);
-
-                thisAgent.SetPath(path);
-
-                //Utils.DebugUtils.DebugLog("Agent " + thisAgent.gameObject.name + " reached its destination.");
-            }
-        }
-    }
-
-    private void OnDisable()
-    {
-        // keep track of how many NPCControllers are active and pathfinding
-        NPCControllerGlobals.activeNPCControllersCount--;
-
-        // remember the path so this NPC can resume it when enabled
-        path = this.GetComponent<NavMeshAgent>().path;
     }
 }
