@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Rendering.PostProcessing;
-using System.Collections.Generic;
 using System.IO;
 
 /// <summary>

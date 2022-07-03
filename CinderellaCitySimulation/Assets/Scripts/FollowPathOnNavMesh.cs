@@ -13,11 +13,11 @@ using UnityEngine.AI;
 public class FollowPathOnNavMesh : MonoBehaviour
 {
     // agent, destination, and path
+    public bool isNPC;
     public NavMeshAgent thisAgent;
     public UpdateNPCAnimatorByState thisAnimatorUpdateScript;
     public Vector3 initialDestination;
     public NavMeshPath path;
-    public bool isNPC;
 
     // variables related to the test for whether the NPC is on a collision course with the player
     // this is only used for NPCs
