@@ -187,34 +187,6 @@ public class Utils
 
     public class GeometryUtils
     {
-        // gets all children in the root object
-        public static GameObject[] GetAllTopLevelChildrenInObject(GameObject parentObject)
-        {
-            List<GameObject> childrenList = new List<GameObject>();
-
-            foreach (Transform trans in parentObject.transform)
-            {
-                childrenList.Add(trans.gameObject);
-            }
-            GameObject[] childrenObjects = childrenList.ToArray();
-
-            return childrenObjects;
-        }
-
-        // get all children transforms given a parent transform
-        public static List<Transform> GetAllChildrenTransformsInTransform(Transform parent)
-        {
-            List<Transform> children = new List<Transform>();
-
-            int count = parent.childCount;
-
-            for (int i = 0; i < count; i++)
-            {
-                children.Add(parent.GetChild(i));
-            }
-
-            return children;
-        }
 
         // get a point on a mesh
         public static List<Vector3> GetPointOnMeshAtIndex(GameObject meshParent, int vertexIndex)

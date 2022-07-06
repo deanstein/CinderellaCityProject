@@ -140,7 +140,7 @@ public class CCPMenuActions : MonoBehaviour
     [MenuItem("Cinderella City Project/Object Visibility/Toggle Historic Photos")]
     public static void ToggleHistoricPhotosOn()
     {
-        GameObject historicPhotoParentObject = ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords)[0];
+        GameObject historicPhotoParentObject = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords)[0];
 
         ToggleObjects.ToggleGameObjectChildrenVisibility(historicPhotoParentObject);
     }
@@ -187,7 +187,7 @@ public class CCPMenuActions : MonoBehaviour
         public static List<GameObject> GetSceneObjectsByUpdateMode()
         {
             // get all the scene objects
-            GameObject[] sceneContainerObjects = ManageScenes.GetTopLevelChildrenInSceneContainer(SceneManager.GetActiveScene());
+            GameObject[] sceneContainerObjects = ManageSceneObjects.GetTopLevelChildrenInSceneContainer(SceneManager.GetActiveScene());
             /// ... and as a list
             List<GameObject> sceneObjectsList = new List<GameObject>(sceneContainerObjects);
 
@@ -401,7 +401,7 @@ public class CCPMenuActions : MonoBehaviour
     public static void RebuildCurrentSceneNavMesh()
     {
         // get this scene's container
-        GameObject sceneContainer = ManageScenes.GetSceneContainerObject(EditorSceneManager.GetActiveScene());
+        GameObject sceneContainer = ManageSceneObjects.GetSceneContainerObject(EditorSceneManager.GetActiveScene());
         List<GameObject> sceneContainers = new List<GameObject>();
         sceneContainers.Add(sceneContainer);
 
@@ -505,7 +505,7 @@ public class CCPMenuActions : MonoBehaviour
     }
 
     /* --------- Editor Debug ---------- */
-#if false
+#if true
 
     [MenuItem("Cinderella City Project/CCP Debug/Get Bounding Box for Selected")]
     public static void TestMeshBounds()
@@ -529,7 +529,7 @@ public class CCPMenuActions : MonoBehaviour
     [MenuItem("Cinderella City Project/CCP Debug/Log Current Scene Object Count")]
     public static void LogCurrentSceneObjectCount()
     {
-        int sceneObjectCount = ManageScenes.GetTopLevelChildrenInSceneContainer(SceneManager.GetActiveScene()).Length;
+        int sceneObjectCount = ManageSceneObjects.GetTopLevelChildrenInSceneContainer(SceneManager.GetActiveScene()).Length;
 
         Debug.Log("Scene Objects: " + sceneObjectCount);
     }
@@ -541,7 +541,7 @@ public class CCPMenuActions : MonoBehaviour
     }
 
     [MenuItem("Cinderella City Project/CCP Debug/Get All Thumbnails to Delete")]
-    public static void GetAllThumbanilsToDeleteTest()
+    public static void GetAllThumbnailsToDeleteTest()
     {
         string[] extensionsToDelete = { "png", "meta" };
         string[] filesToDelete = FileDirUtils.GetAllFilesInDirOfTypes(UIGlobals.projectUIPath + UIGlobals.mainMenuThumbnailsSubdir, extensionsToDelete);
@@ -549,6 +549,14 @@ public class CCPMenuActions : MonoBehaviour
         {
             Utils.DebugUtils.DebugLog(fileToDelete);
         }
+    }
+
+    [MenuItem("Cinderella City Project/CCP Debug/Get All Proxy Replacement Objects")]
+    public static void GetAllProxyReplacementObjectsTest()
+    {
+        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.historicPhotographObjectKeywords[0])[0];
+
+        ManageSceneObjects.ProxyObjects.GetProxyHostList(parentObject);
     }
 #endif
 }

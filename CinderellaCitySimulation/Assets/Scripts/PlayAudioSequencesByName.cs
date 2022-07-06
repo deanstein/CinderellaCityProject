@@ -495,7 +495,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
     // go to the previous track given a speaker type
     public static void PlayPreviousTrack(SpeakerParams speakerParamsToChange)
     {
-        GameObject speakerObject = ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.speakerObjectKeywords)[0];
+        GameObject speakerObject = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.speakerObjectKeywords)[0];
         speakerObject.SetActive(false);
         speakerParamsToChange.lastKnownClipIndex--;
         // if already at the beginning, previous goes to end of list
@@ -511,7 +511,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
     // go to the next track given a speaker type
     public static void PlayNextTrack(SpeakerParams speakerParamsToChange)
     {
-        GameObject speakerObject = ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.speakerObjectKeywords)[0];
+        GameObject speakerObject = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.speakerObjectKeywords)[0];
         speakerObject.SetActive(false);
         speakerParamsToChange.lastKnownClipIndex++;
         // if already at the end, next goes to beginning of list
@@ -527,7 +527,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
     public static void MuteSpeakers(SpeakerParams speakerParamsToMute)
     {
 
-        GameObject speakerObject = ObjectVisibility.GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.speakerObjectKeywords)[0];
+        GameObject speakerObject = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.speakerObjectKeywords)[0];
 
         // if the master is already muted, un-mute it
         if (speakerParamsToMute.masterAudioSource.volume == 0)

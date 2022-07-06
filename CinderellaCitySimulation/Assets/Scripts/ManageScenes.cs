@@ -79,68 +79,6 @@ public static class ManageScenes
         }
     }
 
-    // gets the container object for the current scene
-    public static GameObject GetSceneContainerObject(Scene sceneWithContainer)
-    {
-        // get the root objects of the scene
-        GameObject[] rootObjects = sceneWithContainer.GetRootGameObjects();
-
-        // this assumes there's only 1 object in the scene: a container for all objects
-        GameObject sceneContainer = rootObjects[0];
-        return sceneContainer;
-    }
-
-    // gets the UI launcher object for the current scene
-    public static GameObject GetUILauncherObject(Scene sceneWithUILauncher)
-    {
-        GameObject containerObject = GetSceneContainerObject(sceneWithUILauncher);
-        GameObject UILauncherObject = null;
-
-        for (int i = 0; i < containerObject.transform.childCount; i++)
-        {
-            if (containerObject.transform.GetChild(i).name.Contains("Launcher"))
-            {
-                UILauncherObject = containerObject.transform.GetChild(i).gameObject;
-            }
-        }
-
-        return UILauncherObject;
-
-    }
-
-    // gets the top-level children in this scene's scene container
-    public static GameObject[] GetTopLevelChildrenInSceneContainer(Scene sceneWithContainer)
-    {
-        // get the current scene's container
-        GameObject sceneContainer = ManageScenes.GetSceneContainerObject(SceneManager.GetActiveScene());
-
-        // get all the scene objects
-        GameObject[] sceneObjects = Utils.GeometryUtils.GetAllTopLevelChildrenInObject(sceneContainer);
-
-        return sceneObjects;
-    }
-
-    // search the top-level children in a scene container, and returns the first object matching the given name
-    // likely cheaper than the default GameObject.Find() function
-    public static GameObject[] GetTopLevelSceneContainerGameObjectsByName(string objectName)
-    {
-
-        GameObject activeSceneContainer = GetSceneContainerObject(SceneManager.GetActiveScene());
-        List<GameObject> topLevelMatchingObjects = new List<GameObject>();
-
-        foreach (Transform child in activeSceneContainer.transform)
-        {
-            if (child.name.Contains(objectName))
-            {
-                topLevelMatchingObjects.Add(child.gameObject);
-            }
-        }
-
-        GameObject[] topLevelGameObjectArray = topLevelMatchingObjects.ToArray();
-
-        return topLevelGameObjectArray;
-    }
-
     // determines if the current scene is an FPS/time period scene
     public static bool GetIsActiveSceneTimePeriodScene()
     {

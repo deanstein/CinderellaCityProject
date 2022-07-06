@@ -39,7 +39,7 @@ public static class ManageEditorPrefs
         if (Utils.StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name))
         {
             // get the current scene container
-            GameObject currentSceneContainer = ManageScenes.GetSceneContainerObject(SceneManager.GetActiveScene());
+            GameObject currentSceneContainer = ManageSceneObjects.GetSceneContainerObject(SceneManager.GetActiveScene());
 
             // get its height
             float currentSceneContainerYPos = currentSceneContainer.transform.position.y;
