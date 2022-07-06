@@ -315,7 +315,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
             ManageFPSControllers.RelocateAlignFPSControllerToFPSController(adjustedFPSControllerTransform);
 
             // turn everything off again
-            ManageSceneObjects.ObjectState.ToggleAllTopLevelSceneObjectsOff(disabledSceneName);
+            ManageSceneObjects.ObjectState.ToggleAllTopLevelSceneObjectsToState(disabledSceneName, false);
 
             // return the script hosts to their on state
             ManageSceneObjects.ObjectState.ToggleScriptHostObjectListOn();

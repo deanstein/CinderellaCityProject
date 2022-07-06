@@ -174,7 +174,7 @@ public class ToggleSceneAndUI
         Utils.DebugUtils.DebugLog("Toggling from Scene " + "<b>" + fromScene + "</b>" + " to Scene " + "<b>" + toScene + "</b>");
 
         // toggle the toScene first, to avoid any gaps in playback
-        ManageSceneObjects.ObjectState.ToggleAllTopLevelSceneObjectsOn(toScene);
+        ManageSceneObjects.ObjectState.ToggleAllTopLevelSceneObjectsToState(toScene, true);
 
         // make the toScene active
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(toScene));
@@ -184,7 +184,7 @@ public class ToggleSceneAndUI
         SceneGlobals.upcomingSceneName = toScene;
 
         // now toggle the fromScene scene off
-        ManageSceneObjects.ObjectState.ToggleAllTopLevelSceneObjectsOff(fromScene);
+        ManageSceneObjects.ObjectState.ToggleAllTopLevelSceneObjectsToState(fromScene, false);
     }
 
     // toggles scenes, and also relocates the FPSCharacter to match a Camera position
@@ -232,7 +232,7 @@ public class ToggleSceneAndUI
         // toggle each of the given scenes on
         foreach (string scene in scenes)
         {
-            ManageSceneObjects.ObjectState.ToggleAllTopLevelSceneObjectsOn(scene);
+            ManageSceneObjects.ObjectState.ToggleAllTopLevelSceneObjectsToState(scene, true);
 
             // relocate and align the current FPSController to the referring FPSController
             ManageFPSControllers.RelocateAlignFPSControllerToFPSController(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform);
