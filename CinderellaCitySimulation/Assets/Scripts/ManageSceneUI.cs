@@ -60,6 +60,6 @@ public class ManageHUDVisibility
 
     public static void ToggleHUDCanvas()
     {
-        UIVisibilityGlobals.isHUDActive = ToggleSceneAndUI.ToggleSceneObject(UIVisibilityGlobals.activeHUD);
+        UIVisibilityGlobals.isHUDActive = ManageSceneObjects.ObjectState.ToggleSceneObject(UIVisibilityGlobals.activeHUD);
     }
 }

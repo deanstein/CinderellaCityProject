@@ -76,7 +76,11 @@ public static class ManageSceneObjects
 
         foreach (Transform trans in allTransforms)
         {
-            childrenList.Add(trans.gameObject);
+            // exclude self
+            if (trans.gameObject != parentObject)
+            {
+                childrenList.Add(trans.gameObject);
+            }
         }
         GameObject[] childrenObjects = childrenList.ToArray();
 
@@ -99,6 +103,138 @@ public static class ManageSceneObjects
 
         return UILauncherObject;
 
+    }
+
+    // various functions to control visibility/active state
+    public class ObjectState
+    {
+        // toggle a gameobject visibility to the opposite state
+        // returns the new state
+        public static bool ToggleSceneObject(GameObject sceneObject)
+        {
+            if (sceneObject.activeSelf)
+            {
+                sceneObject.SetActive(false);
+                return false;
+            }
+            else
+            {
+                sceneObject.SetActive(true);
+                return true;
+            }
+        }
+
+        public static void ToggleSceneObjectToState(GameObject sceneObject, bool desiredState)
+        {
+            sceneObject.SetActive(desiredState);
+        }
+
+        public static void ToggleSceneObjectsToState(GameObject[] sceneObjects, bool desiredState)
+        {
+            foreach (GameObject gameObject in sceneObjects)
+            {
+                gameObject.SetActive(desiredState);
+            }
+        }
+
+        // toggles all scene objects on
+        public static void ToggleAllTopLevelSceneObjectsOn(string sceneName)
+        {
+            //Utils.DebugUtils.DebugLog("Toggling Scene object visibility ON for: " + sceneName + "...");
+
+            // each Scene should have a GameObject that contains all of the Scene objects
+            // this container should be named after the Scene + "Container"
+            string sceneContainerName = sceneName + "Container";
+
+            // find the Scene's container GameObject by name
+            GameObject sceneContainerObject = GameObject.Find(sceneContainerName);
+
+            // loop through all children of the scene's container object and make them active if they're not already
+            foreach (Transform child in sceneContainerObject.transform)
+            {
+                // make this child active if it's not already
+                if (!child.gameObject.activeSelf)
+                {
+                    child.gameObject.SetActive(true);
+                    //Utils.DebugUtils.DebugLog("Toggled visibility ON for: " + child.gameObject.name);
+                }
+            }
+        }
+
+        // toggles all scene objects off
+        public static void ToggleAllTopLevelSceneObjectsOff(string sceneName)
+        {
+            //Utils.DebugUtils.DebugLog("Toggling Scene object visibility OFF for: " + sceneName + "...");
+
+            // each Scene should have a GameObject that contains all of the Scene objects
+            // this container should be named after the Scene + "Container"
+            string sceneContainerName = sceneName + "Container";
+
+            // find the Scene's container GameObject by name
+            GameObject sceneContainerObject = GameObject.Find(sceneContainerName);
+
+            // loop through all children of the scene's container object and make them active if they're not already
+            foreach (Transform child in sceneContainerObject.transform)
+            {
+                // make this child inactive if it's not already
+                if (child.gameObject.activeSelf)
+                {
+                    child.gameObject.SetActive(false);
+                    //Utils.DebugUtils.DebugLog("Toggled visibility OFF for: " + child.gameObject.name);
+                }
+            }
+        }
+
+        // forces all children of an object to enabled
+        public static void ToggleAllChildrenSceneObjectsToState(GameObject sceneObject, bool desiredState, bool includeSelf)
+        {
+            GameObject[] allChildren = ManageSceneObjects.GetAllChildrenInObjectRecursively(sceneObject);
+
+            foreach (GameObject child in allChildren)
+            {
+                child.SetActive(desiredState);
+            }
+
+            if (includeSelf)
+            {
+                sceneObject.SetActive(desiredState);
+            }
+        }
+
+        // toggles all scene objects on, except those tagged with any sort of script host tag
+        // note that this doesn't seem to be used currently
+        public static void ToggleAllSceneObjectsOnExceptScriptHosts(string sceneName)
+        {
+            // first, turn all the script hosts off
+            ToggleScriptHostObjectListOff();
+
+            // turn everything else on
+            ManageSceneObjects.ObjectState.ToggleAllTopLevelSceneObjectsOn(sceneName);
+        }
+
+        public static void ToggleScriptHostObjectListOn()
+        {
+            // disable the script host objects for each of the host types given
+            foreach (GameObject[] scriptHostObjectArray in TaggedObjects.TaggedObjectGlobals.scriptHostObjects)
+            {
+                foreach (GameObject scriptHostObject in scriptHostObjectArray)
+                {
+                    scriptHostObject.SetActive(true);
+                }
+            }
+        }
+
+        public static void ToggleScriptHostObjectListOff()
+        {
+            // disable the script host objects for each of the host types given
+            foreach (GameObject[] scriptHostObjectArray in TaggedObjects.TaggedObjectGlobals.scriptHostObjects)
+            {
+                foreach (GameObject scriptHostObject in scriptHostObjectArray)
+                {
+                    scriptHostObject.SetActive(false);
+                }
+            }
+        }
     }
 
     // specific functions for proxy objects
@@ -140,14 +276,16 @@ public static class ManageSceneObjects
         {
             // get all children of the parent recursively
             GameObject[] allChildren = ManageSceneObjects.GetAllChildrenInObjectRecursively(proxyHost);
+            // the remaining children after replacements are found - start with all children and remove from there
+            List<GameObject> remainingChildren = new List<GameObject>(allChildren);
 
-            // create an empty list object to store the two types
+            // create an empty list object to store the types
             ProxyHostList proxyHostList = new ProxyHostList();
 
             // look for any objects with a proxy replacement tag
             foreach (GameObject child in allChildren)
             {
-                // first, make sure the child transform is on so the tag check works
+                // first, make sure the child transform is enabled so the tag check works
                 // then restore its state at the end
                 bool isEnabled = child.gameObject.activeSelf;
                 child.gameObject.SetActive(true);
@@ -155,40 +293,80 @@ public static class ManageSceneObjects
                 // all proxy objects have this prefix in the tag name
                 if (child.tag.Contains(TaggedObjects.TaggedObjectGlobals.deleteProxyReplacementTagPrefix))
                 {
-                    Utils.DebugUtils.DebugLog("Found a replacement: " + child.name);
-                    proxyHostList.replacementObjectList.Add(child.gameObject);
+                    //Utils.DebugUtils.DebugLog("Found a replacement: " + child.name);
+                    proxyHostList.replacementObjectList.Add(child);
+
+                    // get the rest of the children in this replacement object
+                    GameObject[] replacementObjectChildrenTransforms = ManageSceneObjects.GetAllChildrenInObjectRecursively(child);
+                    //Debug.Log("Number of children in this replacement object: " + replacementObjectChildrenTransforms.Length);
+                    // add the children to the list as well
+                    foreach (GameObject childObject in replacementObjectChildrenTransforms)
+                    {
+                        //Utils.DebugUtils.DebugLog("Found a replacement child: " + childObject.name);
+                        proxyHostList.replacementObjectList.Add(childObject);
+                    }
                 }
-                // otherwise, this is likely the original geometry - the actual proxy
+                child.gameObject.SetActive(isEnabled);
+            }
+
+            // remove all replacement objects from the remaining list
+            foreach (GameObject replacementObjectFound in proxyHostList.replacementObjectList)
+            {
+                remainingChildren.Remove(replacementObjectFound);
+            }
+
+            // loop through the remainder of the objects and determine if they are
+            // meshes or containers
+            foreach (GameObject remainingChild in remainingChildren)
+            {
+                // add mesh objects to the list only if they have a mesh renderer
+                if (remainingChild.gameObject.GetComponent<MeshRenderer>())
+                {
+                    Utils.DebugUtils.DebugLog("Found a proxy: " + remainingChild.name);
+                    proxyHostList.proxyMeshList.Add(remainingChild.gameObject);
+                }
+                // otherwise, this is a proxy container and should be recorded as such
                 else
                 {
-                    // but make sure we only provide transforms with a mesh renderer
-                    if (child.gameObject.GetComponent<MeshRenderer>())
-                    {
-                        Utils.DebugUtils.DebugLog("Found a proxy: " + child.name);
-                        proxyHostList.proxyMeshList.Add(child.gameObject);
-                    }
-                    // otherwise, this is a proxy container and should be recorded as such
-                    else
-                    {
-                        Utils.DebugUtils.DebugLog("Found a container: " + child.name);
-                        proxyHostList.proxyContainerList.Add(child.gameObject);
-                    }
+                    //Utils.DebugUtils.DebugLog("Found a container: " + child.name);
+                    proxyHostList.proxyContainerList.Add(remainingChild.gameObject);
                 }
-
-                child.gameObject.SetActive(isEnabled);
             }
 
             return proxyHostList;
         }
 
-        // force all children object in the proxy host to on or off
-        public static void ForceAllProxyHostChildrenToState(GameObject proxyHost, bool desiredState)
+        // enable or disable proxy replacements
+        // (will also toggle the proxy meshes to the opposite state)
+        public static void ToggleProxyHostReplacementsToState(GameObject proxyHost, bool desiredState, bool toggleMeshesToOppositeState)
         {
-            GameObject[] allChildren = ManageSceneObjects.GetAllChildrenInObjectRecursively(proxyHost);
+            ProxyHostList proxyHostList = GetProxyHostList(proxyHost);
 
-            foreach (GameObject child in allChildren)
+            GameObject[] proxyMeshObjects = proxyHostList.proxyMeshList.ToArray();
+            GameObject[] replacementObjects = proxyHostList.replacementObjectList.ToArray();
+
+            ManageSceneObjects.ObjectState.ToggleSceneObjectsToState(replacementObjects, desiredState);
+            // only toggle the proxies to the opposite if the flag is set
+            if (toggleMeshesToOppositeState)
             {
-                child.SetActive(desiredState);
+                ManageSceneObjects.ObjectState.ToggleSceneObjectsToState(proxyMeshObjects, !desiredState);
+            }
+        }
+
+        // enable or disable proxy meshes
+        // (will also toggle the proxy replacements to the opposite state)
+        public static void ToggleProxyHostMeshesToState(GameObject proxyHost, bool desiredState, bool toggleReplacementsToOppositeState)
+        {
+            ProxyHostList proxyHostList = GetProxyHostList(proxyHost);
+
+            GameObject[] proxyMeshObjects = proxyHostList.proxyMeshList.ToArray();
+            GameObject[] replacementObjects = proxyHostList.replacementObjectList.ToArray();
+
+            ManageSceneObjects.ObjectState.ToggleSceneObjectsToState(proxyMeshObjects, desiredState);
+            // only toggle the proxies to the opposite if the flag is set
+            if (toggleReplacementsToOppositeState)
+            {
+                ManageSceneObjects.ObjectState.ToggleSceneObjectsToState(replacementObjects, !desiredState);
             }
         }
 

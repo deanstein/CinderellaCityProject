@@ -175,7 +175,7 @@ public class ToggleSceneAndUI
         ToggleScriptHostObjectListOff();
 
         // turn everything else on
-        ToggleSceneObjectsOn(sceneName);
+        ManageSceneObjects.ObjectState.ToggleAllTopLevelSceneObjectsOn(sceneName);
     }
 
     public static void ToggleScriptHostObjectListOn()
@@ -202,77 +202,13 @@ public class ToggleSceneAndUI
         }
     }
 
-    // toggles all scene objects on
-    public static void ToggleSceneObjectsOn(string sceneName)
-    {
-        //Utils.DebugUtils.DebugLog("Toggling Scene object visibility ON for: " + sceneName + "...");
-
-        // each Scene should have a GameObject that contains all of the Scene objects
-        // this container should be named after the Scene + "Container"
-        string sceneContainerName = sceneName + "Container";
-
-        // find the Scene's container GameObject by name
-        GameObject sceneContainerObject = GameObject.Find(sceneContainerName);
-
-        // loop through all children of the scene's container object and make them active if they're not already
-        foreach (Transform child in sceneContainerObject.transform)
-        {
-            // make this child active if it's not already
-            if (!child.gameObject.activeSelf)
-            {
-                child.gameObject.SetActive(true);
-                //Utils.DebugUtils.DebugLog("Toggled visibility ON for: " + child.gameObject.name);
-            }
-        }
-    }
-
-    // toggles all scene objects off
-    public static void ToggleSceneObjectsOff(string sceneName)
-    {
-        //Utils.DebugUtils.DebugLog("Toggling Scene object visibility OFF for: " + sceneName + "...");
-
-        // each Scene should have a GameObject that contains all of the Scene objects
-        // this container should be named after the Scene + "Container"
-        string sceneContainerName = sceneName + "Container";
-
-        // find the Scene's container GameObject by name
-        GameObject sceneContainerObject = GameObject.Find(sceneContainerName);
-
-        // loop through all children of the scene's container object and make them active if they're not already
-        foreach (Transform child in sceneContainerObject.transform)
-        {
-            // make this child inactive if it's not already
-            if (child.gameObject.activeSelf)
-            {
-                child.gameObject.SetActive(false);
-                //Utils.DebugUtils.DebugLog("Toggled visibility OFF for: " + child.gameObject.name);
-            }
-        }
-    }
-
-    // toggle a gameobject visibility to the opposite state
-    // returns the new state
-    public static bool ToggleSceneObject(GameObject sceneObject)
-    {
-        if (sceneObject.activeSelf)
-        {
-            sceneObject.SetActive(false);
-            return false;
-        }
-        else
-        {
-            sceneObject.SetActive(true);
-            return true;
-        }
-    }
-
     // toggles the "fromScene" off, and toggles the "toScene" on
     public static void ToggleFromSceneToScene(string fromScene, string toScene)
     {
         Utils.DebugUtils.DebugLog("Toggling from Scene " + "<b>" + fromScene + "</b>" + " to Scene " + "<b>" + toScene + "</b>");
 
         // toggle the toScene first, to avoid any gaps in playback
-        ToggleSceneObjectsOn(toScene);
+        ManageSceneObjects.ObjectState.ToggleAllTopLevelSceneObjectsOn(toScene);
 
         // make the toScene active
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(toScene));
@@ -282,7 +218,7 @@ public class ToggleSceneAndUI
         SceneGlobals.upcomingSceneName = toScene;
 
         // now toggle the fromScene scene off
-        ToggleSceneObjectsOff(fromScene);
+        ManageSceneObjects.ObjectState.ToggleAllTopLevelSceneObjectsOff(fromScene);
     }
 
     // toggles scenes, and also relocates the FPSCharacter to match a Camera position
@@ -330,7 +266,7 @@ public class ToggleSceneAndUI
         // toggle each of the given scenes on
         foreach (string scene in scenes)
         {
-            ToggleSceneObjectsOn(scene);
+            ManageSceneObjects.ObjectState.ToggleAllTopLevelSceneObjectsOn(scene);
 
             // relocate and align the current FPSController to the referring FPSController
             ManageFPSControllers.RelocateAlignFPSControllerToFPSController(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform);
