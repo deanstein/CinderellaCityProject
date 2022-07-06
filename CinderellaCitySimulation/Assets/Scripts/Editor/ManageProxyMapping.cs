@@ -418,7 +418,7 @@ public class ManageProxyMapping
         }
 
         // ensure the object we want to replace is visible, so we can measure it
-        ToggleObjects.ToggleGameObjectOn(gameObjectToBeReplaced);
+        ManageSceneObjects.ObjectState.ToggleSceneObjectToState(gameObjectToBeReplaced, true);
 
         // create a new gameObject for the new asset
         GameObject newObject = (GameObject)AssetDatabase.LoadAssetAtPath(replacementObjectPath, typeof(GameObject));
