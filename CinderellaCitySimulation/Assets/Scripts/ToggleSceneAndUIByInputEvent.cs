@@ -168,40 +168,6 @@ public class ToggleSceneAndUIByInputEvent : MonoBehaviour {
 // utilities for toggling between scenes, and for toggling scene-specific UI elements
 public class ToggleSceneAndUI
 {
-    // toggles all scene objects on, except those tagged with any sort of script host tag
-    public static void ToggleSceneObjectsOnExceptScriptHosts(string sceneName)
-    {
-        // first, turn all the script hosts off
-        ToggleScriptHostObjectListOff();
-
-        // turn everything else on
-        ManageSceneObjects.ObjectState.ToggleAllTopLevelSceneObjectsOn(sceneName);
-    }
-
-    public static void ToggleScriptHostObjectListOn()
-    {
-        // disable the script host objects for each of the host types given
-        foreach (GameObject[] scriptHostObjectArray in TaggedObjects.TaggedObjectGlobals.scriptHostObjects)
-        {
-            foreach (GameObject scriptHostObject in scriptHostObjectArray)
-            {
-                scriptHostObject.SetActive(true);
-            }
-        }
-    }
-
-    public static void ToggleScriptHostObjectListOff()
-    {
-        // disable the script host objects for each of the host types given
-        foreach (GameObject[] scriptHostObjectArray in TaggedObjects.TaggedObjectGlobals.scriptHostObjects)
-        {
-            foreach (GameObject scriptHostObject in scriptHostObjectArray)
-            {
-                scriptHostObject.SetActive(false);
-            }
-        }
-    }
-
     // toggles the "fromScene" off, and toggles the "toScene" on
     public static void ToggleFromSceneToScene(string fromScene, string toScene)
     {
