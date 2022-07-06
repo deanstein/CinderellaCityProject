@@ -287,7 +287,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         foreach (string disabledSceneName in disabledTimePeriodSceneNames)
         {
             // toggle the scene, but ignore scriptHost objects - so no scripts or behaviors enable
-            ToggleSceneAndUI.ToggleSceneObjectsOnExceptScriptHosts(disabledSceneName);
+            ManageSceneObjects.ObjectState.ToggleAllSceneObjectsOnExceptScriptHosts(disabledSceneName);
 
             // adjust the FPSController transform to account for hoisting
             Transform adjustedFPSControllerTransform = ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform;
@@ -315,7 +315,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
             ManageFPSControllers.RelocateAlignFPSControllerToFPSController(adjustedFPSControllerTransform);
 
             // turn everything off again
-            ToggleSceneAndUI.ToggleSceneObjectsOff(disabledSceneName);
+            ManageSceneObjects.ObjectState.ToggleAllTopLevelSceneObjectsOff(disabledSceneName);
 
             // return the script hosts to their on state
             ToggleSceneAndUI.ToggleScriptHostObjectListOn();

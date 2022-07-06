@@ -137,12 +137,68 @@ public class CCPMenuActions : MonoBehaviour
 
     /* ---------- Object Visibility Menu ---------- */
 
-    [MenuItem("Cinderella City Project/Object Visibility/Toggle Historic Photos")]
-    public static void ToggleHistoricPhotosOn()
+    [MenuItem("Cinderella City Project/Object State/Toggle People Replacements ON")]
+    public static void TogglePeopleReplacementsOn()
+    {
+        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.peopleObjectKeywords[0])[0];
+
+        ManageSceneObjects.ProxyObjects.ToggleProxyHostReplacementsToState(parentObject, true, true);
+    }
+
+    [MenuItem("Cinderella City Project/Object State/Toggle People Replacements OFF")]
+    public static void TogglePeopleReplacementsOff()
+    {
+        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.peopleObjectKeywords[0])[0];
+
+        ManageSceneObjects.ProxyObjects.ToggleProxyHostReplacementsToState(parentObject, false, true);
+    }
+
+    [MenuItem("Cinderella City Project/Object State/Toggle Vegetation Replacements ON")]
+    public static void ToggleVegetationReplacementsOn()
+    {
+        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.vegetationObjectKeywords[0])[0];
+
+        ManageSceneObjects.ProxyObjects.ToggleProxyHostReplacementsToState(parentObject, true, true);
+    }
+
+    [MenuItem("Cinderella City Project/Object State/Toggle Vegetation Replacements OFF")]
+    public static void ToggleVegetationReplacementsOff()
+    {
+        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.vegetationObjectKeywords[0])[0];
+
+        ManageSceneObjects.ProxyObjects.ToggleProxyHostReplacementsToState(parentObject, false, true);
+    }
+
+    [MenuItem("Cinderella City Project/Object State/Toggle Historic Photo Meshes ON")]
+    public static void ToggleHistoricPhotoMeshesOn()
     {
         GameObject historicPhotoParentObject = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords)[0];
 
-        ToggleObjects.ToggleGameObjectChildrenVisibility(historicPhotoParentObject);
+        ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(historicPhotoParentObject, true, false);
+    }
+
+    [MenuItem("Cinderella City Project/Object State/Toggle Historic Photo Meshes OFF")]
+    public static void ToggleHistoricPhotoMeshesOff()
+    {
+        GameObject historicPhotoParentObject = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords)[0];
+
+        ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(historicPhotoParentObject, false, false);
+    }
+
+    [MenuItem("Cinderella City Project/Object State/Toggle Historic Photo Cameras ON")]
+    public static void ToggleHistoricPhotoCamerasOn()
+    {
+        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.historicPhotographObjectKeywords[0])[0];
+
+        ManageSceneObjects.ProxyObjects.ToggleProxyHostReplacementsToState(parentObject, true, false);
+    }
+
+    [MenuItem("Cinderella City Project/Object State/Toggle Historic Photo Cameras OFF")]
+    public static void ToggleHistoricPhotoCamerasOff()
+    {
+        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.historicPhotographObjectKeywords[0])[0];
+
+        ManageSceneObjects.ProxyObjects.ToggleProxyHostReplacementsToState(parentObject, false, false);
     }
 
     /* ---------- Update Mode Menu ---------- */
@@ -505,7 +561,7 @@ public class CCPMenuActions : MonoBehaviour
     }
 
     /* --------- Editor Debug ---------- */
-#if true
+#if false
 
     [MenuItem("Cinderella City Project/CCP Debug/Get Bounding Box for Selected")]
     public static void TestMeshBounds()
@@ -549,14 +605,6 @@ public class CCPMenuActions : MonoBehaviour
         {
             Utils.DebugUtils.DebugLog(fileToDelete);
         }
-    }
-
-    [MenuItem("Cinderella City Project/CCP Debug/Get All Proxy Replacement Objects")]
-    public static void GetAllProxyReplacementObjectsTest()
-    {
-        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.historicPhotographObjectKeywords[0])[0];
-
-        ManageSceneObjects.ProxyObjects.GetProxyHostList(parentObject);
     }
 #endif
 }
