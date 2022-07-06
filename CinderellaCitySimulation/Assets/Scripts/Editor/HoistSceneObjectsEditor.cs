@@ -28,7 +28,7 @@ public class HoistSceneObjectsEditor : MonoBehaviour
             }
 
             // get the current scene container
-            GameObject currentSceneContainer = ManageScenes.GetSceneContainerObject(SceneManager.GetActiveScene());
+            GameObject currentSceneContainer = ManageSceneObjects.GetSceneContainerObject(SceneManager.GetActiveScene());
             // need to have this in a list format for another function
             List<GameObject> currentSceneContainerList = new List<GameObject>();
             currentSceneContainerList.Add(currentSceneContainer);
@@ -63,7 +63,7 @@ public class HoistSceneObjectsEditor : MonoBehaviour
             }
 
             // get the current scene container
-            GameObject currentSceneContainer = ManageScenes.GetSceneContainerObject(SceneManager.GetActiveScene());
+            GameObject currentSceneContainer = ManageSceneObjects.GetSceneContainerObject(SceneManager.GetActiveScene());
             // need to have this in a list format for another function
             List<GameObject> currentSceneContainerList = new List<GameObject>();
             currentSceneContainerList.Add(currentSceneContainer);

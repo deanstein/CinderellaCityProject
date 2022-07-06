@@ -513,29 +513,6 @@ public class ManageImportSettings
         }
     }
 
-    // get the replacement proxy type based on an asset name
-    public static string GetProxyTypeByName(string assetName)
-    {
-        switch (assetName)
-        {
-            case string name when name.Contains("proxy-trees-veg"):
-                return "TreesVeg";
-                // for now, legacy cameras are known as just cameras
-                // so be sure to not include historic photo cameras
-            case string name when name.Contains(ManageCameraActions.CameraActionGlobals.proxyCamerasObjectName) &&
-            !name.Contains(ManageCameraActions.CameraActionGlobals.proxyCamerasPhotosObjectName):
-                return "Cameras";
-            case string name when name.Contains(ManageCameraActions.CameraActionGlobals.proxyCamerasPhotosObjectName):
-                return "CamerasPhotos";
-            case string name when name.Contains("proxy-people"):
-                return "People";
-            case string name when name.Contains("water"):
-                return "Water";
-            default:
-                return null;
-        }
-    }
-
     // get the desired material emission value given a name or path
     public static float GetMaterialEmissionByName(string materialNameOrPath)
     {

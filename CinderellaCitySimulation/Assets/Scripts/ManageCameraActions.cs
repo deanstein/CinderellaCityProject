@@ -34,8 +34,8 @@ public class ManageCameraActions : MonoBehaviour
         // thumbnail cameras - geometry-based camera objects from FormIt
         //
 
-        public static string proxyCamerasObjectName = "proxy-cameras";
-        public static string proxyCamerasPhotosObjectName = "proxy-cameras-photos";
+        public static string proxyCamerasObjectName = ObjectVisibilityGlobals.thumbnailCameraObjectKeywords[0];
+        public static string proxyCamerasPhotosObjectName = ObjectVisibilityGlobals.historicPhotographObjectKeywords[0];
         // FormIt object names to trigger camera generation
         public static string thumbnailCameraKeyword = "Camera-Thumbnail-";
         public static string historicPhotoCameraKeyword = "Photo Object";
@@ -115,16 +115,6 @@ public class ManageCameraActions : MonoBehaviour
         }
     }
 
-    // get all the thumbnail cameras in this scene
-    // these were previously created from geometry-based cameras and tagged appropriately
-    // so find them by tag
-    public static GameObject[] GetAllThumbnailCamerasInScene()
-    {
-        GameObject[] allThumbnailCameras = GameObject.FindGameObjectsWithTag(ManageTaggedObjects.TaggedObjectGlobals.deleteProxyReplacementTagPrefix + "Cameras");
-
-        return allThumbnailCameras;
-    }
-
     // get the correct screenshot file name when taken from in-game
     public static string GetInGameScreenshotFileName()
     {
@@ -183,7 +173,7 @@ public class ManageCameraActions : MonoBehaviour
     public static void ReplaceSceneThumbnailsInResources()
     {
 #if UNITY_EDITOR
-        GameObject[] thumbnailCameras = GetAllThumbnailCamerasInScene();
+        GameObject[] thumbnailCameras = ManageSceneObjects.ProxyObjects.GetAllThumbnailCamerasInScene();
 
         // first, delete all existing thumbnail images in the project UI path
         // in case some thumbnails were renamed, we don't want zombies left over in this path

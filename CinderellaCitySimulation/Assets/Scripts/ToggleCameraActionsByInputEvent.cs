@@ -196,7 +196,7 @@ public class TakeScreenshots
     public static IEnumerator CaptureAllThumbnailScreenshots()
     {
         // get all thumbnail cameras in the current scene
-        GameObject[] cameraHostObjects = ManageCameraActions.GetAllThumbnailCamerasInScene();
+        GameObject[] cameraHostObjects = ManageSceneObjects.ProxyObjects.GetAllThumbnailCamerasInScene();
 
         // relocate the player to each of these camera host locations, and take a screenshot
         foreach (GameObject cameraHost in cameraHostObjects)

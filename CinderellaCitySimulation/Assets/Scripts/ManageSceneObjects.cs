@@ -1,10 +1,218 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Retrieves and operates on objects in the scene
 /// Provides access to object visibility keywords, top-level object finding, and object visibility checks
 /// </summary>
+
+public static class ManageSceneObjects
+{
+    // gets the container object for the given scene
+    public static GameObject GetSceneContainerObject(Scene sceneWithContainer)
+    {
+        // get the root objects of the scene
+        GameObject[] rootObjects = sceneWithContainer.GetRootGameObjects();
+
+        // this assumes there's only 1 object in the scene: a container for all objects
+        GameObject sceneContainer = rootObjects[0];
+        return sceneContainer;
+    }
+
+    // gets the top-level children in this scene's scene container
+    public static GameObject[] GetTopLevelChildrenInSceneContainer(Scene sceneWithContainer)
+    {
+        // get the current scene's container
+        GameObject sceneContainer = ManageSceneObjects.GetSceneContainerObject(SceneManager.GetActiveScene());
+
+        // get all the scene objects
+        GameObject[] sceneObjects = ManageSceneObjects.GetAllTopLevelChildrenInObject(sceneContainer);
+
+        return sceneObjects;
+    }
+
+    // search the top-level children in a scene container, and returns the first object matching the given name
+    // likely cheaper than the default GameObject.Find() function
+    public static GameObject[] GetTopLevelSceneContainerGameObjectsByName(string objectName)
+    {
+        GameObject activeSceneContainer = ManageSceneObjects.GetSceneContainerObject(SceneManager.GetActiveScene());
+        List<GameObject> topLevelMatchingObjects = new List<GameObject>();
+
+        foreach (Transform child in activeSceneContainer.transform)
+        {
+            if (child.name.Contains(objectName))
+            {
+                topLevelMatchingObjects.Add(child.gameObject);
+            }
+        }
+
+        GameObject[] topLevelGameObjectArray = topLevelMatchingObjects.ToArray();
+
+        return topLevelGameObjectArray;
+    }
+
+    // gets all children in the root object
+    public static GameObject[] GetAllTopLevelChildrenInObject(GameObject parentObject)
+    {
+        List<GameObject> childrenList = new List<GameObject>();
+
+        foreach (Transform trans in parentObject.transform)
+        {
+            childrenList.Add(trans.gameObject);
+        }
+        GameObject[] childrenObjects = childrenList.ToArray();
+
+        return childrenObjects;
+    }
+
+    // gets all children recursively
+    public static GameObject[] GetAllChildrenInObjectRecursively(GameObject parentObject)
+    {
+        // all transforms recursively 
+        Transform[] allTransforms = parentObject.GetComponentsInChildren<Transform>(true /* include inactive */);
+
+        List<GameObject> childrenList = new List<GameObject>();
+
+        foreach (Transform trans in allTransforms)
+        {
+            childrenList.Add(trans.gameObject);
+        }
+        GameObject[] childrenObjects = childrenList.ToArray();
+
+        return childrenObjects;
+    }
+
+    // gets the UI launcher object for the current scene
+    public static GameObject GetUILauncherObject(Scene sceneWithUILauncher)
+    {
+        GameObject containerObject = ManageSceneObjects.GetSceneContainerObject(sceneWithUILauncher);
+        GameObject UILauncherObject = null;
+
+        for (int i = 0; i < containerObject.transform.childCount; i++)
+        {
+            if (containerObject.transform.GetChild(i).name.Contains("Launcher"))
+            {
+                UILauncherObject = containerObject.transform.GetChild(i).gameObject;
+            }
+        }
+
+        return UILauncherObject;
+
+    }
+
+    // specific functions for proxy objects
+    public class ProxyObjects
+    {
+        // get the replacement proxy type based on an asset name
+        public static string GetProxyTypeByName(string gameObjectOrAssetName)
+        {
+            switch (gameObjectOrAssetName)
+            {
+                case string name when name.Contains("proxy-trees-veg"):
+                    return "TreesVeg";
+                // for now, legacy cameras are known as just cameras
+                // so be sure to not include historic photo cameras
+                case string name when name.Contains(ManageCameraActions.CameraActionGlobals.proxyCamerasObjectName) &&
+                !name.Contains(ManageCameraActions.CameraActionGlobals.proxyCamerasPhotosObjectName):
+                    return "Cameras";
+                case string name when name.Contains(ManageCameraActions.CameraActionGlobals.proxyCamerasPhotosObjectName):
+                    return "CamerasPhotos";
+                case string name when name.Contains("proxy-people"):
+                    return "People";
+                case string name when name.Contains("water"):
+                    return "Water";
+                default:
+                    return null;
+            }
+        }
+
+        // define a proxy host list
+        public class ProxyHostList
+        {
+            public List<GameObject> proxyContainerList = new List<GameObject>();
+            public List<GameObject> proxyMeshList = new List<GameObject>();
+            public List<GameObject> replacementObjectList = new List<GameObject>();
+        }
+
+        // get the divided list of proxy mesh/container/replacement objects from the host
+        public static ProxyHostList GetProxyHostList(GameObject proxyHost)
+        {
+            // get all children of the parent recursively
+            GameObject[] allChildren = ManageSceneObjects.GetAllChildrenInObjectRecursively(proxyHost);
+
+            // create an empty list object to store the two types
+            ProxyHostList proxyHostList = new ProxyHostList();
+
+            // look for any objects with a proxy replacement tag
+            foreach (GameObject child in allChildren)
+            {
+                // first, make sure the child transform is on so the tag check works
+                // then restore its state at the end
+                bool isEnabled = child.gameObject.activeSelf;
+                child.gameObject.SetActive(true);
+
+                // all proxy objects have this prefix in the tag name
+                if (child.tag.Contains(TaggedObjects.TaggedObjectGlobals.deleteProxyReplacementTagPrefix))
+                {
+                    Utils.DebugUtils.DebugLog("Found a replacement: " + child.name);
+                    proxyHostList.replacementObjectList.Add(child.gameObject);
+                }
+                // otherwise, this is likely the original geometry - the actual proxy
+                else
+                {
+                    // but make sure we only provide transforms with a mesh renderer
+                    if (child.gameObject.GetComponent<MeshRenderer>())
+                    {
+                        Utils.DebugUtils.DebugLog("Found a proxy: " + child.name);
+                        proxyHostList.proxyMeshList.Add(child.gameObject);
+                    }
+                    // otherwise, this is a proxy container and should be recorded as such
+                    else
+                    {
+                        Utils.DebugUtils.DebugLog("Found a container: " + child.name);
+                        proxyHostList.proxyContainerList.Add(child.gameObject);
+                    }
+                }
+
+                child.gameObject.SetActive(isEnabled);
+            }
+
+            return proxyHostList;
+        }
+
+        // force all children object in the proxy host to on or off
+        public static void ForceAllProxyHostChildrenToState(GameObject proxyHost, bool desiredState)
+        {
+            GameObject[] allChildren = ManageSceneObjects.GetAllChildrenInObjectRecursively(proxyHost);
+
+            foreach (GameObject child in allChildren)
+            {
+                child.SetActive(desiredState);
+            }
+        }
+
+        // get all the thumbnail cameras in this scene
+        // these were previously created from geometry-based cameras and tagged appropriately
+        // so find them by tag
+        public static GameObject[] GetAllThumbnailCamerasInScene()
+        {
+            GameObject[] allThumbnailCameras = GameObject.FindGameObjectsWithTag(TaggedObjects.TaggedObjectGlobals.deleteProxyReplacementTagPrefix + "Cameras");
+
+            return allThumbnailCameras;
+        }
+
+        // get all historic photograph cameras
+        public static Camera[] GetAllHistoricPhotoCamerasInScene()
+        {
+            Camera[] allPhotoCameras = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords)[0].GetComponentsInChildren<Camera>();
+
+            return allPhotoCameras;
+        }
+    }
+}
+
+// TODO: put everything below into the above class
 
 public static class ObjectVisibilityGlobals
 {
@@ -14,7 +222,6 @@ public static class ObjectVisibilityGlobals
     public static string[] exteriorWallObjectKeywords = { "mall-walls-detailing-exterior" };
     public static string[] floorObjectKeywords = { "mall-floors-vert", "store-floors" };
     public static string[] furnitureObjectKeywords = { "mall-furniture" };
-    public static string[] historicPhotographObjectKeywords = { "proxy-cameras-photos" };
     public static string[] lightsObjectKeyword = { "mall-lights" };
     public static string[] interiorDetailingObjectKeywords = { "mall-detailing-interior","mall-flags", "store-detailing" };
     public static string[] interiorWallObjectKeywords = { "mall-walls-interior", "store-walls" };
@@ -22,8 +229,12 @@ public static class ObjectVisibilityGlobals
     public static string[] roofObjectKeywords = { "mall-roof" };
     public static string[] signageObjectKeywords = { "mall-signage" };
     public static string[] speakerObjectKeywords = { "speakers" };
+
+
     public static string[] vegetationObjectKeywords = { "proxy-trees-veg" };
     public static string[] waterFeatureObjectKeywords = { "proxy-water" };
+    public static string[] thumbnailCameraObjectKeywords = { "proxy-cameras" };
+    public static string[] historicPhotographObjectKeywords = { "proxy-cameras-photos" };
 
     // used for updating the checkbox when historic photos are forced to opaque
     public static bool areHistoricPhotosForcedOpaque = false;
@@ -33,14 +244,14 @@ public static class ObjectVisibilityGlobals
 
 public class ObjectVisibility
 {
-    public static GameObject[] GetTopLevelGameObjectByKeyword(string[] visibilityKeywords)
+    public static GameObject[] GetTopLevelGameObjectsByKeyword(string[] visibilityKeywords)
     {
         // start with an empty list and add to it
         List<GameObject> foundObjectsList = new List<GameObject>();
 
         foreach (string keyword in visibilityKeywords)
         {
-            GameObject[] foundObjects = ManageScenes.GetTopLevelSceneContainerGameObjectsByName(keyword);
+            GameObject[] foundObjects = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(keyword);
             if (foundObjects.Length > 0)
             {
                 for (var i = 0; i < foundObjects.Length; i++)
@@ -89,7 +300,7 @@ public class ObjectVisibility
         bool setToDisabledWhenComplete = false;
 
         // get the top-level historic photo gameobject
-        GameObject historicPhotoParentObject = GetTopLevelGameObjectByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords)[0];
+        GameObject historicPhotoParentObject = GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords)[0];
 
         Renderer[] historicPhotoRenderers = historicPhotoParentObject.GetComponentsInChildren<Renderer>();
 
@@ -143,7 +354,7 @@ public class ObjectVisibility
 
 // this was copied from unused code, 
 // but is probably useful someday
-public class ManageTaggedObjects : MonoBehaviour
+public class TaggedObjects : MonoBehaviour
 {
     public class TaggedObjectGlobals
     {

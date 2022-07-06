@@ -100,7 +100,7 @@ public class HoistSceneObjects : MonoBehaviour
     {
         var newPosition = Vector3.zero;
 
-        GameObject currentSceneContainer = ManageScenes.GetSceneContainerObject(sceneObject.scene);
+        GameObject currentSceneContainer = ManageSceneObjects.GetSceneContainerObject(sceneObject.scene);
 
         float hoistHeight = GetHoistHeightBySceneName(currentSceneContainer.name);
         //Utils.DebugUtils.DebugLog("Current scene container (" + currentSceneContainer.name + ") hoist height: " + hoistHeight);

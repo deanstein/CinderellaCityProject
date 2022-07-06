@@ -213,7 +213,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // skip instantiating if this asset already exists in this scene
 
         // get the top-level objects in the scene container
-        GameObject[] sceneObjects = ManageScenes.GetTopLevelChildrenInSceneContainer(SceneManager.GetActiveScene());
+        GameObject[] sceneObjects = ManageSceneObjects.GetTopLevelChildrenInSceneContainer(SceneManager.GetActiveScene());
         // test if the asset name matches any of the top-level object names
         foreach (GameObject sceneObject in sceneObjects)
         {
@@ -240,7 +240,7 @@ public class AssetImportUpdate : AssetPostprocessor {
     // needs to happen in post-processor
     static void SetObjectAsChildOfSceneContainer(GameObject prefabToModify)
     {
-        GameObject sceneContainer = ManageScenes.GetSceneContainerObject(SceneManager.GetActiveScene());
+        GameObject sceneContainer = ManageSceneObjects.GetSceneContainerObject(SceneManager.GetActiveScene());
 
         if (prefabToModify)
         {
@@ -507,7 +507,7 @@ public class AssetImportUpdate : AssetPostprocessor {
     public static void DeleteAllFBMFolders()
     {
         // get all the scene objects
-        GameObject[] sceneObjects = ManageScenes.GetTopLevelChildrenInSceneContainer(SceneManager.GetActiveScene());
+        GameObject[] sceneObjects = ManageSceneObjects.GetTopLevelChildrenInSceneContainer(SceneManager.GetActiveScene());
 
         bool anyFoldersDeleted = false;
 
@@ -637,7 +637,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
             // delete the existing script host objects
             string speakerScriptHostDeleteTag = ManageTags.GetOrCreateTagByScriptHostType("Speakers");
-            ManageTaggedObjects.DeleteObjectsByTag(speakerScriptHostDeleteTag);
+            TaggedObjects.DeleteObjectsByTag(speakerScriptHostDeleteTag);
 
             // get all the children of this object - including empty transforms (instances or groups)
             Transform[] childrenTransforms = gameObjectByAssetName.GetComponentsInChildren<Transform>();
@@ -1009,11 +1009,11 @@ public class AssetImportUpdate : AssetPostprocessor {
         culledPrefabs = 0;
 
         // update the global proxy type variable based on the asset name
-        string proxyType = ManageImportSettings.GetProxyTypeByName(assetName);
+        string proxyType = ManageSceneObjects.ProxyObjects.GetProxyTypeByName(assetName);
 
         // define the delete tag to look for, based on the proxyType, then delete existing proxy replacements
         string proxyReplacementDeleteTag = ManageTags.GetOrCreateTagByProxyType(proxyType);
-        ManageTaggedObjects.DeleteObjectsByTag(proxyReplacementDeleteTag);
+        TaggedObjects.DeleteObjectsByTag(proxyReplacementDeleteTag);
 
         // find the associated GameObject by this asset's name
         GameObject gameObjectByAsset = GameObject.Find(assetName);

@@ -34,7 +34,7 @@ public class ManageTags
     public static string GetOrCreateTagByScriptHostType(string scriptHostType)
     {
         // define the tag that will be used to hide the proxies
-        string deleteScriptHostTag = ManageTaggedObjects.TaggedObjectGlobals.scriptHostTagPrefix + scriptHostType;
+        string deleteScriptHostTag = TaggedObjects.TaggedObjectGlobals.scriptHostTagPrefix + scriptHostType;
 
         // run TagHelper to create the hide proxy tag if it doesn't exist yet
         ManageTags.AddTag(deleteScriptHostTag);
@@ -46,7 +46,7 @@ public class ManageTags
     public static string GetOrCreateTagByProxyType(string proxyType)
     {
         // define the tag that will be used to hide the proxies
-        string deleteReplacementTag = ManageTaggedObjects.TaggedObjectGlobals.deleteProxyReplacementTagPrefix + proxyType;
+        string deleteReplacementTag = TaggedObjects.TaggedObjectGlobals.deleteProxyReplacementTagPrefix + proxyType;
 
         // run TagHelper to create the hide proxy tag if it doesn't exist yet
         ManageTags.AddTag(deleteReplacementTag);

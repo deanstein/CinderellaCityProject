@@ -54,7 +54,7 @@ public static class ManageEditorScenes
 
         for (var i = 0; i < allScenes.Count; i++)
         {
-            GameObject sceneContainer = ManageScenes.GetSceneContainerObject(allScenes[i]);
+            GameObject sceneContainer = ManageSceneObjects.GetSceneContainerObject(allScenes[i]);
 
             allSceneContainerObjects.Add(sceneContainer);
         }
