@@ -1394,66 +1394,6 @@ public class AssetImportUpdate : AssetPostprocessor {
         return copy as T;
     }
 
-    // disable the visibility of proxy assets
-    public static void HideProxyObjects(string assetName)
-    {
-        // find the associated GameObject by this asset's name
-        GameObject gameObjectByAsset = GameObject.Find(assetName);
-        if (gameObjectByAsset)
-        {
-            // get all the children from the gameObject
-            Transform[] assetChildren = gameObjectByAsset.GetComponentsInChildren<Transform>();
-
-            // for each of this asset's children, look for any whose name indicates they are proxies to be replaced
-            foreach (Transform child in assetChildren)
-            {
-                if (child.name.Contains("REPLACE") 
-                    || (child.name.Contains("Camera"))
-                    || (child.name.Contains("Blocker")))
-                {
-                    foreach (Transform proxyChild in child)
-                    {
-                        // only hide the gameobject if it's not a prefab
-                        if (PrefabUtility.GetPrefabAssetType(proxyChild) == PrefabAssetType.Model)
-                        {
-                            ManageSceneObjects.ObjectState.ToggleSceneObjectToState(proxyChild.gameObject, false);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    // disable the visibility of proxy assets
-    public static void UnhideProxyObjects(string assetName)
-    {
-        // find the associated GameObject by this asset's name
-        GameObject gameObjectByAsset = GameObject.Find(assetName);
-        if (gameObjectByAsset)
-        {
-            // get all the children from the gameObject
-            Transform[] assetChildren = gameObjectByAsset.GetComponentsInChildren<Transform>();
-
-            // for each of this asset's children, look for any whose name indicates they are proxies to be replaced
-            foreach (Transform child in assetChildren)
-            {
-                if (child.name.Contains("REPLACE")
-                    || (child.name.Contains("Camera"))
-                    || (child.name.Contains("Blocker")))
-                {
-                    foreach (Transform proxyChild in child)
-                    {
-                        // only unhide the gameobject if it's not a prefab
-                        if (PrefabUtility.GetPrefabAssetType(proxyChild) == PrefabAssetType.Model)
-                        {
-                            ManageSceneObjects.ObjectState.ToggleSceneObjectToState(proxyChild.gameObject, true);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     // configure and bake the nav mesh
     public static void RebuildNavMesh()
     {
@@ -1695,7 +1635,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         if (AssetImportGlobals.ModelImportParamsByName.doHideProxyObjects)
         {
-            HideProxyObjects(importedAssetFileName);
+            ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(importedAssetGameObject, false, false);
         }
 
         // these never worked reliably, so they've been deprecated (now invoked manually via CCP menu)

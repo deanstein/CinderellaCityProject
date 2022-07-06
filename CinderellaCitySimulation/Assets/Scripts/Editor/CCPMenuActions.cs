@@ -461,11 +461,14 @@ public class CCPMenuActions : MonoBehaviour
         List<GameObject> sceneContainers = new List<GameObject>();
         sceneContainers.Add(sceneContainer);
 
+        // get the proxy host
+        GameObject proxyHost = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.blockerObjectKeywords[0])[0];
+
         // first, move this scene container as appropriate
         HoistSceneObjectsEditor.HoistSceneContainersUp(sceneContainers);
 
         // ensure that "blocker" objects are enabled before building the nav mesh
-        AssetImportUpdate.UnhideProxyObjects("proxy-blocker-npc");
+        ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(proxyHost, true, false);
 
         // build the nav mesh
         UnityEditor.AI.NavMeshBuilder.BuildNavMesh();
@@ -473,7 +476,7 @@ public class CCPMenuActions : MonoBehaviour
         Utils.DebugUtils.DebugLog("Updated the nav mesh in scene: " + EditorSceneManager.GetActiveScene().name);
 
         // re-hide the proxy blocker
-        AssetImportUpdate.HideProxyObjects("proxy-blocker-npc");
+        ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(proxyHost, false, false);
 
         EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene());
     }

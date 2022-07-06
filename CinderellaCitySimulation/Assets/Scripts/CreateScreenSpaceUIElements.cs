@@ -318,7 +318,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
             ManageSceneObjects.ObjectState.ToggleAllTopLevelSceneObjectsOff(disabledSceneName);
 
             // return the script hosts to their on state
-            ToggleSceneAndUI.ToggleScriptHostObjectListOn();
+            ManageSceneObjects.ObjectState.ToggleScriptHostObjectListOn();
 
             // set Pause as active again
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(SceneGlobals.pauseMenuName));

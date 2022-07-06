@@ -421,12 +421,12 @@ public static class ObjectVisibilityGlobals
     public static string[] lightsObjectKeyword = { "mall-lights" };
     public static string[] interiorDetailingObjectKeywords = { "mall-detailing-interior","mall-flags", "store-detailing" };
     public static string[] interiorWallObjectKeywords = { "mall-walls-interior", "store-walls" };
-    public static string[] peopleObjectKeywords = { "proxy-people" };
     public static string[] roofObjectKeywords = { "mall-roof" };
     public static string[] signageObjectKeywords = { "mall-signage" };
     public static string[] speakerObjectKeywords = { "speakers" };
 
-
+    public static string[] peopleObjectKeywords = { "proxy-people" };
+    public static string[] blockerObjectKeywords = { "proxy-blocker-npc" };
     public static string[] vegetationObjectKeywords = { "proxy-trees-veg" };
     public static string[] waterFeatureObjectKeywords = { "proxy-water" };
     public static string[] thumbnailCameraObjectKeywords = { "proxy-cameras" };
