@@ -973,7 +973,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
             toggle.onValueChanged.AddListener(delegate {
                 foreach (GameObject objectToToggle in objectsToToggle)
                 {
-                    ToggleObjects.ToggleGameObjectChildrenVisibility(objectToToggle);
+                    ManageSceneObjects.ObjectState.ToggleTopLevelChildrenSceneObjects(objectToToggle);
                 }
             });
         }

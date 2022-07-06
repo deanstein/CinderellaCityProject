@@ -1416,7 +1416,7 @@ public class AssetImportUpdate : AssetPostprocessor {
                         // only hide the gameobject if it's not a prefab
                         if (PrefabUtility.GetPrefabAssetType(proxyChild) == PrefabAssetType.Model)
                         {
-                            ToggleObjects.ToggleGameObjectOff(proxyChild.gameObject);
+                            ManageSceneObjects.ObjectState.ToggleSceneObjectToState(proxyChild.gameObject, false);
                         }
                     }
                 }
@@ -1446,7 +1446,7 @@ public class AssetImportUpdate : AssetPostprocessor {
                         // only unhide the gameobject if it's not a prefab
                         if (PrefabUtility.GetPrefabAssetType(proxyChild) == PrefabAssetType.Model)
                         {
-                            ToggleObjects.ToggleGameObjectOn(proxyChild.gameObject);
+                            ManageSceneObjects.ObjectState.ToggleSceneObjectToState(proxyChild.gameObject, true);
                         }
                     }
                 }
@@ -1690,7 +1690,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         if (AssetImportGlobals.ModelImportParamsByName.doHideInitially)
         {
-            ToggleObjects.ToggleGameObjectOff(importedAssetGameObject);
+            ManageSceneObjects.ObjectState.ToggleSceneObjectToState(importedAssetGameObject, false);
         }
 
         if (AssetImportGlobals.ModelImportParamsByName.doHideProxyObjects)

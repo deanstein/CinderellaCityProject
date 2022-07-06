@@ -185,8 +185,8 @@ public static class ManageSceneObjects
             }
         }
 
-        // forces all children of an object to enabled
-        public static void ToggleAllChildrenSceneObjectsToState(GameObject sceneObject, bool desiredState, bool includeSelf)
+        // forces all children of an object - recursively
+        public static void ToggleChildrenSceneObjectsToStateRecursively(GameObject sceneObject, bool desiredState, bool includeSelf)
         {
             GameObject[] allChildren = ManageSceneObjects.GetAllChildrenInObjectRecursively(sceneObject);
 
@@ -198,6 +198,24 @@ public static class ManageSceneObjects
             if (includeSelf)
             {
                 sceneObject.SetActive(desiredState);
+            }
+        }
+
+        // toggles all top-level children of an object
+        // toggle all children but leave the parent alone
+        public static void ToggleTopLevelChildrenSceneObjects(GameObject parent)
+        {
+            // loop through all children of this GameObject and make them active or inactive
+            foreach (Transform child in parent.transform)
+            {
+                if (child.gameObject.activeSelf)
+                {
+                    child.gameObject.SetActive(false);
+                }
+                else
+                {
+                    child.gameObject.SetActive(true);
+                }
             }
         }
 
@@ -488,7 +506,7 @@ public class ObjectVisibility
         {
             setToDisabledWhenComplete = true;
 
-            ToggleObjects.ToggleGameObjectChildrenVisibility(historicPhotoParentObject);
+            ManageSceneObjects.ObjectState.ToggleTopLevelChildrenSceneObjects(historicPhotoParentObject);
 
             // find the renderers again
             historicPhotoRenderers = historicPhotoParentObject.GetComponentsInChildren<Renderer>();
@@ -525,7 +543,7 @@ public class ObjectVisibility
         // if the historic photos object was disabled, disable it again
         if (setToDisabledWhenComplete)
         {
-            ToggleObjects.ToggleGameObjectChildrenVisibility(historicPhotoParentObject);
+            ManageSceneObjects.ObjectState.ToggleTopLevelChildrenSceneObjects(historicPhotoParentObject);
         }
     }
 }
