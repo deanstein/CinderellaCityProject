@@ -138,54 +138,22 @@ public static class ManageSceneObjects
         }
 
         // toggles all scene objects on
-        public static void ToggleAllTopLevelSceneObjectsOn(string sceneName)
+        public static void ToggleAllTopLevelSceneObjectsToState(string sceneName, bool desiredState)
         {
             //Utils.DebugUtils.DebugLog("Toggling Scene object visibility ON for: " + sceneName + "...");
 
-            // each Scene should have a GameObject that contains all of the Scene objects
-            // this container should be named after the Scene + "Container"
-            string sceneContainerName = sceneName + "Container";
+            // find the Scene's container GameObject
+            GameObject sceneContainerObject = ManageSceneObjects.GetSceneContainerObject(SceneManager.GetSceneByName(sceneName));
 
-            // find the Scene's container GameObject by name
-            GameObject sceneContainerObject = GameObject.Find(sceneContainerName);
-
-            // loop through all children of the scene's container object and make them active if they're not already
+            // loop through all children of the scene's container object and make them
+            // the desired state
             foreach (Transform child in sceneContainerObject.transform)
             {
-                // make this child active if it's not already
-                if (!child.gameObject.activeSelf)
-                {
-                    child.gameObject.SetActive(true);
-                    //Utils.DebugUtils.DebugLog("Toggled visibility ON for: " + child.gameObject.name);
-                }
+                child.gameObject.SetActive(desiredState);
             }
         }
 
-        // toggles all scene objects off
-        public static void ToggleAllTopLevelSceneObjectsOff(string sceneName)
-        {
-            //Utils.DebugUtils.DebugLog("Toggling Scene object visibility OFF for: " + sceneName + "...");
-
-            // each Scene should have a GameObject that contains all of the Scene objects
-            // this container should be named after the Scene + "Container"
-            string sceneContainerName = sceneName + "Container";
-
-            // find the Scene's container GameObject by name
-            GameObject sceneContainerObject = GameObject.Find(sceneContainerName);
-
-            // loop through all children of the scene's container object and make them active if they're not already
-            foreach (Transform child in sceneContainerObject.transform)
-            {
-                // make this child inactive if it's not already
-                if (child.gameObject.activeSelf)
-                {
-                    child.gameObject.SetActive(false);
-                    //Utils.DebugUtils.DebugLog("Toggled visibility OFF for: " + child.gameObject.name);
-                }
-            }
-        }
-
-        // forces all children of an object - recursively
+        // forces all children of an object to a state - recursively
         public static void ToggleChildrenSceneObjectsToStateRecursively(GameObject sceneObject, bool desiredState, bool includeSelf)
         {
             GameObject[] allChildren = ManageSceneObjects.GetAllChildrenInObjectRecursively(sceneObject);
@@ -227,7 +195,7 @@ public static class ManageSceneObjects
             ToggleScriptHostObjectListOff();
 
             // turn everything else on
-            ManageSceneObjects.ObjectState.ToggleAllTopLevelSceneObjectsOn(sceneName);
+            ManageSceneObjects.ObjectState.ToggleAllTopLevelSceneObjectsToState(sceneName, true);
         }
 
         public static void ToggleScriptHostObjectListOn()
