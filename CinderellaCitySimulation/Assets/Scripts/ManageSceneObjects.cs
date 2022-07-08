@@ -367,11 +367,15 @@ public static class ManageSceneObjects
         }
 
         // get all historic photograph cameras
-        public static Camera[] GetAllHistoricPhotoCamerasInScene()
+        public static GameObject[] GetAllHistoricPhotoCamerasInScene()
         {
-            Camera[] allPhotoCameras = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords)[0].GetComponentsInChildren<Camera>();
+            GameObject historicPhotosProxyHost = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.historicPhotographObjectKeywords[0])[0];
 
-            return allPhotoCameras;
+            ProxyObjects.ProxyHostList proxyHostList = ManageSceneObjects.ProxyObjects.GetProxyHostList(historicPhotosProxyHost);
+
+            GameObject[] cameraObjects = proxyHostList.replacementObjectList.ToArray();
+
+            return cameraObjects;
         }
     }
 }

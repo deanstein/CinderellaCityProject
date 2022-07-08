@@ -19,7 +19,8 @@ public class ManageCameraActions : MonoBehaviour
         public static GameObject[] allThumbnailCameras;
 
         // all cameras used for guided tour waypoints
-        public static GameObject[] allPointOfInterestCameras;
+        public static GameObject[] allPointOfInterestWaypoints;
+        public static int currentPointOfInterestWaypointIndex;
 
         // record the highest known camera effect priority
         public static float highestKnownCameraEffectPriority = 0;

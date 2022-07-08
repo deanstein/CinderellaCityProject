@@ -23,17 +23,5 @@ public class ToggleObjectsByInputEvent : MonoBehaviour {
         {
             ManageNPCControllers.ResetAllNPCsToOriginalLocation();
         }
-
-        // get all the photo objects in the scene
-        if (Input.GetKeyDown("["))
-        {
-            //Debug.Log("These are the photo objects in the scene: " + ManageSceneObjects.GetAllHistoricPhotoCamerasInScene().Length);
-
-            //foreach (Camera currentCamera in ManageSceneObjects.GetAllHistoricPhotoCamerasInScene())
-            //{
-            //    Debug.Log("Camera: " + currentCamera.transform.parent.name);
-            //}
-
-        }
     }
 }

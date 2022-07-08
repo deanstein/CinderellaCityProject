@@ -47,19 +47,28 @@ public class FollowPathOnNavMesh : MonoBehaviour
 
     private void Awake()
     {
-        thisAgent = this.GetComponent<NavMeshAgent>();
-        thisAnimatorUpdateScript = this.GetComponent<UpdateNPCAnimatorByState>();
+        // determine if this is a non-playable character or not
+        isNPC = GetIsNPC();
 
-        // record this NPC and its position for other scripts to reference later
-        NPCControllerGlobals.activeNPCControllersList.Add(this.gameObject);
-        NPCControllerGlobals.initialNPCPositionsList.Add(this.transform.position);
+        thisAgent = this.GetComponent<NavMeshAgent>();
+
+        if (isNPC)
+        {
+            thisAnimatorUpdateScript = this.GetComponent<UpdateNPCAnimatorByState>();
+
+            // record this NPC and its position for other scripts to reference later
+            NPCControllerGlobals.activeNPCControllersList.Add(this.gameObject);
+            NPCControllerGlobals.initialNPCPositionsList.Add(this.transform.position);
+        }
+        else
+        {
+            // first, ensure the FPC is configured like NPCs
+            ManageNPCControllers.ConfigureAgentWIthDefaultNPCSettings(thisAgent);
+        }
     }
 
     void Start()
     {
-        // determine if this is a non-playable character or not
-        isNPC = GetIsNPC();
-
         if (isNPC)
         {
             // if the NPC arrays haven't been converted yet, convert them
@@ -79,9 +88,17 @@ public class FollowPathOnNavMesh : MonoBehaviour
         else
         {
             // for first-person character
-            initialDestination = Utils.GeometryUtils.GetRandomPointOnNavMeshFromPool(this.transform.position, NPCControllerGlobals.initialNPCPositionsArray, 0, NPCControllerGlobals.maxDestinationDistance, true);
 
-            SetAgentOnPath(thisAgent, initialDestination);
+            if (ManageFPSControllers.FPSControllerGlobals.isGuidedTourActive)
+            {
+                // get all the available waypoint cameras
+                ManageCameraActions.CameraActionGlobals.allPointOfInterestWaypoints = ManageSceneObjects.ProxyObjects.GetAllHistoricPhotoCamerasInScene();
+
+                // set the initial destination to the first waypoint camera
+                initialDestination = Utils.GeometryUtils.GetNearestPointOnNavMesh(ManageCameraActions.CameraActionGlobals.allPointOfInterestWaypoints[0].transform.position, 5);
+
+                SetAgentOnPath(thisAgent, initialDestination);
+            }
         }
     }
 
@@ -92,7 +109,9 @@ public class FollowPathOnNavMesh : MonoBehaviour
             float currentVelocity = thisAgent.velocity.magnitude;
 
             // this agent's next destination will depend on whether it's an NPC or not
-            Vector3 nextDestination = isNPC ? Utils.GeometryUtils.GetRandomPointOnNavMeshFromPool(this.transform.position, NPCControllerGlobals.initialNPCPositionsArray, NPCControllerGlobals.minDiscardDistance, NPCControllerGlobals.maxDiscardDistance, true) : new Vector3(0, 0, 0);
+            Vector3 nextDestination = isNPC ? Utils.GeometryUtils.GetRandomPointOnNavMeshFromPool(this.transform.position, NPCControllerGlobals.initialNPCPositionsArray, NPCControllerGlobals.minDiscardDistance, NPCControllerGlobals.maxDiscardDistance, true) : ManageCameraActions.CameraActionGlobals.allPointOfInterestWaypoints[ManageCameraActions.CameraActionGlobals.currentPointOfInterestWaypointIndex].transform.position;
+
+            Debug.Log("Current index: " + ManageCameraActions.CameraActionGlobals.currentPointOfInterestWaypointIndex);
 
             // if this is an NPC, check if it's on a collision course with the player 
             if (isNPC)
@@ -120,7 +139,17 @@ public class FollowPathOnNavMesh : MonoBehaviour
             // this prevents the agent from fighting with another for the same point in space
             if (thisAgent.remainingDistance <= NPCControllerGlobals.defaultNPCStoppingDistance)
             {
-                SetAgentOnPath(thisAgent, nextDestination);
+                if (isNPC)
+                {
+                    SetAgentOnPath(thisAgent, nextDestination);
+                }
+                else
+                {
+                    if (ManageFPSControllers.FPSControllerGlobals.isGuidedTourActive)
+                    {
+                        SetAgentOnPath(thisAgent, nextDestination);
+                    }
+                }
 
                 //Utils.DebugUtils.DebugLog("Agent " + thisAgent.gameObject.name + " reached its destination.");
             }
@@ -142,7 +171,7 @@ public class FollowPathOnNavMesh : MonoBehaviour
     // returns true if this agent is *not* the player
     private bool GetIsNPC()
     {
-        if (this.gameObject == ManageFPSControllers.FPSControllerGlobals.activeFPSController)
+        if (this.transform.parent.gameObject == ManageFPSControllers.FPSControllerGlobals.activeFPSController)
         {
             Utils.DebugUtils.DebugLog("This agent is the player: " + this.name);
             return false;

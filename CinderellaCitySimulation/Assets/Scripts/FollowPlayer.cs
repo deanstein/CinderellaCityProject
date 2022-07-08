@@ -7,10 +7,18 @@ public class FollowPlayer : MonoBehaviour
 {
     private void Update()
     {
-        if (ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform != null)
+        if (!ManageFPSControllers.FPSControllerGlobals.isGuidedTourActive)
         {
-            // update this object's position to match the player's last known position
-            this.transform.position = ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position;
+            if (ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform != null)
+            {
+                // update this object's position to match the player's last known position
+                this.transform.position = ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position;
+            }
+        }
+        // make the player follow the agent's location
+        else
+        {
+            ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position = this.transform.position;
         }
     }
 }

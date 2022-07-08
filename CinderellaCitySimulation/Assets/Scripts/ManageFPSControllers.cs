@@ -31,6 +31,9 @@ public class ManageFPSControllers : MonoBehaviour {
         // marked true when an FPS controller is requesting the pause menu
         public static bool isPausing = false;
 
+        // marked true when guided tour mode is enabled
+        public static bool isGuidedTourActive = false;
+
         // all FPSControllers
         public static List<GameObject> allFPSControllers = new List<GameObject>();
 
