@@ -148,6 +148,23 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
                 this.transform.parent.position = new Vector3(currentPos.x, currentPos.y - YPosDelta, currentPos.z);
             }
         }
+
+        // start the guided tour of available historic photos
+        if (Input.GetKeyDown("["))
+        {
+            Utils.DebugUtils.DebugLog("Starting guided tour mode...");
+
+            ManageFPSControllers.FPSControllerGlobals.isGuidedTourActive = true;
+
+            GameObject[] allHistoricPhotos = ManageSceneObjects.ProxyObjects.GetAllHistoricPhotoCamerasInScene();
+        }
+        // end the guided tour
+        if (Input.GetKeyDown("]"))
+        {
+            Utils.DebugUtils.DebugLog("Ending guided tour mode.");
+
+            ManageFPSControllers.FPSControllerGlobals.isGuidedTourActive = false;
+        }
     }
 
     void OnApplicationQuit()
