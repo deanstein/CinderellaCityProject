@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 /// <summary>
 /// Maps 3D mall patrons (non-player characters) to animation controllers, depending on name or gender
@@ -70,6 +71,17 @@ public class NPCControllerGlobals
 
 public class ManageNPCControllers
 {
+    // default configurations for NPCs (and also FPC)
+    public static void ConfigureAgentWIthDefaultNPCSettings(NavMeshAgent agentToConfigure)
+    {
+        agentToConfigure.speed = 1.0f;
+        agentToConfigure.angularSpeed = 200f;
+        agentToConfigure.radius = NPCControllerGlobals.defaultNPCRadius;
+        agentToConfigure.autoTraverseOffMeshLink = false;
+        agentToConfigure.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
+        agentToConfigure.enabled = false;
+    }
+
     // define the default animator controller based on this asset's name
     public static string GetDefaultAnimatorControllerFilePathByName(string objectName)
     {

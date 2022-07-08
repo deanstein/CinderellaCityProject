@@ -881,12 +881,9 @@ public class AssetImportUpdate : AssetPostprocessor {
         {
             thisAgent = NPCObject.GetComponent<NavMeshAgent>();
         }
-        thisAgent.speed = 1.0f;
-        thisAgent.angularSpeed = 200f;
-        thisAgent.radius = NPCControllerGlobals.defaultNPCRadius;
-        thisAgent.autoTraverseOffMeshLink = false;
-        thisAgent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
-        thisAgent.enabled = false;
+
+        // configure
+        ManageNPCControllers.ConfigureAgentWIthDefaultNPCSettings(thisAgent);
     }
 
     public static void ConfigureNPCForPathfinding(GameObject NPCObject, GameObject proxyObject)
