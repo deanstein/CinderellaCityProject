@@ -308,7 +308,7 @@ public static class ManageSceneObjects
                 // add mesh objects to the list only if they have a mesh renderer
                 if (remainingChild.gameObject.GetComponent<MeshRenderer>())
                 {
-                    Utils.DebugUtils.DebugLog("Found a proxy: " + remainingChild.name);
+                    //Utils.DebugUtils.DebugLog("Found a proxy: " + remainingChild.name);
                     proxyHostList.proxyMeshList.Add(remainingChild.gameObject);
                 }
                 // otherwise, this is a proxy container and should be recorded as such
