@@ -9,7 +9,10 @@ public class UpdateFPSAgentByState : MonoBehaviour
 {
     private void Update()
     {
-        ToggleFPSAgentByProximityToPlayer();
+        if (!ManageFPSControllers.FPSControllerGlobals.isGuidedTourActive)
+        {
+            ToggleFPSAgentByProximityToPlayer();
+        }
     }
 
     static void ToggleFPSAgentByProximityToPlayer()
