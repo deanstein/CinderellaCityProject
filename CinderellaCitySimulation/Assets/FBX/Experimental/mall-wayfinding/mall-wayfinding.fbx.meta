@@ -17,13 +17,133 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: LIGHT - very low intensity white
+    second: {fileID: 2100000, guid: eb6d5100fa8997943984cf9055a3e087, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: clear
     second: {fileID: 2100000, guid: d03dbf21ceb22964396d3a5d9c52e36d, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - 701 offices
+    second: {fileID: 2100000, guid: d944ee91427178241ad3bb6470796696, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - brown reflective
     second: {fileID: 2100000, guid: 80d0b0e9938b06d43b981cbd168737b0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - floor trim
+    second: {fileID: 2100000, guid: 2c34073c60dc60445b884f8c5d346911, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - wayfinding blue
+    second: {fileID: 2100000, guid: ea69c8c7524a5f74d9d7048376ef44bf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - wayfinding blue mall
+    second: {fileID: 2100000, guid: 0f1befd7e2d395f4fbb696c1714af26f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - wayfinding cinder alley
+    second: {fileID: 2100000, guid: 4a186b9b480f77143af48560aa4ad938, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - wayfinding cinder down
+    second: {fileID: 2100000, guid: d955db7c7c9d4344c86d0ff2887367e8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - wayfinding cinder left
+    second: {fileID: 2100000, guid: 288d9932165a88043815c73fba895064, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - wayfinding cinder right
+    second: {fileID: 2100000, guid: b4fd752678b9e8548be1e2676ad929ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - wayfinding garden
+    second: {fileID: 2100000, guid: af179dbe9bc8c48498ad516cdbb0be57, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - wayfinding garden dark
+    second: {fileID: 2100000, guid: f4bb22073144f7949a0e35d9754978a0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - wayfinding garden stair left
+    second: {fileID: 2100000, guid: 837074527f92353408d159ec368bf6e0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - wayfinding garden stair right
+    second: {fileID: 2100000, guid: e9f46926c67426f4eb5cf8afde353dab, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - wayfinding garden text
+    second: {fileID: 2100000, guid: d45f31f2dff7d014b81e786328d63749, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - wayfinding garden trees
+    second: {fileID: 2100000, guid: 5691f57fae1fa9f40bfac23dd8e16523, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - wayfinding gold
+    second: {fileID: 2100000, guid: a20156726df86eb4eb4c9bf08965d6cb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - wayfinding gold left
+    second: {fileID: 2100000, guid: 90963616ad8099441b510176e3f3b834, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - wayfinding gold right
+    second: {fileID: 2100000, guid: 8fe4820597fb00b458ce8aa8e0b8835e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - wayfinding gold up
+    second: {fileID: 2100000, guid: f6ada698fa93bc641ae6ef39a784c11e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - wayfinding rose
+    second: {fileID: 2100000, guid: 5049a5937321aba4583bc0c87fe2fdc4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - wayfinding rose left
+    second: {fileID: 2100000, guid: 3b456ef0b3532164ea7540f191c3f5e2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - wayfinding rose right
+    second: {fileID: 2100000, guid: 034ee3f5faf4ffc4ca087a020b55ed5a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - wayfinding rose up
+    second: {fileID: 2100000, guid: 6ade192232572e04384b415bfe037ed4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - wayfinding shamrock
+    second: {fileID: 2100000, guid: 07648ab459cedd1439120c8c1d19eaa3, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -37,8 +157,23 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - wayfinding shamrock text
+    second: {fileID: 2100000, guid: d8981c4f2dd0efd4491f863f550d37a7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: store - black
     second: {fileID: 2100000, guid: 591ca2735c1599d49b27414e4392587c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - dark smoky mirror
+    second: {fileID: 2100000, guid: 871d4bfa716d4754080dd171cd55d8e2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: store - very dark grey
+    second: {fileID: 2100000, guid: c3b6ade868cc3a04ba327b7cfcaab42e, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -99,13 +234,13 @@ ModelImporter:
     secondaryUVPackMargin: 64
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
+    normalSmoothAngle: 15
     normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
-    normalSmoothingSource: 0
+    normalSmoothingSource: 2
   referencedClips: []
   importAnimation: 1
   copyAvatar: 0
