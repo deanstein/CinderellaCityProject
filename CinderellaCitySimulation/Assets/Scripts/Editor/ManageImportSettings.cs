@@ -542,6 +542,8 @@ public class ManageImportSettings
                 return 3.25f;
             case string name when name.Contains("directory white"):
                 return -1.1f;
+            case string name when name.Contains("directory - "):
+                return 0.4f;
             case string name when name.Contains("display case"):
                 return 2.0f;
             case string name when name.Contains("exterior white"):
@@ -574,8 +576,6 @@ public class ManageImportSettings
                 return 3.5f;
             case string name when name.Contains("very low intensity white"):
                 return -1.0f;
-            case string name when name.Contains("wayfinding directory"):
-                return 1.0f;
             // stores
             case string name when name.Contains("americana shop"):
                 return -2.0f;
