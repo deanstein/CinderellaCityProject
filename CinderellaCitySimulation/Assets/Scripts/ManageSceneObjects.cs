@@ -396,6 +396,7 @@ public static class ObjectVisibilityGlobals
     public static string[] roofObjectKeywords = { "mall-roof" };
     public static string[] signageObjectKeywords = { "mall-signage" };
     public static string[] speakerObjectKeywords = { "speakers" };
+    public static string[] wayfindingObjectKeywords = { "mall-wayfinding" };
 
     public static string[] peopleObjectKeywords = { "proxy-people" };
     public static string[] blockerObjectKeywords = { "proxy-blocker-npc" };
