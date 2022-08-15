@@ -69,6 +69,7 @@ public class UIGlobals
     /// sizes ///
 
     // fonts and text sizes
+    public static string groupHeaderFont = "AvenirNextLTPro-Bold";
     public static string labelFont = "AvenirNextLTPro-Demi";
     // the proportion of the text height that the descender is estimated to be
     public static float textDescenderProportion = 0.12f;
@@ -714,7 +715,8 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // add the credits group label
         GameObject groupLabel = new GameObject("CreditsGroupLabel");
         Text groupLabelText = groupLabel.AddComponent<Text>();
-        groupLabelText.font = (Font)Resources.Load(UIGlobals.labelFont);
+        groupLabelText.font = (Font)Resources.Load(UIGlobals.groupHeaderFont);
+        groupLabelText.fontStyle = FontStyle.Bold;
         groupLabelText.text = creditsGroupLabel;
         groupLabelText.fontSize = ConvertFontHeightRatioToPixelValue(UIGlobals.toggleGroupLabelSize);
         groupLabelText.alignment = TextAnchor.UpperLeft;
