@@ -9,7 +9,7 @@ using System.Collections.Generic;
 public static class HoistSceneGlobals
 {
     // the space interval used to hoist each scene vertically to avoid levels sharing the same space
-    public static float hoistInterval = 30f;
+    public static float hoistInterval = 90f;
 }
 
 public class HoistSceneObjects : MonoBehaviour
