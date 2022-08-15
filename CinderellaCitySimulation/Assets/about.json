@@ -6,6 +6,7 @@
           "Environment Updates": [
             "Added chairs and umbrellas to 80s90s food court",
             "Added entrance and storefront details to Woolworth's lower garage entrance and surrounding areas outside of Shamrock Mall in both eras",
+            "Added Hatch's Gifts to 60s70s Rose and Gold Malls",
             "Added Pet City to 60s70s Shamrock Mall",
             "Added the Greater Englewood Chamber of Commerce signage to north side of 80s90s Gold Mall",
             "Added basic layout elements to Chick-Fil-A in 80s90s Food Court",
@@ -16,6 +17,7 @@
             "Added new store details to Stuart's in 60s70s",
             "Added signage and new details to Hatch's Gifts in 60s70s Rose Mall",
             "Added 'Plus Computer Center' to 80s90s Radio Shack exterior signage",
+            "Added photo-based images of floor plans and advertisements to in-mall directories",
             "Enhanced brick floor, planter, and column materials in 80s90s Shamrock Mall, Food Court, and Cinder Alley",
             "Enhanced the wood parquet flooring in 80s90s",
             "Enhanced the textures on certain stores, including Zeezo's Magic Castle and Orange Julius in 80s90s",
@@ -29,7 +31,8 @@
             "Fixed missing lights in Tobaccoland and Mile Hi Hobbies in 80s90s"
           ],
           "UI Updates": [
-            ""
+            "Added bold to the Credits screen group headers",
+            "Updated the Credits screen collaborator list"
           ],
           "Code Updates": [
             ""
