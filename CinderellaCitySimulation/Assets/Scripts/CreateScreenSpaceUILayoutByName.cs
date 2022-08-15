@@ -474,9 +474,9 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         visibilityToggles.Add(signageVisibilityToggle);
 
         GameObject wayfindingVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, signageVisibilityToggle, "Mall: Wayfinding", ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.wayfindingObjectKeywords));
-        visibilityToggles.Add(signageVisibilityToggle);
+        visibilityToggles.Add(wayfindingVisibilityToggle);
 
-        GameObject peopleVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, signageVisibilityToggle, "People", ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.peopleObjectKeywords));
+        GameObject peopleVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, wayfindingVisibilityToggle, "People", ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.peopleObjectKeywords));
         visibilityToggles.Add(peopleVisibilityToggle);
 
         GameObject vegetationVisibilityToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(objectVisibilityToggleGroup, peopleVisibilityToggle, "Vegetation", ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.vegetationObjectKeywords));
