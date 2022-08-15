@@ -294,7 +294,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         GameObject logoHeader = CreateScreenSpaceUIElements.CreateLogoHeader(creditsScreenCanvas);
 
         // create the title bar container
-        GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(creditsScreenCanvas, logoHeader, "Credits:", true);
+        GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(creditsScreenCanvas, logoHeader, "Credits", true);
 
         // put all credits content in a horizontal scroll area
         // and central nav container
