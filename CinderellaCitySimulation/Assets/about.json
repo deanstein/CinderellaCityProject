@@ -37,7 +37,7 @@
             "Updated the Credits screen collaborator list"
           ],
           "Code Updates": [
-            "Added the ability to toggle Guided Tour Mode (WIP",
+            "Added the ability to toggle Guided Tour Mode (WIP)",
             "Added ManageSceneObjects to unify all scene object management",
             "Migrated and refactored several functions from various sources into ManageSceneObjects",
             "Made a non-static wrapper function for toggling camera effects from different contexts"
