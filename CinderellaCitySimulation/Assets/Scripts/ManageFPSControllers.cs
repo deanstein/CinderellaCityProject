@@ -379,7 +379,7 @@ public class ManageFPSControllers : MonoBehaviour {
         CopyAgentSettings(currentAgentToCopy, newFPSAgent);
     }
 
-    // used to give the FPSController full navigation control,
+    // gives the FPSController full navigation control,
     // ending any guided tours or location adjustment agents
     public static void ToggleFPSAgentAsSibling()
     {
