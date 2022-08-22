@@ -57,8 +57,9 @@ public class UIGlobals
     // text grey
     public static Color32 subtleTextColor = new Color32(150, 150, 150, 255);
 
-    // all button colors
-    public static Color32 buttonColor = new Color32(20, 20, 20, 220);
+    // all button and toggle colors
+    public static Color32 buttonColor = new Color32(20, 20, 20, 200);
+    public static Color32 toggleContainerColor = new Color32(20, 20, 20, 120);
 
     // all nav and container colors
     public static Color32 containerColor = new Color32(50, 50, 50, 100);
@@ -789,7 +790,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         GameObject toggleColorContainer = new GameObject("ToggleContainer");
         toggleColorContainer.AddComponent<CanvasRenderer>();
         Image toggleContainerColor = toggleColorContainer.AddComponent<Image>();
-        toggleContainerColor.color = UIGlobals.containerColor;
+        toggleContainerColor.color = UIGlobals.toggleContainerColor;
 
         // position the toggle container
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(toggleColorContainer, topAlignmentObject, toggleBottomMarginScreenHeightRatio);
