@@ -31,6 +31,12 @@ public class ManageCameraActions : MonoBehaviour
         // gets the currently-active camera effect
         public static string activeCameraEffect;
 
+        // all available camera effects
+        public static string cameraEffectVaporwave = "Vaporwave";
+        public static string cameraEffectNoir = "B&W";
+        public static string cameraEffectSepia = "Sepia";
+        public static string cameraEffectDark = "Dark";
+
         //
         // thumbnail cameras - geometry-based camera objects from FormIt
         //

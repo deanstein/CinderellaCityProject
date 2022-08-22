@@ -547,12 +547,15 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         // first, create a list of toggles required for each of the object sets
         List<GameObject> cameraSettingsToggles = new List<GameObject>();
 
+        // get the script required for toggling camera effects
+        ToggleCameraActionsByInputEvent cameraEffectToggleScript = ManageFPSControllers.FPSControllerGlobals.activeFPSController ? ManageFPSControllers.FPSControllerGlobals.activeFPSController.GetComponentInChildren<ToggleCameraActionsByInputEvent>() : null;
+
         // camera mode: normal
         GameObject cameraModeNormalButton = CreateScreenSpaceUIElements.CreateTextButtonForToggleGroup("Normal Mode", cameraSettingsToggleGroup, UIVisibilityToggleGroup.transform.GetChild(0).gameObject);
         cameraSettingsToggles.Add(cameraModeNormalButton);
         cameraModeNormalButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
-           //ManageCameraActions.SetPostProcessProfile(ManageCameraActions.GetDefaultPostProcessProfileBySceneName(SceneManager.GetActiveScene().name));
+            cameraEffectToggleScript.SetCameraEffect(ManageCameraActions.GetDefaultPostProcessProfileBySceneName(SceneManager.GetActiveScene().name));
 
         });
 
@@ -561,7 +564,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         cameraSettingsToggles.Add(cameraModeVaporwaveButton);
         cameraModeVaporwaveButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
-            //StartCoroutine(ToggleCameraEffects.ToggleCameraEffectWithTransition(this.gameObject, "Vaporwave", "FlashBlack", 0.4f));
+            cameraEffectToggleScript.SetCameraEffect(ManageCameraActions.CameraActionGlobals.cameraEffectVaporwave);
 
         });
 
@@ -570,7 +573,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         cameraSettingsToggles.Add(cameraModeNoirButton);
         cameraModeNoirButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
-            //StartCoroutine(ToggleCameraEffects.ToggleCameraEffectWithTransition(this.gameObject, "Vaporwave", "FlashBlack", 0.4f));
+            cameraEffectToggleScript.SetCameraEffect(ManageCameraActions.CameraActionGlobals.cameraEffectNoir);
 
         });
 
@@ -579,7 +582,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         cameraSettingsToggles.Add(cameraModeSepiaButton);
         cameraModeSepiaButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
-            //StartCoroutine(ToggleCameraEffects.ToggleCameraEffectWithTransition(this.gameObject, "Vaporwave", "FlashBlack", 0.4f));
+            cameraEffectToggleScript.SetCameraEffect(ManageCameraActions.CameraActionGlobals.cameraEffectSepia);
 
         });
 

@@ -44,21 +44,22 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
         FirstPersonController playerFPSController = this.gameObject.transform.parent.GetComponent<FirstPersonController>();
 
         // define which effects belong to which shortcut
+        // these should be added to the Visibility Menu too
         if (Input.GetKeyDown("1"))
         {
-            StartCoroutine(ToggleCameraEffects.ToggleCameraEffectWithTransition(this.gameObject, "Vaporwave", "FlashBlack", 0.4f));
+            SetCameraEffect(ManageCameraActions.CameraActionGlobals.cameraEffectVaporwave);
         }
         else if (Input.GetKeyDown("2"))
         {
-            StartCoroutine(ToggleCameraEffects.ToggleCameraEffectWithTransition(this.gameObject, "B&W", "FlashBlack", 0.4f));
+            SetCameraEffect(ManageCameraActions.CameraActionGlobals.cameraEffectNoir);
         }
         else if (Input.GetKeyDown("3"))
         {
-            StartCoroutine(ToggleCameraEffects.ToggleCameraEffectWithTransition(this.gameObject, "Sepia", "FlashBlack", 0.4f));
+            SetCameraEffect(ManageCameraActions.CameraActionGlobals.cameraEffectSepia);
         }
         else if (Input.GetKeyDown("4"))
         {
-            StartCoroutine(ToggleCameraEffects.ToggleCameraEffectWithTransition(this.gameObject, "Dark", "FlashBlack", 0.4f));
+            SetCameraEffect(ManageCameraActions.CameraActionGlobals.cameraEffectDark);
         }
         // toggle blur on/off
         if (Input.GetKeyDown("b"))
@@ -178,6 +179,13 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
 
         EditorPrefs.SetBool(ManageCameraActions.CameraActionGlobals.screenshotModeFlag, false);
 #endif
+    }
+
+    // create a non-static void wrapper function for
+    // calling the camera effects routine from different contexts
+    public void SetCameraEffect(string effectName)
+    {
+        StartCoroutine(ToggleCameraEffects.ToggleCameraEffectWithTransition(this.gameObject, effectName, "FlashBlack", 0.4f));
     }
 }
 
