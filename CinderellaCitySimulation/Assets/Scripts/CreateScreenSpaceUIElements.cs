@@ -12,6 +12,7 @@ using UnityEngine.UI;
 /// </summary>
 
 // holds values other scripts need to access
+// TODO: this should probably go into ManageSceneUI
 public class UIGlobals
 {
     // all files accessed at run-time must be stored in a Resources folder

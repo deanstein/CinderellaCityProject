@@ -605,37 +605,32 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         List<GameObject> cameraActionButtons = new List<GameObject>();
 
         // take screenshot button
-        GameObject takeScreenshotButton = CreateScreenSpaceUIElements.CreateTextButton("Take Screenshot", UIGlobals.visibilityMenuTextButtonlabelSize, UIGlobals.menuButtonTopBottomPaddingScreenHeightRatio, UIGlobals.menuButtonScreenWidthRatio, UIGlobals.containerColor);
+        GameObject takeScreenshotButton = CreateScreenSpaceUIElements.CreateTextButtonForToggleGroup("Take Screenshot", cameraActionsButtonGroup, cameraActionsButtonGroup.transform.GetChild(0).gameObject);
+        cameraActionButtons.Add(takeScreenshotButton);
         takeScreenshotButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
             CreateScreenSpaceUIElements.CaptureScreenshotButtonAction();
 
         });
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(takeScreenshotButton, cameraSettingsToggleGroup.transform.GetChild(1).gameObject, 0.0f);
-        TransformScreenSpaceObject.PositionObjectAtVerticalCenterlineOfNeighbor(takeScreenshotButton, cameraActionsButtonGroup);
-        cameraActionButtons.Add(takeScreenshotButton);
+
 
         // save view button
-        GameObject saveViewFromClipboardButton = CreateScreenSpaceUIElements.CreateTextButton("Save View",  UIGlobals.visibilityMenuTextButtonlabelSize, UIGlobals.menuButtonTopBottomPaddingScreenHeightRatio, UIGlobals.menuButtonScreenWidthRatio, UIGlobals.containerColor);
+        GameObject saveViewFromClipboardButton = CreateScreenSpaceUIElements.CreateTextButtonForToggleGroup("Save View", cameraActionsButtonGroup, takeScreenshotButton);
+        cameraActionButtons.Add(saveViewFromClipboardButton);
         saveViewFromClipboardButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
             CreateScreenSpaceUIElements.SaveViewButtonAction();
 
-        }); ;
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(saveViewFromClipboardButton, takeScreenshotButton, UIGlobals.toggleContainerPadding);
-        TransformScreenSpaceObject.PositionObjectAtVerticalCenterlineOfNeighbor(saveViewFromClipboardButton, takeScreenshotButton);
-        cameraActionButtons.Add(saveViewFromClipboardButton);
+        });
 
         // restore view button
-        GameObject restoreViewFromClipboardButton = CreateScreenSpaceUIElements.CreateTextButton("Restore View",  UIGlobals.visibilityMenuTextButtonlabelSize, UIGlobals.menuButtonTopBottomPaddingScreenHeightRatio, UIGlobals.menuButtonScreenWidthRatio, UIGlobals.containerColor);
+        GameObject restoreViewFromClipboardButton = CreateScreenSpaceUIElements.CreateTextButtonForToggleGroup("Restore View", cameraActionsButtonGroup, saveViewFromClipboardButton);
+        cameraActionButtons.Add(restoreViewFromClipboardButton);
         restoreViewFromClipboardButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
 
             CreateScreenSpaceUIElements.RestoreViewButtonAction();
 
-        }); ;
-        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(restoreViewFromClipboardButton, saveViewFromClipboardButton, UIGlobals.toggleContainerPadding);
-        TransformScreenSpaceObject.PositionObjectAtVerticalCenterlineOfNeighbor(restoreViewFromClipboardButton, saveViewFromClipboardButton);
-        cameraActionButtons.Add(restoreViewFromClipboardButton);
+        });
 
         // now populate the object camera settings toggle group container
         CreateScreenSpaceUIElements.PopulateContentGroup(cameraActionsButtonGroup, cameraActionButtons);
