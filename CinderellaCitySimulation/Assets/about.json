@@ -31,11 +31,16 @@
             "Fixed missing lights in Tobaccoland and Mile Hi Hobbies in 80s90s"
           ],
           "UI Updates": [
-            "Added bold to the Credits screen group headers",
+            "Added the ability to toggle camera effects from the Visibility Settings menu",
+            "Updated the Credits screen group headers to use a bold font",
+            "Updated button and toggle container styling to make them more aligned",
             "Updated the Credits screen collaborator list"
           ],
           "Code Updates": [
-            ""
+            "Added the ability to toggle Guided Tour Mode (WIP",
+            "Added ManageSceneObjects to unify all scene object management",
+            "Migrated and refactored several functions from various sources into ManageSceneObjects",
+            "Made a non-static wrapper function for toggling camera effects from different contexts"
           ]
         }
       ],
