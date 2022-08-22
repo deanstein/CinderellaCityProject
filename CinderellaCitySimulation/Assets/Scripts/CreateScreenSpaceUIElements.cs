@@ -1257,6 +1257,22 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         return buttonContainer;
     }
 
+    // special button type when used in a toggle group
+    public static GameObject CreateTextButtonForToggleGroup(String buttonText, GameObject toggleGroup, GameObject topNeighbor)
+    {
+        // create the button
+        GameObject cameraModeNormalButton = CreateTextButton(buttonText, UIGlobals.visibilityMenuTextButtonlabelSize, UIGlobals.textButtonBottomMarginScreenHeightRatio, 0.2f /* gets resized later */, UIGlobals.buttonColor);
+        // position the button relative to the toggle group
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(cameraModeNormalButton, toggleGroup, -UIGlobals.textButtonLeftMarginScreenWidthRatio);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborBottom(cameraModeNormalButton, topNeighbor, UIGlobals.textButtonBottomMarginScreenHeightRatio);
+        // resize the button relative to the toggle group
+        TransformScreenSpaceObject.ResizeObjectWidthToMatchScreen(cameraModeNormalButton);
+        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromNeighborLeft(cameraModeNormalButton, toggleGroup, -UIGlobals.toggleContainerPadding);
+        TransformScreenSpaceObject.ResizeObjectWidthByScreenWidthRatioTowardRight(cameraModeNormalButton, UIGlobals.toggleContainerMaxWidthScreenWidthRatio);
+
+        return cameraModeNormalButton;
+    }
+
     // create the time label stack
     public static GameObject CreateTimeLabelStack(GameObject parent, GameObject leftAlignmentObject, string[] availableTimePeriodFriendlyNames)
     {

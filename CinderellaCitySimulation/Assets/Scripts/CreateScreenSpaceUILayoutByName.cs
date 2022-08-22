@@ -547,8 +547,44 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         // first, create a list of toggles required for each of the object sets
         List<GameObject> cameraSettingsToggles = new List<GameObject>();
 
+        // camera mode: normal
+        GameObject cameraModeNormalButton = CreateScreenSpaceUIElements.CreateTextButtonForToggleGroup("Normal Mode", cameraSettingsToggleGroup, UIVisibilityToggleGroup.transform.GetChild(0).gameObject);
+        cameraSettingsToggles.Add(cameraModeNormalButton);
+        cameraModeNormalButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
+
+           //ManageCameraActions.SetPostProcessProfile(ManageCameraActions.GetDefaultPostProcessProfileBySceneName(SceneManager.GetActiveScene().name));
+
+        });
+
+        // camera mode: vaporwave
+        GameObject cameraModeVaporwaveButton = CreateScreenSpaceUIElements.CreateTextButtonForToggleGroup("Vaporwave Mode", cameraSettingsToggleGroup, cameraModeNormalButton);
+        cameraSettingsToggles.Add(cameraModeVaporwaveButton);
+        cameraModeVaporwaveButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
+
+            //StartCoroutine(ToggleCameraEffects.ToggleCameraEffectWithTransition(this.gameObject, "Vaporwave", "FlashBlack", 0.4f));
+
+        });
+
+        // camera mode: black and white / noir
+        GameObject cameraModeNoirButton = CreateScreenSpaceUIElements.CreateTextButtonForToggleGroup("Noir Mode", cameraSettingsToggleGroup, cameraModeVaporwaveButton);
+        cameraSettingsToggles.Add(cameraModeNoirButton);
+        cameraModeNoirButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
+
+            //StartCoroutine(ToggleCameraEffects.ToggleCameraEffectWithTransition(this.gameObject, "Vaporwave", "FlashBlack", 0.4f));
+
+        });
+
+        // camera mode: sepia
+        GameObject cameraModeSepiaButton = CreateScreenSpaceUIElements.CreateTextButtonForToggleGroup("Sepia Mode", cameraSettingsToggleGroup, cameraModeNoirButton);
+        cameraSettingsToggles.Add(cameraModeSepiaButton);
+        cameraModeSepiaButton.GetComponentInChildren<Button>().onClick.AddListener(() => {
+
+            //StartCoroutine(ToggleCameraEffects.ToggleCameraEffectWithTransition(this.gameObject, "Vaporwave", "FlashBlack", 0.4f));
+
+        });
+
         // occlusion culling
-        GameObject occlusionCullingToggle = CreateScreenSpaceUIElements.CreateToggleModule(cameraSettingsToggleGroup, UIVisibilityToggleGroup.transform.GetChild(0).gameObject, "Occlusion Culling");
+        GameObject occlusionCullingToggle = CreateScreenSpaceUIElements.CreateToggleModule(cameraSettingsToggleGroup, cameraModeSepiaButton.gameObject, "Occlusion Culling");
         CreateScreenSpaceUIElements.ConfigureTypicalToggle(occlusionCullingToggle, ManageCameraActions.ToggleCurrentCameraOcclusionCullingState, ManageCameraActions.GetCurrentCameraOcclusionCullingState());
         cameraSettingsToggles.Add(occlusionCullingToggle);
 
@@ -571,7 +607,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
 
             CreateScreenSpaceUIElements.CaptureScreenshotButtonAction();
 
-        }); ;
+        });
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromNeighborTop(takeScreenshotButton, cameraSettingsToggleGroup.transform.GetChild(1).gameObject, 0.0f);
         TransformScreenSpaceObject.PositionObjectAtVerticalCenterlineOfNeighbor(takeScreenshotButton, cameraActionsButtonGroup);
         cameraActionButtons.Add(takeScreenshotButton);
