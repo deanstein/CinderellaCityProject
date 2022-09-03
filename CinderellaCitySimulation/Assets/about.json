@@ -1,7 +1,7 @@
 {
   "VersionHistory": [
     {
-      "0.7.3.202208": [
+      "0.7.3.202209": [
         {    
           "Environment Updates": [
             "Added chairs and umbrellas to 80s90s food court",
@@ -17,7 +17,9 @@
             "Added new store details to Stuart's in 60s70s",
             "Added signage and new details to Hatch's Gifts in 60s70s Rose Mall",
             "Added 'Plus Computer Center' to 80s90s Radio Shack exterior signage",
-            "Added photo-based images of floor plans and advertisements to in-mall directories",
+            "Added photo-based images of floor plans to directories in 60s70s and 80s90s",
+            "Added photo-based advertisements to directories in 80s90s",
+            "Added additional 3-sided directories to 80s90s",
             "Enhanced brick floor, planter, and column materials in 80s90s Shamrock Mall, Food Court, and Cinder Alley",
             "Enhanced the wood parquet flooring in 80s90s",
             "Enhanced the textures on certain stores, including Zeezo's Magic Castle and Orange Julius in 80s90s",
