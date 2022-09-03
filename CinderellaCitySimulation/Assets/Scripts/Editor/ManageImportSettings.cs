@@ -543,7 +543,7 @@ public class ManageImportSettings
             case string name when name.Contains("directory white"):
                 return -1.1f;
             case string name when name.Contains("directory - "):
-                return 0.4f;
+                return 0.35f;
             case string name when name.Contains("display case"):
                 return 2.0f;
             case string name when name.Contains("exterior white"):
@@ -596,6 +596,8 @@ public class ManageImportSettings
             case string name when name.Contains("penney's white"):
                 return 0.7f;
             case string name when name.Contains("store yellowing"):
+                return -0.50f;
+            case string name when name.Contains("stuart's chandelier"):
                 return -0.50f;
             case string name when name.Contains("woolworth's red"):
                 return -1.0f;
