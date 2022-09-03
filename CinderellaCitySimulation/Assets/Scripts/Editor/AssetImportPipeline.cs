@@ -744,15 +744,18 @@ public class AssetImportUpdate : AssetPostprocessor {
         {
             if (child.GetComponent<Renderer>())
             {
-                // ensure objects painted with a material indicating non-static don't get static flags
-                if (child.GetComponent<Renderer>().sharedMaterial.name.Contains("non-static"))
+                if (child.GetComponent<Renderer>().sharedMaterial)
                 {
-                    GameObjectUtility.SetStaticEditorFlags(child.gameObject, 0);
-                }
-                else
-                {
-                    GameObjectUtility.SetStaticEditorFlags(child.gameObject, staticFlags);
-                }
+                    // ensure objects painted with a material indicating non-static don't get static flags
+                    if (child.GetComponent<Renderer>().sharedMaterial.name.Contains("non-static"))
+                    {
+                        GameObjectUtility.SetStaticEditorFlags(child.gameObject, 0);
+                    }
+                    else
+                    {
+                        GameObjectUtility.SetStaticEditorFlags(child.gameObject, staticFlags);
+                    }
+                }            
             }
             else
             {
