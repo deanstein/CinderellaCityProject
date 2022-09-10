@@ -591,6 +591,8 @@ public class ManageImportSettings
                 return -2.0f;
             case string name when name.Contains("neusteters brown"):
                 return -0.2f;
+            case string name when name.Contains("orange julius orange"):
+                return -1.2f;
             case string name when name.Contains("no illumination"):
                 return -2.0f;
             case string name when name.Contains("penney's white"):
@@ -598,7 +600,7 @@ public class ManageImportSettings
             case string name when name.Contains("store yellowing"):
                 return -0.50f;
             case string name when name.Contains("stuart's chandelier"):
-                return -0.50f;
+                return -0.20f;
             case string name when name.Contains("woolworth's red"):
                 return -1.0f;
             // store sign graphics
@@ -627,7 +629,9 @@ public class ManageImportSettings
             // specific materials
             case string name when name.Contains("blue mall hanging planter orange"):
                 return 0f;
-            case string name when name.Contains("mall - shamrock floor brick"):
+            case string name when name.Contains("mall - shamrock floor brick")
+                || name.Contains("mall - food court central ring brick")
+                || name.Contains("mall - food court herringbone brick"):
                 return 0.14f;
             // if not specified, return -1 to indicate to calling functions that
             // this material is not intended to have a custom metallic value
@@ -663,11 +667,13 @@ public class ManageImportSettings
             case string name when name.Contains("mall - polished concrete"):
                 return 0.45f;
             case string name when name.Contains("mall - polished concrete cinder alley")
-            || name.Contains("mall - cinder alley scored concrete"):
+                || name.Contains("mall - cinder alley scored concrete"):
                 return 0.27f;
             case string name when name.Contains("mall - polished concrete"):
                 return 0.45f;
-            case string name when name.Contains("mall - shamrock floor brick"):
+            case string name when name.Contains("mall - shamrock floor brick")
+                || name.Contains("mall - food court central ring brick")
+                || name.Contains("mall - food court herringbone brick"):
                 return 0.35f;
             case string name when name.Contains("mall - shamrock planter brick"):
                 return 0.075f;
