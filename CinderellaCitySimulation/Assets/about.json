@@ -1,6 +1,25 @@
 {
   "VersionHistory": [
     {
+      "0.7.4.202209": [
+        {    
+          "Environment Updates": [
+            "Added The Banque, Fashion Conspiracy, and Topps & Trowsers to 60s70s Gold Mall",
+            "Added vegetation to 80s90s Food Court central ring and outer floor planting areas",
+            "Added vegetation to outdoor planters in 80s90s",
+            "Improved 80s90s Food Court umbrellas by moving them to a scene object that gets light calculations",
+            "Improved 80s90s Orange Julius oranges by moving them into a scene object that gets light emission and adding emission to brighten them",
+            "Improved 80s90s Food Court beige tile texture by brightening grout and increasing texture extents",
+            "Fixed issues with the connection between the ceiling and storefront in 60s70s Stuart's"
+          ],
+          "UI Updates": [
+            ""
+          ],
+          "Code Updates": [
+            "Added specular import settings for 80s90s directory base material"
+          ]
+        }
+      ],
       "0.7.3.202209": [
         {    
           "Environment Updates": [
@@ -22,7 +41,8 @@
             "Added additional 3-sided directories to 80s90s",
             "Enhanced brick floor, planter, and column materials in 80s90s Shamrock Mall, Food Court, and Cinder Alley",
             "Enhanced the wood parquet flooring in 80s90s",
-            "Enhanced the textures on certain stores, including Zeezo's Magic Castle and Orange Julius in 80s90s",
+            "Enhanced the textures on certain stores, including Zeezo's Magic Castle, Cookie Co., and Orange Julius in 80s90s",
+            "Enhanced the food court tile texture in 80s90s",
             "Reduced the size of some historic photographs",
             "Fixed inaccuracies with Denver Dry Goods and Montgomery Wards entrances in both eras",
             "Fixed inaccuracies with windows and doors on the exterior of north Gold Mall in both eras",
@@ -42,7 +62,8 @@
             "Added the ability to toggle Guided Tour Mode (WIP)",
             "Added ManageSceneObjects to unify all scene object management",
             "Migrated and refactored several functions from various sources into ManageSceneObjects",
-            "Made a non-static wrapper function for toggling camera effects from different contexts"
+            "Made a non-static wrapper function for toggling camera effects from different contexts",
+            "Updated hoist interval from 30m to 90m"
           ]
         }
       ],
