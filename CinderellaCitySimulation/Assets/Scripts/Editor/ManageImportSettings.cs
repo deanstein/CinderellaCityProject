@@ -701,7 +701,8 @@ public class ManageImportSettings
                 return 0;
             case string name when name.Contains("brick - painted white aged")
             || name.Contains("concrete - foundation wall")
-            || name.Contains("mall - cmu"):
+            || name.Contains("mall - cmu")
+            || name.Contains("mall - directory base"):
                 return 5;
             case string name when name.Contains("mall - upper asphalt"):
                 return 20;
