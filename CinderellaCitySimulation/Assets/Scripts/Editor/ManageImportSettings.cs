@@ -542,8 +542,10 @@ public class ManageImportSettings
                 return 3.25f;
             case string name when name.Contains("directory white"):
                 return -1.1f;
+            case string name when name.Contains("directory 60s70s - "):
+                return -1.25f;
             case string name when name.Contains("directory - "):
-                return 0.35f;
+                return 0.25f;
             case string name when name.Contains("display case"):
                 return 2.0f;
             case string name when name.Contains("exterior white"):
