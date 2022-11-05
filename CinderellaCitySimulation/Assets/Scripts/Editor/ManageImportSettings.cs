@@ -1,4 +1,4 @@
-﻿using UnityEditor;
+using UnityEditor;
 
 /// <summary>
 /// Contains import settings for various importable files, used by AssetImportPipeline to apply certain settings to certain files
@@ -597,16 +597,21 @@ public class ManageImportSettings
                 return -2.0f;
             case string name when name.Contains("penney's white"):
                 return 0.7f;
+            case string name when name.Contains("robin hood corner metal"):
+                return -10.0f;
+            case string name when name.Contains("store high intensity"):
+                return 2.25f;
             case string name when name.Contains("store yellowing"):
                 return -0.50f;
             case string name when name.Contains("stuart's chandelier"):
-                return -0.20f;
+                return 0.1f;
             case string name when name.Contains("woolworth's red"):
                 return -1.0f;
             // store sign graphics
             case string name when name.Contains("store rtc sign")
             || name.Contains("store fl runner")
-            || name.Contains("rich burger icon"):
+            || name.Contains("rich burger icon")
+            || name.Contains("Wendy's icon"):
                 return -1.0f;
             // artwork - gets a small amount of illumination so it doesn't appear dim
             case string name when name.Contains("artwork"):
@@ -633,6 +638,10 @@ public class ManageImportSettings
                 || name.Contains("mall - food court central ring brick")
                 || name.Contains("mall - food court herringbone brick"):
                 return 0.14f;
+            case string name when name.Contains("mirror"):
+                return 1f;
+            case string name when name.Contains("robin hood corner metal"):
+                return 0.25f;
             // if not specified, return -1 to indicate to calling functions that
             // this material is not intended to have a custom metallic value
             default:
