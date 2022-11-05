@@ -1,4 +1,4 @@
-using UnityEditor;
+﻿using UnityEditor;
 
 /// <summary>
 /// Contains import settings for various importable files, used by AssetImportPipeline to apply certain settings to certain files
@@ -438,11 +438,14 @@ public class ManageImportSettings
             case string name when name.Contains("mall-lights")
             || name.Contains("signage"):
                 return 10f;
+            case string name when name.Contains("store-detailing"):
+                return 6f;
             case string name when name.Contains("detailing-interior")
             || name.Contains("detailing-exterior"):
                 return 5f;
             case string name when name.Contains("mall-ceilings")
-            || name.Contains("store-detailing"):
+            || name.Contains("doors")
+            || name.Contains("windows"):
                 return 4f;
             case string name when name.Contains("floors-vert")
             || name.Contains("site-curb-gutter-sidewalk-vert")
@@ -450,14 +453,12 @@ public class ManageImportSettings
             || name.Contains("site-structure")
             || name.Contains("structure-exposed"):
                 return 3f;
-            case string name when name.Contains("doors")
-            || name.Contains("windows"):
-                return 2f;
             case string name when name.Contains("walls-interior")
             || name.Contains("store-ceilings")
             || name.Contains("store-floors")
-            || name.Contains("store-lights")
-            || name.Contains("site-parking-surface"):
+            || name.Contains("store-lights"):
+                return 1f;
+            case string name when name.Contains("site-parking-surface"):
                 return 0.5f;
             case string name when name.Contains("roof") 
             || name.Contains("site-context-buildings")
