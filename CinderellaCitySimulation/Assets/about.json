@@ -1,19 +1,22 @@
 {
   "VersionHistory": [
     {
-      "0.7.4.202210": [
+      "0.7.4.202211": [
         {    
           "Environment Updates": [
-            "Added The Banque, Columbus, Double Up, Kinney Shoes, Fashion Conspiracy, and Topps & Trowsers to 60s70s Gold Mall",
-            "Added signage and storefront details to Pier 1 Imports, Community Finance, and Bosworth-Sullivan signage at the exterior of 60s70s Blue Mall",
-            "Added Wendy's and Sakura to 80s90s Food Court",
-            "Added benches to 80s90s Food Court",
+            "Added The Banque, Columbus, Double Up, Kinney Shoes, Fashion Conspiracy, Rug Crafters, and Topps & Trowsers to 60s70s Gold Mall",
+            "Added signage and storefront details to Pier 1 Imports, Bosworth-Sullivan, Veldkamp's Flowers, and Community Finance at the exterior of 60s70s Blue Mall",
+            "Added exterior signage for Famous Footwear, K-G Men's Store, Lerner's, and Meek's Luggage on the east side of 80s90s Rose Mall",
+            "Added Renzios, Sakura, and Wendy's 80s90s Food Court",
+            "Added details on Paul Wu's storefront details in 80s90s Food Court",
+            "Added benches to the 80s90s Food Court",
             "Added vegetation to 80s90s Food Court central ring and outer floor planting areas",
             "Added vegetation to outdoor planters in 80s90s",
-            "Added roll-up gate recessed wall detail to all built Food Court tenants",
+            "Added roll-up gate recessed wall details and corner protectors to all 80s90s Food Court tenants",
+            "Added missing trash cans and inner-circle planters to the 80s90s Food Court",
             "Added missing handrails to 80s90s Food Court stairs near Wendy's",
-            "Added details on Paul Wu's storefront details in 80s90s Food Court",
             "Added back rooms and hallways to Food Court service areas, including floor materials, ceilings, lights, and doors",
+            "Added wayfinding signage at Rose Mall's southeast entrance for Gart Brothers and Meek's in both 60s70s and 80s90s",
             "Improved 60s70s Robin Hood restaurant detailing based on new photos",
             "Improved 80s90s Food Court umbrellas by moving them to a scene object that gets light calculations",
             "Improved 80s90s Orange Julius oranges by moving them into a scene object that gets light emission and adding emission to brighten them",
@@ -26,8 +29,10 @@
             "Fixed rendering issues with the 80s90s mall common floors due to very large surfaces",
             "Fixed rendering issues with the 60s70s and 80s90s Shamrock Mall ceilings due to very large surfaces",
             "Fixed geometry issues with the connection between the ceiling and storefront in 60s70s Stuart's",
+            "Fixed accuracy issues with food court marquee light spacing along perimeter, and transitioned legacy lights to Dynamo-based lights",
             "Fixed accuracy issues with Sbarro's middle storefront pilaster in 80s90s Food Court",
-            "Fixed accuracy issues with 60s70s Blue Mall floors and furniture"
+            "Fixed accuracy issues with 60s70s Blue Mall floors and furniture",
+            "Fixed accuracy issues with the Woolworth's signage in both 60s70s and 80s90s"
           ],
           "UI Updates": [
             ""
