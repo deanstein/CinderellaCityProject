@@ -72,7 +72,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
     // post-processing seems to repeat itself a lot, so set a max and keep track of how many times
     // note that if an object was just instantiated in the scene, this max hit value gets incremented by 1
-    static int globalMaxPostProcessingHits = 2;
+    static int globalMaxPostProcessingHits = 3;
     static List<bool> postProcessingHits = new List<bool>();
 
     // set up callbacks
