@@ -1,4 +1,4 @@
-using UnityEditor;
+﻿using UnityEditor;
 
 /// <summary>
 /// Contains import settings for various importable files, used by AssetImportPipeline to apply certain settings to certain files
@@ -65,7 +65,6 @@ public class ManageImportSettings
             || assetOrModelName.Contains("walls-interior")
             // stores
             || assetOrModelName.Contains("store-ceilings")
-            || assetOrModelName.Contains("store-detailing")
             || assetOrModelName.Contains("store-floors")
             // site
             || assetOrModelName.Contains("site-context-buildings")
@@ -88,6 +87,22 @@ public class ManageImportSettings
                 return ImportParams;
 
             /// special-cased building elements
+
+            // select storefronts have emissive elements not included in lights
+            case string assetOrModelName when assetOrModelName.Contains("store-detailing"):
+                // pre-processor option flags
+                ImportParams.doSetGlobalScale = true; // always true
+                ImportParams.doInstantiateAndPlaceInCurrentScene = true;
+                ImportParams.doSetColliderActive = true;
+                ImportParams.doSetUVActiveAndConfigure = true;
+                ImportParams.doDeleteReimportMaterialsTextures = true;
+                ImportParams.doAddBehaviorComponents = false;
+                // post-processor option flags
+                ImportParams.doSetMaterialEmission = true; // necessary in some cases
+                ImportParams.doSetMaterialSmoothnessMetallic = true;
+                ImportParams.doInstantiateProxyReplacements = false;
+                ImportParams.doHideProxyObjects = false;
+                return ImportParams;
 
             case string assetOrModelName when assetOrModelName.Contains("doors-exterior")
             || assetOrModelName.Contains("doors-windows-interior")
@@ -573,6 +588,8 @@ public class ManageImportSettings
             case string name when name.Contains("low intensity white")
             && !name.Contains("very"):
                 return 1.0f;
+            case string name when name.Contains("menu"):
+                return -1.0f;
             case string name when name.Contains("mid-mod exterior fixture"):
                 return 0f;
             case string name when name.Contains("very high intensity sodium"):
