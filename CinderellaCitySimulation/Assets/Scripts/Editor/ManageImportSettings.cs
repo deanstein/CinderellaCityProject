@@ -1,4 +1,4 @@
-﻿using UnityEditor;
+using UnityEditor;
 
 /// <summary>
 /// Contains import settings for various importable files, used by AssetImportPipeline to apply certain settings to certain files
@@ -111,7 +111,7 @@ public class ManageImportSettings
                 // pre-processor option flags
                 ImportParams.doSetGlobalScale = true; // always true
                 ImportParams.doInstantiateAndPlaceInCurrentScene = true;
-                ImportParams.doSetColliderActive = true;
+                ImportParams.doSetColliderActive = false;
                 ImportParams.doSetUVActiveAndConfigure = true;
                 ImportParams.doDeleteReimportMaterialsTextures = true;
                 ImportParams.doAddBehaviorComponents = false;
