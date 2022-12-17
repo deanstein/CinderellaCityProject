@@ -619,6 +619,8 @@ public class ManageImportSettings
                 return 0.7f;
             case string name when name.Contains("robin hood corner metal"):
                 return -10.0f;
+            case string name when name.Contains("sbarro neon"):
+                return 1.5f;
             case string name when name.Contains("store high intensity"):
                 return 2.25f;
             case string name when name.Contains("store yellowing"):
