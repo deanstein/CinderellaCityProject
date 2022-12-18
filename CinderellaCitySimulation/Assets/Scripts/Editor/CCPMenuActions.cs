@@ -169,6 +169,22 @@ public class CCPMenuActions : MonoBehaviour
         ManageSceneObjects.ProxyObjects.ToggleProxyHostReplacementsToState(parentObject, false, true);
     }
 
+    [MenuItem("Cinderella City Project/Object State/Toggle Thumbnail Camera Meshes ON")]
+    public static void ToggleThumbnailCameraMeshesOn()
+    {
+        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.thumbnailCameraObjectKeywords[0])[0];
+
+        ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(parentObject, true, false);
+    }
+
+    [MenuItem("Cinderella City Project/Object State/Toggle Thumbnail Camera Meshes OFF")]
+    public static void ToggleThumbnailCameraMeshesOff()
+    {
+        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.thumbnailCameraObjectKeywords[0])[0];
+
+        ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(parentObject, false, false);
+    }
+
     [MenuItem("Cinderella City Project/Object State/Toggle Historic Photo Meshes ON")]
     public static void ToggleHistoricPhotoMeshesOn()
     {
