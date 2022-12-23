@@ -728,14 +728,16 @@ public class ManageImportSettings
             || name.Contains("concrete - cast unpainted")
             || name.Contains("concrete - sidewalk")
             || name.Contains("site-structure")
-            || name.Contains("railing paint color"):
+            || name.Contains("railing paint color")
+            || name.Contains("701 offices"):
                 return 0;
             case string name when name.Contains("brick - painted white aged")
             || name.Contains("concrete - foundation wall")
             || name.Contains("mall - cmu")
             || name.Contains("mall - directory base"):
                 return 5;
-            case string name when name.Contains("mall - upper asphalt"):
+            case string name when name.Contains("mall - upper asphalt")
+            || name.Contains("mall - shamrock planter brick"):
                 return 20;
             case string name when name.Contains("acoustic tile")
             || name.Contains("anchor smooth accent")
