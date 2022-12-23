@@ -727,8 +727,9 @@ public class ManageImportSettings
             case string name when name.Contains("concrete - cast white")
             || name.Contains("concrete - cast unpainted")
             || name.Contains("concrete - sidewalk")
-            || name.Contains("site-structure")
+            || name.Contains("mall - carpet rose")
             || name.Contains("railing paint color")
+            || name.Contains("site-structure")
             || name.Contains("701 offices"):
                 return 0;
             case string name when name.Contains("brick - painted white aged")
