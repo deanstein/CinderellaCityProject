@@ -59,6 +59,15 @@ public class FollowPathOnNavMesh : MonoBehaviour
             // record this NPC and its position for other scripts to reference later
             NPCControllerGlobals.activeNPCControllersList.Add(this.gameObject);
             NPCControllerGlobals.initialNPCPositionsList.Add(this.transform.position);
+
+            // turn off the mesh collider
+            // for some reason, this is now required to avoid a regression in v0.7.4
+            // where NPCs would no longer be consistently pushable by the player
+            MeshCollider[] meshCollidersInChildren = this.GetComponentsInChildren<MeshCollider>(true);
+            if (meshCollidersInChildren.Length > 0)
+            {
+                meshCollidersInChildren[0].enabled = false;
+            }
         }
         else
         {
