@@ -153,6 +153,22 @@ public class CCPMenuActions : MonoBehaviour
         ManageSceneObjects.ProxyObjects.ToggleProxyHostReplacementsToState(parentObject, false, true);
     }
 
+    [MenuItem("Cinderella City Project/Object State/Toggle Proxy Blocker NPC Meshes ON")]
+    public static void ToggleProxyBlockerNPCMeshesOn()
+    {
+        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.blockerObjectKeywords[0])[0];
+
+        ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(parentObject, true, false);
+    }
+
+    [MenuItem("Cinderella City Project/Object State/Toggle Proxy Blocker NPC Meshes OFF")]
+    public static void ToggleProxyBlockerNPCMeshesOff()
+    {
+        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.blockerObjectKeywords[0])[0];
+
+        ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(parentObject, false, false);
+    }
+
     [MenuItem("Cinderella City Project/Object State/Toggle Vegetation Replacements ON")]
     public static void ToggleVegetationReplacementsOn()
     {
