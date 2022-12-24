@@ -19,6 +19,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: mall - floor trim
     second: {fileID: 2100000, guid: d36e2b7772dc56444bdbad30390087c7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - floor trim brown
+    second: {fileID: 2100000, guid: 9f4245efbafee1e4ea9b56af70e6be41, type: 2}
   materials:
     importMaterials: 1
     materialName: 1
@@ -74,13 +79,13 @@ ModelImporter:
     secondaryUVPackMargin: 64
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
+    normalSmoothAngle: 15
     normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
-    normalSmoothingSource: 0
+    normalSmoothingSource: 2
   referencedClips: []
   importAnimation: 1
   copyAvatar: 0
