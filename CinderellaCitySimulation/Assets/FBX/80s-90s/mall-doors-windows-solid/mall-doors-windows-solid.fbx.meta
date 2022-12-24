@@ -62,6 +62,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - silver door hadware
+    second: {fileID: 2100000, guid: d20cfc275b558e64caea308f0676c4be, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - stucco
     second: {fileID: 2100000, guid: 61dd29d6ca45b0e4787107e6bfb50150, type: 2}
   - first:
@@ -146,7 +151,7 @@ ModelImporter:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
-    addColliders: 1
+    addColliders: 0
     useSRGBMaterialColor: 1
     importVisibility: 1
     importBlendShapes: 1

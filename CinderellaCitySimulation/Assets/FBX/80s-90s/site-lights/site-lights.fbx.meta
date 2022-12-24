@@ -22,6 +22,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: LIGHT - mid mod exterior fixture
+    second: {fileID: 2100000, guid: 466e9ac600d366d438b36f251280d0be, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: LIGHT - store - white
     second: {fileID: 2100000, guid: 14d69206a54689e4eab98d3024a0e783, type: 2}
   - first:
@@ -54,6 +59,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: railing paint color
     second: {fileID: 2100000, guid: 47531c375d5ef7a4d9ec5c7fdd3d1d33, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: silver metallic
+    second: {fileID: 2100000, guid: 998fe86a1febe784b94b4f7311a00d35, type: 2}
   materials:
     importMaterials: 1
     materialName: 1
@@ -109,13 +119,13 @@ ModelImporter:
     secondaryUVPackMargin: 64
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
+    normalSmoothAngle: 15
     normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
-    normalSmoothingSource: 3
+    normalSmoothingSource: 2
   referencedClips: []
   importAnimation: 1
   copyAvatar: 0
