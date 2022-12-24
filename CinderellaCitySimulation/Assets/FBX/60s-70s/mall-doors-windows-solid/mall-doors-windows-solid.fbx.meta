@@ -27,6 +27,16 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - 60s rose dark
+    second: {fileID: 2100000, guid: 3e797909087c7f940b88b3f1a69ea5d6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - 60s spandrel
+    second: {fileID: 2100000, guid: 2be3b3393fb27af479a778444aa50836, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - 80s metal trim
     second: {fileID: 2100000, guid: 57be83abf21d931468cee3b5d1b6ebde, type: 2}
   - first:
@@ -49,6 +59,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: mall - food court beige
     second: {fileID: 2100000, guid: 5f1b15e34dfd43845a0decab716370d8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - silver door hadware
+    second: {fileID: 2100000, guid: 6a7a5709aa63fd149b21eda4640acd22, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -121,7 +136,7 @@ ModelImporter:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
-    addColliders: 1
+    addColliders: 0
     useSRGBMaterialColor: 1
     importVisibility: 1
     importBlendShapes: 1
