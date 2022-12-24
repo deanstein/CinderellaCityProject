@@ -1,7 +1,7 @@
 {
   "VersionHistory": [
     {
-      "0.7.4.202211": [
+      "0.7.4.202212": [
         {    
           "Environment Updates": [
             "Added The Banque, Columbus, Double Up, Kinney Shoes, Fashion Conspiracy, Rug Crafters, and Topps & Trowsers to 60s70s Gold Mall",
@@ -22,6 +22,8 @@
             "Improved 80s90s Orange Julius oranges by moving them into a scene object that gets light emission and adding emission to brighten them",
             "Improved 80s90s Food Court beige tile texture by brightening grout and increasing texture extents",
             "Improved variety of plants in all 80s90s planters",
+            "Converted Sbarro and Musicland signage to neon-based outlines in 80s90s",
+            "Updated Main Menu thumbnails, including adjusting position of Food Court, Gold Mall, Shamrock Mall, and Cinder Alley southwest entrance to improve camera angles in 80s90s",
             "Fixed unfinished 60s70s Blue Mall staircase detailing and positioning at garage lobby",
             "Fixed outdated and misaligned Joslins ceiling in 60s70s and 80s90s",
             "Fixed an issue where the 80s90s Shamrock Mall floor texture was stretched and rotated",
@@ -38,9 +40,12 @@
             ""
           ],
           "Code Updates": [
+            "Added missing occludee/occluder support to existing static flags rules, which should generally improve runtime performance",
+            "Added the ability to toggle additional proxy replacements and meshes",
             "Added specular, emission, and metallic support for select new materials",
-            "Increased metallic quality for metal and glass surfaces",
-            "Increased lightmap resolution for store detailing, store floors, store ceilings, interior walls, and doors/windows"
+            "Set solid doors and windows to not occlude, allowing for backroom exploration without incorrect occluding",
+            "Increased metallic quality for all metal and glass surfaces",
+            "Decreased lightmap resolution for certain elements to paradoxically improve lightmap results"
           ]
         }
       ],
