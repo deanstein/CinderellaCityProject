@@ -416,6 +416,7 @@ public class ManageImportSettings
         switch (assetName)
         {
             // no static editor flags
+            // except occludee/occluder, which are required for most objects
             case string name when (name.Contains("light-shrouds")
             || name.Contains("mall-vents")
             || name.Contains("proxy-cameras")
@@ -425,18 +426,22 @@ public class ManageImportSettings
             || name.Contains("speakers")
             || name.Contains("trees")
             || name.Contains("water")):
-                return 0;
+                return StaticEditorFlags.OccludeeStatic | StaticEditorFlags.OccluderStatic;
             // only navigation static
+            // plus occludee/occluder
             case string name when (name.Contains("handrails")
             || name.Contains("furniture")
             || name.Contains("wayfinding")
             || name.Contains("proxy-blocker-npc")) 
             && !name.Contains("solid"):
-                return StaticEditorFlags.NavigationStatic;
+                return StaticEditorFlags.NavigationStatic | StaticEditorFlags.OccludeeStatic | StaticEditorFlags.OccluderStatic;
             // lightmap static only
             case string name when (name.Contains("doors-exterior")
             || name.Contains("Environment")):
                 return StaticEditorFlags.LightmapStatic;
+            // everything but occluder/occludee
+            case string name when (name.Contains("doors-windows")):
+                return StaticEditorFlags.BatchingStatic | StaticEditorFlags.LightmapStatic | StaticEditorFlags.NavigationStatic | StaticEditorFlags.OffMeshLinkGeneration | StaticEditorFlags.ReflectionProbeStatic;
             // if not specified, default to all static editor flags
             default:
                 return StaticEditorFlags.BatchingStatic | StaticEditorFlags.LightmapStatic | StaticEditorFlags.NavigationStatic | StaticEditorFlags.OccludeeStatic | StaticEditorFlags.OccluderStatic | StaticEditorFlags.OffMeshLinkGeneration | StaticEditorFlags.ReflectionProbeStatic;
