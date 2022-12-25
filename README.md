@@ -56,16 +56,21 @@ When released, the Cinderella City Simulation will support a variety of platform
 
 The Cinderella City Simulation is under development, but in-progress builds are available for intrepid mall fans to try out.
 
+The simulation is currently limited to machines running Microsoft Windows, but other platforms will be supported in the future.
+
 The latest ready-to-play builds from the development branch can be found at the top of the **[Releases page](https://github.com/deanstein/CinderellaCityProject/releases)**.
 
-- Click "Assets" below the release notes at the link above.
-- Download the .zip file ending in "_Win." 
-	- This is the Windows build, which will always be available, but other platforms may be offered here by request.
-- Extract the .zip file.
-- Run "Cinderella City Simulation.exe".
-- Optionally choose your desired resolution. Higher resolutions may result in slower performance.
+- Click "Assets" below the release notes at the link above
+- Download the .7z file ending in "_Win" 
+- [Install 7-Zip first](https://www.7-zip.org/a/7z2201-x64.exe) if you don't have it
+- Extract the .7z file
+	- Right-click the .7z file, 7-Zip -> Extract To "CinderellaCityProject..."
+- Run "Cinderella City Simulation.exe"
+- Optionally choose your desired resolution
+	- Recommended starting resolution: 1920x1080 or similar
+	- Higher resolutions may result in slower performance
 
-Currently, the Cinderella City Simulation is only available as a pre-release, so these builds may exhibit bugs and unexpected behavior. The simulation is currently available only for Windows, but other platforms will be supported in the future.
+This is a work-in-progress, so these builds may exhibit bugs and unexpected behavior. 
 
 ### Simulation Controls
 
@@ -94,7 +99,7 @@ After the simulation loads, you'll find yourself at the Main Menu, where you can
 
 # Known Issues
 
-As this is a work in progress, some issues are known and will be fixed in future updates:
+The simulation is still under development, so some issues are known and will be fixed in future updates:
 
 - Large areas of both time periods are unfinished.
 
