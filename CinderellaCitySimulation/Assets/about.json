@@ -3,6 +3,7 @@
     {
       "0.7.4.202212": [
         {    
+          "Overview": "v0.7.4 improves performance generally and adds a host of new storefronts and improved detailing to all parts of the mall, especially the 1980s-1990s food court and Rose Mall exterior, and the 1960s-1970s Gold Mall.",
           "Environment Updates": [
             "Added The Banque, Columbus, Double Up, Kinney Shoes, Fashion Conspiracy, Rug Crafters, and Topps & Trowsers to 60s70s Gold Mall",
             "Added signage and storefront details to Pier 1 Imports, Bosworth-Sullivan, Veldkamp's Flowers, and Community Finance at the exterior of 60s70s Blue Mall",
@@ -51,6 +52,7 @@
       ],
       "0.7.3.202209": [
         {    
+          "Overview": "v0.7.3 adds new storefronts and details to the Food Court, Shamrock Mall, and Rose Mall, as well as new graphics for directories in both eras. This update also adds camera effects to the Visibility Settings menu.",
           "Environment Updates": [
             "Added chairs and umbrellas to 80s90s food court",
             "Added entrance and storefront details to Woolworth's lower garage entrance and surrounding areas outside of Shamrock Mall in both eras",
@@ -98,6 +100,7 @@
       ],
       "0.7.2.202204": [
         {    
+          "Overview": "v0.7.2 adds floating historic photographs (accessible via the Object Visibility menu) and a new Audio menu.",
           "Environment Updates": [
             "Added world-space historic photographs to 60s70s and 80s90s",
             "Added new music from Dead Pisces and FWIENZY to 60s70s and 80s90s",
@@ -127,6 +130,7 @@
       ],
       "0.7.1.202203": [
         {    
+          "Overview": "v0.7.1 adds new storefronts and details to Gold and Shamrock Malls, adds more trees generally, and offers greater music variety in both eras.",
           "Environment Updates": [
             "Added new stores to 60s70s Shamrock Mall, including ABC Kiddie Shop, Tommy Wong's, and Tobaccoland",
             "Added new stores to 80s90s Shamrock Mall, including Tobaccoland, Wells Music, Knock on Wood, Pet City, Mile Hi Hobbies, and several unmarked stores",
@@ -149,7 +153,8 @@
         }
       ],
       "0.7.0.202202": [
-        {          
+        {    
+          "Overview": "v0.7.0: The Dynamic UI and Realistic Sky Release. This release adds randomized photos for the Loading Screen and Main Menu, and introduces a new Visualization Menu to control object visibility, camera effects, and more. This release also adds a Credits screen and more Start Menu starting locations. Environment-wise, this update adds a realistic dynamic sky to both eras, and offers huge updates and new stores in all parts of the Cinderella City model in both eras.",      
           "Environment Updates": [
             "Added new stores to 60s70s Blue Mall, including Orange Julius, Frank Baldwin - Printer, Coffee & Donuts, Waldenbooks, Royal Optical, Dardano's Leather Shop, Carousel Snack Bar, Bri-tone Camera, General Nutrition Centers, Siet's Clogs, Randall's Formalwear, and Rich Burger",
             "Added new stores to 60s70s Rose Mall, including K-G Bootery, Fontius Shoes, Richman Brothers, The Regiment, and Cole's Book Store",
@@ -210,6 +215,7 @@
       ],
       "0.6.9.202106": [
         {          
+          "Overview": "v0.6.9 adds support for reactive UI and adds new storefronts and details in Cinder Alley, Rose Mall, Blue Mall, and Joslins.",
           "Content Updates": [
             "Added the Cinema/Neusteters complex to 60s70s", 
             "Added several new interior brick storefronts to Cinder Alley, in 60s70s and 80s90s",
@@ -226,7 +232,8 @@
         }
       ],
       "0.6.8.202102": [
-        {          
+        {  
+          "Overview": "v0.6.8 adds support for pausing and playing particle systems when time-traveling, and generally improves quality including for cameras, lightmaps, and NPCs.",        
           "Content Updates": [
             "Increased the camera effect saturation in 60s70s and 80s90s",
             "Increased the saturation of the food court tile color in 80s90s",
@@ -243,7 +250,8 @@
         }
       ],
       "0.6.7.202102": [
-        {          
+        {       
+          "Overview": "v0.6.7 adds animated fountain support for the 1960s-1970s Blue Mall fountain. This update also includes more furniture, plants, and trees in both eras.",
           "Content Updates": [
           "Added animated fountain elements to 60s70s",
           "Added more furniture to 80s90s",
@@ -261,7 +269,8 @@
         }
       ],
       "0.6.6.202101": [
-        {          
+        {     
+          "Overview": "v0.6.6 adds randomized heights for NPCs, support for animated fountain elements, various issues in the asset import pipelin, as well as improved department store details and improved lightmaps.",     
           "Content Updates": [
           "Updated The Denver and Penneys with new details and lights, and a new geometry organization hierarchy, in both 60s70s and 80s90s eras",
           "Updated all mall and site models to reflect latest geometry and new organization, in 80s90s",
@@ -278,12 +287,13 @@
         }
       ],
       "0.6.5.202012": [
-        {          
+        {        
+          "Overview": "v0.6.5 adds an anti-gravity mode as well as plants and trees to the 1960s-1970s era, and addresses missing geometry and a few issues in the asset import pipeline.",  
           "Content Updates": [
           "Added plants and trees to 60s70s",
           "Added shortcut 'G' to enter anti-gravity mode, and 'R' and 'F' to rise and fall, respectively",
           "Changed shortcut to reset people to 'O' from 'R'",
-          "Fixed missing railings in 60s70s site"
+          "Fixed some missing railings in 60s70s site"
         ],
           "Logic Updates": [
             "Added the ability to enter anti-gravity mode and navigate up/down using shortcut keys",
@@ -294,6 +304,7 @@
       ],
       "0.6.4.202012": [
         {          
+          "Overview": "v0.6.4 adds hanging planters and NPC queues to the 1960s-1970s era, and fixes issues with asset import routines.",
           "Content Updates": [
           "Added hanging planters in 60s70s",
           "Added queues of NPCs in front of counter-based tenant storefronts in 60s70s",
@@ -316,6 +327,7 @@
       ],
       "0.6.3.202011": [
         {          
+          "Overview": "v0.6.3 adds post-processing routines to the CCP Menu and adds support for NPC blockers to control where NPCs can walk. This update also features new details and updated people in the 1960s-1970s era.",
           "Content Updates": [
           "Added new storefronts, signage, furniture, and site details to 60s70s",
           "Updated 60s70s models to reflect updated FBX model structure",
@@ -332,6 +344,7 @@
       ],
       "0.6.2.202010": [
         {
+          "Overview": "v0.6.2 fixes various issues with asset import pipeline reliability and configurations. This update also adds new details, improves lighting, and updates Main Menu thumbnails for the 1960s-1970s era.",
           "Logic Updates": [
             "Added missing configuration for exterior doors when setting StaticEditorFlags",
             "Added ability to update Nav Mesh for current scene only in the CCP Menu",
@@ -349,6 +362,7 @@
       ],
       "0.6.1.202010": [
         {
+          "Overview": "v0.6.1 fixes a critical issue with occlusion culling, causing some basement areas in the 1980s-1990s model to disappear unexpectedly.",
           "Logic Updates": [
             "Fixed an issue where occlusion culling would generate unexpected results in the basement of the 80s90s era, due to insufficient scene hoisting which caused the mechanical penthouse of 60s70s to collide with the basement of 80s90s"
           ],
@@ -359,6 +373,7 @@
       ],
       "0.6.0.202010": [
         {
+          "Overview": "v0.6.0: The Mall Walkers and Occlusion Culling Release. This release adds support for replacing 2D cutout people with animated people that follow random paths around the mall, as well as support for occlusion culling to improve runtime performance. This update also features the ability to capture in-game screenshots, and adds a new in-editor menu for quick access to Cinderella City Project macros and commands.",
           "Logic Updates": [
             "Added support for generating 3D animated people (NPCs) from Citizens PRO by name or randomly based on 2D proxies, in AssetImportPipeline",
             "Added support for generating additional NPCs from one 2D proxy object",
@@ -387,6 +402,7 @@
       ],
       "0.5.4.202004": [
         {
+          "Overview": "v0.5.4 adds baked lightmaps to the 1960s-1970s era and adds an optional 'Under Construction' UI label. This update also fixes a bug with toggling people off in the 1960s-1970s era.",
           "Logic Updates": [
             "Added the ability to toggle the 'Under Construction' label with '/' shortcut"
           ],
@@ -400,6 +416,7 @@
       ],
       "0.5.3.202004": [
         {
+          "Overview": "v0.5.3 adds an on-screen indicator displaying the current era and app version, and updates the 1960s-1970s era dramatically to bring it closer to parity with the 1980s-1990s era.",
           "Logic Updates": [
             "Added support for displaying HUD indicator UI in 60s70s and 80s90s scenes",
             "Added support for displaying the app version in all scenes",
@@ -414,6 +431,7 @@
       ],
       "0.5.2.202004": [
         {
+          "Overview": "v0.5.2 adds support for camera effects, including when time-traveling, as well as distinct audio for the two eras, and sun management systems when time-traveling.",
           "Logic Updates": [
             "Added support for toggling camera effects via new ManageCameraEffects and ToggleCameraEffectsByShortcut scripts",
             "Added support for camera effect transitions when time-traveling",
@@ -432,6 +450,7 @@
       ],
       "0.5.1.202003": [
         {
+          "Overview": "v0.5.1 refactors the code behind the time travel and FPSController management, adds the mall structure model, and updates the Main Menu thumbnails for the 1960s-1970s era.",
           "Logic Updates": [
             "Simplified time travel/active FPSController management code"
           ],
@@ -444,6 +463,7 @@
       ],
       "0.5.0.202002": [
         {
+          "Overview": "v0.5.0: The Time-Traveling Release. This release adds support for time-traveling, viewport capturing, asynchronous scene loading, and initial support for UI menu layout functionality.",
           "Logic Updates": [
             "Added support for 'time traveling': toggling the visibility of entire scenes via shortcut or menu",
             "Added support for loading all scenes asynchronously in a new Loading Screen",
@@ -466,6 +486,7 @@
       ],
       "0.4.1.201909": [
         {
+          "Overview": "v0.4.1 improves the performance of the new speakers and adds support for synchronizing playback between multiple speakers. This release also reduces the walking speed and adding mouse smoothing for smoother camera moves via mouse.",
           "Logic Updates": [
             "Added master/drone system support for all AudioSources to improve performance",
             "Added support for synchronizing playback between master and slave AudioSources at a certain time interval",
@@ -483,6 +504,7 @@
       ],
       "0.4.0.201908": [
         {
+          "Overview": "v0.4.0: The Mall Speaker Release. This release adds the ability to play audio sequences from speaker objects and features major updates to the 1980s-1990s model of Cinderella City, including the preliminary build-out of Cinder Alley.",
           "Logic Updates": [
             "Added the ability to attach Unity behavior components like AudioSource to GameObjects",
             "Added the ability to attach custom scripted behavior components like PlayAudioSequencesByName to GameObjects",
@@ -518,6 +540,7 @@
       ],
       "0.3.1.201907": [
         {
+          "Overview": "v0.3.1 fixes various lighting issues and adds new storefronts, signage, and details to the 1980s-1990s era of the mall.",
           "Logic Updates": [
             ""
           ],
@@ -539,6 +562,7 @@
       ],
       "0.3.0.201907": [
         {
+          "Overview": "v0.3.0: The Import Pipeline Release. This release adds the AssetImportPipeline and other automations including the ability to generically toggle visibility of objects, plus major updates to 1980s-1990s era models including Shamrock Mall, Food Court, Gold Mall, and Cinder Alley",
           "Logic Updates": [
             "Added new AssetImportPipeline.cs editor script to automate the import of FBX assets",
             "Added ToggleVisibility.cs editor script to control visibility of objects",
@@ -558,6 +582,7 @@
       ],
       "0.2.3.201906": [
         {
+          "Overview": "v0.2.3 represents the start of UI work, in particular for the title screen. This release also builds on code to load scenes, and updates the project to Unity 2019.",
           "Logic Updates": [
             "Added in-progress FullScreenSprite.cs and BackgroundSpriteTransform.cs code for title screen",
             "Added in-progress LoadNewScene.cs code for loading new scenes",
@@ -571,6 +596,7 @@
       ],
       "0.1.2.201811": [
         {
+          "Overview": "v0.1.2 features updated model geometry for the 1980s-1990s era, including in Rose Mall and Shamrock Mall. This update also introduces the ability to toggle 2D people cutouts with a shortcut.",
           "Logic Updates": [
             "Add ability to toggle visibility of 2D people with 'p' shortcut"
           ],
@@ -583,6 +609,7 @@
       ],
       "0.0.1.201806": [
         {
+          "Overview": "v0.0.1 is the very first test of the Cinderella City Project, featuring prototype geometry of Blue Mall in the 1980s-1990s era.",
           "Logic Updates": [],
           "Asset Updates": [
             "Initial Unity signage and lighting test",
