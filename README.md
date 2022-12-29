@@ -45,9 +45,9 @@ The Cinderella City Simulation is at the heart of the Cinderella City Project.
 
 Modeled in [Autodesk FormIt](https://formit.autodesk.com/), and brought to life in [Unity](https://unity.com/), the simulation illustrates distinct time periods of Cinderella City's three-decade life, including the colorful 1960s-1970s, and the staid 1980s-1990s. Eventually, the simulation will also offer an "Alternate Future" interactive exhibit showing how the shopping center could have been adaptively reused in 1998 in lieu of demolition.
 
-While experiencing the mall in each era, the player can "time travel" to other time periods while maintaining the current position in space, to see how the world of retail and design changed over 30 years.
+While experiencing the mall in each era, the player can "time travel" to other time periods while maintaining the current position in space to see how the world of retail and design changed over 30 years.
 
-The simulation includes an accurate representation of the architectural character and signage of the shopping mall, and will soon feature other immersive elements like period-correct music, historical photographs, interactive people, and recorded verbal memories.
+The simulation includes an accurate representation of the architectural character and signage of the shopping mall and other immersive elements like period-correct music, historical photographs, animated shoppers, and eventually, recorded verbal memories.
 
 When released, the Cinderella City Simulation will support a variety of platforms including virtual reality headsets. The simulation may also be made into a permanent or semi-permanent Englewood, Colorado exhibit in the future.
 
