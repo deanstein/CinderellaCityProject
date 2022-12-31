@@ -416,11 +416,13 @@ public class ManageImportSettings
         switch (assetName)
         {
             // no static editor flags
+            case string name when (name.Contains("proxy-people")):
+                return 0;
+            // no static editor flags
             // except occludee
             case string name when (name.Contains("light-shrouds")
             || name.Contains("mall-vents")
             || name.Contains("proxy-cameras")
-            || name.Contains("proxy-people")
             || name.Contains("store-fixtures")
             || name.Contains("structure-concealed")
             || name.Contains("speakers")
