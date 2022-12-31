@@ -416,7 +416,7 @@ public class ManageImportSettings
         switch (assetName)
         {
             // no static editor flags
-            // except occludee/occluder, which are required for most objects
+            // except occludee
             case string name when (name.Contains("light-shrouds")
             || name.Contains("mall-vents")
             || name.Contains("proxy-cameras")
@@ -425,23 +425,24 @@ public class ManageImportSettings
             || name.Contains("structure-concealed")
             || name.Contains("speakers")
             || name.Contains("trees")
-            || name.Contains("water")):
-                return StaticEditorFlags.OccludeeStatic | StaticEditorFlags.OccluderStatic;
+            || name.Contains("water")
+            || name.Contains("Environment")):
+                return StaticEditorFlags.OccludeeStatic;
             // only navigation static
-            // plus occludee/occluder
+            // plus occludee only
             case string name when (name.Contains("handrails")
             || name.Contains("furniture")
             || name.Contains("wayfinding")
             || name.Contains("proxy-blocker-npc")) 
             && !name.Contains("solid"):
-                return StaticEditorFlags.NavigationStatic | StaticEditorFlags.OccludeeStatic | StaticEditorFlags.OccluderStatic;
+                return StaticEditorFlags.NavigationStatic | StaticEditorFlags.OccludeeStatic;
             // lightmap static only
-            case string name when (name.Contains("doors-exterior")
-            || name.Contains("Environment")):
-                return StaticEditorFlags.LightmapStatic;
-            // everything but occluder/occludee
+            // plus occludee only
+            case string name when (name.Contains("doors-exterior")):
+                return StaticEditorFlags.LightmapStatic | StaticEditorFlags.OccludeeStatic;
+            // everything but occluder
             case string name when (name.Contains("doors-windows")):
-                return StaticEditorFlags.BatchingStatic | StaticEditorFlags.LightmapStatic | StaticEditorFlags.NavigationStatic | StaticEditorFlags.OffMeshLinkGeneration | StaticEditorFlags.ReflectionProbeStatic;
+                return StaticEditorFlags.BatchingStatic | StaticEditorFlags.LightmapStatic | StaticEditorFlags.NavigationStatic | StaticEditorFlags.OffMeshLinkGeneration | StaticEditorFlags.ReflectionProbeStatic | StaticEditorFlags.OccludeeStatic;
             // if not specified, default to all static editor flags
             default:
                 return StaticEditorFlags.BatchingStatic | StaticEditorFlags.LightmapStatic | StaticEditorFlags.NavigationStatic | StaticEditorFlags.OccludeeStatic | StaticEditorFlags.OccluderStatic | StaticEditorFlags.OffMeshLinkGeneration | StaticEditorFlags.ReflectionProbeStatic;
