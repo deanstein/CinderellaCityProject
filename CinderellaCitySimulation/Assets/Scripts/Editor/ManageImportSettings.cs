@@ -415,11 +415,11 @@ public class ManageImportSettings
     {
         switch (assetName)
         {
-            // no static editor flags
+            // no static editor flags except batching
             case string name when (name.Contains("proxy-people")):
-                return 0;
+                return StaticEditorFlags.BatchingStatic;
             // no static editor flags
-            // except occludee
+            // except occludee and batching
             case string name when (name.Contains("light-shrouds")
             || name.Contains("mall-vents")
             || name.Contains("proxy-cameras")
@@ -429,19 +429,19 @@ public class ManageImportSettings
             || name.Contains("trees")
             || name.Contains("water")
             || name.Contains("Environment")):
-                return StaticEditorFlags.OccludeeStatic;
+                return StaticEditorFlags.OccludeeStatic | StaticEditorFlags.BatchingStatic;
             // only navigation static
-            // plus occludee only
+            // plus occludee and batching
             case string name when (name.Contains("handrails")
             || name.Contains("furniture")
             || name.Contains("wayfinding")
             || name.Contains("proxy-blocker-npc")) 
             && !name.Contains("solid"):
-                return StaticEditorFlags.NavigationStatic | StaticEditorFlags.OccludeeStatic;
+                return StaticEditorFlags.NavigationStatic | StaticEditorFlags.OccludeeStatic | StaticEditorFlags.BatchingStatic;
             // lightmap static only
-            // plus occludee only
+            // plus occludee and batching only
             case string name when (name.Contains("doors-exterior")):
-                return StaticEditorFlags.LightmapStatic | StaticEditorFlags.OccludeeStatic;
+                return StaticEditorFlags.LightmapStatic | StaticEditorFlags.OccludeeStatic | StaticEditorFlags.BatchingStatic;
             // everything but occluder
             case string name when (name.Contains("doors-windows")):
                 return StaticEditorFlags.BatchingStatic | StaticEditorFlags.LightmapStatic | StaticEditorFlags.NavigationStatic | StaticEditorFlags.OffMeshLinkGeneration | StaticEditorFlags.ReflectionProbeStatic | StaticEditorFlags.OccludeeStatic;
