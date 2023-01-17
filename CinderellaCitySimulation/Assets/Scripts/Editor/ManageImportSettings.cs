@@ -427,8 +427,7 @@ public class ManageImportSettings
             || name.Contains("structure-concealed")
             || name.Contains("speakers")
             || name.Contains("trees")
-            || name.Contains("water")
-            || name.Contains("Environment")):
+            || name.Contains("water")):
                 return StaticEditorFlags.OccludeeStatic | StaticEditorFlags.BatchingStatic;
             // only navigation static
             // plus occludee and batching
@@ -440,7 +439,8 @@ public class ManageImportSettings
                 return StaticEditorFlags.NavigationStatic | StaticEditorFlags.OccludeeStatic | StaticEditorFlags.BatchingStatic;
             // lightmap static only
             // plus occludee and batching only
-            case string name when (name.Contains("doors-exterior")):
+            case string name when (name.Contains("doors-exterior")
+            || name.Contains("Environment")):
                 return StaticEditorFlags.LightmapStatic | StaticEditorFlags.OccludeeStatic | StaticEditorFlags.BatchingStatic;
             // everything but occluder
             case string name when (name.Contains("doors-windows")):
@@ -461,17 +461,17 @@ public class ManageImportSettings
             case string name when name.Contains("mall-lights")
             || name.Contains("signage"):
                 return 10f;
-            case string name when name.Contains("detailing-interior")
-            || name.Contains("detailing-exterior"):
-                return 5f;
-            case string name when name.Contains("store-detailing"):
-                return 3f;
-            case string name when name.Contains("mall-ceilings")
-            || name.Contains("doors")
+            case string name when name.Contains("doors")
             || name.Contains("windows"):
-                return 3f;
-            case string name when name.Contains("floors-vert")
-            || name.Contains("site-curb-gutter-sidewalk-vert")
+                return 8f;
+            case string name when name.Contains("detailing-interior")
+            || name.Contains("detailing-exterior")
+            || name.Contains("floors-vert")
+            || name.Contains("store-detailing"):
+                return 5f;
+            case string name when name.Contains("mall-ceilings"):
+                return 4f;
+            case string name when name.Contains("site-curb-gutter-sidewalk-vert")
             || name.Contains("site-detailing")
             || name.Contains("site-structure")
             || name.Contains("structure-exposed"):
@@ -479,14 +479,15 @@ public class ManageImportSettings
             case string name when name.Contains("walls-interior")
             || name.Contains("store-ceilings")
             || name.Contains("store-floors")
-            || name.Contains("store-lights"):
+            || name.Contains("store-lights")
+            || name.Contains("site-parking-surface"):
                 return 1f;
-            case string name when name.Contains("site-parking-surface"):
-                return 0.5f;
-            case string name when name.Contains("roof") 
+            case string name when name.Contains("roof")
             || name.Contains("site-context-buildings")
             || name.Contains("site-roads"):
                 return 0.1f;
+            case string name when name.Contains("Environment"):
+                return 0.01f;
             case string name when name.Contains("experimental-lightbleed"):
                 return 5f;
             // if not specified, the default is 1 (no change to global resolution for this asset)
