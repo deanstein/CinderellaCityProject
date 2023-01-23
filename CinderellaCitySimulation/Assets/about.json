@@ -1,6 +1,23 @@
 {
   "VersionHistory": [
     {
+      "0.7.5.202301": [
+        {    
+          "Overview": "v0.7.5 fixes geometry and lighting issues in both eras.",
+          "Environment Updates": [
+            "Fixed issues with lighting alignment in the 1980s-1990s food court, including marquee lights incorrectly intersecting central columns and fluorescent lights misaligned with the ceiling tile grid",
+            "Fixed various misaligned geometry issues in the Blue Mall, Gold Mall, and the parking deck in both eras",
+            "Fixed various Z-fighting issues in both eras",
+            "Fixed an issue where exterior vents outside of Blue Mall in both eras were appearing too brightly because they're not static"
+          ],
+          "UI Updates": [
+            ""
+          ],
+          "Code Updates": [
+            ""
+          ]
+        }
+      ],
       "0.7.4.202212": [
         {    
           "Overview": "v0.7.4 improves performance generally and adds a host of new storefronts and improved detailing to all parts of the mall, especially the 1980s-1990s food court and Rose Mall exterior, and the 1960s-1970s Gold Mall.",
@@ -562,7 +579,7 @@
       ],
       "0.3.0.201907": [
         {
-          "Overview": "v0.3.0: The Import Pipeline Release. This release adds the AssetImportPipeline and other automations including the ability to generically toggle visibility of objects, plus major updates to 1980s-1990s era models including Shamrock Mall, Food Court, Gold Mall, and Cinder Alley",
+          "Overview": "v0.3.0: The Import Pipeline Release. This release adds the AssetImportPipeline and other automations including the ability to generically toggle visibility of objects, plus major updates to 1980s-1990s era models including Shamrock Mall, Food Court, Gold Mall, and Cinder Alley.",
           "Logic Updates": [
             "Added new AssetImportPipeline.cs editor script to automate the import of FBX assets",
             "Added ToggleVisibility.cs editor script to control visibility of objects",
