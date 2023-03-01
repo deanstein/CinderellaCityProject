@@ -8,7 +8,8 @@
             "Fixed issues with lighting alignment in the 1980s-1990s food court, including marquee lights incorrectly intersecting central columns and fluorescent lights misaligned with the ceiling tile grid",
             "Fixed various misaligned geometry issues in the Blue Mall, Gold Mall, and the parking deck in both eras",
             "Fixed various Z-fighting issues in both eras",
-            "Fixed an issue where exterior vents outside of Blue Mall in both eras were appearing too brightly because they're not static"
+            "Fixed an issue where exterior vents outside of Blue Mall in both eras were appearing too brightly because they're not static",
+            "Reduced lighting quality in some cases to improve runtime performance"
           ],
           "UI Updates": [
             ""
