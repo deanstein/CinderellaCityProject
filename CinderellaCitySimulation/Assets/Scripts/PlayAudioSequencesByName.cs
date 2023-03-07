@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -58,6 +59,10 @@ public class AudioSourceGlobals
 
     // only one set of params can exist for each type, so keep track of them here
     public static List<SpeakerParams> allKnownSpeakerParams = new List<SpeakerParams>();
+
+    // some audio clip sequences will change depending on 
+    // whether the player is considered outside the mall or inside
+    public static bool isPlayerOutside;
 }
 
 public class PlayAudioSequencesByName : MonoBehaviour
@@ -95,6 +100,9 @@ public class PlayAudioSequencesByName : MonoBehaviour
                         clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-ambient-chatter"))
                     };
                     AudioSourceGlobals.allKnownSpeakerParams.Add(matchingParams);
+                } else // but if the params exist, make sure they're updated
+                {
+                    matchingParams.clipSequence = AudioSourceGlobals.isPlayerOutside ? ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-exterior-ambient")) : ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-ambient-chatter"));
                 }
 
                 return matchingParams;
@@ -115,6 +123,9 @@ public class PlayAudioSequencesByName : MonoBehaviour
                         clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-fountain-1"))
                     };
                     AudioSourceGlobals.allKnownSpeakerParams.Add(matchingParams);
+                } else // but if the params exist, make sure they're updated
+                {
+                    matchingParams.speakerVolume = AudioSourceGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeMallFountain;
                 }
                 return matchingParams;
             
@@ -130,10 +141,13 @@ public class PlayAudioSequencesByName : MonoBehaviour
                     {
                         keyName = thisKeyName,
                         maxDistance = AudioSourceGlobals.defaultSpeakerDistanceMallFountain,
-                        speakerVolume = AudioSourceGlobals.defaultSpeakerVolumeMallFountain,
+                        speakerVolume = AudioSourceGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeMallFountain,
                         clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-fountain-2"))
                     };
                     AudioSourceGlobals.allKnownSpeakerParams.Add(matchingParams);
+                } else // but if the params exist, make sure they're updated
+                {
+                    matchingParams.speakerVolume = AudioSourceGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeMallFountain;
                 }
                 return matchingParams;
 
@@ -142,6 +156,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
 
                 thisKeyName = AudioSourceGlobals.mallMusic60s70sKeyName;
                 matchingParams = GetSpeakerParamsIfKnown(thisKeyName);
+
                 // if these params do not exist, create them and add them to the list
                 if (matchingParams == null)
                 {
@@ -153,6 +168,9 @@ public class PlayAudioSequencesByName : MonoBehaviour
                         clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-mall-60s70s"))
                     };
                     AudioSourceGlobals.allKnownSpeakerParams.Add(matchingParams);
+                } else // but if the params exist, make sure they're updated
+                {
+                    matchingParams.speakerVolume = AudioSourceGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeMallCommon;
                 }
                 return matchingParams;
 
@@ -195,6 +213,10 @@ public class PlayAudioSequencesByName : MonoBehaviour
                         clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-ambient-chatter"))
                     };
                     AudioSourceGlobals.allKnownSpeakerParams.Add(matchingParams);
+                }
+                else // but if the params exist, make sure they're updated
+                {
+                    matchingParams.clipSequence = AudioSourceGlobals.isPlayerOutside ? ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-exterior-ambient")) : ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-ambient-chatter"));
                 }
                 return matchingParams;
 
@@ -306,22 +328,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
         thisCanToggleComponentsScript = this.GetComponent<CanDisableComponents>();
         thisSpeakerParams = AssociateSpeakerParamsByName(this.name);
 
-        // don't proceed if either no audio source or speaker params are available
-        if (!thisAudioSourceComponent || (thisSpeakerParams == null))
-        {
-            return;
-        }
-
-        // set default audiosource settings
-        thisAudioSourceComponent.volume = thisSpeakerParams.speakerVolume;
-        thisAudioSourceComponent.maxDistance = thisSpeakerParams.maxDistance;
-        thisAudioSourceComponent.spatialBlend = 1.0F;
-        thisAudioSourceComponent.dopplerLevel = 0F;
-        thisAudioSourceComponent.rolloffMode = AudioRolloffMode.Custom;
-        thisAudioSourceComponent.loop = false;
-        thisAudioSourceComponent.bypassEffects = true;
-        thisAudioSourceComponent.bypassListenerEffects = true;
-        thisAudioSourceComponent.bypassReverbZones = true;
+        InitializeAudioSourceWithSpeakerParams(thisAudioSourceComponent, thisSpeakerParams);
     }
 
     void OnEnable()
@@ -331,31 +338,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
             return;
         }
 
-        // if this is a master audiosource, resume at the clip and time the last-known master was playing
-        if (!thisSpeakerParams.masterAudioSource)
-        {
-            // set this speaker AudioSource as the Master AudioSource for this type
-            thisSpeakerParams.masterAudioSource = thisAudioSourceComponent;
-
-            // ensure this master cannot be disabled until checks are made in update()
-            thisCanToggleComponentsScript.canDisableComponents = false;
-
-            // play and sync all slaves
-            StartCoroutine(PlayMasterClipSequence(thisSpeakerParams.clipSequence));
-            SynchronizeAllSlavesWithMaster(thisAudioSourceComponent);
-
-            // set isResuming as false so when the next song plays, it starts at time 0 without errors
-            thisSpeakerParams.isResuming = false;
-        }
-        // otherwise, this must be a subordinate audiosource
-        else
-        {
-            // keep track of the active slaves
-            thisSpeakerParams.activeSlaveAudioSources.Add(thisAudioSourceComponent);
-
-            // sync with master
-            SyncAudioSources(thisSpeakerParams.masterAudioSource, thisAudioSourceComponent);
-        }
+        StartAudioSource();
     }
 
     void OnDisable()
@@ -402,6 +385,18 @@ public class PlayAudioSequencesByName : MonoBehaviour
         // and the next master needs to resume
         // for some reason, this cannot be done in OnDisable() (always results in .time of 0)
         thisSpeakerParams.lastKnownClipTime = thisAudioSourceComponent.time;
+
+        // update the global flag tracking whether the player is outside of the mall
+        AudioSourceGlobals.isPlayerOutside = Utils.StringUtils.TestIfAnyListItemContainedInString(ObjectVisibilityGlobals.exteriorObjectKeywordsList, Utils.GeometryUtils.GetTopLevelSceneContainerChildNameAtNearestNavMeshPoint(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position, 1.0f));
+
+        // update the audio source with new speaker params if necessary
+        SpeakerParams newSpeakerParams = AssociateSpeakerParamsByName(this.name);
+        bool requireAudioSourceResume = UpdateAudioSourceWithSpeakerParams(thisAudioSourceComponent, newSpeakerParams);
+
+        if (requireAudioSourceResume)
+        {
+            ResumeAudioSource();
+        }
     }
 
     // retrieve the known speaker params if it exists in the list
@@ -464,6 +459,47 @@ public class PlayAudioSequencesByName : MonoBehaviour
         }
     }
 
+    public static void InitializeAudioSourceWithSpeakerParams
+    (AudioSource audioSourceComponent, SpeakerParams speakerParams)
+    {
+        // don't proceed if either no audio source or speaker params are available
+        if (!audioSourceComponent || (speakerParams == null))
+        {
+            return;
+        }
+
+        // set audiosource settings
+        audioSourceComponent.volume = speakerParams.speakerVolume;
+        audioSourceComponent.maxDistance = speakerParams.maxDistance;
+        audioSourceComponent.spatialBlend = 1.0F;
+        audioSourceComponent.dopplerLevel = 0F;
+        audioSourceComponent.rolloffMode = AudioRolloffMode.Custom;
+        audioSourceComponent.loop = false;
+        audioSourceComponent.bypassEffects = true;
+        audioSourceComponent.bypassListenerEffects = true;
+        audioSourceComponent.bypassReverbZones = true;
+    }
+
+    public static bool UpdateAudioSourceWithSpeakerParams(AudioSource audioSourceComponent, SpeakerParams newSpeakerParams)
+    {
+        bool requireRestart = false;
+
+        // only adjust the volume if necessary
+        if (audioSourceComponent.volume != newSpeakerParams.speakerVolume)
+        {
+            audioSourceComponent.volume = newSpeakerParams.speakerVolume;
+        };
+
+        // only adjust the clip if necessary
+        List<string> audioClipNames = newSpeakerParams.clipSequence.Select(clip => clip.name).ToList<string>();
+        if (!Utils.StringUtils.TestIfAnyListItemContainedInString(audioClipNames, audioSourceComponent.clip.name))
+        {
+            requireRestart = true;
+        }
+
+        return requireRestart;
+    }
+
     // specify and play master speaker clip sequences
     IEnumerator PlayMasterClipSequence(AudioClip[] audioClips)
     {
@@ -490,6 +526,43 @@ public class PlayAudioSequencesByName : MonoBehaviour
             float remainingClipTime = masterAudioSource.clip.length - masterAudioSource.time;
             yield return new WaitForSeconds(remainingClipTime);
         }
+    }
+
+    public void StartAudioSource()
+    {
+        // if this is a master audiosource, resume at the clip and time the last-known master was playing
+        if (!thisSpeakerParams.masterAudioSource)
+        {
+            // set this speaker AudioSource as the Master AudioSource for this type
+            thisSpeakerParams.masterAudioSource = thisAudioSourceComponent;
+
+            // ensure this master cannot be disabled until checks are made in update()
+            thisCanToggleComponentsScript.canDisableComponents = false;
+
+            // play and sync all slaves
+            StartCoroutine(PlayMasterClipSequence(thisSpeakerParams.clipSequence));
+            SynchronizeAllSlavesWithMaster(thisAudioSourceComponent);
+
+            // set isResuming as false so when the next song plays, it starts at time 0 without errors
+            thisSpeakerParams.isResuming = false;
+        }
+        // otherwise, this must be a subordinate audiosource
+        else
+        {
+            // keep track of the active slaves
+            thisSpeakerParams.activeSlaveAudioSources.Add(thisAudioSourceComponent);
+
+            // sync with master
+            SyncAudioSources(thisSpeakerParams.masterAudioSource, thisAudioSourceComponent);
+        }
+    }
+
+    public void ResumeAudioSource()
+    {
+        thisSpeakerParams.masterAudioSource = null;
+        thisSpeakerParams.isResuming = true;
+
+        StartAudioSource();
     }
 
     // go to the previous track given a speaker type
