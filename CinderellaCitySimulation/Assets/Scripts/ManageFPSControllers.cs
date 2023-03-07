@@ -44,12 +44,13 @@ public class ManageFPSControllers : MonoBehaviour {
         public static Vector3 activeFPSControllerCameraForward;
         public static bool isActiveFPSControllerOnNavMesh;
         public static Vector3 activeFPSControllerNavMeshPosition;
+        public static string activeFPSControllerNavMeshClosestObjectName;
         public static FPSControllerRestoreData activeFPSControllerRestoreData;
 
         // this scene's first FPSController location
         // which is used to calculate turning gravity back on after time traveling
         public static Vector3 initialFPSControllerLocation;
-        // the max distance a player can go before gravity is re-enabled after time-travling
+        // the max distance a player can go before gravity is re-enabled after time-traveling
         public static float maxDistanceBeforeResettingGravity = 0.5f;
 
         // the current nav mesh agent - the FPSController should only ever have one of these
@@ -145,6 +146,8 @@ public class ManageFPSControllers : MonoBehaviour {
         // get the nearest point on the nav mesh to the controller
         // this will be the world origin if a point is not found
         FPSControllerGlobals.activeFPSControllerNavMeshPosition = Utils.GeometryUtils.GetNearestPointOnNavMesh(FPSControllerGlobals.activeFPSControllerTransform.position, 5.0f);
+
+        FPSControllerGlobals.activeFPSControllerNavMeshClosestObjectName = Utils.GeometryUtils.GetTopLevelSceneContainerChildNameAtNearestNavMeshPoint(FPSControllerGlobals.activeFPSControllerTransform.position, 1.0f);
     }
 
     // reposition and realign this FPSController to match another camera in the scene

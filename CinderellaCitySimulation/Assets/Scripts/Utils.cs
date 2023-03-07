@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Offers a variety of low-level, common operations shared among other scripts
@@ -239,6 +240,39 @@ public class Utils
             }
 
             return finalPosition;
+        }
+
+        // get the name of the object at the nearest nav mesh point
+        public static string GetTopLevelSceneContainerChildNameAtNearestNavMeshPoint(Vector3 startingPoint, float radius)
+        {
+            NavMeshHit hit;
+
+            GameObject[] topLevelGameObjects = ManageSceneObjects.GetTopLevelChildrenInSceneContainer(SceneManager.GetActiveScene());
+            GameObject closestGameObject;
+            string closestGameObjectName = "";
+
+            // if we get a hit
+            if (NavMesh.SamplePosition(startingPoint, out hit, radius, 1))
+            {
+                RaycastHit raycastHit;
+                if (Physics.Raycast(hit.position + Vector3.up * 0.1f, Vector3.down, out raycastHit))
+                {
+                    closestGameObject = raycastHit.collider.gameObject;
+
+                    foreach (GameObject parent in topLevelGameObjects)
+                    {
+                        // check if the child GameObject is a descendant of the parent GameObject
+                        if (closestGameObject.transform.IsChildOf(parent.transform))
+                        {
+                            // Parent found!
+                            closestGameObjectName = parent.name;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return closestGameObjectName;
         }
 
         // get a random point on the scene's current navmesh within some radius from a starting point
