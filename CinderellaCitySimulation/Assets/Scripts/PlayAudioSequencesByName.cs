@@ -100,7 +100,8 @@ public class PlayAudioSequencesByName : MonoBehaviour
                         clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-ambient-chatter"))
                     };
                     AudioSourceGlobals.allKnownSpeakerParams.Add(matchingParams);
-                } else // but if the params exist, make sure they're updated
+                }
+                else // but if the params exist, make sure they're updated
                 {
                     matchingParams.clipSequence = AudioSourceGlobals.isPlayerOutside ? ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-exterior-ambient")) : ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-ambient-chatter"));
                 }
@@ -123,7 +124,8 @@ public class PlayAudioSequencesByName : MonoBehaviour
                         clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-fountain-1"))
                     };
                     AudioSourceGlobals.allKnownSpeakerParams.Add(matchingParams);
-                } else // but if the params exist, make sure they're updated
+                }
+                else // but if the params exist, make sure they're updated
                 {
                     matchingParams.speakerVolume = AudioSourceGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeMallFountain;
                 }
@@ -145,7 +147,8 @@ public class PlayAudioSequencesByName : MonoBehaviour
                         clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-fountain-2"))
                     };
                     AudioSourceGlobals.allKnownSpeakerParams.Add(matchingParams);
-                } else // but if the params exist, make sure they're updated
+                }
+                else // but if the params exist, make sure they're updated
                 {
                     matchingParams.speakerVolume = AudioSourceGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeMallFountain;
                 }
@@ -168,7 +171,8 @@ public class PlayAudioSequencesByName : MonoBehaviour
                         clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-mall-60s70s"))
                     };
                     AudioSourceGlobals.allKnownSpeakerParams.Add(matchingParams);
-                } else // but if the params exist, make sure they're updated
+                }
+                else // but if the params exist, make sure they're updated
                 {
                     matchingParams.speakerVolume = AudioSourceGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeMallCommon;
                 }
@@ -192,6 +196,10 @@ public class PlayAudioSequencesByName : MonoBehaviour
                         clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-store-musicland-60s70s"))
                     };
                     AudioSourceGlobals.allKnownSpeakerParams.Add(matchingParams);
+                }
+                else // but if the params exist, make sure they're updated
+                {
+                    matchingParams.speakerVolume = AudioSourceGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeStore;
                 }
                 return matchingParams;
 
@@ -237,6 +245,10 @@ public class PlayAudioSequencesByName : MonoBehaviour
                     };
                     AudioSourceGlobals.allKnownSpeakerParams.Add(matchingParams);
                 }
+                else // but if the params exist, make sure they're updated
+                {
+                    matchingParams.speakerVolume = AudioSourceGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeMallCommon;
+                }
                 return matchingParams;
 
             // store - consumer beauty
@@ -255,6 +267,10 @@ public class PlayAudioSequencesByName : MonoBehaviour
                         clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-store-consumer-beauty-80s90s"))
                     };
                     AudioSourceGlobals.allKnownSpeakerParams.Add(matchingParams);
+                }
+                else // but if the params exist, make sure they're updated
+                {
+                    matchingParams.speakerVolume = AudioSourceGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeStore;
                 }
                 return matchingParams;
 
@@ -275,6 +291,10 @@ public class PlayAudioSequencesByName : MonoBehaviour
                     };
                     AudioSourceGlobals.allKnownSpeakerParams.Add(matchingParams);
                 }
+                else // but if the params exist, make sure they're updated
+                {
+                    matchingParams.speakerVolume = AudioSourceGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeStore;
+                }
                 return matchingParams;
             
             // store - generic
@@ -294,6 +314,10 @@ public class PlayAudioSequencesByName : MonoBehaviour
                     };
                     AudioSourceGlobals.allKnownSpeakerParams.Add(matchingParams);
                 }
+                else // but if the params exist, make sure they're updated
+                {
+                    matchingParams.speakerVolume = AudioSourceGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeStore;
+                }
                 return matchingParams;
 
             // store - musicland
@@ -312,6 +336,10 @@ public class PlayAudioSequencesByName : MonoBehaviour
                         clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/music-store-musicland-80s90s"))
                     };
                     AudioSourceGlobals.allKnownSpeakerParams.Add(matchingParams);
+                }
+                else // but if the params exist, make sure they're updated
+                {
+                    matchingParams.speakerVolume = AudioSourceGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeStore;
                 }
                 return matchingParams;
 
