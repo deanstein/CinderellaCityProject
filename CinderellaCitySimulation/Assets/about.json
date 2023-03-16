@@ -1,6 +1,21 @@
 {
   "VersionHistory": [
     {
+      "0.7.6.202303": [
+        {    
+          "Overview": "v0.7.6 adds support for responsive game audio depending on whether the player is inside or outside the mall, and addresses a minor lighting issue on doors and windows.",
+          "Environment Updates": [
+            "Improved lighting results on doors and windows in both eras."
+          ],
+          "UI Updates": [
+          ],
+          "Code Updates": [
+            "Added the ability to track whether the FPSController is standing on geometry that is considered interior mall space or exterior space",
+            "Added the ability to adjust AudioSource volume and current track based on whether the player is inside or outside the mall",
+            "Organized audio source code and centralized reusable logic"
+          ]
+        }
+      ],
       "0.7.5.202302": [
         {    
           "Overview": "v0.7.5 fixes geometry and lighting issues in both eras.",
