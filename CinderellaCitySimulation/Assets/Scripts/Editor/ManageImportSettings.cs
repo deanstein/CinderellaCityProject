@@ -461,15 +461,15 @@ public class ManageImportSettings
             case string name when name.Contains("mall-lights")
             || name.Contains("signage"):
                 return 10f;
-            case string name when name.Contains("doors")
-            || name.Contains("windows"):
-                return 8f;
             case string name when name.Contains("floors-vert")
             || name.Contains("store-detailing"):
                 return 5f;
             case string name when name.Contains("mall-ceilings")
             || name.Contains("detailing-exterior")
             || name.Contains("detailing-interior"):
+                return 4f;
+            case string name when name.Contains("doors")
+            || name.Contains("windows"):
                 return 4f;
             case string name when name.Contains("site-curb-gutter-sidewalk-vert")
             || name.Contains("site-detailing")
