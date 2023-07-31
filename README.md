@@ -7,7 +7,9 @@ The real Cinderella City Mall existed in Englewood, Colorado from 1968 to 1998.
 
 ## Project Updates
 
+- [See the latest progress: Once Upon a Time at Cinderella City v0.7 overview](https://youtu.be/GUgowEJG9HY) (2023-07-29)
 - [Watch the latest presentation on Cinderella City's history and enjoy a walkthrough of the newest simulation version](https://youtu.be/va9xoslXjQo) (2022-04-26)
+- [See all simulation releases and version changes](https://github.com/deanstein/CinderellaCityProject/releases)
 
 ## Quick Links
 
@@ -101,6 +103,8 @@ After the simulation loads, you'll find yourself at the Main Menu, where you can
 
 The simulation is still under development, so some issues are known and will be fixed in future updates:
 
+- The audio when walking outside the mall is too short and loops too quickly
+- Jumping or using anti-gravity mode while walking outside the mall will play the interior audio unexpectedly
 - Large areas of both time periods are unfinished.
 
 
