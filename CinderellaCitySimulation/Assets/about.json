@@ -1,6 +1,20 @@
 {
   "VersionHistory": [
     {
+      "0.7.7.202310": [
+        {    
+          "Overview": "v0.7.7 updates time period labels to be more specific about years they cover.",
+          "Environment Updates": [
+          ],
+          "UI Updates": [
+            "Improved time period labels to indicate specific years instead of general decades"
+          ],
+          "Code Updates": [
+            "Refactored 'friendly names' into a proper TimePeriods class with corresponding sceneName and label",
+            "Decoupled time period label from scene name"
+          ]
+        }
+      ],
       "0.7.6.202303": [
         {    
           "Overview": "v0.7.6 adds support for responsive game audio depending on whether the player is inside or outside the mall, and addresses a minor lighting issue on doors and windows.",

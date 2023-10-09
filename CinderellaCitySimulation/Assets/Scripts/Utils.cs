@@ -131,39 +131,6 @@ public class Utils
             return cleanString;
         }
 
-        // converts an array of friendly UI names into Scene names
-        public static List<string> ConvertFriendlyNamesToSceneNames(List<string> friendlyNames)
-        {
-            List<string> convertedNames = new List<string>();
-
-            foreach (string friendlyName in friendlyNames)
-            {
-                string convertedName = CleanString(friendlyName);
-                convertedNames.Add(convertedName);
-            }
-
-            return convertedNames;
-        }
-
-        // gets the index of a friendly name given a scene name
-        public static string ConvertSceneNameToFriendlyName(string sceneName)
-        {
-            // get the index of the scene we're in
-            int sceneIndex = SceneGlobals.availableTimePeriodSceneNamesList.IndexOf(sceneName);
-
-            if (sceneIndex != -1)
-            {
-                // now get the associated friendly name
-                string friendlyName = SceneGlobals.availableTimePeriodFriendlyNames[sceneIndex];
-
-                return friendlyName;
-            }
-            else
-            {
-                return "0000 Experimental";
-            }
-        }
-
         // return true if this string is found at all in the given array
         public static bool TestIfAnyListItemContainedInString(List<string> listOfStringsToSearchFor, string stringToSearchIn)
         {
