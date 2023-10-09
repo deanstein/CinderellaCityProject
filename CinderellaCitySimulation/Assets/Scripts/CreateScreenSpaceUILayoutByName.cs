@@ -395,7 +395,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         UIVisibilityGlobals.isHUDActive = true;
 
         // create the time period indicator
-        GameObject HUDTimePeriodIndicator = CreateScreenSpaceUIElements.CreateHUDTimePeriodIndicator(HUDCanvasParentObject, Utils.StringUtils.ConvertSceneNameToFriendlyName(UILauncher.scene.name));
+        GameObject HUDTimePeriodIndicator = CreateScreenSpaceUIElements.CreateHUDTimePeriodIndicator(HUDCanvasParentObject, SceneGlobals.TimePeriods.GetTimePeriodLabelBySceneName(UILauncher.scene.name));
 
         // create the game version indicator
         GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(HUDCanvasParentObject);

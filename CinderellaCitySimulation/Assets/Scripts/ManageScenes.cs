@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -30,26 +32,72 @@ public class SceneGlobals
     // the pause menu will record the last known time period scene name when Pause was invoked
     public static string lastKnownTimePeriodSceneName;
 
-    /* scene lists */
+    // each time period is represented by a scene name that must match an existing scene,
+    // and a label that appears on screen in the HUD when this scene is active
+    public class TimePeriod
+    {
+        public string sceneName;
+        public string label;
+    }
+    // define properties of all available time periods
+    // TODO: add Alt Future when available
+    public class TimePeriods
+    {
+        public static List<TimePeriod> timePeriods = new List<TimePeriod>
+        {
+            new TimePeriod
+            {
+                sceneName = "60s70s",
+                label = "1968-1978"
+            },
+            new TimePeriod
+            {
+                sceneName = "80s90s",
+                label = "1987-1997"
+            }
+        };
+
+        // used for testing only, and not included in the real list of time periods
+        public static TimePeriod exterimentalTimePeriod = new TimePeriod
+        {
+            sceneName = "Experimental",
+            label = "Experimental"
+        };
+
+        public static string[] GetAllTimePeriodSceneNames()
+        {
+            return timePeriods.Select(tp => tp.sceneName).ToArray();
+        }
+
+        public static string[] GetAllTimePeriodLabels()
+        {
+            return timePeriods.Select(tp => tp.label).ToArray();
+        }
+
+        public static string GetTimePeriodLabelBySceneName(string sceneName)
+        {
+            var timePeriod = timePeriods.FirstOrDefault(tp => String.Equals(tp.sceneName, sceneName, StringComparison.OrdinalIgnoreCase));
+            return timePeriod != null ? timePeriod.label : exterimentalTimePeriod.label;
+        }
+
+    }
+    TimePeriods timePeriods = new TimePeriods();
+
     // all scene names to load for the full simulation experience
-    public static string[] allGameplaySceneNames = { mainMenuSceneName, pauseMenuName, howToPlaySceneName, creditsSceneName, "60s70s", "80s90s" };
+    public static string[] allGameplaySceneNames = new string[] { mainMenuSceneName, pauseMenuName, howToPlaySceneName, creditsSceneName }.Concat(TimePeriods.GetAllTimePeriodSceneNames()).ToArray();
+
     // only the menu scenes - used for testing menus without overhead of loading first-person scenes
     public static string[] allMenuSceneNames = { mainMenuSceneName, pauseMenuName, howToPlaySceneName, creditsSceneName };
     // only the first-person (non-menu) scenes
-    public static string[] availableTimePeriodSceneNames = { "60s70s", "80s90s" };
+    public static string[] availableTimePeriodSceneNames = TimePeriods.GetAllTimePeriodSceneNames();
     // list the friendly names of available time periods, in chronologial order (used for UI labels)
-    // TODO: add Alt Future when available
-    public static string[] availableTimePeriodFriendlyNames = { "1960s-70s", "1980s-90s" };
+    public static string[] availableTimePeriodLabels = TimePeriods.GetAllTimePeriodLabels();
     // for testing purposes, set this to true to skip loading heavy first-person scenes
     public static bool loadMenusOnly = false;
     // the scenes to load when the game starts will differ depending on the above flag
     public static string[] scenesToLoad = loadMenusOnly ? allMenuSceneNames : allGameplaySceneNames;
-
-    // convert the friendly names to Scene names
-    // uses CleanString to remove spaces, punctuation, and in the case of years, "19"
-    // for example: "1980s-1990s" becomes "80s90s"
     // IMPORTANT: Unity Scene names must match the strings in this list exactly
-    public static List<string> availableTimePeriodSceneNamesList = Utils.StringUtils.ConvertFriendlyNamesToSceneNames(new List<string>(availableTimePeriodFriendlyNames));
+    public static List<string> availableTimePeriodSceneNamesList = new List<string>(availableTimePeriodSceneNames);
     // based on the current scene, these are the time period scenes that are disabled
     // used to generate thumbnails for disabled scenes for the Pause Menu
     public static List<string> disabledTimePeriodSceneNames = new List<string>();
