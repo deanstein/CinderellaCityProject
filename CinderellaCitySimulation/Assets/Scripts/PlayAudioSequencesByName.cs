@@ -414,8 +414,13 @@ public class PlayAudioSequencesByName : MonoBehaviour
         // for some reason, this cannot be done in OnDisable() (always results in .time of 0)
         thisSpeakerParams.lastKnownClipTime = thisAudioSourceComponent.time;
 
-        // update the global flag tracking whether the player is outside of the mall
+        // determine whether the player is inside the mall or outside
+        // based on the name of the game object below the player
+        // this is only calculable when the player is on a floor surface ("grounded")
+        if (ManageFPSControllers.FPSControllerGlobals.activeFPSController.GetComponent<CharacterController>().isGrounded)
+        {
         AudioSourceGlobals.isPlayerOutside = Utils.StringUtils.TestIfAnyListItemContainedInString(ObjectVisibilityGlobals.exteriorObjectKeywordsList, Utils.GeometryUtils.GetTopLevelSceneContainerChildNameAtNearestNavMeshPoint(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position, 1.0f));
+        }
 
         // update the audio source with new speaker params if necessary
         SpeakerParams newSpeakerParams = AssociateSpeakerParamsByName(this.name);
