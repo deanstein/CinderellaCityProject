@@ -46,7 +46,8 @@ public class AudioSourceGlobals
 
     // default volume levels and max distances
     public static float defaultSpeakerVolumeChatter = 0.03f;
-    public static float defaultSpeakerMaxDistanceMallChatter = 500f;
+    public static float defaultSpeakerVolumeExteriorAmbient = 0.1f;
+    public static float defaultSpeakerMaxDistanceMallChatter = 500f; // also used for exterior ambient
 
     public static float defaultSpeakerVolumeMallCommon = 0.02f;
     public static float defaultSpeakerMaxDistanceMallCommon = 20f;
@@ -104,6 +105,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
                 else // but if the params exist, make sure they're updated
                 {
                     matchingParams.clipSequence = AudioSourceGlobals.isPlayerOutside ? ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-exterior-ambient")) : ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-ambient-chatter"));
+                    matchingParams.speakerVolume = AudioSourceGlobals.isPlayerOutside ? AudioSourceGlobals.defaultSpeakerVolumeExteriorAmbient : AudioSourceGlobals.defaultSpeakerVolumeChatter;
                 }
 
                 return matchingParams;
@@ -225,6 +227,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
                 else // but if the params exist, make sure they're updated
                 {
                     matchingParams.clipSequence = AudioSourceGlobals.isPlayerOutside ? ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-exterior-ambient")) : ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-ambient-chatter"));
+                    matchingParams.speakerVolume = AudioSourceGlobals.isPlayerOutside ? AudioSourceGlobals.defaultSpeakerVolumeExteriorAmbient : AudioSourceGlobals.defaultSpeakerVolumeChatter;
                 }
                 return matchingParams;
 
