@@ -1,14 +1,18 @@
 {
   "VersionHistory": {
     "0.7.7.202310": {
-      "Overview": "v0.7.7 enhances time period labels to indicate specific years and fixes a bug with exterior audio if the player stops touching the ground.",
-      "Environment Updates": [],
+      "Overview": "v0.7.7 fixes a bug with exterior audio if the player stops touching the ground, enhances time period labels to indicate specific years, and adds a few missing stores and details in a minor Blue Mall corridor.",
+      "Environment Updates": [
+        "Added an unmarked storefront and interior lights for The Violet House (next to the Carousel Snack Bar) and an adjacent unknown store in 1968-1978 southwest Blue Mall corridor",
+        "Added missing lights, ceilings, and common details to 1987-1997 southwest Blue Mall corridor stores",
+        "Fixed unconverted people proxies in 1987-1997 Shamrock Mall"
+      ],
       "UI Updates": [
         "Improved time period labels to indicate specific years instead of general decades"
       ],
       "Code Updates": [
         "Fixed an issue where isPlayerOutside flag was being unexpectedly set to false when player lifted off the ground via jumping or anti-gravity mode",
-        "Refactored 'friendly names' into a proper TimePeriods class with corresponding sceneName and label",
+        "Refactored 'friendly names' into a proper TimePeriods class with corresponding sceneName and label to enable label customization",
         "Decoupled time period label from scene name"
       ]
     },
