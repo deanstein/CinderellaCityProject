@@ -41,7 +41,7 @@ public static class ManageSceneObjects
 
         foreach (Transform child in activeSceneContainer.transform)
         {
-            if (child.name.Contains(objectName))
+            if (child.name.Equals(objectName))
             {
                 topLevelMatchingObjects.Add(child.gameObject);
             }
@@ -369,11 +369,17 @@ public static class ManageSceneObjects
         // get all historic photograph cameras
         public static GameObject[] GetAllHistoricPhotoCamerasInScene()
         {
-            GameObject historicPhotosProxyHost = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.historicPhotographObjectKeywords[0])[0];
+            GameObject historicPhotosProxyHost = GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.historicPhotographObjectKeywords[0])[0];
 
-            ProxyObjects.ProxyHostList proxyHostList = ManageSceneObjects.ProxyObjects.GetProxyHostList(historicPhotosProxyHost);
+            ProxyHostList proxyHostList = GetProxyHostList(historicPhotosProxyHost);
 
             GameObject[] cameraObjects = proxyHostList.replacementObjectList.ToArray();
+
+            // for debugging: console all historic photo positions
+            //foreach (GameObject cameraObject in cameraObjects)
+            //{
+            //    Debug.Log("Historic photo camera position: " + cameraObject.name + " " + cameraObject.transform.position);
+            //}
 
             return cameraObjects;
         }
