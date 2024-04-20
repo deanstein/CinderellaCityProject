@@ -356,59 +356,6 @@ public class ManageFPSControllers : MonoBehaviour {
         existingVolume.profile = existingProfile;
     }
 
-    // used to allow AI control of the FPSController,
-    // for the purposes of positioning or for a guided tour
-    public static void ToggleFPSAgentAsParent()
-    {
-        // get the FPSAgent - there should only be one of these, but its hierarchy may change
-        // it will be a child of the FPSController, so search for it there
-        NavMeshAgent[] existingFPSAgents = FPSControllerGlobals.activeFPSController.GetComponentsInChildren<NavMeshAgent>();
-        NavMeshAgent currentAgentToCopy = existingFPSAgents[0];
-
-        // if there's only one nav mesh agent found, and it's already on the parent, skip
-        if (existingFPSAgents.Length == 1 && currentAgentToCopy.transform.name.Contains("FPSController"))
-        {
-            return;
-        }
-
-        // delete the current agent from both possible locations
-        foreach (NavMeshAgent FPSAgent in existingFPSAgents)
-        {
-            Destroy(FPSAgent);
-        }
-
-        // copy the agent to the parent
-        NavMeshAgent newFPSAgent = FPSControllerGlobals.activeFPSController.AddComponent<NavMeshAgent>();
-        CopyAgentSettings(currentAgentToCopy, newFPSAgent);
-    }
-
-    // gives the FPSController full navigation control,
-    // ending any guided tours or location adjustment agents
-    public static void ToggleFPSAgentAsSibling()
-    {
-        // get the FPSAgent - there should only be one of these, but its hierarchy may change
-        // it will be a child of the FPSController, so search for it there
-        NavMeshAgent[] existingFPSAgents = FPSControllerGlobals.activeFPSController.GetComponentsInChildren<NavMeshAgent>();
-        NavMeshAgent currentAgentToCopy = existingFPSAgents[0];
-
-        // if there's only one nav mesh agent found, and it's already on the parent, skip
-        if (existingFPSAgents.Length == 1 && currentAgentToCopy.transform.name.Contains("FirstPersonAgent"))
-        {
-            return;
-        }
-
-        // delete the current agent from both possible locations
-        foreach (NavMeshAgent FPSAgent in existingFPSAgents)
-        {
-            Destroy(FPSAgent);
-        }
-
-        // set the agent on the 2nd sibling, which should be the agent host
-        // and copy the settings
-        NavMeshAgent newFPSAgent = FPSControllerGlobals.activeFPSController.transform.GetChild(1).gameObject.AddComponent<NavMeshAgent>();
-        CopyAgentSettings(currentAgentToCopy, newFPSAgent);
-    }
-
     public static void CopyAgentSettings(NavMeshAgent fromAgent, NavMeshAgent toAgent)
     {
         toAgent.agentTypeID = fromAgent.agentTypeID;
