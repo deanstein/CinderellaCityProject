@@ -156,8 +156,6 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
             Utils.DebugUtils.DebugLog("Starting guided tour mode...");
 
             ManageFPSControllers.FPSControllerGlobals.isGuidedTourActive = true;
-
-            GameObject[] allHistoricPhotos = ManageSceneObjects.ProxyObjects.GetAllHistoricPhotoCamerasInScene();
         }
         // end the guided tour
         if (Input.GetKeyDown("]"))

@@ -37,7 +37,6 @@ public class UpdateNPCAnimatorByState : MonoBehaviour
 
             thisAnimator.speed = thisAgent.velocity.magnitude;
         }
-
         // otherwise, when the agent is enabled, match the animation speed with the velocity
         else if (thisAgent.enabled)
         {
