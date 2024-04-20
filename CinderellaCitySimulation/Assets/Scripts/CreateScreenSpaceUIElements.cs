@@ -88,7 +88,7 @@ public class UIGlobals
     public static float timeLabelSize = 0.035f;
 
     public static float HUDBottomBarTopMarginScreenHeightRatio = 0.9f;
-    public static float HUDTimePeriodLabelLeftMarginScreenWidthRatio = 0.85f;
+    public static float HUDTimePeriodLabelLeftMarginScreenWidthRatio = 0.845f;
     public static float HUDBottomBarBottomMarginScreenHeightRatio = 0.03f;
 
     public static float bottomMenuBarHeightRatio = 0.07f;
@@ -1044,13 +1044,13 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
     public static GameObject CreateHUDTimePeriodIndicator(GameObject parent, string titleString)
     {
-        // create the title container object
+        // create the time period container object
         GameObject timePeriodContainer = new GameObject("TimePeriodContainer");
         timePeriodContainer.AddComponent<CanvasRenderer>();
         Image timePeriodContainerColor = timePeriodContainer.AddComponent<Image>();
         timePeriodContainerColor.color = UIGlobals.containerColor;
 
-        // position the title container
+        // position the time period container
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromScreenTop(timePeriodContainer, UIGlobals.HUDBottomBarTopMarginScreenHeightRatio);
 
         // resize the title container
