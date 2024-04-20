@@ -203,7 +203,7 @@ public class Utils
             }
             else
             {
-                Utils.DebugUtils.DebugLog("Failed to find a point on the NavMesh.");
+                Utils.DebugUtils.DebugLog("Failed to find a point on the NavMesh: " + startingPoint);
             }
 
             return finalPosition;
@@ -305,12 +305,9 @@ public class Utils
                         if (Mathf.Abs(hit.position.y - startingPoint.y) < NPCControllerGlobals.maxStepHeight)
                         {
                             finalPosition = hit.position;
-                            return finalPosition;
                         }
                     }
                 }
-
-                return finalPosition;
             }
             else
             {
@@ -322,12 +319,10 @@ public class Utils
                     if (hit.position.y > 10)
                     {
                         finalPosition = new Vector3(hit.position.x, 10, hit.position.z);
-                        return finalPosition;
                     }
                     else
                     {
                         finalPosition = hit.position;
-                        return finalPosition;
                     }
                 }
 
@@ -335,13 +330,13 @@ public class Utils
                 {
                     Utils.DebugUtils.DebugLog("ERROR: Failed to find a random point on NavMesh, so used the world origin instead.");
                 }
-
-                return finalPosition;
             }
 
             // optional: visualize the location and a connecting line
             //Debug.DrawLine(this.gameObject.transform.position, finalPosition, Color.red, 100f);
             //Debug.DrawLine(finalPosition, new Vector3(finalPosition.x, finalPosition.y + 1, finalPosition.z), Color.red, 100f);
+
+            return finalPosition;
         }
 
         // used to correct nav mesh points which are just slightly above the floor
