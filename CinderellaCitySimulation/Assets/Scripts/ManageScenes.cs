@@ -48,12 +48,12 @@ public class SceneGlobals
             new TimePeriod
             {
                 sceneName = "60s70s",
-                label = "1968-1978"
+                label = "1968-1978 "
             },
             new TimePeriod
             {
                 sceneName = "80s90s",
-                label = "1987-1997"
+                label = "1987-1997 "
             }
         };
 
@@ -61,7 +61,7 @@ public class SceneGlobals
         public static TimePeriod exterimentalTimePeriod = new TimePeriod
         {
             sceneName = "Experimental",
-            label = "Experimental"
+            label = "1987-1997"
         };
 
         public static string[] GetAllTimePeriodSceneNames()
