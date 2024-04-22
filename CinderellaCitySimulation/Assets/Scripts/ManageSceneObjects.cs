@@ -378,7 +378,7 @@ public static class ManageSceneObjects
             // for debugging: console all historic photo positions
             //foreach (GameObject cameraObject in cameraObjects)
             //{
-            //    Debug.Log("Historic photo camera position: " + cameraObject.name + " " + cameraObject.transform.position);
+            //    Utils.DebugUtils.DebugLog("Historic photo camera position: " + cameraObject.name + " " + cameraObject.transform.position);
             //}
 
             return cameraObjects;
