@@ -1,10 +1,11 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-// Responsible for making an object's position match the current player's position at all times
-//attach this script to an object that needs to follow the player
+// Responsible for making the NavMeshAgent follow the FPSController (default behavior)
+// Or, when GuidedTourMode is active, FPSController will follow NavMeshAgent
+// Must be attached to the NavMeshAgent in each scene
 
-public class FollowPlayer : MonoBehaviour
+public class FollowPlayerOrAgent : MonoBehaviour
 {
     private void Update()
     {
