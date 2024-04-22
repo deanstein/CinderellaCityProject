@@ -18,6 +18,7 @@ public class FollowPathOnNavMesh : MonoBehaviour
     public UpdateNPCAnimatorByState thisAnimatorUpdateScript;
     public Vector3 initialDestination;
     public NavMeshPath path;
+    private bool showDebugLines = true; // enable for debugging
 
     // variables related to the test for whether the NPC is on a collision course with the player
     // this is only used for NPCs
@@ -98,9 +99,6 @@ public class FollowPathOnNavMesh : MonoBehaviour
             // set the initial destination to the first waypoint camera
             initialDestination = Utils.GeometryUtils.GetNearestPointOnNavMesh(ManageCameraActions.CameraActionGlobals.allPointOfInterestWaypoints[0].transform.position, 5);
 
-            // optional: visualize the direction to the initial destination with a line in the editor
-            Debug.DrawLine(this.transform.position, initialDestination, Color.green, Time.deltaTime);
-
             if (ManageFPSControllers.FPSControllerGlobals.isGuidedTourActive)
             {
                 SetAgentOnPath(thisAgent, initialDestination);
@@ -135,9 +133,6 @@ public class FollowPathOnNavMesh : MonoBehaviour
                 if (currentVelocity > 0f && currentVelocity < NPCControllerGlobals.minimumSpeedBeforeRepath)
                 {
                     SetAgentOnPath(thisAgent, nextDestination);
-
-                    // optional: visualize the path with a red line in the editor
-                    //Debug.DrawLine(this.transform.position, thisAgent.destination, Color.red, Time.deltaTime);
                 }
             }
 
@@ -153,13 +148,12 @@ public class FollowPathOnNavMesh : MonoBehaviour
             // ... for FPC
             else
             {
-                // optional: visualize the path with a line in the editor
-                Debug.DrawLine(thisAgent.transform.position, nextDestination, Color.red, Time.deltaTime);
+                if (ManageFPSControllers.FPSControllerGlobals.isGuidedTourActive && thisAgent.remainingDistance <= 1)
+                    {
+                    //Utils.DebugUtils.DebugLog("FPC next desination: " + nextDestination);
 
-                if (ManageFPSControllers.FPSControllerGlobals.isGuidedTourActive && thisAgent.remainingDistance <= NPCControllerGlobals.defaultNPCStoppingDistance)
-                {
                     ManageCameraActions.CameraActionGlobals.currentPointOfInterestWaypointIndex++;
-                    Utils.DebugUtils.DebugLog("FPC reached destination. New index: " + ManageCameraActions.CameraActionGlobals.currentPointOfInterestWaypointIndex);
+                    //Utils.DebugUtils.DebugLog("FPC reached destination." + nextDestination);
                     SetAgentOnPath(thisAgent, nextDestination);
                 }
             }
@@ -233,18 +227,27 @@ public class FollowPathOnNavMesh : MonoBehaviour
     }
 
     // set a given agent's path to a given destination point
-    private void SetAgentOnPath(NavMeshAgent agent, Vector3 desinationPoint)
+    private void SetAgentOnPath(NavMeshAgent agent, Vector3 destinationPoint)
     {
         // instantiate an empty path that it will follow
         path = new NavMeshPath();
 
         // find a path to the destination
-        bool pathSuccess = NavMesh.CalculatePath(this.gameObject.transform.position, desinationPoint, NavMesh.AllAreas, path);
+        bool pathSuccess = NavMesh.CalculatePath(this.gameObject.transform.position, destinationPoint, NavMesh.AllAreas, path);
 
         // if a path was created, set this agent to use it
         if (pathSuccess)
         {
-            agent.GetComponent<NavMeshAgent>().SetPath(path);
+            // optional: visualize the path with a line in the editor
+            if (showDebugLines)
+            {
+                for (int i = 0; i < path.corners.Length - 1; i++)
+                {
+                    Debug.DrawLine(path.corners[i], path.corners[i + 1], Color.green, 1000);
+                }
+            }
+
+            agent.SetPath(path);
         }
         else
         {
