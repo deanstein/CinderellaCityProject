@@ -23,12 +23,8 @@ public class FollowPlayerOrAgent : MonoBehaviour
             // this is required to be false for NavMeshAgent to not interfere
             this.GetComponent<NavMeshAgent>().updatePosition = false;
 
-            // TODO: decide which of the below we want to use
-
-            // move the FPSController transform to the NavMeshAgent's next position
-            //ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position = this.GetComponent<NavMeshAgent>().nextPosition;
-
-            // use simplemove to chase the NavMeshAgent
+            // move the CharacterController to the NavMeshAgent's next position
+            // using SimpleMove here prevents the agent from changing the height of the controller
             this.transform.parent.GetComponentInChildren<CharacterController>().SimpleMove(this.GetComponent<NavMeshAgent>().velocity);
         }
     }

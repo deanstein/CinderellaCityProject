@@ -156,6 +156,7 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
             Utils.DebugUtils.DebugLog("Starting guided tour mode...");
 
             ManageFPSControllers.FPSControllerGlobals.isGuidedTourActive = true;
+            UIGlobals.guidedTourIndicatorContainer.SetActive(true);
         }
         // end the guided tour
         if (Input.GetKeyDown("]"))
@@ -163,6 +164,7 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
             Utils.DebugUtils.DebugLog("Ending guided tour mode.");
 
             ManageFPSControllers.FPSControllerGlobals.isGuidedTourActive = false;
+            UIGlobals.guidedTourIndicatorContainer.SetActive(false);
         }
     }
 
