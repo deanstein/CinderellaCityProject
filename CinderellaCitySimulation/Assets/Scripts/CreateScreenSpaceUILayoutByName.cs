@@ -400,6 +400,9 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         // create the game version indicator
         GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(HUDCanvasParentObject);
 
+        // create the guided tour indicator
+        UIGlobals.guidedTourIndicatorContainer =  CreateScreenSpaceUIElements.CreateGuidedTourIndicator(HUDCanvasParentObject);
+
         // note that some scenes are under construction
         if (UILauncher.scene.name.Contains("AltFuture"))
         {

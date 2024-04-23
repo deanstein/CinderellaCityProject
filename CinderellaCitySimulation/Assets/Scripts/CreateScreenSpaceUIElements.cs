@@ -12,7 +12,7 @@ using UnityEngine.UI;
 /// </summary>
 
 // holds values other scripts need to access
-// TODO: this should probably go into ManageSceneUI
+// TODO: this should probably go into its own file
 public class UIGlobals
 {
     // all files accessed at run-time must be stored in a Resources folder
@@ -26,6 +26,10 @@ public class UIGlobals
     public static string loadingScreenBackgroundsSubdir = "LoadingScreenBackgrounds/";
     public static string mainMenuBackgroundsSubdir = "MainMenuBackgrounds/";
     public static string mainMenuThumbnailsSubdir = "MainMenuThumbnails/";
+
+    // strings
+    public static string guidedTourActive = "GUIDED TOUR ACTIVE  "; // extra space at end so paused string isn't clipped due to larger size
+    public static string guidedTourPaused = "GUIDED TOUR PAUSED";
 
     // is used to determine when to generate time-travel specific thumbnails
     public static bool isTimeTravelThumbnail;
@@ -45,6 +49,7 @@ public class UIGlobals
     // these are the HUD UI elements that can be hidden/revealed
     public static GameObject underConstructionLabelContainer;
     public static GameObject currentTimePeriodNotificationContainer;
+    public static GameObject guidedTourIndicatorContainer;
     public static GameObject timePeriodNotificationContainer60s70s;
     public static GameObject timePeriodNotificationContainer80s90s;
     public static GameObject timePeriodNotificationContainerAltFuture;
@@ -1197,6 +1202,48 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         versionLabel.transform.SetParent(versionLabelContainer.transform);
 
         return versionLabelContainer;
+    }
+
+    public static GameObject CreateGuidedTourIndicator(GameObject parent)
+    {
+        // create the guided tour container
+        GameObject guidedTourLabelContainer = new GameObject("GuidedTourLabelContainer");
+        guidedTourLabelContainer.AddComponent<CanvasRenderer>();
+        // image is needed to create a rect transform
+        Image guidedTourLabelContainerColor = guidedTourLabelContainer.AddComponent<Image>();
+        guidedTourLabelContainerColor.color = UIGlobals.clearColor;
+
+        // position the guided tour container
+        TransformScreenSpaceObject.PositionObjectAtCenterofScreen(guidedTourLabelContainer);
+
+        // add the guided tour text
+        GameObject guidedTourLabel = new GameObject("GuidedTourLabel");
+        Text guidedTourLabelText = guidedTourLabel.AddComponent<Text>();
+        guidedTourLabelText.color = UIGlobals.subtleTextColor;
+        guidedTourLabelText.font = (Font)Resources.Load(UIGlobals.labelFont);
+        guidedTourLabelText.text = UIGlobals.guidedTourActive; // may get updated later
+        guidedTourLabelText.fontSize = ConvertFontHeightRatioToPixelValue(UIGlobals.versionLabelSize);
+        guidedTourLabelText.alignment = TextAnchor.UpperLeft;
+
+        // resize the text's bounding box to fit the text
+        TransformScreenSpaceObject.ResizeTextExtentsToFitContents(guidedTourLabelText);
+
+        // position the guided tour text
+        TransformScreenSpaceObject.PositionObjectAtCenterofScreen(guidedTourLabel);
+        TransformScreenSpaceObject.PositionObjectByHeightRatioFromScreenTop(guidedTourLabel, versionLabelTopMarginScreenHeightRatio);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromScreenLeft(guidedTourLabel, 0.065f);
+
+        // set parent/child hierarchy
+        guidedTourLabelContainer.transform.SetParent(parent.transform);
+        guidedTourLabel.transform.SetParent(guidedTourLabelContainer.transform);
+
+        // add the update script so guided tour status can be reflected
+        guidedTourLabelContainer.AddComponent<UpdateGuidedTourLabelByState>();
+
+        // set the guided tour label to disabled initially
+        guidedTourLabelContainer.SetActive(false);
+
+        return guidedTourLabelContainer;
     }
 
     public static GameObject CreateCentralNavContainer(GameObject parent, GameObject topAlignmentObject)

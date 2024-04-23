@@ -33,6 +33,9 @@ public class ManageFPSControllers : MonoBehaviour {
 
         // marked true when guided tour mode is enabled
         public static bool isGuidedTourActive = false;
+        // marked true if a player has taken control of FPSController during guided tour
+        // suspension will end automatically after some idle time
+        public static bool isGuidedTourPaused = false;
 
         // all FPSControllers
         public static List<GameObject> allFPSControllers = new List<GameObject>();
@@ -299,9 +302,6 @@ public class ManageFPSControllers : MonoBehaviour {
         // set the FirstPersonCharacter's camera forward direction
         activeFirstPersonCharacter.GetComponent<Camera>().transform.forward = currentCameraForward;
 
-        // set the FirstPersonCharacter height to the camera height
-        //activeFirstPersonCharacter.transform.position = new Vector3(activeFirstPersonCharacter.transform.position.x, newPosition.y, activeFirstPersonCharacter.transform.position.z);
-
         // reset the FPSController mouse to avoid incorrect rotation due to interference
         activeFPSController.transform.GetComponent<FirstPersonController>().MouseReset();
 
@@ -445,6 +445,17 @@ public class ManageFPSControllers : MonoBehaviour {
         }
     }
 
+    // store the active coroutine to restart the countdown if necessary
+    private Coroutine guidedTourRestartCountdownCoroutine;
+    // before un-pausing guided tour mode,
+    // wait a few seconds
+    IEnumerator GuidedTourRestartCountdown()
+    {
+        yield return new WaitForSeconds(5);
+        FPSControllerGlobals.isGuidedTourActive = true;
+        FPSControllerGlobals.isGuidedTourPaused = false;
+    }
+
     private void Start()
     {
         // set the default height for the FPS controller
@@ -505,6 +516,23 @@ public class ManageFPSControllers : MonoBehaviour {
         // or restore their gravity if they've moved after time-traveling
         // (skipped if the time-traveling flag isn't set to true)
         UpdateFPSControllerGravityByState(HoistSceneObjects.AdjustPositionForHoistBetweenScenes(FPSControllerGlobals.initialFPSControllerLocation, SceneGlobals.referringSceneName, SceneGlobals.upcomingSceneName), FPSControllerGlobals.maxDistanceBeforeResettingGravity);
+
+        // if a guided tour is active, and the player is trying to walk,
+        // temporarily pause the guided tour
+        if (FPSControllerGlobals.isGuidedTourActive && (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0))
+        {
+            FPSControllerGlobals.isGuidedTourActive = false;
+            FPSControllerGlobals.isGuidedTourPaused = true;
+
+            // if the countdown has already started, stop it
+            if (guidedTourRestartCountdownCoroutine != null)
+            {
+                StopCoroutine(GuidedTourRestartCountdown());
+            }
+
+            // Start a new coroutine
+            guidedTourRestartCountdownCoroutine = StartCoroutine(GuidedTourRestartCountdown());
+        }
     }
 }
 
