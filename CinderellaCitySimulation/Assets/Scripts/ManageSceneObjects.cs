@@ -375,12 +375,6 @@ public static class ManageSceneObjects
 
             GameObject[] cameraObjects = proxyHostList.replacementObjectList.ToArray();
 
-            // for debugging: console all historic photo positions
-            //foreach (GameObject cameraObject in cameraObjects)
-            //{
-            //    Utils.DebugUtils.DebugLog("Historic photo camera position: " + cameraObject.name + " " + cameraObject.transform.position);
-            //}
-
             return cameraObjects;
         }
     }
