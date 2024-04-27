@@ -36,6 +36,10 @@ public class ManageFPSControllers : MonoBehaviour {
         // marked true if a player has taken control of FPSController during guided tour
         // suspension will end automatically after some idle time
         public static bool isGuidedTourPaused = false;
+        public static GameObject[] allGuidedTourDestinationObjects;
+        public static int currentGuidedTourDestinationIndex;
+        public static Camera currentGuidedTourDestinationCamera;
+        public static Vector3 currentGuidedTourVector;
 
         // all FPSControllers
         public static List<GameObject> allFPSControllers = new List<GameObject>();
@@ -92,13 +96,13 @@ public class ManageFPSControllers : MonoBehaviour {
             File.WriteAllText(JSONFilePath, restoreData);
         }
 
-        public static ManageFPSControllers.FPSControllerRestoreData ReadFPSControllerRestoreDataFromClipboard()
+        public static FPSControllerRestoreData ReadFPSControllerRestoreDataFromClipboard()
         {
             // get the clipboard data
             string clipBoardData = GUIUtility.systemCopyBuffer;
-            ManageFPSControllers.FPSControllerRestoreData restoreData = new ManageFPSControllers.FPSControllerRestoreData();
+            FPSControllerRestoreData restoreData = new FPSControllerRestoreData();
 
-            restoreData = JsonUtility.FromJson<ManageFPSControllers.FPSControllerRestoreData>(clipBoardData);
+            restoreData = JsonUtility.FromJson<FPSControllerRestoreData>(clipBoardData);
 
             return restoreData;
         }
@@ -456,6 +460,12 @@ public class ManageFPSControllers : MonoBehaviour {
         FPSControllerGlobals.isGuidedTourPaused = false;
     }
 
+    private void Awake()
+    {
+        // record all the possible guided tour waypoints for other scripts to access
+        FPSControllerGlobals.allGuidedTourDestinationObjects = ManageSceneObjects.ProxyObjects.GetAllHistoricPhotoCamerasInScene();
+    }
+
     private void Start()
     {
         // set the default height for the FPS controller
@@ -506,6 +516,8 @@ public class ManageFPSControllers : MonoBehaviour {
         }
     }
 
+    private float rotationSpeed = 0.5f;
+
     private void Update()
     {
         // record certain FPSController data globally for other scripts to access
@@ -517,22 +529,46 @@ public class ManageFPSControllers : MonoBehaviour {
         // (skipped if the time-traveling flag isn't set to true)
         UpdateFPSControllerGravityByState(HoistSceneObjects.AdjustPositionForHoistBetweenScenes(FPSControllerGlobals.initialFPSControllerLocation, SceneGlobals.referringSceneName, SceneGlobals.upcomingSceneName), FPSControllerGlobals.maxDistanceBeforeResettingGravity);
 
-        // if a guided tour is active, and the player is trying to walk,
-        // temporarily pause the guided tour
-        if (FPSControllerGlobals.isGuidedTourActive && (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0))
+        // for guided tour
+        if (FPSControllerGlobals.isGuidedTourActive)
         {
-            FPSControllerGlobals.isGuidedTourActive = false;
-            FPSControllerGlobals.isGuidedTourPaused = true;
-
-            // if the countdown has already started, stop it
-            if (guidedTourRestartCountdownCoroutine != null)
+            // if the player is trying to walk,
+            // temporarily pause the guided tour
+            if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
             {
-                StopCoroutine(GuidedTourRestartCountdown());
+                FPSControllerGlobals.isGuidedTourActive = false;
+                FPSControllerGlobals.isGuidedTourPaused = true;
+
+                // if the countdown has already started, stop it
+                if (guidedTourRestartCountdownCoroutine != null)
+                {
+                    StopCoroutine(GuidedTourRestartCountdown());
+                }
+
+                // Start a new coroutine
+                guidedTourRestartCountdownCoroutine = StartCoroutine(GuidedTourRestartCountdown());
             }
 
-            // Start a new coroutine
-            guidedTourRestartCountdownCoroutine = StartCoroutine(GuidedTourRestartCountdown());
-        }
+            // the current guided tour vector is 
+            // either the path vector or the camera direction if on last leg of path
+            // so set the current FPSController direction and camera to that vector
+
+            if (FPSControllerGlobals.currentGuidedTourVector != Vector3.zero)
+            {
+                // make sure the camera looks at the upcoming camera
+                Quaternion targetRotation = Quaternion.LookRotation(FPSControllerGlobals.currentGuidedTourVector, Vector3.up);
+                FPSControllerGlobals.activeFPSController.transform.rotation = Quaternion.Slerp(FPSControllerGlobals.activeFPSController.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+
+                // set the FirstPersonCharacter's camera forward direction
+                Vector3 targetDirection = FPSControllerGlobals.currentGuidedTourVector;
+                FPSControllerGlobals.activeFPSController.GetComponentInChildren<Camera>().transform.forward = Vector3.Lerp(FPSControllerGlobals.activeFPSController.GetComponentInChildren<Camera>().transform.forward, targetDirection, Time.deltaTime * rotationSpeed);
+
+                // reset the FPSController mouse to avoid incorrect rotation due to interference
+                FPSControllerGlobals.activeFPSController.transform.GetComponent<FirstPersonController>().MouseReset();
+            }
+
+        } 
+        
     }
 }
 

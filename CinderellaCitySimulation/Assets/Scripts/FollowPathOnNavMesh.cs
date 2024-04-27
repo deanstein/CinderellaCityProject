@@ -94,10 +94,10 @@ public class FollowPathOnNavMesh : MonoBehaviour
         else
         {
             // get all the available waypoint cameras
-            ManageCameraActions.CameraActionGlobals.allPointOfInterestWaypoints = ManageSceneObjects.ProxyObjects.GetAllHistoricPhotoCamerasInScene();
+            ManageFPSControllers.FPSControllerGlobals.allGuidedTourDestinationObjects = ManageSceneObjects.ProxyObjects.GetAllHistoricPhotoCamerasInScene();
 
             // set the initial destination to the first waypoint camera
-            initialDestination = Utils.GeometryUtils.GetNearestPointOnNavMesh(ManageCameraActions.CameraActionGlobals.allPointOfInterestWaypoints[0].transform.position, 5);
+            initialDestination = Utils.GeometryUtils.GetNearestPointOnNavMesh(ManageFPSControllers.FPSControllerGlobals.allGuidedTourDestinationObjects[0].transform.position, 5);
 
             if (ManageFPSControllers.FPSControllerGlobals.isGuidedTourActive)
             {
@@ -113,7 +113,7 @@ public class FollowPathOnNavMesh : MonoBehaviour
             // this agent's next destination will depend on whether it's an NPC or not
             Vector3 nextDestination = isNPC ? 
                 Utils.GeometryUtils.GetRandomPointOnNavMeshFromPool(this.transform.position, NPCControllerGlobals.initialNPCPositionsArray, NPCControllerGlobals.minDiscardDistance, NPCControllerGlobals.maxDiscardDistance, true) 
-                : Utils.GeometryUtils.GetNearestPointOnNavMesh(ManageCameraActions.CameraActionGlobals.allPointOfInterestWaypoints[ManageCameraActions.CameraActionGlobals.currentPointOfInterestWaypointIndex].transform.position, 5);
+                : Utils.GeometryUtils.GetNearestPointOnNavMesh(ManageFPSControllers.FPSControllerGlobals.allGuidedTourDestinationObjects[ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex].transform.position, 5);
 
             // if this is an NPC, check if it's on a collision course with the player 
             if (isNPC)
@@ -152,9 +152,28 @@ public class FollowPathOnNavMesh : MonoBehaviour
                     {
                     //Utils.DebugUtils.DebugLog("FPC next desination: " + nextDestination);
 
-                    ManageCameraActions.CameraActionGlobals.currentPointOfInterestWaypointIndex++;
+                    // store the current camera destination
+                    ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationCamera = ManageFPSControllers.FPSControllerGlobals.allGuidedTourDestinationObjects[ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex].GetComponent<Camera>();
+
+                    // increment the index
+                    ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex++;
+
                     //Utils.DebugUtils.DebugLog("FPC reached destination." + nextDestination);
                     SetAgentOnPath(thisAgent, nextDestination);
+                }
+
+                if (ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationCamera != null && thisAgent.path.corners.Length > 2)
+                {
+                    // if we're on the last path segment, current tour vector is that camera
+                    if (thisAgent.path.corners.Length == 2 || thisAgent.steeringTarget == thisAgent.path.corners[thisAgent.path.corners.Length - 1])
+                    {
+                        ManageFPSControllers.FPSControllerGlobals.currentGuidedTourVector = ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationCamera.transform.forward;
+                    }
+                    // otherwise, current path vector is the agent's velocity
+                    else
+                    {
+                        ManageFPSControllers.FPSControllerGlobals.currentGuidedTourVector = thisAgent.velocity;
+                    }
                 }
             }
         }
