@@ -37,7 +37,7 @@ public class ManageFPSControllers : MonoBehaviour {
         // suspension will end automatically after some idle time
         public static bool isGuidedTourPaused = false;
         public static GameObject[] allGuidedTourDestinationObjects;
-        public static int currentGuidedTourDestinationIndex;
+        public static int currentGuidedTourDestinationIndex = 0;
         public static Camera currentGuidedTourDestinationCamera;
         public static Vector3 currentGuidedTourVector;
 
@@ -460,12 +460,6 @@ public class ManageFPSControllers : MonoBehaviour {
         FPSControllerGlobals.isGuidedTourPaused = false;
     }
 
-    private void Awake()
-    {
-        // record all the possible guided tour waypoints for other scripts to access
-        FPSControllerGlobals.allGuidedTourDestinationObjects = ManageSceneObjects.ProxyObjects.GetAllHistoricPhotoCamerasInScene();
-    }
-
     private void Start()
     {
         // set the default height for the FPS controller
@@ -512,11 +506,11 @@ public class ManageFPSControllers : MonoBehaviour {
         // unlock the cursor only when the upcoming scene is a menu (not a time period scene)
         if (SceneGlobals.availableTimePeriodSceneNamesList.IndexOf(SceneGlobals.upcomingSceneName) == -1)
         {
-          FPSControllerGlobals.activeFPSController.transform.GetComponent<FirstPersonController>().m_MouseLook.SetCursorLock(false);
+          FPSControllerGlobals.activeFPSController?.transform.GetComponent<FirstPersonController>().m_MouseLook.SetCursorLock(false);
         }
     }
 
-    private float rotationSpeed = 0.5f;
+    private float rotationSpeed = 0.1f;
 
     private void Update()
     {
