@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -19,6 +20,7 @@ public class FollowPathOnNavMesh : MonoBehaviour
     public Vector3 initialDestination;
     public NavMeshPath path;
     private bool showDebugLines = true; // enable for debugging
+    private GameObject[] guidedTourObjects;
 
     // variables related to the test for whether the NPC is on a collision course with the player
     // this is only used for NPCs
@@ -90,93 +92,101 @@ public class FollowPathOnNavMesh : MonoBehaviour
 
             SetAgentOnPath(thisAgent, initialDestination);
         }
-        // first-person character
-        else
-        {
-            // get all the available waypoint cameras
-            ManageFPSControllers.FPSControllerGlobals.allGuidedTourDestinationObjects = ManageSceneObjects.ProxyObjects.GetAllHistoricPhotoCamerasInScene();
-
-            // set the initial destination to the first waypoint camera
-            initialDestination = Utils.GeometryUtils.GetNearestPointOnNavMesh(ManageFPSControllers.FPSControllerGlobals.allGuidedTourDestinationObjects[0].transform.position, 5);
-
-            if (ManageFPSControllers.FPSControllerGlobals.isGuidedTourActive)
-            {
-                SetAgentOnPath(thisAgent, initialDestination);
-            }
-        }
     }
 
     private void Update()
     {
         if (!thisAgent.pathPending)
         {
-            // this agent's next destination will depend on whether it's an NPC or not
-            Vector3 nextDestination = isNPC ? 
-                Utils.GeometryUtils.GetRandomPointOnNavMeshFromPool(this.transform.position, NPCControllerGlobals.initialNPCPositionsArray, NPCControllerGlobals.minDiscardDistance, NPCControllerGlobals.maxDiscardDistance, true) 
-                : Utils.GeometryUtils.GetNearestPointOnNavMesh(ManageFPSControllers.FPSControllerGlobals.allGuidedTourDestinationObjects[ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex].transform.position, 5);
-
-            // if this is an NPC, check if it's on a collision course with the player 
+            // NPCs
             if (isNPC)
             {
                 float currentVelocity = thisAgent.velocity.magnitude;
+                Vector3 nextNPCDestination = Utils.GeometryUtils.GetRandomPointOnNavMeshFromPool(this.transform.position, NPCControllerGlobals.initialNPCPositionsArray, NPCControllerGlobals.minDiscardDistance, NPCControllerGlobals.maxDiscardDistance, true);
 
                 // if this NPC appears to be on a collision course with the player,
                 // get a different destination so the NPC doesn't continue walking into the player
                 if (GetIsNPCApproachingPlayer(this.gameObject, ManageFPSControllers.FPSControllerGlobals.activeFPSController))
                 {
-                    SetAgentOnPath(thisAgent, nextDestination);
+                    SetAgentOnPath(thisAgent, nextNPCDestination);
                 }
-
 
                 // if this agent's speed gets too low, it's likely colliding badly with others
                 // to prevent a traffic jam, find a different random point from the pool to switch directions
                 if (currentVelocity > 0f && currentVelocity < NPCControllerGlobals.minimumSpeedBeforeRepath)
                 {
-                    SetAgentOnPath(thisAgent, nextDestination);
+                    SetAgentOnPath(thisAgent, nextNPCDestination);
                 }
-            }
 
-            // set next destination
-            // ...for NPC
-            if (isNPC)
-            {
+                // set next destination
                 if (thisAgent.remainingDistance <= NPCControllerGlobals.defaultNPCStoppingDistance)
                 {
-                    SetAgentOnPath(thisAgent, nextDestination);
+                    SetAgentOnPath(thisAgent, nextNPCDestination);
                 }
             }
-            // ... for FPC
+            // FPC (fist person controller)
             else
             {
-                if (ManageFPSControllers.FPSControllerGlobals.isGuidedTourActive && thisAgent.remainingDistance <= 1)
+                if (ManageFPSControllers.FPSControllerGlobals.isGuidedTourActive)
+                {
+                    // find the guided tour objects if they haven't been loaded and a guided tour is active
+                    // for some reason, this can't happen in Start() or Update()
+                    if (guidedTourObjects == null)
                     {
-                    //Utils.DebugUtils.DebugLog("FPC next desination: " + nextDestination);
+                        guidedTourObjects = ManageSceneObjects.ProxyObjects.GetAllHistoricPhotoCamerasInScene();
+                    }
 
                     // store the current camera destination
-                    ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationCamera = ManageFPSControllers.FPSControllerGlobals.allGuidedTourDestinationObjects[ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex].GetComponent<Camera>();
+                    ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationCamera = guidedTourObjects[ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex].GetComponent<Camera>();
 
-                    // increment the index
-                    ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex++;
-
-                    //Utils.DebugUtils.DebugLog("FPC reached destination." + nextDestination);
-                    SetAgentOnPath(thisAgent, nextDestination);
-                }
-
-                if (ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationCamera != null && thisAgent.path.corners.Length > 2)
-                {
-                    // if we're on the last path segment, current tour vector is that camera
-                    if (thisAgent.path.corners.Length == 2 || thisAgent.steeringTarget == thisAgent.path.corners[thisAgent.path.corners.Length - 1])
+                    if (ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationCamera != null && thisAgent.path.corners.Length >= 2)
                     {
-                        ManageFPSControllers.FPSControllerGlobals.currentGuidedTourVector = ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationCamera.transform.forward;
+                        // if we're on the last path segment, current tour vector is that camera
+                        if (thisAgent.path.corners.Length == 2 || thisAgent.steeringTarget == thisAgent.path.corners[thisAgent.path.corners.Length - 1])
+                        {
+                            ManageFPSControllers.FPSControllerGlobals.currentGuidedTourVector = ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationCamera.transform.forward;
+                        }
+                        // otherwise, current path vector is the agent's velocity
+                        else
+                        {
+                            ManageFPSControllers.FPSControllerGlobals.currentGuidedTourVector = thisAgent.velocity;
+                        }
                     }
-                    // otherwise, current path vector is the agent's velocity
-                    else
+
+                    // set next destination
+                    if (thisAgent.remainingDistance <= 1)
                     {
-                        ManageFPSControllers.FPSControllerGlobals.currentGuidedTourVector = thisAgent.velocity;
+                        // use initial destination if not set already
+                        if (initialDestination == Vector3.zero)
+                        {
+                            // set the initial destination to the first waypoint camera
+                            initialDestination = Utils.GeometryUtils.GetNearestPointOnNavMesh(guidedTourObjects[0].transform.position, 5);
+
+                            SetAgentOnPath(thisAgent, initialDestination);
+                        }
+                        // otherwise, use the next destination
+                        else
+                        {
+                            // increment the index
+                            ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex++;
+
+                            // update the next destination
+                            Vector3 nextFPCDestination = Utils.GeometryUtils.GetNearestPointOnNavMesh(guidedTourObjects[ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex].transform.position, 5);
+
+                            //Utils.DebugUtils.DebugLog("FPC reached destination." + nextDestination);
+                            SetAgentOnPath(thisAgent, nextFPCDestination);
+                        }
                     }
                 }
             }
         }
+    }
+
+    public static IEnumerator SetPathAfterDelay(NavMeshAgent agent, Vector3 destination)
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        //SetAgentOnPath(agent, destination);
     }
 
     private void OnDisable()

@@ -1231,7 +1231,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // position the guided tour text
         TransformScreenSpaceObject.PositionObjectAtCenterofScreen(guidedTourLabel);
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromScreenTop(guidedTourLabel, versionLabelTopMarginScreenHeightRatio);
-        TransformScreenSpaceObject.PositionObjectByWidthRatioFromScreenLeft(guidedTourLabel, 0.065f);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromScreenLeft(guidedTourLabel, 0.07f);
 
         // set parent/child hierarchy
         guidedTourLabelContainer.transform.SetParent(parent.transform);
