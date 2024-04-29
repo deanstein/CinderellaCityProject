@@ -139,23 +139,21 @@ public class FollowPathOnNavMesh : MonoBehaviour
                     // store the current camera destination
                     ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationCamera = guidedTourObjects[ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex].GetComponent<Camera>();
 
-                    if (ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationCamera != null && thisAgent.path.corners.Length >= 2)
+                    // if we're on the last path segment, current tour vector is that camera
+                    if (thisAgent.path.corners.Length == 2 || thisAgent.steeringTarget == thisAgent.path.corners[thisAgent.path.corners.Length - 1])
                     {
-                        // if we're on the last path segment, current tour vector is that camera
-                        if (thisAgent.path.corners.Length == 2 || thisAgent.steeringTarget == thisAgent.path.corners[thisAgent.path.corners.Length - 1])
-                        {
-                            ManageFPSControllers.FPSControllerGlobals.currentGuidedTourVector = ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationCamera.transform.forward;
-                        }
-                        // otherwise, current path vector is the agent's velocity
-                        else
-                        {
-                            ManageFPSControllers.FPSControllerGlobals.currentGuidedTourVector = thisAgent.velocity;
-                        }
+                        ManageFPSControllers.FPSControllerGlobals.currentGuidedTourVector = ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationCamera.transform.forward;
+                    }
+                    // otherwise, current path vector is the agent's velocity
+                    else
+                    {
+                        ManageFPSControllers.FPSControllerGlobals.currentGuidedTourVector = thisAgent.velocity;
                     }
 
                     // set next destination
-                    if (thisAgent.remainingDistance <= 1)
+                    if (thisAgent.remainingDistance <= 1 && !thisAgent.isStopped)
                     {
+                        Debug.Log("Remaining distance: " + thisAgent.remainingDistance);
                         // use initial destination if not set already
                         if (initialDestination == Vector3.zero)
                         {
@@ -167,26 +165,13 @@ public class FollowPathOnNavMesh : MonoBehaviour
                         // otherwise, use the next destination
                         else
                         {
-                            // increment the index
-                            ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex++;
-
-                            // update the next destination
-                            Vector3 nextFPCDestination = Utils.GeometryUtils.GetNearestPointOnNavMesh(guidedTourObjects[ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex].transform.position, 5);
-
-                            //Utils.DebugUtils.DebugLog("FPC reached destination." + nextDestination);
-                            SetAgentOnPath(thisAgent, nextFPCDestination);
+                            // pause to let the photo show for a few seconds without movement
+                            StartCoroutine(SetAgentOnPathAfterDelay());
                         }
                     }
                 }
             }
         }
-    }
-
-    public static IEnumerator SetPathAfterDelay(NavMeshAgent agent, Vector3 destination)
-    {
-        yield return new WaitForSeconds(0.5f);
-
-        //SetAgentOnPath(agent, destination);
     }
 
     private void OnDisable()
@@ -282,5 +267,43 @@ public class FollowPathOnNavMesh : MonoBehaviour
         {
             Utils.DebugUtils.DebugLog("Agent " + thisAgent.transform.gameObject.name + " failed to find a path.");
         }
+    }
+
+    private IEnumerator SetAgentOnPathAfterDelay()
+    {
+        Debug.Log("Before delay");
+        thisAgent.isStopped = true;
+        // pause to let the photo show for a few seconds without movement
+        yield return new WaitForSeconds(4);
+        Debug.Log("After delay");
+
+        bool useRandomIndex = false;
+
+        // update the next destination
+        if (useRandomIndex)
+        {
+            // use a random index from the destination array
+            ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex = Random.Range(0, guidedTourObjects.Length);
+        } else
+        {
+            // increment the index or start over
+            if (ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex < guidedTourObjects.Length - 1)
+            {
+                ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex++;
+            }
+            else
+            {
+                ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex = 0;
+            }
+
+        }
+
+        Debug.Log(ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex);
+
+        Vector3 nextFPCDestination = Utils.GeometryUtils.GetNearestPointOnNavMesh(guidedTourObjects[ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex].transform.position, 5);
+
+        //Utils.DebugUtils.DebugLog("FPC reached destination." + nextDestination);
+        SetAgentOnPath(thisAgent, nextFPCDestination);
+        thisAgent.isStopped = false;
     }
 }
