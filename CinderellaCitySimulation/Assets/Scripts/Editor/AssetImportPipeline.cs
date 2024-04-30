@@ -931,7 +931,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // ensure the agent is moved to a valid location on the navmesh
 
         // get the distance between the current position, and the nearest navmesh position
-        float distanceToNearestNavMeshPoint = Vector3.Distance(NPCObject.transform.position, Utils.GeometryUtils.GetNearestPointOnNavMesh(NPCObject.transform.position, 1000));
+        float distanceToNearestNavMeshPoint = Vector3.Distance(NPCObject.transform.position, Utils.GeometryUtils.GetNearestPointOnNavMesh(NPCObject.transform.position, 5));
 
         //Utils.DebugUtils.DebugLog("Distance from " + NPCObject.name + " to its nearest NavMesh point: " + distanceToNearestNavMeshPoint);
 
