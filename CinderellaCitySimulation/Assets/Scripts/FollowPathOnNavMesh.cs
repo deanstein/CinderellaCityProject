@@ -31,6 +31,27 @@ public class FollowPathOnNavMesh : MonoBehaviour
     readonly float maxDistanceForFarCheck = 7.0f;
     readonly float maxDistanceForCloseCheck = 2.0f;
 
+    // when looking at historic photos in space, it's best to stand behind them
+    // so this adjusts the camera position in the reverse camera direction some distance
+    private Vector3 AdjustPositionAwayFromCamera(Vector3 startingPosition, Camera camera, float distance)
+    {
+        Vector3 cameraLookDir = camera.transform.forward;
+
+        // Normalize the vector to get a unit vector
+        Vector3 unitVector = cameraLookDir.normalized;
+
+        // the move we want to make has no vertical component
+        unitVector.y = 0;
+
+        // multiply the unit vector by the negative distance
+        Vector3 oppositeVector = unitVector * -distance;
+
+        // Add the opposite vector to the point to move it 10 units in the opposite direction
+        Vector3 adjustedCameraPos = startingPosition + oppositeVector;
+
+        return adjustedCameraPos;
+    }
+
     private void OnEnable()
     {
         // keep track of how many NPCControllers are active and pathfinding
@@ -139,8 +160,8 @@ public class FollowPathOnNavMesh : MonoBehaviour
                     // store the current camera destination
                     ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationCamera = guidedTourObjects[ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex].GetComponent<Camera>();
 
-                    // if we're on the last path segment, current tour vector is that camera
-                    if (thisAgent.path.corners.Length == 2 || thisAgent.steeringTarget == thisAgent.path.corners[thisAgent.path.corners.Length - 1])
+                    // if we're on the last several feet of path, current tour vector is that camera forward dir
+                    if (thisAgent.remainingDistance < 10)
                     {
                         ManageFPSControllers.FPSControllerGlobals.currentGuidedTourVector = ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationCamera.transform.forward;
                     }
@@ -150,23 +171,62 @@ public class FollowPathOnNavMesh : MonoBehaviour
                         ManageFPSControllers.FPSControllerGlobals.currentGuidedTourVector = thisAgent.velocity;
                     }
 
-                    // set next destination
-                    if (thisAgent.remainingDistance <= 1 && !thisAgent.isStopped)
+                    // what happens when current destination is reached
+                    if (thisAgent.remainingDistance <= 2 && !thisAgent.isStopped)
                     {
-                        Debug.Log("Remaining distance: " + thisAgent.remainingDistance);
-                        // use initial destination if not set already
+                        // set initial destination once only if not set already
                         if (initialDestination == Vector3.zero)
                         {
                             // set the initial destination to the first waypoint camera
                             initialDestination = Utils.GeometryUtils.GetNearestPointOnNavMesh(guidedTourObjects[0].transform.position, 5);
 
-                            SetAgentOnPath(thisAgent, initialDestination);
+                            // adjust the point so the FPC stands behind the camera a bit
+                            Vector3 adjustedInitialDestination = AdjustPositionAwayFromCamera(initialDestination, guidedTourObjects[0].GetComponentInChildren<Camera>(), 4.0f);
+
+                            Vector3 adjustdInitialDestinationOnNavMesh = Utils.GeometryUtils.GetNearestPointOnNavMesh(adjustedInitialDestination, 5);
+
+                            SetAgentOnPath(thisAgent, adjustdInitialDestinationOnNavMesh);
                         }
-                        // otherwise, use the next destination
+                        // otherwise, determine  the next destination
                         else
                         {
+                            // go to a random camera or the next one?
+                            bool useRandomIndex = false;
+                            if (useRandomIndex)
+                            {
+                                int randomIndex = Random.Range(0, guidedTourObjects.Length - 1);
+                                // make sure the random number isn't the index already in use
+                                if (randomIndex == ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex)
+                                {
+                                    // if so, increment the index, or reset to 0 if already at max
+                                    randomIndex = randomIndex < guidedTourObjects.Length - 1 ? randomIndex + 1 : 0;
+                                }
+                                // use a random index from the destination array
+                                ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex = randomIndex;
+                            }
+                            else
+                            {
+                                // increment the index or start over
+                                if (ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex < guidedTourObjects.Length - 1)
+                                {
+                                    ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex++;
+                                }
+                                else
+                                {
+                                    ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex = 0;
+                                }
+
+                            }
+
+                            Vector3 nextFPCDestination = Utils.GeometryUtils.GetNearestPointOnNavMesh(guidedTourObjects[ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex].transform.position, 5);
+
+                            // adjust the point so the FPC stands behind the camera a bit
+                            Vector3 adjustedNextFPCDestination = AdjustPositionAwayFromCamera(nextFPCDestination, guidedTourObjects[0].GetComponentInChildren<Camera>(), 4.0f);
+
+                            Vector3 adjustdNextFPCDestinationOnNavMesh = Utils.GeometryUtils.GetNearestPointOnNavMesh(adjustedNextFPCDestination, 5);
+
                             // pause to let the photo show for a few seconds without movement
-                            StartCoroutine(SetAgentOnPathAfterDelay());
+                            StartCoroutine(SetAgentOnPathAfterDelay(adjustdNextFPCDestinationOnNavMesh, 4 /* seconds */));
                         }
                     }
                 }
@@ -269,34 +329,11 @@ public class FollowPathOnNavMesh : MonoBehaviour
         }
     }
 
-    private IEnumerator SetAgentOnPathAfterDelay()
+    private IEnumerator SetAgentOnPathAfterDelay(Vector3 nextFPCDestination, int delayInSeconds)
     {
-                // pause to let the photo show for a few seconds without movement
+        // pause to let the photo show for a few seconds without movement
         thisAgent.isStopped = true;
-        yield return new WaitForSeconds(4);
-
-        bool useRandomIndex = false;
-
-        // update the next destination
-        if (useRandomIndex)
-        {
-            // use a random index from the destination array
-            ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex = Random.Range(0, guidedTourObjects.Length);
-        } else
-        {
-            // increment the index or start over
-            if (ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex < guidedTourObjects.Length - 1)
-            {
-                ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex++;
-            }
-            else
-            {
-                ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex = 0;
-            }
-
-        }
-
-        Vector3 nextFPCDestination = Utils.GeometryUtils.GetNearestPointOnNavMesh(guidedTourObjects[ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex].transform.position, 5);
+        yield return new WaitForSeconds(delayInSeconds);
 
         //Utils.DebugUtils.DebugLog("FPC reached destination." + nextDestination);
         SetAgentOnPath(thisAgent, nextFPCDestination);
