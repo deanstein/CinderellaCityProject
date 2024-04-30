@@ -271,11 +271,9 @@ public class FollowPathOnNavMesh : MonoBehaviour
 
     private IEnumerator SetAgentOnPathAfterDelay()
     {
-        Debug.Log("Before delay");
+                // pause to let the photo show for a few seconds without movement
         thisAgent.isStopped = true;
-        // pause to let the photo show for a few seconds without movement
         yield return new WaitForSeconds(4);
-        Debug.Log("After delay");
 
         bool useRandomIndex = false;
 
@@ -297,8 +295,6 @@ public class FollowPathOnNavMesh : MonoBehaviour
             }
 
         }
-
-        Debug.Log(ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex);
 
         Vector3 nextFPCDestination = Utils.GeometryUtils.GetNearestPointOnNavMesh(guidedTourObjects[ManageFPSControllers.FPSControllerGlobals.currentGuidedTourDestinationIndex].transform.position, 5);
 
