@@ -1060,7 +1060,6 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
         // resize the title container
         TransformScreenSpaceObject.ResizeObjectWidthToMatchScreen(timePeriodContainer);
-        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromScreenLeft(timePeriodContainer, UIGlobals.HUDTimePeriodLabelLeftMarginScreenWidthRatio);
 
         // add the title text
         GameObject timePeriodLabel = new GameObject("TimePeriodLabel");
@@ -1076,7 +1075,15 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // position and resize the text and container
         TransformScreenSpaceObject.PositionObjectAtCenterofScreen(timePeriodLabel);
         TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromScreenBottom(timePeriodContainer, UIGlobals.HUDBottomBarBottomMarginScreenHeightRatio);
+
+        // need to right-align the container to the right edge of the screen
+        float containerWidth = timePeriodLabelText.preferredWidth + Math.Abs((2 * (UIGlobals.menuTitleLeftMarginScreenWidthRatio * Screen.width)));
+        float containerWidthRatio = containerWidth / Screen.width;
+        TransformScreenSpaceObject.ResizeObjectWidthByBufferRatioFromScreenLeft(timePeriodContainer, 1.0f - containerWidthRatio);
+
+        // padding between edge of container and text
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromNeighborLeft(timePeriodLabel, timePeriodContainer, UIGlobals.menuTitleLeftMarginScreenWidthRatio);
+
         TransformScreenSpaceObject.ResizeObjectHeightByBufferRatioFromScreenBottom(timePeriodContainer, UIGlobals.HUDBottomBarBottomMarginScreenHeightRatio);
         TransformScreenSpaceObject.PositionTextAtHorizontalCenterlineOfNeighbor(timePeriodLabel, timePeriodContainer);
 
@@ -1166,8 +1173,14 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         return UIGlobals.underConstructionLabelContainer;
     }
 
-    public static GameObject CreateVersionLabel(GameObject parent)
+    public static GameObject CreateBottomTextRow(GameObject parent)
     {
+        GameObject bottomTextRowContainer = new GameObject("BottomTextRowContainer");
+
+        //
+        // version label
+        //
+
         string version = "v" + Application.version;
 
         // create the version container
@@ -1198,16 +1211,16 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromScreenTop(versionLabel, versionLabelTopMarginScreenHeightRatio);
 
         // set parent/child hierarchy
-        versionLabelContainer.transform.SetParent(parent.transform);
+        versionLabelContainer.transform.SetParent(bottomTextRowContainer.transform);
         versionLabel.transform.SetParent(versionLabelContainer.transform);
 
-        return versionLabelContainer;
-    }
+        //
+        // guided tour label
+        //
 
-    public static GameObject CreateGuidedTourIndicator(GameObject parent)
-    {
         // create the guided tour container
         GameObject guidedTourLabelContainer = new GameObject("GuidedTourLabelContainer");
+        UIGlobals.guidedTourIndicatorContainer = guidedTourLabelContainer;
         guidedTourLabelContainer.AddComponent<CanvasRenderer>();
         // image is needed to create a rect transform
         Image guidedTourLabelContainerColor = guidedTourLabelContainer.AddComponent<Image>();
@@ -1230,12 +1243,15 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
         // position the guided tour text
         TransformScreenSpaceObject.PositionObjectAtCenterofScreen(guidedTourLabel);
+        TransformScreenSpaceObject.PositionObjectByWidthRatioFromScreenLeft(guidedTourLabel, versionLabel.GetComponent<Text>().rectTransform.rect.width / Screen.width + Math.Abs(UIGlobals.menuTitleLeftMarginScreenWidthRatio));
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromScreenTop(guidedTourLabel, versionLabelTopMarginScreenHeightRatio);
-        TransformScreenSpaceObject.PositionObjectByWidthRatioFromScreenLeft(guidedTourLabel, 0.07f);
+
+        UIGlobals.guidedTourIndicatorContainer = guidedTourLabelContainer;
 
         // set parent/child hierarchy
-        guidedTourLabelContainer.transform.SetParent(parent.transform);
+        guidedTourLabelContainer.transform.SetParent(bottomTextRowContainer.transform);
         guidedTourLabel.transform.SetParent(guidedTourLabelContainer.transform);
+        bottomTextRowContainer.transform.SetParent(parent.transform);
 
         // add the update script so guided tour status can be reflected
         guidedTourLabelContainer.AddComponent<UpdateGuidedTourLabelByState>();
@@ -1243,7 +1259,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         // set the guided tour label to disabled initially
         guidedTourLabelContainer.SetActive(false);
 
-        return guidedTourLabelContainer;
+        return bottomTextRowContainer;
     }
 
     public static GameObject CreateCentralNavContainer(GameObject parent, GameObject topAlignmentObject)
