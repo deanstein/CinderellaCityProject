@@ -1,5 +1,14 @@
 {
   "VersionHistory": {
+    "0.8.0.202404": {
+      "Overview": "v0.8.0 adds a guided tour mode for in-person exhibits and fixes user interface issues.",
+      "UI Updates": [
+        "Fixed an issue where the time period indicator could fail to align to the right edge of the screen"
+      ],
+      "Code Updates": [
+        "Added a guided tour mode on the active FPSController, accessible via shortcut"
+      ]
+    },
     "0.7.7.202310": {
       "Overview": "v0.7.7 fixes a bug with exterior audio if the player stops touching the ground, enhances time period labels to indicate specific years, and adds a few missing stores and details in a minor Blue Mall corridor.",
       "Environment Updates": [
