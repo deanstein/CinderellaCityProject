@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -186,7 +187,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(loadingScreen, logoHeader, "Building Cinderella City...", false);
 
         // create the game version indicator
-        GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(loadingScreen);
+        CreateScreenSpaceUIElements.CreateBottomTextRow(loadingScreen);
 
         return loadingScreen;
     }
@@ -245,7 +246,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         CreateScreenSpaceUIElements.PopulateMenuBar(bottomMenubar, menuBarButtons);
 
         // create the game version indicator
-        GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(mainMenu);
+        CreateScreenSpaceUIElements.CreateBottomTextRow(mainMenu);
 
         return mainMenu;
     }
@@ -271,7 +272,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         GameObject titleBarContainer = CreateScreenSpaceUIElements.CreateMenuTitleBar(howToPlayScreenCanvas, logoHeader, "How to play:", true);
 
         // create the game version indicator
-        GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(howToPlayScreenCanvas);
+        CreateScreenSpaceUIElements.CreateBottomTextRow(howToPlayScreenCanvas);
 
         return howToPlayScreenCanvas;
     }
@@ -338,7 +339,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         TransformScreenSpaceObject.ResizeParentContainerToFitLastChild(creditsContentContainer, createdCreditsGroupModules[createdCreditsGroupModules.Count - 1], UIGlobals.toggleContainerPadding, "right");
 
         // create the game version indicator
-        GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(creditsScreenCanvas);
+        CreateScreenSpaceUIElements.CreateBottomTextRow(creditsScreenCanvas);
 
         // set parent/child hierarchy
         creditsContentHorizontalScrollArea.transform.SetParent(creditsScreenCanvas.transform);
@@ -376,7 +377,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         GameObject pauseMenuCentralNav = CreateScreenSpaceUIElements.CreatePauseMenuCentralNav(pauseMenu, titleBarContainer);
 
         // create the game version indicator
-        GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(pauseMenu);
+        CreateScreenSpaceUIElements.CreateBottomTextRow(pauseMenu);
 
         return pauseMenu;
     }
@@ -397,11 +398,8 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         // create the time period indicator
         GameObject HUDTimePeriodIndicator = CreateScreenSpaceUIElements.CreateHUDTimePeriodIndicator(HUDCanvasParentObject, SceneGlobals.TimePeriods.GetTimePeriodLabelBySceneName(UILauncher.scene.name));
 
-        // create the game version indicator
-        GameObject versionIndicator = CreateScreenSpaceUIElements.CreateVersionLabel(HUDCanvasParentObject);
-
-        // create the guided tour indicator
-        UIGlobals.guidedTourIndicatorContainer =  CreateScreenSpaceUIElements.CreateGuidedTourIndicator(HUDCanvasParentObject);
+        // create the bottom text row, containing the version and the guided tour indicator text
+        CreateScreenSpaceUIElements.CreateBottomTextRow(HUDCanvasParentObject);
 
         // note that some scenes are under construction
         if (UILauncher.scene.name.Contains("AltFuture"))
