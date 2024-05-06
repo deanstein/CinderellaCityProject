@@ -226,6 +226,14 @@ public class ToggleSceneAndUI
         ToggleFromSceneToSceneRelocatePlayerToFPSController(fromScene, toScene, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform);
     }
 
+    public static IEnumerator ToggleToNextEraAfterDelay()
+    {
+        yield return new WaitForSeconds(600);
+
+        // set the global flag to indicate guided tour time travel has been requested
+        ManageFPSControllers.FPSControllerGlobals.isGuidedTourTimeTravelRequested = true;
+    }
+
     // toggles given scenes on in the background, captures the FPSCharacter camera, then toggles the scenes off
     public static void ToggleBackgroundScenesForCameraCapture(string[] scenes)
     {

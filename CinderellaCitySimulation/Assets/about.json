@@ -1,12 +1,13 @@
 {
   "VersionHistory": {
-    "0.8.0.202404": {
-      "Overview": "v0.8.0 adds a guided tour mode for in-person exhibits and fixes user interface issues.",
+    "0.8.0.202405": {
+      "Overview": "v0.8.0 adds a guided tour mode for in-person exhibits, prevents FPC and NPCs from pathfinding on store floors, and fixes user interface issues.",
       "UI Updates": [
         "Fixed an issue where the time period indicator could fail to align to the right edge of the screen"
       ],
       "Code Updates": [
-        "Added a guided tour mode on the active FPSController, accessible via shortcut"
+        "Added a guided tour mode on the active FPSController, accessible via shortcut",
+        "Added the ability to select all non-walkable floors to set them as non-walkable in the NavMesh"
       ]
     },
     "0.7.7.202310": {

@@ -31,6 +31,8 @@ public class SceneGlobals
     public static string upcomingSceneName;
     // the pause menu will record the last known time period scene name when Pause was invoked
     public static string lastKnownTimePeriodSceneName;
+    // determines what the last era was doing when a new era was requested
+    public static bool isGuidedTourTimeTraveling;
 
     // each time period is represented by a scene name that must match an existing scene,
     // and a label that appears on screen in the HUD when this scene is active
