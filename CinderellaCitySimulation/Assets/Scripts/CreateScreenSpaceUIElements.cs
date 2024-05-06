@@ -49,7 +49,6 @@ public class UIGlobals
     // these are the HUD UI elements that can be hidden/revealed
     public static GameObject underConstructionLabelContainer;
     public static GameObject currentTimePeriodNotificationContainer;
-    public static GameObject guidedTourIndicatorContainer;
     public static GameObject timePeriodNotificationContainer60s70s;
     public static GameObject timePeriodNotificationContainer80s90s;
     public static GameObject timePeriodNotificationContainerAltFuture;
@@ -1220,7 +1219,6 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
         // create the guided tour container
         GameObject guidedTourLabelContainer = new GameObject("GuidedTourLabelContainer");
-        UIGlobals.guidedTourIndicatorContainer = guidedTourLabelContainer;
         guidedTourLabelContainer.AddComponent<CanvasRenderer>();
         // image is needed to create a rect transform
         Image guidedTourLabelContainerColor = guidedTourLabelContainer.AddComponent<Image>();
@@ -1246,8 +1244,6 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         TransformScreenSpaceObject.PositionObjectByWidthRatioFromScreenLeft(guidedTourLabel, versionLabel.GetComponent<Text>().rectTransform.rect.width / Screen.width + Math.Abs(UIGlobals.menuTitleLeftMarginScreenWidthRatio));
         TransformScreenSpaceObject.PositionObjectByHeightRatioFromScreenTop(guidedTourLabel, versionLabelTopMarginScreenHeightRatio);
 
-        UIGlobals.guidedTourIndicatorContainer = guidedTourLabelContainer;
-
         // set parent/child hierarchy
         guidedTourLabelContainer.transform.SetParent(bottomTextRowContainer.transform);
         guidedTourLabel.transform.SetParent(guidedTourLabelContainer.transform);
@@ -1255,9 +1251,6 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
         // add the update script so guided tour status can be reflected
         guidedTourLabelContainer.AddComponent<UpdateGuidedTourLabelByState>();
-
-        // set the guided tour label to disabled initially
-        guidedTourLabelContainer.SetActive(false);
 
         return bottomTextRowContainer;
     }

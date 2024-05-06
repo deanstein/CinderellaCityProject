@@ -512,7 +512,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         toggle.onValueChanged.AddListener(delegate {
 
             // toggle all historic photo transparencies based on the toggle state
-            ObjectVisibility.ToggleHistoricPhotoTransparencies(toggle.isOn);
+            ObjectVisibility.SetHistoricPhotosOpaque(toggle.isOn);
 
         });
         pointsOfInterestToggles.Add(historicPhotographsOpacityToggle);

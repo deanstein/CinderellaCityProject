@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.AI;
 
 [ExecuteInEditMode]
 [InitializeOnLoad]
@@ -196,7 +197,7 @@ public class CCPMenuActions : MonoBehaviour
     [MenuItem("Cinderella City Project/Object State/Toggle Thumbnail Camera Meshes OFF")]
     public static void ToggleThumbnailCameraMeshesOff()
     {
-        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.thumbnailCameraObjectKeywords[0])[0];
+        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.thumbnailCameraObjectKeywords[0], true)[0];
 
         ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(parentObject, false, false);
     }
@@ -212,7 +213,7 @@ public class CCPMenuActions : MonoBehaviour
     [MenuItem("Cinderella City Project/Object State/Toggle Historic Photo Meshes OFF")]
     public static void ToggleHistoricPhotoMeshesOff()
     {
-        GameObject historicPhotoParentObject = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords)[0];
+        GameObject historicPhotoParentObject = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords, true)[0];
 
         ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(historicPhotoParentObject, false, false);
     }
@@ -493,7 +494,7 @@ public class CCPMenuActions : MonoBehaviour
         List<GameObject> sceneContainers = new List<GameObject>();
         sceneContainers.Add(sceneContainer);
 
-        // get the proxy host
+        // get the blocker object proxy host
         GameObject proxyHost = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.blockerObjectKeywords[0])[0];
 
         // first, move this scene container as appropriate
