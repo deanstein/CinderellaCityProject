@@ -11,7 +11,6 @@ public static class UIVisibilityGlobals
     // HUD is active by default
     public static bool isHUDActive = true;
     public static GameObject activeHUD = null;
-    public static GameObject guidedTourIndicatorContainer = null;
 
     // a UI launcher can only ever have one overlay menu active, so keep track of it
     public static bool isOverlayMenuActive = false;

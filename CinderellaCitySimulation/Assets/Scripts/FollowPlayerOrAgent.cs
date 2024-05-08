@@ -10,7 +10,7 @@ public class FollowPlayerOrAgent : MonoBehaviour
     private void Update()
     {
         // only follow player if guided tour is NOT active or paused
-        if (!ManageFPSControllers.FPSControllerGlobals.isGuidedTourActive && !ManageFPSControllers.FPSControllerGlobals.isGuidedTourPaused)
+        if (!ModeState.isGuidedTourActive && !ModeState.isGuidedTourPaused)
         {
             if (ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform != null)
             {

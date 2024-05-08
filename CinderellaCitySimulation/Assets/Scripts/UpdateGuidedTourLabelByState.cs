@@ -22,7 +22,7 @@ public class UpdateGuidedTourLabelByState : MonoBehaviour
     private void Update()
     {
         // ensure that this label is always shown if guided tour is active
-        if (ManageFPSControllers.FPSControllerGlobals.isGuidedTourActive)
+        if (ModeState.isGuidedTourActive)
         {
             guidedTourLabel.SetActive(true);
             // text and color depend on whether tour is paused
@@ -30,7 +30,7 @@ public class UpdateGuidedTourLabelByState : MonoBehaviour
             guidedTourText.color = Color.green;
         }
         // update text and color if paused
-        else if (ManageFPSControllers.FPSControllerGlobals.isGuidedTourPaused)
+        else if (ModeState.isGuidedTourPaused)
         {
             // text and color depend on whether tour is paused
             guidedTourText.text = UIGlobals.guidedTourPaused;

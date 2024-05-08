@@ -155,16 +155,29 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
         {
             Utils.DebugUtils.DebugLog("Starting guided tour mode...");
 
-            ManageFPSControllers.FPSControllerGlobals.isGuidedTourActive = true;
-            UIGlobals.guidedTourIndicatorContainer.SetActive(true);
+            // set the mode state
+            ModeState.isGuidedTourActive = true;
+
+            // enable the historic photos
+            GameObject historicCamerasContainer = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords, true)[0];
+            ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(historicCamerasContainer, true, false);
+            ObjectVisibility.SetHistoricPhotosOpaque(true);
+
+            // automatically switch to the next era after some time
+            ModeState.toggleToNextEraCoroutine = StartCoroutine(ToggleSceneAndUI.ToggleToNextEraAfterDelay());
         }
         // end the guided tour
         if (Input.GetKeyDown("]"))
         {
             Utils.DebugUtils.DebugLog("Ending guided tour mode.");
 
-            ManageFPSControllers.FPSControllerGlobals.isGuidedTourActive = false;
-            UIGlobals.guidedTourIndicatorContainer.SetActive(false);
+            // set the mode state
+            ModeState.isGuidedTourActive = false;
+            ModeState.isGuidedTourPaused = false;
+
+            // if there was a restart coroutine active, stop it
+            StopCoroutine(ModeState.restartGuidedTourCoroutine);
+            StopCoroutine(ModeState.toggleToNextEraCoroutine);
         }
     }
 
