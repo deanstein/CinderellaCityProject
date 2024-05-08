@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -90,6 +91,92 @@ public class FileDirUtils
         }
 
         return finalPathsList.ToArray();
+    }
+}
+
+public class NavMeshUtils
+{
+    // set a given agent's path to a given destination point
+    public static NavMeshPath SetAgentOnPath(NavMeshAgent agent, Vector3 destination, bool showDebugLines = false)
+    {
+        // instantiate an empty path that it will follow
+        NavMeshPath path = new NavMeshPath();
+
+        // find a path to the destination
+        bool pathSuccess = NavMesh.CalculatePath(agent.transform.position, destination, NavMesh.AllAreas, path);
+
+        // if a path was created, set this agent to use it
+        if (pathSuccess)
+        {
+            // optional: visualize the path with a line in the editor
+            if (showDebugLines)
+            {
+                for (int i = 0; i < path.corners.Length - 1; i++)
+                {
+                    Debug.DrawLine(path.corners[i], path.corners[i + 1], Color.green, 1000);
+                }
+
+                // draw a path from the current agent position to the desired position
+                Debug.DrawLine(agent.transform.position, destination, new Color(1.0f, 0.64f, 0.0f), 1000);
+            }
+
+            agent.SetPath(path);
+            return path;
+        }
+        else
+        {
+            Utils.DebugUtils.DebugLog("Agent " + agent.transform.gameObject.name + " failed to find a path.");
+            return null;
+        }
+    }
+
+    public static IEnumerator SetAgentOnPathAfterDelay(NavMeshAgent agent, Vector3 destination, int delayInSeconds, bool showDebugLines = false)
+    {
+        // pause to let the photo show for a few seconds without movement
+        agent.isStopped = true;
+
+        yield return new WaitForSeconds(delayInSeconds);
+
+        //Utils.DebugUtils.DebugLog("FPC reached destination." + nextDestination);
+        SetAgentOnPath(agent, destination, showDebugLines);
+        agent.isStopped = false;
+    }
+
+    public IEnumerator ResetFPCPosition()
+    {
+        //isResettingPosition = true;
+
+        //// get all the thumbnail cameras in the scene
+        //GameObject[] allThumbnailCameras = ManageSceneObjects.ProxyObjects.GetAllThumbnailCamerasInScene();
+        //int randomIndex = Random.Range(0, allThumbnailCameras.Length - 1);
+        //string randomCameraName = allThumbnailCameras[randomIndex].name;
+        //ManageFPSControllers.RelocateAlignFPSControllerToCamera(randomCameraName);
+
+        //ModeState.isGuidedTourActive = false;
+
+        //// wait a couple of seconds
+        yield return new WaitForSeconds(2);
+
+        //ModeState.isGuidedTourActive = true;
+        //isResettingPosition = false;
+    }
+
+    // when looking at photos for the guided tour, it's best to stand behind them
+    // so this adjusts the camera position in the reverse camera direction some distance
+    public static Vector3 AdjustPositionAwayFromCameraOnNavMesh(Vector3 startingPosition, Camera camera, float distance)
+    {
+        Vector3 cameraLookDir = camera.transform.forward;
+
+        // multiply the unit vector by the negative distance
+        Vector3 oppositeVector = cameraLookDir * -distance;
+
+        // the move we want to make has no vertical component
+        cameraLookDir.y = 0;
+
+        // add the opposite vector to the point to move it the desired amount in the opposite direction
+        Vector3 adjustedCameraPos = startingPosition + oppositeVector;
+
+        return adjustedCameraPos;
     }
 }
 

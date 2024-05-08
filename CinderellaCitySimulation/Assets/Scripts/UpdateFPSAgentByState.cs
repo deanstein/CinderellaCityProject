@@ -9,7 +9,7 @@ public class UpdateFPSAgentByState : MonoBehaviour
 {
     private void Update()
     {
-        if (!ManageFPSControllers.FPSControllerGlobals.isGuidedTourActive)
+        if (!ModeState.isGuidedTourActive)
         {
             ToggleFPSAgentByProximityToPlayer();
         }
@@ -24,7 +24,7 @@ public class UpdateFPSAgentByState : MonoBehaviour
             // get the current nav mesh agent
             // determine if this player agent host is
             // at the same position as the player within some tolerance
-            bool isFPSAgentAtPlayerPos = Vector3.Distance(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.nextPosition, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position) < 1.0f;
+            bool isFPSAgentAtPlayerPos = Vector3.Distance(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.nextPosition, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position) < 1.0;
             //Utils.DebugUtils.DebugLog("Nav Mesh Agent pos: " + ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.nextPosition);
             //Utils.DebugUtils.DebugLog("FPS controller position: " + ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position);
             //Utils.DebugUtils.DebugLog("Is FPS agent at player pos? " + isFPSAgentAtPlayerPos);

@@ -7,7 +7,8 @@
       ],
       "Code Updates": [
         "Added a guided tour mode on the active FPSController, accessible via shortcut",
-        "Added the ability to select all non-walkable floors to set them as non-walkable in the NavMesh"
+        "Added the ability to select all non-walkable floors to set them as non-walkable in the NavMesh",
+        "Refactored and combined code from guided tour attempts in v0.7.x"
       ]
     },
     "0.7.7.202310": {

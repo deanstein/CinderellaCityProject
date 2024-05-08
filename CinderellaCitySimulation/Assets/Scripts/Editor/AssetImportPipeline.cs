@@ -901,7 +901,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             if (ManageProxyMapping.GetIsWalking(proxyObject))
             {
                 // add the script to follow a path
-                FollowPathOnNavMesh followPathOnNavMeshScript = NPCObject.AddComponent<FollowPathOnNavMesh>();
+                FollowRandomPath followPathOnNavMeshScript = NPCObject.AddComponent<FollowRandomPath>();
                 followPathOnNavMeshScript.enabled = false;
 
                 // add the script to update the animation based on the speed
@@ -921,7 +921,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         else
         {
             // add the script to follow a path
-            FollowPathOnNavMesh followPathOnNavMeshScript = NPCObject.AddComponent<FollowPathOnNavMesh>();
+            FollowRandomPath followPathOnNavMeshScript = NPCObject.AddComponent<FollowRandomPath>();
             followPathOnNavMeshScript.enabled = false;
 
             // add the script to update the animation based on the speed

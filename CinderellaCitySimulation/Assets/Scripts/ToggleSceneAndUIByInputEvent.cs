@@ -231,7 +231,7 @@ public class ToggleSceneAndUI
         yield return new WaitForSeconds(600);
 
         // set the global flag to indicate guided tour time travel has been requested
-        ManageFPSControllers.FPSControllerGlobals.isGuidedTourTimeTravelRequested = true;
+        FollowGuidedTour.isGuidedTourTimeTravelRequested = true;
     }
 
     // toggles given scenes on in the background, captures the FPSCharacter camera, then toggles the scenes off
