@@ -15,7 +15,7 @@ public class FollowPlayerOrAgent : MonoBehaviour
             if (ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform != null)
             {
                 // update this object's position to match the player's last known position
-                this.transform.position = ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position;
+                GetComponent<NavMeshAgent>().nextPosition = ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position;
             }
             // if guided tour is active, FPSController must follow agent
         } else
@@ -26,6 +26,7 @@ public class FollowPlayerOrAgent : MonoBehaviour
             // move the CharacterController to the NavMeshAgent's next position
             // using SimpleMove here prevents the agent from changing the height of the controller
             this.transform.parent.GetComponentInChildren<CharacterController>().SimpleMove(this.GetComponent<NavMeshAgent>().velocity);
+            this.transform.parent.transform.position = this.GetComponent<NavMeshAgent>().nextPosition;
         }
     }
 }

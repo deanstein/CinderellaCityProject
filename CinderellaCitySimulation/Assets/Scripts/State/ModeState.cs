@@ -7,10 +7,16 @@
 public static class ModeState
 {
     //
+    // ANTI-GRAVITY MODE
+    //
+
+    public static bool isAntiGravityModeActive = false;
+
+    //
     // GUIDED TOUR
     // 
 
-    // guided tour causes player to be walk and face certain paths, led by its agent
+    // guided tour causes player to walk and face certain paths, led by its agent
     public static bool isGuidedTourActive = false;
     // marked true if a player has taken control of FPSController during guided tour
     // suspension will end automatically after some idle time
