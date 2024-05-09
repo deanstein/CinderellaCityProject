@@ -141,7 +141,7 @@ public class CCPMenuActions : MonoBehaviour
     [MenuItem("Cinderella City Project/Object State/Toggle People Replacements ON")]
     public static void TogglePeopleReplacementsOn()
     {
-        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.peopleObjectKeywords[0])[0];
+        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.peopleObjectKeywords[0], true)[0];
 
         ManageSceneObjects.ProxyObjects.ToggleProxyHostReplacementsToState(parentObject, true, true);
     }
@@ -149,7 +149,7 @@ public class CCPMenuActions : MonoBehaviour
     [MenuItem("Cinderella City Project/Object State/Toggle People Replacements OFF")]
     public static void TogglePeopleReplacementsOff()
     {
-        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.peopleObjectKeywords[0])[0];
+        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.peopleObjectKeywords[0], true)[0];
 
         ManageSceneObjects.ProxyObjects.ToggleProxyHostReplacementsToState(parentObject, false, true);
     }
@@ -157,7 +157,7 @@ public class CCPMenuActions : MonoBehaviour
     [MenuItem("Cinderella City Project/Object State/Toggle Proxy Blocker NPC Meshes ON")]
     public static void ToggleProxyBlockerNPCMeshesOn()
     {
-        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.blockerObjectKeywords[0])[0];
+        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.blockerObjectKeywords[0], true)[0];
 
         ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(parentObject, true, false);
     }
@@ -165,7 +165,7 @@ public class CCPMenuActions : MonoBehaviour
     [MenuItem("Cinderella City Project/Object State/Toggle Proxy Blocker NPC Meshes OFF")]
     public static void ToggleProxyBlockerNPCMeshesOff()
     {
-        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.blockerObjectKeywords[0])[0];
+        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.blockerObjectKeywords[0], true)[0];
 
         ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(parentObject, false, false);
     }
@@ -173,7 +173,7 @@ public class CCPMenuActions : MonoBehaviour
     [MenuItem("Cinderella City Project/Object State/Toggle Vegetation Replacements ON")]
     public static void ToggleVegetationReplacementsOn()
     {
-        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.vegetationObjectKeywords[0])[0];
+        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.vegetationObjectKeywords[0], true)[0];
 
         ManageSceneObjects.ProxyObjects.ToggleProxyHostReplacementsToState(parentObject, true, true);
     }
@@ -181,7 +181,7 @@ public class CCPMenuActions : MonoBehaviour
     [MenuItem("Cinderella City Project/Object State/Toggle Vegetation Replacements OFF")]
     public static void ToggleVegetationReplacementsOff()
     {
-        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.vegetationObjectKeywords[0])[0];
+        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.vegetationObjectKeywords[0], true)[0];
 
         ManageSceneObjects.ProxyObjects.ToggleProxyHostReplacementsToState(parentObject, false, true);
     }
@@ -189,7 +189,7 @@ public class CCPMenuActions : MonoBehaviour
     [MenuItem("Cinderella City Project/Object State/Toggle Thumbnail Camera Meshes ON")]
     public static void ToggleThumbnailCameraMeshesOn()
     {
-        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.thumbnailCameraObjectKeywords[0])[0];
+        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.thumbnailCameraObjectKeywords[0], true)[0];
 
         ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(parentObject, true, false);
     }
@@ -221,7 +221,7 @@ public class CCPMenuActions : MonoBehaviour
     [MenuItem("Cinderella City Project/Object State/Toggle Historic Photo Cameras ON")]
     public static void ToggleHistoricPhotoCamerasOn()
     {
-        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.historicPhotographObjectKeywords[0])[0];
+        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.historicPhotographObjectKeywords[0], true)[0];
 
         ManageSceneObjects.ProxyObjects.ToggleProxyHostReplacementsToState(parentObject, true, false);
     }
@@ -229,7 +229,7 @@ public class CCPMenuActions : MonoBehaviour
     [MenuItem("Cinderella City Project/Object State/Toggle Historic Photo Cameras OFF")]
     public static void ToggleHistoricPhotoCamerasOff()
     {
-        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.historicPhotographObjectKeywords[0])[0];
+        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.historicPhotographObjectKeywords[0], true)[0];
 
         ManageSceneObjects.ProxyObjects.ToggleProxyHostReplacementsToState(parentObject, false, false);
     }
@@ -495,7 +495,7 @@ public class CCPMenuActions : MonoBehaviour
         sceneContainers.Add(sceneContainer);
 
         // get the blocker object proxy host
-        GameObject proxyHost = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.blockerObjectKeywords[0])[0];
+        GameObject proxyHost = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.blockerObjectKeywords[0], true)[0];
 
         // first, move this scene container as appropriate
         HoistSceneObjectsEditor.HoistSceneContainersUp(sceneContainers);
