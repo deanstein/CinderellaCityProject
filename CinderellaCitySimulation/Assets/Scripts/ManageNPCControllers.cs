@@ -43,7 +43,7 @@ public class NPCControllerGlobals
     public static float maxDistanceForClosestPointAdjustment = 5f;
 
     // max distance the NPCController can be from the player to disable itself, and its pathfinding logic
-    public static float maxDistanceBeforeSuspend = 30f;
+    public static float maxDistanceBeforeSuspend = 60f;
 
     // the folder path inside Resources to find the NPC Controllers
     public static string animatorControllerFolderPath = "Animator Controllers/";
