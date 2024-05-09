@@ -441,6 +441,26 @@ public class ManageFPSControllers : MonoBehaviour {
         }
     }
 
+    public static void SetPlayerGravity(bool state)
+    {
+        // get the rigidbody and controller
+        Rigidbody playerRigidBody = FPSControllerGlobals.activeFPSController.GetComponentInChildren<Rigidbody>();
+        FirstPersonController playerFPSController = FPSControllerGlobals.activeFPSController.GetComponentInChildren<FirstPersonController>();
+
+        if (state == true)
+        {
+            playerRigidBody.useGravity = true;
+            playerFPSController.m_StickToGroundForce = FPSControllerGlobals.defaultFPSControllerStickToGroundForce;
+            playerFPSController.m_GravityMultiplier = FPSControllerGlobals.defaultFPSControllerGravityMultiplier;
+        } else
+        {
+            playerRigidBody.useGravity = false;
+           
+            playerFPSController.m_StickToGroundForce = 0;
+            playerFPSController.m_GravityMultiplier = 0;
+        }
+    }
+
     private void Start()
     {
         // set the default height for the FPS controller

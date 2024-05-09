@@ -12,6 +12,9 @@ using System.Collections;
 // this script should be attached to FPSCharacter objects that need to watch for shortcuts to adjust camera effects
 public class ToggleCameraActionsByInputEvent : MonoBehaviour {
 
+    Rigidbody playerRigidBody;
+    FirstPersonController playerFPSController;
+
     private void Awake()
     {
         // add this volume priority to the global priority value
@@ -20,6 +23,10 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
 
     private void Start()
     {
+        // get the player's rigid body and FPS Controller
+        playerRigidBody = this.gameObject.transform.parent.GetComponent<Rigidbody>();
+        playerFPSController = this.gameObject.transform.parent.GetComponent<FirstPersonController>();
+
 #if UNITY_EDITOR
         // if we're in screenshot mode, update all the cameras in this scene
         if (EditorPrefs.GetBool(ManageCameraActions.CameraActionGlobals.screenshotModeFlag))
@@ -38,10 +45,6 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
     {
         // update the globally-available camera host
         ManageCameraActions.CameraActionGlobals.activeCameraHost = this.gameObject;
-
-        // get the player's rigid body and FPS Controller
-        Rigidbody playerRigidBody = this.gameObject.transform.parent.GetComponent<Rigidbody>();
-        FirstPersonController playerFPSController = this.gameObject.transform.parent.GetComponent<FirstPersonController>();
 
         // define which effects belong to which shortcut
         // these should be added to the Visibility Menu too
@@ -87,25 +90,23 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
         if (Input.GetKeyDown("g"))
         {
             // if gravity is on, turn it off, and set the ground force and multiplier to 0
-            if (playerRigidBody.useGravity)
+            if (ModeState.isAntiGravityModeActive)
             {
-                playerRigidBody.useGravity = false;
-                playerFPSController.m_StickToGroundForce = 0;
-                playerFPSController.m_GravityMultiplier = 0;
+                ModeState.isAntiGravityModeActive = false;
+                ManageFPSControllers.SetPlayerGravity(true);
             }
             // if gravity is off, turn it on, and set the ground force and multiplier to their defaults
-            else if (!playerRigidBody.useGravity)
+            else
             {
-                playerRigidBody.useGravity = true;
-                playerFPSController.m_StickToGroundForce = ManageFPSControllers.FPSControllerGlobals.defaultFPSControllerStickToGroundForce;
-                playerFPSController.m_GravityMultiplier = ManageFPSControllers.FPSControllerGlobals.defaultFPSControllerGravityMultiplier;
+                ModeState.isAntiGravityModeActive = true;
+                ManageFPSControllers.SetPlayerGravity(false);
             }
         }
         // move up
         if (Input.GetKey("r"))
         {
             // only do something if gravity is off
-            if (!playerRigidBody.useGravity)
+            if (ModeState.isAntiGravityModeActive)
             {
                 // the delta to move the player up
                 float YPosDelta = 0;
@@ -129,7 +130,7 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
         if (Input.GetKey("f"))
         {
             // only do something if gravity is off
-            if (!playerRigidBody.useGravity)
+            if (ModeState.isAntiGravityModeActive)
             {
                 // the delta to move the player up
                 float YPosDelta = 0;
