@@ -4,7 +4,6 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.AI;
 
 [ExecuteInEditMode]
 [InitializeOnLoad]
@@ -484,6 +483,34 @@ public class CCPMenuActions : MonoBehaviour
                 AssetImportUpdate.SetAllDependentMaterialsEmissionByName(sceneObject);
             }
         }
+    }
+
+    // add all non-walkable mesh renderers to the selection
+    // editor operator must manually set these to non-walkable in the Navigation tab
+    [MenuItem("Cinderella City Project/Nav Meshes/Select All Non-Walkable Meshes")]
+    public static void SelectAllNonWalkableMeshRenderers()
+    {
+        // get all top-level non-walkable objects
+        GameObject[] topLevelNonWalkableObjects = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.floorNonWalkableKeywords);
+
+        // prepare a list for all the found objects
+        List<GameObject> meshRendererGameObjectList = new List<GameObject>();
+        
+        // for each top-level object, get all mesh renderers
+        foreach (GameObject nonWalkableGameObject in topLevelNonWalkableObjects)
+        {
+            MeshRenderer[] meshRenderers = nonWalkableGameObject.GetComponentsInChildren<MeshRenderer>();
+
+            foreach (MeshRenderer meshRenderer in meshRenderers)
+            {
+                meshRendererGameObjectList.Add(meshRenderer.gameObject);
+            }
+        }
+
+        // convert the list to an array
+        GameObject[] finalSelection = meshRendererGameObjectList.ToArray();
+        // set the selection to the array
+        Selection.objects = finalSelection;
     }
 
     [MenuItem("Cinderella City Project/Nav Meshes/Update for Current Scene")]
