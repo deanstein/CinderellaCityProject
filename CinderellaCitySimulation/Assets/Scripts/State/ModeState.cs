@@ -20,5 +20,6 @@ public static class ModeState
     // to ensure only one is active, and allow canceling them if necessary
     public static Coroutine restartGuidedTourCoroutine = null;
     public static Coroutine toggleToNextEraCoroutine = null;
+    public static Coroutine setAgentOnPathAfterDelayRoutine = null;
 }
 
