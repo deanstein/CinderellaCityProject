@@ -140,43 +140,8 @@ public class NavMeshUtils
         //Utils.DebugUtils.DebugLog("FPC reached destination." + nextDestination);
         SetAgentOnPath(agent, destination, showDebugLines);
         agent.isStopped = false;
-    }
-
-    public IEnumerator ResetFPCPosition()
-    {
-        //isResettingPosition = true;
-
-        //// get all the thumbnail cameras in the scene
-        //GameObject[] allThumbnailCameras = ManageSceneObjects.ProxyObjects.GetAllThumbnailCamerasInScene();
-        //int randomIndex = Random.Range(0, allThumbnailCameras.Length - 1);
-        //string randomCameraName = allThumbnailCameras[randomIndex].name;
-        //ManageFPSControllers.RelocateAlignFPSControllerToCamera(randomCameraName);
-
-        //ModeState.isGuidedTourActive = false;
-
-        //// wait a couple of seconds
-        yield return new WaitForSeconds(2);
-
-        //ModeState.isGuidedTourActive = true;
-        //isResettingPosition = false;
-    }
-
-    // when looking at photos for the guided tour, it's best to stand behind them
-    // so this adjusts the camera position in the reverse camera direction some distance
-    public static Vector3 AdjustPositionAwayFromCameraOnNavMesh(Vector3 startingPosition, Camera camera, float distance)
-    {
-        Vector3 cameraLookDir = camera.transform.forward;
-
-        // multiply the unit vector by the negative distance
-        Vector3 oppositeVector = cameraLookDir * -distance;
-
-        // the move we want to make has no vertical component
-        cameraLookDir.y = 0;
-
-        // add the opposite vector to the point to move it the desired amount in the opposite direction
-        Vector3 adjustedCameraPos = startingPosition + oppositeVector;
-
-        return adjustedCameraPos;
+        FollowGuidedTour.incrementIndex = true;
+        ModeState.setAgentOnPathAfterDelayRoutine = null;
     }
 }
 
@@ -242,6 +207,23 @@ public class Utils
 
     public class GeometryUtils
     {
+        // when looking at photos for the guided tour, it's best to stand behind them
+        // so this adjusts the camera position in the reverse camera direction some distance
+        public static Vector3 AdjustPositionAwayFromCamera(Vector3 startingPosition, Camera camera, float distance)
+        {
+            Vector3 cameraLookDir = camera.transform.forward;
+
+            // multiply the unit vector by the negative distance
+            Vector3 oppositeVector = cameraLookDir * -distance;
+
+            // the move we want to make has no vertical component
+            oppositeVector.y = 0;
+
+            // add the opposite vector to the point to move it the desired amount in the opposite direction
+            Vector3 adjustedCameraPos = startingPosition + oppositeVector;
+
+            return adjustedCameraPos;
+        }
 
         // get a point on a mesh
         public static List<Vector3> GetPointOnMeshAtIndex(GameObject meshParent, int vertexIndex)
@@ -277,26 +259,44 @@ public class Utils
         }
 
         // get a point on the scene's current navmesh within some radius from a starting point
-        public static Vector3 GetNearestPointOnNavMesh(Vector3 startingPoint, float radius)
+        public static Vector3 GetNearestPointOnNavMesh(Vector3 startingPoint, float maxRadius, bool forceDown = true, float step = 1.0f)
         {
-            // set up the hit and final position
             NavMeshHit hit;
             Vector3 finalPosition = Vector3.zero;
 
-            // if we get a hit
-            if (NavMesh.SamplePosition(startingPoint, out hit, radius, 1))
+            for (float radius = 1; radius <= maxRadius; radius += step)
             {
-                finalPosition = hit.position;
+                if (NavMesh.SamplePosition(startingPoint, out hit, radius, NavMesh.AllAreas))
+                {
+                    finalPosition = hit.position;
+
+                    // If forceDown is true and the finalPosition is above the startingPoint, adjust the y coordinate
+                    if (forceDown && finalPosition.y > startingPoint.y)
+                    {
+                        Vector3 lowerPoint = new Vector3(finalPosition.x, startingPoint.y - step, finalPosition.z);
+                        NavMeshHit hitBelow;
+                        if (NavMesh.SamplePosition(lowerPoint, out hitBelow, radius, NavMesh.AllAreas))
+                        {
+                            finalPosition = hitBelow.position;
+                        }
+                        // If there is no NavMesh below, use the original hit position
+                    }
+
+                    break;
+                }
             }
-            else
+
+            if (finalPosition == Vector3.zero)
             {
-                Utils.DebugUtils.DebugLog("Failed to find a point on the NavMesh: " + startingPoint);
+                DebugUtils.DebugLog("Failed to find a point on the NavMesh: " + startingPoint);
             }
 
             return finalPosition;
         }
 
-        // get the name of the object at the nearest nav mesh point
+
+
+        // get the name of the top-level object at the nearest nav mesh point
         public static string GetTopLevelSceneContainerChildNameAtNearestNavMeshPoint(Vector3 startingPoint, float radius)
         {
             NavMeshHit hit;

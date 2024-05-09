@@ -16,12 +16,15 @@ public class FollowGuidedTour : MonoBehaviour
     private GameObject[] guidedTourObjects;
     private Vector3[] guidedTourCameraPositions; // raw camera positions
     private Vector3[] guidedTourCameraPositionsAdjusted; // adjusted backward
+    private Vector3[] guidedTourFinalNavMeshDestinations; // destinations on NavMesh
     private bool isPausingAtCamera = false; // player will pause to look at camera for some amount of time
+    public static bool incrementIndex = false; // set to false if we should start or restart at the previously-known destination
     readonly int pauseAtCameraDuration = 4; // number of seconds to pause and look at a camera
     readonly float lookToCameraAtRemainingDistance = 10.0f; // distance from end of path where FPC begins looking at camera
-    readonly float adjustPosAwayFromCamera = 4.0f; // distance away from camera look vector so when looking at a camera, it's visible
+    readonly float adjustPosAwayFromCamera = 2.5f; // distance away from camera look vector so when looking at a camera, it's visible
+    readonly public static float guidedTourRotationSpeed = 0.1f;
+    readonly public static int guidedTourRestartAfterSeconds = 5; // seconds to wait before un-pausing
     readonly bool useRandomGuidedTourDestination = false;
-    bool isResettingPosition = false; // if true, the coroutine to find an alternate position has started and can't be started again until it expires
     readonly private bool showDebugLines = true; // enable for debugging
 
     public static int currentGuidedTourDestinationIndex = 0;
@@ -29,17 +32,48 @@ public class FollowGuidedTour : MonoBehaviour
     public static Vector3 currentGuidedTourVector;
     // set to true briefly to allow IEnumerator time-travel transition
     public static bool isGuidedTourTimeTravelRequested = false;
-    readonly public static float guidedTourRotationSpeed = 0.1f;
-    readonly public static int guidedTourRestartAfterSeconds = 5; // seconds to wait before un-pausing
 
     private void Awake()
     {
-        thisAgent = this.GetComponent<NavMeshAgent>();
+        thisAgent = GetComponent<NavMeshAgent>();
+    }
+
+    private void Start()
+    {
+        // get and post-process the destinations - a mix of historic cameras and thumbnail cameras
+        guidedTourObjects = ManageSceneObjects.ProxyObjects.GetCombinedCamerasInScene();
+        List<Vector3> cameraPositionsList = new List<Vector3>();
+        List<Vector3> cameraPositionsAdjustedList = new List<Vector3>();
+        List<Vector3> cameraPositionsAdjustedOnNavMeshList = new List<Vector3>();
+
+        foreach (GameObject guidedTourObject in guidedTourObjects)
+        {
+            Camera objectCamera = guidedTourObject.GetComponent<Camera>();
+            // record the positions of the cameras
+            Vector3 objectCameraPos = objectCamera.transform.position;
+            cameraPositionsList.Add(objectCameraPos);
+            // also record the adjusted positions
+            Vector3 objectCameraPosAdjusted = Utils.GeometryUtils.AdjustPositionAwayFromCamera(objectCamera.transform.position, objectCamera, adjustPosAwayFromCamera);
+            cameraPositionsAdjustedList.Add(objectCameraPosAdjusted);
+            // project the adjusted positions down onto the NavMesh
+            Vector3 objectCameraPosAdjustedOnNavMesh = Utils.GeometryUtils.GetNearestPointOnNavMesh(objectCameraPosAdjusted, 5);
+            cameraPositionsAdjustedOnNavMeshList.Add(objectCameraPosAdjustedOnNavMesh);
+
+            // draw debug lines if requested
+            if (showDebugLines)
+            {
+                Debug.DrawLine(objectCameraPos, objectCameraPosAdjusted, Color.red, 1000);
+                Debug.DrawLine(objectCameraPosAdjusted, objectCameraPosAdjustedOnNavMesh, Color.blue, 1000);
+            }
+        }
+        // convert the lists into arrays and store them
+        guidedTourCameraPositions = cameraPositionsList.ToArray();
+        guidedTourCameraPositionsAdjusted = cameraPositionsAdjustedList.ToArray();
+        guidedTourFinalNavMeshDestinations = cameraPositionsAdjustedOnNavMeshList.ToArray();
     }
 
     private void OnEnable()
     {
-
         // if guided tour is active from the previous scene, ensure the historic photos are visible
         if (ModeState.isGuidedTourActive)
         {
@@ -56,50 +90,23 @@ public class FollowGuidedTour : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        // get and post-process the destinations - a mix of historic cameras and thumbnail cameras
-        guidedTourObjects = ManageSceneObjects.ProxyObjects.GetCombinedCamerasInScene();
-        List<Vector3> cameraPositionsList = new List<Vector3>();
-        List<Vector3> cameraPositionsAdjustedList = new List<Vector3>();
-        foreach(GameObject guidedTourObject in guidedTourObjects)
-        {
-            Camera objectCamera = guidedTourObject.GetComponent<Camera>();
-            // record the positions of the cameras
-            Vector3 objectCameraPos = objectCamera.transform.position;
-            cameraPositionsList.Add(objectCameraPos);
-            // also record the adjusted positions
-            Vector3 objectCameraPosAdjusted = NavMeshUtils.AdjustPositionAwayFromCameraOnNavMesh(objectCamera.transform.position, objectCamera, 4.0f);
-            cameraPositionsAdjustedList.Add(objectCameraPosAdjusted);
-            if (showDebugLines)
-            {
-                Debug.DrawLine(objectCameraPos, objectCameraPosAdjusted, Color.red, 1000);
-            }
-        }
-        guidedTourCameraPositions = cameraPositionsList.ToArray();
-        guidedTourCameraPositionsAdjusted = cameraPositionsAdjustedList.ToArray();
-    }
-
     private void Update()
     {
         if (ModeState.isGuidedTourActive)
         {
-            // if the current path isn't valid, move to a valid location and try again
-            if (thisAgent.pathStatus == NavMeshPathStatus.PathPartial && !isResettingPosition)
+            // we've arrived, new path requested
+            if (thisAgent.remainingDistance == 0 && !thisAgent.pathPending)
             {
-                Debug.Log("PARTIAL PATH!");
-                //StartCoroutine(ResetFPCPosition());
-            }
-
-            // what happens when current destination is reached
-            if (thisAgent.remainingDistance <= 1)
-            {
-                isPausingAtCamera = true;
-
-                if (!thisAgent.isStopped)
+                // if no path, this may be the first time, so set a path immediately
+                if (!isPausingAtCamera)
                 {
+                    NavMeshUtils.SetAgentOnPath(thisAgent, guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex], showDebugLines);
+                    incrementIndex = false;
+                }
 
-                    // go to a random camera or the next one?
+                // increment the next destination index if appropriate
+                if (incrementIndex && ModeState.setAgentOnPathAfterDelayRoutine == null)
+                {
                     if (useRandomGuidedTourDestination)
                     {
                         int randomIndex = Random.Range(0, guidedTourObjects.Length - 1);
@@ -123,21 +130,23 @@ public class FollowGuidedTour : MonoBehaviour
                         {
                             currentGuidedTourDestinationIndex = 0;
                         }
-
                     }
 
-                    Vector3 nextFPCDestination = Utils.GeometryUtils.GetNearestPointOnNavMesh(guidedTourObjects[currentGuidedTourDestinationIndex].transform.position, 5);
-
-                    // adjust the point so the FPC stands behind the camera a bit
-                    Vector3 adjustedNextFPCDestination = NavMeshUtils.AdjustPositionAwayFromCameraOnNavMesh(nextFPCDestination, guidedTourObjects[0].GetComponentInChildren<Camera>(), 4.0f);
-
-                    Vector3 adjustedNextFPCDestinationOnNavMesh = Utils.GeometryUtils.GetNearestPointOnNavMesh(adjustedNextFPCDestination, 5);
-
-                    // pause to let the photo show for a few seconds without movement
-                    StartCoroutine(NavMeshUtils.SetAgentOnPathAfterDelay(thisAgent, adjustedNextFPCDestinationOnNavMesh, pauseAtCameraDuration /* seconds */, true /*show debug lines*/));
-                    }
+                    incrementIndex = false;
+                }
             }
-            else
+
+            // start pausing at the camera just a bit before destination reached
+            if (thisAgent.remainingDistance <= 0.1f)
+            {
+                isPausingAtCamera = true;
+
+                // set the agent on a new path after a pause
+                if (ModeState.setAgentOnPathAfterDelayRoutine == null && !thisAgent.hasPath)
+                {
+                    ModeState.setAgentOnPathAfterDelayRoutine = StartCoroutine(NavMeshUtils.SetAgentOnPathAfterDelay(thisAgent, guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex], pauseAtCameraDuration, showDebugLines));
+                }
+            } else
             {
                 isPausingAtCamera = false;
             }

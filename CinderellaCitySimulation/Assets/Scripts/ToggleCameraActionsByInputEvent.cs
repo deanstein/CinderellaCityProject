@@ -176,8 +176,14 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
             ModeState.isGuidedTourPaused = false;
 
             // if there was a restart coroutine active, stop it
-            StopCoroutine(ModeState.restartGuidedTourCoroutine);
-            StopCoroutine(ModeState.toggleToNextEraCoroutine);
+            if (ModeState.restartGuidedTourCoroutine != null)
+            {
+                StopCoroutine(ModeState.restartGuidedTourCoroutine);
+            }
+            if (ModeState.toggleToNextEraCoroutine != null)
+            {
+                StopCoroutine(ModeState.toggleToNextEraCoroutine);
+            }
         }
     }
 
