@@ -45,17 +45,17 @@ public class AudioSourceGlobals
     public static string mallMusic80s90sKeyName = "mall-music-80s90s";
 
     // default volume levels and max distances
-    public static float defaultSpeakerVolumeChatter = 0.03f;
-    public static float defaultSpeakerVolumeExteriorAmbient = 0.1f;
+    public static float defaultSpeakerVolumeChatter = 0.3f;
+    public static float defaultSpeakerVolumeExteriorAmbient = 0.3f;
     public static float defaultSpeakerMaxDistanceMallChatter = 500f; // also used for exterior ambient
 
-    public static float defaultSpeakerVolumeMallCommon = 0.02f;
+    public static float defaultSpeakerVolumeMallCommon = 0.2f;
     public static float defaultSpeakerMaxDistanceMallCommon = 20f;
 
-    public static float defaultSpeakerVolumeMallFountain = 0.03f;
+    public static float defaultSpeakerVolumeMallFountain = 0.3f;
     public static float defaultSpeakerDistanceMallFountain = 90f;
 
-    public static float defaultSpeakerVolumeStore = 0.03f;
+    public static float defaultSpeakerVolumeStore = 0.3f;
     public static float defaultSpeakerMaxDistanceStore = 15f;
 
     // only one set of params can exist for each type, so keep track of them here
