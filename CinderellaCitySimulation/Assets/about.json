@@ -2,13 +2,21 @@
   "VersionHistory": {
     "0.8.0.202405": {
       "Overview": "v0.8.0 adds a guided tour mode for in-person exhibits, prevents FPC and NPCs from pathfinding on store floors, and fixes user interface issues.",
+      "Environment Updates": [
+        "Added over a dozen new photos in both eras for guided tour points of interest",
+        "Added The Violet House, fixed issues in the 1968-1978 west Blue Mall",
+        "Increased speaker volumes throughout mall, including ambient sounds"
+      ],
       "UI Updates": [
+        "Added a GUIDED TOUR ACTIVE/PAUSED indicator to the HUD",
         "Fixed an issue where the time period indicator could fail to align to the right edge of the screen"
       ],
       "Code Updates": [
         "Added a guided tour mode on the active FPSController, accessible via shortcut",
         "Added the ability to select all non-walkable floors to set them as non-walkable in the NavMesh",
-        "Refactored and combined code from guided tour attempts in v0.7.x"
+        "Added automatic project version updater that uses today's date in editor",
+        "Refactored and combined code from guided tour attempts in v0.7.x",
+        "Fixed issues with finding top-level gameobjects by name in some cases"
       ]
     },
     "0.7.7.202310": {
