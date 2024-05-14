@@ -18,10 +18,9 @@ public class FollowRandomPath : MonoBehaviour
     public Vector3 initialDestination;
     public NavMeshPath path;
 
-
     // variables related to the test for whether the NPC is on a collision course with the player
     int numberOfFramesApproachingPlayer = 0;
-    readonly int maxNumberOfFramesApproachingPlayer = 30;
+    readonly int maxNumberOfFramesApproachingPlayer = 120;
     readonly float dotProductThresholdFar = -0.96f;
     readonly float dotProductThresholdClose = -0.93f;
     readonly float maxDistanceForFarCheck = 7.0f;
