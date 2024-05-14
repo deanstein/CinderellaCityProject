@@ -159,11 +159,6 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
             // set the mode state
             ModeState.isGuidedTourActive = true;
 
-            // enable the historic photos
-            GameObject historicCamerasContainer = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords, true)[0];
-            ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(historicCamerasContainer, true, false);
-            ObjectVisibility.SetHistoricPhotosOpaque(true);
-
             // automatically switch to the next era after some time
             ModeState.toggleToNextEraCoroutine = StartCoroutine(ToggleSceneAndUI.ToggleToNextEraAfterDelay());
         }

@@ -34,9 +34,10 @@ public static class ManageSceneObjects
 
     // search the top-level children in a scene container, and returns the first object matching the given name
     // likely cheaper than the default GameObject.Find() function
+    // THIS MIGHT NEED TO BE USED IN EDITOR ONLY - it fails in Start() in multi-scene
     public static GameObject[] GetTopLevelSceneContainerGameObjectsByName(string objectName, bool exactName = false /* if true uses .Equals, if false uses .Contains when checking by name */)
     {
-        GameObject activeSceneContainer = ManageSceneObjects.GetSceneContainerObject(SceneManager.GetActiveScene());
+        GameObject activeSceneContainer = GetSceneContainerObject(SceneManager.GetActiveScene());
         List<GameObject> topLevelMatchingObjects = new List<GameObject>();
 
         foreach (Transform child in activeSceneContainer.transform)
@@ -59,6 +60,10 @@ public static class ManageSceneObjects
         }
 
         GameObject[] topLevelGameObjectArray = topLevelMatchingObjects.ToArray();
+        if (topLevelGameObjectArray == null)
+        {
+            Debug.LogWarning("No top-level objects found with keyword: " + objectName);
+        }
 
         return topLevelGameObjectArray;
     }
@@ -380,13 +385,9 @@ public static class ManageSceneObjects
         // get all historic photograph cameras
         public static GameObject[] GetAllHistoricPhotoCamerasInScene()
         {
-            GameObject historicPhotosProxyHost = GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.historicPhotographObjectKeywords[0], true)[0];
+            GameObject[] allHistoricCameraObjects = GameObject.FindGameObjectsWithTag(TaggedObjects.TaggedObjectGlobals.deleteProxyReplacementTagPrefix + "CamerasPhotos");
 
-            ProxyHostList proxyHostList = GetProxyHostList(historicPhotosProxyHost);
-
-            GameObject[] cameraObjects = proxyHostList.replacementObjectList.ToArray();
-
-            return cameraObjects;
+            return allHistoricCameraObjects;
         }
 
         // get both historic photos and thumbnail cameras
@@ -409,7 +410,7 @@ public static class ObjectVisibilityGlobals
     public static string[] ceilingObjectKeywords = { "mall-ceilings", "mall-speakers", "store-ceilings" };
     public static string[] exteriorWallObjectKeywords = { "mall-walls-detailing-exterior" };
     public static string[] floorObjectKeywords = { "mall-floors-vert", "store-floors" };
-    public static string[] floorNonWalkableKeywords = { "store-floors", "broadway-floors-vert", "cinema-neusteters-floors-vert", "denver-floors-vert", "joslins-floors-vert", "penneys-floors-vert", "wards-floors-vert" };
+    public static string[] floorNonWalkableKeywords = { "proxy-blocker-npc", "store-floors", "broadway-floors-vert", "cinema-neusteters-floors-vert", "denver-floors-vert", "joslins-floors-vert", "penneys-floors-vert", "wards-floors-vert" };
     public static string[] furnitureObjectKeywords = { "mall-furniture" };
     public static string[] lightsObjectKeyword = { "mall-lights" };
     public static string[] interiorDetailingObjectKeywords = { "mall-detailing-interior", "mall-flags", "store-detailing" };
