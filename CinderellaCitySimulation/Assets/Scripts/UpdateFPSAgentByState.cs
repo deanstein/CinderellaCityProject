@@ -10,38 +10,29 @@ public class UpdateFPSAgentByState : MonoBehaviour
 {
     private void Update()
     {
-            // handle guided tour state
-            if (ModeState.isGuidedTourPaused)
+        // agent should be enabled when guided tour is active
+        if (ModeState.isGuidedTourActive && !ModeState.isGuidedTourPaused)
+        {
+            gameObject.GetComponent<NavMeshAgent>().enabled = true;
+
+            // but not if anti-gravity mode is enabled
+            if (ModeState.isAntiGravityModeActive)
             {
                 gameObject.GetComponent<NavMeshAgent>().enabled = false;
             }
-            else if (ModeState.isGuidedTourActive)
+        // agent should be disabled when guided tour is suspended
+        } else if (!ModeState.isGuidedTourActive && ModeState.isGuidedTourPaused)
+        {
+            gameObject.GetComponent<NavMeshAgent>().enabled = false;
+        } else
+        {
+            if (ModeState.isAntiGravityModeActive)
+            {
+                gameObject.GetComponent<NavMeshAgent>().enabled = false;
+            } else
             {
                 gameObject.GetComponent<NavMeshAgent>().enabled = true;
             }
-            else if (!ModeState.isGuidedTourActive)
-            {
-                gameObject.GetComponent<NavMeshAgent>().enabled = false;
-            }
-
-        // otherwise, in normal gameplay (non-guided tour related)
-        // handle agent rubberbanding from player in certain cases
-
-        // toggle the nav mesh off if the player is not on the nav mesh
-        if (ManageFPSControllers.FPSControllerGlobals.activeFPSController.GetComponent<CharacterController>().isGrounded)
-        {
-            gameObject.GetComponent<NavMeshAgent>().enabled = true;
-        } else
-        {
-            gameObject.GetComponent<NavMeshAgent>().enabled = false;
-        }
-
-        if (ModeState.isAntiGravityModeActive)
-        {
-            gameObject.GetComponent<NavMeshAgent>().enabled = false;
-        } else
-        {
-            gameObject.GetComponent<NavMeshAgent>().enabled = true;
         }
     }
 }
