@@ -18,16 +18,16 @@ public class FollowGuidedTour : MonoBehaviour
     private Vector3[] guidedTourCameraPositionsAdjusted; // adjusted backward
     private Vector3[] guidedTourFinalNavMeshDestinations; // destinations on NavMesh
     private bool isPausingAtCamera = false; // player will pause to look at camera for some amount of time
+    private bool? areHistoricPhotosVisible = null;
     public static bool incrementIndex = false; // set to false if we should start or restart at the previously-known destination
     readonly int pauseAtCameraDuration = 4; // number of seconds to pause and look at a camera
     readonly float lookToCameraAtRemainingDistance = 10.0f; // distance from end of path where FPC begins looking at camera
-    readonly float adjustPosAwayFromCamera = 2.5f; // distance away from camera look vector so when looking at a camera, it's visible
-    readonly public static float guidedTourRotationSpeed = 0.1f;
+    readonly float adjustPosAwayFromCamera = 2f; // distance away from camera look vector so when looking at a camera, it's visible
+    readonly public static float guidedTourRotationSpeed = 0.15f;
     readonly public static int guidedTourRestartAfterSeconds = 5; // seconds to wait before un-pausing
     readonly bool useRandomGuidedTourDestination = false;
     readonly private bool showDebugLines = true; // enable for debugging
-
-    public static int currentGuidedTourDestinationIndex = 0;
+    public static int currentGuidedTourDestinationIndex = 0; // optionally start at a specific index
     public static Camera currentGuidedTourDestinationCamera;
     public static Vector3 currentGuidedTourVector;
     // set to true briefly to allow IEnumerator time-travel transition
@@ -40,8 +40,8 @@ public class FollowGuidedTour : MonoBehaviour
 
     private void Start()
     {
-        // get and post-process the destinations - a mix of historic cameras and thumbnail cameras
-        guidedTourObjects = ManageSceneObjects.ProxyObjects.GetCombinedCamerasInScene();
+        // get and post-process the destinations
+        guidedTourObjects = ManageSceneObjects.ProxyObjects.GetAllHistoricPhotoCamerasInScene();
         List<Vector3> cameraPositionsList = new List<Vector3>();
         List<Vector3> cameraPositionsAdjustedList = new List<Vector3>();
         List<Vector3> cameraPositionsAdjustedOnNavMeshList = new List<Vector3>();
@@ -58,6 +58,8 @@ public class FollowGuidedTour : MonoBehaviour
             // project the adjusted positions down onto the NavMesh
             Vector3 objectCameraPosAdjustedOnNavMesh = Utils.GeometryUtils.GetNearestPointOnNavMesh(objectCameraPosAdjusted, 5);
             cameraPositionsAdjustedOnNavMeshList.Add(objectCameraPosAdjustedOnNavMesh);
+
+            Debug.Log(objectCamera.name + " is at index " + (cameraPositionsAdjustedOnNavMeshList.Count - 1).ToString());
 
             // draw debug lines if requested
             if (showDebugLines)
@@ -77,11 +79,6 @@ public class FollowGuidedTour : MonoBehaviour
         // if guided tour is active from the previous scene, ensure the historic photos are visible
         if (ModeState.isGuidedTourActive)
         {
-            // enable the historic photos
-            GameObject historicCamerasContainer = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords, true)[0];
-            ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(historicCamerasContainer, true, false);
-            ObjectVisibility.SetHistoricPhotosOpaque(true);
-
             // restart the guided tour to ensure new pathfinding happens 
             StartCoroutine(ToggleGuidedTourOnEnable());
 
@@ -92,12 +89,19 @@ public class FollowGuidedTour : MonoBehaviour
 
     private void Update()
     {
-        if (ModeState.isGuidedTourActive)
+        // when guided tour is active and not paused, ensure the player is on the navmesh
+        if (ModeState.isGuidedTourActive && !ModeState.isGuidedTourPaused)
         {
+            // if the player is not on the navmesh, move it to the nearest point
+            if (!ManageFPSControllers.FPSControllerGlobals.isActiveFPSControllerOnNavMesh)
+            {
+                ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.position = Utils.GeometryUtils.GetNearestPointOnNavMesh(ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.position, 2.0f);
+            }
+
             // we've arrived, new path requested
             if (thisAgent.remainingDistance == 0 && !thisAgent.pathPending)
             {
-                // if no path, this may be the first time, so set a path immediately
+                // if not pausing at camera, we may be just starting, so set path immediately
                 if (!isPausingAtCamera)
                 {
                     NavMeshUtils.SetAgentOnPath(thisAgent, guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex], showDebugLines);
@@ -146,7 +150,8 @@ public class FollowGuidedTour : MonoBehaviour
                 {
                     ModeState.setAgentOnPathAfterDelayRoutine = StartCoroutine(NavMeshUtils.SetAgentOnPathAfterDelay(thisAgent, guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex], pauseAtCameraDuration, showDebugLines));
                 }
-            } else
+            }
+            else
             {
                 isPausingAtCamera = false;
             }
@@ -203,7 +208,7 @@ public class FollowGuidedTour : MonoBehaviour
                 // calculate the target rotation
                 Quaternion targetRotation = Quaternion.LookRotation(cameraForwardNoTilt, Vector3.up);
                 // slerp interpolation
-                Quaternion slerpRotation = Quaternion.Slerp(currentRotation, targetRotation, Time.deltaTime * guidedTourRotationSpeed);
+                Quaternion slerpRotation = Quaternion.SlerpUnclamped(currentRotation, targetRotation, Time.deltaTime * guidedTourRotationSpeed);
                 // set the new rotation
                 ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.rotation = slerpRotation;
 
@@ -220,7 +225,7 @@ public class FollowGuidedTour : MonoBehaviour
             {
                 // make sure the camera looks at the upcoming camera
                 Quaternion targetRotation = Quaternion.LookRotation(currentGuidedTourVector, Vector3.up);
-                Quaternion SlerpRotation = Quaternion.Slerp(ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.rotation, targetRotation, Time.deltaTime * guidedTourRotationSpeed);
+                Quaternion SlerpRotation = Quaternion.SlerpUnclamped(ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.rotation, targetRotation, Time.deltaTime * guidedTourRotationSpeed);
                 ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.rotation = SlerpRotation;
 
                 // set the FirstPersonCharacter's camera forward direction
@@ -246,12 +251,44 @@ public class FollowGuidedTour : MonoBehaviour
                 SceneGlobals.isGuidedTourTimeTraveling = true;
             }
         }
+
+        // provide emergency override to change the next destination
+        if (Input.GetKeyDown(".") || Input.GetKeyDown(","))
+        {
+            int randomIndex = Random.Range(0, guidedTourObjects.Length - 1);
+            currentGuidedTourDestinationIndex = randomIndex;
+        }
+
+        // during guided tour, historic photos should
+        // only be visible when within some distance to the next destination
+        // this is possibly expensive so only do it one frame only when requested
+        if (ModeState.isGuidedTourActive && thisAgent.remainingDistance < lookToCameraAtRemainingDistance)
+        {
+            ModeState.areHistoricPhotosRequestedVisible = true;
+        }
+        else
+        {
+            ModeState.areHistoricPhotosRequestedVisible = false;
+        }
+
+        // only force visibility if the local flag doesn't match the global flag
+        // or if the local flag hasn't been set yet
+        if (areHistoricPhotosVisible == null || areHistoricPhotosVisible != ModeState.areHistoricPhotosRequestedVisible)
+        {
+            // enable or disable the historic photos
+            GameObject historicCamerasContainer = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords, true)[0];
+            ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(historicCamerasContainer, ModeState.areHistoricPhotosRequestedVisible, false);
+            ObjectVisibility.SetHistoricPhotosOpaque(ModeState.areHistoricPhotosRequestedVisible);
+
+            // set the local flag to match so this only runs once
+            areHistoricPhotosVisible = ModeState.areHistoricPhotosRequestedVisible;
+        }
     }
 
     // when guided tour is active, this checks if the user is trying to override control
     public bool GetIsGuidedTourOverrideRequested()
     {
-        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0 || Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
         {
             return true;
         }
@@ -259,6 +296,7 @@ public class FollowGuidedTour : MonoBehaviour
         {
             return false;
         }
+
     }
 
     // before un-pausing guided tour mode,

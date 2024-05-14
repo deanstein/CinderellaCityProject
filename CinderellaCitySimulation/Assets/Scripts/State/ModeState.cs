@@ -27,5 +27,10 @@ public static class ModeState
     public static Coroutine restartGuidedTourCoroutine = null;
     public static Coroutine toggleToNextEraCoroutine = null;
     public static Coroutine setAgentOnPathAfterDelayRoutine = null;
+
+    // when guided tour is active,
+    // historic photos are only shown within some distance to the current destination
+    // this gets set to true for 1 frame when needed
+    public static bool areHistoricPhotosRequestedVisible = false;
 }
 
