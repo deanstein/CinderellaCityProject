@@ -20,7 +20,7 @@ public class ToggleComponentsByProximityToPlayer : MonoBehaviour {
 
     // the maximum distance this object can be from the FPSController before the specified component is disabled
     // this may be overridden by AssetImportPipeline
-    public float maxDistance = 20f;
+    public float maxDistance = 50f;
 
     private void Awake()
     {

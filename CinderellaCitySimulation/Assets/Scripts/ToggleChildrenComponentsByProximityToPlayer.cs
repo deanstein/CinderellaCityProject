@@ -56,7 +56,7 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
 
     // the maximum distance this object can be from the player before the specified components are disabled
     // this may be overridden by AssetImportPipeline
-    public float maxDistance = 20f;
+    public float maxDistance = 50f;
 
     // keep track of the number of frames between updates
     public int frameCount = 0;
