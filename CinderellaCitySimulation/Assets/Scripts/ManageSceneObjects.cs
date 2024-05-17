@@ -520,7 +520,7 @@ public class ObjectVisibility
                 // record the existing transparency value so we can reset later if requested
                 ObjectVisibilityGlobals.historicPhotoTransparencyValues.Add(color.a);
 
-                color.a = 1.0f;
+                color.a = 0.9f;
                 historicPhotoRenderers[i].material.color = color;
             }
             // if toggle is off, set new alpha from the recorded alpha
