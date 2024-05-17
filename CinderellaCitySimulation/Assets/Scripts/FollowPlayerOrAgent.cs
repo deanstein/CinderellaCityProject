@@ -27,8 +27,9 @@ public class FollowPlayerOrAgent : MonoBehaviour
             // move the CharacterController, the parent, and the agent's transform
             // to the NavMeshAgent's next position
             this.transform.parent.GetComponentInChildren<CharacterController>().SimpleMove(this.GetComponent<NavMeshAgent>().velocity);
-            this.transform.parent.transform.position = this.GetComponent<NavMeshAgent>().nextPosition;
-            this.transform.position = this.GetComponent<NavMeshAgent>().nextPosition;
+            Vector3 positionNoY = new Vector3(this.GetComponent<NavMeshAgent>().nextPosition.x, this.transform.parent.transform.position.y, this.GetComponent<NavMeshAgent>().nextPosition.z);
+            this.transform.parent.transform.position = positionNoY;
+            this.transform.position = positionNoY;
         }
     }
 }
