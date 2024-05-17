@@ -19,6 +19,7 @@ public class FollowRandomPath : MonoBehaviour
     public NavMeshPath path;
 
     // variables related to the test for whether the NPC is on a collision course with the player
+    bool doAdjustIfApproachingPlayer = false;
     int numberOfFramesApproachingPlayer = 0;
     readonly int maxNumberOfFramesApproachingPlayer = 120;
     readonly float dotProductThresholdFar = -0.96f;
@@ -85,9 +86,12 @@ public class FollowRandomPath : MonoBehaviour
 
             // if this NPC appears to be on a collision course with the player,
             // get a different destination so the NPC doesn't continue walking into the player
-            if (GetIsNPCApproachingPlayer(this.gameObject, ManageFPSControllers.FPSControllerGlobals.activeFPSController))
+            if (doAdjustIfApproachingPlayer)
             {
-                path = NavMeshUtils.SetAgentOnPath(thisAgent, nextNPCDestination);
+                if (GetIsNPCApproachingPlayer(this.gameObject, ManageFPSControllers.FPSControllerGlobals.activeFPSController))
+                {
+                    path = NavMeshUtils.SetAgentOnPath(thisAgent, nextNPCDestination);
+                }
             }
 
             // if this agent's speed gets too low, it's likely colliding badly with others
