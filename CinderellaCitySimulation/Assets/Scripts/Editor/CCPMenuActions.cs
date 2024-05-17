@@ -490,6 +490,9 @@ public class CCPMenuActions : MonoBehaviour
     [MenuItem("Cinderella City Project/Nav Meshes/Select All Non-Walkable Meshes")]
     public static void SelectAllNonWalkableMeshRenderers()
     {
+        // make sure proxy blockers are visible
+        ToggleProxyBlockerNPCMeshesOn();
+
         // get all top-level non-walkable objects
         GameObject[] topLevelNonWalkableObjects = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.floorNonWalkableKeywords);
 
