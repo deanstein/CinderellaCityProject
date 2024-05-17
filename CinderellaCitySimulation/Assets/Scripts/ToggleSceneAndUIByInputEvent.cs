@@ -228,7 +228,9 @@ public class ToggleSceneAndUI
 
     public static IEnumerator ToggleToNextEraAfterDelay()
     {
-        yield return new WaitForSeconds(600);
+        Debug.Log("Waiting to toggle for seconds...");
+        yield return new WaitForSeconds(300);
+        Debug.Log("Wait is over! Setting toggle request to true");
 
         // set the global flag to indicate guided tour time travel has been requested
         FollowGuidedTour.isGuidedTourTimeTravelRequested = true;

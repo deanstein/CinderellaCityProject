@@ -22,7 +22,7 @@ public class FollowGuidedTour : MonoBehaviour
     public static bool incrementIndex = false; // set to false if we should start or restart at the previously-known destination
     readonly int pauseAtCameraDuration = 4; // number of seconds to pause and look at a camera
     readonly float lookToCameraAtRemainingDistance = 10.0f; // distance from end of path where FPC begins looking at camera
-    readonly float adjustPosAwayFromCamera = 2f; // distance away from camera look vector so when looking at a camera, it's visible
+    readonly float adjustPosAwayFromCamera = 1.25f; // distance away from camera look vector so when looking at a camera, it's visible
     readonly public static float guidedTourRotationSpeed = 0.15f;
     readonly public static int guidedTourRestartAfterSeconds = 5; // seconds to wait before un-pausing
     readonly bool useRandomGuidedTourDestination = false;
@@ -83,6 +83,7 @@ public class FollowGuidedTour : MonoBehaviour
             StartCoroutine(ToggleGuidedTourOnEnable());
 
             // only spend a certain amount of time in each era
+            StopCoroutine(ModeState.toggleToNextEraCoroutine);
             ModeState.toggleToNextEraCoroutine = StartCoroutine(ToggleSceneAndUI.ToggleToNextEraAfterDelay());
         }
     }
@@ -175,7 +176,7 @@ public class FollowGuidedTour : MonoBehaviour
                 }
             }
 
-            // start or stop the restart routine if override is requested
+            // start or stop the restart routines if override is requested
             if (ModeState.isGuidedTourActive || ModeState.isGuidedTourPaused)
             {
                 if (GetIsGuidedTourOverrideRequested())
@@ -184,10 +185,12 @@ public class FollowGuidedTour : MonoBehaviour
                     if (ModeState.restartGuidedTourCoroutine != null)
                     {
                         StopCoroutine(ModeState.restartGuidedTourCoroutine);
+                        StopCoroutine(ModeState.toggleToNextEraCoroutine);
                     }
                     // otherwise, start a new countdown to resume the guided tour again
                     // TODO: this happens every frame which is not ideal
                     ModeState.restartGuidedTourCoroutine = StartCoroutine(GuidedTourRestartCountdown());
+                    ModeState.toggleToNextEraCoroutine = StartCoroutine(ToggleSceneAndUI.ToggleToNextEraAfterDelay());
                 }
             }
 
@@ -204,13 +207,13 @@ public class FollowGuidedTour : MonoBehaviour
                 Vector3 cameraForwardNoTilt = new Vector3(ManageFPSControllers.FPSControllerGlobals.activeFPSController.GetComponent<CharacterController>().transform.forward.x, 0, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerCamera.transform.forward.z);
 
                 // get the current rotation
-                Quaternion currentRotation = ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.rotation;
+                Quaternion currentRotation = ManageFPSControllers.FPSControllerGlobals.activeFPSController.GetComponent<CharacterController>().transform.rotation;
                 // calculate the target rotation
                 Quaternion targetRotation = Quaternion.LookRotation(cameraForwardNoTilt, Vector3.up);
                 // slerp interpolation
                 Quaternion slerpRotation = Quaternion.SlerpUnclamped(currentRotation, targetRotation, Time.deltaTime * guidedTourRotationSpeed);
                 // set the new rotation
-                ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.rotation = slerpRotation;
+                ManageFPSControllers.FPSControllerGlobals.activeFPSController.GetComponent<CharacterController>().transform.rotation = slerpRotation;
 
                 // set the camera's forward direction to match the character controller
                 Vector3 slerpForward = Vector3.Slerp(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerCamera.transform.forward, ManageFPSControllers.FPSControllerGlobals.activeFPSController.GetComponent<CharacterController>().transform.forward, Time.deltaTime * guidedTourRotationSpeed);
@@ -223,15 +226,14 @@ public class FollowGuidedTour : MonoBehaviour
             // so set the current FPSController direction and camera to that vector
             if (currentGuidedTourVector != Vector3.zero)
             {
-                // make sure the camera looks at the upcoming camera
-                Quaternion targetRotation = Quaternion.LookRotation(currentGuidedTourVector, Vector3.up);
-                Quaternion SlerpRotation = Quaternion.SlerpUnclamped(ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.rotation, targetRotation, Time.deltaTime * guidedTourRotationSpeed);
-                ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.rotation = SlerpRotation;
-
                 // set the FirstPersonCharacter's camera forward direction
                 Vector3 targetDirection = currentGuidedTourVector;
                 Vector3 slerpForward = Vector3.Slerp(ManageFPSControllers.FPSControllerGlobals.activeFPSController.GetComponent<CharacterController>().transform.forward, targetDirection, Time.deltaTime * guidedTourRotationSpeed);
                 ManageFPSControllers.FPSControllerGlobals.activeFPSController.GetComponent<CharacterController>().transform.forward = slerpForward;
+
+                // set the camera's forward direction to match the character controller
+                Vector3 cameraSlerpForward = Vector3.Slerp(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerCamera.transform.forward, ManageFPSControllers.FPSControllerGlobals.activeFPSController.GetComponent<CharacterController>().transform.forward, Time.deltaTime * guidedTourRotationSpeed);
+                ManageFPSControllers.FPSControllerGlobals.activeFPSControllerCamera.transform.forward = cameraSlerpForward;
 
                 // reset the FPSController mouse to avoid incorrect rotation due to interference
                 ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.GetComponent<FirstPersonController>().MouseReset();
@@ -288,7 +290,7 @@ public class FollowGuidedTour : MonoBehaviour
     // when guided tour is active, this checks if the user is trying to override control
     public bool GetIsGuidedTourOverrideRequested()
     {
-        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0 || Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
+        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0 || Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0 || InputActions.rightStickLook.x != 0 || InputActions.rightStickLook.y != 0)
         {
             return true;
         }
