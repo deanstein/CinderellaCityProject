@@ -509,9 +509,6 @@ public class ManageFPSControllers : MonoBehaviour {
         {
           FPSControllerGlobals.activeFPSController?.transform.GetComponent<FirstPersonController>().m_MouseLook.SetCursorLock(false);
         }
-
-        // ensure the toggle to next era coroutine is stopped on disable
-        StopCoroutine(ModeState.toggleToNextEraCoroutine);
     }
 
     private void Update()
