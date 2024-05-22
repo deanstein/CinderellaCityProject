@@ -46,7 +46,7 @@ public class AudioSourceGlobals
 
     // default volume levels and max distances
     public static float defaultSpeakerVolumeChatter = 0.3f;
-    public static float defaultSpeakerVolumeExteriorAmbient = 0.3f;
+    public static float defaultSpeakerVolumeExteriorAmbient = 0.9f;
     public static float defaultSpeakerMaxDistanceMallChatter = 500f; // also used for exterior ambient
 
     public static float defaultSpeakerVolumeMallCommon = 0.2f;
