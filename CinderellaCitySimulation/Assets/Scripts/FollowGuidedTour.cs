@@ -14,6 +14,7 @@ public class FollowGuidedTour : MonoBehaviour
 {
     private NavMeshAgent thisAgent;
     private GameObject[] guidedTourObjects;
+    readonly bool shuffleGuidedTourDestinations = false;
     private Vector3[] guidedTourCameraPositions; // raw camera positions
     private Vector3[] guidedTourCameraPositionsAdjusted; // adjusted backward
     private Vector3[] guidedTourFinalNavMeshDestinations; // destinations on NavMesh
@@ -21,11 +22,11 @@ public class FollowGuidedTour : MonoBehaviour
     private bool? areHistoricPhotosVisible = null;
     public static bool incrementIndex = false; // set to false if we should start or restart at the previously-known destination
     readonly int pauseAtCameraDuration = 4; // number of seconds to pause and look at a camera
+    readonly bool matchCameraForward = false; // player camera: match destination camera or simply look at it?
     readonly float lookToCameraAtRemainingDistance = 10.0f; // distance from end of path where FPC begins looking at camera
     readonly float adjustPosAwayFromCamera = 1.25f; // distance away from camera look vector so when looking at a camera, it's visible
-    readonly public static float guidedTourRotationSpeed = 0.15f;
+    readonly public static float guidedTourRotationSpeed = 0.4f;
     readonly public static int guidedTourRestartAfterSeconds = 5; // seconds to wait before un-pausing
-    readonly bool useRandomGuidedTourDestination = false;
     readonly private bool showDebugLines = true; // enable for debugging
     public static int currentGuidedTourDestinationIndex = 0; // optionally start at a specific index
     public static Camera currentGuidedTourDestinationCamera;
@@ -41,7 +42,14 @@ public class FollowGuidedTour : MonoBehaviour
     private void Start()
     {
         // get and post-process the destinations
-        guidedTourObjects = ManageSceneObjects.ProxyObjects.GetAllHistoricPhotoCamerasInScene();
+        guidedTourObjects = ManageSceneObjects.ProxyObjects.GetAllHistoricPhotoCamerasInScene(this.gameObject.scene.name);
+
+        // shuffle the list if requested
+        if (shuffleGuidedTourDestinations)
+        {
+            guidedTourObjects = ArrayUtils.ShuffleArray(guidedTourObjects);
+        }
+
         List<Vector3> cameraPositionsList = new List<Vector3>();
         List<Vector3> cameraPositionsAdjustedList = new List<Vector3>();
         List<Vector3> cameraPositionsAdjustedOnNavMeshList = new List<Vector3>();
@@ -76,7 +84,6 @@ public class FollowGuidedTour : MonoBehaviour
 
     private void OnEnable()
     {
-        // if guided tour is active from the previous scene, ensure the historic photos are visible
         if (ModeState.isGuidedTourActive)
         {
             // restart the guided tour to ensure new pathfinding happens 
@@ -91,7 +98,7 @@ public class FollowGuidedTour : MonoBehaviour
     private void Update()
     {
         // when guided tour is active and not paused, ensure the player is on the navmesh
-        if (ModeState.isGuidedTourActive && !ModeState.isGuidedTourPaused)
+        if (ModeState.isGuidedTourActive && !ModeState.isGuidedTourPaused && thisAgent.isActiveAndEnabled)
         {
             // if the player is not on the navmesh, move it to the nearest point
             if (!ManageFPSControllers.FPSControllerGlobals.isActiveFPSControllerOnNavMesh)
@@ -112,29 +119,14 @@ public class FollowGuidedTour : MonoBehaviour
                 // increment the next destination index if appropriate
                 if (incrementIndex && ModeState.setAgentOnPathAfterDelayRoutine == null)
                 {
-                    if (useRandomGuidedTourDestination)
+                    // increment the index or start over
+                    if (currentGuidedTourDestinationIndex <= guidedTourObjects.Length - 1)
                     {
-                        int randomIndex = Random.Range(0, guidedTourObjects.Length - 1);
-                        // make sure the random number isn't the index already in use
-                        if (randomIndex == currentGuidedTourDestinationIndex)
-                        {
-                            // if so, increment the index, or reset to 0 if already at max
-                            randomIndex = randomIndex < guidedTourObjects.Length - 1 ? randomIndex + 1 : 0;
-                        }
-                        // use a random index from the destination array
-                        currentGuidedTourDestinationIndex = randomIndex;
+                        currentGuidedTourDestinationIndex++;
                     }
                     else
                     {
-                        // increment the index or start over
-                        if (currentGuidedTourDestinationIndex < guidedTourObjects.Length - 1)
-                        {
-                            currentGuidedTourDestinationIndex++;
-                        }
-                        else
-                        {
-                            currentGuidedTourDestinationIndex = 0;
-                        }
+                        currentGuidedTourDestinationIndex = 0;
                     }
 
                     incrementIndex = false;
@@ -162,11 +154,29 @@ public class FollowGuidedTour : MonoBehaviour
             {
                 // store the current camera destination
                 currentGuidedTourDestinationCamera = guidedTourObjects[currentGuidedTourDestinationIndex].GetComponent<Camera>();
+                Vector3 currentGuidedTourCameraPosition = guidedTourCameraPositions[currentGuidedTourDestinationIndex];
 
                 // if we're on the last several feet of path, current tour vector is that camera forward dir
                 if (thisAgent.remainingDistance < lookToCameraAtRemainingDistance)
                 {
-                    currentGuidedTourVector = currentGuidedTourDestinationCamera.transform.forward;
+                    // match the camera forward angle 
+                    if (matchCameraForward)
+                    {
+                        currentGuidedTourVector = currentGuidedTourDestinationCamera.transform.forward;
+                    }
+                    else // or simply look at the image
+                    {
+                        // distsance along camera plane to look to
+                        float distanceToPlane = 5f;
+
+                        // Define the viewport center point (0.5, 0.5 is the center in viewport coordinates)
+                        Vector3 cameraViewportCenter = new Vector3(0.5f, 0.5f, distanceToPlane);
+
+                        // Convert the center point from viewport space to world space
+                        Vector3 cameraViewportCenterWorld = currentGuidedTourDestinationCamera.ViewportToWorldPoint(cameraViewportCenter);
+
+                        currentGuidedTourVector = cameraViewportCenterWorld - thisAgent.transform.position;
+                    }
                 }
                 // otherwise, current path vector is the agent's velocity
                 else
@@ -264,16 +274,24 @@ public class FollowGuidedTour : MonoBehaviour
         // during guided tour, historic photos should
         // only be visible when within some distance to the next destination
         // this is possibly expensive so only do it one frame only when requested
-        if (ModeState.isGuidedTourActive && thisAgent.remainingDistance < lookToCameraAtRemainingDistance)
+        if (ModeState.isGuidedTourActive && thisAgent.isActiveAndEnabled)
         {
+            if (thisAgent.remainingDistance < lookToCameraAtRemainingDistance)
+            {
+                ModeState.areHistoricPhotosRequestedVisible = true;
+            }
+            else
+            {
+                ModeState.areHistoricPhotosRequestedVisible = false;
+            }
+        } else
+        {
+            // make photos visible if guided tour is not happening
             ModeState.areHistoricPhotosRequestedVisible = true;
         }
-        else
-        {
-            ModeState.areHistoricPhotosRequestedVisible = false;
-        }
 
-        // only force visibility if the local flag doesn't match the global flag
+        // only force visibility if guided tour mode is on, 
+        // and the local flag doesn't match the global flag
         // or if the local flag hasn't been set yet
         if (areHistoricPhotosVisible == null || areHistoricPhotosVisible != ModeState.areHistoricPhotosRequestedVisible)
         {
@@ -313,7 +331,9 @@ public class FollowGuidedTour : MonoBehaviour
     IEnumerator ToggleGuidedTourOnEnable()
     {
         ModeState.isGuidedTourActive = false;
-        yield return new WaitForSeconds(0.5f);
+        ModeState.isGuidedTourPaused = true;
+        yield return new WaitForSeconds(1f);
         ModeState.isGuidedTourActive = true;
+        ModeState.isGuidedTourPaused = false;
     }
 }
