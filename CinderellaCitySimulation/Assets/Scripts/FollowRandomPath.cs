@@ -79,7 +79,7 @@ public class FollowRandomPath : MonoBehaviour
 
     private void Update()
     {
-        if (!thisAgent.pathPending)
+        if (!thisAgent.pathPending && this.transform.position != null && NPCControllerGlobals.initialNPCPositionsArray != null)
         {
             float currentVelocity = thisAgent.velocity.magnitude;
             Vector3 nextNPCDestination = Utils.GeometryUtils.GetRandomPointOnNavMeshFromPool(this.transform.position, NPCControllerGlobals.initialNPCPositionsArray, NPCControllerGlobals.minDiscardDistance, NPCControllerGlobals.maxDiscardDistance, true);
