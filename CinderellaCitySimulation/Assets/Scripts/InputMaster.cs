@@ -41,6 +41,22 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Time Travel Backward"",
+                    ""type"": ""Value"",
+                    ""id"": ""f9e4dfe1-6048-4a73-8a21-7b1e6627b08d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Value"",
+                    ""id"": ""33987f7b-f18b-4534-adf9-bfc90692aa73"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -76,6 +92,28 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2d3b8aa7-5362-4117-b880-14fbdc78dbfb"",
+                    ""path"": ""<XInputController>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox Control Scheme"",
+                    ""action"": ""Time Travel Backward"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c806b6e8-d65f-4deb-bc60-d8f7b8d47a09"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox Control Scheme"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -99,6 +137,8 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_TimeTravelForward = m_Player.FindAction("Time Travel Forward", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
+        m_Player_TimeTravelBackward = m_Player.FindAction("Time Travel Backward", throwIfNotFound: true);
+        m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -151,6 +191,8 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_TimeTravelForward;
     private readonly InputAction m_Player_Look;
+    private readonly InputAction m_Player_TimeTravelBackward;
+    private readonly InputAction m_Player_Pause;
     public struct PlayerActions
     {
         private @InputMaster m_Wrapper;
@@ -158,6 +200,8 @@ public class @InputMaster : IInputActionCollection, IDisposable
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @TimeTravelForward => m_Wrapper.m_Player_TimeTravelForward;
         public InputAction @Look => m_Wrapper.m_Player_Look;
+        public InputAction @TimeTravelBackward => m_Wrapper.m_Player_TimeTravelBackward;
+        public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -176,6 +220,12 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @Look.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
                 @Look.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
                 @Look.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
+                @TimeTravelBackward.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTimeTravelBackward;
+                @TimeTravelBackward.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTimeTravelBackward;
+                @TimeTravelBackward.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTimeTravelBackward;
+                @Pause.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -189,6 +239,12 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @Look.started += instance.OnLook;
                 @Look.performed += instance.OnLook;
                 @Look.canceled += instance.OnLook;
+                @TimeTravelBackward.started += instance.OnTimeTravelBackward;
+                @TimeTravelBackward.performed += instance.OnTimeTravelBackward;
+                @TimeTravelBackward.canceled += instance.OnTimeTravelBackward;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
         }
     }
@@ -207,5 +263,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnTimeTravelForward(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
+        void OnTimeTravelBackward(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }
