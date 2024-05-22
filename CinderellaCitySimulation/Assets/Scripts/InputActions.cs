@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityStandardAssets.CrossPlatformInput;
 
 /// <summary>
@@ -16,6 +17,39 @@ public class InputActions : MonoBehaviour
 
     private Quaternion m_CharacterTargetRot;
     private Quaternion m_CameraTargetRot;
+
+    // TODO / coming soon
+    public void Pause()
+    {
+        Debug.Log("Pause invoked.");
+    }
+
+    // TODO / coming soon
+    public void Jump()
+    {
+        // this doesn't work for some reason
+        //CrossPlatformInputManager.SetButtonDown("Jump"); 
+        Debug.Log("Jump action triggered");
+    }
+
+    public void TimeTravelBackward()
+    {
+        // get the previous time period scene name
+        string previousTimePeriodSceneName = ManageScenes.GetNextTimePeriodSceneName("previous");
+
+        // toggle to the previous scene with a camera effect transition
+        StartCoroutine(ToggleSceneAndUI.ToggleFromSceneToSceneWithTransition(SceneManager.GetActiveScene().name, previousTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform,
+            ManageFPSControllers.FPSControllerGlobals.activeFPSControllerCamera.gameObject, "FlashBlack", 0.2f));
+    }
+
+    public void TimeTravelForward()
+    {
+        // get the next time period scene name
+        string nextTimePeriodSceneName = ManageScenes.GetNextTimePeriodSceneName("next");
+
+        // then toggle to the next scene with a camera effect transition
+        StartCoroutine(ToggleSceneAndUI.ToggleFromSceneToSceneWithTransition(SceneManager.GetActiveScene().name, nextTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerCamera.gameObject, "FlashBlack", 0.2f));
+    }
 
     Quaternion ClampRotationAroundXAxis(Quaternion q)
     {
@@ -37,7 +71,9 @@ public class InputActions : MonoBehaviour
     {
         inputMaster = new InputMaster();
         inputMaster.Player.Jump.performed += ctx => Jump();
-        inputMaster.Player.TimeTravelForward.performed += ctx => TimeTravel();
+        inputMaster.Player.TimeTravelBackward.performed += ctx => TimeTravelBackward();
+        inputMaster.Player.TimeTravelForward.performed += ctx => TimeTravelForward();
+        inputMaster.Player.Pause.performed += ctx => Pause();
         inputMaster.Player.Look.performed += ctx => rightStickLook = ctx.ReadValue<Vector2>();
         inputMaster.Player.Look.canceled += ctx => rightStickLook = Vector2.zero;
     }
@@ -48,11 +84,141 @@ public class InputActions : MonoBehaviour
         controller = GetComponentInChildren<CharacterController>();
         m_CharacterTargetRot = controller.transform.localRotation;
         m_CameraTargetRot = cam.transform.localRotation;
-        inputMaster.Enable();
+        if (inputMaster != null)
+        {
+            inputMaster.Enable();
+        }
     }
 
     private void Update()
     {
+
+
+
+        ////////// KEYBOARD ACTIONS //////////
+        
+
+
+        // time travel requested - previous time period
+        if (Input.GetKeyDown("q") &&
+            Utils.StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name))
+        {
+            TimeTravelBackward();
+        }
+
+        // time travel requested - next time period
+        if (Input.GetKeyDown("e") &&
+            Utils.StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name))
+        {
+            TimeTravelForward();
+        }
+
+        // main menu
+        // only accessible from time period scenes
+        if (Input.GetKeyDown("m") &&
+            Utils.StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name))
+        {
+            ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "MainMenu");
+        }
+
+        // pause menu
+        // only accessible from time period scenes
+        if (Input.GetKeyDown(KeyCode.Escape) &&
+            Utils.StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name)
+            && UIVisibilityGlobals.activeOverlayMenu == null)
+        {
+            // before pausing, we need to capture a screenshot from the active FPSController
+            // then update the pause menu background image
+            CreateScreenSpaceUIElements.CaptureActiveFPSControllerCamera();
+            CreateScreenSpaceUIElements.RefreshObjectImageSprite(UIGlobals.pauseMenuBackgroundImage);
+
+            // toggle to Pause
+            ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, "PauseMenu");
+
+            // set the pausing flag to prevent disabled scenes from adversely affecting hoisting behavior
+            ManageFPSControllers.FPSControllerGlobals.isPausing = true;
+
+            // now capture a screenshot from the inactive scenes' FPSControllers
+            // then update the thumbnail sprites
+            CreateScreenSpaceUIElements.CaptureDisabledSceneFPSCameras();
+            CreateScreenSpaceUIElements.RefreshThumbnailSprites();
+
+            // reset the pause flag
+            ManageFPSControllers.FPSControllerGlobals.isPausing = false;
+        }
+        // but if we're already in the pause menu, return to the previous scene (referring scene)
+        else if (Input.GetKeyDown(KeyCode.Escape)
+            && SceneManager.GetActiveScene().name.Contains("PauseMenu"))
+        {
+            ManageFPSControllers.FPSControllerGlobals.isTimeTraveling = false;
+            ToggleSceneAndUI.ToggleFromSceneToScene(SceneManager.GetActiveScene().name, SceneGlobals.referringSceneName);
+        }
+
+        // dismiss any active overlay menu with ESC
+        else if (Input.GetKeyDown(KeyCode.Escape) && UIVisibilityGlobals.activeOverlayMenu != null)
+        {
+            ManageOverlayVisibility.DismissActiveOverlayMenu();
+        }
+
+        // visibility menu
+        // only accessible from time period scenes
+        if (Input.GetKeyDown("v") &&
+            (Utils.StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name) || (SceneManager.GetActiveScene().name.Contains("Experimental"))))
+        {
+            if (UIVisibilityGlobals.isOverlayMenuActive)
+            {
+                ManageOverlayVisibility.DismissActiveOverlayMenu();
+            }
+            else
+            {
+                CreateScreenSpaceUILayoutByName.BuildVisualizationMenuOverlay(this.gameObject);
+            }
+        }
+
+        // audio menu
+        // only accessible from time period scenes
+        if (Input.GetKeyDown("u") &&
+            (Utils.StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name) || (SceneManager.GetActiveScene().name.Contains("Experimental"))))
+        {
+            if (UIVisibilityGlobals.isOverlayMenuActive)
+            {
+                ManageOverlayVisibility.DismissActiveOverlayMenu();
+            }
+            else
+            {
+                CreateScreenSpaceUILayoutByName.BuildAudioMenuOverlay(this.gameObject);
+            }
+        }
+
+        // optionally display or hide the under construction label
+        if (Input.GetKeyDown(KeyCode.Slash) &&
+            Utils.StringUtils.TestIfAnyListItemContainedInString(SceneGlobals.availableTimePeriodSceneNamesList, SceneManager.GetActiveScene().name))
+        {
+            ToggleSceneAndUI.ToggleUnderConstructionLabel();
+        }
+
+        // experimental: fade testing
+        if (Input.GetKeyDown(KeyCode.Slash) && SceneManager.GetActiveScene().name.Contains("Experimental"))
+        {
+            FadeGlobals.frameCount = 0;
+            FadeGlobals.startValue = 0.0f;
+            FadeGlobals.currentValue = 0.0f;
+            FadeGlobals.endValue = 1.0f;
+        }
+        if (Input.GetKeyDown(KeyCode.Backslash) && SceneManager.GetActiveScene().name.Contains("Experimental"))
+        {
+            FadeGlobals.frameCount = 0;
+            FadeGlobals.startValue = 1.0f;
+            FadeGlobals.currentValue = 1.0f;
+            FadeGlobals.endValue = 0.0f;
+        }
+
+
+
+        ////////// XBOX CONTROLLER ACTIONS //////////
+        
+
+
         // ensure controller right stick inputs move the camera around
         if (rightStickLook.x != 0 || rightStickLook.y != 0 || ModeState.isGuidedTourPaused)
         {
@@ -73,16 +239,5 @@ public class InputActions : MonoBehaviour
             controller.transform.localRotation = Quaternion.Slerp(controller.transform.localRotation, m_CharacterTargetRot,
                     lookSpeed * Time.deltaTime);
         }
-    }
-
-    public void Jump()
-    {
-        CrossPlatformInputManager.SetButtonDown("Jump");
-        Debug.Log("Jump action triggered");
-    }
-
-    public void TimeTravel()
-    {
-        Debug.Log("Time travel action triggered");
     }
 }
