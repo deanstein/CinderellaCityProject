@@ -175,7 +175,7 @@ public class ManageFPSControllers : MonoBehaviour {
         // temporarily override the existing volume to avoid motion blur when relocating
         existingVolume.profile = newProfile;
 
-        GameObject[] cameras = GameObject.FindGameObjectsWithTag(TaggedObjects.TaggedObjectGlobals.deleteProxyReplacementTagPrefix + "Cameras");
+        GameObject[] cameras = ManageSceneObjects.ProxyObjects.GetAllThumbnailCamerasInScene();
 
         // keep track of whether a camera is matched in the upcoming for loop
         bool matchingCameraFound = false;
