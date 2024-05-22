@@ -7,10 +7,12 @@
         "Added The Violet House, fixed issues in the 1968-1978 west Blue Mall",
         "Increased speaker volumes throughout mall, including ambient sounds",
         "Fixed an issue where NPCs were standing in the way of a Cinder Alley historic photograph",
-        "Fixed incorrect icons for 1987-1997 sub-mall wayfinding signage"
+        "Fixed incorrect icons for 1987-1997 sub-mall wayfinding signage",
+        "Fixed unfinished wayfinding signage in the 1968-1978 Blue Mall"
       ],
       "UI Updates": [
         "Added a GUIDED TOUR ACTIVE/PAUSED indicator to the HUD",
+        "Added automatic build date to version",
         "Fixed an issue where the time period indicator could fail to align to the right edge of the screen"
       ],
       "Code Updates": [
