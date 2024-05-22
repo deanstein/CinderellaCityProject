@@ -10,7 +10,7 @@ public class FollowPlayerOrAgent : MonoBehaviour
     private void Update()
     {
         // only follow player if guided tour is NOT active or paused
-        if (!ModeState.isGuidedTourActive && !ModeState.isGuidedTourPaused)
+        if (!ModeState.isGuidedTourActive)
         {
             if (ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform != null)
             {
@@ -27,6 +27,7 @@ public class FollowPlayerOrAgent : MonoBehaviour
             // move the CharacterController, the parent, and the agent's transform
             // to the NavMeshAgent's next position
             this.transform.parent.GetComponentInChildren<CharacterController>().SimpleMove(this.GetComponent<NavMeshAgent>().velocity);
+            // use a position with no Y component so player doesn't move down unexpectedly
             Vector3 positionNoY = new Vector3(this.GetComponent<NavMeshAgent>().nextPosition.x, this.transform.parent.transform.position.y, this.GetComponent<NavMeshAgent>().nextPosition.z);
             this.transform.parent.transform.position = positionNoY;
             this.transform.position = positionNoY;
