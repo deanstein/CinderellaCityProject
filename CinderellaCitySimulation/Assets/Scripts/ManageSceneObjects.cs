@@ -377,24 +377,39 @@ public static class ManageSceneObjects
         // so find them by tag
         public static GameObject[] GetAllThumbnailCamerasInScene()
         {
+            // WARNING! this finds all cameras in all scenes, not just the current one
+            // TODO: fix this (although doesn't seem to be breaking anything)
             GameObject[] allThumbnailCameras = GameObject.FindGameObjectsWithTag(TaggedObjects.TaggedObjectGlobals.deleteProxyReplacementTagPrefix + "Cameras");
 
             return allThumbnailCameras;
         }
 
         // get all historic photograph cameras
-        public static GameObject[] GetAllHistoricPhotoCamerasInScene()
+        public static GameObject[] GetAllHistoricPhotoCamerasInScene(string sceneName)
         {
+            // we only want the photos in the given scene, so prepare a list for filtered results
+            List<GameObject> filteredHistoricCameraObjects = new List<GameObject>();
+
+            // this finds objects in all additively loaded scenes
             GameObject[] allHistoricCameraObjects = GameObject.FindGameObjectsWithTag(TaggedObjects.TaggedObjectGlobals.deleteProxyReplacementTagPrefix + "CamerasPhotos");
 
-            return allHistoricCameraObjects;
+            // filter the objects for the current scene only
+            foreach (GameObject filteredHistoricCameraObject in allHistoricCameraObjects)
+            {
+                if (filteredHistoricCameraObject.scene.name == sceneName)
+                {
+                    filteredHistoricCameraObjects.Add(filteredHistoricCameraObject);
+                }
+            }
+
+            return filteredHistoricCameraObjects.ToArray();
         }
 
         // get both historic photos and thumbnail cameras
-        public static GameObject[] GetCombinedCamerasInScene()
+        public static GameObject[] GetCombinedCamerasInScene(string sceneName)
         {
             List<GameObject> allCameras = new List<GameObject>();
-            allCameras.AddRange(GetAllHistoricPhotoCamerasInScene());
+            allCameras.AddRange(GetAllHistoricPhotoCamerasInScene(sceneName));
             allCameras.AddRange(GetAllThumbnailCamerasInScene());
             return allCameras.ToArray();
         }
@@ -520,7 +535,7 @@ public class ObjectVisibility
                 // record the existing transparency value so we can reset later if requested
                 ObjectVisibilityGlobals.historicPhotoTransparencyValues.Add(color.a);
 
-                color.a = 0.9f;
+                color.a = 1.0f;
                 historicPhotoRenderers[i].material.color = color;
             }
             // if toggle is off, set new alpha from the recorded alpha
@@ -566,6 +581,8 @@ public class TaggedObjects : MonoBehaviour
     }
 
     // finds all objects with tags associated with script host types, and stores them globally
+    // WARNING: because this uses FindGameObjectsWithTag, 
+    // this must be used IN THE EDITOR ONLY with one scene open
     public static void GetScriptHostObjectsByTypes(string[] types)
     {
         foreach (string type in types)
@@ -577,6 +594,8 @@ public class TaggedObjects : MonoBehaviour
     }
 
     // deletes all objects with the given tag
+    // WARNING: because this uses FindGameObjectsWithTag,
+    // this must be used IN THE EDITOR ONLY with one scene open
     public static void DeleteObjectsByTag(string tag)
     {
         // get all objects tagged already and delete them
