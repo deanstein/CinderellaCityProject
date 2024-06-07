@@ -111,12 +111,11 @@ public class NavMeshUtils
             // optional: visualize the path with a line in the editor
             if (showDebugLines)
             {
+                // draw a path from the current agent position to the desired position
                 for (int i = 0; i < path.corners.Length - 1; i++)
                 {
                     Debug.DrawLine(path.corners[i], path.corners[i + 1], Color.green, 1000);
                 }
-
-                // draw a path from the current agent position to the desired position
                 Debug.DrawLine(agent.transform.position, destination, new Color(1.0f, 0.64f, 0.0f), 1000);
             }
 
@@ -125,7 +124,7 @@ public class NavMeshUtils
         }
         else
         {
-            Utils.DebugUtils.DebugLog("Agent " + agent.transform.gameObject.name + " failed to find a path.");
+            Utils.DebugUtils.DebugLog("Agent " + agent.transform.gameObject.name + " failed to find a path. The destination point was: " + destination);
             return null;
         }
     }
