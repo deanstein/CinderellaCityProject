@@ -11,7 +11,7 @@ public class InputActions : MonoBehaviour
 {
     private InputMaster inputMaster;
     public static Vector2 rightStickLook;
-    private readonly float lookSpeed = 5f;
+    private readonly float lookSpeed = 6f;
     private Camera cam;
     private CharacterController controller;
 
@@ -51,6 +51,11 @@ public class InputActions : MonoBehaviour
         StartCoroutine(ToggleSceneAndUI.ToggleFromSceneToSceneWithTransition(SceneManager.GetActiveScene().name, nextTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerCamera.gameObject, "FlashBlack", 0.2f));
     }
 
+    public void InvertYAxis()
+    {
+        ModeState.invertYAxis = !ModeState.invertYAxis;
+    }
+
     Quaternion ClampRotationAroundXAxis(Quaternion q)
     {
         q.x /= q.w;
@@ -73,6 +78,7 @@ public class InputActions : MonoBehaviour
         inputMaster.Player.Jump.performed += ctx => Jump();
         inputMaster.Player.TimeTravelBackward.performed += ctx => TimeTravelBackward();
         inputMaster.Player.TimeTravelForward.performed += ctx => TimeTravelForward();
+        inputMaster.Player.InvertYAxis.performed += ctx => InvertYAxis();
         inputMaster.Player.Pause.performed += ctx => Pause();
         inputMaster.Player.Look.performed += ctx => rightStickLook = ctx.ReadValue<Vector2>();
         inputMaster.Player.Look.canceled += ctx => rightStickLook = Vector2.zero;
@@ -230,7 +236,7 @@ public class InputActions : MonoBehaviour
             float xRot = rightStickLook.y * lookSpeed;
 
             m_CharacterTargetRot *= Quaternion.Euler(0f, yRot, 0f);
-            m_CameraTargetRot *= Quaternion.Euler(xRot, 0f, 0f);
+            m_CameraTargetRot *= Quaternion.Euler(ModeState.invertYAxis ? xRot : -xRot, 0f, 0f);
 
             m_CameraTargetRot = ClampRotationAroundXAxis(m_CameraTargetRot);
 
