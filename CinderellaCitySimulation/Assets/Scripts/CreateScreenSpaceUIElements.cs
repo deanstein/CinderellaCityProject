@@ -1469,6 +1469,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
 
             // add the button property
             timePeriodButton.AddComponent<Button>();
+            // add an onClick event
             timePeriodButton.GetComponent<Button>().onClick.AddListener(() => { TimeTravelButtonAction(timePeriodButton.name); }); ;
 
             // set the parent/child hierarchy
