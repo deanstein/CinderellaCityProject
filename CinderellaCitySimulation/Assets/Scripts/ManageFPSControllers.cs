@@ -463,9 +463,10 @@ public class ManageFPSControllers : MonoBehaviour {
 
     private void Start()
     {
-        // set the default height for the FPS controller
-        CharacterController thisCharacterController = this.GetComponent<CharacterController>();
-        thisCharacterController.height = FPSControllerGlobals.defaultFPSControllerHeight;
+        // set the default height for the FPS controller and its agent
+        this.GetComponent<CharacterController>().height = FPSControllerGlobals.defaultFPSControllerHeight;
+        this.GetComponentInChildren<NavMeshAgent>().height = FPSControllerGlobals.defaultFPSControllerHeight;
+        this.GetComponentInChildren<NavMeshAgent>().baseOffset = FPSControllerGlobals.defaultFPSControllerHeight / 2;
     }
 
     private void OnEnable()
