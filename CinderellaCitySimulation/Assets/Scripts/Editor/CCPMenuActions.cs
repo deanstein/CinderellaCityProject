@@ -27,6 +27,12 @@ public class CCPMenuActions : MonoBehaviour
         EditorApplication.EnterPlaymode();
     }
 
+    [MenuItem("Cinderella City Project/Restart Unity")]
+    public static void ReopenProject()
+    {
+        EditorApplication.OpenProject(Directory.GetCurrentDirectory());
+    }
+
     /* ---------- Mark Scene Dirty ---------- */
 
     [MenuItem("Cinderella City Project/Mark Current Scene Dirty")]
