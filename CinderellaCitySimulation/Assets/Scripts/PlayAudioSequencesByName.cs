@@ -520,17 +520,20 @@ public class PlayAudioSequencesByName : MonoBehaviour
     {
         bool requireRestart = false;
 
-        // only adjust the volume if necessary
-        if (audioSourceComponent.volume != newSpeakerParams.speakerVolume)
+        if (audioSourceComponent != null)
         {
-            audioSourceComponent.volume = newSpeakerParams.speakerVolume;
-        };
+            // only adjust the volume if necessary
+            if (audioSourceComponent.volume != newSpeakerParams.speakerVolume)
+            {
+                audioSourceComponent.volume = newSpeakerParams.speakerVolume;
+            };
 
-        // only adjust the clip if necessary
-        List<string> audioClipNames = newSpeakerParams.clipSequence.Select(clip => clip.name).ToList<string>();
-        if (!Utils.StringUtils.TestIfAnyListItemContainedInString(audioClipNames, audioSourceComponent.clip.name))
-        {
-            requireRestart = true;
+            // only adjust the clip if necessary
+            List<string> audioClipNames = newSpeakerParams.clipSequence.Select(clip => clip.name).ToList<string>();
+            if (!Utils.StringUtils.TestIfAnyListItemContainedInString(audioClipNames, audioSourceComponent.clip.name))
+            {
+                requireRestart = true;
+            }
         }
 
         return requireRestart;
