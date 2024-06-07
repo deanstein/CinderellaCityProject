@@ -57,6 +57,14 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Invert Y Axis"",
+                    ""type"": ""Button"",
+                    ""id"": ""ec3f4b76-1581-4e50-842b-afe477a8637a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -114,6 +122,17 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6d316fe7-4964-49af-97c2-ac56794271b5"",
+                    ""path"": ""<XInputController>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox Control Scheme"",
+                    ""action"": ""Invert Y Axis"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -139,6 +158,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_TimeTravelBackward = m_Player.FindAction("Time Travel Backward", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
+        m_Player_InvertYAxis = m_Player.FindAction("Invert Y Axis", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -193,6 +213,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_TimeTravelBackward;
     private readonly InputAction m_Player_Pause;
+    private readonly InputAction m_Player_InvertYAxis;
     public struct PlayerActions
     {
         private @InputMaster m_Wrapper;
@@ -202,6 +223,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @TimeTravelBackward => m_Wrapper.m_Player_TimeTravelBackward;
         public InputAction @Pause => m_Wrapper.m_Player_Pause;
+        public InputAction @InvertYAxis => m_Wrapper.m_Player_InvertYAxis;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -226,6 +248,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @Pause.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
                 @Pause.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
                 @Pause.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @InvertYAxis.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInvertYAxis;
+                @InvertYAxis.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInvertYAxis;
+                @InvertYAxis.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInvertYAxis;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -245,6 +270,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @Pause.started += instance.OnPause;
                 @Pause.performed += instance.OnPause;
                 @Pause.canceled += instance.OnPause;
+                @InvertYAxis.started += instance.OnInvertYAxis;
+                @InvertYAxis.performed += instance.OnInvertYAxis;
+                @InvertYAxis.canceled += instance.OnInvertYAxis;
             }
         }
     }
@@ -265,5 +293,6 @@ public class @InputMaster : IInputActionCollection, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnTimeTravelBackward(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
+        void OnInvertYAxis(InputAction.CallbackContext context);
     }
 }

@@ -32,5 +32,8 @@ public static class ModeState
     // historic photos are only shown within some distance to the current destination
     // this gets set to true for 1 frame when needed
     public static bool areHistoricPhotosRequestedVisible = false;
+
+    // whether to invert the right stick on the controller
+    public static bool invertYAxis = true;
 }
 
