@@ -1,7 +1,7 @@
 {
   "VersionHistory": {
     "0.8.0.202405": {
-      "Overview": "v0.8.0 adds a guided tour mode and Xbox controller support, adds more historic photographs in both eras, prevents FPC and NPCs from pathfinding on store floors, and fixes user interface issues.",
+      "Overview": "v0.8.0 adds a guided tour mode and Xbox controller support, adds more historic photographs in both eras, prevents FPC and NPCs from pathfinding on non-walkable surfaces, and fixes user interface issues.",
       "Environment Updates": [
         "Added over a dozen new photos in both eras for guided tour points of interest",
         "Added The Violet House, fixed issues in the 1968-1978 west Blue Mall",
