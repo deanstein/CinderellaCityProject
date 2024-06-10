@@ -420,7 +420,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
         // determine whether the player is inside the mall or outside
         // based on the name of the game object below the player
         // this is only calculable when the player is on a floor surface ("grounded")
-        if (ManageFPSControllers.FPSControllerGlobals.activeFPSController.GetComponent<CharacterController>().isGrounded && ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position != null)
+        if (ManageFPSControllers.FPSControllerGlobals.activeFPSController?.GetComponent<CharacterController>().isGrounded ?? false && ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform?.position != null)
         {
         AudioSourceGlobals.isPlayerOutside = Utils.StringUtils.TestIfAnyListItemContainedInString(ObjectVisibilityGlobals.exteriorObjectKeywordsList, Utils.GeometryUtils.GetTopLevelSceneContainerChildNameAtNearestNavMeshPoint(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position, 1.0f));
         }
@@ -433,6 +433,11 @@ public class PlayAudioSequencesByName : MonoBehaviour
         {
             ResumeAudioSource();
         }
+
+        //if (thisAudioSourceComponent.name.Contains("ambient-chatter"))
+        //{
+        //    Utils.DebugUtils.DebugLog("This speaker: " + thisAudioSourceComponent?.name + " is playing: " + thisAudioSourceComponent.clip.name + " at this index: " + thisSpeakerParams?.lastKnownClipIndex + " and at this time: " + thisSpeakerParams?.lastKnownClipTime);
+        //}
     }
 
     // retrieve the known speaker params if it exists in the list
@@ -530,7 +535,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
 
             // only adjust the clip if necessary
             List<string> audioClipNames = newSpeakerParams.clipSequence.Select(clip => clip.name).ToList<string>();
-            if (!Utils.StringUtils.TestIfAnyListItemContainedInString(audioClipNames, audioSourceComponent.clip.name))
+            if (!Utils.StringUtils.TestIfAnyListItemContainedInString(audioClipNames, audioSourceComponent?.clip?.name))
             {
                 requireRestart = true;
             }
