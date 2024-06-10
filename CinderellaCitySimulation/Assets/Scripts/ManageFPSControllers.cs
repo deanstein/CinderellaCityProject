@@ -39,8 +39,6 @@ public class ManageFPSControllers : MonoBehaviour {
         public static Transform activeFPSControllerTransform;
         public static Camera activeFPSControllerCamera;
         public static Vector3 activeFPSControllerCameraForward;
-        public static bool isActiveFPSControllerOnNavMesh;
-        public static Vector3 activeFPSControllerNavMeshPosition;
         public static string activeFPSControllerNavMeshClosestObjectName;
         public static FPSControllerRestoreData activeFPSControllerRestoreData;
 
@@ -130,23 +128,6 @@ public class ManageFPSControllers : MonoBehaviour {
     {
         // update the current FPSController agent
         FPSControllerGlobals.activeFPSControllerNavMeshAgent = FPSControllerGlobals.activeFPSController.GetComponentInChildren<NavMeshAgent>();
-
-        // determine if the controller is close enough to a nav mesh point 
-        // to be considered on the nav mesh
-        if (Utils.GeometryUtils.GetIsOnNavMeshWithinTolerance(FPSControllerGlobals.activeFPSControllerTransform.gameObject, 5.0f))
-        {
-            FPSControllerGlobals.isActiveFPSControllerOnNavMesh = true;
-        }
-        else
-        {
-            FPSControllerGlobals.isActiveFPSControllerOnNavMesh = false;
-        }
-
-        // get the nearest point on the nav mesh to the controller
-        // this will be the world origin if a point is not found
-        FPSControllerGlobals.activeFPSControllerNavMeshPosition = Utils.GeometryUtils.GetNearestPointOnNavMesh(FPSControllerGlobals.activeFPSControllerTransform.position, 5.0f);
-
-        FPSControllerGlobals.activeFPSControllerNavMeshClosestObjectName = Utils.GeometryUtils.GetTopLevelSceneContainerChildNameAtNearestNavMeshPoint(FPSControllerGlobals.activeFPSControllerTransform.position, 1.0f);
     }
 
     // reposition and realign this FPSController to match another camera in the scene
