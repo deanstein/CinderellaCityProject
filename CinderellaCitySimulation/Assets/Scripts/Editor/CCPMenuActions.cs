@@ -522,6 +522,29 @@ public class CCPMenuActions : MonoBehaviour
         Selection.objects = finalSelection;
     }
 
+    [MenuItem("Cinderella City Project/Nav Meshes/Select Meshes in Selection")]
+    public static void SelectMeshesInSelection()
+    {
+        // prepare a list for all the found objects
+        List<GameObject> meshRendererGameObjectList = new List<GameObject>();
+
+        // for each selected object, get the mesh renderers
+        foreach (GameObject selectedGameObjects in Selection.objects)
+        {
+            MeshRenderer[] meshRenderers = selectedGameObjects.GetComponentsInChildren<MeshRenderer>();
+
+            foreach (MeshRenderer meshRenderer in meshRenderers)
+            {
+                meshRendererGameObjectList.Add(meshRenderer.gameObject);
+            }
+        }
+
+        // convert the list to an array
+        GameObject[] finalSelection = meshRendererGameObjectList.ToArray();
+        // set the selection to the array
+        Selection.objects = finalSelection;
+    }
+
     [MenuItem("Cinderella City Project/Nav Meshes/Update for Current Scene")]
     public static void RebuildCurrentSceneNavMesh()
     {
