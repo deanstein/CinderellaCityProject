@@ -35,9 +35,9 @@ public class FollowGuidedTour : MonoBehaviour
     readonly public int guidedTourRestartAfterSeconds = 5; // seconds to wait before un-pausing
 
     // DEBUGGING
-    readonly bool shuffleGuidedTourDestinations = false;
+    readonly bool shuffleGuidedTourDestinations = true;
     private int currentGuidedTourDestinationIndex = 0; // optionally start at a specific index
-    readonly bool useOverrideDestinations = true; // if true, use a special list for tour objects
+    readonly bool useOverrideDestinations = false; // if true, use a special list for tour objects
     readonly private bool showDebugLines = true; // if true, show path as debug lines
 
     private void Awake()
