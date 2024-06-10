@@ -7,6 +7,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: 80s glass
+    second: {fileID: 2100000, guid: 9862ff7679f4e1c47a6d2e39ecf8b05d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: drywall
     second: {fileID: 2100000, guid: 061e3d410a9eec34d8376dbf4f1d6e9e, type: 2}
   - first:
@@ -24,6 +29,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: mall - 60s rose light
     second: {fileID: 2100000, guid: e00e4469979ce5e428d74313f14da022, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - 80s metal trim
+    second: {fileID: 2100000, guid: 8fe168320414675479e3f3dc5f53b4c2, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -94,13 +104,13 @@ ModelImporter:
     secondaryUVPackMargin: 64
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
+    normalSmoothAngle: 15
     normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
-    normalSmoothingSource: 0
+    normalSmoothingSource: 2
   referencedClips: []
   importAnimation: 1
   copyAvatar: 0
