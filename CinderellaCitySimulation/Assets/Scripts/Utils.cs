@@ -97,7 +97,7 @@ public class FileDirUtils
 public class NavMeshUtils
 {
     // set a given agent's path to a given destination point
-    public static NavMeshPath SetAgentOnPath(NavMeshAgent agent, Vector3 destination, bool showDebugLines = false)
+    public static NavMeshPath SetAgentOnPath(NavMeshAgent agent, Vector3 destination, bool drawDebugLines = false)
     {
         // instantiate an empty path that it will follow
         NavMeshPath path = new NavMeshPath();
@@ -105,7 +105,7 @@ public class NavMeshUtils
         // find a path to the destination
         bool pathSuccess = NavMesh.CalculatePath(agent.transform.position, destination, NavMesh.AllAreas, path);
 
-        if (showDebugLines)
+        if (drawDebugLines)
         {
             // draw a line to the desired point
             Debug.DrawLine(agent.transform.position, destination, new Color(1.0f, 0.64f, 0.0f), 1000);
@@ -115,7 +115,7 @@ public class NavMeshUtils
         if (pathSuccess)
         {
             // optional: visualize the path with a line in the editor
-            if (showDebugLines)
+            if (drawDebugLines)
             {
                 // draw a path from the current agent position to the desired position
                 for (int i = 0; i < path.corners.Length - 1; i++)
@@ -134,7 +134,7 @@ public class NavMeshUtils
         }
     }
 
-    public static IEnumerator SetAgentOnPathAfterDelay(NavMeshAgent agent, Vector3 destination, int delayInSeconds, bool stopAgentDuringDelay = false, bool showDebugLines = false)
+    public static IEnumerator SetAgentOnPathAfterDelay(NavMeshAgent agent, Vector3 destination, int delayInSeconds, bool stopAgentDuringDelay = false, bool drawDebugLines = false)
     {
         // if stop is requested during delay,
         // stop the agent during the duration - used for pausing at photos for example
@@ -145,7 +145,7 @@ public class NavMeshUtils
 
         yield return new WaitForSeconds(delayInSeconds);
 
-        SetAgentOnPath(agent, destination, showDebugLines);
+        SetAgentOnPath(agent, destination, drawDebugLines);
         agent.isStopped = false;
         FollowGuidedTour.doIncrementIndex = true;
         ModeState.setAgentOnPathAfterDelayRoutine = null;
@@ -253,9 +253,9 @@ public class Utils
         }
 
         // determine if an object is close enough to a valid nav mesh point to be considered on the nav mesh
-        public static bool GetIsOnNavMeshWithinTolerance(GameObject gameObjectToMeasure, float tolerance)
+        public static bool GetIsOnNavMeshWithinTolerance(Vector3 pointToTest, float tolerance)
         {
-            if (Vector3.Distance(gameObjectToMeasure.transform.position, GetNearestPointOnNavMesh(gameObjectToMeasure.transform.position, tolerance)) < tolerance)
+            if (Vector3.Distance(pointToTest, GetNearestPointOnNavMesh(pointToTest, tolerance)) < tolerance)
             {
                 return true;
             }
@@ -266,7 +266,7 @@ public class Utils
         }
 
         // find the nearest point on the navmesh - could be above or below starting point
-        public static Vector3 GetNearestPointOnNavMesh(Vector3 startingPoint, float maxRadius, bool forceSameLevel = true, float step = 1.0f, bool drawDebugLines = true)
+        public static Vector3 GetNearestPointOnNavMesh(Vector3 startingPoint, float maxRadius, bool forceSameLevel = true, float step = 1.0f, bool drawDebugLines = false)
         {
             NavMeshHit hit;
             Vector3 foundPosition = Vector3.zero;
