@@ -105,6 +105,12 @@ public class NavMeshUtils
         // find a path to the destination
         bool pathSuccess = NavMesh.CalculatePath(agent.transform.position, destination, NavMesh.AllAreas, path);
 
+        if (showDebugLines)
+        {
+            // draw a line to the desired point
+            Debug.DrawLine(agent.transform.position, destination, new Color(1.0f, 0.64f, 0.0f), 1000);
+        }
+
         // if a path was created, set this agent to use it
         if (pathSuccess)
         {
@@ -116,7 +122,6 @@ public class NavMeshUtils
                 {
                     Debug.DrawLine(path.corners[i], path.corners[i + 1], Color.green, 1000);
                 }
-                Debug.DrawLine(agent.transform.position, destination, new Color(1.0f, 0.64f, 0.0f), 1000);
             }
 
             agent.SetPath(path);
@@ -129,17 +134,20 @@ public class NavMeshUtils
         }
     }
 
-    public static IEnumerator SetAgentOnPathAfterDelay(NavMeshAgent agent, Vector3 destination, int delayInSeconds, bool showDebugLines = false)
+    public static IEnumerator SetAgentOnPathAfterDelay(NavMeshAgent agent, Vector3 destination, int delayInSeconds, bool stopAgentDuringDelay = false, bool showDebugLines = false)
     {
-        // pause to let the photo show for a few seconds without movement
-        agent.isStopped = true;
+        // if stop is requested during delay,
+        // stop the agent during the duration - used for pausing at photos for example
+        if (stopAgentDuringDelay)
+        {
+            agent.isStopped = true;
+        }
 
         yield return new WaitForSeconds(delayInSeconds);
 
-        //Utils.DebugUtils.DebugLog("FPC reached destination." + nextDestination);
         SetAgentOnPath(agent, destination, showDebugLines);
         agent.isStopped = false;
-        FollowGuidedTour.incrementIndex = true;
+        FollowGuidedTour.doIncrementIndex = true;
         ModeState.setAgentOnPathAfterDelayRoutine = null;
     }
 }
@@ -257,41 +265,101 @@ public class Utils
             }
         }
 
-        // get a point on the scene's current navmesh within some radius from a starting point
-        public static Vector3 GetNearestPointOnNavMesh(Vector3 startingPoint, float maxRadius, bool forceDown = true, float step = 1.0f)
+        // find the nearest point on the navmesh - could be above or below starting point
+        public static Vector3 GetNearestPointOnNavMesh(Vector3 startingPoint, float maxRadius, bool forceSameLevel = true, float step = 1.0f, bool drawDebugLines = true)
         {
             NavMeshHit hit;
-            Vector3 finalPosition = Vector3.zero;
+            Vector3 foundPosition = Vector3.zero;
 
-            for (float radius = 1; radius <= maxRadius; radius += step)
+            if (forceSameLevel)
             {
-                if (NavMesh.SamplePosition(startingPoint, out hit, radius, NavMesh.AllAreas))
+                // adjust the starting position down until we get a hit below the given point
+                // (loosely constituting "same level")
+                Vector3 adjustedStartingPoint = startingPoint;
+                while (adjustedStartingPoint.y > 0)
                 {
-                    finalPosition = hit.position;
-
-                    // If forceDown is true and the finalPosition is above the startingPoint, adjust the y coordinate
-                    if (forceDown && finalPosition.y > startingPoint.y)
+                    if (NavMesh.SamplePosition(adjustedStartingPoint, out hit, maxRadius, NavMesh.AllAreas) && hit.position.y <= startingPoint.y)
                     {
-                        Vector3 lowerPoint = new Vector3(finalPosition.x, startingPoint.y - step, finalPosition.z);
-                        NavMeshHit hitBelow;
-                        if (NavMesh.SamplePosition(lowerPoint, out hitBelow, radius, NavMesh.AllAreas))
-                        {
-                            finalPosition = hitBelow.position;
-                        }
-                        // If there is no NavMesh below, use the original hit position
+                        foundPosition = hit.position;
+                        break;
                     }
+                    adjustedStartingPoint.y -= step;
+                }
+            }
+            else
+            {
+                NavMesh.SamplePosition(startingPoint, out hit, maxRadius, NavMesh.AllAreas);
+                foundPosition = hit.position;
+            }
 
+            if (foundPosition == Vector3.zero)
+            {
+                DebugUtils.DebugLog("Failed to find a point on the NavMesh: " + startingPoint + " with max radius: " + maxRadius);
+                foundPosition = startingPoint;
+            }
+
+            if (drawDebugLines)
+            {
+                // draw a line to the desired point
+                Debug.DrawLine(startingPoint, foundPosition, new Color(1.0f, 0.64f, 1.0f), 1000);
+            }
+
+            return foundPosition;
+        }
+
+        // find a point along the ~horizontal plane from the bottom of the agent
+        // (effectively ensures found point will be on the current building level if possible)
+        public static Vector3 GetNearestNavMeshPointHorizontally(NavMeshAgent agent, float tolerance = 0.5f, float step = 1.0f, int maxAttempts = 1000, bool drawDebugLines = true)
+        {
+            NavMeshHit hit;
+            Vector3 foundPosition = Vector3.zero;
+
+            // Get the bottom of the agent as the point to test from
+            Vector3 startingPoint = agent.transform.position - new Vector3(0, agent.height / 2, 0);
+
+            // Each cycle, go out in the X, -X, Z, and -Z directions at the given interval until a point is found
+            int attempts = 0;
+            for (float radius = 1; attempts < maxAttempts; radius += step)
+            {
+                Vector3[] directions = new Vector3[]
+                {
+            startingPoint + new Vector3(radius, 0, 0),
+            startingPoint - new Vector3(radius, 0, 0),
+            startingPoint + new Vector3(0, 0, radius),
+            startingPoint - new Vector3(0, 0, radius)
+                };
+
+                foreach (Vector3 direction in directions)
+                {
+                    attempts++;
+                    if (NavMesh.SamplePosition(direction, out hit, tolerance, NavMesh.AllAreas) && Mathf.Abs(hit.position.y - startingPoint.y) <= tolerance)
+                    {
+                        foundPosition = hit.position;
+                        break;
+                    }
+                }
+
+                if (foundPosition != Vector3.zero)
+                {
                     break;
                 }
             }
 
-            if (finalPosition == Vector3.zero)
+            if (foundPosition == Vector3.zero)
             {
-                DebugUtils.DebugLog("Failed to find a point on the NavMesh: " + startingPoint);
+                DebugUtils.DebugLog("Failed to find a point horizontally on the NavMesh from this point: " + startingPoint);
+                foundPosition = startingPoint;
             }
 
-            return finalPosition;
+            if (drawDebugLines)
+            {
+                // draw a line to the desired point
+                Debug.DrawLine(startingPoint, foundPosition, new Color(1.0f, 0.64f, 1.0f), 1000);
+            }
+
+            return foundPosition;
         }
+
 
 
 
