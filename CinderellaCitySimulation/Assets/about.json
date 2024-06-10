@@ -1,14 +1,16 @@
 {
   "VersionHistory": {
-    "0.8.0.202405": {
-      "Overview": "v0.8.0 adds a guided tour mode and Xbox controller support, adds more historic photographs in both eras, prevents FPC and NPCs from pathfinding on non-walkable surfaces, and fixes user interface issues.",
+    "0.8.0.202406": {
+      "Overview": "v0.8.0 adds a guided tour mode and Xbox controller support, introduces more historic photographs in both eras, prevents FPC and NPCs from pathfinding on non-walkable surfaces, and fixes user interface issues.",
       "Environment Updates": [
         "Added over a dozen new photos in both eras for guided tour points of interest",
         "Added The Violet House, fixed issues in the 1968-1978 west Blue Mall",
         "Increased speaker volumes throughout mall, including ambient sounds",
         "Fixed an issue where NPCs were standing in the way of a Cinder Alley historic photograph",
         "Fixed incorrect icons for 1987-1997 sub-mall wayfinding signage",
-        "Fixed unfinished wayfinding signage in the 1968-1978 Blue Mall"
+        "Fixed unfinished wayfinding signage in the 1968-1978 Blue Mall",
+        "Fixed missing mezzanine office walls facing Blue Mall",
+        "Fixed an issue where NavMesh navigation was blocked on certain stairs"
       ],
       "UI Updates": [
         "Added a GUIDED TOUR ACTIVE/PAUSED indicator to the HUD",
@@ -20,6 +22,7 @@
         "Added the ability to select all non-walkable floors to set them as non-walkable in the NavMesh",
         "Added input classes and Xbox One controller support",
         "Added automatic project version updater that uses today's date in editor",
+        "Added ability to find closest horizontal nav mesh point",
         "Added states for guided tour, anti-gravity mode",
         "Refactored and combined code from guided tour attempts in v0.7.x",
         "Fixed issues with finding top-level gameobjects by name in some cases"
