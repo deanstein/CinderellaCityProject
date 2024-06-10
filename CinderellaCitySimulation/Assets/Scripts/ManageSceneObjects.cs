@@ -425,7 +425,7 @@ public static class ObjectVisibilityGlobals
     public static string[] ceilingObjectKeywords = { "mall-ceilings", "mall-speakers", "store-ceilings" };
     public static string[] exteriorWallObjectKeywords = { "mall-walls-detailing-exterior" };
     public static string[] floorObjectKeywords = { "mall-floors-vert", "store-floors" };
-    public static string[] floorNonWalkableKeywords = { "proxy-blocker-npc", "mall-ceiling", "mall-roof", "store-ceilings", "store-floors", "broadway-floors-vert", "broadway-roof", "cinema-neusteters-floors-vert", "cinema-neusteters-roof", "denver-floors-vert", "denver-foor", "joslins-floors-vert", "joslins-roof", "penneys-floors-vert", "penneys-roof", "wards-floors-vert", "wards-roof" };
+    public static string[] floorNonWalkableKeywords = { "proxy-blocker-npc", "store-floors", "broadway-floors-vert", "cinema-neusteters-floors-vert", "denver-floors-vert", "joslins-floors-vert", "penneys-floors-vert", "wards-floors-vert" };
     public static string[] furnitureObjectKeywords = { "mall-furniture" };
     public static string[] lightsObjectKeyword = { "mall-lights" };
     public static string[] interiorDetailingObjectKeywords = { "mall-detailing-interior", "mall-flags", "store-detailing" };
