@@ -97,18 +97,18 @@ public class FileDirUtils
 public class NavMeshUtils
 {
     // set a given agent's path to a given destination point
-    public static NavMeshPath SetAgentOnPath(NavMeshAgent agent, Vector3 destination, bool drawDebugLines = false)
+    public static NavMeshPath SetAgentOnPath(NavMeshAgent agent, Vector3 startPoint, Vector3 destination, bool drawDebugLines = false)
     {
         // instantiate an empty path that it will follow
         NavMeshPath path = new NavMeshPath();
 
         // find a path to the destination
-        bool pathSuccess = NavMesh.CalculatePath(agent.transform.position, destination, NavMesh.AllAreas, path);
+        bool pathSuccess = NavMesh.CalculatePath(startPoint, destination, NavMesh.AllAreas, path);
 
         if (drawDebugLines)
         {
             // draw a line to the desired point
-            Debug.DrawLine(agent.transform.position, destination, new Color(1.0f, 0.64f, 0.0f), 1000);
+            Debug.DrawLine(startPoint, destination, new Color(1.0f, 0.64f, 0.0f), 1000);
         }
 
         // if a path was created, set this agent to use it
@@ -134,7 +134,7 @@ public class NavMeshUtils
         }
     }
 
-    public static IEnumerator SetAgentOnPathAfterDelay(NavMeshAgent agent, Vector3 destination, int delayInSeconds, bool stopAgentDuringDelay = false, bool drawDebugLines = false)
+    public static IEnumerator SetAgentOnPathAfterDelay(NavMeshAgent agent, Vector3 startPosition, Vector3 destination, int delayInSeconds, bool stopAgentDuringDelay = false, bool drawDebugLines = false)
     {
         // if stop is requested during delay,
         // stop the agent during the duration - used for pausing at photos for example
@@ -145,7 +145,7 @@ public class NavMeshUtils
 
         yield return new WaitForSeconds(delayInSeconds);
 
-        SetAgentOnPath(agent, destination, drawDebugLines);
+        SetAgentOnPath(agent, startPosition, destination, drawDebugLines);
         agent.isStopped = false;
         FollowGuidedTour.doIncrementIndex = true;
         ModeState.setAgentOnPathAfterDelayRoutine = null;
@@ -400,7 +400,7 @@ public class Utils
         public static Vector3 GetRandomPointOnNavMeshFromPool(Vector3 currentPosition, Vector3[] positionPool, float minDistance, float maxDistance, bool stayOnLevel)
         {
             // get a random selection from the pool
-            Vector3 randomPosition = positionPool[UnityEngine.Random.Range(0, positionPool.Length)];
+            Vector3 randomPosition = positionPool[UnityEngine.Random.Range(0, positionPool.Length - 1)];
 
             // when picking from the random position pool,
             // we should try to adhere to the specified radius and stayOnLevel requests
