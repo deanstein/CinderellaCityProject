@@ -73,8 +73,10 @@ public class FollowRandomPath : MonoBehaviour
 
         initialDestination = Utils.GeometryUtils.GetRandomPointOnNavMeshFromPool(this.transform.position, NPCControllerGlobals.initialNPCPositionsArray, 0, NPCControllerGlobals.maxDestinationDistance, true);
 
-        path = NavMeshUtils.SetAgentOnPath(thisAgent, initialDestination);
+        path = NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, initialDestination);
 
+        // give this agent a random priority, so when it encounters another, one wins
+        thisAgent.avoidancePriority = Random.Range(2, 99);
     }
 
     private void Update()
@@ -90,7 +92,7 @@ public class FollowRandomPath : MonoBehaviour
             {
                 if (GetIsNPCApproachingPlayer(this.gameObject, ManageFPSControllers.FPSControllerGlobals.activeFPSController))
                 {
-                    path = NavMeshUtils.SetAgentOnPath(thisAgent, nextNPCDestination);
+                    path = NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, nextNPCDestination);
                 }
             }
 
@@ -98,13 +100,13 @@ public class FollowRandomPath : MonoBehaviour
             // to prevent a traffic jam, find a different random point from the pool to switch directions
             if (currentVelocity > 0f && currentVelocity < NPCControllerGlobals.minimumSpeedBeforeRepath)
             {
-                path = NavMeshUtils.SetAgentOnPath(thisAgent, nextNPCDestination);
+                path = NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, nextNPCDestination);
             }
 
             // set next destination
             if (thisAgent.remainingDistance <= NPCControllerGlobals.defaultNPCStoppingDistance)
             {
-                path = NavMeshUtils.SetAgentOnPath(thisAgent, nextNPCDestination);
+                path = NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, nextNPCDestination);
             }
         }
     }
