@@ -554,7 +554,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
             AudioSource masterAudioSource = thisAudioSourceComponent;
 
             // make sure the last known clip index is within the array bounds
-            thisSpeakerParams.lastKnownClipIndex = thisSpeakerParams.lastKnownClipIndex < thisSpeakerParams.clipSequence.Length - 1 || thisSpeakerParams != null ? thisSpeakerParams.lastKnownClipIndex : 0;
+            thisSpeakerParams.lastKnownClipIndex = thisSpeakerParams.lastKnownClipIndex < thisSpeakerParams.clipSequence.Length - 1 && thisSpeakerParams.lastKnownClipIndex != -1 && thisSpeakerParams != null  ? thisSpeakerParams.lastKnownClipIndex : 0;
 
             // only set clip, time, and play if the index is available in the clipSequence array
             if (thisSpeakerParams.lastKnownClipIndex < thisSpeakerParams.clipSequence.Length && thisSpeakerParams.clipSequence.Length > 0)
@@ -575,7 +575,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
             }
 
             // wait until the clip is over to proceed to the next
-            float remainingClipTime = masterAudioSource.clip.length - masterAudioSource.time;
+            float remainingClipTime = masterAudioSource?.clip != null ? masterAudioSource.clip.length - masterAudioSource.time : 0;
             yield return new WaitForSeconds(remainingClipTime);  
         }
     }
