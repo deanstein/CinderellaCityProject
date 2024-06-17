@@ -885,7 +885,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
 
         // configure
-        ManageNPCControllers.ConfigureAgentWIthDefaultNPCSettings(thisAgent);
+        ManageNPCControllers.ConfigureNPCAgent(thisAgent);
     }
 
     public static void ConfigureNPCForPathfinding(GameObject NPCObject, GameObject proxyObject)
@@ -930,15 +930,20 @@ public class AssetImportUpdate : AssetPostprocessor {
         // ensure the agent is moved to a valid location on the navmesh
 
         // get the distance between the current position, and the nearest navmesh position
-        float distanceToNearestNavMeshPoint = Vector3.Distance(NPCObject.transform.position, Utils.GeometryUtils.GetNearestPointOnNavMesh(NPCObject.transform.position, 5));
+        Vector3 NPCObjectPos = NPCObject.transform.position;
+        Vector3 nearestMeshPoint = Utils.GeometryUtils.GetNearestPointOnNavMesh(NPCObject.transform.position, 5, false);
 
+        float distanceToNearestNavMeshPoint = Vector3.Distance(NPCObjectPos, nearestMeshPoint);
+
+        // DEBUGGING
         //Utils.DebugUtils.DebugLog("Distance from " + NPCObject.name + " to its nearest NavMesh point: " + distanceToNearestNavMeshPoint);
+        //Debug.DrawLine(NPCObjectPos, nearestMeshPoint, new Color(1.0f, 0.64f, 1.0f), 100);
 
         // if the distance between the current position, and the nearest navmesh position
         // is less than the max distance, use the closest point on the navmesh
         if (distanceToNearestNavMeshPoint < NPCControllerGlobals.maxDistanceForClosestPointAdjustment)
         {
-            NPCObject.transform.position = Utils.GeometryUtils.GetNearestPointOnNavMesh(NPCObject.transform.position, 1000);
+            NPCObject.transform.position = nearestMeshPoint;
         }
         // otherwise, this person is probably floating in space
         // so find a totally random location on the navmesh for them to go
