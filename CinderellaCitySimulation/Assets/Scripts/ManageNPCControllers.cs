@@ -71,8 +71,8 @@ public class NPCControllerGlobals
 
 public class ManageNPCControllers
 {
-    // default configurations for NPCs (and also FPC)
-    public static void ConfigureAgentWIthDefaultNPCSettings(NavMeshAgent agentToConfigure)
+    // default configurations for NPCs
+    public static void ConfigureNPCAgent(NavMeshAgent agentToConfigure)
     {
         agentToConfigure.speed = 1.0f;
         agentToConfigure.angularSpeed = 200f;
