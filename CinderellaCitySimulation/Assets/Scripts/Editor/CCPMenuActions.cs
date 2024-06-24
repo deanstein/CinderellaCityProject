@@ -175,6 +175,22 @@ public class CCPMenuActions : MonoBehaviour
         ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(parentObject, false, false);
     }
 
+    [MenuItem("Cinderella City Project/Object State/Toggle Nav Mesh Ramps ON")]
+    public static void ToggleNavMeshRampsOn()
+    {
+        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.navMeshRampsKeyword, true)[0];
+
+        ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(parentObject, true, false);
+    }
+
+    [MenuItem("Cinderella City Project/Object State/Toggle Nav Mesh Ramps OFF")]
+    public static void ToggleNavMeshRampsOff()
+    {
+        GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.navMeshRampsKeyword, true)[0];
+
+        ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(parentObject, false, false);
+    }
+
     [MenuItem("Cinderella City Project/Object State/Toggle Vegetation Replacements ON")]
     public static void ToggleVegetationReplacementsOn()
     {
@@ -554,21 +570,22 @@ public class CCPMenuActions : MonoBehaviour
         sceneContainers.Add(sceneContainer);
 
         // get the blocker object proxy host
-        GameObject proxyHost = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.blockerObjectKeywords[0], true)[0];
+        GameObject navMeshBlockersHost = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.blockerObjectKeywords[0], true)[0];
+
+        // get the navmesh ramps proxy host
+        GameObject navMeshRampsHost = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.navMeshRampsKeyword, true)[0];
 
         // first, move this scene container as appropriate
         HoistSceneObjectsEditor.HoistSceneContainersUp(sceneContainers);
-
-        // ensure that "blocker" objects are enabled before building the nav mesh
-        ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(proxyHost, true, false);
 
         // build the nav mesh
         UnityEditor.AI.NavMeshBuilder.BuildNavMesh();
 
         Utils.DebugUtils.DebugLog("Updated the nav mesh in scene: " + EditorSceneManager.GetActiveScene().name);
 
-        // re-hide the proxy blocker
-        ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(proxyHost, false, false);
+        // re-hide the navmesh blockers and ramps
+        ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(navMeshBlockersHost, false, false);
+        ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(navMeshRampsHost, false, false);
 
         EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene());
     }
