@@ -468,6 +468,7 @@ public class ManageProxyMapping
             }
 
             // tag this instanced prefab as a delete candidate for the next import
+            string proxyReplacementDeleteTag = ManageTags.GetOrCreateTagByProxyType(proxyType);
             instancedPrefab.gameObject.tag = proxyReplacementDeleteTag;
         }
         else
