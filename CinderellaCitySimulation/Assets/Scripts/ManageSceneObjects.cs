@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -535,7 +535,7 @@ public class ObjectVisibility
                 // record the existing transparency value so we can reset later if requested
                 ObjectVisibilityGlobals.historicPhotoTransparencyValues.Add(color.a);
 
-                color.a = 0.9f;
+                color.a = 1.0f;
                 historicPhotoRenderers[i].material.color = color;
             }
             // if toggle is off, set new alpha from the recorded alpha
