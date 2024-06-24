@@ -16,8 +16,10 @@ public class ManageFPSControllers : MonoBehaviour {
 
     public class FPSControllerGlobals
     {
-        // default FPS Controller height
         public static float defaultFPSControllerHeight = 2.28f;
+        public static float defaultFPSControllerWalkSpeed = 1.5f;
+        public static float defaultFPSControllerRunSpeed = 6.0f;
+        public static float defaultAgentSpeed = 1.1f;
 
         // default FPS Controller gravity values
         public static float defaultFPSControllerGravityMultiplier = 2f;
@@ -444,10 +446,12 @@ public class ManageFPSControllers : MonoBehaviour {
 
     private void Start()
     {
-        // set the default height for the FPS controller and its agent
+        // set the default configurations for the FPS controller and its agent
         this.GetComponent<CharacterController>().height = FPSControllerGlobals.defaultFPSControllerHeight;
         this.GetComponentInChildren<NavMeshAgent>().height = FPSControllerGlobals.defaultFPSControllerHeight;
+        this.GetComponentInChildren<NavMeshAgent>().radius = 0.15f;
         this.GetComponentInChildren<NavMeshAgent>().baseOffset = FPSControllerGlobals.defaultFPSControllerHeight / 2;
+        this.GetComponentInChildren<NavMeshAgent>().stoppingDistance = 0.5f;
     }
 
     private void OnEnable()
