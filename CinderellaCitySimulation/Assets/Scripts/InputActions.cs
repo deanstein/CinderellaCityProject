@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityStandardAssets.CrossPlatformInput;
+using UnityStandardAssets.Characters.FirstPerson;
 
 /// <summary>
 /// Responsible for handling input actions from peripherals like controllers
@@ -18,18 +18,38 @@ public class InputActions : MonoBehaviour
     private Quaternion m_CharacterTargetRot;
     private Quaternion m_CameraTargetRot;
 
+    private readonly bool doAllowStartStopGuidedTour = false;
+
     // TODO / coming soon
     public void Pause()
     {
         Debug.Log("Pause invoked.");
     }
 
-    // TODO / coming soon
-    public void Jump()
+    public void StartGuidedTour()
     {
-        // this doesn't work for some reason
-        //CrossPlatformInputManager.SetButtonDown("Jump"); 
-        Debug.Log("Jump action triggered");
+        if (doAllowStartStopGuidedTour)
+        {
+            FollowGuidedTour.StartGuidedTourMode();
+        }
+    }
+
+    public void EndGuidedTour()
+    {
+        if (doAllowStartStopGuidedTour)
+        {
+            FollowGuidedTour.EndGuidedTourMode();
+        }
+    }
+
+    public void PreviousPhoto()
+    {
+        FollowGuidedTour.DecrementGuidedTourIndexAndSetAgentOnPath();
+    }
+
+    public void NextPhoto()
+    {
+        FollowGuidedTour.IncrementGuidedTourIndexAndSetAgentOnPath();
     }
 
     public void TimeTravelBackward()
@@ -49,6 +69,33 @@ public class InputActions : MonoBehaviour
 
         // then toggle to the next scene with a camera effect transition
         StartCoroutine(ToggleSceneAndUI.ToggleFromSceneToSceneWithTransition(SceneManager.GetActiveScene().name, nextTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerCamera.gameObject, "FlashBlack", 0.2f));
+    }
+
+    public void ToggleHistoricPhotos()
+    {
+        GameObject historicCamerasContainer = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords, true)[0];
+        ModeState.areHistoricPhotosRequestedVisible = !ModeState.areHistoricPhotosRequestedVisible;
+        ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(historicCamerasContainer, ModeState.areHistoricPhotosRequestedVisible, false);
+
+        Debug.Log("Toggle photos called! From " + this.gameObject);
+    }
+
+    public void ToggleRun()
+    {
+        if (ManageFPSControllers.FPSControllerGlobals.activeFPSController.GetComponent<FirstPersonController>().m_WalkSpeed == ManageFPSControllers.FPSControllerGlobals.defaultFPSControllerWalkSpeed)
+        {
+            ManageFPSControllers.FPSControllerGlobals.activeFPSController.GetComponent<FirstPersonController>().m_WalkSpeed = ManageFPSControllers.FPSControllerGlobals.defaultFPSControllerRunSpeed;
+        } else
+        {
+            ManageFPSControllers.FPSControllerGlobals.activeFPSController.GetComponent<FirstPersonController>().m_WalkSpeed = ManageFPSControllers.FPSControllerGlobals.defaultFPSControllerWalkSpeed;
+        }
+    }
+
+    public void TogglePeople()
+    {
+        GameObject peopleContainer = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.peopleObjectKeywords, true)[0];
+        peopleContainer.SetActive(!peopleContainer.activeInHierarchy);
+        Debug.Log("Toggle people called! From " + this.gameObject);
     }
 
     public void InvertYAxis()
@@ -75,11 +122,23 @@ public class InputActions : MonoBehaviour
     private void Awake()
     {
         inputMaster = new InputMaster();
-        inputMaster.Player.Jump.performed += ctx => Jump();
+        inputMaster.Player.Run.performed += ctx => ToggleRun();
         inputMaster.Player.TimeTravelBackward.performed += ctx => TimeTravelBackward();
         inputMaster.Player.TimeTravelForward.performed += ctx => TimeTravelForward();
+        inputMaster.Player.TogglePeople.performed += ctx =>
+        {
+            if (ctx.performed)
+            {
+                TogglePeople();
+            };
+        };
+        inputMaster.Player.ToggleHistoricPhotos.performed += ctx => ToggleHistoricPhotos();
         inputMaster.Player.InvertYAxis.performed += ctx => InvertYAxis();
         inputMaster.Player.Pause.performed += ctx => Pause();
+        inputMaster.Player.StartGuidedTour.performed += ctx => StartGuidedTour();
+        inputMaster.Player.EndGuidedTour.performed += ctx => EndGuidedTour();
+        inputMaster.Player.PreviousPhoto.performed += ctx => PreviousPhoto();
+        inputMaster.Player.NextPhoto.performed += ctx => NextPhoto();
         inputMaster.Player.Look.performed += ctx => rightStickLook = ctx.ReadValue<Vector2>();
         inputMaster.Player.Look.canceled += ctx => rightStickLook = Vector2.zero;
     }
@@ -90,11 +149,21 @@ public class InputActions : MonoBehaviour
         controller = GetComponentInChildren<CharacterController>();
         m_CharacterTargetRot = controller.transform.localRotation;
         m_CameraTargetRot = cam.transform.localRotation;
+
         if (inputMaster != null)
         {
             inputMaster.Enable();
         }
     }
+
+    private void OnDisable()
+    {
+        if (inputMaster != null)
+        {
+            inputMaster.Disable();
+        }
+    }
+
 
     private void Update()
     {
