@@ -307,6 +307,21 @@ public class ManageImportSettings
                 ImportParams.doHideProxyObjects = true;
                 return ImportParams;
 
+            case string assetOrModelName when assetOrModelName.Contains("navmesh-ramps"):
+                // pre-processor option flags
+                ImportParams.doSetGlobalScale = true; // always true
+                ImportParams.doInstantiateAndPlaceInCurrentScene = true;
+                ImportParams.doSetColliderActive = false;
+                ImportParams.doSetUVActiveAndConfigure = false;
+                ImportParams.doDeleteReimportMaterialsTextures = false;
+                ImportParams.doAddBehaviorComponents = false;
+                // post-processor option flags
+                ImportParams.doSetMaterialEmission = false;
+                ImportParams.doSetMaterialSmoothnessMetallic = false;
+                ImportParams.doInstantiateProxyReplacements = false;
+                ImportParams.doHideProxyObjects = true;
+                return ImportParams;
+
             case string assetOrModelName when assetOrModelName.Contains("speakers") 
             || assetOrModelName.Contains("speakers-simple"):
                 // pre-processor option flags

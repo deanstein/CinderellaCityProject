@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -440,6 +440,7 @@ public static class ObjectVisibilityGlobals
 
     public static string[] peopleObjectKeywords = { "proxy-people" };
     public static string[] blockerObjectKeywords = { "proxy-blocker-npc" };
+    public static string navMeshRampsKeyword = "navmesh-ramps";
     public static string[] vegetationObjectKeywords = { "proxy-trees-veg" };
     public static string[] waterFeatureObjectKeywords = { "proxy-water" };
     public static string[] thumbnailCameraObjectKeywords = { "proxy-cameras" };
