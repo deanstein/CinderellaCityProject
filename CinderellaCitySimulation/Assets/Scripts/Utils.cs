@@ -134,7 +134,7 @@ public class NavMeshUtils
         }
     }
 
-    public static IEnumerator SetAgentOnPathAfterDelay(NavMeshAgent agent, Vector3 startPosition, Vector3 destination, int delayInSeconds, bool stopAgentDuringDelay = false, bool drawDebugLines = false)
+    public static IEnumerator SetAgentOnPathAfterDelay(NavMeshAgent agent, Vector3 startPosition, Vector3 destination, float delayInSeconds, bool stopAgentDuringDelay = false, bool drawDebugLines = false)
     {
         // if stop is requested during delay,
         // stop the agent during the duration - used for pausing at photos for example
