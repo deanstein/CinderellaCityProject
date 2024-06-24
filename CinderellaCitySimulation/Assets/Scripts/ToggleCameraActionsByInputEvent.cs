@@ -154,32 +154,12 @@ public class ToggleCameraActionsByInputEvent : MonoBehaviour {
         // start the guided tour of available historic photos
         if (Input.GetKeyDown("["))
         {
-            Utils.DebugUtils.DebugLog("Starting guided tour mode...");
-
-            // set the mode state
-            ModeState.isGuidedTourActive = true;
-
-            // automatically switch to the next era after some time
-            ModeState.toggleToNextEraCoroutine = StartCoroutine(ToggleSceneAndUI.ToggleToNextEraAfterDelay());
+            FollowGuidedTour.StartGuidedTourMode();
         }
         // end the guided tour
         if (Input.GetKeyDown("]"))
         {
-            Utils.DebugUtils.DebugLog("Ending guided tour mode.");
-
-            // set the mode state
-            ModeState.isGuidedTourActive = false;
-            ModeState.isGuidedTourPaused = false;
-
-            // if there was a restart coroutine active, stop it
-            if (ModeState.restartGuidedTourCoroutine != null)
-            {
-                StopCoroutine(ModeState.restartGuidedTourCoroutine);
-            }
-            if (ModeState.toggleToNextEraCoroutine != null)
-            {
-                StopCoroutine(ModeState.toggleToNextEraCoroutine);
-            }
+            FollowGuidedTour.EndGuidedTourMode();
         }
     }
 
