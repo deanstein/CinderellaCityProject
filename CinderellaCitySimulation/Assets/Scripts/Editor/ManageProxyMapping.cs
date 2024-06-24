@@ -96,7 +96,7 @@ public class ProxyGlobals
         thirdPartyPrefabPathCitizensPro + "/Female/Summer/casual12_f_highpoly.prefab",
         thirdPartyPrefabPathCitizensPro + "/Female/Summer/casual14_f_highpoly.prefab",
         thirdPartyPrefabPathCitizensPro + "/Female/Summer/casual15_f_highpoly.prefab",
-        thirdPartyPrefabPathCitizensPro + "/Female/Summer/casual21_f_highpoly.prefab",
+        thirdPartyPrefabPathCitizensPro + "/Female/Summer/granny01.prefab",
         thirdPartyPrefabPathCitizensPro + "/Female/Summer/Girl_55.prefab",
         thirdPartyPrefabPathCitizensPro + "/Female/Summer/Girl_77.prefab",
         thirdPartyPrefabPathCitizensPro + "/Female/Summer/granny02.prefab",
