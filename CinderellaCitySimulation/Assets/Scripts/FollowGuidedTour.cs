@@ -17,7 +17,7 @@ public class FollowGuidedTour : MonoBehaviour
 
     readonly string partialPathCameraName60s70s = "Blue Mall 1";
     readonly string partialPathCameraName80s90s = "Blue Mall deep";
-    readonly int pauseAtCameraDuration = 6; // number of seconds to pause and look at a camera
+    readonly int pauseAtCameraDuration = 8; // number of seconds to pause and look at a camera
     readonly bool matchCameraForward = false; // player camera: match destination camera or simply look at it?
     readonly float lookToCameraAtRemainingDistance = 10.0f; // distance from end of path where FPC begins looking at camera
     readonly float adjustPosAwayFromCamera = 1.15f; // distance away from camera look vector so when looking at a camera, it's visible
