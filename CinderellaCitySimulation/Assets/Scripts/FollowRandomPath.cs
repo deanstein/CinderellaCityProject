@@ -19,13 +19,15 @@ public class FollowRandomPath : MonoBehaviour
     public NavMeshPath path;
 
     // variables related to the test for whether the NPC is on a collision course with the player
-    bool doAdjustIfApproachingPlayer = false;
+    readonly bool doAdjustIfApproachingPlayer = false;
     int numberOfFramesApproachingPlayer = 0;
     readonly int maxNumberOfFramesApproachingPlayer = 120;
     readonly float dotProductThresholdFar = -0.96f;
     readonly float dotProductThresholdClose = -0.93f;
     readonly float maxDistanceForFarCheck = 7.0f;
     readonly float maxDistanceForCloseCheck = 2.0f;
+    // repath if slowing down (likely due to colliding with others)
+    readonly bool doRepathIfSlow = true;
 
     private void Awake()
     {
@@ -98,7 +100,7 @@ public class FollowRandomPath : MonoBehaviour
 
             // if this agent's speed gets too low, it's likely colliding badly with others
             // to prevent a traffic jam, find a different random point from the pool to switch directions
-            if (currentVelocity > 0f && currentVelocity < NPCControllerGlobals.minimumSpeedBeforeRepath)
+            if (doRepathIfSlow && currentVelocity > 0f && currentVelocity < NPCControllerGlobals.minimumSpeedBeforeRepath)
             {
                 path = NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, nextNPCDestination);
             }
