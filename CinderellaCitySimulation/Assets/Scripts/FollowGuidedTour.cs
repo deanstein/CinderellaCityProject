@@ -207,7 +207,7 @@ public class FollowGuidedTour : MonoBehaviour
                     Debug.Log("FollowGuidedTour: Pausing at camera OR starting/resuming, setting path after delay. Next destination: " + guidedTourObjects[currentGuidedTourDestinationIndex].name + " at index: " + currentGuidedTourDestinationIndex);
                     // the exact delay depends on whether we're atually pausing at a camera
                     // or merely starting fresh or resuming after time-traveling
-                    float delayDuration = isPausingAtCamera ? pauseAtCameraDuration : 0.25f;
+                    float delayDuration = isPausingAtCamera && !ModeState.isGuidedTourPaused ? pauseAtCameraDuration : 0.25f;
                     Debug.Log("Requested delay: " + delayDuration);
                     ModeState.setAgentOnPathAfterDelayRoutine = StartCoroutine(NavMeshUtils.SetAgentOnPathAfterDelay(thisAgent, Utils.GeometryUtils.GetNearestPointOnNavMesh(thisAgent.transform.position, thisAgent.height / 2), guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex], delayDuration, true, showDebugLines));
                 }
@@ -263,8 +263,8 @@ public class FollowGuidedTour : MonoBehaviour
                 isPausingAtCamera = false;
             }
 
-            // only update the vector if we're not pausing at a camera
-            if (!isPausingAtCamera && !ModeState.isGuidedTourPaused)
+            // only update the vector if we're not pausing at a camera, or paused, and we're moving
+            if (!isPausingAtCamera && !ModeState.isGuidedTourPaused && thisAgent.velocity != Vector3.zero)
             {
                 // store the current camera destination
                 currentGuidedTourDestinationCamera = guidedTourObjects[currentGuidedTourDestinationIndex].GetComponent<Camera>();
@@ -329,17 +329,18 @@ public class FollowGuidedTour : MonoBehaviour
                 Vector3 currentControllerDirection = new Vector3(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerCameraForward.x, 0, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerCameraForward.z);
                 // determine the target controller and camera directions
                 Vector3 targetControllerDirection = new Vector3(currentGuidedTourVector.x, 0, currentGuidedTourVector.z);
+                // slerp between the current and target directions
+                Vector3 controllerSlerpForward = Vector3.Slerp(currentControllerDirection, targetControllerDirection, Time.deltaTime * guidedTourRotationSpeed);
+                // apply the slerp
+                ManageFPSControllers.FPSControllerGlobals.activeFPSController.GetComponent<CharacterController>().transform.forward = controllerSlerpForward;
 
-                Vector3 currentCameraDirection = ManageFPSControllers.FPSControllerGlobals.activeFPSControllerCameraForward;
-                Vector3 targetCameraDirection = currentGuidedTourVector;
-
-                // adjust the controller direction with slerp
-                Vector3 slerpControllerForward = Vector3.Slerp(currentControllerDirection, targetControllerDirection, Time.deltaTime * guidedTourRotationSpeed);
-                ManageFPSControllers.FPSControllerGlobals.activeFPSController.GetComponent<CharacterController>().transform.forward = slerpControllerForward;
-
-                // adjust the camera direction with slerp
-                Vector3 cameraSlerpForward = Vector3.Slerp(currentCameraDirection, targetCameraDirection, Time.deltaTime * guidedTourRotationSpeed);
-                ManageFPSControllers.FPSControllerGlobals.activeFPSControllerCamera.transform.forward = cameraSlerpForward;
+                // get the current and target camera rotations
+                Quaternion currentCameraRotation = Quaternion.LookRotation(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerCameraForward);
+                Quaternion targetCameraRotation = Quaternion.LookRotation(currentGuidedTourVector);
+                // slerp between the current and target rotations
+                Quaternion slerpedRotation = Quaternion.Slerp(currentCameraRotation, targetCameraRotation, Time.deltaTime * guidedTourRotationSpeed);
+                // apply the slerp
+                ManageFPSControllers.FPSControllerGlobals.activeFPSControllerCamera.transform.rotation = slerpedRotation;
 
                 // reset the FPSController mouse to avoid incorrect rotation due to interference
                 ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.GetComponent<FirstPersonController>().MouseReset();
@@ -475,6 +476,7 @@ public class FollowGuidedTour : MonoBehaviour
     public static void IncrementGuidedTourIndex()
     {
         currentGuidedTourDestinationIndex = (currentGuidedTourDestinationIndex + 1) % Instance.guidedTourObjects.Length;
+        Utils.DebugUtils.DebugLog("Incrementing destination index. New destination: " + Instance.guidedTourObjects[currentGuidedTourDestinationIndex].name);
     }
 
     public static void IncrementGuidedTourIndexAndSetAgentOnPath()
@@ -487,6 +489,7 @@ public class FollowGuidedTour : MonoBehaviour
     public static void DecrementGuidedTourIndex()
     {
         currentGuidedTourDestinationIndex = (currentGuidedTourDestinationIndex + Instance.guidedTourObjects.Length - 1) % Instance.guidedTourObjects.Length;
+        Utils.DebugUtils.DebugLog("Decrementing destination index. New destination: " + Instance.guidedTourObjects[currentGuidedTourDestinationIndex].name);
     }
 
     public static void DecrementGuidedTourIndexAndSetAgentOnPath()
