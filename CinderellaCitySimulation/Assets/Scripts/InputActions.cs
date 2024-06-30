@@ -18,9 +18,13 @@ public class InputActions : MonoBehaviour
     private Quaternion m_CharacterTargetRot;
     private Quaternion m_CameraTargetRot;
 
+    // allows start/stop of guided tour from controller
+    // for installations like Historic Englewood, this should be false
+    // but for other customers, this can be true
     private readonly bool doAllowStartStopGuidedTour = false;
 
     // TODO / coming soon
+    // pause menu interface only supports mouse/keyboard
     public void Pause()
     {
         Debug.Log("Pause invoked.");
@@ -76,8 +80,6 @@ public class InputActions : MonoBehaviour
         GameObject historicCamerasContainer = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords, true)[0];
         ModeState.areHistoricPhotosRequestedVisible = !ModeState.areHistoricPhotosRequestedVisible;
         ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(historicCamerasContainer, ModeState.areHistoricPhotosRequestedVisible, false);
-
-        Debug.Log("Toggle photos called! From " + this.gameObject);
     }
 
     public void ToggleRun()
@@ -95,7 +97,6 @@ public class InputActions : MonoBehaviour
     {
         GameObject peopleContainer = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.peopleObjectKeywords, true)[0];
         peopleContainer.SetActive(!peopleContainer.activeInHierarchy);
-        Debug.Log("Toggle people called! From " + this.gameObject);
     }
 
     public void InvertYAxis()
