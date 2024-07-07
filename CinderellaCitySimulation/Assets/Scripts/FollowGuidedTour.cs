@@ -12,8 +12,9 @@ using UnityStandardAssets.Characters.FirstPerson;
 
 public class FollowGuidedTour : MonoBehaviour
 {
-    // this script needs to be a singleton
-    public static FollowGuidedTour Instance { get; private set; }
+    // the two instances of this script need to be held in a dictionary
+    // then accessed by scene name, to avoid "crossing the wires" between singleton eras
+    public static Dictionary<string, FollowGuidedTour> Instances { get; private set; } = new Dictionary<string, FollowGuidedTour>();
 
     readonly string partialPathCameraName60s70s = "Blue Mall 1";
     readonly string partialPathCameraName80s90s = "Blue Mall deep";
@@ -41,14 +42,28 @@ public class FollowGuidedTour : MonoBehaviour
 
     // DEBUGGING
     readonly bool shuffleGuidedTourDestinations = true;
-    private static int currentGuidedTourDestinationIndex = 0; // optionally start at a specific index
+    private int currentGuidedTourDestinationIndex = 0; // optionally start at a specific index
     readonly bool useOverrideDestinations = false; // if true, use a special list for tour objects
     readonly private bool showDebugLines = true; // if true, show path as debug lines
     readonly bool doTestAllPaths = false; // if true, attempt to find paths between all destinations
 
     private void Awake()
     {
-        Instance = this;
+        // fill out the Instances dictionary, so each scene has its own instance
+        string thisSceneName = gameObject.scene.name;
+        // check if an instance already exists for this scene
+        if (Instances.ContainsKey(thisSceneName))
+        {
+            // if an instance already exists, destroy this one
+            Destroy(gameObject);
+        }
+        else
+        {
+            // if no instance exists for this scene, add this one to the dictionary
+            Instances.Add(thisSceneName, this);
+            DontDestroyOnLoad(gameObject);
+        }
+
         thisAgent = GetComponent<NavMeshAgent>();
     }
 
@@ -450,7 +465,7 @@ public class FollowGuidedTour : MonoBehaviour
         ModeState.isGuidedTourActive = true;
 
         // automatically switch to the next era after some time
-        ModeState.toggleToNextEraCoroutine = Instance.StartCoroutine(ToggleSceneAndUI.ToggleToNextEraAfterDelay());
+        ModeState.toggleToNextEraCoroutine = Instances[SceneManager.GetActiveScene().name].StartCoroutine(ToggleSceneAndUI.ToggleToNextEraAfterDelay());
     }
 
     public static void EndGuidedTourMode()
@@ -464,38 +479,38 @@ public class FollowGuidedTour : MonoBehaviour
         // if there was a restart coroutine active, stop it
         if (ModeState.restartGuidedTourCoroutine != null)
         {
-            Instance.StopCoroutine(ModeState.restartGuidedTourCoroutine);
+            Instances[SceneManager.GetActiveScene().name].StopCoroutine(ModeState.restartGuidedTourCoroutine);
         }
         if (ModeState.toggleToNextEraCoroutine != null)
         {
-            Instance.StopCoroutine(ModeState.toggleToNextEraCoroutine);
+            Instances[SceneManager.GetActiveScene().name].StopCoroutine(ModeState.toggleToNextEraCoroutine);
         }
     }
 
     // increment or start over depending on the current index
     public static void IncrementGuidedTourIndex()
     {
-        currentGuidedTourDestinationIndex = (currentGuidedTourDestinationIndex + 1) % Instance.guidedTourObjects.Length;
-        Utils.DebugUtils.DebugLog("Incrementing destination index. New destination: " + Instance.guidedTourObjects[currentGuidedTourDestinationIndex].name);
+        Instances[SceneManager.GetActiveScene().name].currentGuidedTourDestinationIndex = (Instances[SceneManager.GetActiveScene().name].currentGuidedTourDestinationIndex + 1) % Instances[SceneManager.GetActiveScene().name].guidedTourObjects.Length;
+        Utils.DebugUtils.DebugLog("Incrementing destination index. New destination: " + Instances[SceneManager.GetActiveScene().name].guidedTourObjects[Instances[SceneManager.GetActiveScene().name].currentGuidedTourDestinationIndex].name);
     }
 
     public static void IncrementGuidedTourIndexAndSetAgentOnPath()
     {
         IncrementGuidedTourIndex();
-        NavMeshUtils.SetAgentOnPath(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent, Utils.GeometryUtils.GetNearestPointOnNavMesh(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.transform.position, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.height / 2), Instance.guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex]);
+        NavMeshUtils.SetAgentOnPath(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent, Utils.GeometryUtils.GetNearestPointOnNavMesh(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.transform.position, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.height / 2), Instances[SceneManager.GetActiveScene().name].guidedTourFinalNavMeshDestinations[Instances[SceneManager.GetActiveScene().name].currentGuidedTourDestinationIndex]);
     }
 
     // decrement or go to the end depending on the current index
     public static void DecrementGuidedTourIndex()
     {
-        currentGuidedTourDestinationIndex = (currentGuidedTourDestinationIndex + Instance.guidedTourObjects.Length - 1) % Instance.guidedTourObjects.Length;
-        Utils.DebugUtils.DebugLog("Decrementing destination index. New destination: " + Instance.guidedTourObjects[currentGuidedTourDestinationIndex].name);
+        Instances[SceneManager.GetActiveScene().name].currentGuidedTourDestinationIndex = (Instances[SceneManager.GetActiveScene().name].currentGuidedTourDestinationIndex + Instances[SceneManager.GetActiveScene().name].guidedTourObjects.Length - 1) % Instances[SceneManager.GetActiveScene().name].guidedTourObjects.Length;
+        Utils.DebugUtils.DebugLog("Decrementing destination index. New destination: " + Instances[SceneManager.GetActiveScene().name].guidedTourObjects[Instances[SceneManager.GetActiveScene().name].currentGuidedTourDestinationIndex].name);
     }
 
     public static void DecrementGuidedTourIndexAndSetAgentOnPath()
     {
         DecrementGuidedTourIndex();
-        NavMeshUtils.SetAgentOnPath(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent, Utils.GeometryUtils.GetNearestPointOnNavMesh(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.transform.position, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.height / 2), Instance.guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex]);
+        NavMeshUtils.SetAgentOnPath(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent, Utils.GeometryUtils.GetNearestPointOnNavMesh(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.transform.position, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.height / 2), Instances[SceneManager.GetActiveScene().name].guidedTourFinalNavMeshDestinations[Instances[SceneManager.GetActiveScene().name].currentGuidedTourDestinationIndex]);
     }
 
     // when guided tour is active, this checks if the user is trying to override control
