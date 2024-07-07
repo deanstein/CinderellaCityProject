@@ -207,7 +207,7 @@ public class FollowGuidedTour : MonoBehaviour
                     Debug.Log("FollowGuidedTour: Pausing at camera OR starting/resuming, setting path after delay. Next destination: " + guidedTourObjects[currentGuidedTourDestinationIndex].name + " at index: " + currentGuidedTourDestinationIndex);
                     // the exact delay depends on whether we're atually pausing at a camera
                     // or merely starting fresh or resuming after time-traveling
-                    float delayDuration = isPausingAtCamera && !ModeState.isGuidedTourPaused ? pauseAtCameraDuration : 0.25f;
+                    float delayDuration = isPausingAtCamera && !ModeState.isGuidedTourPaused && ModeState.isGuidedTourActive ? pauseAtCameraDuration : 0.25f;
                     Debug.Log("Requested delay: " + delayDuration);
                     ModeState.setAgentOnPathAfterDelayRoutine = StartCoroutine(NavMeshUtils.SetAgentOnPathAfterDelay(thisAgent, Utils.GeometryUtils.GetNearestPointOnNavMesh(thisAgent.transform.position, thisAgent.height / 2), guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex], delayDuration, true, showDebugLines));
                 }
