@@ -264,7 +264,7 @@ public class FollowGuidedTour : MonoBehaviour
             }
 
             // only update the vector if we're not pausing at a camera, or paused, and we're moving
-            if (!isPausingAtCamera && !ModeState.isGuidedTourPaused && thisAgent.velocity != Vector3.zero)
+            if (!isPausingAtCamera && !ModeState.isGuidedTourPaused && thisAgent.velocity.sqrMagnitude > 0.1f)
             {
                 // store the current camera destination
                 currentGuidedTourDestinationCamera = guidedTourObjects[currentGuidedTourDestinationIndex].GetComponent<Camera>();
