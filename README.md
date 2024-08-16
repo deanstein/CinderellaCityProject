@@ -10,11 +10,11 @@ The real [Cinderella City Mall](https://www.cinderellacityproject.com/history) e
 - [Project website](https://www.cinderellacityproject.com)
 - [Latest updates](https://www.cinderellacityproject.com/#latest-updates)
 - [Press coverage](https://www.cinderellacityproject.com/#press-coverage)
-- [Sign the petition to save the last remaining Cinderella City building from demolition](https://www.change.org/p/save-the-englewood-civic-center-from-demolition-by-adapting-it-into-the-new-heart-of-the-neighborhood)
 - [Read about the project and donate on Ko-Fi](https://www.ko-fi.com/cinderellacityproject)
 - [See historic photos and the latest simulation progress on Instagram](https://instagram.com/cinderellacityproject) or [Facebook](https://www.facebook.com/cinderellacityproject)
 - [See videos on YouTube](https://www.youtube.com/c/TheCinderellaCityProject)
 - [Try the Cinderella City Simulation (work in progress)](https://github.com/deanstein/CinderellaCityProject#try-the-cinderella-city-simulation-work-in-progress)
+- [Sign the petition to save the last remaining Cinderella City building from demolition](https://www.change.org/p/save-the-englewood-civic-center-from-demolition-by-adapting-it-into-the-new-heart-of-the-neighborhood)
 
 
 # Cinderella City Simulation
@@ -33,15 +33,8 @@ When released, the Cinderella City Simulation will support a variety of platform
 # Try the Cinderella City Simulation (work in progress)
 
 - [Download the simulation](https://www.cinderellacityproject.com/simulation#download)
-- [Learn about the simulation controls](https://www.cinderellacityproject.com/simulation#controls)
-
-# Known Issues
-
-The simulation is still under development, so some issues are known and will be fixed in future updates:
-
-- The audio when walking outside the mall is too short and loops too quickly
-- Jumping or using anti-gravity mode while walking outside the mall will play the interior audio unexpectedly
-- Large areas of both time periods are unfinished.
+- [Learn how to control the simulation](https://www.cinderellacityproject.com/simulation#controls)
+- [See known issues](https://www.cinderellacityproject.com/simulation#known-issues)
 
 
 # Unity Project Structure + Development Guide
