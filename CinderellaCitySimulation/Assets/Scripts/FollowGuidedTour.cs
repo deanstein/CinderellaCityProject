@@ -39,6 +39,7 @@ public class FollowGuidedTour : MonoBehaviour
     public static bool isGuidedTourTimeTravelRequested = false; // set to true briefly to allow IEnumerator time-travel transition
     private bool isResumeRequiredAfterOverride = false;
     private int partialPathCameraIndex = -1; // index of the camera at the name defined below
+    private float stationaryTime = 0f; // amount of time agent has been stationary
 
     // DEBUGGING
     readonly bool shuffleGuidedTourDestinations = true;
@@ -215,14 +216,14 @@ public class FollowGuidedTour : MonoBehaviour
                 }
 
                 // set the agent on a new path after a pause
-                if ((thisAgent.velocity == Vector3.zero && !isPausingAtCamera) || 
+                if ((thisAgent.velocity == Vector3.zero && !Instances[SceneManager.GetActiveScene().name].isPausingAtCamera) || 
                     (thisAgent.velocity == Vector3.zero && ModeState.setAgentOnPathAfterDelayRoutine == null && !thisAgent.hasPath) || 
                     (thisAgent.velocity == Vector3.zero && ModeState.setAgentOnPathAfterDelayRoutine == null && thisAgent.remainingDistance <= thisAgent.stoppingDistance))
                 {
                     Debug.Log("FollowGuidedTour: Pausing at camera OR starting/resuming, setting path after delay. Next destination: " + guidedTourObjects[currentGuidedTourDestinationIndex].name + " at index: " + currentGuidedTourDestinationIndex);
                     // the exact delay depends on whether we're atually pausing at a camera
                     // or merely starting fresh or resuming after time-traveling
-                    float delayDuration = isPausingAtCamera && !ModeState.isGuidedTourPaused && ModeState.isGuidedTourActive ? pauseAtCameraDuration : 0.25f;
+                    float delayDuration = Instances[SceneManager.GetActiveScene().name].isPausingAtCamera && !ModeState.isGuidedTourPaused && ModeState.isGuidedTourActive ? pauseAtCameraDuration : 0.25f;
                     Debug.Log("Requested delay: " + delayDuration);
                     ModeState.setAgentOnPathAfterDelayRoutine = StartCoroutine(NavMeshUtils.SetAgentOnPathAfterDelay(thisAgent, Utils.GeometryUtils.GetNearestPointOnNavMesh(thisAgent.transform.position, thisAgent.height / 2), guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex], delayDuration, true, showDebugLines));
                 }
@@ -271,15 +272,15 @@ public class FollowGuidedTour : MonoBehaviour
             // start pausing at the camera when we're less than the stopping distance away
             if (!thisAgent.pathPending && thisAgent.remainingDistance < 0.1f)
             {
-                isPausingAtCamera = true;
+                Instances[SceneManager.GetActiveScene().name].isPausingAtCamera = true;
             }
             else
             {
-                isPausingAtCamera = false;
+                Instances[SceneManager.GetActiveScene().name].isPausingAtCamera = false;
             }
 
             // only update the vector if we're not pausing at a camera, or paused, and we're moving
-            if (!isPausingAtCamera && !ModeState.isGuidedTourPaused && thisAgent.velocity.sqrMagnitude > 0.1f)
+            if (!Instances[SceneManager.GetActiveScene().name].isPausingAtCamera && !ModeState.isGuidedTourPaused && thisAgent.velocity.sqrMagnitude > 0.1f)
             {
                 // store the current camera destination
                 currentGuidedTourDestinationCamera = guidedTourObjects[currentGuidedTourDestinationIndex].GetComponent<Camera>();
@@ -373,6 +374,26 @@ public class FollowGuidedTour : MonoBehaviour
 
                 // indicate to the next scene that it needs to recalc its cameras and paths
                 SceneGlobals.isGuidedTourTimeTraveling = true;
+            }
+
+            // sometimes, things go wrong and the guided tour will hang
+            // so check if the agent has not moved in more than the delay period
+            // and force it to go to the next destination
+            // Check if the FPSController's velocity is approximately zero
+            if (thisAgent.velocity == Vector3.zero)
+            {
+                stationaryTime += Time.deltaTime;
+            }
+            else
+            {
+                stationaryTime = 0f;
+            }
+
+            if (stationaryTime >= pauseAtCameraDuration + 1)
+            {
+                Debug.LogWarning("FPSAgent has been stationary for " + (pauseAtCameraDuration + 1) + " seconds or more. Forcing next destination.");
+                IncrementGuidedTourIndexAndSetAgentOnPath();
+                stationaryTime = 0f;
             }
         }
 
