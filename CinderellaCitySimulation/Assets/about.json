@@ -1,6 +1,6 @@
 {
   "VersionHistory": {
-    "0.8.0.202406": {
+    "0.8.0.202407": {
       "Overview": "v0.8.0 adds a guided tour mode and Xbox controller support, introduces more historic photographs in both eras, prevents FPC and NPCs from pathfinding on non-walkable surfaces, and fixes user interface issues.",
       "Environment Updates": [
         "Added over a dozen new photos in both eras for guided tour points of interest",
@@ -13,7 +13,7 @@
         "Fixed an issue where NavMesh navigation was blocked on certain stairs"
       ],
       "UI Updates": [
-        "Added a GUIDED TOUR ACTIVE/PAUSED indicator to the HUD",
+        "Added a GUIDED TOUR ACTIVE / GUIDED TOUR PAUSED indicator to the HUD",
         "Added automatic build date to version",
         "Fixed an issue where the time period indicator could fail to align to the right edge of the screen"
       ],
