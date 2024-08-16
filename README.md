@@ -1,45 +1,21 @@
 ![Main Preview](README_intro.png)
 
 # The Cinderella City Project
-The Cinderella City Project is a digital reconstruction of a historic shopping center for a virtual reality history experience. 
+[The Cinderella City Project](https://www.cinderellacityproject.com/) is a digital reconstruction of a historic shopping center for a virtual reality history experience. 
 
-The real Cinderella City Mall existed in Englewood, Colorado from 1968 to 1998.
-
-## Project Updates
-- [The Cinderella City exhibit at the Historic Englewood Museum is now open](https://www.cinderellacityproject.com/exhibit) (2024-06-22)
-- [See the latest progress: Once Upon a Time at Cinderella City v0.7 overview](https://youtu.be/GUgowEJG9HY) (2023-07-29)
-- [Watch the latest presentation on Cinderella City's history and enjoy a walkthrough of the newest simulation version](https://youtu.be/va9xoslXjQo) (2022-04-26)
-- [See all simulation releases and version changes](https://github.com/deanstein/CinderellaCityProject/releases)
+The real [Cinderella City Mall](https://www.cinderellacityproject.com/history) existed in Englewood, Colorado from 1968 to 1998. [Learn more](https://www.cinderellacityproject.com).
 
 ## Quick Links
 
+- [Project website](https://www.cinderellacityproject.com)
+- [Latest updates](https://www.cinderellacityproject.com/#latest-updates)
+- [Press coverage](https://www.cinderellacityproject.com/#press-coverage)
 - [Sign the petition to save the last remaining Cinderella City building from demolition](https://www.change.org/p/save-the-englewood-civic-center-from-demolition-by-adapting-it-into-the-new-heart-of-the-neighborhood)
 - [Read about the project and donate on Ko-Fi](https://www.ko-fi.com/cinderellacityproject)
 - [See historic photos and the latest simulation progress on Instagram](https://instagram.com/cinderellacityproject) or [Facebook](https://www.facebook.com/cinderellacityproject)
 - [See videos on YouTube](https://www.youtube.com/c/TheCinderellaCityProject)
 - [Try the Cinderella City Simulation (work in progress)](https://github.com/deanstein/CinderellaCityProject#try-the-cinderella-city-simulation-work-in-progress)
 
-## Press Coverage
-**Recent** 
-
-- [Once Upon a Time at Cinderella City: Project Update](https://www.westword.com/news/cinderella-city-famous-colorado-mall-virtual-online-project-update-13955248) (*Westword*, 2022-04-26)
-
-- [Fight to Save the Final Remains of Cinderella City](https://www.westword.com/news/englewood-citycenter-development-and-fight-to-save-cinderella-citys-final-remains-11853344) (*Westword*, 2021-02-19)
-
-- [One Denverite is Creating a Virtual tour of the Iconic Cinderella City Mall](https://www.5280.com/2020/04/one-denverite-is-creating-a-virtual-tour-of-the-iconic-cinderella-city-mall/) (*5280*, 2020-04-23)
-
-- [Cinderella City Virtual Video Game Project Update](https://www.westword.com/news/cinderella-city-virtual-video-game-project-update-2020-11516741) (*Westword*, 2020-01-28)
-
-**Archive**
-
-- [A Giant Fairytale Mall in Colorado Is Being Brought Back to Virtual Life](http://veryfamousmagazine.com/fairytale-mall-colorado-virtual-life/) (*Very Famous Magazine*, 2018-11-01)
-
-- [Cinderella City Vintage Photos Helping to Turn famed Mall Into video Game](https://www.westword.com/news/cinderella-city-vintage-photos-helping-to-turn-famed-mall-into-video-game-10303551) (*Westword*, 2018-06-28)
-
-- [Bringing Cinderella City Back to virtual Life for its 50th Anniversary](https://www.westword.com/news/bringing-cinderella-city-back-to-virtual-life-for-its-50th-anniversary-10069280) (*Westword*, 2018-03-16)
-
-- [Cinderella City Project Video Preview new Effects, Music by Dead Mall](https://www.westword.com/news/cinderella-city-project-video-preview-new-effects-music-by-dead-mall-10983679) (*Westword*, 2018-01-16)
- 
 
 # Cinderella City Simulation
 
@@ -56,48 +32,8 @@ When released, the Cinderella City Simulation will support a variety of platform
 
 # Try the Cinderella City Simulation (work in progress)
 
-The Cinderella City Simulation is under development, but in-progress builds are available for intrepid mall fans to try out.
-
-The simulation is currently limited to machines running Microsoft Windows, but other platforms will be supported in the future.
-
-The latest ready-to-play builds from the development branch can be found at the top of the **[Releases page](https://github.com/deanstein/CinderellaCityProject/releases)**.
-
-- Click "Assets" below the release notes at the link above
-- Download the .7z file ending in "_Win" 
-- [Install 7-Zip first](https://www.7-zip.org/a/7z2201-x64.exe) if you don't have it
-- Extract the .7z file
-	- Right-click the .7z file, 7-Zip -> Extract To "CinderellaCityProject..."
-- Run "Cinderella City Simulation.exe"
-- Optionally choose your desired resolution
-	- Recommended starting resolution: 1920x1080 or similar
-	- Higher resolutions may result in slower performance
-
-This is a work-in-progress, so these builds may exhibit bugs and unexpected behavior. 
-
-### Simulation Controls
-
-After the simulation loads, you'll find yourself at the Main Menu, where you can pick a time and place to start. Once you're in the simulation, here's how to navigate:
-
-- Keyboard (Windows)
-	- WASD to walk forward, left, right, and backward respectively
-		- Hold Shift to run
-	- Mouse to look around
-	- Space to jump
-	- Q and E to time-travel
-	- P to toggle the people on/off
-	- O to reset the people to their original positions
-	- G to enter/exit anti-gravity mode. While in anti-gravity mode:
-		- Hold R to rise/ascend
-		- Hold F to fall/descend
-		- Hit G again to toggle gravity on
-	- X to take a screenshot (stored at users/AppData/The Cinderella City Project/Cinderella City Simulation/Screenshots)
-	- 1, 2, 3, 4 to cycle between special post-processing camera modes. Tap the number again to return to the default.
-	- ESC to go to the Pause Menu
-		- You can also time-travel from here, with a visual showing what the other eras look like at this point in space
-	- M to go to the Main Menu
-	- V to go to the Visualization Menu
-	- U to go to the Audio Menu
-
+- [Download the simulation](https://www.cinderellacityproject.com/simulation#download)
+- [Learn about the simulation controls](https://www.cinderellacityproject.com/simulation#controls)
 
 # Known Issues
 
