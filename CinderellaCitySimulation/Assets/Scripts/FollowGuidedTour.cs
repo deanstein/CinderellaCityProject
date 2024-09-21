@@ -41,7 +41,9 @@ public class FollowGuidedTour : MonoBehaviour
     private int partialPathCameraIndex = -1; // index of the camera at the name defined below
     private float stationaryTime = 0f; // amount of time agent has been stationary
 
+    //
     // DEBUGGING
+    //
     readonly bool shuffleGuidedTourDestinations = true;
     private int currentGuidedTourDestinationIndex = 0; // optionally start at a specific index
     readonly bool useOverrideDestinations = false; // if true, use a special list for tour objects
@@ -198,8 +200,10 @@ public class FollowGuidedTour : MonoBehaviour
             {
                 Vector3 nearestHorizontalPoint = Utils.GeometryUtils.GetNearestNavMeshPointHorizontally(thisAgent);
 
-                // use warp to ensure the agent is placed correctly given the point
-                ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.Warp(nearestHorizontalPoint);
+                // move the FPSController and the agent to the closest point
+                ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.position = new Vector3(nearestHorizontalPoint.x, nearestHorizontalPoint.y + (thisAgent.height / 2), nearestHorizontalPoint.z);
+                // use warp for the agent
+                thisAgent.Warp(nearestHorizontalPoint);
             }
 
             // we've arrived, new path requested
@@ -334,7 +338,6 @@ public class FollowGuidedTour : MonoBehaviour
                     currentGuidedTourVector = new Vector3(thisAgent.velocity.x, 0, thisAgent.velocity.z);
                 }
             }
-
 
             // the current guided tour vector is 
             // either the path vector or the camera direction if on last leg of path
