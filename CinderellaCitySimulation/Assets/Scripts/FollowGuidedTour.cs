@@ -201,7 +201,7 @@ public class FollowGuidedTour : MonoBehaviour
                 Vector3 nearestHorizontalPoint = Utils.GeometryUtils.GetNearestNavMeshPointHorizontally(thisAgent);
 
                 // move the FPSController and the agent to the closest point
-                ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.position = new Vector3(nearestHorizontalPoint.x, nearestHorizontalPoint.y + (thisAgent.height / 2), nearestHorizontalPoint.z);
+                ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.position = new Vector3(nearestHorizontalPoint.x, ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.position.y, nearestHorizontalPoint.z);
                 // use warp for the agent
                 thisAgent.Warp(nearestHorizontalPoint);
             }
