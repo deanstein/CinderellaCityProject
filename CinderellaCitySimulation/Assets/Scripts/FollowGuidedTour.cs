@@ -220,14 +220,14 @@ public class FollowGuidedTour : MonoBehaviour
                 }
 
                 // set the agent on a new path after a pause
-                if ((thisAgent.velocity == Vector3.zero && !Instances[SceneManager.GetActiveScene().name].isPausingAtCamera) || 
+                if ((thisAgent.velocity == Vector3.zero && !Instances[SceneManager.GetActiveScene().name].isPausingAtCamera && ModeState.setAgentOnPathAfterDelayRoutine == null) || 
                     (thisAgent.velocity == Vector3.zero && ModeState.setAgentOnPathAfterDelayRoutine == null && !thisAgent.hasPath) || 
                     (thisAgent.velocity == Vector3.zero && ModeState.setAgentOnPathAfterDelayRoutine == null && thisAgent.remainingDistance <= thisAgent.stoppingDistance))
                 {
                     Debug.Log("FollowGuidedTour: Pausing at camera OR starting/resuming, setting path after delay. Next destination: " + guidedTourObjects[currentGuidedTourDestinationIndex].name + " at index: " + currentGuidedTourDestinationIndex);
                     // the exact delay depends on whether we're atually pausing at a camera
                     // or merely starting fresh or resuming after time-traveling
-                    float delayDuration = Instances[SceneManager.GetActiveScene().name].isPausingAtCamera && !ModeState.isGuidedTourPaused && ModeState.isGuidedTourActive ? pauseAtCameraDuration : 0.25f;
+                    float delayDuration = (thisAgent.remainingDistance < lookToCameraAtRemainingDistance && thisAgent.remainingDistance > 0 || areHistoricPhotosVisible == true) && !ModeState.isGuidedTourPaused && ModeState.isGuidedTourActive ? pauseAtCameraDuration : 0.25f;
                     Debug.Log("Requested delay: " + delayDuration);
                     ModeState.setAgentOnPathAfterDelayRoutine = StartCoroutine(NavMeshUtils.SetAgentOnPathAfterDelay(thisAgent, Utils.GeometryUtils.GetNearestPointOnNavMesh(thisAgent.transform.position, thisAgent.height / 2), guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex], delayDuration, true, showDebugLines));
                 }
