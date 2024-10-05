@@ -202,21 +202,22 @@ public class FollowGuidedTour : MonoBehaviour
             {
                 Debug.LogWarning("Agent was found not on NavMesh. Relocating...");
                 Vector3 nearestHorizontalPoint = Utils.GeometryUtils.GetNearestNavMeshPointHorizontally(thisAgent);
+                Vector3 nearestHorizontalNavMeshPointAtControllerHeight = new Vector3(nearestHorizontalPoint.x, ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.position.y, nearestHorizontalPoint.z);
 
                 // move the FPSController and the agent to the closest point
-                ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.position = new Vector3(nearestHorizontalPoint.x, ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.position.y, nearestHorizontalPoint.z);
+                ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.position = nearestHorizontalNavMeshPointAtControllerHeight;
                 // use warp for the agent
-                thisAgent.Warp(nearestHorizontalPoint);
+                thisAgent.Warp(nearestHorizontalNavMeshPointAtControllerHeight);
 
-                NavMeshUtils.SetAgentOnPath(thisAgent, Utils.GeometryUtils.GetNearestPointOnNavMesh(thisAgent.transform.position, thisAgent.height / 2), guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex]);
+                NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex], true);
             } else
             {
-                NavMeshUtils.SetAgentOnPath(thisAgent, Utils.GeometryUtils.GetNearestPointOnNavMesh(thisAgent.transform.position, thisAgent.height / 2), guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex]);
+                NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex], true);
             }
 
             
 
-            // if the path is partial, try setting it again in a few moments
+            // if the path is partial, trt setting it again in a few moments
             // this could due to the path being very long
             if ((thisAgent.pathStatus == NavMeshPathStatus.PathPartial || 
                 thisAgent.pathStatus == NavMeshPathStatus.PathInvalid))
@@ -231,21 +232,21 @@ public class FollowGuidedTour : MonoBehaviour
                 {
                     // check that the temporary path to the partialPath camera itself is valid
                     NavMeshPath temporaryPath = new NavMeshPath();
-                    bool temporaryPathValid = NavMesh.CalculatePath(Utils.GeometryUtils.GetNearestPointOnNavMesh(thisAgent.transform.position, thisAgent.height / 2), guidedTourFinalNavMeshDestinations[partialPathCameraIndex], NavMesh.AllAreas, temporaryPath);
+                    bool temporaryPathValid = NavMesh.CalculatePath(thisAgent.transform.position, guidedTourFinalNavMeshDestinations[partialPathCameraIndex], NavMesh.AllAreas, temporaryPath);
 
                     // if we're far enough away from the partial camera,
                     // and if the path to the partial path camera itself is valid,
                     // keep trying
-                    if (Vector3.Distance(Utils.GeometryUtils.GetNearestPointOnNavMesh(thisAgent.transform.position, thisAgent.height / 2), guidedTourFinalNavMeshDestinations[partialPathCameraIndex]) > partialPathCameraClosestDistance && 
+                    if (Vector3.Distance(thisAgent.transform.position, guidedTourFinalNavMeshDestinations[partialPathCameraIndex]) > partialPathCameraClosestDistance && 
                         temporaryPathValid && temporaryPath.status == NavMeshPathStatus.PathComplete)
                     {
                         Debug.LogWarning("FollowGuidedTour: Path is " + thisAgent.pathStatus + ", will try to repath in a few moments. Current destination: " + guidedTourObjects[currentGuidedTourDestinationIndex].name + " at index: " + currentGuidedTourDestinationIndex);
 
                         // set the immediate destination to the alternate camera in case of partial path
-                        NavMeshUtils.SetAgentOnPath(thisAgent, Utils.GeometryUtils.GetNearestPointOnNavMesh(thisAgent.transform.position, thisAgent.height / 2), guidedTourFinalNavMeshDestinations[partialPathCameraIndex]);
+                        NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, guidedTourFinalNavMeshDestinations[partialPathCameraIndex]);
 
                         // try setting the agent to the original index in a few moments
-                        ModeState.setAgentOnPathAfterDelayRoutine = StartCoroutine(NavMeshUtils.SetAgentOnPathAfterDelay(thisAgent, Utils.GeometryUtils.GetNearestPointOnNavMesh(thisAgent.transform.position, thisAgent.height / 2), guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex], 10, false, showDebugLines));
+                        ModeState.setAgentOnPathAfterDelayRoutine = StartCoroutine(NavMeshUtils.SetAgentOnPathAfterDelay(thisAgent, thisAgent.transform.position, guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex], 10, false, showDebugLines));
                     } else
                     // otherwise, this path simply cannot be used as it continues to be partial
                     // so go to the next index
