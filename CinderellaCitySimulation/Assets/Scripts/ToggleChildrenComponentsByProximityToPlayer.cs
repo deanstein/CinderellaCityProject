@@ -162,7 +162,7 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
                 // get the screen space position of this object
                 screenSpacePoint = ManageFPSControllers.FPSControllerGlobals.activeFPSControllerCamera.WorldToViewportPoint(distributedChildrenPositions[i]);
 
-                isInFrame = screenSpacePoint.z > -1 && screenSpacePoint.x > -1 && screenSpacePoint.x < 2 && screenSpacePoint.y > -1 && screenSpacePoint.y < 2;
+                isInFrame = screenSpacePoint.z > minScreenSpacePoint && screenSpacePoint.x > minScreenSpacePoint && screenSpacePoint.x < maxScreenSpacePoint && screenSpacePoint.y > minScreenSpacePoint && screenSpacePoint.y < maxScreenSpacePoint;
             }
             else
             {
