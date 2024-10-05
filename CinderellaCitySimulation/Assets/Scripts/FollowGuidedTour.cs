@@ -44,10 +44,10 @@ public class FollowGuidedTour : MonoBehaviour
     //
     // DEBUGGING
     //
-    readonly bool shuffleGuidedTourDestinations = false;
+    readonly bool shuffleGuidedTourDestinations = true;
     private int currentGuidedTourDestinationIndex = 0; // optionally start at a specific index
     readonly bool useOverrideDestinations = false; // if true, use a special list for tour objects
-    readonly private bool showDebugLines = true; // if true, show path as debug lines
+    readonly private bool showDebugLines = false; // if true, show path as debug lines
     readonly bool doTestAllPaths = false; // if true, attempt to find paths between all destinations
 
     private void Awake()
@@ -211,11 +211,10 @@ public class FollowGuidedTour : MonoBehaviour
 
                 NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex], true);
             } else
+            // otherwise, ensure the agent has a path on the nav mesh at all times
             {
                 NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex], true);
-            }
-
-            
+            }  
 
             // if the path is partial, trt setting it again in a few moments
             // this could due to the path being very long
