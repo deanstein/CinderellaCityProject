@@ -1,5 +1,16 @@
 {
   "VersionHistory": {
+    "0.8.1.202410": {
+      "Overview": "v0.8.1 fixes issues with the new Guided Tour functionality.",
+      "Environment Updates": [
+        "Removed two mall music audio tracks and added one to the 1987-1997 era."
+      ],
+      "UI Updates": [],
+      "Code Updates": [
+        "Simplified and improved Guided Tour pause, resume, and reset position logic.",
+        "Removed random NPC avoidance priority code as it looked even more unnatural."
+      ]
+    },
     "0.8.0.202407": {
       "Overview": "v0.8.0 adds a guided tour mode and Xbox controller support, introduces more historic photographs in both eras, prevents FPC and NPCs from pathfinding on non-walkable surfaces, and fixes user interface issues.",
       "Environment Updates": [
