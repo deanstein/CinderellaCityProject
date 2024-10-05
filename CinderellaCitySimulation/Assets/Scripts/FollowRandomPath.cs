@@ -76,9 +76,6 @@ public class FollowRandomPath : MonoBehaviour
         initialDestination = Utils.GeometryUtils.GetRandomPointOnNavMeshFromPool(this.transform.position, NPCControllerGlobals.initialNPCPositionsArray, 0, NPCControllerGlobals.maxDestinationDistance, true);
 
         path = NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, initialDestination);
-
-        // give this agent a random priority, so when it encounters another, one wins
-        thisAgent.avoidancePriority = Random.Range(2, 99);
     }
 
     private void Update()
