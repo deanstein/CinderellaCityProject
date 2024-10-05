@@ -147,8 +147,6 @@ public class NavMeshUtils
 
         SetAgentOnPath(agent, startPosition, destination, drawDebugLines);
         agent.isStopped = false;
-        FollowGuidedTour.doIncrementIndex = true;
-        ModeState.setAgentOnPathAfterDelayRoutine = null;
     }
 }
 
