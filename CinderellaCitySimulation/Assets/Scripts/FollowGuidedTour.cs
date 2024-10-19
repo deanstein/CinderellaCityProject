@@ -19,12 +19,12 @@ public class FollowGuidedTour : MonoBehaviour
     readonly string partialPathCameraName60s70s = "Blue Mall 1";
     readonly string partialPathCameraName80s90s = "Blue Mall deep";
     readonly float pauseAtCameraDuration = 8f; // number of seconds to pause and look at a camera
-    readonly float pauseOnEnableDuration = 1f;
+    readonly float guidedTourRestartAfterSeconds = 4f; // seconds to wait before un-pausing
+
     readonly bool matchCameraForward = false; // player camera: match destination camera or simply look at it?
     readonly float lookToCameraAtRemainingDistance = 10.0f; // distance from end of path where FPC begins looking at camera
     readonly float adjustPosAwayFromCamera = 1.15f; // distance away from camera look vector so when looking at a camera, it's visible
     readonly public float guidedTourRotationSpeed = 0.4f;
-    readonly public int guidedTourRestartAfterSeconds = 5; // seconds to wait before un-pausing
     readonly public float partialPathCameraClosestDistance = 20; // get this close to the partial path camera before giving up
 
     private NavMeshAgent thisAgent;
@@ -39,7 +39,9 @@ public class FollowGuidedTour : MonoBehaviour
     public static bool isGuidedTourTimeTravelRequested = false; // set to true briefly to allow IEnumerator time-travel transition
     private bool isResumeRequiredAfterOverride = false;
     private int partialPathCameraIndex = -1; // index of the camera at the name defined below
-    private float stationaryTime = 0f; // amount of time agent has been stationary
+
+    float stationaryTimeActive = 0f;
+    float stationaryTimePaused = 0f;
 
     //
     // DEBUGGING
@@ -182,7 +184,9 @@ public class FollowGuidedTour : MonoBehaviour
         if (ModeState.isGuidedTourActive || ModeState.isGuidedTourPaused)
         {
             // restart the guided tour to ensure new pathfinding happens 
-            StartCoroutine(ToggleGuidedTourOnEnable());
+            ModeState.isGuidedTourActive = false;
+            ModeState.isGuidedTourPaused = true;
+501
 
             // only spend a certain amount of time in each era
             StopCoroutine(ModeState.toggleToNextEraCoroutine);
@@ -198,7 +202,7 @@ public class FollowGuidedTour : MonoBehaviour
             thisAgent.enabled)
         {
             // if the player is not on the navmesh, move it to the nearest point
-            if (!ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.isOnNavMesh)
+            if (!thisAgent.isOnNavMesh)
             {
                 Debug.LogWarning("Agent was found not on NavMesh. Relocating...");
                 Vector3 nearestHorizontalPoint = Utils.GeometryUtils.GetNearestNavMeshPointHorizontally(thisAgent);
@@ -209,11 +213,13 @@ public class FollowGuidedTour : MonoBehaviour
                 // use warp for the agent
                 thisAgent.Warp(nearestHorizontalNavMeshPointAtControllerHeight);
 
-                NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex], true);
-            } else
-            // otherwise, ensure the agent has a path on the nav mesh at all times
+                NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex], showDebugLines);
+            }
+            // otherwise, ensure the agent has a path on the nav mesh if it doesn't already have apath
+            // and if its path isn't partial or invalid (those are handled below)
+            else if (!thisAgent.hasPath && thisAgent.pathStatus != NavMeshPathStatus.PathPartial && thisAgent.pathStatus != NavMeshPathStatus.PathPartial)
             {
-                NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex], true);
+                NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex], showDebugLines);
             }  
 
             // if the path is partial, trt setting it again in a few moments
@@ -353,23 +359,43 @@ public class FollowGuidedTour : MonoBehaviour
                 // indicate to the next scene that it needs to recalc its cameras and paths
                 SceneGlobals.isGuidedTourTimeTraveling = true;
             }
+        }
 
-            // guided tour can only stop for a certain amount of time before we proceed
-            if (thisAgent.velocity == Vector3.zero && !ModeState.isGuidedTourPaused)
-            {
-                stationaryTime += Time.deltaTime;
-            }
-            else
-            {
-                stationaryTime = 0f;
-            }
+        // guided tour can only stop for a certain amount of time before we proceed
+        // but the pause duration will differ between unpaused and paused states
 
-            if (stationaryTime >= pauseAtCameraDuration)
-            {
-                Debug.Log("FPSAgent has been stationary for " + (pauseAtCameraDuration) + " seconds or more. Going to next destination.");
-                IncrementGuidedTourIndexAndSetAgentOnPath();
-                stationaryTime = 0f;
-            }
+        // not paused
+        if (thisAgent.velocity == Vector3.zero && !ModeState.isGuidedTourPaused)
+        {
+            stationaryTimeActive += Time.deltaTime;
+        }
+        else
+        {
+            stationaryTimeActive = 0f;
+        }
+        if (stationaryTimeActive >= pauseAtCameraDuration)
+        {
+            Debug.Log("FPSAgent has been stationary with guided tour ACTIVE for " + (pauseAtCameraDuration) + " seconds or more. Going to next destination.");
+            IncrementGuidedTourIndexAndSetAgentOnPath();
+            stationaryTimeActive = 0f;
+        }
+
+        // paused
+        if ((thisAgent.velocity == Vector3.zero || thisAgent.remainingDistance == Mathf.Infinity) && ModeState.isGuidedTourPaused && !GetIsGuidedTourOverrideRequested())
+        {
+            stationaryTimePaused += Time.deltaTime;
+        }
+        else
+        {
+            stationaryTimePaused = 0f;
+        }
+
+        if (stationaryTimePaused >= guidedTourRestartAfterSeconds)
+        {
+            Debug.Log("FPSAgent has been stationary with guided tour PAUSED for " + (guidedTourRestartAfterSeconds) + " seconds or more. Resuming guided tour.");
+            ModeState.isGuidedTourPaused = false;
+            ModeState.isGuidedTourActive = true;
+            stationaryTimePaused = 0f;
         }
 
         // start or stop the restart routines if override is requested
@@ -381,10 +407,10 @@ public class FollowGuidedTour : MonoBehaviour
                 isResumeRequiredAfterOverride = true;
 
                 // stop the active countdown coroutine if there is one
-                if (ModeState.restartGuidedTourCoroutine != null)
-                {
-                    StopCoroutine(ModeState.restartGuidedTourCoroutine);
-                }
+                //if (ModeState.restartGuidedTourCoroutine != null)
+                //{
+                //    StopCoroutine(ModeState.restartGuidedTourCoroutine);
+                //}
                 if (ModeState.toggleToNextEraCoroutine != null)
                 {
                     StopCoroutine(ModeState.toggleToNextEraCoroutine);
@@ -395,7 +421,6 @@ public class FollowGuidedTour : MonoBehaviour
             // then ensure the restart coroutines happen now, just one time
             if (!GetIsGuidedTourOverrideRequested() && isResumeRequiredAfterOverride)
             {
-                ModeState.restartGuidedTourCoroutine = StartCoroutine(GuidedTourRestartCountdown());
                 ModeState.toggleToNextEraCoroutine = StartCoroutine(ToggleSceneAndUI.ToggleToNextEraAfterDelay());
 
                 // indicate that we've restarted the coroutines since last request
@@ -472,11 +497,6 @@ public class FollowGuidedTour : MonoBehaviour
         ModeState.isGuidedTourActive = false;
         ModeState.isGuidedTourPaused = false;
 
-        // if there was a restart coroutine active, stop it
-        if (ModeState.restartGuidedTourCoroutine != null)
-        {
-            Instances[SceneManager.GetActiveScene().name].StopCoroutine(ModeState.restartGuidedTourCoroutine);
-        }
         if (ModeState.toggleToNextEraCoroutine != null)
         {
             Instances[SceneManager.GetActiveScene().name].StopCoroutine(ModeState.toggleToNextEraCoroutine);
@@ -521,23 +541,5 @@ public class FollowGuidedTour : MonoBehaviour
             return false;
         }
 
-    }
-
-    // before un-pausing guided tour mode,
-    // wait a few seconds
-    IEnumerator GuidedTourRestartCountdown()
-    {
-        yield return new WaitForSeconds(guidedTourRestartAfterSeconds);
-        ModeState.isGuidedTourActive = true;
-        ModeState.isGuidedTourPaused = false;
-    }
-
-    IEnumerator ToggleGuidedTourOnEnable()
-    {
-        ModeState.isGuidedTourActive = false;
-        ModeState.isGuidedTourPaused = true;
-        yield return new WaitForSeconds(pauseOnEnableDuration);
-        ModeState.isGuidedTourActive = true;
-        ModeState.isGuidedTourPaused = false;
     }
 }
