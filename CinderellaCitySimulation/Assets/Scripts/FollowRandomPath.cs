@@ -18,16 +18,20 @@ public class FollowRandomPath : MonoBehaviour
     public Vector3 initialDestination;
     public NavMeshPath path;
 
-    // variables related to the test for whether the NPC is on a collision course with the player
-    readonly bool doAdjustIfApproachingPlayer = false;
+    // variables related to the test for whether the NPC needs to repath
+    readonly bool doRepathIfApproachingPlayer = false;
+    readonly bool doRepathIfBlockingPlayerCamera = true;
     int numberOfFramesApproachingPlayer = 0;
-    readonly int maxNumberOfFramesApproachingPlayer = 120;
-    readonly float dotProductThresholdFar = -0.96f;
-    readonly float dotProductThresholdClose = -0.93f;
-    readonly float maxDistanceForFarCheck = 7.0f;
-    readonly float maxDistanceForCloseCheck = 2.0f;
+    readonly int maxNumberOfFramesApproachingPlayer = 60;
+    readonly float dotProductAlignThreshold = 0.90f;
+    readonly float dotProductPosThreshold = 0.75f;
+    readonly float maxDistanceForFarCheck = 2.0f;
+    readonly float maxDistanceForCloseCheck = 0.1f;
     // repath if slowing down (likely due to colliding with others)
     readonly bool doRepathIfSlow = true;
+
+    // debugging
+    readonly bool doShowDebugMessages = false;
 
     private void Awake()
     {
@@ -85,11 +89,11 @@ public class FollowRandomPath : MonoBehaviour
             float currentVelocity = thisAgent.velocity.magnitude;
             Vector3 nextNPCDestination = Utils.GeometryUtils.GetRandomPointOnNavMeshFromPool(this.transform.position, NPCControllerGlobals.initialNPCPositionsArray, NPCControllerGlobals.minDiscardDistance, NPCControllerGlobals.maxDiscardDistance, true);
 
-            // if this NPC appears to be on a collision course with the player,
-            // get a different destination so the NPC doesn't continue walking into the player
-            if (doAdjustIfApproachingPlayer)
+            // if this NPC is walking the same direction as the player
+            // and blocking the player camera, make them repath
+            if (doRepathIfBlockingPlayerCamera)
             {
-                if (GetIsNPCApproachingPlayer(this.gameObject, ManageFPSControllers.FPSControllerGlobals.activeFPSController))
+                if (GetIsNPCFacingPlayer(this.gameObject, ManageFPSControllers.FPSControllerGlobals.activeFPSController, true))
                 {
                     path = NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, nextNPCDestination);
                 }
@@ -119,8 +123,7 @@ public class FollowRandomPath : MonoBehaviour
         path = this.GetComponent<NavMeshAgent>().path;
     }
 
-    // returns true if the NPC on a collision course with the player
-    private bool GetIsNPCApproachingPlayer(GameObject NPCObject, GameObject FPSController)
+    private bool GetIsNPCFacingPlayer(GameObject NPCObject, GameObject FPSController, bool reverseDirection = false /* NPC is facing away from and aligned, in front of the camera */)
     {
         // get the NPC direction and compare it to the vector between the NPC and player
         Vector3 NPCForwardVector = (NPCObject.transform.forward).normalized;
@@ -135,27 +138,63 @@ public class FollowRandomPath : MonoBehaviour
         // distance between this object and the player
         float distanceFromNPCToPlayer = Vector3.Distance(NPCObject.transform.position, FPSController.transform.position);
 
-        // if the NPC object is looking at, and heading towards, the player
-        // or if the NPC is very close to, and mostly looking at, the player
-        // start counting the number of frames to determine if this NPC will collide with the player
-        if ((dotProductPosition < dotProductThresholdFar && dotProductAlignment < dotProductThresholdFar && distanceFromNPCToPlayer < maxDistanceForFarCheck && thisAgent.velocity.magnitude > 0) || (dotProductAlignment < dotProductThresholdClose && distanceFromNPCToPlayer < maxDistanceForCloseCheck))
+        if (doShowDebugMessages)
         {
-            numberOfFramesApproachingPlayer++;
-            if (numberOfFramesApproachingPlayer >= maxNumberOfFramesApproachingPlayer)
+            Debug.Log("NPC forward vector: " + NPCForwardVector);
+            Debug.Log("FPSForwardVector: " + FPSForwardVector);
+            Debug.Log("Distance: " + distanceFromNPCToPlayer);
+            Debug.Log("dotProductPos: " + dotProductPosition);
+            Debug.Log("dotProductAlign: " + dotProductAlignment);
+        }
+
+        // reverse direction means the NPC is in front of the camera,
+        // close to, and aligned with the player
+        // so it might block the camera especially during guided tours
+        if (reverseDirection)
+        {
+            // if the NPC is in front of the camera, close, and aligned
+            if ((dotProductPosition > dotProductPosThreshold && dotProductAlignment > dotProductAlignThreshold && distanceFromNPCToPlayer < maxDistanceForFarCheck))
             {
-                numberOfFramesApproachingPlayer = 0;
-                return true;
+                numberOfFramesApproachingPlayer++;
+                if (numberOfFramesApproachingPlayer >= maxNumberOfFramesApproachingPlayer)
+                {
+                    numberOfFramesApproachingPlayer = 0;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
+                numberOfFramesApproachingPlayer = 0;
                 return false;
             }
         }
-        // otherwise, the NPC is not on a collision course with the player
         else
         {
-            numberOfFramesApproachingPlayer = 0;
-            return false;
+            // if the NPC is looking at and heading towards the player
+            if ((dotProductPosition < dotProductAlignThreshold && dotProductAlignment < dotProductAlignThreshold && distanceFromNPCToPlayer < maxDistanceForFarCheck && thisAgent.velocity.magnitude > 0) || (dotProductAlignment < dotProductPosThreshold && distanceFromNPCToPlayer < maxDistanceForCloseCheck))
+            {
+                numberOfFramesApproachingPlayer++;
+                if (numberOfFramesApproachingPlayer >= maxNumberOfFramesApproachingPlayer)
+                {
+                    numberOfFramesApproachingPlayer = 0;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                numberOfFramesApproachingPlayer = 0;
+                return false;
+            }
         }
     }
+
+
 }
