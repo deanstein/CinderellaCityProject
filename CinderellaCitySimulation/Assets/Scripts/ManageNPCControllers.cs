@@ -25,7 +25,7 @@ public class NPCControllerGlobals
     public static float maxStepHeight = 0.18f;
 
     // the minimum agent speed allowed before trying to re-path
-    public static float minimumSpeedBeforeRepath = 0.3f;
+    public static float minimumSpeedBeforeRepath = 0.15f;
 
     // define the walking speed range
     public static float minWalkingSpeed = 0.9f;
