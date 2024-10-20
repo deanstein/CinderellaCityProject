@@ -186,7 +186,6 @@ public class FollowGuidedTour : MonoBehaviour
             // restart the guided tour to ensure new pathfinding happens 
             ModeState.isGuidedTourActive = false;
             ModeState.isGuidedTourPaused = true;
-501
 
             // only spend a certain amount of time in each era
             StopCoroutine(ModeState.toggleToNextEraCoroutine);
@@ -265,7 +264,7 @@ public class FollowGuidedTour : MonoBehaviour
             }
 
             // only update the vector if the mode is not paused, and we're moving
-            if (!ModeState.isGuidedTourPaused && thisAgent.velocity.sqrMagnitude > 0.1f)
+            if (!ModeState.isGuidedTourPaused && thisAgent.velocity.sqrMagnitude > 0f)
             {
                 // store the current camera destination
                 currentGuidedTourDestinationCamera = guidedTourObjects[currentGuidedTourDestinationIndex].GetComponent<Camera>();
@@ -365,7 +364,7 @@ public class FollowGuidedTour : MonoBehaviour
         // but the pause duration will differ between unpaused and paused states
 
         // not paused
-        if (thisAgent.velocity == Vector3.zero && !ModeState.isGuidedTourPaused)
+        if (thisAgent.velocity == Vector3.zero && !ModeState.isGuidedTourPaused && ModeState.isGuidedTourActive)
         {
             stationaryTimeActive += Time.deltaTime;
         }
