@@ -46,10 +46,10 @@ public class FollowGuidedTour : MonoBehaviour
     //
     // DEBUGGING
     //
+    readonly private bool showDebugLines = false; // if true, show paths and camera positions as debug lines
     readonly bool shuffleGuidedTourDestinations = true;
     private int currentGuidedTourDestinationIndex = 0; // optionally start at a specific index
     readonly bool useOverrideDestinations = false; // if true, use a special list for tour objects
-    readonly private bool showDebugLines = false; // if true, show path as debug lines
     readonly bool doTestAllPaths = false; // if true, attempt to find paths between all destinations
 
     private void Awake()
@@ -120,7 +120,7 @@ public class FollowGuidedTour : MonoBehaviour
             Vector3 objectCameraPosAdjusted = Utils.GeometryUtils.AdjustPositionAwayFromCamera(objectCamera.transform.position, objectCamera, adjustPosAwayFromCamera);
             cameraPositionsAdjustedList.Add(objectCameraPosAdjusted);
             // project the adjusted positions down onto the NavMesh
-            Vector3 objectCameraPosAdjustedOnNavMesh = Utils.GeometryUtils.GetNearestPointOnNavMesh(objectCameraPosAdjusted, 5);
+            Vector3 objectCameraPosAdjustedOnNavMesh = Utils.GeometryUtils.GetNearestPointOnNavMesh(objectCameraPosAdjusted, thisAgent.height);
             cameraPositionsAdjustedOnNavMeshList.Add(objectCameraPosAdjustedOnNavMesh);
 
             Debug.Log(objectCamera.name + " is at index " + (cameraPositionsAdjustedOnNavMeshList.Count - 1).ToString() + " at adjusted position: " + objectCameraPosAdjustedOnNavMesh);
