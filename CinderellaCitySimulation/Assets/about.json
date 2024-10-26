@@ -1,14 +1,16 @@
 {
   "VersionHistory": {
     "0.8.1.202410": {
-      "Overview": "v0.8.1 fixes issues with the new Guided Tour functionality.",
+      "Overview": "v0.8.1 fixes issues with the new Guided Tour functionality and adds new historic photos.",
       "Environment Updates": [
+        "Added historic photos in 1968-1978 Gold Mall, and 1987-1997 Gold Mall and Rose Mall",
         "Removed two mall music audio tracks and added one to the 1987-1997 era."
       ],
       "UI Updates": [],
       "Code Updates": [
         "Simplified and improved Guided Tour pause, resume, and reset position logic.",
-        "Removed random NPC avoidance priority code as it looked even more unnatural."
+        "Removed random NPC avoidance priority code as it looked even more unnatural.",
+        "Adjusted minimum repath speed for colliding NPCs"
       ]
     },
     "0.8.0.202407": {
