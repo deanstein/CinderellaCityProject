@@ -394,10 +394,15 @@ public static class ManageSceneObjects
             GameObject[] allHistoricCameraObjects = GameObject.FindGameObjectsWithTag(TaggedObjects.TaggedObjectGlobals.deleteProxyReplacementTagPrefix + "CamerasPhotos");
 
             // filter the objects for the current scene only
+            // and also exclude certain photos
             foreach (GameObject filteredHistoricCameraObject in allHistoricCameraObjects)
             {
                 if (filteredHistoricCameraObject.scene.name == sceneName)
                 {
+                    // the "Lauter" photo isn't generally interesting enough for the tour
+                    // and the "Village Inn" photo is behind glass and best for custom tours
+                    if (!filteredHistoricCameraObject.name.Contains("Rose Mall - Lauter") && 
+                        !filteredHistoricCameraObject.name.Contains("Gold Mall - Village Inn"))
                     filteredHistoricCameraObjects.Add(filteredHistoricCameraObject);
                 }
             }
