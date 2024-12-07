@@ -99,6 +99,14 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
+                    ""name"": ""Toggle Guided Tour"",
+                    ""type"": ""Button"",
+                    ""id"": ""274fbeda-e318-45ac-be33-385cdb5a72be"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
                     ""name"": ""Next Photo"",
                     ""type"": ""Button"",
                     ""id"": ""081fbecd-6bfa-4775-954a-b72ac805bff1"",
@@ -247,6 +255,17 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""action"": ""Previous Photo"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""03d942e9-0ded-4249-95aa-8e0130dd2def"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox Control Scheme"",
+                    ""action"": ""Toggle Guided Tour"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -277,6 +296,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_Player_TogglePeople = m_Player.FindAction("Toggle People", throwIfNotFound: true);
         m_Player_StartGuidedTour = m_Player.FindAction("Start Guided Tour", throwIfNotFound: true);
         m_Player_EndGuidedTour = m_Player.FindAction("End Guided Tour", throwIfNotFound: true);
+        m_Player_ToggleGuidedTour = m_Player.FindAction("Toggle Guided Tour", throwIfNotFound: true);
         m_Player_NextPhoto = m_Player.FindAction("Next Photo", throwIfNotFound: true);
         m_Player_PreviousPhoto = m_Player.FindAction("Previous Photo", throwIfNotFound: true);
     }
@@ -338,6 +358,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_TogglePeople;
     private readonly InputAction m_Player_StartGuidedTour;
     private readonly InputAction m_Player_EndGuidedTour;
+    private readonly InputAction m_Player_ToggleGuidedTour;
     private readonly InputAction m_Player_NextPhoto;
     private readonly InputAction m_Player_PreviousPhoto;
     public struct PlayerActions
@@ -354,6 +375,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         public InputAction @TogglePeople => m_Wrapper.m_Player_TogglePeople;
         public InputAction @StartGuidedTour => m_Wrapper.m_Player_StartGuidedTour;
         public InputAction @EndGuidedTour => m_Wrapper.m_Player_EndGuidedTour;
+        public InputAction @ToggleGuidedTour => m_Wrapper.m_Player_ToggleGuidedTour;
         public InputAction @NextPhoto => m_Wrapper.m_Player_NextPhoto;
         public InputAction @PreviousPhoto => m_Wrapper.m_Player_PreviousPhoto;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -395,6 +417,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @EndGuidedTour.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEndGuidedTour;
                 @EndGuidedTour.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEndGuidedTour;
                 @EndGuidedTour.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEndGuidedTour;
+                @ToggleGuidedTour.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleGuidedTour;
+                @ToggleGuidedTour.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleGuidedTour;
+                @ToggleGuidedTour.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleGuidedTour;
                 @NextPhoto.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNextPhoto;
                 @NextPhoto.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNextPhoto;
                 @NextPhoto.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNextPhoto;
@@ -435,6 +460,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @EndGuidedTour.started += instance.OnEndGuidedTour;
                 @EndGuidedTour.performed += instance.OnEndGuidedTour;
                 @EndGuidedTour.canceled += instance.OnEndGuidedTour;
+                @ToggleGuidedTour.started += instance.OnToggleGuidedTour;
+                @ToggleGuidedTour.performed += instance.OnToggleGuidedTour;
+                @ToggleGuidedTour.canceled += instance.OnToggleGuidedTour;
                 @NextPhoto.started += instance.OnNextPhoto;
                 @NextPhoto.performed += instance.OnNextPhoto;
                 @NextPhoto.canceled += instance.OnNextPhoto;
@@ -466,6 +494,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         void OnTogglePeople(InputAction.CallbackContext context);
         void OnStartGuidedTour(InputAction.CallbackContext context);
         void OnEndGuidedTour(InputAction.CallbackContext context);
+        void OnToggleGuidedTour(InputAction.CallbackContext context);
         void OnNextPhoto(InputAction.CallbackContext context);
         void OnPreviousPhoto(InputAction.CallbackContext context);
     }

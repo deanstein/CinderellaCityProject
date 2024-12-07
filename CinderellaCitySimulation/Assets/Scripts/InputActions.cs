@@ -46,6 +46,17 @@ public class InputActions : MonoBehaviour
         }
     }
 
+    public void ToggleGuidedTour()
+    {
+        if (ModeState.isGuidedTourActive || ModeState.isGuidedTourPaused)
+        {
+            FollowGuidedTour.EndGuidedTourMode();
+        } else
+        {
+            FollowGuidedTour.StartGuidedTourMode();
+        }
+    }
+
     public void PreviousPhoto()
     {
         FollowGuidedTour.DecrementGuidedTourIndexAndSetAgentOnPath();
@@ -138,6 +149,7 @@ public class InputActions : MonoBehaviour
         inputMaster.Player.Pause.performed += ctx => Pause();
         inputMaster.Player.StartGuidedTour.performed += ctx => StartGuidedTour();
         inputMaster.Player.EndGuidedTour.performed += ctx => EndGuidedTour();
+        inputMaster.Player.ToggleGuidedTour.performed += ctx => ToggleGuidedTour();
         inputMaster.Player.PreviousPhoto.performed += ctx => PreviousPhoto();
         inputMaster.Player.NextPhoto.performed += ctx => NextPhoto();
         inputMaster.Player.Look.performed += ctx => rightStickLook = ctx.ReadValue<Vector2>();
