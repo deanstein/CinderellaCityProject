@@ -86,6 +86,14 @@
                     "interactions": ""
                 },
                 {
+                    "name": "Toggle Guided Tour",
+                    "type": "Button",
+                    "id": "274fbeda-e318-45ac-be33-385cdb5a72be",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
                     "name": "Next Photo",
                     "type": "Button",
                     "id": "081fbecd-6bfa-4775-954a-b72ac805bff1",
@@ -194,7 +202,7 @@
                 {
                     "name": "",
                     "id": "1a5cebc1-34a4-4ae0-910a-e32efc190e07",
-                    "path": "<XInputController>/dpad/up",
+                    "path": "<Gamepad>/dpad/up",
                     "interactions": "",
                     "processors": "",
                     "groups": "Xbox Control Scheme",
@@ -232,6 +240,17 @@
                     "processors": "",
                     "groups": "Xbox Control Scheme",
                     "action": "Previous Photo",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "03d942e9-0ded-4249-95aa-8e0130dd2def",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox Control Scheme",
+                    "action": "Toggle Guided Tour",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
