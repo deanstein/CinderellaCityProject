@@ -103,7 +103,7 @@ public class FollowGuidedTour : MonoBehaviour
             /*** start FPSController in Rose Mall 80s90s near Woolworth's ***/
             //guidedTourObjects = new GameObject[] { guidedTourObjects[25], guidedTourObjects[3] };
             /*** test whether approaching a camera from the "opposite" way results in bad camera transition ***/
-            guidedTourObjects = new GameObject[] { guidedTourObjects[33], guidedTourObjects[3] };
+            guidedTourObjects = new GameObject[] { guidedTourObjects[20], guidedTourObjects[3] };
         }
 
         List<Vector3> cameraPositionsList = new List<Vector3>();
@@ -364,7 +364,7 @@ public class FollowGuidedTour : MonoBehaviour
         // but the pause duration will differ between unpaused and paused states
 
         // not paused
-        if (thisAgent.velocity == Vector3.zero && !ModeState.isGuidedTourPaused && ModeState.isGuidedTourActive)
+        if ((thisAgent.remainingDistance < 0.01f || thisAgent.velocity.magnitude < 0.01f) && !ModeState.isGuidedTourPaused && ModeState.isGuidedTourActive)
         {
             stationaryTimeActive += Time.deltaTime;
         }
@@ -380,7 +380,7 @@ public class FollowGuidedTour : MonoBehaviour
         }
 
         // paused
-        if ((thisAgent.velocity == Vector3.zero || thisAgent.remainingDistance == Mathf.Infinity) && ModeState.isGuidedTourPaused && !GetIsGuidedTourOverrideRequested())
+        if (((thisAgent.remainingDistance < 0.01f || thisAgent.velocity.magnitude < 0.01f) || thisAgent.remainingDistance == Mathf.Infinity) && ModeState.isGuidedTourPaused && !GetIsGuidedTourOverrideRequested())
         {
             stationaryTimePaused += Time.deltaTime;
         }
