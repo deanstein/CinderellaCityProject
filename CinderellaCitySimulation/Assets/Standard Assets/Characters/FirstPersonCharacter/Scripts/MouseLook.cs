@@ -15,7 +15,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
         public bool smooth;
         public float smoothTime = 5f;
         public bool lockCursor = true;
-
+        // if true, this code doesn't need to run
+        // this is set by InputActions.cs when the controller is used
+        public bool isControllerActive = false;
 
         private Quaternion m_CharacterTargetRot;
         private Quaternion m_CameraTargetRot;
@@ -27,11 +29,15 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_CameraTargetRot = camera.localRotation;
         }
 
-
         public void LookRotation(Transform character, Transform camera)
         {
-            if (CrossPlatformInputManager.GetAxis("Mouse X") != 0 || CrossPlatformInputManager.GetAxis("Mouse Y") != 0)
+            if (!isControllerActive)
             {
+                // in case the controller has taken over previously,
+                // use the current rotations before modifying
+                m_CharacterTargetRot = character.localRotation;
+                m_CameraTargetRot = camera.localRotation;
+
                 float yRot = CrossPlatformInputManager.GetAxis("Mouse X") * XSensitivity;
                 float xRot = CrossPlatformInputManager.GetAxis("Mouse Y") * YSensitivity;
 
