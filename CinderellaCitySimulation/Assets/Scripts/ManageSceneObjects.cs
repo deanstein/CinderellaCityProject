@@ -506,6 +506,12 @@ public class ObjectVisibility
         return false;
     }
 
+    public static void SetPeopleVisibility(bool visible)
+    {
+        GameObject peopleContainer = GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.peopleObjectKeywords, true)[0];
+        peopleContainer.SetActive(visible);
+    }
+
     public static void SetHistoricPhotosOpaque(bool toggleState)
     {
         ObjectVisibilityGlobals.areHistoricPhotosForcedOpaque = toggleState;
