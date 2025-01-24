@@ -472,6 +472,12 @@ public class FollowGuidedTour : MonoBehaviour
             ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(historicCamerasContainer, ModeState.areHistoricPhotosRequestedVisible, false);
             ObjectVisibility.SetHistoricPhotosOpaque(ModeState.areHistoricPhotosRequestedVisible);
 
+            // ensure people are off when photos are on
+            if (ModeState.isGuidedTourActive)
+            {
+                ObjectVisibility.SetPeopleVisibility(!ModeState.areHistoricPhotosRequestedVisible);
+            }
+
             // set the local flag to match so this only runs once
             areHistoricPhotosVisible = ModeState.areHistoricPhotosRequestedVisible;
         }
