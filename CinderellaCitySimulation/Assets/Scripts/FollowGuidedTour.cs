@@ -145,6 +145,8 @@ public class FollowGuidedTour : MonoBehaviour
 
             // start with historic photos on
             ModeState.areHistoricPhotosRequestedVisible = true;
+            // start with people visible
+            ModeState.arePeopleRequestedVisible = true;
 
             // DEBUGGING
             // draw debug lines if requested
@@ -449,7 +451,7 @@ public class FollowGuidedTour : MonoBehaviour
 
         // during guided tour, historic photos should
         // only be visible when within some distance to the next destination
-        // this is possibly expensive so only do it one frame only when requested
+        // this is possibly expensive, so only do it one frame only when requested
         if (ModeState.isGuidedTourActive && thisAgent.enabled && thisAgent.isOnNavMesh)
         {
             if (thisAgent.remainingDistance < lookToCameraAtRemainingDistance)
@@ -459,6 +461,20 @@ public class FollowGuidedTour : MonoBehaviour
             else
             {
                 ModeState.areHistoricPhotosRequestedVisible = false;
+            }
+        }
+
+        // similarly, people should be hidden when within some distance to next destination
+        // this is possibly expensive, so only do it one frame when requested
+        if (ModeState.isGuidedTourActive && thisAgent.enabled && thisAgent.isOnNavMesh)
+        {
+            if (thisAgent.remainingDistance < lookToCameraAtRemainingDistance / 4)
+            {
+                ModeState.arePeopleRequestedVisible = false;
+            }
+            else
+            {
+                ModeState.arePeopleRequestedVisible = true;
             }
         }
 
@@ -472,14 +488,17 @@ public class FollowGuidedTour : MonoBehaviour
             ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(historicCamerasContainer, ModeState.areHistoricPhotosRequestedVisible, false);
             ObjectVisibility.SetHistoricPhotosOpaque(ModeState.areHistoricPhotosRequestedVisible);
 
-            // ensure people are off when photos are on
-            if (ModeState.isGuidedTourActive)
-            {
-                ObjectVisibility.SetPeopleVisibility(!ModeState.areHistoricPhotosRequestedVisible);
-            }
-
             // set the local flag to match so this only runs once
             areHistoricPhotosVisible = ModeState.areHistoricPhotosRequestedVisible;
+        }
+
+        // similar for people
+        if (ModeState.isGuidedTourActive && arePeopleVisible == null || arePeopleVisible != ModeState.arePeopleRequestedVisible)
+        {
+            ObjectVisibility.SetPeopleVisibility(ModeState.arePeopleRequestedVisible);
+
+            // set the local flag to match so this only runs once
+            arePeopleVisible = ModeState.arePeopleRequestedVisible;
         }
     }
 
