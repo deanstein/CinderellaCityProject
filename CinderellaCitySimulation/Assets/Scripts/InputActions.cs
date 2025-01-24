@@ -13,7 +13,7 @@ public class InputActions : MonoBehaviour
     public static Vector2 rightStickLook;
     private readonly float lookSpeed = 6f;
     private Camera cam;
-    private CharacterController controller;
+    private CharacterController characterController;
 
     private Quaternion m_CharacterTargetRot;
     private Quaternion m_CameraTargetRot;
@@ -159,8 +159,8 @@ public class InputActions : MonoBehaviour
     private void OnEnable()
     {
         cam = GetComponentInChildren<Camera>();
-        controller = GetComponentInChildren<CharacterController>();
-        m_CharacterTargetRot = controller.transform.localRotation;
+        characterController = GetComponentInChildren<CharacterController>();
+        m_CharacterTargetRot = characterController.transform.localRotation;
         m_CameraTargetRot = cam.transform.localRotation;
 
         if (inputMaster != null)
@@ -324,8 +324,15 @@ public class InputActions : MonoBehaviour
 
             cam.transform.localRotation = Quaternion.Slerp(cam.transform.localRotation, m_CameraTargetRot,
                     lookSpeed * Time.deltaTime);
-            controller.transform.localRotation = Quaternion.Slerp(controller.transform.localRotation, m_CharacterTargetRot,
+            characterController.transform.localRotation = Quaternion.Slerp(characterController.transform.localRotation, m_CharacterTargetRot,
                     lookSpeed * Time.deltaTime);
+
+            // prevent MouseLook from interfering
+            this.GetComponentInChildren<FirstPersonController>().m_MouseLook.isControllerActive = true;
+        } else
+        {
+            // MouseLook takes over if controller isn't being used
+            this.GetComponentInChildren<FirstPersonController>().m_MouseLook.isControllerActive = false;
         }
     }
 }
