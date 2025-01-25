@@ -14,9 +14,20 @@ using UnityEngine.SceneManagement;
 [System.Serializable]
 public class StartupConfig
 {
-    public bool autoStart;
-    public bool autoGuidedTour;
+    public bool autoStart; // skips the main menu and goes to a specific scene
+    public bool autoGuidedTour; // starts the guided tour immediately
+    public bool recordingMode; // uses a specific order of scenes for recording a video
 }
+/*** EXAMPLE START CONFIG ***
+
+{
+    autoStart: true,
+    autoGuidedTour: true,
+    recordingMode: true
+}
+
+*** END EXAMPLE ***/
+
 
 public class StartupGlobals
 {
@@ -112,22 +123,27 @@ public class LoadAllScenesAsync : MonoBehaviour {
             // convert the JSON file to StartupConfig class
             StartupConfig startupConfig = JsonUtility.FromJson<StartupConfig>(json);
 
-            // instantStart skips right to a given scene
+            // skip right to a given scene
             if (startupConfig.autoStart)
             {
                 Debug.Log("Startup Config: autoStart is true.");
                 yield return new WaitForSeconds(0.5f);
                 ToggleSceneAndUI.ToggleFromSceneToSceneRelocatePlayerToCamera(SceneManager.GetActiveScene().name, "60s70s", "Camera-Thumbnail-Blue Mall-Highlight");
             }
-            // instantGuidedTour sets the guided tour state to true immediately
+            // set the guided tour state to true immediately
             if (startupConfig.autoGuidedTour)
             {
                 Debug.Log("Startup Config: autoGuidedTour is true.");
                 yield return new WaitForSeconds(0.5f);
                 ModeState.isGuidedTourActive = true;
-
                 // automatically switch to the next era after some time
                 ModeState.toggleToNextEraCoroutine = StartCoroutine(ToggleSceneAndUI.ToggleToNextEraAfterDelay());
+            }
+            // specific scene order for recording videos
+            if (startupConfig.recordingMode)
+            {
+                Debug.Log("Startup Config: recordingMode is true.");
+                ModeState.useRecordingPhotoOrder = true;
             }
         }
     }
