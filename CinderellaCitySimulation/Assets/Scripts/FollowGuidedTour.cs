@@ -79,7 +79,7 @@ public class FollowGuidedTour : MonoBehaviour
         guidedTourObjects = ManageSceneObjects.ProxyObjects.GetAllHistoricPhotoCamerasInScene(this.gameObject.scene.name);
 
         // log the original indices - this is helpful for next runs
-        for (int i = 0; i < guidedTourObjects.Length - 1; i++)
+        for (int i = 0; i < guidedTourObjects.Length; i++)
         {
             Debug.Log(guidedTourObjects[i].name + " is at original index " + i);
         }
@@ -167,7 +167,7 @@ public class FollowGuidedTour : MonoBehaviour
         // run through the list of destinations if requested
         if (doTestAllPaths)
         {
-            for (int i = 0; i < guidedTourObjects.Length - 1; i++)
+            for (int i = 0; i < guidedTourObjects.Length; i++)
             {
                 GameObject currentObject = guidedTourObjects[i];
                 Vector3 currentObjectClosestNavPos = guidedTourFinalNavMeshDestinations[i];
