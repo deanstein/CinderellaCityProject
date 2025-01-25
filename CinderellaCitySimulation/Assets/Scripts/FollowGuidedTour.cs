@@ -104,7 +104,163 @@ public class FollowGuidedTour : MonoBehaviour
             /*** start FPSController in Rose Mall 80s90s near Woolworth's ***/
             //guidedTourObjects = new GameObject[] { guidedTourObjects[25], guidedTourObjects[3] };
             /*** test whether approaching a camera from the "opposite" way results in bad camera transition ***/
-            guidedTourObjects = new GameObject[] { guidedTourObjects[20], guidedTourObjects[3] };
+            guidedTourObjects = new GameObject[] { guidedTourObjects[3], guidedTourObjects[4], guidedTourObjects[9] };
+        }
+        // use a specific order for recording if requested
+        // can print indices of all historic photos in 
+        // CCP Menu -> Guided Tour -> Print Historic Photo Data
+        if (ModeState.useRecordingPhotoOrder)
+        {
+            // define the recording order per era
+            if (this.gameObject.scene.name == "60s70s" || this.gameObject.scene.name == "Experimental")
+            {
+                guidedTourObjects = new GameObject[]
+                {
+                    // fountain
+                    guidedTourObjects[3],
+                    guidedTourObjects[4],
+                    // trampoline
+                    guidedTourObjects[15],
+                    // Robin Hood
+                    guidedTourObjects[13],
+                    // Rich Burger
+                    guidedTourObjects[12],
+                    // back to fountain
+                    guidedTourObjects[4],
+                    // Blue hall toward Rose
+                    guidedTourObjects[5],
+                    // 10th anniversary
+                    guidedTourObjects[14],
+                    // earcetera
+                    guidedTourObjects[7],
+                    // K-G
+                    guidedTourObjects[28],
+                    // Richman
+                    guidedTourObjects[33],
+                    // Cricket
+                    guidedTourObjects[27],
+                    // Hatch's
+                    guidedTourObjects[30],
+                    // Regiment
+                    guidedTourObjects[32],
+                    // Cinema-Neusteters
+                    guidedTourObjects[29],
+                    // Leader entrance
+                    guidedTourObjects[31],
+                    // Farrell's
+                    guidedTourObjects[2],
+                    // Blue Mall exterior corner
+                    guidedTourObjects[9],
+                    // Tommy Wong's
+                    guidedTourObjects[35],
+                    // Kiddie Shop
+                    guidedTourObjects[34],
+                    // Cinder Alley from Penney's
+                    guidedTourObjects[15],
+                    // Candle Makers of Candles II
+                    guidedTourObjects[18],
+                    guidedTourObjects[17],
+                    // Cinder Alley gate
+                    guidedTourObjects[20],
+                    // Cinder Alley far
+                    guidedTourObjects[19],
+                    // Joslins exterior entrance
+                    guidedTourObjects[25],
+                    // Gold Mall colorized
+                    guidedTourObjects[23],
+                    // Spencer's
+                    guidedTourObjects[24],
+                    // CA sign at Gold Mall
+                    guidedTourObjects[22],
+                    guidedTourObjects[21],
+                    // Karmelkorn
+                    guidedTourObjects[11],
+                    // Hummell's
+                    guidedTourObjects[10],
+                    // back to Joslins exterior entrance
+                    guidedTourObjects[25],
+                    // Blue Mall Denver exterior entrance
+                    guidedTourObjects[8],
+                    // back to fountain
+                    guidedTourObjects[3],
+                    // Blue Mall mezzanine
+                    guidedTourObjects[0]
+                };
+            }
+            else if (this.gameObject.scene.name == "80s90s")
+            {
+                guidedTourObjects = new GameObject[]
+                {
+                    // atrium marketing
+                    guidedTourObjects[3],
+                    // carousel
+                    guidedTourObjects[2],
+                    // wedding
+                    guidedTourObjects[9],
+                    // b&w decay
+                    guidedTourObjects[1],
+                    // Pollard decay
+                    guidedTourObjects[8],
+                    // Footlocker
+                    guidedTourObjects[5],
+                    // Pollard west doors
+                    guidedTourObjects[10],
+                    // Rose Mall
+                    guidedTourObjects[28],
+                    // Thom McAn
+                    guidedTourObjects[33],
+                    // Woolworth's
+                    guidedTourObjects[30],
+                    // Stride Right
+                    guidedTourObjects[31],
+                    // Shamrock escalator
+                    guidedTourObjects[32],
+                    // Shamrock by escalator
+                    guidedTourObjects[34],
+                    // Pollard Shamrock
+                    guidedTourObjects[36],
+                    // waterbeds
+                    guidedTourObjects[29],
+                    // book fair
+                    guidedTourObjects[35],
+                    // Sports Fan
+                    guidedTourObjects[37],
+                    // Renzios
+                    guidedTourObjects[22],
+                    // Sbarro
+                    guidedTourObjects[21],
+                    // Wendy's
+                    guidedTourObjects[20],
+                    // Paul Wu's
+                    guidedTourObjects[19],
+                    // Orange Julius
+                    guidedTourObjects[14],
+                    // Corn Dog
+                    guidedTourObjects[18],
+                    // Chick-Fil-A
+                    guidedTourObjects[17],
+                    // jazzercise
+                    guidedTourObjects[16],
+                    // Zeezo's
+                    guidedTourObjects[13],
+                    // Funtastic's
+                    guidedTourObjects[12],
+                    // Cinder Alley sign east
+                    guidedTourObjects[24],
+                    // Gold Mall
+                    guidedTourObjects[25],
+                    // Pollard Gold
+                    guidedTourObjects[27],
+                    // Cinder Alley sign west
+                    guidedTourObjects[26],
+                    // Hummel's
+                    guidedTourObjects[6],
+                    // Blue Mall Ward's exterior entrance
+                    guidedTourObjects[4],
+                    // Blue Mall mezzanine
+                    guidedTourObjects[7]
+                };
+            }
         }
 
         List<Vector3> cameraPositionsList = new List<Vector3>();
