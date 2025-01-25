@@ -1,6 +1,6 @@
 {
   "VersionHistory": {
-    "0.8.1.202410": {
+    "0.8.1.202502": {
       "Overview": "v0.8.1 fixes issues with the new Guided Tour functionality and adds new historic photos.",
       "Environment Updates": [
         "Added historic photos in 1968-1978 Gold Mall, and 1987-1997 Gold Mall and Rose Mall",
@@ -9,11 +9,15 @@
       "UI Updates": [],
       "Code Updates": [
         "Simplified and improved Guided Tour pause, resume, and reset position logic.",
+        "Set people to hidden when historic photos became visible during Guided Tour",
         "Removed random NPC avoidance priority code as it looked even more unnatural.",
-        "Adjusted minimum repath speed for colliding NPCs"
+        "Adjusted minimum repath speed for colliding NPCs",
+        "Added the ability to set recordingMode to use defined manual tour stops for recording walkthrough videos",
+        "Added the ability to print historic camera data in CCP Menu",
+        "Fixed a known regression in v0.8.0 where mouse camera swiveling was no longer smooth"
       ]
     },
-    "0.8.0.202407": {
+    "0.8.0.202408": {
       "Overview": "v0.8.0 adds a guided tour mode and Xbox controller support, introduces more historic photographs in both eras, prevents FPC and NPCs from pathfinding on non-walkable surfaces, and fixes user interface issues.",
       "Environment Updates": [
         "Added over a dozen new photos in both eras for guided tour points of interest",
