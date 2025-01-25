@@ -35,6 +35,7 @@ public class FollowGuidedTour : MonoBehaviour
     public Camera currentGuidedTourDestinationCamera;
     public Vector3 currentGuidedTourVector;
     private bool? areHistoricPhotosVisible = null;
+    private bool? arePeopleVisible = null;
 
     public static bool isGuidedTourTimeTravelRequested = false; // set to true briefly to allow IEnumerator time-travel transition
     private bool isResumeRequiredAfterOverride = false;
