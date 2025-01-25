@@ -48,7 +48,7 @@ public class FollowGuidedTour : MonoBehaviour
     // DEBUGGING
     //
     readonly private bool showDebugLines = false; // if true, show paths and camera positions as debug lines
-    readonly bool shuffleGuidedTourDestinations = true;
+    readonly bool shuffleGuidedTourDestinations = true && !ModeState.useRecordingPhotoOrder;
     private int currentGuidedTourDestinationIndex = 0; // optionally start at a specific index
     readonly bool useOverrideDestinations = false; // if true, use a special list for tour objects
     readonly bool doTestAllPaths = false; // if true, attempt to find paths between all destinations
