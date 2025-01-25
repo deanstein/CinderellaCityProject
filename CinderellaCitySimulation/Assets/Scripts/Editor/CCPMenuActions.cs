@@ -408,6 +408,46 @@ public class CCPMenuActions : MonoBehaviour
         }
     }
 
+    /* ---------- Guided Tour ---------- */
+
+    // prints the names and indices of all historic cameras in the scene
+    [MenuItem("Cinderella City Project/Guided Tour/Print Guided Tour Camera Data")]
+    public static void PrintHistoricPhotoData()
+    {
+        GameObject[] historicPhotoObjects = ManageSceneObjects.ProxyObjects.GetAllHistoricPhotoCamerasInScene(SceneManager.GetActiveScene().name);
+
+        // log the original indices - this is helpful for next runs
+        for (int i = 0; i < historicPhotoObjects.Length; i++)
+        {
+            Debug.Log(historicPhotoObjects[i].name + " is at original index " + i);
+        }
+    }
+
+    [MenuItem("Cinderella City Project/Nav Meshes/Show Guided Tour Camera Position Debug Lines")]
+    public static void ShowGuidedTourCameraPosDebugLines()
+    {
+        // move back from camera this distance 
+        float distanceFromCamera = 1.15f;
+
+        // get all guided tour camera objects
+        GameObject[] guidedTourCameraObjects = ManageSceneObjects.ProxyObjects.GetAllHistoricPhotoCamerasInScene(SceneManager.GetActiveScene().name);
+
+        foreach (GameObject guidedTourCameraObject in guidedTourCameraObjects)
+        {
+            Camera objectCamera = guidedTourCameraObject.GetComponent<Camera>();
+            // record the positions of the cameras
+            Vector3 objectCameraPos = objectCamera.transform.position;
+            // also record the adjusted positions
+            Vector3 objectCameraPosAdjusted = Utils.GeometryUtils.AdjustPositionAwayFromCamera(objectCamera.transform.position, objectCamera, distanceFromCamera);
+            // project the adjusted positions down onto the NavMesh
+            Vector3 objectCameraPosAdjustedOnNavMesh = Utils.GeometryUtils.GetNearestPointOnNavMesh(objectCameraPosAdjusted, 2);
+
+            // draw debug lines
+            Debug.DrawLine(objectCameraPos, objectCameraPosAdjusted, Color.red, 10);
+            Debug.DrawLine(objectCameraPosAdjusted, objectCameraPosAdjustedOnNavMesh, Color.blue, 10);
+        }
+    }
+
     /* ---------- Update Data ---------- */
 
     [MenuItem("Cinderella City Project/Static Flags/Update for Current Scene")]
@@ -490,6 +530,8 @@ public class CCPMenuActions : MonoBehaviour
             }
         }
     }
+
+    /* ---------- Nav Meshes ---------- */
 
     // add all non-walkable mesh renderers to the selection
     // editor operator must manually set these to non-walkable in the Navigation tab
