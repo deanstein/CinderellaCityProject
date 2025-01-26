@@ -31,13 +31,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         public void LookRotation(Transform character, Transform camera)
         {
+            // only apply mouse camera controls and smoothing
+            // if a controller is not currently in use
             if (!isControllerActive)
             {
-                // in case the controller has taken over previously,
-                // use the current rotations before modifying
-                m_CharacterTargetRot = character.localRotation;
-                m_CameraTargetRot = camera.localRotation;
-
                 float yRot = CrossPlatformInputManager.GetAxis("Mouse X") * XSensitivity;
                 float xRot = CrossPlatformInputManager.GetAxis("Mouse Y") * YSensitivity;
 
@@ -61,6 +58,13 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 }
 
                 UpdateCursorLock();
+            }
+            // when a controller is being used,
+            // this prevents this script from interfering with the controller
+            else
+            {
+                m_CharacterTargetRot = character.localRotation;
+                m_CameraTargetRot = camera.localRotation;
             }
         }
 
