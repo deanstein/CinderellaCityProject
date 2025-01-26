@@ -20,9 +20,13 @@ public class UpdateFPSAgentByState : MonoBehaviour
             {
                 gameObject.GetComponent<NavMeshAgent>().enabled = false;
             }
-        // agent should be disabled when anti-gravity mode is on
-        } else
+        }
+        else if (ModeState.isGuidedTourPaused)
         {
+            // agent should be disabled when guided tour is paused
+            gameObject.GetComponent<NavMeshAgent>().enabled = false;
+
+            // agent should be disabled when anti-gravity mode is on
             if (ModeState.isAntiGravityModeActive)
             {
                 gameObject.GetComponent<NavMeshAgent>().enabled = false;
