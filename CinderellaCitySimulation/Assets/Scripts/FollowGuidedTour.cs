@@ -539,7 +539,7 @@ public class FollowGuidedTour : MonoBehaviour
         }
 
         // paused
-        if (ModeState.isGuidedTourPaused && !GetIsGuidedTourOverrideRequested() && (ModeState.isGuidedTourPaused || thisAgent.remainingDistance < 0.01f || thisAgent.velocity.magnitude < 0.01f) || thisAgent.remainingDistance == Mathf.Infinity)
+        if (ModeState.isGuidedTourPaused && !GetIsGuidedTourOverrideRequested() && (thisAgent.velocity.magnitude < 0.01f || thisAgent.remainingDistance == Mathf.Infinity))
         {
             stationaryTimePaused += Time.deltaTime;
         }
