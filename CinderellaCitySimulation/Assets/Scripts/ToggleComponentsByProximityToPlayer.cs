@@ -52,7 +52,7 @@ public class ToggleComponentsByProximityToPlayer : MonoBehaviour {
             {
                 if (!(this.GetComponent(componentType) as Behaviour).enabled)
                 {
-                    Utils.DebugUtils.DebugLog("Enabled " + componentType + " on " + this.name);
+                    DebugUtils.DebugLog("Enabled " + componentType + " on " + this.name);
                     (this.GetComponent(componentType) as Behaviour).enabled = true;
                 }
             }
@@ -68,7 +68,7 @@ public class ToggleComponentsByProximityToPlayer : MonoBehaviour {
             {
                 if ((this.GetComponent(componentType) as Behaviour).enabled)
                 {
-                    Utils.DebugUtils.DebugLog("Disabled " + componentType + " on " + this.name);
+                    DebugUtils.DebugLog("Disabled " + componentType + " on " + this.name);
                     (this.GetComponent(componentType) as Behaviour).enabled = false;
                 }
             }
