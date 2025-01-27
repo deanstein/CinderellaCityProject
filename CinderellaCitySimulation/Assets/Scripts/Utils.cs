@@ -129,7 +129,7 @@ public class NavMeshUtils
         }
         else
         {
-            Utils.DebugUtils.DebugLog("Agent " + agent.transform.gameObject.name + " failed to find a path. The destination point was: " + destination);
+            DebugUtils.DebugLog("Agent " + agent.transform.gameObject.name + " failed to find a path. The destination point was: " + destination);
             return null;
         }
     }
@@ -153,21 +153,6 @@ public class NavMeshUtils
 // TODO: move these out of Utils to top-level classes
 public class Utils
 {
-    public class DebugUtils
-    {
-        // print debug messages in the Editor console?
-        static bool printDebugMessages = true;
-
-        public static void DebugLog(string message)
-        {
-            // only print messages if the flag is set, and if we're in the Editor - otherwise, don't
-            if (printDebugMessages && Application.isEditor)
-            {
-                Debug.Log(message);
-            }
-        }
-    }
-
     public class StringUtils
     {
         // remove spaces, punctuation, and other characters from a string
@@ -243,7 +228,7 @@ public class Utils
             {
                 Vector3[] vertices = mesh.mesh.vertices;
                 meshPos = meshParent.transform.TransformPoint(vertices[vertexIndex]);
-                //Utils.DebugUtils.DebugLog(meshPos);
+                //DebugUtils.DebugLog(meshPos);
                 gameObjectMeshPosList.Add(meshPos);
             }
 
@@ -480,7 +465,7 @@ public class Utils
 
                 if (finalPosition == Vector3.zero)
                 {
-                    Utils.DebugUtils.DebugLog("ERROR: Failed to find a random point on NavMesh, so used the world origin instead.");
+                    DebugUtils.DebugLog("ERROR: Failed to find a random point on NavMesh, so used the world origin instead.");
                 }
             }
 
@@ -549,13 +534,13 @@ public class Utils
             // initialize the game object's maximum bounding box dimension
             float gameObjectMaxDimension = 0;
             
-            //Utils.DebugUtils.DebugLog("Found a MeshChunk to get bounds info from: " + gameObjectMeshRendererArray[i]);
+            //DebugUtils.DebugLog("Found a MeshChunk to get bounds info from: " + gameObjectMeshRendererArray[i]);
 
             //Debug.Log("Bounds: " + bounds);
             float dimX = bounds.extents.x;
             float dimY = bounds.extents.y;
             float dimZ = bounds.extents.z;
-            //Utils.DebugUtils.DebugLog("Mesh dimensions for " + gameObjectMeshFilterArray[i] + dimX + "," + dimY + "," + dimZ);
+            //DebugUtils.DebugLog("Mesh dimensions for " + gameObjectMeshFilterArray[i] + dimX + "," + dimY + "," + dimZ);
 
             List<float> XYZList = new List<float>();
             XYZList.Add(dimX);
@@ -563,7 +548,7 @@ public class Utils
             XYZList.Add(dimZ);
 
             float maxXYZ = XYZList.Max();
-            //Utils.DebugUtils.DebugLog("Max XYZ dimension for " + gameObjectMeshFilterArray[i] + ": " + maxXYZ);
+            //DebugUtils.DebugLog("Max XYZ dimension for " + gameObjectMeshFilterArray[i] + ": " + maxXYZ);
 
             // set the max dimension to the max XYZ value
             gameObjectMaxDimension = maxXYZ;
@@ -579,9 +564,9 @@ public class Utils
         {
             // get the height of the object to be replaced
             float targetHeight = GetMaxGOBoundingBoxDimension(gameObjectToMatch);
-            //Utils.DebugUtils.DebugLog("Target height: " + targetHeight);
+            //DebugUtils.DebugLog("Target height: " + targetHeight);
             float currentHeight = GetMaxGOBoundingBoxDimension(gameObjectToScale);
-            //Utils.DebugUtils.DebugLog("Current height: " + currentHeight);
+            //DebugUtils.DebugLog("Current height: " + currentHeight);
 
             // run NPCs (people) through an extra set of scaling, to reduce their size if required
             if (gameObjectToMatch.name.Contains("people"))
@@ -601,15 +586,15 @@ public class Utils
         // define how to scale a GameObject to match a height
         public static void ScaleGameObjectToMaxHeight(GameObject gameObjectToScale, float targetHeight)
         {
-            //Utils.DebugUtils.DebugLog("Target height: " + targetHeight);
+            //DebugUtils.DebugLog("Target height: " + targetHeight);
             float currentHeight = GetMaxGOBoundingBoxDimension(gameObjectToScale);
-            //Utils.DebugUtils.DebugLog("Current height: " + currentHeight);
+            //DebugUtils.DebugLog("Current height: " + currentHeight);
 
             float scaleFactor = (targetHeight / currentHeight) * ((gameObjectToScale.transform.localScale.x + gameObjectToScale.transform.localScale.y + gameObjectToScale.transform.localScale.z) / 3);
 
             // scale the prefab to match the height of its replacement
             gameObjectToScale.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
-            Utils.DebugUtils.DebugLog("<b>Scaled </b>" + gameObjectToScale + " <b>to max height: </b> " + targetHeight + " <b>(" + scaleFactor + " scale factor)</b>");
+            DebugUtils.DebugLog("<b>Scaled </b>" + gameObjectToScale + " <b>to max height: </b> " + targetHeight + " <b>(" + scaleFactor + " scale factor)</b>");
         }
 
         // randomly rotate a GameObject about its vertical axis (Y)
@@ -629,6 +614,21 @@ public class Utils
 
             // scale the prefab to match the height of its replacement
             gameObjectToScale.transform.localScale = new Vector3(gameObjectToScale.transform.localScale.x * scaleFactor, gameObjectToScale.transform.localScale.y * scaleFactor, gameObjectToScale.transform.localScale.z * scaleFactor);
+        }
+    }
+}
+
+public class DebugUtils
+{
+    // print debug messages in the Editor console?
+    static bool printDebugMessages = true;
+
+    public static void DebugLog(string message)
+    {
+        // only print messages if the flag is set, and if we're in the Editor - otherwise, don't
+        if (printDebugMessages && Application.isEditor)
+        {
+            Debug.Log(message);
         }
     }
 }

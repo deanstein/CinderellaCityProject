@@ -106,7 +106,7 @@ public class HoistSceneObjectsEditor : MonoBehaviour
             if (EditorPrefs.GetFloat(originalSceneContainerYPosKey, -1) != -1 && Mathf.Approximately(currentPosition.y, EditorPrefs.GetFloat(originalSceneContainerYPosKey, -1) + HoistSceneObjects.GetHoistHeightBySceneName(sceneContainer.scene.name)))
             {
 
-                Utils.DebugUtils.DebugLog("This scene container appears to already have been hoisted, and won't be modified: " + sceneContainer.name);
+                DebugUtils.DebugLog("This scene container appears to already have been hoisted, and won't be modified: " + sceneContainer.name);
                 sceneModified = false;
             }
             else
@@ -116,7 +116,7 @@ public class HoistSceneObjectsEditor : MonoBehaviour
 
                 sceneContainer.transform.position = newPosition;
 
-                Utils.DebugUtils.DebugLog("This scene container was hoisted up: " + sceneContainer.name);
+                DebugUtils.DebugLog("This scene container was hoisted up: " + sceneContainer.name);
                 sceneModified = true;
             }
         }
@@ -143,7 +143,7 @@ public class HoistSceneObjectsEditor : MonoBehaviour
             // and display a debug log message
             if (EditorPrefs.GetFloat(originalSceneContainerYPosKey, -1) == -1)
             {
-                Utils.DebugUtils.DebugLog("ERROR: Cannot hoist scene container down, because there is no EditorPrefs record of an original YPosition for this scene container: " + timePeriodSceneContainer.name);
+                DebugUtils.DebugLog("ERROR: Cannot hoist scene container down, because there is no EditorPrefs record of an original YPosition for this scene container: " + timePeriodSceneContainer.name);
 
                 sceneModified = false;
             }
@@ -157,18 +157,18 @@ public class HoistSceneObjectsEditor : MonoBehaviour
 
                 timePeriodSceneContainer.transform.position = newPosition;
 
-                Utils.DebugUtils.DebugLog("This scene container was moved back down to align with its recorded original YPos: " + timePeriodSceneContainer.name);
+                DebugUtils.DebugLog("This scene container was moved back down to align with its recorded original YPos: " + timePeriodSceneContainer.name);
 
                 sceneModified = true;
             }
             else if (Mathf.Approximately(currentSceneContainerYPos - EditorPrefs.GetFloat(originalSceneContainerYPosKey, -1), 0))
             {
-                Utils.DebugUtils.DebugLog("Made no changes to this scene container because it is at its original YPos already: " + timePeriodSceneContainer.name + " " + EditorPrefs.GetFloat(originalSceneContainerYPosKey, -1));
+                DebugUtils.DebugLog("Made no changes to this scene container because it is at its original YPos already: " + timePeriodSceneContainer.name + " " + EditorPrefs.GetFloat(originalSceneContainerYPosKey, -1));
                 sceneModified = false;
             }
             else
             {
-                Utils.DebugUtils.DebugLog("Made no changes to this scene container because its original YPos and current YPos do not have a delta of the global hoist interval. Did something go wrong? " + timePeriodSceneContainer.name + " Delta: " + (currentSceneContainerYPos - EditorPrefs.GetFloat(originalSceneContainerYPosKey)));
+                DebugUtils.DebugLog("Made no changes to this scene container because its original YPos and current YPos do not have a delta of the global hoist interval. Did something go wrong? " + timePeriodSceneContainer.name + " Delta: " + (currentSceneContainerYPos - EditorPrefs.GetFloat(originalSceneContainerYPosKey)));
                 sceneModified = false;
             }
         }

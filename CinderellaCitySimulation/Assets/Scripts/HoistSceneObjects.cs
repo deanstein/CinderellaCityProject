@@ -28,7 +28,7 @@ public class HoistSceneObjects : MonoBehaviour
     {
         float hoistDelta = GetHoistDeltaBetweenScenes(referringSceneName, upcomingSceneName);
 
-        //Utils.DebugUtils.DebugLog("Scene hoist delta: " + hoistDelta + " between " + SceneGlobals.referringSceneName + " and " + SceneGlobals.upcomingSceneName);
+        //DebugUtils.DebugLog("Scene hoist delta: " + hoistDelta + " between " + SceneGlobals.referringSceneName + " and " + SceneGlobals.upcomingSceneName);
 
         Vector3 newPosition = new Vector3(positionToModify.x, positionToModify.y + hoistDelta, positionToModify.z);
 
@@ -103,7 +103,7 @@ public class HoistSceneObjects : MonoBehaviour
         GameObject currentSceneContainer = ManageSceneObjects.GetSceneContainerObject(sceneObject.scene);
 
         float hoistHeight = GetHoistHeightBySceneName(currentSceneContainer.name);
-        //Utils.DebugUtils.DebugLog("Current scene container (" + currentSceneContainer.name + ") hoist height: " + hoistHeight);
+        //DebugUtils.DebugLog("Current scene container (" + currentSceneContainer.name + ") hoist height: " + hoistHeight);
 
         if (hoistHeight != 0)
         {
@@ -129,7 +129,7 @@ public class HoistSceneObjects : MonoBehaviour
         {
             float hoistDelta = GetHoistDeltaBetweenScenes(SceneGlobals.lastKnownTimePeriodSceneName, SceneGlobals.upcomingSceneName);
 
-            //Utils.DebugUtils.DebugLog("Scene hoist delta: " + hoistDelta + " between " + SceneGlobals.referringScene + " and " + SceneGlobals.upcomingScene);
+            //DebugUtils.DebugLog("Scene hoist delta: " + hoistDelta + " between " + SceneGlobals.referringScene + " and " + SceneGlobals.upcomingScene);
 
             newPosition = new Vector3(objectToHoist.transform.position.x, objectToHoist.transform.position.y + hoistDelta, objectToHoist.transform.position.z);
 

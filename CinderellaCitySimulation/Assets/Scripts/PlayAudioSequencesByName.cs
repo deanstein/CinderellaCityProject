@@ -347,7 +347,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
                 return matchingParams;
 
             default:
-                Utils.DebugUtils.DebugLog("Failed to associate speaker params with this speaker: " + name);
+                DebugUtils.DebugLog("Failed to associate speaker params with this speaker: " + name);
                 return null;
         }
     }
@@ -436,7 +436,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
 
         //if (thisAudioSourceComponent.name.Contains("ambient-chatter"))
         //{
-        //    Utils.DebugUtils.DebugLog("This speaker: " + thisAudioSourceComponent?.name + " is playing: " + thisAudioSourceComponent.clip.name + " at this index: " + thisSpeakerParams?.lastKnownClipIndex + " and at this time: " + thisSpeakerParams?.lastKnownClipTime);
+        //    DebugUtils.DebugLog("This speaker: " + thisAudioSourceComponent?.name + " is playing: " + thisAudioSourceComponent.clip.name + " at this index: " + thisSpeakerParams?.lastKnownClipIndex + " and at this time: " + thisSpeakerParams?.lastKnownClipTime);
         //}
     }
 
@@ -565,7 +565,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
                 masterAudioSource.time = thisSpeakerParams.isResuming ? thisSpeakerParams.lastKnownClipTime : 0f;
                 masterAudioSource.Play();
 
-                Utils.DebugUtils.DebugLog("Playing master music " + masterAudioSource.clip.name + " on " + masterAudioSource);
+                DebugUtils.DebugLog("Playing master music " + masterAudioSource.clip.name + " on " + masterAudioSource);
 
                 // sync all suborinates
                 SynchronizeAllSlavesWithMaster(masterAudioSource);

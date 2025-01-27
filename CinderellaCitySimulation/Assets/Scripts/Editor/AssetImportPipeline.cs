@@ -84,7 +84,7 @@ public class AssetImportUpdate : AssetPostprocessor {
     private void SceneChangedInEditModeCallback(Scene previousScene, Scene newScene)
     {
         currentScene = newScene;
-        Utils.DebugUtils.DebugLog("Opened a different Scene in the Editor: " + newScene.name);
+        DebugUtils.DebugLog("Opened a different Scene in the Editor: " + newScene.name);
     }
 
     // define how to clear the console
@@ -136,7 +136,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // if that happens, the gameObject from asset will be null, so skip this to prevent errors
         if (gameObject == null)
         {
-            Utils.DebugUtils.DebugLog("This GameObject was null, so skipping set custom lightmapping operation: " + gameObject.name);
+            DebugUtils.DebugLog("This GameObject was null, so skipping set custom lightmapping operation: " + gameObject.name);
 
             return;
         }
@@ -161,7 +161,7 @@ public class AssetImportUpdate : AssetPostprocessor {
                 float existingResolution = so.FindProperty("m_ScaleInLightmap").floatValue;
                 float newResolution = ManageImportSettings.GetShadowMapResolutionOverrideByMaterialName(sceneName, gameObject.name, mat.name, ManageImportSettings.GetShadowMapResolutionMultiplierByName(gameObject.name));
 
-                //Utils.DebugUtils.DebugLog("Changing resolution of " + gameObject.name + " child " + child.name + " to " + newResolution);
+                //DebugUtils.DebugLog("Changing resolution of " + gameObject.name + " child " + child.name + " to " + newResolution);
 
                 // only bother changing the properties if the existing and new res don't match
                 if (existingResolution != newResolution)
@@ -205,7 +205,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // if the game object is null, this is a new file... so refresh the asset database and try again
         if (!gameObjectFromAsset)
         {
-            //Utils.DebugUtils.DebugLog("Game object from asset not valid (yet): " + assetFilePath);
+            //DebugUtils.DebugLog("Game object from asset not valid (yet): " + assetFilePath);
             AssetDatabase.Refresh();
             gameObjectFromAsset = (GameObject)AssetDatabase.LoadAssetAtPath(importedAssetFilePath, typeof(GameObject));
         }
@@ -219,7 +219,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         {
             if (sceneObject.name == gameObjectFromAsset.name)
             {
-                Utils.DebugUtils.DebugLog("This object is already present in the model.");
+                DebugUtils.DebugLog("This object is already present in the model.");
                 return;
             }
         }
@@ -227,7 +227,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // otherwise, instantiate as a prefab with the name of the file
         newlyInstantiatedFBXContainer = PrefabUtility.InstantiatePrefab(gameObjectFromAsset, scene) as GameObject;
         newlyInstantiatedFBXContainer.name = gameObjectFromAsset.name;
-        Utils.DebugUtils.DebugLog("This object was instantiated in the model hierarchy.");
+        DebugUtils.DebugLog("This object was instantiated in the model hierarchy.");
 
         // set the flag that an object was just instantiated so we can fix parent/child hierarchy in post-processor
         isNewlyInstantiatedFBXContainer = true;
@@ -264,7 +264,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         {
             //var dependencyPath = AssetDatabase.GetAssetPath(dependency);
             var dependencyPathString = dependencyPath.ToString();
-            //Utils.DebugUtils.DebugLog("Dependency path: " + dependencyPathString);
+            //DebugUtils.DebugLog("Dependency path: " + dependencyPathString);
 
             // if there are materials or textures detected in the path, delete them
             // note that we also check that the path includes the file name to avoid other assets from being affected
@@ -272,7 +272,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             {
                 UnityEngine.Windows.File.Delete(dependencyPathString);
                 UnityEngine.Windows.File.Delete(dependencyPathString + ".meta");
-                Utils.DebugUtils.DebugLog("<b>Deleting files and meta files:</b> " + dependencyPathString);
+                DebugUtils.DebugLog("<b>Deleting files and meta files:</b> " + dependencyPathString);
                 reimportRequired = true;
                 prevTime = Time.time;
             }
@@ -283,11 +283,11 @@ public class AssetImportUpdate : AssetPostprocessor {
         // if materials or textures were deleted, force reimport the model
         if (reimportRequired)
         {
-            Utils.DebugUtils.DebugLog("Reimport model triggered. Forcing asset update...");
+            DebugUtils.DebugLog("Reimport model triggered. Forcing asset update...");
             AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
         }
 
-        Utils.DebugUtils.DebugLog("Re-importing materials...");
+        DebugUtils.DebugLog("Re-importing materials...");
 
         // import materials
         importer.importMaterials = true;
@@ -309,7 +309,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         importedAssetTexturesDirectory = assetTexturesDirectory;
 
         // re-extract textures
-        Utils.DebugUtils.DebugLog("Re-importing textures...");
+        DebugUtils.DebugLog("Re-importing textures...");
         importer.ExtractTextures(assetTexturesDirectory);
 
     }
@@ -335,7 +335,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         Texture texture = mat.GetTexture("_MainTex");
         mat.SetTexture("_EmissionMap", texture);
 
-        Utils.DebugUtils.DebugLog("<b>Set standard emission on Material: </b>" + mat);
+        DebugUtils.DebugLog("<b>Set standard emission on Material: </b>" + mat);
     }
 
     // define how to enable custom emission color and intensity on a material
@@ -351,7 +351,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // redefine the color with intensity factored in - this should result in the UI slider matching the desired value
         color *= Mathf.Pow(2.0F, adjustedIntensity);
         mat.SetColor("_EmissionColor", color);
-        Utils.DebugUtils.DebugLog("<b>Set custom emission intensity of " + intensity + " (" + adjustedIntensity + " internally) on Material: </b>" + mat);
+        DebugUtils.DebugLog("<b>Set custom emission intensity of " + intensity + " (" + adjustedIntensity + " internally) on Material: </b>" + mat);
     }
 
     // define how to set a custom material emission color
@@ -369,7 +369,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
 
         mat.color = new Color(R, G, B);
-        Utils.DebugUtils.DebugLog("<b>Set custom emission color on Material: </b>" + mat);
+        DebugUtils.DebugLog("<b>Set custom emission color on Material: </b>" + mat);
     }
 
     // define how to create a greyscale new texture given a scale factor from 0 (black) to 1 (white)
@@ -387,7 +387,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // so it's likely already made and can be reused
         if (!AssetDatabase.LoadAssetAtPath(filePath, typeof(Texture)))
         {
-            //Utils.DebugUtils.DebugLog("No MetallicGlossMap detected. Creating one.");
+            //DebugUtils.DebugLog("No MetallicGlossMap detected. Creating one.");
             // since the texture is just one color, we don't need a high resolution
             int sizeX = 100;
             int sizeY = 100;
@@ -420,7 +420,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
         else
         {
-            //Utils.DebugUtils.DebugLog("MetallicGlossMap texture already exists.");
+            //DebugUtils.DebugLog("MetallicGlossMap texture already exists.");
         }
 
         return filePath;
@@ -430,7 +430,7 @@ public class AssetImportUpdate : AssetPostprocessor {
     // define how to set material smoothness
     public static void SetMaterialSmoothness(string materialFilePath, float smoothness)
     {
-        Utils.DebugUtils.DebugLog("<b>Set smoothness on Material: </b>" + materialFilePath);
+        DebugUtils.DebugLog("<b>Set smoothness on Material: </b>" + materialFilePath);
 
         // get the material at this path
         Material mat = (Material)AssetDatabase.LoadAssetAtPath(materialFilePath, typeof(Material));
@@ -470,7 +470,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // set the MetallicGlossMap as the black texture
         mat.SetTexture("_MetallicGlossMap", metallicGlossTexture);
 
-        Utils.DebugUtils.DebugLog("<b>Set metallic on Material: </b>" + mat);
+        DebugUtils.DebugLog("<b>Set metallic on Material: </b>" + mat);
     }
 
     // use the specular shader to set a material to no specular
@@ -496,8 +496,8 @@ public class AssetImportUpdate : AssetPostprocessor {
         string FBMFolderPath = assetFileDirectory + assetFileName + ".fbm";
         if (AssetDatabase.IsValidFolder(FBMFolderPath))
         {
-            Utils.DebugUtils.DebugLog("<b>Deleting a leftover .FBM folder: </b>" + FBMFolderPath);
-            //Utils.DebugUtils.DebugLog(assetFileDirectory + assetFileName + ".fbm");
+            DebugUtils.DebugLog("<b>Deleting a leftover .FBM folder: </b>" + FBMFolderPath);
+            //DebugUtils.DebugLog(assetFileDirectory + assetFileName + ".fbm");
             UnityEngine.Windows.Directory.Delete(importedAssetFileDirectory + importedAssetFileName + ".fbm");
             UnityEngine.Windows.File.Delete(importedAssetFileDirectory + importedAssetFileName + ".fbm.meta");
         }
@@ -527,7 +527,7 @@ public class AssetImportUpdate : AssetPostprocessor {
                 // if the folder exists, delete it
                 if (AssetDatabase.IsValidFolder(FBMFolderPath))
                 {
-                    Utils.DebugUtils.DebugLog("<b>Found a leftover .FBM folder to delete: </b>" + FBMFolderPath);
+                    DebugUtils.DebugLog("<b>Found a leftover .FBM folder to delete: </b>" + FBMFolderPath);
                     UnityEngine.Windows.Directory.Delete(FBMFolderPath);
                     UnityEngine.Windows.File.Delete(FBMFolderPath + ".meta");
 
@@ -538,7 +538,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         if (!anyFoldersDeleted)
         {
-            Utils.DebugUtils.DebugLog("Found no .FBM folders to delete for the objects found in the scene.");
+            DebugUtils.DebugLog("Found no .FBM folders to delete for the objects found in the scene.");
         }
     }
 
@@ -549,7 +549,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // if this object already has a component of this type, delete it
         if (hasComponent)
         {
-            Utils.DebugUtils.DebugLog("<b>Deleted</b> existing behavior component " + componentType + " on " + gameObjectForComponent + ".");
+            DebugUtils.DebugLog("<b>Deleted</b> existing behavior component " + componentType + " on " + gameObjectForComponent + ".");
             Component componentToDelete = gameObjectForComponent.GetComponent(componentType) as Component;
             //AudioSource audioSourceToDelete = gameObjectForComponent.gameObject.GetComponent<AudioSource>();
 
@@ -570,7 +570,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // now add the component
         gameObjectForComponent.AddComponent(unityEngineComponentType);
 
-        Utils.DebugUtils.DebugLog("<b>Added</b> " + componentName + " component to " + gameObjectForComponent);
+        DebugUtils.DebugLog("<b>Added</b> " + componentName + " component to " + gameObjectForComponent);
     }
 
     // adds Unity Engine components to a GameObject's children
@@ -596,7 +596,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             // now add the component
             Component customScriptComponent = gameObjectForComponent.AddComponent(customScriptComponentType);
 
-            Utils.DebugUtils.DebugLog("<b>Added</b> " + scriptName + " component to " + gameObjectForComponent);
+            DebugUtils.DebugLog("<b>Added</b> " + scriptName + " component to " + gameObjectForComponent);
         }
     }
 
@@ -612,7 +612,7 @@ public class AssetImportUpdate : AssetPostprocessor {
     // add certain behavior components to certain GameObjects as defined by their host file name
     public static void AddBehaviorComponentsByName(string assetName)
     {
-        Utils.DebugUtils.DebugLog("Adding behavior components...");
+        DebugUtils.DebugLog("Adding behavior components...");
 
         // find the associated GameObject by this asset's name, and all of its children objects
         GameObject gameObjectByAssetName = GameObject.Find(assetName);
@@ -733,7 +733,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         // get the appropriate flags for this asset
         var staticFlags = ManageImportSettings.GetStaticFlagsByName(gameObject.name);
-        Utils.DebugUtils.DebugLog("Setting static flags for " + gameObject.name);
+        DebugUtils.DebugLog("Setting static flags for " + gameObject.name);
 
         // get all children of the asset-based gameObject
         Transform[] allChildren = gameObject.GetComponentsInChildren<Transform>(true); // true to include inactive children
@@ -775,7 +775,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         {
             var dependencyPath = AssetDatabase.GetAssetPath(dependency);
             string dependencyPathString = dependencyPath.ToString();
-            //Utils.DebugUtils.DebugLog("Dependency path: " + dependencyPathString);
+            //DebugUtils.DebugLog("Dependency path: " + dependencyPathString);
 
             // limit changes to materials only
             if (dependencyPathString.Contains(".mat"))
@@ -812,7 +812,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         {
             var dependencyPath = AssetDatabase.GetAssetPath(dependency);
             string dependencyPathString = dependencyPath.ToString();
-            //Utils.DebugUtils.DebugLog("Dependency path: " + dependencyPathString);
+            //DebugUtils.DebugLog("Dependency path: " + dependencyPathString);
 
             // limit changes to materials only
             if (dependencyPathString.Contains(".mat"))
@@ -936,7 +936,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         float distanceToNearestNavMeshPoint = Vector3.Distance(NPCObjectPos, nearestMeshPoint);
 
         // DEBUGGING
-        //Utils.DebugUtils.DebugLog("Distance from " + NPCObject.name + " to its nearest NavMesh point: " + distanceToNearestNavMeshPoint);
+        //DebugUtils.DebugLog("Distance from " + NPCObject.name + " to its nearest NavMesh point: " + distanceToNearestNavMeshPoint);
         //Debug.DrawLine(NPCObjectPos, nearestMeshPoint, new Color(1.0f, 0.64f, 1.0f), 100);
 
         // if the distance between the current position, and the nearest navmesh position
@@ -1002,7 +1002,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // don't do anything if this isn't required
         if (proxyReplacementProcessingRequired == false)
         {
-            Utils.DebugUtils.DebugLog("ProxyReplacementProcessing was not required.");
+            DebugUtils.DebugLog("ProxyReplacementProcessing was not required.");
             return;
         }
 
@@ -1025,7 +1025,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // we might get here, if so we need to return to prevent an error
         if (!gameObjectByAsset)
         {
-            Utils.DebugUtils.DebugLog("Couldn't find the GameObject by name: " + assetName);
+            DebugUtils.DebugLog("Couldn't find the GameObject by name: " + assetName);
             postProcessingRequired = false;
             return;
         }
@@ -1090,7 +1090,7 @@ public class AssetImportUpdate : AssetPostprocessor {
                             // if we get a zero vector, the random point generation failed
                             else
                             {
-                                Utils.DebugUtils.DebugLog("The provided point for a random filler was Vector3.zero, so no filler was instantiated.");
+                                DebugUtils.DebugLog("The provided point for a random filler was Vector3.zero, so no filler was instantiated.");
                             }
                         }
                     }
@@ -1297,7 +1297,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
                     }
 
-                    //Utils.DebugUtils.DebugLog("Position: " + instancedPrefab.transform.GetChild(0).position);
+                    //DebugUtils.DebugLog("Position: " + instancedPrefab.transform.GetChild(0).position);
 
                     // some proxies may have been placed at the origin, meaning we couldn't
                     // find a good random spot for them - so they should be deleted
@@ -1306,7 +1306,7 @@ public class AssetImportUpdate : AssetPostprocessor {
                     if (Math.Abs(transformToTest.position.x) < ProxyGlobals.proxyOriginTolerance
                         && Math.Abs(transformToTest.position.z) < ProxyGlobals.proxyOriginTolerance)
                     {
-                        Utils.DebugUtils.DebugLog("<b>Culling </b>" + instancedPrefab.name + " because it was found at the world origin.");
+                        DebugUtils.DebugLog("<b>Culling </b>" + instancedPrefab.name + " because it was found at the world origin.");
 
                         // count this as a culled instance
                         culledPrefabs++;
@@ -1382,7 +1382,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         }
 
         // log how many prefabs were successfully instanced
-        Utils.DebugUtils.DebugLog("Number of successfully instanced prefabs: " + (instancedPrefabs.Count - culledPrefabs) + " (" + culledPrefabs + " culled), including " + instancedPrefabsFromProxies.Count + " from proxy objects, and " + instancedPrefabsAsRandomFillers.Count + " as random fillers.");
+        DebugUtils.DebugLog("Number of successfully instanced prefabs: " + (instancedPrefabs.Count - culledPrefabs) + " (" + culledPrefabs + " culled), including " + instancedPrefabsFromProxies.Count + " from proxy objects, and " + instancedPrefabsAsRandomFillers.Count + " as random fillers.");
     }
 
     // copies a component and all its settings from one GameObject to another
@@ -1409,23 +1409,23 @@ public class AssetImportUpdate : AssetPostprocessor {
     void OnPreprocessTexture()
     {
         // check if the pre-processor just ran, and if so, skip pre-processing
-        //Utils.DebugUtils.DebugLog("Current time: " + Time.time);
-        //Utils.DebugUtils.DebugLog("Previous time: " + prevTime);
+        //DebugUtils.DebugLog("Current time: " + Time.time);
+        //DebugUtils.DebugLog("Previous time: " + prevTime);
         if (Time.time == prevTime)
         {
-            Utils.DebugUtils.DebugLog("Skipping pre-processing texture because the pre-processor just ran.");
+            DebugUtils.DebugLog("Skipping pre-processing texture because the pre-processor just ran.");
             return;
         }
 
         //ClearConsole();
-        Utils.DebugUtils.DebugLog("START Texture PreProcessing...");
+        DebugUtils.DebugLog("START Texture PreProcessing...");
 
         postProcessingHits.Clear();
 
         // get the file path of the asset that just got updated
         TextureImporter textureImporter = assetImporter as TextureImporter;
         String assetFilePath = textureImporter.assetPath.ToLower();
-        Utils.DebugUtils.DebugLog("Modified file: " + assetFilePath);
+        DebugUtils.DebugLog("Modified file: " + assetFilePath);
 
         // make the asset path available globally
         importedAssetFilePath = assetFilePath;
@@ -1447,23 +1447,23 @@ public class AssetImportUpdate : AssetPostprocessor {
     void OnPreprocessAudio()
     {
         // check if the pre-processor just ran, and if so, skip pre-processing
-        //Utils.DebugUtils.DebugLog("Current time: " + Time.time);
-        //Utils.DebugUtils.DebugLog("Previous time: " + prevTime);
+        //DebugUtils.DebugLog("Current time: " + Time.time);
+        //DebugUtils.DebugLog("Previous time: " + prevTime);
         if (Time.time == prevTime)
         {
-            Utils.DebugUtils.DebugLog("Skipping pre-processing audio because the pre-processor just ran.");
+            DebugUtils.DebugLog("Skipping pre-processing audio because the pre-processor just ran.");
             return;
         }
 
         ClearConsole();
-        Utils.DebugUtils.DebugLog("START Audio PreProcessing...");
+        DebugUtils.DebugLog("START Audio PreProcessing...");
 
         postProcessingHits.Clear();
 
         // get the file path of the asset that just got updated
         AudioImporter audioImporter = assetImporter as AudioImporter;
         String assetFilePath = audioImporter.assetPath.ToLower();
-        Utils.DebugUtils.DebugLog(assetFilePath);
+        DebugUtils.DebugLog(assetFilePath);
 
         // make the asset path available globally
         importedAssetFilePath = assetFilePath;
@@ -1486,11 +1486,11 @@ public class AssetImportUpdate : AssetPostprocessor {
     void OnPreprocessModel()
     {
         // check if the pre-processor just ran, and if so, skip pre-processing
-        //Utils.DebugUtils.DebugLog("Current time: " + Time.time);
-        //Utils.DebugUtils.DebugLog("Previous time: " + prevTime);
+        //DebugUtils.DebugLog("Current time: " + Time.time);
+        //DebugUtils.DebugLog("Previous time: " + prevTime);
         if (Time.time == prevTime)
         {
-            Utils.DebugUtils.DebugLog("Skipping pre-processing model because the pre-processor just ran.");
+            DebugUtils.DebugLog("Skipping pre-processing model because the pre-processor just ran.");
             return;
         }
 
@@ -1498,14 +1498,14 @@ public class AssetImportUpdate : AssetPostprocessor {
         DeleteFBMFolderOnImport(importedAssetFileDirectory, importedAssetFileName);
 
         //ClearConsole();
-        Utils.DebugUtils.DebugLog("START Model PreProcessing...");
+        DebugUtils.DebugLog("START Model PreProcessing...");
 
         postProcessingHits.Clear();
 
         // get the file path of the asset that just got updated
         ModelImporter modelImporter = assetImporter as ModelImporter;
         String assetFilePath = modelImporter.assetPath.ToLower();
-        Utils.DebugUtils.DebugLog("Modified file: " + assetFilePath);
+        DebugUtils.DebugLog("Modified file: " + assetFilePath);
 
         // make the asset path available globally
         importedAssetFilePath = assetFilePath;
@@ -1587,7 +1587,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         // if post processing isn't required, skip
         if (!postProcessingRequired)
         {
-            Utils.DebugUtils.DebugLog("Skipping PostProcessing (not required)");
+            DebugUtils.DebugLog("Skipping PostProcessing (not required)");
             return;
         }
 
@@ -1595,11 +1595,11 @@ public class AssetImportUpdate : AssetPostprocessor {
         // any further is probably not necessary
         if (!postProcessingRequired || postProcessingHits.Count >= globalMaxPostProcessingHits)
         {
-            Utils.DebugUtils.DebugLog("Skipping PostProcessing attempt " + postProcessingHits.Count + " (max allowed: " + globalMaxPostProcessingHits + ")");
+            DebugUtils.DebugLog("Skipping PostProcessing attempt " + postProcessingHits.Count + " (max allowed: " + globalMaxPostProcessingHits + ")");
             return;
         }
 
-        Utils.DebugUtils.DebugLog("START PostProcessing...");
+        DebugUtils.DebugLog("START PostProcessing...");
 
         // add to the list of post processing hits, so we know how many times we've been here
         postProcessingHits.Add(true);
@@ -1666,6 +1666,6 @@ public class AssetImportUpdate : AssetPostprocessor {
             SetObjectAsChildOfSceneContainer(newlyInstantiatedFBXContainer);
         }
 
-        Utils.DebugUtils.DebugLog("END PostProcessing");
+        DebugUtils.DebugLog("END PostProcessing");
     }
 }

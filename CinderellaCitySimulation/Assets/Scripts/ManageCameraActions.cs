@@ -200,7 +200,7 @@ public class ManageCameraActions : MonoBehaviour
             string temporaryFilePath = CameraActionGlobals.inGameScreenshotsPath + thumbnailCamera.name + "-" + SceneManager.GetActiveScene().name + CameraActionGlobals.screenshotFormat;
             string resourcesFilePath = UIGlobals.projectUIPath + UIGlobals.mainMenuThumbnailsSubdir + thumbnailCamera.name + "-" + SceneManager.GetActiveScene().name + CameraActionGlobals.screenshotFormat;
 
-            Utils.DebugUtils.DebugLog("<b>Replacing</b> " + temporaryFilePath + " <b>with</b> " + resourcesFilePath);
+            DebugUtils.DebugLog("<b>Replacing</b> " + temporaryFilePath + " <b>with</b> " + resourcesFilePath);
 
             FileUtil.ReplaceFile(temporaryFilePath, resourcesFilePath);
         }

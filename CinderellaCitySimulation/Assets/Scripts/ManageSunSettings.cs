@@ -71,7 +71,7 @@ public class ManageSunSettings : MonoBehaviour
         }
         else
         {
-            Utils.DebugUtils.DebugLog("Failed to find a sun for the given Scene name.");
+            DebugUtils.DebugLog("Failed to find a sun for the given Scene name.");
             return null;
         }
     }

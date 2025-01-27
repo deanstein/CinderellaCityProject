@@ -288,7 +288,7 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
     {
         // define the time periods that are considered disabled at this time
         List<string> disabledTimePeriodSceneNames = ManageScenes.GetDisabledTimePeriodSceneNames(SceneGlobals.referringSceneName);
-        //Utils.DebugUtils.DebugLog("Disabled time period scene names: " + disabledTimePeriodSceneNames);
+        //DebugUtils.DebugLog("Disabled time period scene names: " + disabledTimePeriodSceneNames);
 
         // for each inactive time period, enable it without scripts, take a screenshot, and update textures
         foreach (string disabledSceneName in disabledTimePeriodSceneNames)
