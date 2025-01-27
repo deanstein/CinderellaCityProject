@@ -479,5 +479,37 @@ public class ManageProxyMapping
         }
         return instancedPrefab;
     }
+
+    // mostly intended to eliminate NPC duplicates
+    public static void FixDuplicateStationaryNPCs(string proxyType, float maxDistance /*List<GameObject> pool*/)
+    {
+        // get all elements tagged with this proxy type tag
+        string proxyTag = ManageTags.GetOrCreateTagByProxyType(proxyType);
+
+        GameObject[] allNPCs = GameObject.FindGameObjectsWithTag(proxyTag);
+        List<GameObject> stationaryNPCs = new List<GameObject>();
+
+        for (int i = 0; i < allNPCs.Length; i++)
+        {
+            if (allNPCs[i].GetComponent<NavMeshAgent>() == null)
+            {
+                stationaryNPCs.Add(allNPCs[i]);
+                
+            }
+            //for (int j = i + 1; j < allNPCs.Length; j++)
+            //{
+            //    float distance = Vector3.Distance(allNPCs[i].transform.position, allNPCs[j].transform.position);
+            //    if (distance < maxDistance)
+            //    {
+            //        // The two GameObjects are within the proximity threshold
+            //        Debug.Log("Point determined too close!");
+                    
+            //    }
+            //}
+        }
+
+        Debug.Log("Total number of stationary NPCs: " + stationaryNPCs.Count);
+    }
+
 }
 

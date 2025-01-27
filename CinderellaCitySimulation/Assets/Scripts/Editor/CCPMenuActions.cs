@@ -633,6 +633,14 @@ public class CCPMenuActions : MonoBehaviour
         }
     }
 
+    /* ---------- Proxy Objects ---------- */
+
+    [MenuItem("Cinderella City Project/Proxy Objects/Fix Duplicate NPCs in Current Scene")]
+    public static void FixDuplicateStationaryNPCs()
+    {
+        ManageProxyMapping.FixDuplicateStationaryNPCs("People", 8);
+    }
+
     [MenuItem("Cinderella City Project/Occlusion Culling/Update for All Scenes")]
     public static void UpdateOcclusionCulling()
     {
