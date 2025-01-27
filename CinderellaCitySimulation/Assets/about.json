@@ -12,9 +12,10 @@
         "Set people to hidden when historic photos became visible during Guided Tour",
         "Removed random NPC avoidance priority code as it looked even more unnatural.",
         "Adjusted minimum repath speed for colliding NPCs",
-        "Added the ability to set recordingMode to use defined manual tour stops for recording walkthrough videos",
+        "Added recordingMode support in in ccp-startup-config.json to use defined manual tour stops for recording walkthrough videos",
         "Added the ability to print historic camera data in CCP Menu",
-        "Fixed a known regression in v0.8.0 where mouse camera swiveling was no longer smooth"
+        "Fixed a known regression in v0.8.0 where mouse camera swiveling was no longer smooth",
+        "Improved startup config initialization lifecycle"
       ]
     },
     "0.8.0.202408": {
@@ -36,11 +37,12 @@
       ],
       "Code Updates": [
         "Added a guided tour mode on the active FPSController, accessible via shortcut",
-        "Added the ability to select all non-walkable floors to set them as non-walkable in the NavMesh",
         "Added input classes and Xbox One controller support",
+        "Added the ability to select all non-walkable floors to set them as non-walkable in the NavMesh",
         "Added automatic project version updater that uses today's date in editor",
         "Added ability to find closest horizontal nav mesh point",
         "Added states for guided tour, anti-gravity mode",
+        "Added support for ccp-startup-config.json with options for starting the game with certain flags",
         "Refactored and combined code from guided tour attempts in v0.7.x",
         "Fixed an issue where NPCs had equal priority, causing extended collisions",
         "Fixed issues with finding top-level gameobjects by name in some cases"
