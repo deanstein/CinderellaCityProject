@@ -25,7 +25,6 @@ public class FollowRandomPath : MonoBehaviour
     readonly float dotProductAlignThreshold = 0.90f;
     readonly float dotProductPosThreshold = 0.75f;
     readonly float maxDistanceForFarCheck = 2.0f;
-    readonly float maxDistanceForCloseCheck = 0.1f;
     // repath if slowing down (likely due to colliding with others)
     readonly bool doRepathIfSlow = true;
 
