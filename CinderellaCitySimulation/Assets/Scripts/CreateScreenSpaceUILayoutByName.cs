@@ -157,7 +157,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         // otherwise, no UI will be built because the name wasn't found or recognized
         else
         {
-            Utils.DebugUtils.DebugLog("Unknown UI type! " + name);
+            DebugUtils.DebugLog("Unknown UI type! " + name);
         }
     }
 
@@ -170,7 +170,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
     // loading screen
     public static GameObject BuildLoadingScreen(GameObject UILauncher, Sprite[] backgroundSlideshowSequence)
     {
-        Utils.DebugUtils.DebugLog("Building the loading screen...");
+        DebugUtils.DebugLog("Building the loading screen...");
 
         // the loading screen is responsible for preloading the large scenes so level choice is faster
 
@@ -195,7 +195,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
     // main menu
     public static GameObject BuildMainMenu(GameObject UILauncher, Sprite[] backgroundSlideshowSequence)
     {
-        Utils.DebugUtils.DebugLog("Building the Main Menu...");
+        DebugUtils.DebugLog("Building the Main Menu...");
 
         // main menu canvas
         GameObject mainMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, SceneGlobals.mainMenuSceneName);
@@ -254,7 +254,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
     // how to play, including shortcuts/controls
     public static GameObject BuildHowToPlayScreen(GameObject UILauncher)
     {
-        Utils.DebugUtils.DebugLog("Building the How-to-Play Screen...");
+        DebugUtils.DebugLog("Building the How-to-Play Screen...");
 
         // define the background image path
         string backgroundImagePath = "UI/HowToPlayScreenBackground";
@@ -280,7 +280,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
     // credits
     public static GameObject BuildCreditsScreen(GameObject UILauncher)
     {
-        Utils.DebugUtils.DebugLog("Building the Credits Screen...");
+        DebugUtils.DebugLog("Building the Credits Screen...");
 
         // define the background image path
         string backgroundImagePath = "UI/CreditsScreenBackground";
@@ -356,7 +356,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
     // pause menu
     public static GameObject BuildPauseMenu(GameObject UILauncher)
     {
-        Utils.DebugUtils.DebugLog("Building the Pause Menu...");
+        DebugUtils.DebugLog("Building the Pause Menu...");
 
         // clear the time travel thumbnails, since this may be called multiple times in one session
         UIGlobals.timeTravelThumbnails.Clear();
@@ -387,7 +387,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
     // the heads-up-display
     public static GameObject BuildTimePeriodHUD(GameObject UILauncher)
     {
-        Utils.DebugUtils.DebugLog("Building the Heads Up Display...");
+        DebugUtils.DebugLog("Building the Heads Up Display...");
 
         // Heads Up Display canvas
         GameObject HUDCanvasParentObject = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, "HUD");
@@ -413,7 +413,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
     // the visualization menu
     public static GameObject BuildVisualizationMenuOverlay(GameObject UILauncher)
     {
-        Utils.DebugUtils.DebugLog("Building the Visibility Menu...");
+        DebugUtils.DebugLog("Building the Visibility Menu...");
 
         // visibility menu canvas
         GameObject visibilityMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, SceneGlobals.visibilityMenuSceneName);
@@ -665,7 +665,7 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
     // the audio settings menu
     public static GameObject BuildAudioMenuOverlay(GameObject UILauncher)
     {
-        Utils.DebugUtils.DebugLog("Building the Audio Menu...");
+        DebugUtils.DebugLog("Building the Audio Menu...");
 
         // audio menu canvas
         GameObject audioMenu = CreateScreenSpaceUIElements.CreateMenuCanvas(UILauncher, SceneGlobals.visibilityMenuSceneName);

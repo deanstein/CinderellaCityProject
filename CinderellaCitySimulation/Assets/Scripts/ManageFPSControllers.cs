@@ -173,7 +173,7 @@ public class ManageFPSControllers : MonoBehaviour {
             if (cameraPartialName.Contains(cameraPositionName))
             {
                 matchingCameraFound = true;
-                Utils.DebugUtils.DebugLog("Found a matching camera: " + cameraPositionName);
+                DebugUtils.DebugLog("Found a matching camera: " + cameraPositionName);
 
                 // need to make sure the camera transform doesn't include a rotation up or down (causes FPSCharacter to tilt)
                 Vector3 currentCameraForward = camera.transform.forward;
@@ -210,7 +210,7 @@ public class ManageFPSControllers : MonoBehaviour {
         // alert if a matching camera wasn't found
         if (!matchingCameraFound)
         {
-            Utils.DebugUtils.DebugLog("Failed to find a matching camera for: " + cameraPartialName);
+            DebugUtils.DebugLog("Failed to find a matching camera for: " + cameraPartialName);
         }
 
         // restore the existing post process profile
@@ -236,7 +236,7 @@ public class ManageFPSControllers : MonoBehaviour {
         FPSControllerRestoreData.restoreCameraForward[2] = FPSControllerCamera.transform.forward.z;
 
         string serializedFPSControllerData = JsonUtility.ToJson(FPSControllerRestoreData);
-        //Utils.DebugUtils.DebugLog("FPS Controller data: " + serializedFPSControllerData);
+        //DebugUtils.DebugLog("FPS Controller data: " + serializedFPSControllerData);
 
         FPSControllerGlobals.activeFPSControllerRestoreData = FPSControllerRestoreData;
 

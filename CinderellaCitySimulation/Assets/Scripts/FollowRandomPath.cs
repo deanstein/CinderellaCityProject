@@ -55,7 +55,7 @@ public class FollowRandomPath : MonoBehaviour
     private void OnEnable()
     {
         NPCControllerGlobals.activeNPCControllersCount++;
-        //Utils.DebugUtils.DebugLog("Active NPCControllers following paths: " + NPCControllerGlobals.activeNPCControllers);
+        //DebugUtils.DebugLog("Active NPCControllers following paths: " + NPCControllerGlobals.activeNPCControllers);
 
         // if a path was previously recorded, use it
         if (path != null)

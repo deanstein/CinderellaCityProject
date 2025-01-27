@@ -19,7 +19,7 @@ public static class ManageEditorScenes
             string loadingScenePath = SceneGlobals.GetScenePathByName(loadingScene);
 
             EditorSceneManager.OpenScene(loadingScenePath);
-            //Utils.DebugUtils.DebugLog("Opening the loading scene first...");
+            //DebugUtils.DebugLog("Opening the loading scene first...");
         }
 
         // load each specified scene additively
@@ -29,7 +29,7 @@ public static class ManageEditorScenes
             string scenePath = SceneGlobals.GetScenePathByName(sceneNames[i]);
 
             EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Additive);
-            //Utils.DebugUtils.DebugLog("Additively opening scene in editor: " + scenePath);
+            //DebugUtils.DebugLog("Additively opening scene in editor: " + scenePath);
         }
     }
 

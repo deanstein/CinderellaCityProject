@@ -53,17 +53,17 @@ public static class ManageEditorPrefs
             {
                 EditorPrefs.SetFloat(currentSceneContainerYPosKey, currentSceneContainerYPos);
 
-                Utils.DebugUtils.DebugLog("This scene's container YPos was not recorded previously, so the current YPos was recorded: " + currentSceneContainer.name);
+                DebugUtils.DebugLog("This scene's container YPos was not recorded previously, so the current YPos was recorded: " + currentSceneContainer.name);
             }
             else if (!Mathf.Approximately(EditorPrefs.GetFloat(currentSceneContainerYPosKey, -1), currentSceneContainerYPos))
             {
                 EditorPrefs.SetFloat(currentSceneContainerYPosKey, currentSceneContainerYPos);
 
-                Utils.DebugUtils.DebugLog("This scene's container YPos was already recorded, but didn't match the current YPos, so it's been overwritten: " + currentSceneContainer.name);
+                DebugUtils.DebugLog("This scene's container YPos was already recorded, but didn't match the current YPos, so it's been overwritten: " + currentSceneContainer.name);
             }
             else
             {
-                Utils.DebugUtils.DebugLog("This scene's container YPos was already recorded and up to date in EditorPrefs: " + currentSceneContainer.name);
+                DebugUtils.DebugLog("This scene's container YPos was already recorded and up to date in EditorPrefs: " + currentSceneContainer.name);
             }
         }
     }

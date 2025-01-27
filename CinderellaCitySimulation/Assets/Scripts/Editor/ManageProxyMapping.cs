@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
 /// <summary>
@@ -381,14 +383,14 @@ public class ManageProxyMapping
         // if instancing the prefab was successful, adjust its position, scale, and parent
         if (instancedPrefab)
         {
-            Utils.DebugUtils.DebugLog("<b>Instanced this random filler prefab: </b>" + instancedPrefab);
+            DebugUtils.DebugLog("<b>Instanced this random filler prefab: </b>" + instancedPrefab);
 
             // move the prefab to the specified location
             instancedPrefab.transform.position = destinationPoint;
 
             // scale the prefab to match a globally-available average height
             Utils.GeometryUtils.ScaleGameObjectToMaxHeight(instancedPrefab, ProxyGlobals.averageProxyHeight);
-            //Utils.DebugUtils.DebugLog("Average proxy height: " + ProxyGlobals.averageProxyHeight);
+            //DebugUtils.DebugLog("Average proxy height: " + ProxyGlobals.averageProxyHeight);
 
             // nest the prefab below the given parent
             instancedPrefab.transform.parent = parent.transform;
@@ -404,13 +406,13 @@ public class ManageProxyMapping
         GameObject instancedPrefab;
 
         GameObject gameObjectToBeReplaced = proxyObject.gameObject;
-        Utils.DebugUtils.DebugLog("Found a proxy gameObject to be replaced: " + gameObjectToBeReplaced);
+        DebugUtils.DebugLog("Found a proxy gameObject to be replaced: " + gameObjectToBeReplaced);
 
         // define the proxy replacement path by the proxyObject object's name
         string replacementObjectPath = GetProxyReplacementPathByName(proxyObject.name);
         if (replacementObjectPath == null)
         {
-            Utils.DebugUtils.DebugLog("No replacement path was specified for this proxy, so it has not been replaced: " + proxyObject.name);
+            DebugUtils.DebugLog("No replacement path was specified for this proxy, so it has not been replaced: " + proxyObject.name);
             return null;
         }
 
@@ -426,14 +428,14 @@ public class ManageProxyMapping
         // if instancing the prefab was successful, move it to the same location as the proxy
         if (instancedPrefab)
         {
-            Utils.DebugUtils.DebugLog("<b>Instanced this prefab: </b>" + instancedPrefab);
+            DebugUtils.DebugLog("<b>Instanced this prefab: </b>" + instancedPrefab);
 
             // give the new prefab the same parent, position, and scale as the proxy
             instancedPrefab.transform.position = gameObjectToBeReplaced.transform.position;
             instancedPrefab.transform.localScale = gameObjectToBeReplaced.transform.localScale;
             instancedPrefab.transform.parent = gameObjectToBeReplaced.transform.parent;
-            //Utils.DebugUtils.DebugLog("GameObject to be replaced position " + gameObjectToBeReplaced.transform.position);
-            //Utils.DebugUtils.DebugLog("Instanced prefab position: " + instancedPrefab.transform.position);
+            //DebugUtils.DebugLog("GameObject to be replaced position " + gameObjectToBeReplaced.transform.position);
+            //DebugUtils.DebugLog("Instanced prefab position: " + instancedPrefab.transform.position);
 
             // further scale the new object to match the proxy's height
             // except for water (particle systems)
@@ -473,7 +475,7 @@ public class ManageProxyMapping
         }
         else
         {
-            Utils.DebugUtils.DebugLog("Failed to instantiate this prefab. Is the path valid? " + replacementObjectPath);
+            DebugUtils.DebugLog("Failed to instantiate this prefab. Is the path valid? " + replacementObjectPath);
         }
         return instancedPrefab;
     }

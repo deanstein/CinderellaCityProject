@@ -125,7 +125,7 @@ public static class ManageScenes
             // collect the async operations into a list
             asyncOperations.Add(asyncOperation);
 
-            Utils.DebugUtils.DebugLog("Started loading scene asynchronously: " + sceneName);
+            DebugUtils.DebugLog("Started loading scene asynchronously: " + sceneName);
         }
     }
 
@@ -165,7 +165,7 @@ public static class ManageScenes
         // if the current scene doesn't match any in the list, return with an error
         if (currentTimePeriodSceneIndex == -1)
         {
-            Utils.DebugUtils.DebugLog("Error: failed to determine the next time period, because the current time period is unknown.");
+            DebugUtils.DebugLog("Error: failed to determine the next time period, because the current time period is unknown.");
             return "null";
         }
 

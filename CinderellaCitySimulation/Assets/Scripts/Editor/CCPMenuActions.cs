@@ -288,7 +288,7 @@ public class CCPMenuActions : MonoBehaviour
             // if update all is checked, return all objects from the scene like normal
             if (isUpdateModeAll)
             {
-                Utils.DebugUtils.DebugLog("All objects were selected for update.");
+                DebugUtils.DebugLog("All objects were selected for update.");
 
                 return sceneObjectsList;
             }
@@ -315,12 +315,12 @@ public class CCPMenuActions : MonoBehaviour
                         }
                     }
 
-                    Utils.DebugUtils.DebugLog("Found " + sceneObjectsList.Count + " scene objects to update.");
+                    DebugUtils.DebugLog("Found " + sceneObjectsList.Count + " scene objects to update.");
                     return sceneObjectsList;
                 }
                 else
                 {
-                    Utils.DebugUtils.DebugLog("No models selected for post-update processing.");
+                    DebugUtils.DebugLog("No models selected for post-update processing.");
                     return null;
                 }
             }
@@ -607,7 +607,7 @@ public class CCPMenuActions : MonoBehaviour
         // build the nav mesh
         UnityEditor.AI.NavMeshBuilder.BuildNavMesh();
 
-        Utils.DebugUtils.DebugLog("Updated the nav mesh in scene: " + EditorSceneManager.GetActiveScene().name);
+        DebugUtils.DebugLog("Updated the nav mesh in scene: " + EditorSceneManager.GetActiveScene().name);
 
         // re-hide the proxy blocker
         ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(proxyHost, false, false);
@@ -704,7 +704,7 @@ public class CCPMenuActions : MonoBehaviour
     public static void TestMeshBounds()
     {
         GameObject[] selectedObjects = Selection.gameObjects;
-        Utils.DebugUtils.DebugLog("Max bounding box dimension " + Utils.GeometryUtils.GetMaxGOBoundingBoxDimension(selectedObjects[0]) + " for " + selectedObjects[0]);
+        DebugUtils.DebugLog("Max bounding box dimension " + Utils.GeometryUtils.GetMaxGOBoundingBoxDimension(selectedObjects[0]) + " for " + selectedObjects[0]);
     }
 
     [MenuItem("Cinderella City Project/CCP Debug/Hoist Object Up")]
@@ -716,7 +716,7 @@ public class CCPMenuActions : MonoBehaviour
     [MenuItem("Cinderella City Project/CCP Debug/Log Current Scene Name")]
     public static void LogCurrentScene()
     {
-        Utils.DebugUtils.DebugLog("Current Editor scene: " + SceneManager.GetActiveScene().name);
+        DebugUtils.DebugLog("Current Editor scene: " + SceneManager.GetActiveScene().name);
     }
 
     [MenuItem("Cinderella City Project/CCP Debug/Log Current Scene Object Count")]
@@ -740,7 +740,7 @@ public class CCPMenuActions : MonoBehaviour
         string[] filesToDelete = FileDirUtils.GetAllFilesInDirOfTypes(UIGlobals.projectUIPath + UIGlobals.mainMenuThumbnailsSubdir, extensionsToDelete);
         foreach (string fileToDelete in filesToDelete)
         {
-            Utils.DebugUtils.DebugLog(fileToDelete);
+            DebugUtils.DebugLog(fileToDelete);
         }
     }
 #endif

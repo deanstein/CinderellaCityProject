@@ -49,7 +49,7 @@ public class AnimateScreenSpaceObject : AutoResumeCoroutines
     {
         Vector3 currentScale = gameObject.GetComponent<Image>().rectTransform.localScale;
         Vector3 newScale = new Vector3(currentScale.x * scaleFactor, currentScale.y * scaleFactor, currentScale.z * scaleFactor);
-        //Utils.DebugUtils.DebugLog("New scale: " + newScale);
+        //DebugUtils.DebugLog("New scale: " + newScale);
         gameObject.GetComponent<Image>().rectTransform.localScale = newScale;
     }
 
@@ -57,7 +57,7 @@ public class AnimateScreenSpaceObject : AutoResumeCoroutines
     public IEnumerator PlayFullScreenSpriteSequence(Image imageComponent, Sprite[] imageSequence, float displayTime)
     {
         // for each image in the array, display it for a certain amount of time, then show the next one
-        Utils.DebugUtils.DebugLog("Playing image sequence...");
+        DebugUtils.DebugLog("Playing image sequence...");
         int counter = 0;
         while (true)
         {

@@ -209,7 +209,7 @@ public class TakeScreenshots
         // take the screenshot and store it at the given location
         ScreenCapture.CaptureScreenshot(screenshotPath + screenshotName + ManageCameraActions.CameraActionGlobals.screenshotFormat);
 
-        Utils.DebugUtils.DebugLog("<b>Saved a screenshot of the current camera at: </b>" + screenshotPath + screenshotName);
+        DebugUtils.DebugLog("<b>Saved a screenshot of the current camera at: </b>" + screenshotPath + screenshotName);
     }
 
     // moves the current player around to all cameras requiring a screenshot

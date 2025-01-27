@@ -156,7 +156,7 @@ public static class ManageSceneObjects
         // toggles all scene objects on
         public static void ToggleAllTopLevelSceneObjectsToState(string sceneName, bool desiredState)
         {
-            //Utils.DebugUtils.DebugLog("Toggling Scene object visibility ON for: " + sceneName + "...");
+            //DebugUtils.DebugLog("Toggling Scene object visibility ON for: " + sceneName + "...");
 
             // find the Scene's container GameObject
             GameObject sceneContainerObject = ManageSceneObjects.GetSceneContainerObject(SceneManager.GetSceneByName(sceneName));
@@ -295,7 +295,7 @@ public static class ManageSceneObjects
                 // all proxy objects have this prefix in the tag name
                 if (child.tag.Contains(TaggedObjects.TaggedObjectGlobals.deleteProxyReplacementTagPrefix))
                 {
-                    //Utils.DebugUtils.DebugLog("Found a replacement: " + child.name);
+                    //DebugUtils.DebugLog("Found a replacement: " + child.name);
                     proxyHostList.replacementObjectList.Add(child);
 
                     // get the rest of the children in this replacement object
@@ -304,7 +304,7 @@ public static class ManageSceneObjects
                     // add the children to the list as well
                     foreach (GameObject childObject in replacementObjectChildrenTransforms)
                     {
-                        //Utils.DebugUtils.DebugLog("Found a replacement child: " + childObject.name);
+                        //DebugUtils.DebugLog("Found a replacement child: " + childObject.name);
                         proxyHostList.replacementObjectList.Add(childObject);
                     }
                 }
@@ -324,13 +324,13 @@ public static class ManageSceneObjects
                 // add mesh objects to the list only if they have a mesh renderer
                 if (remainingChild.gameObject.GetComponent<MeshRenderer>())
                 {
-                    //Utils.DebugUtils.DebugLog("Found a proxy: " + remainingChild.name);
+                    //DebugUtils.DebugLog("Found a proxy: " + remainingChild.name);
                     proxyHostList.proxyMeshList.Add(remainingChild.gameObject);
                 }
                 // otherwise, this is a proxy container and should be recorded as such
                 else
                 {
-                    //Utils.DebugUtils.DebugLog("Found a container: " + child.name);
+                    //DebugUtils.DebugLog("Found a container: " + child.name);
                     proxyHostList.proxyContainerList.Add(remainingChild.gameObject);
                 }
             }
@@ -613,7 +613,7 @@ public class TaggedObjects : MonoBehaviour
         GameObject[] replacementsToDelete = GameObject.FindGameObjectsWithTag(tag);
         for (int i = 0; i < replacementsToDelete.Length; i++)
         {
-            Utils.DebugUtils.DebugLog("<b>Deleted an object with delete tag: </b>" + tag);
+            DebugUtils.DebugLog("<b>Deleted an object with delete tag: </b>" + tag);
             UnityEngine.Object.DestroyImmediate(replacementsToDelete[i].gameObject);
         }
     }

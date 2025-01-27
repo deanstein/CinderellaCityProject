@@ -24,7 +24,7 @@ public class ToggleSceneAndUI
     // toggles the "fromScene" off, and toggles the "toScene" on
     public static void ToggleFromSceneToScene(string fromScene, string toScene)
     {
-        Utils.DebugUtils.DebugLog("Toggling from Scene " + "<b>" + fromScene + "</b>" + " to Scene " + "<b>" + toScene + "</b>");
+        DebugUtils.DebugLog("Toggling from Scene " + "<b>" + fromScene + "</b>" + " to Scene " + "<b>" + toScene + "</b>");
 
         // toggle the toScene first, to avoid any gaps in playback
         ManageSceneObjects.ObjectState.ToggleAllTopLevelSceneObjectsToState(toScene, true);
