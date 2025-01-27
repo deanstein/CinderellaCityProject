@@ -35,10 +35,6 @@ public static class ModeState
     // similarly, people are toggled off when within some distance to current destination
     public static bool arePeopleRequestedVisible = false;
 
-    // whether to use a pre-selected order of photos for recording videos
-    // currently, this is set using StartupConfig in LoadAllScenesAsync.cs
-    public static bool useRecordingPhotoOrder = false;
-
     // whether to invert the right stick on the controller
     public static bool invertYAxis = true;
 }

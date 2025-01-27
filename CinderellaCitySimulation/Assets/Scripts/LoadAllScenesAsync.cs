@@ -21,9 +21,9 @@ public class StartupConfig
 /*** EXAMPLE START CONFIG ***
 
 {
-    autoStart: true,
-    autoGuidedTour: true,
-    recordingMode: true
+    "autoStart": true,
+    "autoGuidedTour": true,
+    "recordingMode": true
 }
 
 *** END EXAMPLE ***/
@@ -31,21 +31,66 @@ public class StartupConfig
 
 public class StartupGlobals
 {
-    public static string startupConfigPath = Application.persistentDataPath + "/ccp-startup-config.json";
+    public static string startupConfigFile = "ccp-startup-config.json";
+    public static string startupConfigPath = Application.persistentDataPath + "/" + startupConfigFile;
+    public static StartupConfig startupConfig = null;
 }
 
 public class LoadAllScenesAsync : MonoBehaviour {
 
     // create a list to keep track of all active async operations progress
     static List<AsyncOperation> asyncOperations = new List<AsyncOperation>();
-
     // set to true only when all specified scenes are loaded
     bool allLoaded;
 
+    // reads the startup config json file and updates ModeState as required
+    public static void ReadStartupConfig()
+    {
+        // check startup config for additional instructions
+        if (File.Exists(StartupGlobals.startupConfigPath))
+        {
+            Debug.Log("Startup config file found. Checking for configs...");
+
+            // read the JSON file
+            string json = File.ReadAllText(StartupGlobals.startupConfigPath);
+
+            // convert the JSON file to StartupConfig class
+            StartupConfig foundConfig = JsonUtility.FromJson<StartupConfig>(json);
+            // make the found config available publicly
+            StartupGlobals.startupConfig = foundConfig;
+
+            //
+            // handle individual config settings as needed
+            //
+
+            if (foundConfig.autoStart)
+            {
+                Debug.Log("Startup Config: <b>autoStart is TRUE</b>");
+            }
+            if (StartupGlobals.startupConfig.autoGuidedTour)
+            {
+                Debug.Log("Startup Config: <b>autoGuidedTour is TRUE</b>");
+                ModeState.isGuidedTourActive = true;
+            }
+            // specific scene order for recording videos
+            if (foundConfig.recordingMode)
+            {
+                DebugUtils.DebugLog("Startup Config: <b>recordingMode is TRUE</b>");
+            }
+        }
+        else
+        {
+            DebugUtils.DebugLog("No startup config file found.");
+        }
+    }
+
     private void Awake()
     {
-        // ensure this coroutine host is not destroyed to the config check later can happen
+        // ensure this coroutine host is not destroyed so the config check can happen later
         DontDestroyOnLoad(this.gameObject);
+
+        // read the startup config file if it exists
+        ReadStartupConfig();
     }
 
     void Start()
@@ -58,7 +103,8 @@ public class LoadAllScenesAsync : MonoBehaviour {
         ManageScenes.LoadScenesAsync(SceneGlobals.scenesToLoad, asyncOperations);
 
         // switch to the MainMenu when all scenes are ready
-        StartCoroutine(SetActiveSceneAndCheckConfigAfterDelay(SceneManager.GetSceneByName(SceneGlobals.startingSceneName)));
+        // also check for post-launch config settings
+        StartCoroutine(SetActiveSceneWhenReady(SceneManager.GetSceneByName(SceneGlobals.startingSceneName)));
     }
 	
 	void Update ()
@@ -93,59 +139,29 @@ public class LoadAllScenesAsync : MonoBehaviour {
     // switches to the given scene when all requested scenes are loaded
     IEnumerator SetActiveSceneWhenReady(Scene startingScene)
     {
-        // wait until the flag is set to switch scenes
+        // wait until all scenes are loaded to switch to the given starting scene
         yield return new WaitUntil(() => allLoaded == true);
 
-        // set the specified scene as active, once all scenes are loaded
-        SceneManager.SetActiveScene(startingScene);
-        ManageSceneObjects.ObjectState.ToggleAllTopLevelSceneObjectsToState(startingScene.name, true);
-
-        // then turn off all the Loading Screen's objects
-        ManageSceneObjects.ObjectState.ToggleAllTopLevelSceneObjectsToState("LoadingScreen", false);
-    }
-
-    IEnumerator SetActiveSceneAndCheckConfigAfterDelay(Scene startingScene)
-    {
-        yield return StartCoroutine(SetActiveSceneWhenReady(startingScene));
-
-        yield return StartCoroutine(CheckConfigAfterDelay(StartupGlobals.startupConfigPath));
-    }
-
-    IEnumerator CheckConfigAfterDelay(string startupConfigPath)
-    {
-        // check startup config for additional instructions
-        if (File.Exists(startupConfigPath))
+        // if the starting scene is one of the mall eras,
+        // we need to relocate the player to a good initial spot
+        if (startingScene.name == SceneGlobals.mallEra60s70sSceneName || startingScene.name == SceneGlobals.mallEra80s90sSceneName || startingScene.name == SceneGlobals.experimentalSceneName)
         {
-            Debug.Log("Startup config file found. Checking for configs...");
+            ToggleSceneAndUI.ToggleFromSceneToSceneRelocatePlayerToCamera(SceneManager.GetActiveScene().name, startingScene.name, "Camera-Thumbnail-Blue Mall-Highlight");
 
-            string json = File.ReadAllText(startupConfigPath);
-
-            // convert the JSON file to StartupConfig class
-            StartupConfig startupConfig = JsonUtility.FromJson<StartupConfig>(json);
-
-            // skip right to a given scene
-            if (startupConfig.autoStart)
+            // automatically switch to the next era after some time
+            // if startupConfig specifies autoGuidedTour
+            if (StartupGlobals.startupConfig.autoGuidedTour)
             {
-                Debug.Log("Startup Config: autoStart is true.");
-                yield return new WaitForSeconds(0.5f);
-                ToggleSceneAndUI.ToggleFromSceneToSceneRelocatePlayerToCamera(SceneManager.GetActiveScene().name, "60s70s", "Camera-Thumbnail-Blue Mall-Highlight");
-            }
-            // set the guided tour state to true immediately
-            if (startupConfig.autoGuidedTour)
-            {
-                Debug.Log("Startup Config: autoGuidedTour is true.");
-                yield return new WaitForSeconds(0.5f);
-                ModeState.isGuidedTourActive = true;
-                // automatically switch to the next era after some time
                 ModeState.toggleToNextEraCoroutine = StartCoroutine(ToggleSceneAndUI.ToggleToNextEraAfterDelay());
             }
-            // specific scene order for recording videos
-            if (startupConfig.recordingMode)
-            {
-                Debug.Log("Startup Config: recordingMode is true.");
-                ModeState.useRecordingPhotoOrder = true;
-            }
+        }
+        // otherwise, we assume we're switching to a menu scene, like Main Menu
+        else
+        {
+            SceneManager.SetActiveScene(startingScene);
+            ManageSceneObjects.ObjectState.ToggleAllTopLevelSceneObjectsToState(startingScene.name, true);
+            // then turn off all the Loading Screen's objects
+            ManageSceneObjects.ObjectState.ToggleAllTopLevelSceneObjectsToState("LoadingScreen", false);
         }
     }
-
 }

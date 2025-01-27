@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -16,16 +15,30 @@ public class FollowGuidedTour : MonoBehaviour
     // then accessed by scene name, to avoid "crossing the wires" between singleton eras
     public static Dictionary<string, FollowGuidedTour> Instances { get; private set; } = new Dictionary<string, FollowGuidedTour>();
 
+    // fallback destination names if pathfinding is failing due to large distance
     readonly string partialPathCameraName60s70s = "Blue Mall 1";
     readonly string partialPathCameraName80s90s = "Blue Mall deep";
-    readonly float pauseAtCameraDuration = 8f; // number of seconds to pause and look at a camera
-    readonly float guidedTourRestartAfterSeconds = 4f; // seconds to wait before un-pausing
+    // index of the current partial path camera in the list of cameras
+    private int partialPathCameraIndex = -1;
 
-    readonly bool matchCameraForward = false; // player camera: match destination camera or simply look at it?
-    readonly float lookToCameraAtRemainingDistance = 10.0f; // distance from end of path where FPC begins looking at camera
-    readonly float adjustPosAwayFromCamera = 1.15f; // distance away from camera look vector so when looking at a camera, it's visible
+    // number of seconds to pause and look at a camera
+    readonly float pauseAtCameraDuration = 8f;
+    // seconds to wait before un-pausing
+    readonly float guidedTourRestartAfterSeconds = 4f;
+    // guided tour can be stationary only for the durations specified above
+    // keep track of the stationary time so we can force an advance if max stationary times are exceeded
+    float stationaryTimeActive = 0f;
+    float stationaryTimePaused = 0f;
+
+    // should the player camera match the destination camera or simply look toward it?
+    readonly bool matchCameraForward = false;
+    // distance from end of path where before camera begins looking at destination camera
+    readonly float lookToCameraAtRemainingDistance = 10.0f;
+    // distance (m) away from camera look vector so when looking at a camera, it's visible
+    readonly float adjustPosAwayFromCamera = 1.15f; 
     readonly public float guidedTourRotationSpeed = 0.4f;
-    readonly public float partialPathCameraClosestDistance = 20; // get this close to the partial path camera before giving up
+    // get this close to the partial path camera before giving up
+    readonly public float partialPathCameraClosestDistance = 20;
 
     private NavMeshAgent thisAgent;
     private GameObject[] guidedTourObjects;
@@ -37,19 +50,21 @@ public class FollowGuidedTour : MonoBehaviour
     private bool? areHistoricPhotosVisible = null;
     private bool? arePeopleVisible = null;
 
-    public static bool isGuidedTourTimeTravelRequested = false; // set to true briefly to allow IEnumerator time-travel transition
+    // set to true briefly to allow IEnumerator time-travel transition
+    public static bool isGuidedTourTimeTravelRequested = false; 
     private bool isResumeRequiredAfterOverride = false;
-    private int partialPathCameraIndex = -1; // index of the camera at the name defined below
-
-    float stationaryTimeActive = 0f;
-    float stationaryTimePaused = 0f;
 
     //
     // DEBUGGING
     //
-    readonly private bool showDebugLines = false; // if true, show paths and camera positions as debug lines
-    readonly bool shuffleGuidedTourDestinations = true && !ModeState.useRecordingPhotoOrder;
-    private int currentGuidedTourDestinationIndex = 0; // optionally start at a specific index
+
+    // show paths and camera positions as debug lines
+    readonly private bool showDebugLines = false;
+    // shuffle the destinations - does not apply if recordingMode is false
+    readonly bool shuffleGuidedTourDestinations = true && !StartupGlobals.startupConfig.recordingMode;
+    // start the guided tour at this index
+    private int currentGuidedTourDestinationIndex = 0;
+    // use a special destination list for debugging
     readonly bool useOverrideDestinations = false; // if true, use a special list for tour objects
     readonly bool doTestAllPaths = false; // if true, attempt to find paths between all destinations
 
@@ -109,13 +124,12 @@ public class FollowGuidedTour : MonoBehaviour
         // use a specific order for recording if requested
         // can print indices of all historic photos in 
         // CCP Menu -> Guided Tour -> Print Historic Photo Data
-        if (ModeState.useRecordingPhotoOrder)
+        if (StartupGlobals.startupConfig.recordingMode)
         {
             // define the recording order per era
             if (this.gameObject.scene.name == "60s70s" || this.gameObject.scene.name == "Experimental")
             {
-                guidedTourObjects = new GameObject[]
-                {
+                guidedTourObjects = new GameObject[] {
                     // fountain
                     guidedTourObjects[3],
                     guidedTourObjects[4],
@@ -189,8 +203,7 @@ public class FollowGuidedTour : MonoBehaviour
             }
             else if (this.gameObject.scene.name == "80s90s")
             {
-                guidedTourObjects = new GameObject[]
-                {
+                guidedTourObjects = new GameObject[] {
                     // atrium marketing
                     guidedTourObjects[3],
                     // carousel
@@ -661,7 +674,7 @@ public class FollowGuidedTour : MonoBehaviour
 
     public static void StartGuidedTourMode()
     {
-        Utils.DebugUtils.DebugLog("Starting guided tour mode...");
+        DebugUtils.DebugLog("Starting guided tour mode...");
 
         // set the mode state
         ModeState.isGuidedTourActive = true;
@@ -672,7 +685,7 @@ public class FollowGuidedTour : MonoBehaviour
 
     public static void EndGuidedTourMode()
     {
-        Utils.DebugUtils.DebugLog("Ending guided tour mode.");
+        DebugUtils.DebugLog("Ending guided tour mode.");
 
         // set the mode state
         ModeState.isGuidedTourActive = false;
@@ -688,7 +701,7 @@ public class FollowGuidedTour : MonoBehaviour
     public static void IncrementGuidedTourIndex()
     {
         Instances[SceneManager.GetActiveScene().name].currentGuidedTourDestinationIndex = (Instances[SceneManager.GetActiveScene().name].currentGuidedTourDestinationIndex + 1) % Instances[SceneManager.GetActiveScene().name].guidedTourObjects.Length;
-        Utils.DebugUtils.DebugLog("Incrementing destination index. New destination: " + Instances[SceneManager.GetActiveScene().name].guidedTourObjects[Instances[SceneManager.GetActiveScene().name].currentGuidedTourDestinationIndex].name);
+        DebugUtils.DebugLog("Incrementing destination index. New destination: " + Instances[SceneManager.GetActiveScene().name].guidedTourObjects[Instances[SceneManager.GetActiveScene().name].currentGuidedTourDestinationIndex].name);
     }
 
     public static void IncrementGuidedTourIndexAndSetAgentOnPath()
@@ -701,7 +714,7 @@ public class FollowGuidedTour : MonoBehaviour
     public static void DecrementGuidedTourIndex()
     {
         Instances[SceneManager.GetActiveScene().name].currentGuidedTourDestinationIndex = (Instances[SceneManager.GetActiveScene().name].currentGuidedTourDestinationIndex + Instances[SceneManager.GetActiveScene().name].guidedTourObjects.Length - 1) % Instances[SceneManager.GetActiveScene().name].guidedTourObjects.Length;
-        Utils.DebugUtils.DebugLog("Decrementing destination index. New destination: " + Instances[SceneManager.GetActiveScene().name].guidedTourObjects[Instances[SceneManager.GetActiveScene().name].currentGuidedTourDestinationIndex].name);
+        DebugUtils.DebugLog("Decrementing destination index. New destination: " + Instances[SceneManager.GetActiveScene().name].guidedTourObjects[Instances[SceneManager.GetActiveScene().name].currentGuidedTourDestinationIndex].name);
     }
 
     public static void DecrementGuidedTourIndexAndSetAgentOnPath()
