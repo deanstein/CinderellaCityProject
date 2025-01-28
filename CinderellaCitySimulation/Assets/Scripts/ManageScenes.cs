@@ -31,7 +31,10 @@ public class SceneGlobals
     // scene to jump to if autoStart is true in startupConfig
     public static string autoStartSceneName = mallEra60s70sSceneName;
     // scene to set active after all other scenes are loaded
-    public static string startingSceneName = StartupGlobals.startupConfig.autoStart ? autoStartSceneName : mainMenuSceneName;
+    public static string startingSceneName =
+    (StartupGlobals.startupConfig != null && StartupGlobals.startupConfig.autoStart)
+        ? autoStartSceneName
+        : mainMenuSceneName;
     // when a scene change is requested, record the outgoing and upcoming scenes for other scripts to access
     public static string referringSceneName;
     public static string upcomingSceneName;
