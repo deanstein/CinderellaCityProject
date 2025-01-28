@@ -86,9 +86,6 @@ public class LoadAllScenesAsync : MonoBehaviour {
 
     private void Awake()
     {
-        // ensure this coroutine host is not destroyed so the config check can happen later
-        DontDestroyOnLoad(this.gameObject);
-
         // read the startup config file if it exists
         ReadStartupConfig();
     }
