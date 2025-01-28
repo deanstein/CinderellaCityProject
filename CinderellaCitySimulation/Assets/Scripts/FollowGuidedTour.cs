@@ -627,7 +627,7 @@ public class FollowGuidedTour : MonoBehaviour
         // this is possibly expensive, so only do it one frame only when requested
         if (ModeState.isGuidedTourActive && thisAgent.enabled && thisAgent.isOnNavMesh)
         {
-            if (thisAgent.remainingDistance < lookToCameraAtRemainingDistance)
+            if (thisAgent.hasPath && thisAgent.remainingDistance < lookToCameraAtRemainingDistance)
             {
                 ModeState.areHistoricPhotosRequestedVisible = true;
             }
@@ -641,7 +641,7 @@ public class FollowGuidedTour : MonoBehaviour
         // this is possibly expensive, so only do it one frame when requested
         if (ModeState.isGuidedTourActive && thisAgent.enabled && thisAgent.isOnNavMesh)
         {
-            if (thisAgent.remainingDistance < lookToCameraAtRemainingDistance / 4)
+            if (thisAgent.hasPath && thisAgent.remainingDistance < lookToCameraAtRemainingDistance / 4)
             {
                 ModeState.arePeopleRequestedVisible = false;
             }
