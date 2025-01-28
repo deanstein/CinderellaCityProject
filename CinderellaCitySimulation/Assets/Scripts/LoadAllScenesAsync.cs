@@ -69,6 +69,7 @@ public class LoadAllScenesAsync : MonoBehaviour {
             if (foundConfig.autoStart)
             {
                 Debug.Log("Startup Config: <b>autoStart is TRUE</b>");
+                ModeState.autoStart = true;
             }
             if (StartupGlobals.startupConfig.autoGuidedTour)
             {
@@ -79,6 +80,7 @@ public class LoadAllScenesAsync : MonoBehaviour {
             if (foundConfig.recordingMode)
             {
                 DebugUtils.DebugLog("Startup Config: <b>recordingMode is TRUE</b>");
+                ModeState.recordingMode = true;
             }
         }
         else
