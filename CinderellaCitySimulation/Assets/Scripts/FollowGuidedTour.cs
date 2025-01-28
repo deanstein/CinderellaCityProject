@@ -127,7 +127,7 @@ public class FollowGuidedTour : MonoBehaviour
         // use a specific order for recording if requested
         // can print indices of all historic photos in 
         // CCP Menu -> Guided Tour -> Print Historic Photo Data
-        if (StartupGlobals.startupConfig != null && StartupGlobals.startupConfig.recordingMode)
+        if (ModeState.recordingMode)
         {
             // define the recording order per era
             if (this.gameObject.scene.name == "60s70s" || this.gameObject.scene.name == "Experimental")
