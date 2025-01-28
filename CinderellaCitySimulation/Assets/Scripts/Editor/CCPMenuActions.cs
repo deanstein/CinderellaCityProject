@@ -665,7 +665,7 @@ public class CCPMenuActions : MonoBehaviour
 
     /* ---------- Batch Operations ---------- */
 
-    [MenuItem("Cinderella City Project/Batch Operations/Delete All FBM Folders")]
+    [MenuItem("Cinderella City Project/Batch Operations/Delete All FBM Folders from Scene")]
     public static void DeleteAllFBMFoldersTest()
     {
         AssetImportUpdate.DeleteAllFBMFolders();
