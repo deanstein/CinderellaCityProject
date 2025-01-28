@@ -411,7 +411,7 @@ public class CCPMenuActions : MonoBehaviour
     /* ---------- Guided Tour ---------- */
 
     // prints the names and indices of all historic cameras in the scene
-    [MenuItem("Cinderella City Project/Guided Tour/Print Guided Tour Camera Data")]
+    [MenuItem("Cinderella City Project/Guided Tour/Log Guided Tour Camera Data")]
     public static void PrintHistoricPhotoData()
     {
         GameObject[] historicPhotoObjects = ManageSceneObjects.ProxyObjects.GetAllHistoricPhotoCamerasInScene(SceneManager.GetActiveScene().name);
