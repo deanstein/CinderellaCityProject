@@ -33,7 +33,7 @@ public static class ModeState
     // this gets set to true for 1 frame when needed
     public static bool areHistoricPhotosRequestedVisible = false;
     // similarly, people are toggled off when within some distance to current destination
-    public static bool arePeopleRequestedVisible = false;
+    public static bool arePeopleRequestedVisible = true;
 
     // whether to invert the right stick on the controller
     public static bool invertYAxis = true;
