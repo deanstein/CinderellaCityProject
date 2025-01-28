@@ -32,7 +32,7 @@ public class StartupConfig
 public class StartupGlobals
 {
     public static string startupConfigFile = "ccp-startup-config.json";
-    public static string startupConfigPath = Application.persistentDataPath + "/" + startupConfigFile;
+    public static string startupConfigPath = null;
     public static StartupConfig startupConfig = null;
 }
 
@@ -46,6 +46,9 @@ public class LoadAllScenesAsync : MonoBehaviour {
     // reads the startup config json file and updates ModeState as required
     public static void ReadStartupConfig()
     {
+        // persistent data path must be called in Awake() or Start()
+        StartupGlobals.startupConfigPath = Application.persistentDataPath + "/" + StartupGlobals.startupConfigFile;
+
         // check startup config for additional instructions
         if (File.Exists(StartupGlobals.startupConfigPath))
         {
