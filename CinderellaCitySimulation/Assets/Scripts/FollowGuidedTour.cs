@@ -425,7 +425,7 @@ public class FollowGuidedTour : MonoBehaviour
                         NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, guidedTourFinalNavMeshDestinations[partialPathCameraIndex]);
 
                         // try setting the agent to the original index in a few moments
-                        ModeState.setAgentOnPathAfterDelayRoutine = StartCoroutine(NavMeshUtils.SetAgentOnPathAfterDelay(thisAgent, thisAgent.transform.position, guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex], 10, false, showDebugLines));
+                        ModeState.setAgentOnPathAfterDelayCoroutine = StartCoroutine(NavMeshUtils.SetAgentOnPathAfterDelay(thisAgent, thisAgent.transform.position, guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex], 10, false, showDebugLines));
                     } else
                     // otherwise, this path simply cannot be used as it continues to be partial
                     // so go to the next index
@@ -665,7 +665,7 @@ public class FollowGuidedTour : MonoBehaviour
             areHistoricPhotosVisible = ModeState.areHistoricPhotosRequestedVisible;
         }
 
-        // similar for people
+        // similar for people - only adjust their visibility once if requested
         if (ModeState.isGuidedTourActive && arePeopleVisible == null || arePeopleVisible != ModeState.arePeopleRequestedVisible)
         {
             ObjectVisibility.SetPeopleVisibility(ModeState.arePeopleRequestedVisible);

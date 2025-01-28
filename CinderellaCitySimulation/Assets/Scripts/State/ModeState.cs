@@ -26,7 +26,7 @@ public static class ModeState
     // to ensure only one is active, and allow canceling them if necessary
     public static Coroutine restartGuidedTourCoroutine = null;
     public static Coroutine toggleToNextEraCoroutine = null;
-    public static Coroutine setAgentOnPathAfterDelayRoutine = null;
+    public static Coroutine setAgentOnPathAfterDelayCoroutine = null;
 
     // when guided tour is active,
     // historic photos are only shown within some distance to the current destination
