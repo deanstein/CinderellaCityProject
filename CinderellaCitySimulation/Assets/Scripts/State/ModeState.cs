@@ -28,11 +28,10 @@ public static class ModeState
     public static Coroutine toggleToNextEraCoroutine = null;
     public static Coroutine setAgentOnPathAfterDelayCoroutine = null;
 
-    // when guided tour is active,
-    // historic photos are only shown within some distance to the current destination
-    // this gets set to true for 1 frame when needed
+    // when guided tour is active, historic photos and people
+    // are toggled on or off when agent is close to destination photo
+    // FollowGuidedTour.cs looks for these and adjusts object visibility accordingly
     public static bool areHistoricPhotosRequestedVisible = false;
-    // similarly, people are toggled off when within some distance to current destination
     public static bool arePeopleRequestedVisible = true;
 
     // whether to invert the right stick on the controller
