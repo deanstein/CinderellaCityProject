@@ -47,6 +47,9 @@ public class FollowGuidedTour : MonoBehaviour
     private Vector3[] guidedTourFinalNavMeshDestinations; // destinations on NavMesh
     public Camera currentGuidedTourDestinationCamera;
     public Vector3 currentGuidedTourVector;
+
+    // object visibility during guided tour
+    // these are initially set in ModeState.cs
     private bool? areHistoricPhotosVisible = null;
     private bool? arePeopleVisible = null;
 
@@ -124,7 +127,7 @@ public class FollowGuidedTour : MonoBehaviour
         // use a specific order for recording if requested
         // can print indices of all historic photos in 
         // CCP Menu -> Guided Tour -> Print Historic Photo Data
-        if (StartupGlobals.startupConfig.recordingMode)
+        if (StartupGlobals.startupConfig != null && StartupGlobals.startupConfig.recordingMode)
         {
             // define the recording order per era
             if (this.gameObject.scene.name == "60s70s" || this.gameObject.scene.name == "Experimental")
