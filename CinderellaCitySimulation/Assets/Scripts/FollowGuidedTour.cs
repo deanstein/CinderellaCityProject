@@ -363,8 +363,11 @@ public class FollowGuidedTour : MonoBehaviour
             ModeState.isGuidedTourPaused = true;
 
             // only spend a certain amount of time in each era
-            StopCoroutine(ModeState.toggleToNextEraCoroutine);
-            ModeState.toggleToNextEraCoroutine = StartCoroutine(ToggleSceneAndUI.ToggleToNextEraAfterDelay());
+            if (!ModeState.recordingMode)
+            {
+                StopCoroutine(ModeState.toggleToNextEraCoroutine);
+                ModeState.toggleToNextEraCoroutine = StartCoroutine(ToggleSceneAndUI.ToggleToNextEraAfterDelay());
+            }
         }
     }
 
@@ -577,19 +580,24 @@ public class FollowGuidedTour : MonoBehaviour
         {
             if (GetIsGuidedTourOverrideRequested())
             {
-                // record that the override has been requested
-                isResumeRequiredAfterOverride = true;
-
-                if (ModeState.toggleToNextEraCoroutine != null)
+                if (!ModeState.recordingMode)
                 {
-                    StopCoroutine(ModeState.toggleToNextEraCoroutine);
+                    // record that the override has been requested
+                    isResumeRequiredAfterOverride = true;
+
+                    if (ModeState.toggleToNextEraCoroutine != null)
+                    {
+                        // stop the coroutine so it starts over
+                        StopCoroutine(ModeState.toggleToNextEraCoroutine);
+                    }
                 }
             }
 
             // if override is no longer requested, but override was previously requested
             // then ensure the restart coroutines happen now, just one time
-            if (!GetIsGuidedTourOverrideRequested() && isResumeRequiredAfterOverride)
+            if (!GetIsGuidedTourOverrideRequested() && isResumeRequiredAfterOverride && !ModeState.recordingMode)
             {
+                // start the coroutine again
                 ModeState.toggleToNextEraCoroutine = StartCoroutine(ToggleSceneAndUI.ToggleToNextEraAfterDelay());
 
                 // indicate that we've restarted the coroutines since last request
@@ -678,7 +686,10 @@ public class FollowGuidedTour : MonoBehaviour
         ModeState.isGuidedTourActive = true;
 
         // automatically switch to the next era after some time
-        ModeState.toggleToNextEraCoroutine = Instances[SceneManager.GetActiveScene().name].StartCoroutine(ToggleSceneAndUI.ToggleToNextEraAfterDelay());
+        if (!ModeState.recordingMode)
+        {
+            ModeState.toggleToNextEraCoroutine = Instances[SceneManager.GetActiveScene().name].StartCoroutine(ToggleSceneAndUI.ToggleToNextEraAfterDelay());
+        }
     }
 
     public static void EndGuidedTourMode()
@@ -689,7 +700,7 @@ public class FollowGuidedTour : MonoBehaviour
         ModeState.isGuidedTourActive = false;
         ModeState.isGuidedTourPaused = false;
 
-        if (ModeState.toggleToNextEraCoroutine != null)
+        if (ModeState.toggleToNextEraCoroutine != null && !ModeState.recordingMode)
         {
             Instances[SceneManager.GetActiveScene().name].StopCoroutine(ModeState.toggleToNextEraCoroutine);
         }

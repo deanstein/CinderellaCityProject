@@ -152,7 +152,7 @@ public class LoadAllScenesAsync : MonoBehaviour {
 
             // automatically switch to the next era after some time
             // if startupConfig specifies autoGuidedTour
-            if (StartupGlobals.startupConfig.autoGuidedTour)
+            if (StartupGlobals.startupConfig.autoGuidedTour && !ModeState.recordingMode)
             {
                 ModeState.toggleToNextEraCoroutine = StartCoroutine(ToggleSceneAndUI.ToggleToNextEraAfterDelay());
             }
