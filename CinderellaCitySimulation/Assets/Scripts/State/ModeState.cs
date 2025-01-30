@@ -27,10 +27,11 @@ public static class ModeState
     // suspension will end automatically after some idle time
     public static bool isGuidedTourPaused = false;
 
-    // keep track of guided tour coroutines 
-    // to ensure only one is active, and allow canceling them if necessary
-    public static Coroutine restartGuidedTourCoroutine = null;
+    /** keep track of guided tour coroutines **/
+    /** to ensure only one is active, and allow canceling them if necessary **/
+    // time-travels after a certain amount of time during guided tour
     public static Coroutine toggleToNextEraCoroutine = null;
+    // used for attempting re-path after a few seconds when current path is invalid
     public static Coroutine setAgentOnPathAfterDelayCoroutine = null;
 
     // when guided tour is active, historic photos and people

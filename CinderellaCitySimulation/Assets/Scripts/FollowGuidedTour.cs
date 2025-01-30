@@ -580,11 +580,6 @@ public class FollowGuidedTour : MonoBehaviour
                 // record that the override has been requested
                 isResumeRequiredAfterOverride = true;
 
-                // stop the active countdown coroutine if there is one
-                //if (ModeState.restartGuidedTourCoroutine != null)
-                //{
-                //    StopCoroutine(ModeState.restartGuidedTourCoroutine);
-                //}
                 if (ModeState.toggleToNextEraCoroutine != null)
                 {
                     StopCoroutine(ModeState.toggleToNextEraCoroutine);
