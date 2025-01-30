@@ -1,16 +1,16 @@
 {
   "VersionHistory": {
     "0.8.1.202501": {
-      "Overview": "v0.8.1 fixes issues with Guided Tour, fixes a regression with mouse camera smoothing, improves the startupConfig system, adds new historic photos, and adds a recordingMode startupConfig flag for Guided Tour to navigate to photos in a specific order for recording videos.",
+      "Overview": "v0.8.1 fixes issues with Guided Tour, fixes a regression with mouse camera smoothing, improves the startupConfig system, adds new historic photos, and adds a recordingMode startupConfig flag for Guided Tour to navigate to photos in a specific order for recording videos",
       "Environment Updates": [
         "Added historic photos in 1968-1978 Gold Mall, and 1987-1997 Gold Mall and Rose Mall",
-        "Removed two mall music audio tracks and added one to the 1987-1997 era."
+        "Removed two mall music audio tracks and added one to the 1987-1997 era"
       ],
       "UI Updates": [],
       "Code Updates": [
-        "Simplified and improved Guided Tour pause, resume, and reset position logic.",
+        "Simplified and improved Guided Tour pause, resume, and reset position logic",
         "Set people to hidden when historic photos became visible during Guided Tour",
-        "Removed random NPC avoidance priority code as it looked even more unnatural.",
+        "Removed random NPC avoidance priority code as it looked even more unnatural",
         "Adjusted minimum repath speed for colliding NPCs",
         "Added recordingMode support in in ccp-startup-config.json to use defined manual tour stops for recording walkthrough videos",
         "Added the ability to print historic camera data in CCP Menu",
