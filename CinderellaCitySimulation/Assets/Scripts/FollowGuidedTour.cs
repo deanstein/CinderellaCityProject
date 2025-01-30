@@ -64,7 +64,7 @@ public class FollowGuidedTour : MonoBehaviour
     // show paths and camera positions as debug lines
     readonly private bool showDebugLines = false;
     // shuffle the destinations - does not apply if recordingMode is false
-    readonly bool shuffleGuidedTourDestinations = true && (StartupGlobals.startupConfig != null && !StartupGlobals.startupConfig.recordingMode);
+    readonly bool shuffleGuidedTourDestinations = true && !ModeState.recordingMode;
     // start the guided tour at this index
     private int currentGuidedTourDestinationIndex = 0;
     // use a special destination list for debugging
