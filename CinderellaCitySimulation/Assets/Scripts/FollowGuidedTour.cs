@@ -64,11 +64,11 @@ public class FollowGuidedTour : MonoBehaviour
     // show paths and camera positions as debug lines
     readonly private bool showDebugLines = false;
     // shuffle the destinations - does not apply if recordingMode is false
-    readonly bool shuffleGuidedTourDestinations = true && !ModeState.recordingMode;
+    readonly bool shuffleGuidedTourDestinations = true && !ModeState.recordingMode && !useOverrideDestinations;
     // start the guided tour at this index
     private int currentGuidedTourDestinationIndex = 0;
     // use a special destination list for debugging
-    readonly bool useOverrideDestinations = false; // if true, use a special list for tour objects
+    static readonly bool useOverrideDestinations = false; // if true, use a special list for tour objects
     readonly bool doTestAllPaths = false; // if true, attempt to find paths between all destinations
 
     private void Awake()
@@ -122,7 +122,7 @@ public class FollowGuidedTour : MonoBehaviour
             /*** start FPSController in Rose Mall 80s90s near Woolworth's ***/
             //guidedTourObjects = new GameObject[] { guidedTourObjects[25], guidedTourObjects[3] };
             /*** test whether approaching a camera from the "opposite" way results in bad camera transition ***/
-            guidedTourObjects = new GameObject[] { guidedTourObjects[3], guidedTourObjects[4], guidedTourObjects[9] };
+            guidedTourObjects = new GameObject[] { guidedTourObjects[3], guidedTourObjects[15], guidedTourObjects[9] };
         }
         // use a specific order for recording if requested
         // can print indices of all historic photos in 
@@ -373,6 +373,10 @@ public class FollowGuidedTour : MonoBehaviour
 
     private void Update()
     {
+        // need to calculate whether we've arrived manually
+        // since Unity's NavMeshAgent.remainingDistance may return 0 unexpectedly
+        float calculatedRemainingDistance = Vector3.Distance(thisAgent.nextPosition, guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex]);
+
         // guided tour active, not paused
         if (ModeState.isGuidedTourActive && 
             !ModeState.isGuidedTourPaused && 
@@ -399,7 +403,7 @@ public class FollowGuidedTour : MonoBehaviour
                 NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex], showDebugLines);
             }  
 
-            // if the path is partial, trt setting it again in a few moments
+            // if the path is partial, try setting it again in a few moments
             // this could due to the path being very long
             if ((thisAgent.pathStatus == NavMeshPathStatus.PathPartial || 
                 thisAgent.pathStatus == NavMeshPathStatus.PathInvalid))
@@ -441,7 +445,7 @@ public class FollowGuidedTour : MonoBehaviour
                 }
             }
 
-            // only update the vector if the mode is not paused, and we're moving
+            // only update the guiided tour vector if the mode is not paused, and we're moving
             if (!ModeState.isGuidedTourPaused && thisAgent.velocity.sqrMagnitude > 0f)
             {
                 // store the current camera destination
@@ -613,7 +617,7 @@ public class FollowGuidedTour : MonoBehaviour
             }
         }
 
-        // provide emergency override to change the next destination
+        // provide a keyboard override to change the next destination
         if (Input.GetKeyDown("."))
         {
             IncrementGuidedTourIndex();
@@ -630,7 +634,7 @@ public class FollowGuidedTour : MonoBehaviour
         // this is possibly expensive, so only do it one frame only when requested
         if (ModeState.isGuidedTourActive && thisAgent.enabled && thisAgent.isOnNavMesh)
         {
-            if (thisAgent.hasPath && thisAgent.remainingDistance < lookToCameraAtRemainingDistance)
+            if (calculatedRemainingDistance < lookToCameraAtRemainingDistance)
             {
                 ModeState.areHistoricPhotosRequestedVisible = true;
             }
@@ -644,7 +648,7 @@ public class FollowGuidedTour : MonoBehaviour
         // this is possibly expensive, so only do it one frame when requested
         if (ModeState.isGuidedTourActive && thisAgent.enabled && thisAgent.isOnNavMesh)
         {
-            if (thisAgent.hasPath && thisAgent.remainingDistance < lookToCameraAtRemainingDistance / 4)
+            if (calculatedRemainingDistance < lookToCameraAtRemainingDistance / 4)
             {
                 ModeState.arePeopleRequestedVisible = false;
             }
