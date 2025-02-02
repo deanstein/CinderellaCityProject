@@ -1370,3 +1370,6 @@ LogInit: Object subsystem initialized
 [2025.02.02-03.06.51:491][ 35]LogFab: Display: User client id: xyza7891REBVsEqSJRRNXmlS7EQHM459
 [2025.02.02-03.06.51:608][ 42]LogEOSSDK: Warning: LogEOS: Error response received from backend. ServiceName=[Friend], OperationName=[GetBlockList], Url=[<Redacted>], HttpStatus=[403], ErrorCode=[errors.com.epicgames.common.insufficient_scopes], NumericErrorCode=[1056], ErrorMessage=[Insufficient access scopes. Expected: [friends_list]], CorrId=[EOS-jjFSh7mmo0Kn14ntpb4ZDA-15VBmfjynUGP0JdyArEYPw]
 [2025.02.02-03.08.43:248][976]LogDerivedDataCache: C:/Users/Mason/AppData/Local/UnrealEngine/Common/DerivedDataCache: Maintenance finished in +00:00:00.000 and deleted 0 files with total size 0 MiB and 0 empty folders. Scanned 0 files in 1 folders with total size 0 MiB.
+[2025.02.02-03.12.10:588][597]LogEOSSDK: LogEOS: Updating Product SDK Config, Time: 323.922241
+[2025.02.02-03.12.11:587][601]LogEOSSDK: LogEOS: SDK Config Product Update Request Completed - No Change
+[2025.02.02-03.12.11:588][601]LogEOSSDK: LogEOS: ScheduleNextSDKConfigDataUpdate - Time: 324.589172, Update Interval: 333.357330
