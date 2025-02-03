@@ -665,12 +665,6 @@ public class CCPMenuActions : MonoBehaviour
 
     /* ---------- Batch Operations ---------- */
 
-    [MenuItem("Cinderella City Project/Batch Operations/Delete All FBM Folders from Scene")]
-    public static void DeleteAllFBMFoldersTest()
-    {
-        AssetImportUpdate.DeleteAllFBMFolders();
-    }
-
     [MenuItem("Cinderella City Project/Batch Operations/Post Process Scene Update")]
     public static void PostProcessSceneUpdate()
     {
@@ -687,7 +681,7 @@ public class CCPMenuActions : MonoBehaviour
         SetAllLightmapResolutionsInCurrentScene();
 
         // remove aany FBM folders that might be present
-        AssetImportUpdate.DeleteAllFBMFolders();
+        AssetImportUpdate.DeleteAllLegacyTextureFolders();
 
         // save the scene
         // required to see some of the post-processing changes take effect in the editor
@@ -695,6 +689,14 @@ public class CCPMenuActions : MonoBehaviour
 
         // occlusion culling requires opening all scenes additively, so it's saved for last
         UpdateOcclusionCulling();
+    }
+
+    // deletes folders that may linger from older versions
+    // for example, the /Textures folder which used to replace the asset-name.fbm folder
+    [MenuItem("Cinderella City Project/Batch Operations/Delete Legacy Folders")]
+    public static void DeleteLegacyFolders()
+    {
+        AssetImportUpdate.DeleteAllLegacyTextureFolders();
     }
 
     /* --------- Editor Debug ---------- */

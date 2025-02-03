@@ -96,26 +96,6 @@ public class AssetImportUpdate : AssetPostprocessor {
         method.Invoke(new object(), null);
     }
 
-    // get the textures path for an asset given the asset's file path
-    static string GetTexturesPathFromMaterialPath(string materialPath)
-    {
-        // the material path is one folder adjacent to the textures path
-        // so split the path by slashes and go up one level
-        string[] splitPath = materialPath.Split(new char[] { '/' });
-        string[] newSplitPathArray = splitPath.RangeSubset(0, splitPath.Length - 2);
-
-        string newPath = "";
-
-        foreach (string pathSection in newSplitPathArray)
-        {
-            newPath = newPath + pathSection + "/";
-        }
-
-        newPath = newPath + "Textures";
-
-        return newPath;
-    }
-
     // define how to enable UVs and configure them
     void SetUVActiveAndConfigure(ModelImporter mi)
     {
@@ -298,20 +278,13 @@ public class AssetImportUpdate : AssetPostprocessor {
         importer.materialName = ModelImporterMaterialName.BasedOnMaterialName;
         importer.materialSearch = ModelImporterMaterialSearch.Local;
 
-        // Materials are automatically stored in a Materials folder (Unity default behavior)
-
-        // Textures are automatically stored in an ".fbm" folder (Unity default behavior)
-        // However, for clean organization, we want to store textures in a "Textures" folder
-        // the old .FBM folder will be deleted in the post-processor
-
-        // textures will be extracted to a "Textures" folder next to the asset
-        string assetTexturesDirectory = importedAssetFileDirectory + "Textures";
-        importedAssetTexturesDirectory = assetTexturesDirectory;
+        // Materials are stored in /Materials
+        // Textures are stored in /fbx-asset-name.fbm
+        importedAssetTexturesDirectory = importedAssetFileDirectory + importedAssetFileName + ".fbm";
 
         // re-extract textures
         DebugUtils.DebugLog("Re-importing textures...");
-        importer.ExtractTextures(assetTexturesDirectory);
-
+        importer.ExtractTextures(importedAssetTexturesDirectory);
     }
 
     // define how to enable emission on a material and set its color and texture to emissive
@@ -379,7 +352,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         string fileName = "metallicMap-" + scale + "-" + scale + "-" + scale + ".png";
         // determine the textures dir for this material and the new texture's file path
         // if this is during an import process, use the known asset import textures dir, otherwise determine the textures dir
-        string texturesDir = importedAssetTexturesDirectory != null ? importedAssetTexturesDirectory : AssetImportUpdate.GetTexturesPathFromMaterialPath(materialFilePath);
+        string texturesDir = importedAssetTexturesDirectory;
         string filePath = texturesDir + "/" + fileName;
 
         // only make a new texture if it doesn't exist yet
@@ -405,12 +378,6 @@ public class AssetImportUpdate : AssetPostprocessor {
                 {
                     newTexture.SetPixel(x, y, color);
                 }
-            }
-
-            // create the required textures folder before trying to write to it
-            if (!Directory.Exists(texturesDir))
-            {
-                Directory.CreateDirectory(texturesDir);
             }
 
             // write the texture to the file system
@@ -489,22 +456,41 @@ public class AssetImportUpdate : AssetPostprocessor {
         mat.SetColor("_SpecColor", specularColor);
     }
 
-    // clean up the automatically-created .fbm folder on import
-    // this folder is not necessary because we put materials in a "Materials" folder
-    public static void DeleteFBMFolderOnImport(string assetFileDirectory, string assetFileName)
+    // in older versions, we'd forcefully delete the default /asset-name.fbm folder
+    // and replace it with /Textures for a cleaner file system
+    // but we've given up on fighting Unity's default behavior
+    // so this function deletes the legacy /Textures folder for asset-name.fbx if /asset-name.fbm exists
+    public static bool DeleteLegacyTexturesFolderForAsset(String prefabPath)
     {
-        string FBMFolderPath = assetFileDirectory + assetFileName + ".fbm";
+        // only delete the /Textures folder if the /asset-name.fbm folder exists
+        string prefabPathWithoutExtension = FileDirUtils.RemoveExtensionFromPath(prefabPath);
+        string FBMFolderPath = prefabPathWithoutExtension + ".fbm";
         if (AssetDatabase.IsValidFolder(FBMFolderPath))
         {
-            DebugUtils.DebugLog("<b>Deleting a leftover .FBM folder: </b>" + FBMFolderPath);
-            //DebugUtils.DebugLog(assetFileDirectory + assetFileName + ".fbm");
-            UnityEngine.Windows.Directory.Delete(importedAssetFileDirectory + importedAssetFileName + ".fbm");
-            UnityEngine.Windows.File.Delete(importedAssetFileDirectory + importedAssetFileName + ".fbm.meta");
+            // get the /Textures folder path
+            string texturesFolderPath = FileDirUtils.RemoveLastSectionFromPath(prefabPath) + "/Textures";
+
+            // if the folder exists, delete it
+            if (AssetDatabase.IsValidFolder(texturesFolderPath))
+            {
+                DebugUtils.DebugLog("<b>Found a legacy /Textures folder to delete: </b>" + texturesFolderPath);
+                UnityEngine.Windows.Directory.Delete(texturesFolderPath);
+                UnityEngine.Windows.File.Delete(texturesFolderPath + ".meta");
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
         }
     }
 
-    // clean up all .fbm folders in the project
-    public static void DeleteAllFBMFolders()
+    public static void DeleteAllLegacyTextureFolders()
     {
         // get all the scene objects
         GameObject[] sceneObjects = ManageSceneObjects.GetTopLevelChildrenInSceneContainer(SceneManager.GetActiveScene());
@@ -519,18 +505,10 @@ public class AssetImportUpdate : AssetPostprocessor {
             // only proceed if the prefab path is non-zero in length
             if (prefabPathBySceneObject.Length != 0)
             {
-                // determine the FBM dir, which would be at the same level as the object
-                // but with an .fbm extension instead
-                string prefabPathWithoutExtension = FileDirUtils.RemoveExtension(prefabPathBySceneObject);
-                string FBMFolderPath = prefabPathWithoutExtension + ".fbm";
-
-                // if the folder exists, delete it
-                if (AssetDatabase.IsValidFolder(FBMFolderPath))
+                // delete the folder if it exists
+                bool folderDeletedResult = DeleteLegacyTexturesFolderForAsset(prefabPathBySceneObject);
+                if (folderDeletedResult)
                 {
-                    DebugUtils.DebugLog("<b>Found a leftover .FBM folder to delete: </b>" + FBMFolderPath);
-                    UnityEngine.Windows.Directory.Delete(FBMFolderPath);
-                    UnityEngine.Windows.File.Delete(FBMFolderPath + ".meta");
-
                     anyFoldersDeleted = true;
                 }
             }
@@ -538,7 +516,7 @@ public class AssetImportUpdate : AssetPostprocessor {
 
         if (!anyFoldersDeleted)
         {
-            DebugUtils.DebugLog("Found no .FBM folders to delete for the objects found in the scene.");
+            DebugUtils.DebugLog("Found no legacy /Textures folders to delete for the objects found in the scene.");
         }
     }
 
@@ -1494,22 +1472,16 @@ public class AssetImportUpdate : AssetPostprocessor {
             return;
         }
 
-        // check if there's a leftover .fbm folder, and if so, delete it
-        DeleteFBMFolderOnImport(importedAssetFileDirectory, importedAssetFileName);
-
         //ClearConsole();
         DebugUtils.DebugLog("START Model PreProcessing...");
-
         postProcessingHits.Clear();
 
         // get the file path of the asset that just got updated
         ModelImporter modelImporter = assetImporter as ModelImporter;
         String assetFilePath = modelImporter.assetPath.ToLower();
         DebugUtils.DebugLog("Modified file: " + assetFilePath);
-
         // make the asset path available globally
         importedAssetFilePath = assetFilePath;
-
         // get the file name + extension
         String assetFileNameAndExtension = Path.GetFileName(assetFilePath);
         importedAssetFileNameAndExtension = assetFileNameAndExtension;
@@ -1581,9 +1553,6 @@ public class AssetImportUpdate : AssetPostprocessor {
         string[] movedAssets,
         string[] movedFromAssetPaths)
     {
-        // check if there's a leftover .fbm folder, and if so, delete it
-        DeleteFBMFolderOnImport(importedAssetFileDirectory, importedAssetFileName);
-
         // if post processing isn't required, skip
         if (!postProcessingRequired)
         {
@@ -1608,6 +1577,9 @@ public class AssetImportUpdate : AssetPostprocessor {
         // for some reason this needs to happen in the post-processor
         importedAssetGameObject = (GameObject)AssetDatabase.LoadAssetAtPath(importedAssetFilePath, typeof(GameObject));
         importedAssetGameObjectDependencies = EditorUtility.CollectDependencies(new UnityEngine.Object[] { importedAssetGameObject });
+
+        // delete any legacy /Textures folder for this asset if applicable
+        DeleteLegacyTexturesFolderForAsset(importedAssetFilePath);
 
         //
         // execute all AssetImportUpdate PostProcessor option flags marked as true
