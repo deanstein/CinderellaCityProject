@@ -1,6 +1,14 @@
 {
   "VersionHistory": {
-    "0.8.1.202501": {
+    "0.8.2.202502": {
+      "Overview": "v0.8.2 eliminates custom .fbm folder behavior in AssetImportPipeline to reduce friction for project integrators.",
+      "Environment Updates": [],
+      "UI Updates": [],
+      "Code Updates": [
+        "Added the ability to set material transparency mode in AssetImportPipeline"
+      ]
+    },
+    "0.8.1.202502": {
       "Overview": "v0.8.1 fixes issues with Guided Tour, fixes a regression with mouse camera smoothing, improves the startupConfig system, adds new historic photos, and adds a recordingMode startupConfig flag for Guided Tour to navigate to photos in a specific order for recording videos",
       "Environment Updates": [
         "Added historic photos in 1968-1978 Gold Mall, and 1987-1997 Gold Mall and Rose Mall",
