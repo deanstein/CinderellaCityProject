@@ -548,12 +548,14 @@ public class ObjectVisibility
 
                 color.a = 1.0f;
                 historicPhotoRenderers[i].material.color = color;
+                MaterialUtils.SetMaterialRenderingMode(historicPhotoRenderers[i].material, MaterialUtils.RenderingMode.Opaque);
             }
             // if toggle is off, set new alpha from the recorded alpha
             else
             {
                 Color color = historicPhotoRenderers[i].material.color;
                 color.a = ObjectVisibilityGlobals.historicPhotoTransparencyValues[i];
+                MaterialUtils.SetMaterialRenderingMode(historicPhotoRenderers[i].material, MaterialUtils.RenderingMode.Transparent);
 
                 historicPhotoRenderers[i].material.color = color;
             }
