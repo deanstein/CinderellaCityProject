@@ -66,12 +66,25 @@ public class FileDirUtils
     }
 
     // remove a 3-letter extension and the dot from a name or path
-    public static string RemoveExtension(string nameOrPathWithExtension)
+    public static string RemoveExtensionFromPath(string nameOrPathWithExtension)
     {
         string nameOrPathWithoutExtension = nameOrPathWithExtension.Substring(0, nameOrPathWithExtension.Length - 4);
 
         return nameOrPathWithoutExtension;
     }
+
+    // remove a file name (or last section) from a path
+    public static string RemoveLastSectionFromPath(string path)
+    {
+        // Find the last index of the '/' character
+        int lastIndex = path.LastIndexOf('/');
+
+        // Remove the last section of the path
+        string result = path.Substring(0, lastIndex);
+
+        return result;
+    }
+
 
     // eliminate "Assets/Resources/" from a path
     public static string ConvertProjectPathToRelativePath(string projectPath)
@@ -87,7 +100,7 @@ public class FileDirUtils
 
         foreach (string filePath in filePaths)
         {
-            finalPathsList.Add(FileDirUtils.ConvertProjectPathToRelativePath(FileDirUtils.RemoveExtension(filePath)));
+            finalPathsList.Add(FileDirUtils.ConvertProjectPathToRelativePath(FileDirUtils.RemoveExtensionFromPath(filePath)));
         }
 
         return finalPathsList.ToArray();
