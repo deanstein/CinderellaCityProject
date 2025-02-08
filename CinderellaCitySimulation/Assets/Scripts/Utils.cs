@@ -12,8 +12,27 @@ using UnityEngine.SceneManagement;
 
 public static class ArrayUtils
 {
-    // create a subset from a range of indices
-    public static T[] RangeSubset<T>(this T[] array, int startIndex, int length)
+    // remove nulls from an array
+    public static GameObject[] CleanArray(GameObject[] array)
+    {
+        // Create a temporary list to hold non-null GameObjects
+        List<GameObject> tempList = new List<GameObject>();
+
+        // Iterate through the array and add non-null GameObjects to the list
+        foreach (GameObject go in array)
+        {
+            if (go != null)
+            {
+                tempList.Add(go);
+            }
+        }
+
+        // Convert the list back to an array and return it
+        return tempList.ToArray();
+    }
+
+        // create a subset from a range of indices
+        public static T[] RangeSubset<T>(this T[] array, int startIndex, int length)
     {
         T[] subset = new T[length];
         Array.Copy(array, startIndex, subset, 0, length);

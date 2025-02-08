@@ -119,7 +119,6 @@ public class FollowGuidedTour : MonoBehaviour
         if (ModeState.recordingMode)
         {
             // get the list of curated guided tour objects for RecordingMode
-            // TODO: clean the list in case any of the names weren't found
             guidedTourObjects = ManageSceneObjects.ProxyObjects.FindAllCuratedGuidedTourObjects(guidedTourObjects);
         }
 
