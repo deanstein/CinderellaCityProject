@@ -523,7 +523,7 @@ public static class ManageSceneObjects
 
                     // BLUE MALL ENTRANCES
                     // Leader entrance
-                    FindGameObjectInArrayByName("K-G Entrance", guidedTourObjects),
+                    FindGameObjectInArrayByName("Rose Mall Leader Entrance", guidedTourObjects),
                     // Farrell's
                     FindGameObjectInArrayByName("Blue Mall - Farrell's 1", guidedTourObjects),
                     // Blue Mall exterior corner
