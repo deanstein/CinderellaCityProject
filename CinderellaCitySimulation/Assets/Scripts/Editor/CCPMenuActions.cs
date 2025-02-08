@@ -423,6 +423,16 @@ public class CCPMenuActions : MonoBehaviour
         }
     }
 
+    // attempts to find all indices of the "curated" guided tour
+    // check the console for any issues
+    [MenuItem("Cinderella City Project/Guided Tour/Find All Curated Tour Objects")]
+    public static void FindCuratedTourIndices()
+    {
+        GameObject[] historicPhotoObjects = ManageSceneObjects.ProxyObjects.GetAllHistoricPhotoCamerasInScene(SceneManager.GetActiveScene().name);
+
+        ManageSceneObjects.ProxyObjects.FindAllCuratedGuidedTourObjects(historicPhotoObjects);
+    }
+
     [MenuItem("Cinderella City Project/Nav Meshes/Show Guided Tour Camera Position Debug Lines")]
     public static void ShowGuidedTourCameraPosDebugLines()
     {
