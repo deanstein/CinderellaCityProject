@@ -672,7 +672,8 @@ public static class ManageSceneObjects
                 };
             }
 
-            return finalCuratedGuidedTourObjects;
+            // clean the array in case any items weren't found (eliminate nulls)
+            return ArrayUtils.CleanArray(finalCuratedGuidedTourObjects);
         }
 
         // define and get the index of the "partial path" camera depending on the scene
