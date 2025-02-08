@@ -19,6 +19,7 @@ public class StartupConfig
     public bool recordingMode; // uses a specific order of scenes for recording a video
 }
 /*** EXAMPLE START CONFIG ***
+*** STORE AT C:/Users/<user>/AppData/LocalLow/The Cinderella City Project/ccp-startup-config.json ***
 
 {
     "autoStart": true,
