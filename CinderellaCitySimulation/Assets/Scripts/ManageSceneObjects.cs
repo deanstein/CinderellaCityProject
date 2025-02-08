@@ -9,6 +9,51 @@ using UnityEngine.SceneManagement;
 
 public static class ManageSceneObjects
 {
+    // finds a GameObject with name from an array of GameObjects
+    // returns its index
+    public static int FindGameObjectIndexByName(string name, GameObject[] objectsToSearch, bool exactMatch = false)
+    {
+        for (int i = 0; i < objectsToSearch.Length; i++)
+        {
+            GameObject gameObject = objectsToSearch[i];
+            if (exactMatch)
+            {
+                if (gameObject.name == name)
+                {
+                    return i;
+                }
+            }
+            else
+            {
+                if (gameObject.name.Contains(name))
+                {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    // finds a GameObject with a specific name from an array of gameobjects
+    // less expensive than GameObject.Find if a scoped array is known
+    public static GameObject FindGameObjectInArrayByName(string name, GameObject[] objectsToSearch, bool exactMatch = false)
+    {
+        // attempt to find the index
+        int foundIndex = -1;
+        foundIndex = FindGameObjectIndexByName(name, objectsToSearch, exactMatch);
+
+        if (foundIndex != -1)
+        {
+            return objectsToSearch[foundIndex];
+        }
+        else
+        {
+            Debug.LogError("Failed to find GameObject " + "<i>" + name + "</i>" + " in array.");
+            return null;
+        }
+    }
+
+
     // gets the container object for the given scene
     public static GameObject GetSceneContainerObject(Scene sceneWithContainer)
     {
@@ -401,9 +446,9 @@ public static class ManageSceneObjects
                 {
                     // the "Lauter" photo isn't generally interesting enough for the tour
                     // and the "Village Inn" photo is behind glass and best for custom tours
-                    if (!filteredHistoricCameraObject.name.Contains("Rose Mall - Lauter") && 
+                    if (!filteredHistoricCameraObject.name.Contains("Rose Mall - Lauter") &&
                         !filteredHistoricCameraObject.name.Contains("Gold Mall - Village Inn"))
-                    filteredHistoricCameraObjects.Add(filteredHistoricCameraObject);
+                        filteredHistoricCameraObjects.Add(filteredHistoricCameraObject);
                 }
             }
 
@@ -418,10 +463,306 @@ public static class ManageSceneObjects
             allCameras.AddRange(GetAllThumbnailCamerasInScene());
             return allCameras.ToArray();
         }
+
+        // gets a curated list of historic photos for Guided Tour in RecordingMode
+        // by searching a list of uncurated guidedTourObjects for specific names
+        public static GameObject[] FindAllCuratedGuidedTourObjects(GameObject[] guidedTourObjects)
+        {
+            // get the scene from the object
+            // GetActiveScene() can't be trusted here for some reason
+            string sceneName = guidedTourObjects[0].scene.name;
+
+            // the final array of curated objects
+            GameObject[] finalCuratedGuidedTourObjects = new GameObject[0];
+
+            // 60s70s or Experimental scene
+            if (sceneName == SceneGlobals.mallEra60s70sSceneName || sceneName == SceneGlobals.experimentalSceneName)
+            {
+                finalCuratedGuidedTourObjects = new GameObject[] {
+                    // BLUE MALL CENTRAL
+                    // fountain - straight on
+                    FindGameObjectInArrayByName("Blue Mall 1", guidedTourObjects),
+                    // fountain - closer
+                    FindGameObjectInArrayByName("Blue Mall 2", guidedTourObjects),
+                    // Blue Mall event
+                    FindGameObjectInArrayByName("Blue Mall trampoline", guidedTourObjects),
+
+                    // BLUE MALL OUTER HALLS
+                    // Robin Hood
+                    FindGameObjectInArrayByName("Blue Mall Robin Hood interior", guidedTourObjects),
+                    // Rich Burger
+                    FindGameObjectInArrayByName("Blue Mall Rich Burger", guidedTourObjects),
+
+                    // CLEANSER
+                    // back to fountain
+                    FindGameObjectInArrayByName("Blue Mall 1", guidedTourObjects),
+
+                    // BLUE MALL OUTER HALLS
+                    // Blue hall toward Rose
+                    FindGameObjectInArrayByName("Blue Mall 3", guidedTourObjects),
+                    // reverse view
+                    FindGameObjectInArrayByName("Blue Mall 4", guidedTourObjects),
+                    // 10th anniversary
+                    FindGameObjectInArrayByName("Blue Mall Snack Bar", guidedTourObjects),
+                    // earcetera
+                    FindGameObjectInArrayByName("Blue Mall at Rose Mall", guidedTourObjects),
+
+                    // ROSE MALL
+                    // K-G
+                    FindGameObjectInArrayByName("Rose Mall 2", guidedTourObjects),
+                    // Richman Bros
+                    FindGameObjectInArrayByName("Rose Mall Richman", guidedTourObjects),
+                    // Cricket
+                    FindGameObjectInArrayByName("Rose Mall 1", guidedTourObjects),
+                    // Hatch's
+                    FindGameObjectInArrayByName("Rose Mall Hatch's", guidedTourObjects),
+                    // The Regiment
+                    FindGameObjectInArrayByName("Rose Mall Regiment", guidedTourObjects),
+                    // Cinema-Neusteters
+                    FindGameObjectInArrayByName("Rose Mall Exterior 1", guidedTourObjects),
+
+                    // BLUE MALL ENTRANCES
+                    // Leader entrance
+                    FindGameObjectInArrayByName("K-G Entrance", guidedTourObjects),
+                    // Farrell's
+                    FindGameObjectInArrayByName("Blue Mall - Farrell's 1", guidedTourObjects),
+                    // Blue Mall exterior corner
+                    FindGameObjectInArrayByName("Blue Mall Exterior 2", guidedTourObjects),
+
+                    // SHAMROCK MALL
+                    // Tommy Wong's
+                    FindGameObjectInArrayByName("Shamrock Mall Tommy Wong's", guidedTourObjects),
+                    // Kiddie Shop
+                    FindGameObjectInArrayByName("Shamrock Kiddie Shop", guidedTourObjects),
+
+                    // CINDER ALLEY
+                    // Cinder Alley from Penney's
+                    FindGameObjectInArrayByName("Cinder Alley 1", guidedTourObjects),
+                    // Candle Makers of Candles II
+                    FindGameObjectInArrayByName("Cinder Alley Candles", guidedTourObjects),
+                    // store with planter
+                    FindGameObjectInArrayByName("Cinder Alley 2", guidedTourObjects),
+                    // Cinder Alley looking through gate to alleys
+                    FindGameObjectInArrayByName("Cinder Alley gate", guidedTourObjects),
+                    // Cinder Alley looking toward Penney's
+                    FindGameObjectInArrayByName("Cinder Alley far", guidedTourObjects),
+
+                    // GOLD MALL
+                    // Joslins exterior entrance
+                    FindGameObjectInArrayByName("Gold Mall Joslins entrance", guidedTourObjects),
+                    // Gold Mall colorized
+                    FindGameObjectInArrayByName("Gold Mall Colorized", guidedTourObjects),
+                    // Spencer's
+                    FindGameObjectInArrayByName("Gold Mall Horseshoes", guidedTourObjects),
+                    // CA sign at Gold Mall
+                    FindGameObjectInArrayByName("Gold Mall 2", guidedTourObjects),
+                    FindGameObjectInArrayByName("Gold Mall 1", guidedTourObjects),
+
+                    // BLUE MALL OUTER HALLS
+                    // Karmelkorn
+                    FindGameObjectInArrayByName("Blue Mall Karmelkorn", guidedTourObjects),
+                    // Hummell's
+                    FindGameObjectInArrayByName("Blue Mall Hummel's", guidedTourObjects),
+
+                    // CLEANSER
+                    // back to Joslins exterior entrance
+                    FindGameObjectInArrayByName("Gold Mall Joslins entrance", guidedTourObjects),
+
+                    // BLUE MALL ENTRANCES
+                    // Blue Mall Denver exterior entrance
+                    FindGameObjectInArrayByName("Blue Mall Denver entrance", guidedTourObjects),
+
+                    // BLUE MALL CENTRAL
+                    // back to fountain - straight on
+                    FindGameObjectInArrayByName("Blue Mall 1", guidedTourObjects),
+                    // Blue Mall mezzanine
+                    FindGameObjectInArrayByName("Blue Mall - mezzanine 1", guidedTourObjects)
+                };
+            }
+            // 80s90s scene
+            else if (sceneName == SceneGlobals.mallEra80s90sSceneName)
+            {
+                finalCuratedGuidedTourObjects = new GameObject[] {
+                    // BLUE MALL CENTRAL
+                    // atrium marketing
+                    FindGameObjectInArrayByName("Blue Mall deep", guidedTourObjects),
+                    // carousel
+                    FindGameObjectInArrayByName("Blue Mall carousel 1", guidedTourObjects),
+                    // wedding
+                    FindGameObjectInArrayByName("Blue Mall wedding 1", guidedTourObjects),
+                    // b&w decay
+                    FindGameObjectInArrayByName("Blue Mall 1", guidedTourObjects),
+                    // Pollard decay
+                    FindGameObjectInArrayByName("Blue Mall peek", guidedTourObjects),
+
+                    // BLUE MALL OUTER HALLS
+                    // Footlocker
+                    FindGameObjectInArrayByName("Blue Mall Footlocker", guidedTourObjects),
+                    // Pollard west doors
+                    FindGameObjectInArrayByName("Blue Mall west doors", guidedTourObjects),
+
+                    // Rose Mall
+                    FindGameObjectInArrayByName("Rose Mall 1", guidedTourObjects),
+                    // Thom McAn
+                    FindGameObjectInArrayByName("Rose Mall Thom McAn", guidedTourObjects),
+                    // Woolworth's
+                    FindGameObjectInArrayByName("Rose Mall Woolworth's", guidedTourObjects),
+                    // Stride Right
+                    FindGameObjectInArrayByName("Rose Mall Stride Right", guidedTourObjects),
+
+                    // SHAMROCK MALL
+                    // Shamrock escalator toward Broadway
+                    FindGameObjectInArrayByName("Shamrock escalator", guidedTourObjects),
+                    // Shamrock by escalator
+                    FindGameObjectInArrayByName("Shamrock Mall 1", guidedTourObjects),
+                    // Pollard Shamrock
+                    FindGameObjectInArrayByName("Shamrock Woolworths", guidedTourObjects),
+                    // waterbeds
+                    FindGameObjectInArrayByName("Shamrock Mall AWF", guidedTourObjects),
+                    // book fair
+                    FindGameObjectInArrayByName("Shamrock Mall book fair", guidedTourObjects),
+                    // Sports Fan
+                    FindGameObjectInArrayByName("Shamrock Mall 2", guidedTourObjects),
+
+                    // FOOD COURT
+                    // Renzios
+                    FindGameObjectInArrayByName("Food Court 9", guidedTourObjects),
+                    // Sbarro
+                    FindGameObjectInArrayByName("Food Court 8", guidedTourObjects),
+                    // Wendy's
+                    FindGameObjectInArrayByName("Food Court 7", guidedTourObjects),
+                    // Paul Wu's
+                    FindGameObjectInArrayByName("Food Court 6", guidedTourObjects),
+                    // smoking area
+                    FindGameObjectInArrayByName("Food Court 2", guidedTourObjects),
+                    // Orange Julius
+                    FindGameObjectInArrayByName("Food Court 1", guidedTourObjects),
+                    // Corn Dog
+                    FindGameObjectInArrayByName("Food Court 5", guidedTourObjects),
+                    // Chick-Fil-A
+                    FindGameObjectInArrayByName("Food Court 4", guidedTourObjects),
+                    // jazzercise
+                    FindGameObjectInArrayByName("Food Court 3", guidedTourObjects),
+
+                    // CINDER ALLEY
+                    // Zeezo's
+                    FindGameObjectInArrayByName("Cinder Alley Zeezo's", guidedTourObjects),
+                    // Funtastic's
+                    FindGameObjectInArrayByName("Cinder Alley Funtastic's", guidedTourObjects),
+                    // abandoned
+                    FindGameObjectInArrayByName("Cinder Alley 1", guidedTourObjects),
+
+                    // GOLD MALL
+                    // Cinder Alley sign east
+                    FindGameObjectInArrayByName("Gold Mall CA east stair", guidedTourObjects),
+                    // Gold Mall
+                    FindGameObjectInArrayByName("Gold Mall far", guidedTourObjects),
+                    // Pollard Gold
+                    FindGameObjectInArrayByName("Gold Mall Pollard to Joslins", guidedTourObjects),
+                    // Cinder Alley sign west
+                    FindGameObjectInArrayByName("Gold Mall Penney's", guidedTourObjects),
+                    // Hummel's
+                    FindGameObjectInArrayByName("Blue Mall Hummels 1", guidedTourObjects),
+
+                    // BLUE MALL
+                    // Blue Mall Ward's exterior entrance
+                    FindGameObjectInArrayByName("Blue Mall Exterior 1", guidedTourObjects),
+                    // Blue Mall mezzanine
+                    FindGameObjectInArrayByName("Blue Mall mezzanine 1", guidedTourObjects)
+                };
+            }
+
+            return finalCuratedGuidedTourObjects;
+        }
+
+        // define and get the index of the "partial path" camera depending on the scene
+        // this is the camera that's used as a fallback
+        // if the NavMeshAgent's current destination if returning only a partial path
+        public static int FindGuidedTourPartialPathCameraIndex(GameObject[] guidedTourObjects)
+        {
+            // define the partial names of the cameras per era
+            string partialPathCameraName60s70s = "Blue Mall 1";
+            string partialPathCameraName80s90s = "Blue Mall deep";
+
+            int finalIndex = -1;
+
+            // get the scene from the object
+            // GetActiveScene() can't be trusted here for some reason
+            string sceneName = guidedTourObjects[0].scene.name;
+
+            // 60s70s or Experimental scene
+            if (sceneName == SceneGlobals.mallEra60s70sSceneName || sceneName == SceneGlobals.experimentalSceneName)
+            {
+                finalIndex = FindGameObjectIndexByName(partialPathCameraName60s70s, guidedTourObjects);
+                Debug.Log("<b>Partial path camera found for 60s70s: " + guidedTourObjects[finalIndex].name + " at index " + finalIndex + "</b>");
+            }
+            else if (sceneName == SceneGlobals.mallEra80s90sSceneName)
+            {
+                finalIndex = FindGameObjectIndexByName(partialPathCameraName80s90s, guidedTourObjects);
+                Debug.Log("<b>Partial path camera found for 80s90s: " + guidedTourObjects[finalIndex].name + " at index " + finalIndex + "</b>");
+            }
+
+            return finalIndex;
+        }
+
+        // specific guided tour locations for regression testing
+        public static GameObject[] FindDebuggingGuidedTourObjects(GameObject[] guidedTourObjects)
+        {
+            // the final objects
+            GameObject[] finalDebuggingGuidedTourObjects = new GameObject[] { guidedTourObjects[0] };
+            List<GameObject> finalDebuggingGuidedTourObjectsList = new List<GameObject>();
+
+            // trigger known cases
+            // descriptions are below
+            bool testCase1 = false;
+            bool testCase2 = false;
+            bool testCase3 = false;
+
+            switch (true)
+            {
+                // guided tour would hang on image - 80s90s
+                case bool _ when testCase1:
+                    finalDebuggingGuidedTourObjects = new GameObject[] {
+                        FindGameObjectInArrayByName("Cinder Alley Zeezo's", guidedTourObjects),
+                        FindGameObjectInArrayByName("Food Court 8", guidedTourObjects),
+                        FindGameObjectInArrayByName("Rose Mall Thom McAn", guidedTourObjects)
+                    };
+                    break;
+
+                // guided tour would hang on trampoline image - 60s70s
+                case bool _ when testCase2:
+                    finalDebuggingGuidedTourObjects = new GameObject[] {
+                        // fountain
+                        FindGameObjectInArrayByName("Blue Mall 1", guidedTourObjects),
+                        // trampoline
+                        FindGameObjectInArrayByName("Blue Mall trampoline", guidedTourObjects),
+                    };
+                    break;
+
+                // agent approaching camera from behind - camera should not rotate up
+                case bool _ when testCase3:
+                    finalDebuggingGuidedTourObjects = new GameObject[] {
+                        // fountain
+                        FindGameObjectInArrayByName("Blue Mall 1", guidedTourObjects),
+                        // hallway looking west
+                        FindGameObjectInArrayByName("Blue Mall 3", guidedTourObjects),
+                        // hallway looking east
+                        FindGameObjectInArrayByName("Blue Mall 4", guidedTourObjects)
+                    };
+                    break;
+
+                default:
+                    break;
+            }
+
+            // always add the partial path camera to all debugging lists
+            int partialPathCameraIndex = FindGuidedTourPartialPathCameraIndex(guidedTourObjects);
+            finalDebuggingGuidedTourObjectsList.Add(guidedTourObjects[partialPathCameraIndex]);
+
+            return finalDebuggingGuidedTourObjects;
+        }
     }
 }
-
-// TODO: put everything below into the above class
 
 public static class ObjectVisibilityGlobals
 {

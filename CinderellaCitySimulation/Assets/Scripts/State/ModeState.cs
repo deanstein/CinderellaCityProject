@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// Handles gameplay modes like Guided Tour
+/// Various game modes or app states that other scripts subscribe to
 /// </summary>
 
 public static class ModeState

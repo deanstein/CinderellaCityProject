@@ -73,7 +73,7 @@ public class FileDirUtils
         return nameOrPathWithoutExtension;
     }
 
-    // remove a file name (or last section) from a path
+    // remove a last section (could be a file name) from a path
     public static string RemoveLastSectionFromPath(string path)
     {
         // Find the last index of the '/' character
