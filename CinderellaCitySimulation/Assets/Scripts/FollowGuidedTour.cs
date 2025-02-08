@@ -15,10 +15,7 @@ public class FollowGuidedTour : MonoBehaviour
     // then accessed by scene name, to avoid "crossing the wires" between singleton eras
     public static Dictionary<string, FollowGuidedTour> Instances { get; private set; } = new Dictionary<string, FollowGuidedTour>();
 
-    // fallback destination names if pathfinding is failing due to large distance
-    readonly string partialPathCameraName60s70s = "Blue Mall 1";
-    readonly string partialPathCameraName80s90s = "Blue Mall deep";
-    // index of the current partial path camera in the list of cameras
+    // get the partial path index of the current partial path camera in the list of cameras
     private int partialPathCameraIndex = -1;
 
     // number of seconds to pause and look at a camera
@@ -64,11 +61,11 @@ public class FollowGuidedTour : MonoBehaviour
     // show paths and camera positions as debug lines
     readonly private bool showDebugLines = false;
     // shuffle the destinations - does not apply if recordingMode is false
-    readonly bool shuffleGuidedTourDestinations = true && !ModeState.recordingMode && !useOverrideDestinations;
+    readonly bool shuffleGuidedTourDestinations = true && !ModeState.recordingMode && !useDebuggingDestinations;
     // start the guided tour at this index
     private int currentGuidedTourDestinationIndex = 0;
     // use a special destination list for debugging
-    static readonly bool useOverrideDestinations = false; // if true, use a special list for tour objects
+    static readonly bool useDebuggingDestinations = false; // if true, use a special list for tour objects
     readonly bool doTestAllPaths = false; // if true, attempt to find paths between all destinations
 
     private void Awake()
@@ -102,182 +99,33 @@ public class FollowGuidedTour : MonoBehaviour
             Debug.Log(guidedTourObjects[i].name + " is at original index " + i);
         }
 
-        // DEBUGGING
+        //
+        // OPTIONAL OVERRIDES
+        //
+
         // shuffle the list if requested
-        if (shuffleGuidedTourDestinations && !useOverrideDestinations)
+        if (shuffleGuidedTourDestinations && !useDebuggingDestinations)
         {
             guidedTourObjects = ArrayUtils.ShuffleArray(guidedTourObjects);
         }
-        // use the overrides if requested
-        if (useOverrideDestinations)
+
+        // use the debugging overrides if requested
+        if (useDebuggingDestinations)
         {
-            // USEFUL OVERRIDE PRESETS
-            /*** issue where guided tour would hang on image due to since-removed logic (use 80s90s scene) ***/
-            //guidedTourObjects = new GameObject[] { guidedTourObjects[13] /* Cinder Alley Zeezo's */, guidedTourObjects[21] /* food court 8 */, guidedTourObjects[31], /*Rose Mall Thom McAn */ /* REQUIRED: index of partial path alt */ guidedTourObjects[3] };
-            //guidedTourObjects = new GameObject[] { /*guidedTourObjects[13],*/ guidedTourObjects[21], guidedTourObjects[31], /* REQUIRED: index of partial path alt */ guidedTourObjects[3] };
-            // guidedTourObjects = new GameObject[] { guidedTourObjects[3], guidedTourObjects[21], guidedTourObjects[31]  };
-            /*** issue where guided tour would hang on tampoline image (use 60s70s scene) ***/
-            //guidedTourObjects = new GameObject[] { guidedTourObjects[9], guidedTourObjects[5], guidedTourObjects[15], guidedTourObjects[21], /* REQUIRED: index of partial path alt */ guidedTourObjects[3] };
-            /*** issue where partial path happens and index gets incremented like crazy when at partial alt camera ***/
-            /*** start FPSController in Rose Mall 80s90s near Woolworth's ***/
-            //guidedTourObjects = new GameObject[] { guidedTourObjects[25], guidedTourObjects[3] };
-            /*** test whether approaching a camera from the "opposite" way results in bad camera transition ***/
-            guidedTourObjects = new GameObject[] { guidedTourObjects[3], guidedTourObjects[15], guidedTourObjects[9] };
+            guidedTourObjects = ManageSceneObjects.ProxyObjects.FindDebuggingGuidedTourObjects(guidedTourObjects);
         }
+
         // use a specific order for recording if requested
-        // can print indices of all historic photos in 
-        // CCP Menu -> Guided Tour -> Print Historic Photo Data
         if (ModeState.recordingMode)
         {
-            // define the recording order per era
-            if (this.gameObject.scene.name == "60s70s" || this.gameObject.scene.name == "Experimental")
-            {
-                guidedTourObjects = new GameObject[] {
-                    // fountain
-                    guidedTourObjects[3],
-                    guidedTourObjects[4],
-                    // trampoline
-                    guidedTourObjects[15],
-                    // Robin Hood
-                    guidedTourObjects[13],
-                    // Rich Burger
-                    guidedTourObjects[12],
-                    // back to fountain
-                    guidedTourObjects[4],
-                    // Blue hall toward Rose
-                    guidedTourObjects[5],
-                    // 10th anniversary
-                    guidedTourObjects[14],
-                    // earcetera
-                    guidedTourObjects[7],
-                    // K-G
-                    guidedTourObjects[28],
-                    // Richman
-                    guidedTourObjects[33],
-                    // Cricket
-                    guidedTourObjects[27],
-                    // Hatch's
-                    guidedTourObjects[30],
-                    // Regiment
-                    guidedTourObjects[32],
-                    // Cinema-Neusteters
-                    guidedTourObjects[29],
-                    // Leader entrance
-                    guidedTourObjects[31],
-                    // Farrell's
-                    guidedTourObjects[2],
-                    // Blue Mall exterior corner
-                    guidedTourObjects[9],
-                    // Tommy Wong's
-                    guidedTourObjects[35],
-                    // Kiddie Shop
-                    guidedTourObjects[34],
-                    // Cinder Alley from Penney's
-                    guidedTourObjects[15],
-                    // Candle Makers of Candles II
-                    guidedTourObjects[18],
-                    guidedTourObjects[17],
-                    // Cinder Alley gate
-                    guidedTourObjects[20],
-                    // Cinder Alley far
-                    guidedTourObjects[19],
-                    // Joslins exterior entrance
-                    guidedTourObjects[25],
-                    // Gold Mall colorized
-                    guidedTourObjects[23],
-                    // Spencer's
-                    guidedTourObjects[24],
-                    // CA sign at Gold Mall
-                    guidedTourObjects[22],
-                    guidedTourObjects[21],
-                    // Karmelkorn
-                    guidedTourObjects[11],
-                    // Hummell's
-                    guidedTourObjects[10],
-                    // back to Joslins exterior entrance
-                    guidedTourObjects[25],
-                    // Blue Mall Denver exterior entrance
-                    guidedTourObjects[8],
-                    // back to fountain
-                    guidedTourObjects[3],
-                    // Blue Mall mezzanine
-                    guidedTourObjects[0]
-                };
-            }
-            else if (this.gameObject.scene.name == "80s90s")
-            {
-                guidedTourObjects = new GameObject[] {
-                    // atrium marketing
-                    guidedTourObjects[3],
-                    // carousel
-                    guidedTourObjects[2],
-                    // wedding
-                    guidedTourObjects[9],
-                    // b&w decay
-                    guidedTourObjects[1],
-                    // Pollard decay
-                    guidedTourObjects[8],
-                    // Footlocker
-                    guidedTourObjects[5],
-                    // Pollard west doors
-                    guidedTourObjects[10],
-                    // Rose Mall
-                    guidedTourObjects[28],
-                    // Thom McAn
-                    guidedTourObjects[33],
-                    // Woolworth's
-                    guidedTourObjects[30],
-                    // Stride Right
-                    guidedTourObjects[31],
-                    // Shamrock escalator
-                    guidedTourObjects[32],
-                    // Shamrock by escalator
-                    guidedTourObjects[34],
-                    // Pollard Shamrock
-                    guidedTourObjects[36],
-                    // waterbeds
-                    guidedTourObjects[29],
-                    // book fair
-                    guidedTourObjects[35],
-                    // Sports Fan
-                    guidedTourObjects[37],
-                    // Renzios
-                    guidedTourObjects[22],
-                    // Sbarro
-                    guidedTourObjects[21],
-                    // Wendy's
-                    guidedTourObjects[20],
-                    // Paul Wu's
-                    guidedTourObjects[19],
-                    // Orange Julius
-                    guidedTourObjects[14],
-                    // Corn Dog
-                    guidedTourObjects[18],
-                    // Chick-Fil-A
-                    guidedTourObjects[17],
-                    // jazzercise
-                    guidedTourObjects[16],
-                    // Zeezo's
-                    guidedTourObjects[13],
-                    // Funtastic's
-                    guidedTourObjects[12],
-                    // Cinder Alley sign east
-                    guidedTourObjects[24],
-                    // Gold Mall
-                    guidedTourObjects[25],
-                    // Pollard Gold
-                    guidedTourObjects[27],
-                    // Cinder Alley sign west
-                    guidedTourObjects[26],
-                    // Hummel's
-                    guidedTourObjects[6],
-                    // Blue Mall Ward's exterior entrance
-                    guidedTourObjects[4],
-                    // Blue Mall mezzanine
-                    guidedTourObjects[7]
-                };
-            }
+            // get the list of curated guided tour objects for RecordingMode
+            // TODO: clean the list in case any of the names weren't found
+            guidedTourObjects = ManageSceneObjects.ProxyObjects.FindAllCuratedGuidedTourObjects(guidedTourObjects);
         }
+
+        // by now, the final guidedTourObjects are in the right order
+        // so get the partial path camera index
+        partialPathCameraIndex = ManageSceneObjects.ProxyObjects.FindGuidedTourPartialPathCameraIndex(guidedTourObjects);
 
         List<Vector3> cameraPositionsList = new List<Vector3>();
         List<Vector3> cameraPositionsAdjustedList = new List<Vector3>();
@@ -297,24 +145,6 @@ public class FollowGuidedTour : MonoBehaviour
             cameraPositionsAdjustedOnNavMeshList.Add(objectCameraPosAdjustedOnNavMesh);
 
             Debug.Log(objectCamera.name + " is at index " + (cameraPositionsAdjustedOnNavMeshList.Count - 1).ToString() + " at adjusted position: " + objectCameraPosAdjustedOnNavMesh);
-
-            // also record the index of the alternate camera destination 
-            // for use when path is partial
-            if (this.gameObject.scene.name == "60s70s" || SceneManager.GetActiveScene().name == SceneGlobals.experimentalSceneName)
-            {
-                if (objectCamera.name.Contains(partialPathCameraName60s70s))
-                {
-                    partialPathCameraIndex = cameraPositionsAdjustedOnNavMeshList.Count - 1;
-                    Debug.Log("<b>Partial path camera found for 60s70s: " + objectCamera.name + " at index " + partialPathCameraIndex + "</b>");
-                }
-            } else if (this.gameObject.scene.name == "80s90s")
-            {
-                if (objectCamera.name.Contains(partialPathCameraName80s90s))
-                {
-                    partialPathCameraIndex = cameraPositionsAdjustedOnNavMeshList.Count - 1;
-                    Debug.Log("<b>Partial path camera found for 80s90s: " + objectCamera.name + " at index " + partialPathCameraIndex + "</b>");
-                }
-            }
 
             // start with historic photos on
             ModeState.areHistoricPhotosRequestedVisible = true;
