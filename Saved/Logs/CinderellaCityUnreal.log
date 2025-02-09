@@ -10350,3 +10350,989 @@ LogConfig: Set CVar [[r.VRS.ContrastAdaptiveShading:1]]
 [2025.02.09-22.01.37:988][ 41]LogEOSSDK: LogEOS: Updating Product SDK Config, Time: 5536.819824
 [2025.02.09-22.01.38:988][ 44]LogEOSSDK: LogEOS: SDK Config Product Update Request Completed - No Change
 [2025.02.09-22.01.38:989][ 44]LogEOSSDK: LogEOS: ScheduleNextSDKConfigDataUpdate - Time: 5537.485840, Update Interval: 319.479370
+[2025.02.09-22.07.05:888][661]LogAssetEditorSubsystem: Opening Asset editor for Blueprint /Game/60s-70s/anchor-penneys-walls-detailing-exterior/FbxScene_anchor-penneys-walls-detailing-exterior.FbxScene_anchor-penneys-walls-detailing-exterior
+[2025.02.09-22.07.05:888][661]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_15
+[2025.02.09-22.07.06:250][661]PIE: Warning: AttachTo: '/Engine/Transient.World_15:PersistentLevel.FbxScene_anchor-penneys-walls-detailing-exterior_C_0.DefaultSceneRoot' is not static  (in blueprint "FbxScene_anchor-penneys-walls-detailing-exterior"), cannot attach '/Engine/Transient.World_15:PersistentLevel.FbxScene_anchor-penneys-walls-detailing-exterior_C_0.Instance-0-0' which is static to it. Aborting.
+[2025.02.09-22.07.08:314][758]PIE: Warning: AttachTo: '/Engine/Transient.World_15:PersistentLevel.FbxScene_anchor-penneys-walls-detailing-exterior_C_0.DefaultSceneRoot' is not static  (in blueprint "FbxScene_anchor-penneys-walls-detailing-exterior"), cannot attach '/Engine/Transient.World_15:PersistentLevel.FbxScene_anchor-penneys-walls-detailing-exterior_C_0.Instance-0-0' which is static to it. Aborting.
+[2025.02.09-22.07.30:477][563]LogAssetEditorSubsystem: Opening Asset editor for StaticMesh /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78.Mesh
+[2025.02.09-22.07.30:483][563]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_16
+[2025.02.09-22.07.39:175][ 16]LogEOSSDK: LogEOS: Updating Product SDK Config, Time: 5898.016602
+[2025.02.09-22.07.39:310][ 24]LogEOSSDK: LogEOS: SDK Config Product Update Request Completed - No Change
+[2025.02.09-22.07.39:310][ 24]LogEOSSDK: LogEOS: ScheduleNextSDKConfigDataUpdate - Time: 5898.134766, Update Interval: 313.279205
+[2025.02.09-22.13.43:910][152]LogEOSSDK: LogEOS: Updating Product SDK Config, Time: 6262.744629
+[2025.02.09-22.13.44:043][158]LogEOSSDK: LogEOS: SDK Config Product Update Request Completed - No Change
+[2025.02.09-22.13.44:044][158]LogEOSSDK: LogEOS: ScheduleNextSDKConfigDataUpdate - Time: 6262.856445, Update Interval: 329.733582
+[2025.02.09-22.14.37:612][515]LogEditorTransaction: Undo Scale Collision
+[2025.02.09-22.18.36:272][797]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2025.02.09-22.18.36:347][797]OBJ SavePackage: Generating thumbnails for [0] asset(s) in package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78] ([1] browsable assets)...
+[2025.02.09-22.18.36:347][797]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78]
+[2025.02.09-22.18.36:349][797]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78
+[2025.02.09-22.18.36:349][797]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_78F4309729472E1E73DD2E1CB0546C5597.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78.uasset'
+[2025.02.09-22.18.36:355][797]LogFileHelpers: InternalPromptForCheckoutAndSave took 83.167 ms (total: 15.9 sec)
+[2025.02.09-22.18.36:429][797]LogContentValidation: Display: Starting to validate 1 assets
+[2025.02.09-22.18.36:429][797]LogContentValidation: Enabled validators:
+[2025.02.09-22.18.36:429][797]LogContentValidation: 	/Script/DataValidation.EditorValidator_Material
+[2025.02.09-22.18.36:429][797]LogContentValidation: 	/Script/DataValidation.DirtyFilesChangelistValidator
+[2025.02.09-22.18.36:429][797]LogContentValidation: 	/Script/DataValidation.EditorValidator_Localization
+[2025.02.09-22.18.36:429][797]LogContentValidation: 	/Script/DataValidation.PackageFileValidator
+[2025.02.09-22.18.36:429][797]LogContentValidation: 	/Script/DataValidation.WorldPartitionChangelistValidator
+[2025.02.09-22.18.36:429][797]LogContentValidation: 	/Script/InputBlueprintNodes.EnhancedInputUserWidgetValidator
+[2025.02.09-22.18.36:429][797]AssetCheck: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78 Validating asset
+[2025.02.09-22.18.38:586][888]LogDebuggerCommands: Repeating last play command: Selected Viewport
+[2025.02.09-22.18.38:592][888]LogPlayLevel: PlayLevel: No blueprints needed recompiling
+[2025.02.09-22.18.38:592][888]LogPlayLevel: Creating play world package: /Game/Levels/UEDPIE_0_anchor-demo
+[2025.02.09-22.18.39:996][888]LogPlayLevel: PIE: StaticDuplicateObject took: (1.404250s)
+[2025.02.09-22.18.39:996][888]LogPlayLevel: PIE: Created PIE world by copying editor world from /Game/Levels/anchor-demo.anchor-demo to /Game/Levels/UEDPIE_0_anchor-demo.anchor-demo (1.404297s)
+[2025.02.09-22.18.40:056][888]LogUObjectHash: Compacting FUObjectHashTables data took   1.79ms
+[2025.02.09-22.18.40:060][888]LogChaosDD: Creating Chaos Debug Draw Scene for world anchor-demo
+[2025.02.09-22.18.40:067][888]LogPlayLevel: PIE: World Init took: (0.006997s)
+[2025.02.09-22.18.40:068][888]LogAudio: Display: Creating Audio Device:                 Id: 12, Scope: Unique, Realtime: True
+[2025.02.09-22.18.40:068][888]LogAudioMixer: Display: Audio Mixer Platform Settings:
+[2025.02.09-22.18.40:068][888]LogAudioMixer: Display: 	Sample Rate:						  48000
+[2025.02.09-22.18.40:068][888]LogAudioMixer: Display: 	Callback Buffer Frame Size Requested: 1024
+[2025.02.09-22.18.40:068][888]LogAudioMixer: Display: 	Callback Buffer Frame Size To Use:	  1024
+[2025.02.09-22.18.40:068][888]LogAudioMixer: Display: 	Number of buffers to queue:			  1
+[2025.02.09-22.18.40:068][888]LogAudioMixer: Display: 	Max Channels (voices):				  32
+[2025.02.09-22.18.40:068][888]LogAudioMixer: Display: 	Number of Async Source Workers:		  4
+[2025.02.09-22.18.40:068][888]LogAudio: Display: AudioDevice MaxSources: 32
+[2025.02.09-22.18.40:068][888]LogAudio: Display: Audio Spatialization Plugin: None (built-in).
+[2025.02.09-22.18.40:068][888]LogAudio: Display: Audio Reverb Plugin: None (built-in).
+[2025.02.09-22.18.40:068][888]LogAudio: Display: Audio Occlusion Plugin: None (built-in).
+[2025.02.09-22.18.40:071][888]LogAudioMixer: Display: Initializing audio mixer using platform API: 'XAudio2'
+[2025.02.09-22.18.40:098][888]LogAudioMixer: Display: Using Audio Hardware Device Headphones (Realtek(R) Audio)
+[2025.02.09-22.18.40:098][888]LogAudioMixer: Display: Initializing Sound Submixes...
+[2025.02.09-22.18.40:098][888]LogAudioMixer: Display: Creating Master Submix 'MasterSubmixDefault'
+[2025.02.09-22.18.40:098][888]LogAudioMixer: Display: Creating Master Submix 'MasterReverbSubmixDefault'
+[2025.02.09-22.18.40:099][888]LogAudioMixer: FMixerPlatformXAudio2::StartAudioStream() called. InstanceID=12
+[2025.02.09-22.18.40:099][888]LogAudioMixer: Display: Output buffers initialized: Frames=1024, Channels=2, Samples=2048, InstanceID=12
+[2025.02.09-22.18.40:102][888]LogAudioMixer: Display: Starting AudioMixerPlatformInterface::RunInternal(), InstanceID=12
+[2025.02.09-22.18.40:102][888]LogAudioMixer: Display: FMixerPlatformXAudio2::SubmitBuffer() called for the first time. InstanceID=12
+[2025.02.09-22.18.40:102][888]LogInit: FAudioDevice initialized with ID 12.
+[2025.02.09-22.18.40:102][888]LogAudio: Display: Audio Device (ID: 12) registered with world 'anchor-demo'.
+[2025.02.09-22.18.40:102][888]LogAudioMixer: Initializing Audio Bus Subsystem for audio device with ID 12
+[2025.02.09-22.18.40:105][888]LogLoad: Game class is 'GameModeBase'
+[2025.02.09-22.18.40:182][888]LogWorld: Bringing World /Game/Levels/UEDPIE_0_anchor-demo.anchor-demo up for play (max tick rate 60) at 2025.02.09-15.18.40
+[2025.02.09-22.18.40:183][888]LogWorld: Bringing up level for play took: 0.078162
+[2025.02.09-22.18.40:185][888]LogOnline: OSS: Created online subsystem instance for: :Context_28
+[2025.02.09-22.18.40:188][888]PIE: Server logged in
+[2025.02.09-22.18.40:188][888]PIE: Play in editor total start time 1.597 seconds.
+[2025.02.09-22.19.54:771][324]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2025.02.09-22.19.54:771][324]LogWorld: BeginTearingDown for /Game/Levels/UEDPIE_0_anchor-demo
+[2025.02.09-22.19.54:772][324]LogWorld: UWorld::CleanupWorld for anchor-demo, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-22.19.54:796][324]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-22.19.55:306][324]LogPlayLevel: Display: Shutting down PIE online subsystems
+[2025.02.09-22.19.55:315][324]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-22.19.55:368][324]LogAudio: Display: Audio Device unregistered from world 'None'.
+[2025.02.09-22.19.55:371][324]LogAudioMixer: Deinitializing Audio Bus Subsystem for audio device with ID 12
+[2025.02.09-22.19.55:371][324]LogAudioMixer: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=12
+[2025.02.09-22.19.55:373][324]LogAudioMixer: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=12
+[2025.02.09-22.19.55:379][324]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2025.02.09-22.19.55:399][324]LogUObjectHash: Compacting FUObjectHashTables data took   2.31ms
+[2025.02.09-22.19.55:442][325]LogPlayLevel: Display: Destroying online subsystem :Context_28
+[2025.02.09-22.20.09:220][864]LogEOSSDK: LogEOS: Updating Product SDK Config, Time: 6648.036621
+[2025.02.09-22.20.09:378][870]LogEOSSDK: LogEOS: SDK Config Product Update Request Completed - No Change
+[2025.02.09-22.20.09:379][870]LogEOSSDK: LogEOS: ScheduleNextSDKConfigDataUpdate - Time: 6648.168945, Update Interval: 303.805054
+[2025.02.09-22.26.10:009][618]LogEOSSDK: LogEOS: Updating Product SDK Config, Time: 7008.837891
+[2025.02.09-22.26.11:010][621]LogEOSSDK: LogEOS: SDK Config Product Update Request Completed - No Change
+[2025.02.09-22.26.11:010][621]LogEOSSDK: LogEOS: ScheduleNextSDKConfigDataUpdate - Time: 7009.506836, Update Interval: 317.624451
+[2025.02.09-22.27.21:783][ 58]LogEditorTransaction: Undo Translate Collision
+[2025.02.09-22.27.48:531][ 60]LogEOSSDK: LogEOSAuth: Refreshing authentication session. AccessTokenExpired: No RefreshRequired: Yes VerifyRequired: No UserId: 484...84c
+[2025.02.09-22.27.48:531][ 60]LogEOSSDK: LogEOSAuth: Refresh authentication session. AuthState: 1 AccessExpires: 99.99 RefreshExpires: 1.554e+07
+[2025.02.09-22.27.48:706][ 66]LogEOSSDK: LogEOSAuth: UpdateUserAuthToken: User ClientId: xyz...459 AccountId: 484...84c Access[Expires: 2025.02.10-00.27.47 Remaining: 7200.97] Refresh[Expires: 2025-08-08T20:02:12.877Z Remaining: 15543265.88] State: Valid
+[2025.02.09-22.28.53:388][685]LogUObjectHash: Compacting FUObjectHashTables data took   2.29ms
+[2025.02.09-22.28.53:395][685]LogFileHelpers: Editor autosave (incl. external actors) for '/Game/Levels/anchor-demo' took 0.059
+[2025.02.09-22.28.53:396][685]OBJ SavePackage: Generating thumbnails for [0] asset(s) in package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78] ([1] browsable assets)...
+[2025.02.09-22.28.53:396][685]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78]
+[2025.02.09-22.28.53:398][685]LogSavePackage: Moving output files for package: /Temp/Autosaves/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78_Auto1
+[2025.02.09-22.28.53:398][685]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_78_Auto1675E728247C286558D4BF59121129F67.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Autosaves/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78_Auto1.uasset'
+[2025.02.09-22.28.53:399][685]LogFileHelpers: Auto-saving content packages took 0.004
+[2025.02.09-22.32.11:274][189]LogEOSSDK: LogEOS: Updating Product SDK Config, Time: 7370.090820
+[2025.02.09-22.32.11:413][195]LogEOSSDK: LogEOS: SDK Config Product Update Request Completed - No Change
+[2025.02.09-22.32.11:413][195]LogEOSSDK: LogEOS: ScheduleNextSDKConfigDataUpdate - Time: 7370.207031, Update Interval: 332.956329
+[2025.02.09-22.34.26:109][570]LogEditorTransaction: Undo Scale Collision
+[2025.02.09-22.34.39:879][ 46]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2025.02.09-22.34.39:967][ 46]OBJ SavePackage: Generating thumbnails for [0] asset(s) in package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78] ([1] browsable assets)...
+[2025.02.09-22.34.39:968][ 46]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78]
+[2025.02.09-22.34.39:974][ 46]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78
+[2025.02.09-22.34.39:974][ 46]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_78D11F5BB0405AE457850989800CFDBC4D.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78.uasset'
+[2025.02.09-22.34.39:981][ 46]LogFileHelpers: InternalPromptForCheckoutAndSave took 102.366 ms (total: 16.0 sec)
+[2025.02.09-22.34.40:066][ 46]LogContentValidation: Display: Starting to validate 1 assets
+[2025.02.09-22.34.40:066][ 46]LogContentValidation: Enabled validators:
+[2025.02.09-22.34.40:066][ 46]LogContentValidation: 	/Script/DataValidation.EditorValidator_Material
+[2025.02.09-22.34.40:066][ 46]LogContentValidation: 	/Script/DataValidation.DirtyFilesChangelistValidator
+[2025.02.09-22.34.40:066][ 46]LogContentValidation: 	/Script/DataValidation.EditorValidator_Localization
+[2025.02.09-22.34.40:066][ 46]LogContentValidation: 	/Script/DataValidation.PackageFileValidator
+[2025.02.09-22.34.40:066][ 46]LogContentValidation: 	/Script/DataValidation.WorldPartitionChangelistValidator
+[2025.02.09-22.34.40:066][ 46]LogContentValidation: 	/Script/InputBlueprintNodes.EnhancedInputUserWidgetValidator
+[2025.02.09-22.34.40:066][ 46]AssetCheck: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78 Validating asset
+[2025.02.09-22.34.41:872][108]LogDebuggerCommands: Repeating last play command: Selected Viewport
+[2025.02.09-22.34.41:879][108]LogPlayLevel: PlayLevel: No blueprints needed recompiling
+[2025.02.09-22.34.41:880][108]LogPlayLevel: Creating play world package: /Game/Levels/UEDPIE_0_anchor-demo
+[2025.02.09-22.34.43:388][108]LogPlayLevel: PIE: StaticDuplicateObject took: (1.507907s)
+[2025.02.09-22.34.43:388][108]LogPlayLevel: PIE: Created PIE world by copying editor world from /Game/Levels/anchor-demo.anchor-demo to /Game/Levels/UEDPIE_0_anchor-demo.anchor-demo (1.507957s)
+[2025.02.09-22.34.43:429][108]LogUObjectHash: Compacting FUObjectHashTables data took   2.12ms
+[2025.02.09-22.34.43:435][108]LogChaosDD: Creating Chaos Debug Draw Scene for world anchor-demo
+[2025.02.09-22.34.43:437][108]LogPlayLevel: PIE: World Init took: (0.001991s)
+[2025.02.09-22.34.43:438][108]LogAudio: Display: Creating Audio Device:                 Id: 13, Scope: Unique, Realtime: True
+[2025.02.09-22.34.43:438][108]LogAudioMixer: Display: Audio Mixer Platform Settings:
+[2025.02.09-22.34.43:438][108]LogAudioMixer: Display: 	Sample Rate:						  48000
+[2025.02.09-22.34.43:438][108]LogAudioMixer: Display: 	Callback Buffer Frame Size Requested: 1024
+[2025.02.09-22.34.43:438][108]LogAudioMixer: Display: 	Callback Buffer Frame Size To Use:	  1024
+[2025.02.09-22.34.43:438][108]LogAudioMixer: Display: 	Number of buffers to queue:			  1
+[2025.02.09-22.34.43:438][108]LogAudioMixer: Display: 	Max Channels (voices):				  32
+[2025.02.09-22.34.43:438][108]LogAudioMixer: Display: 	Number of Async Source Workers:		  4
+[2025.02.09-22.34.43:438][108]LogAudio: Display: AudioDevice MaxSources: 32
+[2025.02.09-22.34.43:438][108]LogAudio: Display: Audio Spatialization Plugin: None (built-in).
+[2025.02.09-22.34.43:438][108]LogAudio: Display: Audio Reverb Plugin: None (built-in).
+[2025.02.09-22.34.43:438][108]LogAudio: Display: Audio Occlusion Plugin: None (built-in).
+[2025.02.09-22.34.43:440][108]LogAudioMixer: Display: Initializing audio mixer using platform API: 'XAudio2'
+[2025.02.09-22.34.43:468][108]LogAudioMixer: Display: Using Audio Hardware Device Headphones (Realtek(R) Audio)
+[2025.02.09-22.34.43:469][108]LogAudioMixer: Display: Initializing Sound Submixes...
+[2025.02.09-22.34.43:469][108]LogAudioMixer: Display: Creating Master Submix 'MasterSubmixDefault'
+[2025.02.09-22.34.43:469][108]LogAudioMixer: Display: Creating Master Submix 'MasterReverbSubmixDefault'
+[2025.02.09-22.34.43:470][108]LogAudioMixer: FMixerPlatformXAudio2::StartAudioStream() called. InstanceID=13
+[2025.02.09-22.34.43:470][108]LogAudioMixer: Display: Output buffers initialized: Frames=1024, Channels=2, Samples=2048, InstanceID=13
+[2025.02.09-22.34.43:473][108]LogAudioMixer: Display: Starting AudioMixerPlatformInterface::RunInternal(), InstanceID=13
+[2025.02.09-22.34.43:473][108]LogAudioMixer: Display: FMixerPlatformXAudio2::SubmitBuffer() called for the first time. InstanceID=13
+[2025.02.09-22.34.43:473][108]LogInit: FAudioDevice initialized with ID 13.
+[2025.02.09-22.34.43:473][108]LogAudio: Display: Audio Device (ID: 13) registered with world 'anchor-demo'.
+[2025.02.09-22.34.43:473][108]LogAudioMixer: Initializing Audio Bus Subsystem for audio device with ID 13
+[2025.02.09-22.34.43:476][108]LogLoad: Game class is 'GameModeBase'
+[2025.02.09-22.34.43:585][108]LogWorld: Bringing World /Game/Levels/UEDPIE_0_anchor-demo.anchor-demo up for play (max tick rate 60) at 2025.02.09-15.34.43
+[2025.02.09-22.34.43:586][108]LogWorld: Bringing up level for play took: 0.109816
+[2025.02.09-22.34.43:589][108]LogOnline: OSS: Created online subsystem instance for: :Context_29
+[2025.02.09-22.34.43:592][108]PIE: Server logged in
+[2025.02.09-22.34.43:593][108]PIE: Play in editor total start time 1.714 seconds.
+[2025.02.09-22.35.29:871][725]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2025.02.09-22.35.29:871][725]LogWorld: BeginTearingDown for /Game/Levels/UEDPIE_0_anchor-demo
+[2025.02.09-22.35.29:872][725]LogWorld: UWorld::CleanupWorld for anchor-demo, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-22.35.29:903][725]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-22.35.30:459][725]LogPlayLevel: Display: Shutting down PIE online subsystems
+[2025.02.09-22.35.30:472][725]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-22.35.30:510][725]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2025.02.09-22.35.30:556][725]LogAudioMixer: Deinitializing Audio Bus Subsystem for audio device with ID 13
+[2025.02.09-22.35.30:556][725]LogAudioMixer: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=13
+[2025.02.09-22.35.30:559][725]LogAudioMixer: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=13
+[2025.02.09-22.35.30:594][725]LogUObjectHash: Compacting FUObjectHashTables data took   2.76ms
+[2025.02.09-22.35.30:648][726]LogPlayLevel: Display: Destroying online subsystem :Context_29
+[2025.02.09-22.38.30:085][728]LogEOSSDK: LogEOS: Updating Product SDK Config, Time: 7748.926758
+[2025.02.09-22.38.30:472][732]LogEOSSDK: LogEOS: SDK Config Product Update Request Completed - No Change
+[2025.02.09-22.38.30:472][732]LogEOSSDK: LogEOS: ScheduleNextSDKConfigDataUpdate - Time: 7749.260742, Update Interval: 352.215942
+[2025.02.09-22.38.39:245][ 47]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2025.02.09-22.38.39:316][ 47]OBJ SavePackage: Generating thumbnails for [0] asset(s) in package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78] ([1] browsable assets)...
+[2025.02.09-22.38.39:316][ 47]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78]
+[2025.02.09-22.38.39:319][ 47]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78
+[2025.02.09-22.38.39:319][ 47]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_787BFB5C8D442A775E5E6DF0894C42DA5D.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78.uasset'
+[2025.02.09-22.38.39:326][ 47]LogFileHelpers: InternalPromptForCheckoutAndSave took 80.741 ms (total: 16.1 sec)
+[2025.02.09-22.38.39:420][ 47]LogContentValidation: Display: Starting to validate 1 assets
+[2025.02.09-22.38.39:420][ 47]LogContentValidation: Enabled validators:
+[2025.02.09-22.38.39:420][ 47]LogContentValidation: 	/Script/DataValidation.EditorValidator_Material
+[2025.02.09-22.38.39:420][ 47]LogContentValidation: 	/Script/DataValidation.DirtyFilesChangelistValidator
+[2025.02.09-22.38.39:420][ 47]LogContentValidation: 	/Script/DataValidation.EditorValidator_Localization
+[2025.02.09-22.38.39:420][ 47]LogContentValidation: 	/Script/DataValidation.PackageFileValidator
+[2025.02.09-22.38.39:420][ 47]LogContentValidation: 	/Script/DataValidation.WorldPartitionChangelistValidator
+[2025.02.09-22.38.39:420][ 47]LogContentValidation: 	/Script/InputBlueprintNodes.EnhancedInputUserWidgetValidator
+[2025.02.09-22.38.39:420][ 47]AssetCheck: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78 Validating asset
+[2025.02.09-22.38.40:386][ 80]LogWorld: UWorld::CleanupWorld for World_16, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-22.38.40:386][ 80]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-22.38.40:471][ 80]LogUObjectHash: Compacting FUObjectHashTables data took   2.37ms
+[2025.02.09-22.38.40:735][ 80]PIE: Warning: AttachTo: '/Engine/Transient.World_15:PersistentLevel.FbxScene_anchor-penneys-walls-detailing-exterior_C_0.DefaultSceneRoot' is not static  (in blueprint "FbxScene_anchor-penneys-walls-detailing-exterior"), cannot attach '/Engine/Transient.World_15:PersistentLevel.FbxScene_anchor-penneys-walls-detailing-exterior_C_0.Instance-0-0' which is static to it. Aborting.
+[2025.02.09-22.38.42:490][126]LogDebuggerCommands: Repeating last play command: Selected Viewport
+[2025.02.09-22.38.42:496][126]LogPlayLevel: PlayLevel: No blueprints needed recompiling
+[2025.02.09-22.38.42:497][126]LogPlayLevel: Creating play world package: /Game/Levels/UEDPIE_0_anchor-demo
+[2025.02.09-22.38.43:978][126]LogPlayLevel: PIE: StaticDuplicateObject took: (1.481287s)
+[2025.02.09-22.38.43:978][126]LogPlayLevel: PIE: Created PIE world by copying editor world from /Game/Levels/anchor-demo.anchor-demo to /Game/Levels/UEDPIE_0_anchor-demo.anchor-demo (1.481349s)
+[2025.02.09-22.38.44:008][126]LogUObjectHash: Compacting FUObjectHashTables data took   2.01ms
+[2025.02.09-22.38.44:013][126]LogChaosDD: Creating Chaos Debug Draw Scene for world anchor-demo
+[2025.02.09-22.38.44:015][126]LogPlayLevel: PIE: World Init took: (0.002056s)
+[2025.02.09-22.38.44:016][126]LogAudio: Display: Creating Audio Device:                 Id: 14, Scope: Unique, Realtime: True
+[2025.02.09-22.38.44:016][126]LogAudioMixer: Display: Audio Mixer Platform Settings:
+[2025.02.09-22.38.44:016][126]LogAudioMixer: Display: 	Sample Rate:						  48000
+[2025.02.09-22.38.44:016][126]LogAudioMixer: Display: 	Callback Buffer Frame Size Requested: 1024
+[2025.02.09-22.38.44:016][126]LogAudioMixer: Display: 	Callback Buffer Frame Size To Use:	  1024
+[2025.02.09-22.38.44:016][126]LogAudioMixer: Display: 	Number of buffers to queue:			  1
+[2025.02.09-22.38.44:016][126]LogAudioMixer: Display: 	Max Channels (voices):				  32
+[2025.02.09-22.38.44:016][126]LogAudioMixer: Display: 	Number of Async Source Workers:		  4
+[2025.02.09-22.38.44:016][126]LogAudio: Display: AudioDevice MaxSources: 32
+[2025.02.09-22.38.44:016][126]LogAudio: Display: Audio Spatialization Plugin: None (built-in).
+[2025.02.09-22.38.44:016][126]LogAudio: Display: Audio Reverb Plugin: None (built-in).
+[2025.02.09-22.38.44:016][126]LogAudio: Display: Audio Occlusion Plugin: None (built-in).
+[2025.02.09-22.38.44:019][126]LogAudioMixer: Display: Initializing audio mixer using platform API: 'XAudio2'
+[2025.02.09-22.38.44:046][126]LogAudioMixer: Display: Using Audio Hardware Device Headphones (Realtek(R) Audio)
+[2025.02.09-22.38.44:046][126]LogAudioMixer: Display: Initializing Sound Submixes...
+[2025.02.09-22.38.44:046][126]LogAudioMixer: Display: Creating Master Submix 'MasterSubmixDefault'
+[2025.02.09-22.38.44:046][126]LogAudioMixer: Display: Creating Master Submix 'MasterReverbSubmixDefault'
+[2025.02.09-22.38.44:047][126]LogAudioMixer: FMixerPlatformXAudio2::StartAudioStream() called. InstanceID=14
+[2025.02.09-22.38.44:047][126]LogAudioMixer: Display: Output buffers initialized: Frames=1024, Channels=2, Samples=2048, InstanceID=14
+[2025.02.09-22.38.44:050][126]LogAudioMixer: Display: Starting AudioMixerPlatformInterface::RunInternal(), InstanceID=14
+[2025.02.09-22.38.44:050][126]LogAudioMixer: Display: FMixerPlatformXAudio2::SubmitBuffer() called for the first time. InstanceID=14
+[2025.02.09-22.38.44:050][126]LogInit: FAudioDevice initialized with ID 14.
+[2025.02.09-22.38.44:050][126]LogAudio: Display: Audio Device (ID: 14) registered with world 'anchor-demo'.
+[2025.02.09-22.38.44:050][126]LogAudioMixer: Initializing Audio Bus Subsystem for audio device with ID 14
+[2025.02.09-22.38.44:055][126]LogLoad: Game class is 'GameModeBase'
+[2025.02.09-22.38.44:148][126]LogWorld: Bringing World /Game/Levels/UEDPIE_0_anchor-demo.anchor-demo up for play (max tick rate 60) at 2025.02.09-15.38.44
+[2025.02.09-22.38.44:149][126]LogWorld: Bringing up level for play took: 0.094082
+[2025.02.09-22.38.44:152][126]LogOnline: OSS: Created online subsystem instance for: :Context_30
+[2025.02.09-22.38.44:155][126]PIE: Server logged in
+[2025.02.09-22.38.44:156][126]PIE: Play in editor total start time 1.66 seconds.
+[2025.02.09-22.39.33:371][408]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2025.02.09-22.39.33:371][408]LogWorld: BeginTearingDown for /Game/Levels/UEDPIE_0_anchor-demo
+[2025.02.09-22.39.33:373][408]LogWorld: UWorld::CleanupWorld for anchor-demo, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-22.39.33:408][408]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-22.39.33:956][408]LogPlayLevel: Display: Shutting down PIE online subsystems
+[2025.02.09-22.39.33:967][408]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-22.39.34:037][408]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2025.02.09-22.39.34:040][408]LogAudioMixer: Deinitializing Audio Bus Subsystem for audio device with ID 14
+[2025.02.09-22.39.34:040][408]LogAudioMixer: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=14
+[2025.02.09-22.39.34:043][408]LogAudioMixer: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=14
+[2025.02.09-22.39.34:079][408]LogUObjectHash: Compacting FUObjectHashTables data took   3.11ms
+[2025.02.09-22.39.34:483][408]PIE: Warning: AttachTo: '/Engine/Transient.World_15:PersistentLevel.FbxScene_anchor-penneys-walls-detailing-exterior_C_0.DefaultSceneRoot' is not static  (in blueprint "FbxScene_anchor-penneys-walls-detailing-exterior"), cannot attach '/Engine/Transient.World_15:PersistentLevel.FbxScene_anchor-penneys-walls-detailing-exterior_C_0.Instance-0-0' which is static to it. Aborting.
+[2025.02.09-22.39.34:584][409]LogPlayLevel: Display: Destroying online subsystem :Context_30
+[2025.02.09-22.40.03:446][276]LogAssetEditorSubsystem: Opening Asset editor for StaticMesh /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78.Mesh
+[2025.02.09-22.40.03:454][276]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_17
+[2025.02.09-22.42.58:751][836]LogWorld: UWorld::CleanupWorld for World_17, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-22.42.58:751][836]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-22.42.58:829][836]LogUObjectHash: Compacting FUObjectHashTables data took   1.62ms
+[2025.02.09-22.43.15:515][425]LogAssetEditorSubsystem: Opening Asset editor for StaticMesh /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_66.Mesh
+[2025.02.09-22.43.15:526][425]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_18
+[2025.02.09-22.43.39:030][407]LogWorld: UWorld::CleanupWorld for World_18, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-22.43.39:030][407]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-22.43.39:093][407]LogUObjectHash: Compacting FUObjectHashTables data took   1.62ms
+[2025.02.09-22.44.11:284][541]LogAssetEditorSubsystem: Opening Asset editor for StaticMesh /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78.Mesh
+[2025.02.09-22.44.11:294][541]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_19
+[2025.02.09-22.45.04:167][672]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2025.02.09-22.45.04:251][672]OBJ SavePackage: Generating thumbnails for [0] asset(s) in package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78] ([1] browsable assets)...
+[2025.02.09-22.45.04:251][672]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78]
+[2025.02.09-22.45.04:254][672]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78
+[2025.02.09-22.45.04:254][672]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_787F7876B04B0CBCEC4749128C4AA33644.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78.uasset'
+[2025.02.09-22.45.04:259][672]LogFileHelpers: InternalPromptForCheckoutAndSave took 93.006 ms (total: 16.2 sec)
+[2025.02.09-22.45.04:334][672]LogContentValidation: Display: Starting to validate 1 assets
+[2025.02.09-22.45.04:334][672]LogContentValidation: Enabled validators:
+[2025.02.09-22.45.04:334][672]LogContentValidation: 	/Script/DataValidation.EditorValidator_Material
+[2025.02.09-22.45.04:334][672]LogContentValidation: 	/Script/DataValidation.DirtyFilesChangelistValidator
+[2025.02.09-22.45.04:334][672]LogContentValidation: 	/Script/DataValidation.EditorValidator_Localization
+[2025.02.09-22.45.04:334][672]LogContentValidation: 	/Script/DataValidation.PackageFileValidator
+[2025.02.09-22.45.04:334][672]LogContentValidation: 	/Script/DataValidation.WorldPartitionChangelistValidator
+[2025.02.09-22.45.04:334][672]LogContentValidation: 	/Script/InputBlueprintNodes.EnhancedInputUserWidgetValidator
+[2025.02.09-22.45.04:334][672]AssetCheck: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78 Validating asset
+[2025.02.09-22.45.06:261][746]LogWorld: UWorld::CleanupWorld for World_19, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-22.45.06:261][746]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-22.45.06:332][746]LogUObjectHash: Compacting FUObjectHashTables data took   1.77ms
+[2025.02.09-22.45.11:443][907]LogAssetEditorSubsystem: Opening Asset editor for StaticMesh /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_77.Mesh
+[2025.02.09-22.45.11:454][907]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_20
+[2025.02.09-22.45.18:255][157]LogEOSSDK: LogEOS: Updating Product SDK Config, Time: 8157.104980
+[2025.02.09-22.45.18:398][163]LogEOSSDK: LogEOS: SDK Config Product Update Request Completed - No Change
+[2025.02.09-22.45.18:398][163]LogEOSSDK: LogEOS: ScheduleNextSDKConfigDataUpdate - Time: 8157.224609, Update Interval: 301.479523
+[2025.02.09-22.50.54:745][205]LogEOSSDK: LogEOS: Updating Product SDK Config, Time: 8493.606445
+[2025.02.09-22.50.54:886][211]LogEOSSDK: LogEOS: SDK Config Product Update Request Completed - No Change
+[2025.02.09-22.50.54:886][211]LogEOSSDK: LogEOS: ScheduleNextSDKConfigDataUpdate - Time: 8493.724609, Update Interval: 319.530640
+[2025.02.09-22.51.58:475][916]Cmd: MODE GRID=1
+[2025.02.09-22.52.17:769][709]Cmd: MODE GRID=0
+[2025.02.09-22.52.19:476][781]Cmd: MODE SCALEGRID=1
+[2025.02.09-22.52.41:519][685]Cmd: MODE SCALEGRID=0
+[2025.02.09-22.54.52:351][138]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2025.02.09-22.54.52:436][138]OBJ SavePackage: Generating thumbnails for [0] asset(s) in package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_77] ([1] browsable assets)...
+[2025.02.09-22.54.52:436][138]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_77]
+[2025.02.09-22.54.52:438][138]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_77
+[2025.02.09-22.54.52:438][138]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_77DE5F56CC45C0097B2B3BD7B9245CEF69.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_77.uasset'
+[2025.02.09-22.54.52:446][138]LogFileHelpers: InternalPromptForCheckoutAndSave took 95.059 ms (total: 16.3 sec)
+[2025.02.09-22.54.52:517][138]LogContentValidation: Display: Starting to validate 1 assets
+[2025.02.09-22.54.52:517][138]LogContentValidation: Enabled validators:
+[2025.02.09-22.54.52:517][138]LogContentValidation: 	/Script/DataValidation.EditorValidator_Material
+[2025.02.09-22.54.52:517][138]LogContentValidation: 	/Script/DataValidation.DirtyFilesChangelistValidator
+[2025.02.09-22.54.52:517][138]LogContentValidation: 	/Script/DataValidation.EditorValidator_Localization
+[2025.02.09-22.54.52:517][138]LogContentValidation: 	/Script/DataValidation.PackageFileValidator
+[2025.02.09-22.54.52:517][138]LogContentValidation: 	/Script/DataValidation.WorldPartitionChangelistValidator
+[2025.02.09-22.54.52:517][138]LogContentValidation: 	/Script/InputBlueprintNodes.EnhancedInputUserWidgetValidator
+[2025.02.09-22.54.52:517][138]AssetCheck: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_77 Validating asset
+[2025.02.09-22.54.55:355][244]LogDebuggerCommands: Repeating last play command: Selected Viewport
+[2025.02.09-22.54.55:362][244]LogPlayLevel: PlayLevel: No blueprints needed recompiling
+[2025.02.09-22.54.55:362][244]LogPlayLevel: Creating play world package: /Game/Levels/UEDPIE_0_anchor-demo
+[2025.02.09-22.54.56:792][244]LogPlayLevel: PIE: StaticDuplicateObject took: (1.430171s)
+[2025.02.09-22.54.56:792][244]LogPlayLevel: PIE: Created PIE world by copying editor world from /Game/Levels/anchor-demo.anchor-demo to /Game/Levels/UEDPIE_0_anchor-demo.anchor-demo (1.430223s)
+[2025.02.09-22.54.56:845][244]LogUObjectHash: Compacting FUObjectHashTables data took   1.65ms
+[2025.02.09-22.54.56:849][244]LogChaosDD: Creating Chaos Debug Draw Scene for world anchor-demo
+[2025.02.09-22.54.56:851][244]LogPlayLevel: PIE: World Init took: (0.001727s)
+[2025.02.09-22.54.56:852][244]LogAudio: Display: Creating Audio Device:                 Id: 15, Scope: Unique, Realtime: True
+[2025.02.09-22.54.56:852][244]LogAudioMixer: Display: Audio Mixer Platform Settings:
+[2025.02.09-22.54.56:852][244]LogAudioMixer: Display: 	Sample Rate:						  48000
+[2025.02.09-22.54.56:852][244]LogAudioMixer: Display: 	Callback Buffer Frame Size Requested: 1024
+[2025.02.09-22.54.56:852][244]LogAudioMixer: Display: 	Callback Buffer Frame Size To Use:	  1024
+[2025.02.09-22.54.56:852][244]LogAudioMixer: Display: 	Number of buffers to queue:			  1
+[2025.02.09-22.54.56:852][244]LogAudioMixer: Display: 	Max Channels (voices):				  32
+[2025.02.09-22.54.56:852][244]LogAudioMixer: Display: 	Number of Async Source Workers:		  4
+[2025.02.09-22.54.56:852][244]LogAudio: Display: AudioDevice MaxSources: 32
+[2025.02.09-22.54.56:852][244]LogAudio: Display: Audio Spatialization Plugin: None (built-in).
+[2025.02.09-22.54.56:852][244]LogAudio: Display: Audio Reverb Plugin: None (built-in).
+[2025.02.09-22.54.56:852][244]LogAudio: Display: Audio Occlusion Plugin: None (built-in).
+[2025.02.09-22.54.56:855][244]LogAudioMixer: Display: Initializing audio mixer using platform API: 'XAudio2'
+[2025.02.09-22.54.56:882][244]LogAudioMixer: Display: Using Audio Hardware Device Headphones (Realtek(R) Audio)
+[2025.02.09-22.54.56:882][244]LogAudioMixer: Display: Initializing Sound Submixes...
+[2025.02.09-22.54.56:882][244]LogAudioMixer: Display: Creating Master Submix 'MasterSubmixDefault'
+[2025.02.09-22.54.56:882][244]LogAudioMixer: Display: Creating Master Submix 'MasterReverbSubmixDefault'
+[2025.02.09-22.54.56:883][244]LogAudioMixer: FMixerPlatformXAudio2::StartAudioStream() called. InstanceID=15
+[2025.02.09-22.54.56:883][244]LogAudioMixer: Display: Output buffers initialized: Frames=1024, Channels=2, Samples=2048, InstanceID=15
+[2025.02.09-22.54.56:885][244]LogAudioMixer: Display: Starting AudioMixerPlatformInterface::RunInternal(), InstanceID=15
+[2025.02.09-22.54.56:885][244]LogAudioMixer: Display: FMixerPlatformXAudio2::SubmitBuffer() called for the first time. InstanceID=15
+[2025.02.09-22.54.56:885][244]LogInit: FAudioDevice initialized with ID 15.
+[2025.02.09-22.54.56:885][244]LogAudio: Display: Audio Device (ID: 15) registered with world 'anchor-demo'.
+[2025.02.09-22.54.56:886][244]LogAudioMixer: Initializing Audio Bus Subsystem for audio device with ID 15
+[2025.02.09-22.54.56:888][244]LogLoad: Game class is 'GameModeBase'
+[2025.02.09-22.54.56:975][244]LogWorld: Bringing World /Game/Levels/UEDPIE_0_anchor-demo.anchor-demo up for play (max tick rate 0) at 2025.02.09-15.54.56
+[2025.02.09-22.54.56:976][244]LogWorld: Bringing up level for play took: 0.087186
+[2025.02.09-22.54.56:978][244]LogOnline: OSS: Created online subsystem instance for: :Context_35
+[2025.02.09-22.54.56:981][244]PIE: Server logged in
+[2025.02.09-22.54.56:982][244]PIE: Play in editor total start time 1.62 seconds.
+[2025.02.09-22.56.00:652][828]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2025.02.09-22.56.00:652][828]LogWorld: BeginTearingDown for /Game/Levels/UEDPIE_0_anchor-demo
+[2025.02.09-22.56.00:653][828]LogWorld: UWorld::CleanupWorld for anchor-demo, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-22.56.00:680][828]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-22.56.01:175][828]LogPlayLevel: Display: Shutting down PIE online subsystems
+[2025.02.09-22.56.01:185][828]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-22.56.01:261][828]LogAudio: Display: Audio Device unregistered from world 'None'.
+[2025.02.09-22.56.01:265][828]LogAudioMixer: Deinitializing Audio Bus Subsystem for audio device with ID 15
+[2025.02.09-22.56.01:265][828]LogAudioMixer: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=15
+[2025.02.09-22.56.01:268][828]LogAudioMixer: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=15
+[2025.02.09-22.56.01:273][828]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2025.02.09-22.56.01:294][828]LogUObjectHash: Compacting FUObjectHashTables data took   2.26ms
+[2025.02.09-22.56.01:376][829]LogPlayLevel: Display: Destroying online subsystem :Context_35
+[2025.02.09-22.56.04:030][911]LogWorld: UWorld::CleanupWorld for World_20, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-22.56.04:030][911]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-22.56.04:102][911]LogUObjectHash: Compacting FUObjectHashTables data took   1.84ms
+[2025.02.09-22.56.04:324][911]PIE: Warning: AttachTo: '/Engine/Transient.World_15:PersistentLevel.FbxScene_anchor-penneys-walls-detailing-exterior_C_0.DefaultSceneRoot' is not static  (in blueprint "FbxScene_anchor-penneys-walls-detailing-exterior"), cannot attach '/Engine/Transient.World_15:PersistentLevel.FbxScene_anchor-penneys-walls-detailing-exterior_C_0.Instance-0-0' which is static to it. Aborting.
+[2025.02.09-22.56.12:482][159]LogAssetEditorSubsystem: Opening Asset editor for StaticMesh /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_199.Mesh
+[2025.02.09-22.56.12:489][159]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_21
+[2025.02.09-22.56.17:830][332]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2025.02.09-22.56.17:900][332]OBJ SavePackage: Generating thumbnails for [0] asset(s) in package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_199] ([1] browsable assets)...
+[2025.02.09-22.56.17:900][332]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_199]
+[2025.02.09-22.56.17:901][332]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_199
+[2025.02.09-22.56.17:902][332]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_199E27B47064D7BE6FC7B9EDC856F2A5478.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_199.uasset'
+[2025.02.09-22.56.17:908][332]LogFileHelpers: InternalPromptForCheckoutAndSave took 78.303 ms (total: 16.3 sec)
+[2025.02.09-22.56.17:989][332]LogContentValidation: Display: Starting to validate 1 assets
+[2025.02.09-22.56.17:989][332]LogContentValidation: Enabled validators:
+[2025.02.09-22.56.17:989][332]LogContentValidation: 	/Script/DataValidation.EditorValidator_Material
+[2025.02.09-22.56.17:989][332]LogContentValidation: 	/Script/DataValidation.DirtyFilesChangelistValidator
+[2025.02.09-22.56.17:989][332]LogContentValidation: 	/Script/DataValidation.EditorValidator_Localization
+[2025.02.09-22.56.17:989][332]LogContentValidation: 	/Script/DataValidation.PackageFileValidator
+[2025.02.09-22.56.17:989][332]LogContentValidation: 	/Script/DataValidation.WorldPartitionChangelistValidator
+[2025.02.09-22.56.17:989][332]LogContentValidation: 	/Script/InputBlueprintNodes.EnhancedInputUserWidgetValidator
+[2025.02.09-22.56.17:989][332]AssetCheck: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_199 Validating asset
+[2025.02.09-22.56.18:585][353]LogWorld: UWorld::CleanupWorld for World_21, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-22.56.18:585][353]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-22.56.18:655][353]LogUObjectHash: Compacting FUObjectHashTables data took   1.53ms
+[2025.02.09-22.56.20:835][417]LogAssetEditorSubsystem: Opening Asset editor for StaticMesh /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_200.Mesh
+[2025.02.09-22.56.20:841][417]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_22
+[2025.02.09-22.56.24:287][518]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2025.02.09-22.56.24:351][518]OBJ SavePackage: Generating thumbnails for [0] asset(s) in package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_200] ([1] browsable assets)...
+[2025.02.09-22.56.24:352][518]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_200]
+[2025.02.09-22.56.24:353][518]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_200
+[2025.02.09-22.56.24:353][518]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_200161E0BE841A2532D488433A7AC6516CD.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_200.uasset'
+[2025.02.09-22.56.24:359][518]LogFileHelpers: InternalPromptForCheckoutAndSave took 71.962 ms (total: 16.4 sec)
+[2025.02.09-22.56.24:431][518]LogContentValidation: Display: Starting to validate 1 assets
+[2025.02.09-22.56.24:431][518]LogContentValidation: Enabled validators:
+[2025.02.09-22.56.24:431][518]LogContentValidation: 	/Script/DataValidation.EditorValidator_Material
+[2025.02.09-22.56.24:431][518]LogContentValidation: 	/Script/DataValidation.DirtyFilesChangelistValidator
+[2025.02.09-22.56.24:431][518]LogContentValidation: 	/Script/DataValidation.EditorValidator_Localization
+[2025.02.09-22.56.24:431][518]LogContentValidation: 	/Script/DataValidation.PackageFileValidator
+[2025.02.09-22.56.24:431][518]LogContentValidation: 	/Script/DataValidation.WorldPartitionChangelistValidator
+[2025.02.09-22.56.24:431][518]LogContentValidation: 	/Script/InputBlueprintNodes.EnhancedInputUserWidgetValidator
+[2025.02.09-22.56.24:431][518]AssetCheck: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_200 Validating asset
+[2025.02.09-22.56.25:093][542]LogWorld: UWorld::CleanupWorld for World_22, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-22.56.25:093][542]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-22.56.25:173][542]LogUObjectHash: Compacting FUObjectHashTables data took   1.54ms
+[2025.02.09-22.56.28:407][642]LogAssetEditorSubsystem: Opening Asset editor for StaticMesh /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_201.Mesh
+[2025.02.09-22.56.28:413][642]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_23
+[2025.02.09-22.56.33:740][820]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2025.02.09-22.56.33:818][820]OBJ SavePackage: Generating thumbnails for [0] asset(s) in package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_201] ([1] browsable assets)...
+[2025.02.09-22.56.33:818][820]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_201]
+[2025.02.09-22.56.33:819][820]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_201
+[2025.02.09-22.56.33:820][820]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_20180B61B254F6BF24C185CF6B0AC9CBEA9.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_201.uasset'
+[2025.02.09-22.56.33:825][820]LogFileHelpers: InternalPromptForCheckoutAndSave took 84.532 ms (total: 16.5 sec)
+[2025.02.09-22.56.33:878][820]LogContentValidation: Display: Starting to validate 1 assets
+[2025.02.09-22.56.33:878][820]LogContentValidation: Enabled validators:
+[2025.02.09-22.56.33:878][820]LogContentValidation: 	/Script/DataValidation.EditorValidator_Material
+[2025.02.09-22.56.33:878][820]LogContentValidation: 	/Script/DataValidation.DirtyFilesChangelistValidator
+[2025.02.09-22.56.33:878][820]LogContentValidation: 	/Script/DataValidation.EditorValidator_Localization
+[2025.02.09-22.56.33:878][820]LogContentValidation: 	/Script/DataValidation.PackageFileValidator
+[2025.02.09-22.56.33:878][820]LogContentValidation: 	/Script/DataValidation.WorldPartitionChangelistValidator
+[2025.02.09-22.56.33:878][820]LogContentValidation: 	/Script/InputBlueprintNodes.EnhancedInputUserWidgetValidator
+[2025.02.09-22.56.33:878][820]AssetCheck: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_201 Validating asset
+[2025.02.09-22.56.34:557][846]LogWorld: UWorld::CleanupWorld for World_23, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-22.56.34:557][846]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-22.56.34:623][846]LogUObjectHash: Compacting FUObjectHashTables data took   1.47ms
+[2025.02.09-22.56.40:989][ 65]LogAssetEditorSubsystem: Opening Asset editor for StaticMesh /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_188.Mesh
+[2025.02.09-22.56.40:997][ 65]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_24
+[2025.02.09-22.56.45:822][224]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2025.02.09-22.56.45:901][224]OBJ SavePackage: Generating thumbnails for [0] asset(s) in package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_188] ([1] browsable assets)...
+[2025.02.09-22.56.45:901][224]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_188]
+[2025.02.09-22.56.45:903][224]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_188
+[2025.02.09-22.56.45:903][224]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_1888F20CDD94693F221B50C59B896E1D74C.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_188.uasset'
+[2025.02.09-22.56.45:909][224]LogFileHelpers: InternalPromptForCheckoutAndSave took 86.343 ms (total: 16.6 sec)
+[2025.02.09-22.56.45:981][224]LogContentValidation: Display: Starting to validate 1 assets
+[2025.02.09-22.56.45:981][224]LogContentValidation: Enabled validators:
+[2025.02.09-22.56.45:981][224]LogContentValidation: 	/Script/DataValidation.EditorValidator_Material
+[2025.02.09-22.56.45:981][224]LogContentValidation: 	/Script/DataValidation.DirtyFilesChangelistValidator
+[2025.02.09-22.56.45:981][224]LogContentValidation: 	/Script/DataValidation.EditorValidator_Localization
+[2025.02.09-22.56.45:981][224]LogContentValidation: 	/Script/DataValidation.PackageFileValidator
+[2025.02.09-22.56.45:981][224]LogContentValidation: 	/Script/DataValidation.WorldPartitionChangelistValidator
+[2025.02.09-22.56.45:981][224]LogContentValidation: 	/Script/InputBlueprintNodes.EnhancedInputUserWidgetValidator
+[2025.02.09-22.56.45:981][224]AssetCheck: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_188 Validating asset
+[2025.02.09-22.56.47:065][265]LogWorld: UWorld::CleanupWorld for World_24, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-22.56.47:065][265]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-22.56.47:129][265]LogUObjectHash: Compacting FUObjectHashTables data took   1.48ms
+[2025.02.09-22.56.49:527][343]LogAssetEditorSubsystem: Opening Asset editor for StaticMesh /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_188.Mesh
+[2025.02.09-22.56.49:533][343]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_25
+[2025.02.09-22.56.56:734][588]LogWorld: UWorld::CleanupWorld for World_25, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-22.56.56:734][588]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-22.56.56:794][588]LogUObjectHash: Compacting FUObjectHashTables data took   1.44ms
+[2025.02.09-22.57.01:824][760]LogAssetEditorSubsystem: Opening Asset editor for StaticMesh /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_268.Mesh
+[2025.02.09-22.57.01:831][760]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_26
+[2025.02.09-22.57.10:864][ 77]LogEOSSDK: LogEOS: Updating Product SDK Config, Time: 8869.694336
+[2025.02.09-22.57.11:043][ 83]LogEOSSDK: LogEOS: SDK Config Product Update Request Completed - No Change
+[2025.02.09-22.57.11:044][ 83]LogEOSSDK: LogEOS: ScheduleNextSDKConfigDataUpdate - Time: 8869.847656, Update Interval: 339.341400
+[2025.02.09-22.57.24:052][568]LogWorld: UWorld::CleanupWorld for World_26, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-22.57.24:052][568]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-22.57.24:113][568]LogUObjectHash: Compacting FUObjectHashTables data took   1.42ms
+[2025.02.09-22.57.26:358][643]LogAssetEditorSubsystem: Opening Asset editor for StaticMesh /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_268.Mesh
+[2025.02.09-22.57.26:364][643]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_27
+[2025.02.09-22.57.30:035][754]LogWorld: UWorld::CleanupWorld for World_27, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-22.57.30:035][754]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-22.57.30:090][754]LogUObjectHash: Compacting FUObjectHashTables data took   1.51ms
+[2025.02.09-22.57.43:550][220]LogAssetEditorSubsystem: Opening Asset editor for StaticMesh /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_269.Mesh
+[2025.02.09-22.57.43:557][220]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_28
+[2025.02.09-22.57.52:341][521]LogWorld: UWorld::CleanupWorld for World_28, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-22.57.52:341][521]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-22.57.52:413][521]LogUObjectHash: Compacting FUObjectHashTables data took   1.48ms
+[2025.02.09-22.58.02:606][875]LogAssetEditorSubsystem: Opening Asset editor for StaticMesh /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_268.Mesh
+[2025.02.09-22.58.02:614][875]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_29
+[2025.02.09-22.58.59:790][ 22]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2025.02.09-22.58.59:850][ 22]OBJ SavePackage: Generating thumbnails for [0] asset(s) in package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_268] ([1] browsable assets)...
+[2025.02.09-22.58.59:850][ 22]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_268]
+[2025.02.09-22.58.59:852][ 22]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_268
+[2025.02.09-22.58.59:852][ 22]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_2686D84A789488F1F89C4F2FBA5A4D8C6EA.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_268.uasset'
+[2025.02.09-22.58.59:858][ 22]LogFileHelpers: InternalPromptForCheckoutAndSave took 67.735 ms (total: 16.7 sec)
+[2025.02.09-22.58.59:932][ 22]LogContentValidation: Display: Starting to validate 1 assets
+[2025.02.09-22.58.59:932][ 22]LogContentValidation: Enabled validators:
+[2025.02.09-22.58.59:932][ 22]LogContentValidation: 	/Script/DataValidation.EditorValidator_Material
+[2025.02.09-22.58.59:932][ 22]LogContentValidation: 	/Script/DataValidation.DirtyFilesChangelistValidator
+[2025.02.09-22.58.59:932][ 22]LogContentValidation: 	/Script/DataValidation.EditorValidator_Localization
+[2025.02.09-22.58.59:932][ 22]LogContentValidation: 	/Script/DataValidation.PackageFileValidator
+[2025.02.09-22.58.59:932][ 22]LogContentValidation: 	/Script/DataValidation.WorldPartitionChangelistValidator
+[2025.02.09-22.58.59:932][ 22]LogContentValidation: 	/Script/InputBlueprintNodes.EnhancedInputUserWidgetValidator
+[2025.02.09-22.58.59:932][ 22]AssetCheck: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_268 Validating asset
+[2025.02.09-22.59.00:775][ 53]LogWorld: UWorld::CleanupWorld for World_29, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-22.59.00:775][ 53]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-22.59.00:848][ 53]LogUObjectHash: Compacting FUObjectHashTables data took   1.52ms
+[2025.02.09-22.59.09:728][353]LogAssetEditorSubsystem: Opening Asset editor for StaticMesh /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_214.Mesh
+[2025.02.09-22.59.09:735][353]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_30
+[2025.02.09-22.59.45:122][635]LogDerivedDataCache: C:/Users/Mason/AppData/Local/UnrealEngine/Common/DerivedDataCache: Maintenance finished in +00:00:00.000 and deleted 0 files with total size 0 MiB and 0 empty folders. Scanned 0 files in 1 folders with total size 0 MiB.
+[2025.02.09-22.59.58:935][145]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2025.02.09-22.59.59:023][145]OBJ SavePackage: Generating thumbnails for [0] asset(s) in package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_214] ([1] browsable assets)...
+[2025.02.09-22.59.59:023][145]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_214]
+[2025.02.09-22.59.59:025][145]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_214
+[2025.02.09-22.59.59:025][145]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_214A83955D44850906D882359A68D0F1074.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_214.uasset'
+[2025.02.09-22.59.59:031][145]LogFileHelpers: InternalPromptForCheckoutAndSave took 96.014 ms (total: 16.8 sec)
+[2025.02.09-22.59.59:098][145]LogContentValidation: Display: Starting to validate 1 assets
+[2025.02.09-22.59.59:098][145]LogContentValidation: Enabled validators:
+[2025.02.09-22.59.59:098][145]LogContentValidation: 	/Script/DataValidation.EditorValidator_Material
+[2025.02.09-22.59.59:099][145]LogContentValidation: 	/Script/DataValidation.DirtyFilesChangelistValidator
+[2025.02.09-22.59.59:099][145]LogContentValidation: 	/Script/DataValidation.EditorValidator_Localization
+[2025.02.09-22.59.59:099][145]LogContentValidation: 	/Script/DataValidation.PackageFileValidator
+[2025.02.09-22.59.59:099][145]LogContentValidation: 	/Script/DataValidation.WorldPartitionChangelistValidator
+[2025.02.09-22.59.59:099][145]LogContentValidation: 	/Script/InputBlueprintNodes.EnhancedInputUserWidgetValidator
+[2025.02.09-22.59.59:099][145]AssetCheck: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_214 Validating asset
+[2025.02.09-23.00.00:048][180]LogWorld: UWorld::CleanupWorld for World_30, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-23.00.00:048][180]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-23.00.00:112][180]LogUObjectHash: Compacting FUObjectHashTables data took   1.48ms
+[2025.02.09-23.00.01:897][240]LogDebuggerCommands: Repeating last play command: Selected Viewport
+[2025.02.09-23.00.01:903][240]LogPlayLevel: PlayLevel: No blueprints needed recompiling
+[2025.02.09-23.00.01:903][240]LogPlayLevel: Creating play world package: /Game/Levels/UEDPIE_0_anchor-demo
+[2025.02.09-23.00.03:355][240]LogPlayLevel: PIE: StaticDuplicateObject took: (1.452140s)
+[2025.02.09-23.00.03:355][240]LogPlayLevel: PIE: Created PIE world by copying editor world from /Game/Levels/anchor-demo.anchor-demo to /Game/Levels/UEDPIE_0_anchor-demo.anchor-demo (1.452180s)
+[2025.02.09-23.00.03:378][240]LogUObjectHash: Compacting FUObjectHashTables data took   1.65ms
+[2025.02.09-23.00.03:380][240]LogChaosDD: Creating Chaos Debug Draw Scene for world anchor-demo
+[2025.02.09-23.00.03:381][240]LogPlayLevel: PIE: World Init took: (0.001486s)
+[2025.02.09-23.00.03:382][240]LogAudio: Display: Creating Audio Device:                 Id: 16, Scope: Unique, Realtime: True
+[2025.02.09-23.00.03:382][240]LogAudioMixer: Display: Audio Mixer Platform Settings:
+[2025.02.09-23.00.03:382][240]LogAudioMixer: Display: 	Sample Rate:						  48000
+[2025.02.09-23.00.03:382][240]LogAudioMixer: Display: 	Callback Buffer Frame Size Requested: 1024
+[2025.02.09-23.00.03:382][240]LogAudioMixer: Display: 	Callback Buffer Frame Size To Use:	  1024
+[2025.02.09-23.00.03:382][240]LogAudioMixer: Display: 	Number of buffers to queue:			  1
+[2025.02.09-23.00.03:382][240]LogAudioMixer: Display: 	Max Channels (voices):				  32
+[2025.02.09-23.00.03:382][240]LogAudioMixer: Display: 	Number of Async Source Workers:		  4
+[2025.02.09-23.00.03:382][240]LogAudio: Display: AudioDevice MaxSources: 32
+[2025.02.09-23.00.03:382][240]LogAudio: Display: Audio Spatialization Plugin: None (built-in).
+[2025.02.09-23.00.03:382][240]LogAudio: Display: Audio Reverb Plugin: None (built-in).
+[2025.02.09-23.00.03:382][240]LogAudio: Display: Audio Occlusion Plugin: None (built-in).
+[2025.02.09-23.00.03:384][240]LogAudioMixer: Display: Initializing audio mixer using platform API: 'XAudio2'
+[2025.02.09-23.00.03:410][240]LogAudioMixer: Display: Using Audio Hardware Device Headphones (Realtek(R) Audio)
+[2025.02.09-23.00.03:410][240]LogAudioMixer: Display: Initializing Sound Submixes...
+[2025.02.09-23.00.03:410][240]LogAudioMixer: Display: Creating Master Submix 'MasterSubmixDefault'
+[2025.02.09-23.00.03:411][240]LogAudioMixer: Display: Creating Master Submix 'MasterReverbSubmixDefault'
+[2025.02.09-23.00.03:411][240]LogAudioMixer: FMixerPlatformXAudio2::StartAudioStream() called. InstanceID=16
+[2025.02.09-23.00.03:411][240]LogAudioMixer: Display: Output buffers initialized: Frames=1024, Channels=2, Samples=2048, InstanceID=16
+[2025.02.09-23.00.03:414][240]LogAudioMixer: Display: Starting AudioMixerPlatformInterface::RunInternal(), InstanceID=16
+[2025.02.09-23.00.03:414][240]LogAudioMixer: Display: FMixerPlatformXAudio2::SubmitBuffer() called for the first time. InstanceID=16
+[2025.02.09-23.00.03:414][240]LogInit: FAudioDevice initialized with ID 16.
+[2025.02.09-23.00.03:414][240]LogAudio: Display: Audio Device (ID: 16) registered with world 'anchor-demo'.
+[2025.02.09-23.00.03:414][240]LogAudioMixer: Initializing Audio Bus Subsystem for audio device with ID 16
+[2025.02.09-23.00.03:417][240]LogLoad: Game class is 'GameModeBase'
+[2025.02.09-23.00.03:506][240]LogWorld: Bringing World /Game/Levels/UEDPIE_0_anchor-demo.anchor-demo up for play (max tick rate 0) at 2025.02.09-16.00.03
+[2025.02.09-23.00.03:507][240]LogWorld: Bringing up level for play took: 0.090144
+[2025.02.09-23.00.03:509][240]LogOnline: OSS: Created online subsystem instance for: :Context_46
+[2025.02.09-23.00.03:512][240]PIE: Server logged in
+[2025.02.09-23.00.03:513][240]PIE: Play in editor total start time 1.61 seconds.
+[2025.02.09-23.00.41:412][493]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2025.02.09-23.00.41:412][493]LogWorld: BeginTearingDown for /Game/Levels/UEDPIE_0_anchor-demo
+[2025.02.09-23.00.41:413][493]LogWorld: UWorld::CleanupWorld for anchor-demo, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-23.00.41:441][493]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-23.00.41:983][493]LogPlayLevel: Display: Shutting down PIE online subsystems
+[2025.02.09-23.00.41:992][493]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-23.00.42:021][493]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2025.02.09-23.00.42:063][493]LogAudioMixer: Deinitializing Audio Bus Subsystem for audio device with ID 16
+[2025.02.09-23.00.42:063][493]LogAudioMixer: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=16
+[2025.02.09-23.00.42:065][493]LogAudioMixer: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=16
+[2025.02.09-23.00.42:093][493]LogUObjectHash: Compacting FUObjectHashTables data took   2.56ms
+[2025.02.09-23.00.42:329][493]PIE: Warning: AttachTo: '/Engine/Transient.World_15:PersistentLevel.FbxScene_anchor-penneys-walls-detailing-exterior_C_0.DefaultSceneRoot' is not static  (in blueprint "FbxScene_anchor-penneys-walls-detailing-exterior"), cannot attach '/Engine/Transient.World_15:PersistentLevel.FbxScene_anchor-penneys-walls-detailing-exterior_C_0.Instance-0-0' which is static to it. Aborting.
+[2025.02.09-23.00.42:602][494]LogPlayLevel: Display: Destroying online subsystem :Context_46
+[2025.02.09-23.01.01:273][ 85]LogAssetEditorSubsystem: Opening Asset editor for StaticMesh /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78.Mesh
+[2025.02.09-23.01.01:280][ 85]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_31
+[2025.02.09-23.02.17:384][909]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2025.02.09-23.02.17:451][909]OBJ SavePackage: Generating thumbnails for [0] asset(s) in package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78] ([1] browsable assets)...
+[2025.02.09-23.02.17:451][909]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78]
+[2025.02.09-23.02.17:453][909]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78
+[2025.02.09-23.02.17:453][909]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_782A5A443242ED624B008891982937B08B.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78.uasset'
+[2025.02.09-23.02.17:460][909]LogFileHelpers: InternalPromptForCheckoutAndSave took 75.777 ms (total: 16.8 sec)
+[2025.02.09-23.02.17:535][909]LogContentValidation: Display: Starting to validate 1 assets
+[2025.02.09-23.02.17:535][909]LogContentValidation: Enabled validators:
+[2025.02.09-23.02.17:535][909]LogContentValidation: 	/Script/DataValidation.EditorValidator_Material
+[2025.02.09-23.02.17:535][909]LogContentValidation: 	/Script/DataValidation.DirtyFilesChangelistValidator
+[2025.02.09-23.02.17:535][909]LogContentValidation: 	/Script/DataValidation.EditorValidator_Localization
+[2025.02.09-23.02.17:535][909]LogContentValidation: 	/Script/DataValidation.PackageFileValidator
+[2025.02.09-23.02.17:535][909]LogContentValidation: 	/Script/DataValidation.WorldPartitionChangelistValidator
+[2025.02.09-23.02.17:535][909]LogContentValidation: 	/Script/InputBlueprintNodes.EnhancedInputUserWidgetValidator
+[2025.02.09-23.02.17:535][909]AssetCheck: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78 Validating asset
+[2025.02.09-23.02.33:587][515]LogDebuggerCommands: Repeating last play command: Selected Viewport
+[2025.02.09-23.02.33:594][515]LogPlayLevel: PlayLevel: No blueprints needed recompiling
+[2025.02.09-23.02.33:594][515]LogPlayLevel: Creating play world package: /Game/Levels/UEDPIE_0_anchor-demo
+[2025.02.09-23.02.34:997][515]LogPlayLevel: PIE: StaticDuplicateObject took: (1.402971s)
+[2025.02.09-23.02.34:997][515]LogPlayLevel: PIE: Created PIE world by copying editor world from /Game/Levels/anchor-demo.anchor-demo to /Game/Levels/UEDPIE_0_anchor-demo.anchor-demo (1.403038s)
+[2025.02.09-23.02.35:042][515]LogUObjectHash: Compacting FUObjectHashTables data took   1.60ms
+[2025.02.09-23.02.35:045][515]LogChaosDD: Creating Chaos Debug Draw Scene for world anchor-demo
+[2025.02.09-23.02.35:046][515]LogPlayLevel: PIE: World Init took: (0.001451s)
+[2025.02.09-23.02.35:047][515]LogAudio: Display: Creating Audio Device:                 Id: 17, Scope: Unique, Realtime: True
+[2025.02.09-23.02.35:047][515]LogAudioMixer: Display: Audio Mixer Platform Settings:
+[2025.02.09-23.02.35:047][515]LogAudioMixer: Display: 	Sample Rate:						  48000
+[2025.02.09-23.02.35:047][515]LogAudioMixer: Display: 	Callback Buffer Frame Size Requested: 1024
+[2025.02.09-23.02.35:047][515]LogAudioMixer: Display: 	Callback Buffer Frame Size To Use:	  1024
+[2025.02.09-23.02.35:047][515]LogAudioMixer: Display: 	Number of buffers to queue:			  1
+[2025.02.09-23.02.35:047][515]LogAudioMixer: Display: 	Max Channels (voices):				  32
+[2025.02.09-23.02.35:047][515]LogAudioMixer: Display: 	Number of Async Source Workers:		  4
+[2025.02.09-23.02.35:047][515]LogAudio: Display: AudioDevice MaxSources: 32
+[2025.02.09-23.02.35:047][515]LogAudio: Display: Audio Spatialization Plugin: None (built-in).
+[2025.02.09-23.02.35:047][515]LogAudio: Display: Audio Reverb Plugin: None (built-in).
+[2025.02.09-23.02.35:047][515]LogAudio: Display: Audio Occlusion Plugin: None (built-in).
+[2025.02.09-23.02.35:049][515]LogAudioMixer: Display: Initializing audio mixer using platform API: 'XAudio2'
+[2025.02.09-23.02.35:075][515]LogAudioMixer: Display: Using Audio Hardware Device Headphones (Realtek(R) Audio)
+[2025.02.09-23.02.35:075][515]LogAudioMixer: Display: Initializing Sound Submixes...
+[2025.02.09-23.02.35:075][515]LogAudioMixer: Display: Creating Master Submix 'MasterSubmixDefault'
+[2025.02.09-23.02.35:075][515]LogAudioMixer: Display: Creating Master Submix 'MasterReverbSubmixDefault'
+[2025.02.09-23.02.35:076][515]LogAudioMixer: FMixerPlatformXAudio2::StartAudioStream() called. InstanceID=17
+[2025.02.09-23.02.35:076][515]LogAudioMixer: Display: Output buffers initialized: Frames=1024, Channels=2, Samples=2048, InstanceID=17
+[2025.02.09-23.02.35:078][515]LogAudioMixer: Display: Starting AudioMixerPlatformInterface::RunInternal(), InstanceID=17
+[2025.02.09-23.02.35:078][515]LogAudioMixer: Display: FMixerPlatformXAudio2::SubmitBuffer() called for the first time. InstanceID=17
+[2025.02.09-23.02.35:078][515]LogInit: FAudioDevice initialized with ID 17.
+[2025.02.09-23.02.35:078][515]LogAudio: Display: Audio Device (ID: 17) registered with world 'anchor-demo'.
+[2025.02.09-23.02.35:078][515]LogAudioMixer: Initializing Audio Bus Subsystem for audio device with ID 17
+[2025.02.09-23.02.35:081][515]LogLoad: Game class is 'GameModeBase'
+[2025.02.09-23.02.35:170][515]LogWorld: Bringing World /Game/Levels/UEDPIE_0_anchor-demo.anchor-demo up for play (max tick rate 0) at 2025.02.09-16.02.35
+[2025.02.09-23.02.35:171][515]LogWorld: Bringing up level for play took: 0.089946
+[2025.02.09-23.02.35:173][515]LogOnline: OSS: Created online subsystem instance for: :Context_48
+[2025.02.09-23.02.35:176][515]PIE: Server logged in
+[2025.02.09-23.02.35:177][515]PIE: Play in editor total start time 1.585 seconds.
+[2025.02.09-23.03.21:420][823]LogEOSSDK: LogEOS: Updating Product SDK Config, Time: 9240.182617
+[2025.02.09-23.03.21:546][832]LogEOSSDK: LogEOS: SDK Config Product Update Request Completed - No Change
+[2025.02.09-23.03.21:546][832]LogEOSSDK: LogEOS: ScheduleNextSDKConfigDataUpdate - Time: 9240.294922, Update Interval: 352.466797
+[2025.02.09-23.04.06:502][138]LogRenderer: Warning: [VSM] Non-Nanite Marking Job Queue overflow. Performance may be affected. This occurs when many non-nanite meshes cover a large area of the shadow map.
+[2025.02.09-23.04.12:952][603]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2025.02.09-23.04.12:952][603]LogWorld: BeginTearingDown for /Game/Levels/UEDPIE_0_anchor-demo
+[2025.02.09-23.04.12:952][603]LogWorld: UWorld::CleanupWorld for anchor-demo, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-23.04.12:980][603]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-23.04.13:480][603]LogPlayLevel: Display: Shutting down PIE online subsystems
+[2025.02.09-23.04.13:489][603]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-23.04.13:566][603]LogAudio: Display: Audio Device unregistered from world 'None'.
+[2025.02.09-23.04.13:569][603]LogAudioMixer: Deinitializing Audio Bus Subsystem for audio device with ID 17
+[2025.02.09-23.04.13:569][603]LogAudioMixer: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=17
+[2025.02.09-23.04.13:572][603]LogAudioMixer: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=17
+[2025.02.09-23.04.13:577][603]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2025.02.09-23.04.13:598][603]LogUObjectHash: Compacting FUObjectHashTables data took   2.36ms
+[2025.02.09-23.04.13:808][604]Cmd: SELECT NONE
+[2025.02.09-23.04.13:818][604]LogPlayLevel: Display: Destroying online subsystem :Context_48
+[2025.02.09-23.04.16:647][683]LogWorld: UWorld::CleanupWorld for World_31, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-23.04.16:647][683]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-23.04.16:699][683]LogUObjectHash: Compacting FUObjectHashTables data took   1.76ms
+[2025.02.09-23.04.16:928][683]PIE: Warning: AttachTo: '/Engine/Transient.World_15:PersistentLevel.FbxScene_anchor-penneys-walls-detailing-exterior_C_0.DefaultSceneRoot' is not static  (in blueprint "FbxScene_anchor-penneys-walls-detailing-exterior"), cannot attach '/Engine/Transient.World_15:PersistentLevel.FbxScene_anchor-penneys-walls-detailing-exterior_C_0.Instance-0-0' which is static to it. Aborting.
+[2025.02.09-23.04.44:080][669]LogAssetEditorSubsystem: Opening Asset editor for StaticMesh /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_187.Mesh
+[2025.02.09-23.04.44:088][669]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_32
+[2025.02.09-23.04.56:809][223]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2025.02.09-23.04.56:885][223]OBJ SavePackage: Generating thumbnails for [0] asset(s) in package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_187] ([1] browsable assets)...
+[2025.02.09-23.04.56:885][223]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_187]
+[2025.02.09-23.04.56:887][223]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_187
+[2025.02.09-23.04.56:887][223]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_187116A80234AC545737CDC9694E0535E34.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_187.uasset'
+[2025.02.09-23.04.56:893][223]LogFileHelpers: InternalPromptForCheckoutAndSave took 83.823 ms (total: 16.9 sec)
+[2025.02.09-23.04.56:952][223]LogContentValidation: Display: Starting to validate 1 assets
+[2025.02.09-23.04.56:952][223]LogContentValidation: Enabled validators:
+[2025.02.09-23.04.56:952][223]LogContentValidation: 	/Script/DataValidation.EditorValidator_Material
+[2025.02.09-23.04.56:952][223]LogContentValidation: 	/Script/DataValidation.DirtyFilesChangelistValidator
+[2025.02.09-23.04.56:952][223]LogContentValidation: 	/Script/DataValidation.EditorValidator_Localization
+[2025.02.09-23.04.56:952][223]LogContentValidation: 	/Script/DataValidation.PackageFileValidator
+[2025.02.09-23.04.56:952][223]LogContentValidation: 	/Script/DataValidation.WorldPartitionChangelistValidator
+[2025.02.09-23.04.56:952][223]LogContentValidation: 	/Script/InputBlueprintNodes.EnhancedInputUserWidgetValidator
+[2025.02.09-23.04.56:952][223]AssetCheck: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_187 Validating asset
+[2025.02.09-23.04.59:227][330]LogWorld: UWorld::CleanupWorld for World_32, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-23.04.59:227][330]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-23.04.59:280][330]LogUObjectHash: Compacting FUObjectHashTables data took   1.44ms
+[2025.02.09-23.05.31:447][613]LogAssetEditorSubsystem: Opening Asset editor for StaticMesh /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249.Mesh
+[2025.02.09-23.05.31:454][613]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_33
+[2025.02.09-23.05.59:409][844]LogWorld: UWorld::CleanupWorld for World_33, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-23.05.59:409][844]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-23.05.59:487][844]LogUObjectHash: Compacting FUObjectHashTables data took   1.64ms
+[2025.02.09-23.06.11:050][262]LogAssetEditorSubsystem: Opening Asset editor for StaticMesh /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_233.Mesh
+[2025.02.09-23.06.11:062][262]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_34
+[2025.02.09-23.07.58:045][905]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2025.02.09-23.07.58:121][905]OBJ SavePackage: Generating thumbnails for [0] asset(s) in package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_233] ([1] browsable assets)...
+[2025.02.09-23.07.58:121][905]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_233]
+[2025.02.09-23.07.58:123][905]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_233
+[2025.02.09-23.07.58:123][905]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_23382A83225406B9FFFE3695B8C979137F9.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_233.uasset'
+[2025.02.09-23.07.58:130][905]LogFileHelpers: InternalPromptForCheckoutAndSave took 85.368 ms (total: 17.0 sec)
+[2025.02.09-23.07.58:182][905]LogContentValidation: Display: Starting to validate 1 assets
+[2025.02.09-23.07.58:182][905]LogContentValidation: Enabled validators:
+[2025.02.09-23.07.58:182][905]LogContentValidation: 	/Script/DataValidation.EditorValidator_Material
+[2025.02.09-23.07.58:182][905]LogContentValidation: 	/Script/DataValidation.DirtyFilesChangelistValidator
+[2025.02.09-23.07.58:182][905]LogContentValidation: 	/Script/DataValidation.EditorValidator_Localization
+[2025.02.09-23.07.58:182][905]LogContentValidation: 	/Script/DataValidation.PackageFileValidator
+[2025.02.09-23.07.58:182][905]LogContentValidation: 	/Script/DataValidation.WorldPartitionChangelistValidator
+[2025.02.09-23.07.58:182][905]LogContentValidation: 	/Script/InputBlueprintNodes.EnhancedInputUserWidgetValidator
+[2025.02.09-23.07.58:182][905]AssetCheck: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_233 Validating asset
+[2025.02.09-23.08.00:080][987]LogWorld: UWorld::CleanupWorld for World_34, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-23.08.00:080][987]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-23.08.00:152][987]LogUObjectHash: Compacting FUObjectHashTables data took   1.95ms
+[2025.02.09-23.08.05:999][202]LogAssetEditorSubsystem: Opening Asset editor for StaticMesh /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_279.Mesh
+[2025.02.09-23.08.06:010][202]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_35
+[2025.02.09-23.10.07:910][532]LogEOSSDK: LogEOS: Updating Product SDK Config, Time: 9646.583008
+[2025.02.09-23.10.08:039][538]LogEOSSDK: LogEOS: SDK Config Product Update Request Completed - No Change
+[2025.02.09-23.10.08:039][538]LogEOSSDK: LogEOS: ScheduleNextSDKConfigDataUpdate - Time: 9646.690430, Update Interval: 319.569092
+[2025.02.09-23.10.46:551][245]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2025.02.09-23.10.46:603][245]OBJ SavePackage: Generating thumbnails for [0] asset(s) in package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_279] ([1] browsable assets)...
+[2025.02.09-23.10.46:603][245]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_279]
+[2025.02.09-23.10.46:605][245]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_279
+[2025.02.09-23.10.46:605][245]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_2795104E53A499B71037864669549634CC1.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_279.uasset'
+[2025.02.09-23.10.46:611][245]LogFileHelpers: InternalPromptForCheckoutAndSave took 59.395 ms (total: 17.1 sec)
+[2025.02.09-23.10.46:689][245]LogContentValidation: Display: Starting to validate 1 assets
+[2025.02.09-23.10.46:689][245]LogContentValidation: Enabled validators:
+[2025.02.09-23.10.46:689][245]LogContentValidation: 	/Script/DataValidation.EditorValidator_Material
+[2025.02.09-23.10.46:689][245]LogContentValidation: 	/Script/DataValidation.DirtyFilesChangelistValidator
+[2025.02.09-23.10.46:689][245]LogContentValidation: 	/Script/DataValidation.EditorValidator_Localization
+[2025.02.09-23.10.46:689][245]LogContentValidation: 	/Script/DataValidation.PackageFileValidator
+[2025.02.09-23.10.46:689][245]LogContentValidation: 	/Script/DataValidation.WorldPartitionChangelistValidator
+[2025.02.09-23.10.46:689][245]LogContentValidation: 	/Script/InputBlueprintNodes.EnhancedInputUserWidgetValidator
+[2025.02.09-23.10.46:689][245]AssetCheck: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_279 Validating asset
+[2025.02.09-23.10.47:750][291]LogWorld: UWorld::CleanupWorld for World_35, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-23.10.47:750][291]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-23.10.47:823][291]LogUObjectHash: Compacting FUObjectHashTables data took   1.48ms
+[2025.02.09-23.10.59:383][729]LogAssetEditorSubsystem: Opening Asset editor for StaticMesh /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_177.Mesh
+[2025.02.09-23.10.59:391][729]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_36
+[2025.02.09-23.11.04:862][950]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2025.02.09-23.11.04:919][950]OBJ SavePackage: Generating thumbnails for [0] asset(s) in package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_177] ([1] browsable assets)...
+[2025.02.09-23.11.04:919][950]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_177]
+[2025.02.09-23.11.04:921][950]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_177
+[2025.02.09-23.11.04:921][950]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_177E4A12ACE4222640447FD09A8EC6566AC.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_177.uasset'
+[2025.02.09-23.11.04:926][950]LogFileHelpers: InternalPromptForCheckoutAndSave took 64.467 ms (total: 17.1 sec)
+[2025.02.09-23.11.04:981][950]LogContentValidation: Display: Starting to validate 1 assets
+[2025.02.09-23.11.04:982][950]LogContentValidation: Enabled validators:
+[2025.02.09-23.11.04:982][950]LogContentValidation: 	/Script/DataValidation.EditorValidator_Material
+[2025.02.09-23.11.04:982][950]LogContentValidation: 	/Script/DataValidation.DirtyFilesChangelistValidator
+[2025.02.09-23.11.04:982][950]LogContentValidation: 	/Script/DataValidation.EditorValidator_Localization
+[2025.02.09-23.11.04:982][950]LogContentValidation: 	/Script/DataValidation.PackageFileValidator
+[2025.02.09-23.11.04:982][950]LogContentValidation: 	/Script/DataValidation.WorldPartitionChangelistValidator
+[2025.02.09-23.11.04:982][950]LogContentValidation: 	/Script/InputBlueprintNodes.EnhancedInputUserWidgetValidator
+[2025.02.09-23.11.04:982][950]AssetCheck: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_177 Validating asset
+[2025.02.09-23.11.06:299][ 10]LogWorld: UWorld::CleanupWorld for World_36, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-23.11.06:299][ 10]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-23.11.06:352][ 10]LogUObjectHash: Compacting FUObjectHashTables data took   1.49ms
+[2025.02.09-23.11.08:996][ 94]LogAssetEditorSubsystem: Opening Asset editor for StaticMesh /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249.Mesh
+[2025.02.09-23.11.09:004][ 94]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_37
+[2025.02.09-23.11.14:855][330]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2025.02.09-23.11.14:936][330]OBJ SavePackage: Generating thumbnails for [0] asset(s) in package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249] ([1] browsable assets)...
+[2025.02.09-23.11.14:936][330]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249]
+[2025.02.09-23.11.14:938][330]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249
+[2025.02.09-23.11.14:938][330]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_249F2C71E8F4F4EB24A273471A11622D5DB.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249.uasset'
+[2025.02.09-23.11.14:944][330]LogFileHelpers: InternalPromptForCheckoutAndSave took 88.696 ms (total: 17.2 sec)
+[2025.02.09-23.11.15:016][330]LogContentValidation: Display: Starting to validate 1 assets
+[2025.02.09-23.11.15:016][330]LogContentValidation: Enabled validators:
+[2025.02.09-23.11.15:016][330]LogContentValidation: 	/Script/DataValidation.EditorValidator_Material
+[2025.02.09-23.11.15:016][330]LogContentValidation: 	/Script/DataValidation.DirtyFilesChangelistValidator
+[2025.02.09-23.11.15:016][330]LogContentValidation: 	/Script/DataValidation.EditorValidator_Localization
+[2025.02.09-23.11.15:016][330]LogContentValidation: 	/Script/DataValidation.PackageFileValidator
+[2025.02.09-23.11.15:016][330]LogContentValidation: 	/Script/DataValidation.WorldPartitionChangelistValidator
+[2025.02.09-23.11.15:016][330]LogContentValidation: 	/Script/InputBlueprintNodes.EnhancedInputUserWidgetValidator
+[2025.02.09-23.11.15:016][330]AssetCheck: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249 Validating asset
+[2025.02.09-23.11.16:181][381]LogWorld: UWorld::CleanupWorld for World_37, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-23.11.16:181][381]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-23.11.16:255][381]LogUObjectHash: Compacting FUObjectHashTables data took   1.48ms
+[2025.02.09-23.11.19:981][527]LogAssetEditorSubsystem: Opening Asset editor for StaticMesh /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_175.Mesh
+[2025.02.09-23.11.19:991][527]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_38
+[2025.02.09-23.11.23:952][680]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2025.02.09-23.11.24:002][680]OBJ SavePackage: Generating thumbnails for [0] asset(s) in package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_175] ([1] browsable assets)...
+[2025.02.09-23.11.24:002][680]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_175]
+[2025.02.09-23.11.24:003][680]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_175
+[2025.02.09-23.11.24:004][680]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_1757F40F23F4FC087E0C41A888F50D5143E.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_175.uasset'
+[2025.02.09-23.11.24:008][680]LogFileHelpers: InternalPromptForCheckoutAndSave took 56.749 ms (total: 17.3 sec)
+[2025.02.09-23.11.24:065][680]LogContentValidation: Display: Starting to validate 1 assets
+[2025.02.09-23.11.24:065][680]LogContentValidation: Enabled validators:
+[2025.02.09-23.11.24:065][680]LogContentValidation: 	/Script/DataValidation.EditorValidator_Material
+[2025.02.09-23.11.24:065][680]LogContentValidation: 	/Script/DataValidation.DirtyFilesChangelistValidator
+[2025.02.09-23.11.24:065][680]LogContentValidation: 	/Script/DataValidation.EditorValidator_Localization
+[2025.02.09-23.11.24:065][680]LogContentValidation: 	/Script/DataValidation.PackageFileValidator
+[2025.02.09-23.11.24:065][680]LogContentValidation: 	/Script/DataValidation.WorldPartitionChangelistValidator
+[2025.02.09-23.11.24:065][680]LogContentValidation: 	/Script/InputBlueprintNodes.EnhancedInputUserWidgetValidator
+[2025.02.09-23.11.24:065][680]AssetCheck: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_175 Validating asset
+[2025.02.09-23.11.24:917][718]LogWorld: UWorld::CleanupWorld for World_38, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-23.11.24:917][718]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-23.11.24:992][718]LogUObjectHash: Compacting FUObjectHashTables data took   1.49ms
+[2025.02.09-23.11.27:396][809]LogAssetEditorSubsystem: Opening Asset editor for StaticMesh /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249.Mesh
+[2025.02.09-23.11.27:403][809]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_39
+[2025.02.09-23.11.33:563][ 66]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2025.02.09-23.11.33:636][ 66]OBJ SavePackage: Generating thumbnails for [0] asset(s) in package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249] ([1] browsable assets)...
+[2025.02.09-23.11.33:636][ 66]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249]
+[2025.02.09-23.11.33:637][ 66]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249
+[2025.02.09-23.11.33:638][ 66]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_24934ED0AD2417C68A34F12D084EF2C2DC7.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249.uasset'
+[2025.02.09-23.11.33:644][ 66]LogFileHelpers: InternalPromptForCheckoutAndSave took 79.604 ms (total: 17.3 sec)
+[2025.02.09-23.11.33:718][ 66]LogContentValidation: Display: Starting to validate 1 assets
+[2025.02.09-23.11.33:718][ 66]LogContentValidation: Enabled validators:
+[2025.02.09-23.11.33:718][ 66]LogContentValidation: 	/Script/DataValidation.EditorValidator_Material
+[2025.02.09-23.11.33:718][ 66]LogContentValidation: 	/Script/DataValidation.DirtyFilesChangelistValidator
+[2025.02.09-23.11.33:718][ 66]LogContentValidation: 	/Script/DataValidation.EditorValidator_Localization
+[2025.02.09-23.11.33:718][ 66]LogContentValidation: 	/Script/DataValidation.PackageFileValidator
+[2025.02.09-23.11.33:718][ 66]LogContentValidation: 	/Script/DataValidation.WorldPartitionChangelistValidator
+[2025.02.09-23.11.33:718][ 66]LogContentValidation: 	/Script/InputBlueprintNodes.EnhancedInputUserWidgetValidator
+[2025.02.09-23.11.33:718][ 66]AssetCheck: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249 Validating asset
+[2025.02.09-23.11.34:928][124]Cmd: TRANSACTION UNDO
+[2025.02.09-23.11.34:928][124]LogEditorTransaction: Undo Create Box Collision
+[2025.02.09-23.11.40:468][355]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2025.02.09-23.11.40:537][355]OBJ SavePackage: Generating thumbnails for [0] asset(s) in package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249] ([1] browsable assets)...
+[2025.02.09-23.11.40:537][355]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249]
+[2025.02.09-23.11.40:538][355]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249
+[2025.02.09-23.11.40:539][355]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_249BF63C3B746337CE7C42E8786777AF6FA.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249.uasset'
+[2025.02.09-23.11.40:544][355]LogFileHelpers: InternalPromptForCheckoutAndSave took 75.869 ms (total: 17.4 sec)
+[2025.02.09-23.11.40:598][355]LogContentValidation: Display: Starting to validate 1 assets
+[2025.02.09-23.11.40:598][355]LogContentValidation: Enabled validators:
+[2025.02.09-23.11.40:598][355]LogContentValidation: 	/Script/DataValidation.EditorValidator_Material
+[2025.02.09-23.11.40:598][355]LogContentValidation: 	/Script/DataValidation.DirtyFilesChangelistValidator
+[2025.02.09-23.11.40:598][355]LogContentValidation: 	/Script/DataValidation.EditorValidator_Localization
+[2025.02.09-23.11.40:598][355]LogContentValidation: 	/Script/DataValidation.PackageFileValidator
+[2025.02.09-23.11.40:598][355]LogContentValidation: 	/Script/DataValidation.WorldPartitionChangelistValidator
+[2025.02.09-23.11.40:598][355]LogContentValidation: 	/Script/InputBlueprintNodes.EnhancedInputUserWidgetValidator
+[2025.02.09-23.11.40:598][355]AssetCheck: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249 Validating asset
+[2025.02.09-23.11.43:871][508]LogWorld: UWorld::CleanupWorld for World_39, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-23.11.43:871][508]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-23.11.43:936][508]LogUObjectHash: Compacting FUObjectHashTables data took   1.48ms
+[2025.02.09-23.11.53:796][880]LogAssetEditorSubsystem: Opening Asset editor for StaticMesh /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249.Mesh
+[2025.02.09-23.11.53:804][880]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_40
+[2025.02.09-23.12.04:219][302]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2025.02.09-23.12.04:269][302]OBJ SavePackage: Generating thumbnails for [0] asset(s) in package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249] ([1] browsable assets)...
+[2025.02.09-23.12.04:269][302]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249]
+[2025.02.09-23.12.04:271][302]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249
+[2025.02.09-23.12.04:271][302]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_2499C1231954A6EE124710EF7B0A7A2C9C6.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249.uasset'
+[2025.02.09-23.12.04:277][302]LogFileHelpers: InternalPromptForCheckoutAndSave took 57.583 ms (total: 17.5 sec)
+[2025.02.09-23.12.04:352][302]LogContentValidation: Display: Starting to validate 1 assets
+[2025.02.09-23.12.04:353][302]LogContentValidation: Enabled validators:
+[2025.02.09-23.12.04:353][302]LogContentValidation: 	/Script/DataValidation.EditorValidator_Material
+[2025.02.09-23.12.04:353][302]LogContentValidation: 	/Script/DataValidation.DirtyFilesChangelistValidator
+[2025.02.09-23.12.04:353][302]LogContentValidation: 	/Script/DataValidation.EditorValidator_Localization
+[2025.02.09-23.12.04:353][302]LogContentValidation: 	/Script/DataValidation.PackageFileValidator
+[2025.02.09-23.12.04:353][302]LogContentValidation: 	/Script/DataValidation.WorldPartitionChangelistValidator
+[2025.02.09-23.12.04:353][302]LogContentValidation: 	/Script/InputBlueprintNodes.EnhancedInputUserWidgetValidator
+[2025.02.09-23.12.04:353][302]AssetCheck: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249 Validating asset
+[2025.02.09-23.12.04:977][328]LogWorld: UWorld::CleanupWorld for World_40, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-23.12.04:977][328]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-23.12.05:045][328]LogUObjectHash: Compacting FUObjectHashTables data took   1.61ms
+[2025.02.09-23.12.09:266][484]LogAssetEditorSubsystem: Opening Asset editor for StaticMesh /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249.Mesh
+[2025.02.09-23.12.09:274][484]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_41
+[2025.02.09-23.12.17:193][794]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2025.02.09-23.12.17:272][794]OBJ SavePackage: Generating thumbnails for [0] asset(s) in package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249] ([1] browsable assets)...
+[2025.02.09-23.12.17:272][794]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249]
+[2025.02.09-23.12.17:273][794]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249
+[2025.02.09-23.12.17:273][794]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_2496B03DB114150D3B335D5418E4E4C3D9C.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249.uasset'
+[2025.02.09-23.12.17:279][794]LogFileHelpers: InternalPromptForCheckoutAndSave took 86.041 ms (total: 17.6 sec)
+[2025.02.09-23.12.17:350][794]LogContentValidation: Display: Starting to validate 1 assets
+[2025.02.09-23.12.17:350][794]LogContentValidation: Enabled validators:
+[2025.02.09-23.12.17:350][794]LogContentValidation: 	/Script/DataValidation.EditorValidator_Material
+[2025.02.09-23.12.17:350][794]LogContentValidation: 	/Script/DataValidation.DirtyFilesChangelistValidator
+[2025.02.09-23.12.17:350][794]LogContentValidation: 	/Script/DataValidation.EditorValidator_Localization
+[2025.02.09-23.12.17:350][794]LogContentValidation: 	/Script/DataValidation.PackageFileValidator
+[2025.02.09-23.12.17:350][794]LogContentValidation: 	/Script/DataValidation.WorldPartitionChangelistValidator
+[2025.02.09-23.12.17:350][794]LogContentValidation: 	/Script/InputBlueprintNodes.EnhancedInputUserWidgetValidator
+[2025.02.09-23.12.17:350][794]AssetCheck: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_249 Validating asset
+[2025.02.09-23.12.17:862][815]LogWorld: UWorld::CleanupWorld for World_41, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-23.12.17:862][815]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-23.12.17:945][815]LogUObjectHash: Compacting FUObjectHashTables data took   1.55ms
+[2025.02.09-23.12.32:928][343]LogDebuggerCommands: Repeating last play command: Selected Viewport
+[2025.02.09-23.12.32:934][343]LogPlayLevel: PlayLevel: No blueprints needed recompiling
+[2025.02.09-23.12.32:934][343]LogPlayLevel: Creating play world package: /Game/Levels/UEDPIE_0_anchor-demo
+[2025.02.09-23.12.34:284][343]LogPlayLevel: PIE: StaticDuplicateObject took: (1.349552s)
+[2025.02.09-23.12.34:284][343]LogPlayLevel: PIE: Created PIE world by copying editor world from /Game/Levels/anchor-demo.anchor-demo to /Game/Levels/UEDPIE_0_anchor-demo.anchor-demo (1.349597s)
+[2025.02.09-23.12.34:313][343]LogUObjectHash: Compacting FUObjectHashTables data took   1.64ms
+[2025.02.09-23.12.34:317][343]LogChaosDD: Creating Chaos Debug Draw Scene for world anchor-demo
+[2025.02.09-23.12.34:319][343]LogPlayLevel: PIE: World Init took: (0.001476s)
+[2025.02.09-23.12.34:319][343]LogAudio: Display: Creating Audio Device:                 Id: 18, Scope: Unique, Realtime: True
+[2025.02.09-23.12.34:319][343]LogAudioMixer: Display: Audio Mixer Platform Settings:
+[2025.02.09-23.12.34:319][343]LogAudioMixer: Display: 	Sample Rate:						  48000
+[2025.02.09-23.12.34:319][343]LogAudioMixer: Display: 	Callback Buffer Frame Size Requested: 1024
+[2025.02.09-23.12.34:319][343]LogAudioMixer: Display: 	Callback Buffer Frame Size To Use:	  1024
+[2025.02.09-23.12.34:319][343]LogAudioMixer: Display: 	Number of buffers to queue:			  1
+[2025.02.09-23.12.34:319][343]LogAudioMixer: Display: 	Max Channels (voices):				  32
+[2025.02.09-23.12.34:319][343]LogAudioMixer: Display: 	Number of Async Source Workers:		  4
+[2025.02.09-23.12.34:319][343]LogAudio: Display: AudioDevice MaxSources: 32
+[2025.02.09-23.12.34:319][343]LogAudio: Display: Audio Spatialization Plugin: None (built-in).
+[2025.02.09-23.12.34:319][343]LogAudio: Display: Audio Reverb Plugin: None (built-in).
+[2025.02.09-23.12.34:319][343]LogAudio: Display: Audio Occlusion Plugin: None (built-in).
+[2025.02.09-23.12.34:322][343]LogAudioMixer: Display: Initializing audio mixer using platform API: 'XAudio2'
+[2025.02.09-23.12.34:349][343]LogAudioMixer: Display: Using Audio Hardware Device Headphones (Realtek(R) Audio)
+[2025.02.09-23.12.34:349][343]LogAudioMixer: Display: Initializing Sound Submixes...
+[2025.02.09-23.12.34:349][343]LogAudioMixer: Display: Creating Master Submix 'MasterSubmixDefault'
+[2025.02.09-23.12.34:349][343]LogAudioMixer: Display: Creating Master Submix 'MasterReverbSubmixDefault'
+[2025.02.09-23.12.34:350][343]LogAudioMixer: FMixerPlatformXAudio2::StartAudioStream() called. InstanceID=18
+[2025.02.09-23.12.34:350][343]LogAudioMixer: Display: Output buffers initialized: Frames=1024, Channels=2, Samples=2048, InstanceID=18
+[2025.02.09-23.12.34:352][343]LogAudioMixer: Display: Starting AudioMixerPlatformInterface::RunInternal(), InstanceID=18
+[2025.02.09-23.12.34:352][343]LogAudioMixer: Display: FMixerPlatformXAudio2::SubmitBuffer() called for the first time. InstanceID=18
+[2025.02.09-23.12.34:352][343]LogInit: FAudioDevice initialized with ID 18.
+[2025.02.09-23.12.34:352][343]LogAudio: Display: Audio Device (ID: 18) registered with world 'anchor-demo'.
+[2025.02.09-23.12.34:353][343]LogAudioMixer: Initializing Audio Bus Subsystem for audio device with ID 18
+[2025.02.09-23.12.34:355][343]LogLoad: Game class is 'GameModeBase'
+[2025.02.09-23.12.34:440][343]LogWorld: Bringing World /Game/Levels/UEDPIE_0_anchor-demo.anchor-demo up for play (max tick rate 0) at 2025.02.09-16.12.34
+[2025.02.09-23.12.34:441][343]LogWorld: Bringing up level for play took: 0.085691
+[2025.02.09-23.12.34:443][343]LogOnline: OSS: Created online subsystem instance for: :Context_59
+[2025.02.09-23.12.34:446][343]PIE: Server logged in
+[2025.02.09-23.12.34:447][343]PIE: Play in editor total start time 1.513 seconds.
+[2025.02.09-23.13.15:774][763]LogRenderer: Warning: [VSM] Non-Nanite Marking Job Queue overflow. Performance may be affected. This occurs when many non-nanite meshes cover a large area of the shadow map.
+[2025.02.09-23.13.17:153][846]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2025.02.09-23.13.17:153][846]LogWorld: BeginTearingDown for /Game/Levels/UEDPIE_0_anchor-demo
+[2025.02.09-23.13.17:154][846]LogWorld: UWorld::CleanupWorld for anchor-demo, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-23.13.17:180][846]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-23.13.17:703][846]LogPlayLevel: Display: Shutting down PIE online subsystems
+[2025.02.09-23.13.17:712][846]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-23.13.17:739][846]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2025.02.09-23.13.17:779][846]LogAudioMixer: Deinitializing Audio Bus Subsystem for audio device with ID 18
+[2025.02.09-23.13.17:779][846]LogAudioMixer: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=18
+[2025.02.09-23.13.17:782][846]LogAudioMixer: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=18
+[2025.02.09-23.13.17:808][846]LogUObjectHash: Compacting FUObjectHashTables data took   1.98ms
+[2025.02.09-23.13.18:196][846]PIE: Warning: AttachTo: '/Engine/Transient.World_15:PersistentLevel.FbxScene_anchor-penneys-walls-detailing-exterior_C_0.DefaultSceneRoot' is not static  (in blueprint "FbxScene_anchor-penneys-walls-detailing-exterior"), cannot attach '/Engine/Transient.World_15:PersistentLevel.FbxScene_anchor-penneys-walls-detailing-exterior_C_0.Instance-0-0' which is static to it. Aborting.
+[2025.02.09-23.13.18:287][847]LogPlayLevel: Display: Destroying online subsystem :Context_59
+[2025.02.09-23.13.37:569][605]LogAssetEditorSubsystem: Opening Asset editor for StaticMesh /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78.Mesh
+[2025.02.09-23.13.37:576][605]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_42
+[2025.02.09-23.13.44:207][925]LogWorld: UWorld::CleanupWorld for World_42, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-23.13.44:207][925]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-23.13.44:282][925]LogUObjectHash: Compacting FUObjectHashTables data took   1.64ms
+[2025.02.09-23.13.56:092][447]LogAssetEditorSubsystem: Opening Asset editor for StaticMesh /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78.Mesh
+[2025.02.09-23.13.56:100][447]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_43
+[2025.02.09-23.14.37:029][521]LogEditorTransaction: Undo Create Box Collision
+[2025.02.09-23.15.28:285][ 87]LogEditorTransaction: Undo Translate Collision
+[2025.02.09-23.15.28:451][ 87]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2025.02.09-23.15.28:634][ 87]OBJ SavePackage: Generating thumbnails for [0] asset(s) in package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78] ([1] browsable assets)...
+[2025.02.09-23.15.28:634][ 87]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78]
+[2025.02.09-23.15.28:637][ 87]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78
+[2025.02.09-23.15.28:637][ 87]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_78F281E7604EAC1F249F9B7397BAD8ACBE.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78.uasset'
+[2025.02.09-23.15.28:739][ 87]LogFileHelpers: InternalPromptForCheckoutAndSave took 287.539 ms (total: 17.9 sec)
+[2025.02.09-23.15.28:844][ 87]LogContentValidation: Display: Starting to validate 1 assets
+[2025.02.09-23.15.28:844][ 87]LogContentValidation: Enabled validators:
+[2025.02.09-23.15.28:844][ 87]LogContentValidation: 	/Script/DataValidation.EditorValidator_Material
+[2025.02.09-23.15.28:844][ 87]LogContentValidation: 	/Script/DataValidation.DirtyFilesChangelistValidator
+[2025.02.09-23.15.28:844][ 87]LogContentValidation: 	/Script/DataValidation.EditorValidator_Localization
+[2025.02.09-23.15.28:844][ 87]LogContentValidation: 	/Script/DataValidation.PackageFileValidator
+[2025.02.09-23.15.28:844][ 87]LogContentValidation: 	/Script/DataValidation.WorldPartitionChangelistValidator
+[2025.02.09-23.15.28:845][ 87]LogContentValidation: 	/Script/InputBlueprintNodes.EnhancedInputUserWidgetValidator
+[2025.02.09-23.15.28:845][ 87]AssetCheck: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_78 Validating asset
+[2025.02.09-23.15.31:189][197]LogDebuggerCommands: Repeating last play command: Selected Viewport
+[2025.02.09-23.15.31:196][197]LogPlayLevel: PlayLevel: No blueprints needed recompiling
+[2025.02.09-23.15.31:196][197]LogPlayLevel: Creating play world package: /Game/Levels/UEDPIE_0_anchor-demo
+[2025.02.09-23.15.32:663][197]LogPlayLevel: PIE: StaticDuplicateObject took: (1.467018s)
+[2025.02.09-23.15.32:663][197]LogPlayLevel: PIE: Created PIE world by copying editor world from /Game/Levels/anchor-demo.anchor-demo to /Game/Levels/UEDPIE_0_anchor-demo.anchor-demo (1.467056s)
+[2025.02.09-23.15.32:707][197]LogUObjectHash: Compacting FUObjectHashTables data took   1.50ms
+[2025.02.09-23.15.32:709][197]LogChaosDD: Creating Chaos Debug Draw Scene for world anchor-demo
+[2025.02.09-23.15.32:710][197]LogPlayLevel: PIE: World Init took: (0.001425s)
+[2025.02.09-23.15.32:711][197]LogAudio: Display: Creating Audio Device:                 Id: 19, Scope: Unique, Realtime: True
+[2025.02.09-23.15.32:711][197]LogAudioMixer: Display: Audio Mixer Platform Settings:
+[2025.02.09-23.15.32:711][197]LogAudioMixer: Display: 	Sample Rate:						  48000
+[2025.02.09-23.15.32:711][197]LogAudioMixer: Display: 	Callback Buffer Frame Size Requested: 1024
+[2025.02.09-23.15.32:711][197]LogAudioMixer: Display: 	Callback Buffer Frame Size To Use:	  1024
+[2025.02.09-23.15.32:711][197]LogAudioMixer: Display: 	Number of buffers to queue:			  1
+[2025.02.09-23.15.32:711][197]LogAudioMixer: Display: 	Max Channels (voices):				  32
+[2025.02.09-23.15.32:711][197]LogAudioMixer: Display: 	Number of Async Source Workers:		  4
+[2025.02.09-23.15.32:711][197]LogAudio: Display: AudioDevice MaxSources: 32
+[2025.02.09-23.15.32:711][197]LogAudio: Display: Audio Spatialization Plugin: None (built-in).
+[2025.02.09-23.15.32:711][197]LogAudio: Display: Audio Reverb Plugin: None (built-in).
+[2025.02.09-23.15.32:711][197]LogAudio: Display: Audio Occlusion Plugin: None (built-in).
+[2025.02.09-23.15.32:713][197]LogAudioMixer: Display: Initializing audio mixer using platform API: 'XAudio2'
+[2025.02.09-23.15.32:739][197]LogAudioMixer: Display: Using Audio Hardware Device Headphones (Realtek(R) Audio)
+[2025.02.09-23.15.32:739][197]LogAudioMixer: Display: Initializing Sound Submixes...
+[2025.02.09-23.15.32:739][197]LogAudioMixer: Display: Creating Master Submix 'MasterSubmixDefault'
+[2025.02.09-23.15.32:739][197]LogAudioMixer: Display: Creating Master Submix 'MasterReverbSubmixDefault'
+[2025.02.09-23.15.32:740][197]LogAudioMixer: FMixerPlatformXAudio2::StartAudioStream() called. InstanceID=19
+[2025.02.09-23.15.32:740][197]LogAudioMixer: Display: Output buffers initialized: Frames=1024, Channels=2, Samples=2048, InstanceID=19
+[2025.02.09-23.15.32:743][197]LogAudioMixer: Display: Starting AudioMixerPlatformInterface::RunInternal(), InstanceID=19
+[2025.02.09-23.15.32:743][197]LogAudioMixer: Display: FMixerPlatformXAudio2::SubmitBuffer() called for the first time. InstanceID=19
+[2025.02.09-23.15.32:743][197]LogInit: FAudioDevice initialized with ID 19.
+[2025.02.09-23.15.32:743][197]LogAudio: Display: Audio Device (ID: 19) registered with world 'anchor-demo'.
+[2025.02.09-23.15.32:743][197]LogAudioMixer: Initializing Audio Bus Subsystem for audio device with ID 19
+[2025.02.09-23.15.32:745][197]LogLoad: Game class is 'GameModeBase'
+[2025.02.09-23.15.32:830][197]LogWorld: Bringing World /Game/Levels/UEDPIE_0_anchor-demo.anchor-demo up for play (max tick rate 0) at 2025.02.09-16.15.32
+[2025.02.09-23.15.32:831][197]LogWorld: Bringing up level for play took: 0.085300
+[2025.02.09-23.15.32:833][197]LogOnline: OSS: Created online subsystem instance for: :Context_62
+[2025.02.09-23.15.32:836][197]PIE: Server logged in
+[2025.02.09-23.15.32:837][197]PIE: Play in editor total start time 1.641 seconds.
+[2025.02.09-23.16.12:103][887]LogEOSSDK: LogEOS: Updating Product SDK Config, Time: 10010.708984
+[2025.02.09-23.16.12:222][896]LogEOSSDK: LogEOS: SDK Config Product Update Request Completed - No Change
+[2025.02.09-23.16.12:222][896]LogEOSSDK: LogEOS: ScheduleNextSDKConfigDataUpdate - Time: 10010.815430, Update Interval: 338.599823
+[2025.02.09-23.16.27:532][ 39]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2025.02.09-23.16.27:533][ 39]LogWorld: BeginTearingDown for /Game/Levels/UEDPIE_0_anchor-demo
+[2025.02.09-23.16.27:533][ 39]LogWorld: UWorld::CleanupWorld for anchor-demo, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-23.16.27:561][ 39]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-23.16.28:062][ 39]LogPlayLevel: Display: Shutting down PIE online subsystems
+[2025.02.09-23.16.28:071][ 39]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-23.16.28:137][ 39]LogAudio: Display: Audio Device unregistered from world 'None'.
+[2025.02.09-23.16.28:137][ 39]LogAudioMixer: Deinitializing Audio Bus Subsystem for audio device with ID 19
+[2025.02.09-23.16.28:137][ 39]LogAudioMixer: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=19
+[2025.02.09-23.16.28:139][ 39]LogAudioMixer: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=19
+[2025.02.09-23.16.28:144][ 39]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2025.02.09-23.16.28:165][ 39]LogUObjectHash: Compacting FUObjectHashTables data took   1.96ms
+[2025.02.09-23.16.28:204][ 40]LogPlayLevel: Display: Destroying online subsystem :Context_62
+[2025.02.09-23.16.30:581][116]LogWorld: UWorld::CleanupWorld for World_43, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-23.16.30:581][116]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-23.16.30:639][116]LogUObjectHash: Compacting FUObjectHashTables data took   1.66ms
+[2025.02.09-23.16.30:868][116]PIE: Warning: AttachTo: '/Engine/Transient.World_15:PersistentLevel.FbxScene_anchor-penneys-walls-detailing-exterior_C_0.DefaultSceneRoot' is not static  (in blueprint "FbxScene_anchor-penneys-walls-detailing-exterior"), cannot attach '/Engine/Transient.World_15:PersistentLevel.FbxScene_anchor-penneys-walls-detailing-exterior_C_0.Instance-0-0' which is static to it. Aborting.
+[2025.02.09-23.16.54:067][855]LogAssetEditorSubsystem: Opening Asset editor for StaticMesh /Game/60s-70s/anchor-penneys-walls-detailing-exterior/Mesh_72.Mesh
+[2025.02.09-23.16.54:079][855]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_44
+[2025.02.09-23.17.40:911][870]LogWorld: UWorld::CleanupWorld for World_44, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-23.17.40:911][870]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-23.17.40:986][870]LogUObjectHash: Compacting FUObjectHashTables data took   1.49ms
+[2025.02.09-23.17.45:977][ 84]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2025.02.09-23.17.46:056][ 84]OBJ SavePackage: Generating thumbnails for [1] asset(s) in package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/FbxScene_anchor-penneys-walls-detailing-exterior] ([2] browsable assets)...
+[2025.02.09-23.17.46:056][ 84]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-walls-detailing-exterior/FbxScene_anchor-penneys-walls-detailing-exterior]
+[2025.02.09-23.17.46:236][ 84]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/FbxScene_anchor-penneys-walls-detailing-exterior
+[2025.02.09-23.17.46:236][ 84]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/FbxScene_anchor-penneys-walls-deFC7F1D3041C30F102B68C09D54C0D411.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-walls-detailing-exterior/FbxScene_anchor-penneys-walls-detailing-exterior.uasset'
+[2025.02.09-23.17.46:244][ 84]LogFileHelpers: InternalPromptForCheckoutAndSave took 266.142 ms (total: 18.1 sec)
+[2025.02.09-23.17.46:346][ 84]LogContentValidation: Display: Starting to validate 1 assets
+[2025.02.09-23.17.46:346][ 84]LogContentValidation: Enabled validators:
+[2025.02.09-23.17.46:346][ 84]LogContentValidation: 	/Script/DataValidation.EditorValidator_Material
+[2025.02.09-23.17.46:346][ 84]LogContentValidation: 	/Script/DataValidation.DirtyFilesChangelistValidator
+[2025.02.09-23.17.46:346][ 84]LogContentValidation: 	/Script/DataValidation.EditorValidator_Localization
+[2025.02.09-23.17.46:346][ 84]LogContentValidation: 	/Script/DataValidation.PackageFileValidator
+[2025.02.09-23.17.46:346][ 84]LogContentValidation: 	/Script/DataValidation.WorldPartitionChangelistValidator
+[2025.02.09-23.17.46:346][ 84]LogContentValidation: 	/Script/InputBlueprintNodes.EnhancedInputUserWidgetValidator
+[2025.02.09-23.17.46:346][ 84]AssetCheck: /Game/60s-70s/anchor-penneys-walls-detailing-exterior/FbxScene_anchor-penneys-walls-detailing-exterior Validating asset
+[2025.02.09-23.18.25:701][561]LogSlate: Window 'FbxScene_anchor-penneys-walls-detailing-exterior' being destroyed
+[2025.02.09-23.18.25:729][561]LogSlate: Window 'FbxScene_anchor-penneys-walls-detailing-exterior' being destroyed
+[2025.02.09-23.18.25:737][561]LogWorld: UWorld::CleanupWorld for World_15, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-23.18.25:737][561]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-23.18.25:924][561]LogUObjectHash: Compacting FUObjectHashTables data took   2.52ms
