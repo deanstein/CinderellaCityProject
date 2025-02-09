@@ -4495,3 +4495,316 @@ LogConfig: Set CVar [[r.VRS.ContrastAdaptiveShading:1]]
 [2025.02.09-20.19.35:333][979]AssetCheck: /Game/60s-70s/anchor-penneys-structure-concealed/Mesh_229 Validating asset
 [2025.02.09-20.19.35:333][979]AssetCheck: /Game/60s-70s/anchor-penneys-structure-concealed/Mesh_230 Validating asset
 [2025.02.09-20.19.35:333][979]AssetCheck: /Game/60s-70s/anchor-penneys-structure-concealed/FbxScene_anchor-penneys-structure-concealed Validating asset
+[2025.02.09-20.22.16:016][335]LogSlate: Window 'Choose Location for importing the scene content' being destroyed
+[2025.02.09-20.22.16:115][335]LogFactory: FactoryCreateFile: World with FbxSceneImportFactory (0 0 E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/anchor-penneys-structure-exposed.fbx)
+[2025.02.09-20.22.16:122][335]LogFbx: Loading FBX Scene from E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/anchor-penneys-structure-exposed.fbx
+[2025.02.09-20.22.16:132][335]LogFbx: FBX Scene Loaded Succesfully
+[2025.02.09-20.22.26:334][335]LogSlate: Window 'FBX Scene Import Options' being destroyed
+[2025.02.09-20.22.26:369][335]LogStreaming: Display: FlushAsyncLoading(683): 1 QueuedPackages, 0 AsyncPackages
+[2025.02.09-20.22.26:370][335]LogEditorFactories: Display: JPEG imported and retained as JPEG in uasset.
+[2025.02.09-20.22.26:370][335]LogEditorFactories: Display: Image imported as : TSF BGRA8
+[2025.02.09-20.22.26:507][335]LogEditorFactories: Display: JPEG imported and retained as JPEG in uasset.
+[2025.02.09-20.22.26:507][335]LogEditorFactories: Display: Image imported as : TSF BGRA8
+[2025.02.09-20.22.26:748][335]LogActorFactory: Actor Factory attempting to spawn Class /Script/Engine.Actor
+[2025.02.09-20.22.26:748][335]LogActorFactory: Actor Factory attempting to spawn Class /Script/Engine.Actor
+[2025.02.09-20.22.26:750][335]LogActorFactory: Actor Factory spawned Class /Script/Engine.Actor as actor: Actor /Game/Levels/anchor-demo.anchor-demo:PersistentLevel.Actor_1
+[2025.02.09-20.22.26:750][335]LogActorFactory: Actor Factory spawned Class /Script/Engine.Actor as actor: Actor /Game/Levels/anchor-demo.anchor-demo:PersistentLevel.Actor_1
+[2025.02.09-20.22.26:798][335]LogUObjectHash: Compacting FUObjectHashTables data took   1.25ms
+[2025.02.09-20.22.26:809][335]PIE: Warning: AttachTo: '/Game/Levels/anchor-demo.anchor-demo:PersistentLevel.FbxScene_anchor-penneys-structure-exposed_C_0.DefaultSceneRoot' is not static  (in blueprint "FbxScene_anchor-penneys-structure-exposed"), cannot attach '/Game/Levels/anchor-demo.anchor-demo:PersistentLevel.FbxScene_anchor-penneys-structure-exposed_C_0.Instance-0-0' which is static to it. Aborting.
+[2025.02.09-20.22.26:812][335]PIE: Warning: AttachTo: '/Game/Levels/anchor-demo.anchor-demo:PersistentLevel.FbxScene_anchor-penneys-structure-exposed_C_0.DefaultSceneRoot' is not static  (in blueprint "FbxScene_anchor-penneys-structure-exposed"), cannot attach '/Game/Levels/anchor-demo.anchor-demo:PersistentLevel.FbxScene_anchor-penneys-structure-exposed_C_0.Instance-0-0' which is static to it. Aborting.
+[2025.02.09-20.22.26:836][335]LogAssetEditorSubsystem: Opening Asset editor for Blueprint /Game/60s-70s/anchor-penneys-structure-exposed/FbxScene_anchor-penneys-structure-exposed.FbxScene_anchor-penneys-structure-exposed
+[2025.02.09-20.22.26:837][335]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_4
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'Node-71-649' was renamed to 'Node-71-6491' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'MeshChunk' was renamed to 'MeshChunk2' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'Node-71-649' was renamed to 'Node-71-6493' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'MeshChunk' was renamed to 'MeshChunk4' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'Node-71-649' was renamed to 'Node-71-6495' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'MeshChunk' was renamed to 'MeshChunk6' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'Node-71-649' was renamed to 'Node-71-6497' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'MeshChunk' was renamed to 'MeshChunk8' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'MeshChunk' was renamed to 'MeshChunk9' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'Node-412-590' was renamed to 'Node-412-59010' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'MeshChunk' was renamed to 'MeshChunk11' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'Node-412-590' was renamed to 'Node-412-59012' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'MeshChunk' was renamed to 'MeshChunk13' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'Node-412-590' was renamed to 'Node-412-59014' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'MeshChunk' was renamed to 'MeshChunk15' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'Node-412-590' was renamed to 'Node-412-59016' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'MeshChunk' was renamed to 'MeshChunk17' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'Node-412-590' was renamed to 'Node-412-59018' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'MeshChunk' was renamed to 'MeshChunk19' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'Node-412-590' was renamed to 'Node-412-59020' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'MeshChunk' was renamed to 'MeshChunk21' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'Node-412-590' was renamed to 'Node-412-59022' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'MeshChunk' was renamed to 'MeshChunk23' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'Node-412-590' was renamed to 'Node-412-59024' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'MeshChunk' was renamed to 'MeshChunk25' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'Node-412-590' was renamed to 'Node-412-59026' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'MeshChunk' was renamed to 'MeshChunk27' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'Node-412-590' was renamed to 'Node-412-59028' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'MeshChunk' was renamed to 'MeshChunk29' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'Node-412-590' was renamed to 'Node-412-59030' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'MeshChunk' was renamed to 'MeshChunk31' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'Node-412-590' was renamed to 'Node-412-59032' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'MeshChunk' was renamed to 'MeshChunk33' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'Node-412-590' was renamed to 'Node-412-59034' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'MeshChunk' was renamed to 'MeshChunk35' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'Node-412-590' was renamed to 'Node-412-59036' 
+[2025.02.09-20.22.27:032][335]FBXImport: FBX File Loading: Found name clash, node 'MeshChunk' was renamed to 'MeshChunk37' 
+[2025.02.09-20.22.27:032][335]FBXImport: Warning: Mesh Mesh in the fbx file is not reference by any hierarchy node. 
+[2025.02.09-20.22.27:032][335]FBXImport: Warning: Mesh Mesh in the fbx file is not reference by any hierarchy node. 
+[2025.02.09-20.22.27:032][335]FBXImport: Warning: Found invalid character in a material name. Original name: concrete - cast unpainted New name: concrete_-_cast_unpainted 
+[2025.02.09-20.22.27:032][335]FBXImport: Warning: Found invalid character in a material name. Original name: concrete - painted 60s New name: concrete_-_painted_60s 
+[2025.02.09-20.22.27:032][335]FBXImport: Warning: Found invalid character in a material name. Original name: concrete - painted 60s New name: concrete_-_painted_60s 
+[2025.02.09-20.22.27:032][335]FBXImport: Warning: Found invalid character in a material name. Original name: concrete - painted 60s New name: concrete_-_painted_60s 
+[2025.02.09-20.22.27:032][335]FBXImport: Warning: Found invalid character in a material name. Original name: concrete - painted 60s New name: concrete_-_painted_60s 
+[2025.02.09-20.22.27:032][335]FBXImport: Warning: Found invalid character in a material name. Original name: concrete - painted 60s New name: concrete_-_painted_60s 
+[2025.02.09-20.22.27:032][335]FBXImport: Warning: Found invalid character in a material name. Original name: concrete - painted 60s New name: concrete_-_painted_60s 
+[2025.02.09-20.22.27:032][335]FBXImport: Warning: Found invalid character in a material name. Original name: concrete - painted 60s New name: concrete_-_painted_60s 
+[2025.02.09-20.22.27:032][335]FBXImport: Warning: Found invalid character in a material name. Original name: concrete - painted 60s New name: concrete_-_painted_60s 
+[2025.02.09-20.22.27:032][335]FBXImport: Warning: Found invalid character in a material name. Original name: concrete - painted 60s New name: concrete_-_painted_60s 
+[2025.02.09-20.22.27:032][335]FBXImport: Warning: Found invalid character in a material name. Original name: concrete - painted 60s New name: concrete_-_painted_60s 
+[2025.02.09-20.22.27:032][335]FBXImport: Warning: Found invalid character in a material name. Original name: concrete - painted 60s New name: concrete_-_painted_60s 
+[2025.02.09-20.22.27:032][335]FBXImport: Warning: Found invalid character in a material name. Original name: concrete - painted 60s New name: concrete_-_painted_60s 
+[2025.02.09-20.22.27:032][335]FBXImport: Warning: Found invalid character in a material name. Original name: concrete - painted 60s New name: concrete_-_painted_60s 
+[2025.02.09-20.22.27:032][335]FBXImport: Warning: Found invalid character in a material name. Original name: concrete - painted 60s New name: concrete_-_painted_60s 
+[2025.02.09-20.22.27:033][335]FBXImport: Warning: No smoothing group information was found in this FBX scene.  Please make sure to enable the 'Export Smoothing Groups' option in the FBX Exporter plug-in before exporting the file.  Even for tools that don't support smoothing groups, the FBX Exporter will generate appropriate smoothing data at export-time so that correct vertex normals can be inferred while importing. 
+[2025.02.09-20.22.27:243][335]PIE: Warning: AttachTo: '/Engine/Transient.World_4:PersistentLevel.FbxScene_anchor-penneys-structure-exposed_C_0.DefaultSceneRoot' is not static  (in blueprint "FbxScene_anchor-penneys-structure-exposed"), cannot attach '/Engine/Transient.World_4:PersistentLevel.FbxScene_anchor-penneys-structure-exposed_C_0.Instance-0-0' which is static to it. Aborting.
+[2025.02.09-20.22.27:381][335]PIE: Warning: AttachTo: '/Engine/Transient.World_4:PersistentLevel.FbxScene_anchor-penneys-structure-exposed_C_0.DefaultSceneRoot' is not static  (in blueprint "FbxScene_anchor-penneys-structure-exposed"), cannot attach '/Engine/Transient.World_4:PersistentLevel.FbxScene_anchor-penneys-structure-exposed_C_0.Instance-0-0' which is static to it. Aborting.
+[2025.02.09-20.22.27:795][340]LogChaosDD: Not creating Chaos Debug Draw Scene for world World_5
+[2025.02.09-20.22.27:812][340]PIE: Warning: AttachTo: '/Engine/Transient.World_5:PersistentLevel.FbxScene_anchor-penneys-structure-exposed_C_0.DefaultSceneRoot' is not static  (in blueprint "FbxScene_anchor-penneys-structure-exposed"), cannot attach '/Engine/Transient.World_5:PersistentLevel.FbxScene_anchor-penneys-structure-exposed_C_0.Instance-0-0' which is static to it. Aborting.
+[2025.02.09-20.22.29:854][447]LogSlate: Window 'Message Log' being destroyed
+[2025.02.09-20.22.29:879][447]LogSlate: Window 'Message Log' being destroyed
+[2025.02.09-20.24.09:028][621]LogDebuggerCommands: Repeating last play command: Selected Viewport
+[2025.02.09-20.24.09:036][621]LogPlayLevel: PlayLevel: No blueprints needed recompiling
+[2025.02.09-20.24.09:037][621]LogPlayLevel: Creating play world package: /Game/Levels/UEDPIE_0_anchor-demo
+[2025.02.09-20.24.10:379][621]LogPlayLevel: PIE: StaticDuplicateObject took: (1.342516s)
+[2025.02.09-20.24.10:379][621]LogPlayLevel: PIE: Created PIE world by copying editor world from /Game/Levels/anchor-demo.anchor-demo to /Game/Levels/UEDPIE_0_anchor-demo.anchor-demo (1.342563s)
+[2025.02.09-20.24.10:413][621]LogUObjectHash: Compacting FUObjectHashTables data took   1.40ms
+[2025.02.09-20.24.10:415][621]LogChaosDD: Creating Chaos Debug Draw Scene for world anchor-demo
+[2025.02.09-20.24.10:416][621]LogPlayLevel: PIE: World Init took: (0.001333s)
+[2025.02.09-20.24.10:417][621]LogAudio: Display: Creating Audio Device:                 Id: 3, Scope: Unique, Realtime: True
+[2025.02.09-20.24.10:417][621]LogAudioMixer: Display: Audio Mixer Platform Settings:
+[2025.02.09-20.24.10:417][621]LogAudioMixer: Display: 	Sample Rate:						  48000
+[2025.02.09-20.24.10:417][621]LogAudioMixer: Display: 	Callback Buffer Frame Size Requested: 1024
+[2025.02.09-20.24.10:417][621]LogAudioMixer: Display: 	Callback Buffer Frame Size To Use:	  1024
+[2025.02.09-20.24.10:417][621]LogAudioMixer: Display: 	Number of buffers to queue:			  1
+[2025.02.09-20.24.10:417][621]LogAudioMixer: Display: 	Max Channels (voices):				  32
+[2025.02.09-20.24.10:417][621]LogAudioMixer: Display: 	Number of Async Source Workers:		  4
+[2025.02.09-20.24.10:417][621]LogAudio: Display: AudioDevice MaxSources: 32
+[2025.02.09-20.24.10:417][621]LogAudio: Display: Audio Spatialization Plugin: None (built-in).
+[2025.02.09-20.24.10:417][621]LogAudio: Display: Audio Reverb Plugin: None (built-in).
+[2025.02.09-20.24.10:417][621]LogAudio: Display: Audio Occlusion Plugin: None (built-in).
+[2025.02.09-20.24.10:419][621]LogAudioMixer: Display: Initializing audio mixer using platform API: 'XAudio2'
+[2025.02.09-20.24.10:447][621]LogAudioMixer: Display: Using Audio Hardware Device Headphones (Realtek(R) Audio)
+[2025.02.09-20.24.10:447][621]LogAudioMixer: Display: Initializing Sound Submixes...
+[2025.02.09-20.24.10:447][621]LogAudioMixer: Display: Creating Master Submix 'MasterSubmixDefault'
+[2025.02.09-20.24.10:447][621]LogAudioMixer: Display: Creating Master Submix 'MasterReverbSubmixDefault'
+[2025.02.09-20.24.10:448][621]LogAudioMixer: FMixerPlatformXAudio2::StartAudioStream() called. InstanceID=3
+[2025.02.09-20.24.10:448][621]LogAudioMixer: Display: Output buffers initialized: Frames=1024, Channels=2, Samples=2048, InstanceID=3
+[2025.02.09-20.24.10:450][621]LogAudioMixer: Display: Starting AudioMixerPlatformInterface::RunInternal(), InstanceID=3
+[2025.02.09-20.24.10:450][621]LogAudioMixer: Display: FMixerPlatformXAudio2::SubmitBuffer() called for the first time. InstanceID=3
+[2025.02.09-20.24.10:450][621]LogInit: FAudioDevice initialized with ID 3.
+[2025.02.09-20.24.10:450][621]LogAudio: Display: Audio Device (ID: 3) registered with world 'anchor-demo'.
+[2025.02.09-20.24.10:451][621]LogAudioMixer: Initializing Audio Bus Subsystem for audio device with ID 3
+[2025.02.09-20.24.10:453][621]LogLoad: Game class is 'GameModeBase'
+[2025.02.09-20.24.10:515][621]LogWorld: Bringing World /Game/Levels/UEDPIE_0_anchor-demo.anchor-demo up for play (max tick rate 60) at 2025.02.09-13.24.10
+[2025.02.09-20.24.10:516][621]LogWorld: Bringing up level for play took: 0.062471
+[2025.02.09-20.24.10:518][621]LogOnline: OSS: Created online subsystem instance for: :Context_8
+[2025.02.09-20.24.10:521][621]PIE: Server logged in
+[2025.02.09-20.24.10:522][621]PIE: Play in editor total start time 1.488 seconds.
+[2025.02.09-20.24.10:579][622]LogSlate: Window 'FbxScene_anchor-penneys-structure-exposed' being destroyed
+[2025.02.09-20.24.10:818][622]LogSlate: Window 'FbxScene_anchor-penneys-structure-exposed' being destroyed
+[2025.02.09-20.24.10:821][622]LogWorld: UWorld::CleanupWorld for World_4, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-20.24.10:821][622]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-20.24.10:893][622]LogUObjectHash: Compacting FUObjectHashTables data took   1.53ms
+[2025.02.09-20.24.31:886][869]LogEOSSDK: LogEOS: Updating Product SDK Config, Time: 1348.513672
+[2025.02.09-20.24.32:019][878]LogEOSSDK: LogEOS: SDK Config Product Update Request Completed - No Change
+[2025.02.09-20.24.32:020][878]LogEOSSDK: LogEOS: ScheduleNextSDKConfigDataUpdate - Time: 1348.630127, Update Interval: 333.121124
+[2025.02.09-20.25.05:124][861]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2025.02.09-20.25.05:124][861]LogWorld: BeginTearingDown for /Game/Levels/UEDPIE_0_anchor-demo
+[2025.02.09-20.25.05:125][861]LogWorld: UWorld::CleanupWorld for anchor-demo, bSessionEnded=true, bCleanupResources=true
+[2025.02.09-20.25.05:145][861]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-20.25.05:149][861]LogPlayLevel: Display: Shutting down PIE online subsystems
+[2025.02.09-20.25.05:156][861]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2025.02.09-20.25.05:196][861]LogAudio: Display: Audio Device unregistered from world 'None'.
+[2025.02.09-20.25.05:196][861]LogAudioMixer: Deinitializing Audio Bus Subsystem for audio device with ID 3
+[2025.02.09-20.25.05:196][861]LogAudioMixer: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=3
+[2025.02.09-20.25.05:198][861]LogAudioMixer: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=3
+[2025.02.09-20.25.05:203][861]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2025.02.09-20.25.05:223][861]LogUObjectHash: Compacting FUObjectHashTables data took   1.87ms
+[2025.02.09-20.25.05:386][862]LogPlayLevel: Display: Destroying online subsystem :Context_8
+[2025.02.09-20.25.07:199][939]LogUObjectHash: Compacting FUObjectHashTables data took   1.59ms
+[2025.02.09-20.25.07:206][939]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2025.02.09-20.25.07:283][939]Cmd: OBJ SAVEPACKAGE PACKAGE="/Game/Levels/anchor-demo" FILE="E:/Unreal Projects/CinderellaCityUnreal/Content/Levels/anchor-demo.umap" SILENT=true AUTOSAVING=false KEEPDIRTY=false
+[2025.02.09-20.25.07:321][939]LogUObjectHash: Compacting FUObjectHashTables data took   0.72ms
+[2025.02.09-20.25.08:649][939]LogSavePackage: Moving output files for package: /Game/Levels/anchor-demo
+[2025.02.09-20.25.08:650][939]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/anchor-demo03B5A273410658C741D22D99E1633B62.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/Levels/anchor-demo.umap'
+[2025.02.09-20.25.08:679][939]LogFileHelpers: Saving map 'anchor-demo' took 1.398
+[2025.02.09-20.25.08:679][939]OBJ SavePackage: Generating thumbnails for [0] asset(s) in package [/Game/60s-70s/anchor-penneys-structure-exposed/anchor-penneys-structure-exposed] ([1] browsable assets)...
+[2025.02.09-20.25.08:679][939]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-structure-exposed/anchor-penneys-structure-exposed]
+[2025.02.09-20.25.08:681][939]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-structure-exposed/anchor-penneys-structure-exposed
+[2025.02.09-20.25.08:681][939]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/anchor-penneys-structure-exposed781328D24634507B92DFDFA38B277444.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/anchor-penneys-structure-exposed.uasset'
+[2025.02.09-20.25.08:683][939]OBJ SavePackage: Generating thumbnails for [1] asset(s) in package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh] ([1] browsable assets)...
+[2025.02.09-20.25.08:748][939]OBJ SavePackage:     Rendered thumbnail for [StaticMesh /Game/60s-70s/anchor-penneys-structure-exposed/Mesh.Mesh]
+[2025.02.09-20.25.08:748][939]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh]
+[2025.02.09-20.25.08:748][939]Cmd: OBJ SAVEPACKAGE PACKAGE="/Game/60s-70s/anchor-penneys-structure-exposed/Mesh" FILE="E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/Mesh.uasset" SILENT=true
+[2025.02.09-20.25.08:750][939]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh
+[2025.02.09-20.25.08:750][939]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh5211E94C425CCF99ACBA4E9BC89BD793.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/Mesh.uasset'
+[2025.02.09-20.25.08:751][939]OBJ SavePackage: Generating thumbnails for [1] asset(s) in package [/Game/60s-70s/anchor-penneys-structure-exposed/concrete_-_painted_60s] ([1] browsable assets)...
+[2025.02.09-20.25.08:782][939]OBJ SavePackage:     Rendered thumbnail for [Material /Game/60s-70s/anchor-penneys-structure-exposed/concrete_-_painted_60s.concrete_-_painted_60s]
+[2025.02.09-20.25.08:782][939]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-structure-exposed/concrete_-_painted_60s]
+[2025.02.09-20.25.08:784][939]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-structure-exposed/concrete_-_painted_60s
+[2025.02.09-20.25.08:784][939]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/concrete_-_painted_60s02204DC242B6B2E4E31DB1ABC8DE9A76.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/concrete_-_painted_60s.uasset'
+[2025.02.09-20.25.08:785][939]OBJ SavePackage: Generating thumbnails for [1] asset(s) in package [/Game/60s-70s/anchor-penneys-structure-exposed/25286-22] ([1] browsable assets)...
+[2025.02.09-20.25.08:786][939]OBJ SavePackage:     Rendered thumbnail for [Texture2D /Game/60s-70s/anchor-penneys-structure-exposed/25286-22.25286-22]
+[2025.02.09-20.25.08:786][939]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-structure-exposed/25286-22]
+[2025.02.09-20.25.08:787][939]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-structure-exposed/25286-22
+[2025.02.09-20.25.08:787][939]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/25286-2292AC16924A799A82E0ECC49C0A9196C8.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/25286-22.uasset'
+[2025.02.09-20.25.08:788][939]OBJ SavePackage: Generating thumbnails for [1] asset(s) in package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_1] ([1] browsable assets)...
+[2025.02.09-20.25.08:795][939]OBJ SavePackage:     Rendered thumbnail for [StaticMesh /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_1.Mesh]
+[2025.02.09-20.25.08:795][939]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_1]
+[2025.02.09-20.25.08:797][939]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_1
+[2025.02.09-20.25.08:797][939]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_1DF0D6F5344601442EF4F4B855BC4930A.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/Mesh_1.uasset'
+[2025.02.09-20.25.08:798][939]OBJ SavePackage: Generating thumbnails for [1] asset(s) in package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_2] ([1] browsable assets)...
+[2025.02.09-20.25.08:805][939]OBJ SavePackage:     Rendered thumbnail for [StaticMesh /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_2.Mesh]
+[2025.02.09-20.25.08:805][939]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_2]
+[2025.02.09-20.25.08:807][939]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_2
+[2025.02.09-20.25.08:807][939]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_260F9A494425F0FCA811A2A8C34CE918F.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/Mesh_2.uasset'
+[2025.02.09-20.25.08:808][939]OBJ SavePackage: Generating thumbnails for [1] asset(s) in package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_3] ([1] browsable assets)...
+[2025.02.09-20.25.08:815][939]OBJ SavePackage:     Rendered thumbnail for [StaticMesh /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_3.Mesh]
+[2025.02.09-20.25.08:815][939]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_3]
+[2025.02.09-20.25.08:817][939]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_3
+[2025.02.09-20.25.08:817][939]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_3E3F08C844673FBAAC11986B9A5863B5D.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/Mesh_3.uasset'
+[2025.02.09-20.25.08:818][939]OBJ SavePackage: Generating thumbnails for [1] asset(s) in package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_4] ([1] browsable assets)...
+[2025.02.09-20.25.08:825][939]OBJ SavePackage:     Rendered thumbnail for [StaticMesh /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_4.Mesh]
+[2025.02.09-20.25.08:825][939]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_4]
+[2025.02.09-20.25.08:826][939]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_4
+[2025.02.09-20.25.08:826][939]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_46F60ADBB449B86257E4BF590F5915EAA.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/Mesh_4.uasset'
+[2025.02.09-20.25.08:827][939]OBJ SavePackage: Generating thumbnails for [1] asset(s) in package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_5] ([1] browsable assets)...
+[2025.02.09-20.25.08:834][939]OBJ SavePackage:     Rendered thumbnail for [StaticMesh /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_5.Mesh]
+[2025.02.09-20.25.08:834][939]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_5]
+[2025.02.09-20.25.08:837][939]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_5
+[2025.02.09-20.25.08:837][939]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_5B2AEB5DE4E1A128D1509449BF58316DA.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/Mesh_5.uasset'
+[2025.02.09-20.25.08:837][939]OBJ SavePackage: Generating thumbnails for [1] asset(s) in package [/Game/60s-70s/anchor-penneys-structure-exposed/concrete_-_cast_unpainted] ([1] browsable assets)...
+[2025.02.09-20.25.08:878][939]OBJ SavePackage:     Rendered thumbnail for [Material /Game/60s-70s/anchor-penneys-structure-exposed/concrete_-_cast_unpainted.concrete_-_cast_unpainted]
+[2025.02.09-20.25.08:879][939]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-structure-exposed/concrete_-_cast_unpainted]
+[2025.02.09-20.25.08:884][939]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-structure-exposed/concrete_-_cast_unpainted
+[2025.02.09-20.25.08:884][939]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/concrete_-_cast_unpaintedAA3B14574EAA6958D27FE4B84DF14169.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/concrete_-_cast_unpainted.uasset'
+[2025.02.09-20.25.08:884][939]OBJ SavePackage: Generating thumbnails for [1] asset(s) in package [/Game/60s-70s/anchor-penneys-structure-exposed/0-3] ([1] browsable assets)...
+[2025.02.09-20.25.08:886][939]OBJ SavePackage:     Rendered thumbnail for [Texture2D /Game/60s-70s/anchor-penneys-structure-exposed/0-3.0-3]
+[2025.02.09-20.25.08:886][939]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-structure-exposed/0-3]
+[2025.02.09-20.25.08:886][939]Cmd: OBJ SAVEPACKAGE PACKAGE="/Game/60s-70s/anchor-penneys-structure-exposed/0-3" FILE="E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/0-3.uasset" SILENT=true
+[2025.02.09-20.25.08:887][939]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-structure-exposed/0-3
+[2025.02.09-20.25.08:887][939]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/0-3C7B35BE347BFDECE7F7AC2825D90C04D.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/0-3.uasset'
+[2025.02.09-20.25.08:889][939]OBJ SavePackage: Generating thumbnails for [1] asset(s) in package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_6] ([1] browsable assets)...
+[2025.02.09-20.25.08:896][939]OBJ SavePackage:     Rendered thumbnail for [StaticMesh /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_6.Mesh]
+[2025.02.09-20.25.08:896][939]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_6]
+[2025.02.09-20.25.08:898][939]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_6
+[2025.02.09-20.25.08:898][939]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_66884B5014C5847B2F23E9081556369C2.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/Mesh_6.uasset'
+[2025.02.09-20.25.08:899][939]OBJ SavePackage: Generating thumbnails for [1] asset(s) in package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_7] ([1] browsable assets)...
+[2025.02.09-20.25.08:905][939]OBJ SavePackage:     Rendered thumbnail for [StaticMesh /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_7.Mesh]
+[2025.02.09-20.25.08:906][939]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_7]
+[2025.02.09-20.25.08:907][939]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_7
+[2025.02.09-20.25.08:907][939]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_7CE4F222347B97DD79A7057BE11144B9F.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/Mesh_7.uasset'
+[2025.02.09-20.25.08:908][939]OBJ SavePackage: Generating thumbnails for [1] asset(s) in package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_8] ([1] browsable assets)...
+[2025.02.09-20.25.08:915][939]OBJ SavePackage:     Rendered thumbnail for [StaticMesh /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_8.Mesh]
+[2025.02.09-20.25.08:915][939]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_8]
+[2025.02.09-20.25.08:917][939]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_8
+[2025.02.09-20.25.08:917][939]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_89E2241BA4D11E9D02FC061BC7C751227.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/Mesh_8.uasset'
+[2025.02.09-20.25.08:918][939]OBJ SavePackage: Generating thumbnails for [1] asset(s) in package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_9] ([1] browsable assets)...
+[2025.02.09-20.25.08:925][939]OBJ SavePackage:     Rendered thumbnail for [StaticMesh /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_9.Mesh]
+[2025.02.09-20.25.08:925][939]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_9]
+[2025.02.09-20.25.08:927][939]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_9
+[2025.02.09-20.25.08:927][939]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_97348656C47CECBB0646C1C82465BFCF8.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/Mesh_9.uasset'
+[2025.02.09-20.25.08:928][939]OBJ SavePackage: Generating thumbnails for [1] asset(s) in package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_10] ([1] browsable assets)...
+[2025.02.09-20.25.08:935][939]OBJ SavePackage:     Rendered thumbnail for [StaticMesh /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_10.Mesh]
+[2025.02.09-20.25.08:935][939]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_10]
+[2025.02.09-20.25.08:937][939]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_10
+[2025.02.09-20.25.08:937][939]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_102EA9D549451647D7A49DC9B8D79A87B3.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/Mesh_10.uasset'
+[2025.02.09-20.25.08:938][939]OBJ SavePackage: Generating thumbnails for [1] asset(s) in package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_11] ([1] browsable assets)...
+[2025.02.09-20.25.08:945][939]OBJ SavePackage:     Rendered thumbnail for [StaticMesh /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_11.Mesh]
+[2025.02.09-20.25.08:945][939]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_11]
+[2025.02.09-20.25.08:947][939]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_11
+[2025.02.09-20.25.08:947][939]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_116CE961574F7E518B9C8EF9BE53B4CC67.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/Mesh_11.uasset'
+[2025.02.09-20.25.08:948][939]OBJ SavePackage: Generating thumbnails for [1] asset(s) in package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_12] ([1] browsable assets)...
+[2025.02.09-20.25.08:955][939]OBJ SavePackage:     Rendered thumbnail for [StaticMesh /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_12.Mesh]
+[2025.02.09-20.25.08:955][939]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_12]
+[2025.02.09-20.25.08:957][939]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_12
+[2025.02.09-20.25.08:957][939]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_12D22279E042229EF233664EAECF64028F.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/Mesh_12.uasset'
+[2025.02.09-20.25.08:958][939]OBJ SavePackage: Generating thumbnails for [1] asset(s) in package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_13] ([1] browsable assets)...
+[2025.02.09-20.25.08:965][939]OBJ SavePackage:     Rendered thumbnail for [StaticMesh /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_13.Mesh]
+[2025.02.09-20.25.08:965][939]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_13]
+[2025.02.09-20.25.08:967][939]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_13
+[2025.02.09-20.25.08:967][939]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_13D7AA83464D0CFAB10B0CA38C289E4D55.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/Mesh_13.uasset'
+[2025.02.09-20.25.08:968][939]OBJ SavePackage: Generating thumbnails for [1] asset(s) in package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_14] ([1] browsable assets)...
+[2025.02.09-20.25.08:975][939]OBJ SavePackage:     Rendered thumbnail for [StaticMesh /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_14.Mesh]
+[2025.02.09-20.25.08:975][939]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_14]
+[2025.02.09-20.25.08:977][939]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_14
+[2025.02.09-20.25.08:977][939]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_14638BDF4A4945FB67B1C5469FBA156686.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/Mesh_14.uasset'
+[2025.02.09-20.25.08:978][939]OBJ SavePackage: Generating thumbnails for [1] asset(s) in package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_15] ([1] browsable assets)...
+[2025.02.09-20.25.08:985][939]OBJ SavePackage:     Rendered thumbnail for [StaticMesh /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_15.Mesh]
+[2025.02.09-20.25.08:985][939]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_15]
+[2025.02.09-20.25.08:987][939]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_15
+[2025.02.09-20.25.08:987][939]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_15C4F3031A4F51B1E40FD34A88C67359C1.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/Mesh_15.uasset'
+[2025.02.09-20.25.08:988][939]OBJ SavePackage: Generating thumbnails for [1] asset(s) in package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_16] ([1] browsable assets)...
+[2025.02.09-20.25.08:995][939]OBJ SavePackage:     Rendered thumbnail for [StaticMesh /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_16.Mesh]
+[2025.02.09-20.25.08:995][939]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_16]
+[2025.02.09-20.25.08:997][939]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_16
+[2025.02.09-20.25.08:997][939]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_167FA2EE8A408B7931934482A17AD22AE8.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/Mesh_16.uasset'
+[2025.02.09-20.25.08:998][939]OBJ SavePackage: Generating thumbnails for [1] asset(s) in package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_17] ([1] browsable assets)...
+[2025.02.09-20.25.09:005][939]OBJ SavePackage:     Rendered thumbnail for [StaticMesh /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_17.Mesh]
+[2025.02.09-20.25.09:005][939]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_17]
+[2025.02.09-20.25.09:007][939]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_17
+[2025.02.09-20.25.09:007][939]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_17B6C2DDF24ACAF7716C129C8CD64886ED.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/Mesh_17.uasset'
+[2025.02.09-20.25.09:008][939]OBJ SavePackage: Generating thumbnails for [1] asset(s) in package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_18] ([1] browsable assets)...
+[2025.02.09-20.25.09:015][939]OBJ SavePackage:     Rendered thumbnail for [StaticMesh /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_18.Mesh]
+[2025.02.09-20.25.09:015][939]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_18]
+[2025.02.09-20.25.09:017][939]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_18
+[2025.02.09-20.25.09:017][939]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_18FAE616EB4E7E53DFD38784B203317D71.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/Mesh_18.uasset'
+[2025.02.09-20.25.09:018][939]OBJ SavePackage: Generating thumbnails for [1] asset(s) in package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_19] ([1] browsable assets)...
+[2025.02.09-20.25.09:028][939]OBJ SavePackage:     Rendered thumbnail for [StaticMesh /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_19.Mesh]
+[2025.02.09-20.25.09:028][939]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-structure-exposed/Mesh_19]
+[2025.02.09-20.25.09:030][939]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_19
+[2025.02.09-20.25.09:030][939]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/Mesh_19FCA2A51146D71F77BE4E09B04C2E5420.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/Mesh_19.uasset'
+[2025.02.09-20.25.09:031][939]OBJ SavePackage: Generating thumbnails for [2] asset(s) in package [/Game/60s-70s/anchor-penneys-structure-exposed/FbxScene_anchor-penneys-structure-exposed] ([2] browsable assets)...
+[2025.02.09-20.25.09:039][939]OBJ SavePackage:     Rendered thumbnail for [Blueprint /Game/60s-70s/anchor-penneys-structure-exposed/FbxScene_anchor-penneys-structure-exposed.FbxScene_anchor-penneys-structure-exposed]
+[2025.02.09-20.25.09:039][939]OBJ SavePackage: Finished generating thumbnails for package [/Game/60s-70s/anchor-penneys-structure-exposed/FbxScene_anchor-penneys-structure-exposed]
+[2025.02.09-20.25.09:048][939]LogSavePackage: Moving output files for package: /Game/60s-70s/anchor-penneys-structure-exposed/FbxScene_anchor-penneys-structure-exposed
+[2025.02.09-20.25.09:048][939]LogSavePackage: Moving 'E:/Unreal Projects/CinderellaCityUnreal/Saved/FbxScene_anchor-penneys-structurC5E62E3D4F64C74A0B3DCB8270076578.tmp' to 'E:/Unreal Projects/CinderellaCityUnreal/Content/60s-70s/anchor-penneys-structure-exposed/FbxScene_anchor-penneys-structure-exposed.uasset'
+[2025.02.09-20.25.09:058][939]LogFileHelpers: InternalPromptForCheckoutAndSave took 1.85 sec (total: 4.00 sec)
+[2025.02.09-20.25.09:125][939]LogContentValidation: Display: Starting to validate 27 assets
+[2025.02.09-20.25.09:125][939]LogContentValidation: Enabled validators:
+[2025.02.09-20.25.09:125][939]LogContentValidation: 	/Script/DataValidation.EditorValidator_Material
+[2025.02.09-20.25.09:125][939]LogContentValidation: 	/Script/DataValidation.DirtyFilesChangelistValidator
+[2025.02.09-20.25.09:125][939]LogContentValidation: 	/Script/DataValidation.EditorValidator_Localization
+[2025.02.09-20.25.09:125][939]LogContentValidation: 	/Script/DataValidation.PackageFileValidator
+[2025.02.09-20.25.09:125][939]LogContentValidation: 	/Script/DataValidation.WorldPartitionChangelistValidator
+[2025.02.09-20.25.09:125][939]LogContentValidation: 	/Script/InputBlueprintNodes.EnhancedInputUserWidgetValidator
+[2025.02.09-20.25.09:125][939]AssetCheck: /Game/Levels/anchor-demo Validating asset
+[2025.02.09-20.25.09:125][939]AssetCheck: /Game/60s-70s/anchor-penneys-structure-exposed/anchor-penneys-structure-exposed Validating asset
+[2025.02.09-20.25.09:126][939]AssetCheck: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh Validating asset
+[2025.02.09-20.25.09:126][939]AssetCheck: /Game/60s-70s/anchor-penneys-structure-exposed/concrete_-_painted_60s Validating asset
+[2025.02.09-20.25.09:126][939]AssetCheck: /Game/60s-70s/anchor-penneys-structure-exposed/25286-22 Validating asset
+[2025.02.09-20.25.09:126][939]AssetCheck: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_1 Validating asset
+[2025.02.09-20.25.09:126][939]AssetCheck: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_2 Validating asset
+[2025.02.09-20.25.09:126][939]AssetCheck: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_3 Validating asset
+[2025.02.09-20.25.09:126][939]AssetCheck: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_4 Validating asset
+[2025.02.09-20.25.09:126][939]AssetCheck: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_5 Validating asset
+[2025.02.09-20.25.09:126][939]AssetCheck: /Game/60s-70s/anchor-penneys-structure-exposed/concrete_-_cast_unpainted Validating asset
+[2025.02.09-20.25.09:126][939]AssetCheck: /Game/60s-70s/anchor-penneys-structure-exposed/0-3 Validating asset
+[2025.02.09-20.25.09:126][939]AssetCheck: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_6 Validating asset
+[2025.02.09-20.25.09:126][939]AssetCheck: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_7 Validating asset
+[2025.02.09-20.25.09:126][939]AssetCheck: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_8 Validating asset
+[2025.02.09-20.25.09:126][939]AssetCheck: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_9 Validating asset
+[2025.02.09-20.25.09:126][939]AssetCheck: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_10 Validating asset
+[2025.02.09-20.25.09:126][939]AssetCheck: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_11 Validating asset
+[2025.02.09-20.25.09:126][939]AssetCheck: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_12 Validating asset
+[2025.02.09-20.25.09:126][939]AssetCheck: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_13 Validating asset
+[2025.02.09-20.25.09:126][939]AssetCheck: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_14 Validating asset
+[2025.02.09-20.25.09:126][939]AssetCheck: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_15 Validating asset
+[2025.02.09-20.25.09:126][939]AssetCheck: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_16 Validating asset
+[2025.02.09-20.25.09:126][939]AssetCheck: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_17 Validating asset
+[2025.02.09-20.25.09:127][939]AssetCheck: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_18 Validating asset
+[2025.02.09-20.25.09:127][939]AssetCheck: /Game/60s-70s/anchor-penneys-structure-exposed/Mesh_19 Validating asset
+[2025.02.09-20.25.09:127][939]AssetCheck: /Game/60s-70s/anchor-penneys-structure-exposed/FbxScene_anchor-penneys-structure-exposed Validating asset
