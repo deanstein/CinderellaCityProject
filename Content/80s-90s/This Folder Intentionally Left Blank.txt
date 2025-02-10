@@ -1,0 +1,1 @@
+There is no 80s/90s mall content in this demo currently. This folder is here to maintain the structure of the assets that was used by the original Unity project, in case more may be added in the future.
