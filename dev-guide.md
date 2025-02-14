@@ -60,7 +60,40 @@ The glass was a specific one-off fix, so I'm not sure if it's worth documenting 
 
 ## Lighting Implementation
 
-TBD
+WIP - Stuff I've tried so far:
+
+### Emissive Material
+
+- Give the material a const 1 (1 + click on blueprint) to adjust intensity
+- Give the material a constant vector 3 (3 + click on blueprint) to adjust color
+- Multiply above 2 (M + click on blueprint) and connect to Emissive Color
+- Unlit shading model maybe makes a difference?
+
+#### Downsides
+- Projects onto the floor in a weird circular pattern that isn't bright enough, even if intensity is cranked way up
+- Only projects light when it's on camera. So the room gets dim spots as you move/look around
+
+### Actor Lights
+- Rectangular light can be shaped to fit into fixture. Maybe copyable, not tried yet
+
+#### Downsides
+
+- Placing in each fixture when there's about ~500 of them
+- Likewise, editing all at once if needed, i.e. to make brighter, might not be possible
+- The light just projects out of nowhere, doesn't make the fixture look like a light, so may need emissive anyway
+
+### Settings Attempted
+
+- Global Settings: Enabled virtual textures, virtual lightmaps. No idea what these did, just saw in a video. Also enabled static lighting in order to allow me to bake it, maybe other two do this as well
+- Baked Lighting: First needed to add the GPU Lightmass plugin, then it can be accessed in the Build menu. Used all default settings except Realtime Viewport, noticed no difference in resulting lighting
+- Post Process Volume
+    - Enable Infinite Extent
+    - Exposure > Metering Mode Manual and Exposure Compensation 10. This seems to act like a global brightness or gamma setting, not sure if needed
+    - Global Illumination > Lumen (was already set to this)
+    - Lumen Global Illumination > Lumen Scene Detail: Suggested in a video but I didn't notice any difference altering the value. There are some other light settings here
+    - LGI > Max Trace Distance: Suggested in forum that turning this up would reduce the "look away" disappearing light issue. Instead I noticed that turning it _down_ seemed to make interiors appear brighter
+    - Bloom can be adjusted. This is potentially useful with a bright emissive to make the fixture look cleaner
+
 
 ## Other Changes
 
