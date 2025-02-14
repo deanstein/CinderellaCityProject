@@ -75,12 +75,15 @@ WIP - Stuff I've tried so far:
 
 ### Actor Lights
 - Rectangular light can be shaped to fit into fixture. Maybe copyable, not tried yet
+- Make Static instead of Stationary to avoid some issues
+- Source Width 56, Source Height 116 or 238. Probably do 238 to make one light in two fixtures since it is more performant and looks the same anyway
+- Z coordinate 1447.5 for top floor, 960.5 for middle floor, 381.5 for bottom floor
+- For cloning to the same column, delta X should be 348, delta Y should be 342
+- For cloning to the same row, delta X should be 384, delta Y should be 390
 
 #### Downsides
 
 - Placing in each fixture when there's about ~500 of them
-- Likewise, editing all at once if needed, i.e. to make brighter, might not be possible
-- The light just projects out of nowhere, doesn't make the fixture look like a light, so may need emissive anyway
 
 ### Settings Attempted
 
@@ -93,7 +96,7 @@ WIP - Stuff I've tried so far:
     - Lumen Global Illumination > Lumen Scene Detail: Suggested in a video but I didn't notice any difference altering the value. There are some other light settings here
     - LGI > Max Trace Distance: Suggested in forum that turning this up would reduce the "look away" disappearing light issue. Instead I noticed that turning it _down_ seemed to make interiors appear brighter
     - Bloom can be adjusted. This is potentially useful with a bright emissive to make the fixture look cleaner
-
+- Mesh Settings - Noticed no difference attempting the "Use Emissive for Static Lighting" (with Emissive Boost) or "Emissive Light Source" settings. Also probably not a good option anyway since it's per mesh and there are very many meshes
 
 ## Other Changes
 
