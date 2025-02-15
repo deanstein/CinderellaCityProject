@@ -76,10 +76,12 @@ WIP - Stuff I've tried so far:
 ### Actor Lights
 - Rectangular light can be shaped to fit into fixture. Maybe copyable, not tried yet
 - Make Static instead of Stationary to avoid some issues
+- -44.5 degree angle for X axis, -90 degree angle for Y axis, no change for Z
 - Source Width 56, Source Height 116 or 238. Probably do 238 to make one light in two fixtures since it is more performant and looks the same anyway
 - Z coordinate 1447.5 for top floor, 960.5 for middle floor, 381.5 for bottom floor
 - For cloning to the same column, delta X should be 348, delta Y should be 342
 - For cloning to the same row, delta X should be 384, delta Y should be 390
+- Disabling "Cast Shadows" makes it perform better
 
 #### Downsides
 
