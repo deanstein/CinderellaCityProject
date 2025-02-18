@@ -60,7 +60,45 @@ The glass was a specific one-off fix, so I'm not sure if it's worth documenting 
 
 ## Lighting Implementation
 
-TBD
+WIP - Stuff I've tried so far:
+
+### Emissive Material
+
+- Give the material a const 1 (1 + click on blueprint) to adjust intensity
+- Give the material a constant vector 3 (3 + click on blueprint) to adjust color
+- Multiply above 2 (M + click on blueprint) and connect to Emissive Color
+- Unlit shading model maybe makes a difference?
+
+#### Downsides
+- Projects onto the floor in a weird circular pattern that isn't bright enough, even if intensity is cranked way up
+- Only projects light when it's on camera. So the room gets dim spots as you move/look around
+
+### Actor Lights
+- Rectangular light can be shaped to fit into fixture. Maybe copyable, not tried yet
+- Make Static instead of Stationary to avoid some issues
+- -44.5 degree angle for X axis, -90 degree angle for Y axis, no change for Z
+- Source Width 56, Source Height 116 or 238. Probably do 238 to make one light in two fixtures since it is more performant and looks the same anyway
+- Z coordinate 1447.5 for top floor, 960.5 for middle floor, 381.5 for bottom floor
+- For cloning to the same column, delta X should be 348, delta Y should be 342
+- For cloning to the same row, delta X should be 384, delta Y should be 390
+- Disabling "Cast Shadows" makes it perform better
+
+#### Downsides
+
+- Placing in each fixture when there's about ~500 of them
+
+### Settings Attempted
+
+- Global Settings: Enabled virtual textures, virtual lightmaps. No idea what these did, just saw in a video. Also enabled static lighting in order to allow me to bake it, maybe other two do this as well
+- Baked Lighting: First needed to add the GPU Lightmass plugin, then it can be accessed in the Build menu. Used all default settings except Realtime Viewport, noticed no difference in resulting lighting
+- Post Process Volume
+    - Enable Infinite Extent
+    - Exposure > Metering Mode Manual and Exposure Compensation 10. This seems to act like a global brightness or gamma setting, not sure if needed
+    - Global Illumination > Lumen (was already set to this)
+    - Lumen Global Illumination > Lumen Scene Detail: Suggested in a video but I didn't notice any difference altering the value. There are some other light settings here
+    - LGI > Max Trace Distance: Suggested in forum that turning this up would reduce the "look away" disappearing light issue. Instead I noticed that turning it _down_ seemed to make interiors appear brighter
+    - Bloom can be adjusted. This is potentially useful with a bright emissive to make the fixture look cleaner
+- Mesh Settings - Noticed no difference attempting the "Use Emissive for Static Lighting" (with Emissive Boost) or "Emissive Light Source" settings. Also probably not a good option anyway since it's per mesh and there are very many meshes
 
 ## Other Changes
 
