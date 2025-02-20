@@ -9,8 +9,8 @@ In theory, if I can get one store in good shape, then the same concepts could be
 This is a high level overview of the process, and then each step will be broken down in more detail in its own section.
 
 1. Import section into the level
-    - TBD: Correct collisions if necessary
-    - TBD: Correct materials if necessary
+    - Correct collisions if necessary
+    - Correct materials if necessary
 2. TBD: Create lighting
 3. TBD: Music, NPCs
 
@@ -56,7 +56,50 @@ Another issue I experienced is materials not importing correctly. For example, i
 ![](./Screenshots/Guide-07.PNG)  
 ![](./Screenshots/Guide-08.PNG)
 
-The glass was a specific one-off fix, so I'm not sure if it's worth documenting yet. Ideally, I would find a way to correct these things on import, but I'm not sure if that'll be possible. Most likely what will end up happening is, like with the glass, I'll implement a fix that's specific to the Unreal material that's a best approximation of what was originally intended, on a case-by-case basis.
+From the source fbx files, there are a few properties a material can hav, sometimes in combination:
+
+- A simple color
+- A texture
+- A texture tint
+- A bump map (normal map)
+- A metallic property
+- A transparency property
+
+There are more than this available, but these are all that I encountered that the JCP anchor actually uses. I found Unreal to be pretty reliable with importing the textures and bump maps, but not the others, so they required some fixing.
+
+### Fixing Simple Colors
+
+I noticed that there's a difference in Unreal between setting a base color directly and having a node with the base color. I think there are probably some broader material or lighting settings I don't understand yet that could "fix" the node-based color, but since I found that setting the color directly looked closer to the Unity color, I just used that as a workaround.
+
+![](./Screenshots/Guide-09.PNG)  
+![](./Screenshots/Guide-10.PNG)
+
+### Fixing Tints
+
+The absence of tints is why the mall looked so white, since the base textures were meant to be tinted, and therefore predominantly white. Fixing them is subject to the same phenomenon of setting a base color. In cases where the texture had a normal map available, I'd just recolor it directly, because the texture sample is redundant to the normal map. Here's an example of that - the disconnected nodes are not a factor here:
+
+![](./Screenshots/Guide-11.PNG)
+
+
+But, once again, if I hook the same color up through a node, it expresses it differently:
+
+![](./Screenshots/Guide-12.PNG)
+
+Then there are the ones with no normal maps, so I have to blend the color. I think this makes materials look brighter than in the Unity version, but I lived with it since it didn't affect some of the more noticeable textures:
+
+![](./Screenshots/Guide-13.PNG)
+
+### Fixing Metallic Property
+
+This one is pretty simple, fortunately. In Unity there sre similar parameters, although I think the roughness (which is the inverse in Unity, smoothness) also comes into play. I didn't try too much to make these 1:1 because I'm not sure how the numbers and properties equate between engines. But you can see that adding this property gives the texture some reflective sheen.
+
+![](./Screenshots/Guide-14.PNG)
+
+### Fixing Transparency Property
+
+Admittedly I just cribbed this setup entirely from a tutorial for glass, so I don't completely understand in depth what each property means. Obviously changing the Blend Mode to Translucent is key, but it's also important to give it some reflection and refraction so that it doesn't just look like an invisible texture.
+
+![](./Screenshots/Guide-15.PNG)
 
 ## Lighting Implementation
 
