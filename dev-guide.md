@@ -111,6 +111,7 @@ WIP - Stuff I've tried so far:
 - Give the material a constant vector 3 (3 + click on blueprint) to adjust color
 - Multiply above 2 (M + click on blueprint) and connect to Emissive Color
 - Unlit shading model maybe makes a difference?
+- TO TRY: Two colors into Lerp A and B, Fresnel with Exponent In to Lerp Alpha node, all to multiply node A with brightness to multiply node B
 
 #### Downsides
 - Projects onto the floor in a weird circular pattern that isn't bright enough, even if intensity is cranked way up
