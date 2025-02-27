@@ -151,10 +151,40 @@ But again I got the jittery light effect. This didn't seem like it was a result 
 
 ### Signage Lights
 
-TBD
+I ultimately decided to leave the signage unlit, as there isn't really a good way to make use of light actors here given the unique shape of the signs.
 
 ### Sunlight
 
-TBD
+There are two basic light actors in stock Unreal, the SkyLight and DirectionalLight. I don't fully understand the interplay between the two, but I put both in my level. The sky light seems to have some effect on the general ambient lighting, whereas the directional light is a more obvious effect of creating a movable sun. Here are example shots of the mall at different times of day:
+
+![](./Screenshots/Guide-25.PNG)  
+![](./Screenshots/Guide-26.PNG)
 
 ### Unresolved Light Issues
+
+Aside from the issues with the compromises made above, there were also a couple other issues I had with lighting that I didn't have the time to even explore a fix for.
+
+First, the light filtering through objects can come in looking really harsh and produce strange artifacts in the level. I understand where this comes from, but I find it doesn't look very real at all. Here are some examples at around dusk time, which produces lots of boxes of reddish light:
+
+![](./Screenshots/Guide-27.PNG)  
+![](./Screenshots/Guide-28.PNG)  
+![](./Screenshots/Guide-29.PNG)
+
+The next issue I experienced is lights bleeding through solid objects. Here's one example (which also includes a bit of the above issue); these display cases do not have any light sources:
+
+![](./Screenshots/Guide-30.PNG)
+
+This one is a bit hard to see, but more light bleed-through. Check the yellow spots near the far floor, which are coming from the soffit lights below:
+
+![](./Screenshots/Guide-31.PNG)
+
+These areas aren't really visible in-game, but it's easiest to see lights inappropriately bleeding through by looking at some roofs from above:
+
+![](./Screenshots/Guide-32.PNG)  
+![](./Screenshots/Guide-33.PNG)  
+
+## Additional Functions
+
+Given all the unexpected issues I experienced with the lighting, collisions and textures, I didn't get much of an opportunity to add some of the extra functions. In terms of the area surrounding the mall, I added a simple plane for the ground with some walls around all four sides to prevent the player from being able to walk off the world. Initially I tried to import the FBX scene for the site terrain, but it was pretty large and performance costly, plus it would've been a lot of empty space to walk on. 
+
+I copied some FPS game type boilerplate from an Unreal sample project in order to constrain the player's movement to a first-person style, with some minor changes made to the hitbox and movement speed.
