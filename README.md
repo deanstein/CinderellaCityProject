@@ -16,4 +16,4 @@ I have not published any complete builds as the project is still in too much of 
 
 ## Other Details
 
-More specifics about the project are provided in the [Development Guide](./dev-guide.md).
+More specifics about the objectives and work done in the project are provided in the [Project Details](./project-details.md).
