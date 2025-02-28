@@ -92,6 +92,10 @@ Admittedly I just cribbed this setup entirely from a tutorial for glass, so I do
 
 ![](./Screenshots/Guide-14.PNG)
 
+### Terrain
+
+Since the anchor FBX files by themselves combined are just floating in space, I needed to have some terrain for them. I did attempt to add the site FBX files from the original project, but they were big and unwieldy. Instead I added a few Unreal stock shape actors, with stock materials. First is the ground, which is just a single flat plane. Then I added some cubes (which can actually be shaped to non-cubic prisms) to make some overhangs so that you can stand outside the upper floor entrances; in the original project these areas be part of other mall assets and not the anchor. Lastly, I added four more very large cubes around the outside of the ground to make walls so the player can't walk off the world.
+
 ## Lighting Implementation
 
 The above issues with materials and textures were nothing compared to trying to resolve the lighting. As I would come to find out, lighting in Unreal is a pretty complex web of options that can drastically change the look of a level. I also found that, unfortunately, a lot of these options did not do what I expected of them from countless docs, tutorials and help posts.
@@ -185,6 +189,50 @@ These areas aren't really visible in-game, but it's easiest to see lights inappr
 
 ## Additional Functions
 
-Given all the unexpected issues I experienced with the lighting, collisions and textures, I didn't get much of an opportunity to add some of the extra functions. In terms of the area surrounding the mall, I added a simple plane for the ground with some walls around all four sides to prevent the player from being able to walk off the world. Initially I tried to import the FBX scene for the site terrain, but it was pretty large and performance costly, plus it would've been a lot of empty space to walk on. 
+Most of my time was spent tweaking the structures and lighting, so I didn't get a chance to add a ton of extra features. But I did add some, as I wanted to be sure to take the opportunity to learn a bit about implementing some interactivity, as well as displaying information.
 
-I copied some FPS game type boilerplate from an Unreal sample project in order to constrain the player's movement to a first-person style, with some minor changes made to the hitbox and movement speed.
+### Player Movement
+
+The most basic starting point of the empty world template I used does contain movement code, but it's pretty unconstrained, allowing you to fly, for example. I ended up copying some FPS game type boilerplate from an Unreal sample project, with a few minor changes. I could edit this Capsule Component of the character and narrow the radius, which helped me to not get stuck trying to enter the escalators:
+
+![](./Screenshots/Guide-34.PNG)
+
+From the same blueprint above, clicking on the Character Movement component changs the Details menu, which is where I changed the Max Walk Speed value to increase movement speed. 
+
+### Movable Sun
+
+I didn't want the sun to be fixed to one place at start, since I want the player to be able to see the interplay between natural and artificial lighting at different times of day. I considered making the sun move on its own over time, but I didn't want to have to make the player wait. Then I thought about giving it fine movement with a key press, but wasn't sure about performance implications. I decided to make it so that you could choose some preselected times of day.
+
+First I added the Sun Position Calculator plugin, as recommended in the Unreal documentation. This gave me access to the SunSky actor, which basically provides all of the natural light related actors I already had before:
+
+![](./Screenshots/Guide-35.PNG)
+
+It also came with volumetric clouds, which really enchances the sky look, but it gave me such a bad performance dip that I had to take them out. The extra thing here is the CompassMesh, which is an object that you can use to define the location of north. The actor also has options for latitude, longitude and date/time, enabling me to have real-world accurate sun positioning.
+
+To actually move the sun, I added to the level blueprint. Unreal suggests first getting the SunSky actor once at game start and setting as a variable, as it's apparently a costly operation. Once I have that variable, I can act off of key presses to set a time, which will move the sun:
+
+![](./Screenshots/Guide-36.PNG)
+
+Ultimately I'm not sure I needed the sun positioning plugin, as I think I could've done something similar by just changing the Y coordinate of the directional light actor, but it's nice to have something that does it by time with accuracy.
+
+### Player Warp
+
+I thought of the player warp idea as a way to get on the otherwise inaccessible roof, but used up my remaining numerical key options to provide some other spots to warp around the map as well. Like with the moving sun, I gather there are many ways to go about this, but I chose to use PlayerStart actors (aka spawn points) for the warp locations. Here's what the blueprint ultimately ended up looking like:
+
+![](./Screenshots/Guide-37.PNG)
+
+I'll note that most of these blueprint nodes are pretty intuitive, as the node names you see on the top label are searchable. The one part that wasn't super intuitive to me was getting the PlayerStart references to show up - I found that I first needed to select them in the main level editor, and then with "Context Sensitive" selected on the node menu selected, there will be an option to create a reference to it. But Context Sensitive can be unhelpful at other times, as I've noticed it preventing me from searching node names if Unreal doesn't think they are relevant to the current context.
+
+### HUD
+
+I created a basic static HUD to display the numeric shortcuts for the sun positions and warps above. Using the Widget Blueprint class is how I made the UI - this is a bit small to capture the whole thing, but reading the text right now isn't crucial. It has text boxes inside of borders, the borders being used to provide a black background:
+
+![](./Screenshots/Guide-38.PNG)
+
+Then I needed to create a HUD class with a blueprint that references this blueprint and puts it on the player's viewport:
+
+![](./Screenshots/Guide-39.PNG)
+
+The last part was to update the World Settigns for the game, where in the game mode settings the HUD Class above can be selected. With all that, here is the running game showing the UI:
+
+![](./Screenshots/Guide-40.PNG)
