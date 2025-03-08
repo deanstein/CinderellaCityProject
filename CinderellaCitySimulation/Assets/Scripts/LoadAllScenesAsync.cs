@@ -16,7 +16,8 @@ public class StartupConfig
 {
     public bool autoStart; // skips the main menu and goes to a specific scene
     public bool autoGuidedTour; // starts the guided tour immediately
-    public bool recordingMode; // uses a specific order of scenes for recording a video
+    public bool autoTimeTravel; // time travels automatically after 10 minutes
+    public bool shuffleDestinations; // uses a specific order of scenes for recording a video
 }
 /*** EXAMPLE START CONFIG ***
 *** STORE AT C:/Users/<user>/AppData/LocalLow/The Cinderella City Project/ccp-startup-config.json ***
@@ -24,7 +25,8 @@ public class StartupConfig
 {
     "autoStart": true,
     "autoGuidedTour": true,
-    "recordingMode": true
+    "autoTimeTravel": true,
+    "shuffleDestinations": true
 }
 
 *** END EXAMPLE ***/
@@ -77,11 +79,14 @@ public class LoadAllScenesAsync : MonoBehaviour {
                 Debug.Log("Startup Config: <b>autoGuidedTour is TRUE</b>");
                 ModeState.isGuidedTourActive = true;
             }
-            // specific scene order for recording videos
-            if (foundConfig.recordingMode)
+            if (StartupGlobals.startupConfig.autoTimeTravel)
             {
-                DebugUtils.DebugLog("Startup Config: <b>recordingMode is TRUE</b>");
-                ModeState.recordingMode = true;
+                Debug.Log("Startup Config: <b>autoTimeTravel is TRUE</b>");
+            }
+            if (foundConfig.shuffleDestinations)
+            {
+                DebugUtils.DebugLog("Startup Config: <b>shuffleDestinations is TRUE</b>");
+                ModeState.shuffleDestinations = true;
             }
         }
         else
@@ -152,8 +157,8 @@ public class LoadAllScenesAsync : MonoBehaviour {
             ToggleSceneAndUI.ToggleFromSceneToSceneRelocatePlayerToCamera(SceneManager.GetActiveScene().name, startingScene.name, "Camera-Thumbnail-Blue Mall-Highlight");
 
             // automatically switch to the next era after some time
-            // if startupConfig specifies autoGuidedTour
-            if (StartupGlobals.startupConfig.autoGuidedTour && !ModeState.recordingMode)
+            // if startupConfig specifies so
+            if (StartupGlobals.startupConfig.autoGuidedTour && ModeState.autoTimeTravel)
             {
                 ModeState.toggleToNextEraCoroutine = StartCoroutine(ToggleSceneAndUI.ToggleToNextEraAfterDelay());
             }
