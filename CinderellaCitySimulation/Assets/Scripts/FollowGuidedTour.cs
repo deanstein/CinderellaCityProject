@@ -19,7 +19,7 @@ public class FollowGuidedTour : MonoBehaviour
     private int partialPathCameraIndex = -1;
 
     // number of seconds to pause and look at a camera
-    readonly float pauseAtCameraDuration = 8f;
+    readonly float pauseAtCameraDuration = 10f;
     // seconds to wait before un-pausing
     readonly float guidedTourRestartAfterSeconds = 4f;
     // guided tour can be stationary only for the durations specified above
