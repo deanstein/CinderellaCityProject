@@ -13,6 +13,10 @@ public class UpdateGuidedTourLabelByState : MonoBehaviour
     private GameObject guidedTourLabel;
     private Text guidedTourText;
 
+    // colors for active and paused
+    Color activeColor = new Color(0.25f, 0.55f, 0.25f);
+    Color pausedColor = new Color(0.45f, 0.45f, 0.25f);
+
     private void Awake()
     {
         guidedTourText = GetComponentInChildren<Text>();
@@ -27,14 +31,14 @@ public class UpdateGuidedTourLabelByState : MonoBehaviour
             guidedTourLabel.SetActive(true);
             // text and color depend on whether tour is paused
             guidedTourText.text = UIGlobals.guidedTourActive;
-            guidedTourText.color = Color.green;
+            guidedTourText.color = activeColor;
         }
         // update text and color if paused
         else if (ModeState.isGuidedTourPaused)
         {
             // text and color depend on whether tour is paused
             guidedTourText.text = UIGlobals.guidedTourPaused;
-            guidedTourText.color = Color.yellow;
+            guidedTourText.color = pausedColor;
         }
         // otherwise, it should be hidden entirely
         else
