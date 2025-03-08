@@ -60,8 +60,8 @@ public class FollowGuidedTour : MonoBehaviour
 
     // show paths and camera positions as debug lines
     readonly private bool showDebugLines = false;
-    // shuffle the destinations - does not apply if recordingMode is false
-    readonly bool shuffleGuidedTourDestinations = true && !ModeState.recordingMode && !useDebuggingDestinations;
+    // shuffle the destinations if requested
+    readonly bool shuffleGuidedTourDestinations = true && ModeState.shuffleDestinations && !useDebuggingDestinations;
     // start the guided tour at this index
     private int currentGuidedTourDestinationIndex = 0;
     // use a special destination list for debugging
@@ -115,8 +115,8 @@ public class FollowGuidedTour : MonoBehaviour
             guidedTourObjects = ManageSceneObjects.ProxyObjects.FindDebuggingGuidedTourObjects(guidedTourObjects);
         }
 
-        // use a specific order for recording if requested
-        if (ModeState.recordingMode)
+        // if we're not shuffling destinations, get the curated list
+        if (!ModeState.shuffleDestinations)
         {
             // get the list of curated guided tour objects for RecordingMode
             guidedTourObjects = ManageSceneObjects.ProxyObjects.FindAllCuratedGuidedTourObjects(guidedTourObjects);
@@ -192,7 +192,7 @@ public class FollowGuidedTour : MonoBehaviour
             ModeState.isGuidedTourPaused = true;
 
             // only spend a certain amount of time in each era
-            if (!ModeState.recordingMode)
+            if (ModeState.autoTimeTravel)
             {
                 StopCoroutine(ModeState.toggleToNextEraCoroutine);
                 ModeState.toggleToNextEraCoroutine = StartCoroutine(ToggleSceneAndUI.ToggleToNextEraAfterDelay());
@@ -413,7 +413,7 @@ public class FollowGuidedTour : MonoBehaviour
         {
             if (GetIsGuidedTourOverrideRequested())
             {
-                if (!ModeState.recordingMode)
+                if (ModeState.autoTimeTravel)
                 {
                     // record that the override has been requested
                     isResumeRequiredAfterOverride = true;
@@ -428,7 +428,7 @@ public class FollowGuidedTour : MonoBehaviour
 
             // if override is no longer requested, but override was previously requested
             // then ensure the restart coroutines happen now, just one time
-            if (!GetIsGuidedTourOverrideRequested() && isResumeRequiredAfterOverride && !ModeState.recordingMode)
+            if (!GetIsGuidedTourOverrideRequested() && isResumeRequiredAfterOverride && ModeState.autoTimeTravel)
             {
                 // start the coroutine again
                 ModeState.toggleToNextEraCoroutine = StartCoroutine(ToggleSceneAndUI.ToggleToNextEraAfterDelay());
@@ -519,7 +519,7 @@ public class FollowGuidedTour : MonoBehaviour
         ModeState.isGuidedTourActive = true;
 
         // automatically switch to the next era after some time
-        if (!ModeState.recordingMode)
+        if (ModeState.autoTimeTravel)
         {
             ModeState.toggleToNextEraCoroutine = Instances[SceneManager.GetActiveScene().name].StartCoroutine(ToggleSceneAndUI.ToggleToNextEraAfterDelay());
         }
@@ -533,7 +533,7 @@ public class FollowGuidedTour : MonoBehaviour
         ModeState.isGuidedTourActive = false;
         ModeState.isGuidedTourPaused = false;
 
-        if (ModeState.toggleToNextEraCoroutine != null && !ModeState.recordingMode)
+        if (ModeState.toggleToNextEraCoroutine != null && ModeState.autoTimeTravel)
         {
             Instances[SceneManager.GetActiveScene().name].StopCoroutine(ModeState.toggleToNextEraCoroutine);
         }
