@@ -594,6 +594,8 @@ public static class ManageSceneObjects
                     FindGameObjectInArrayByName("Blue Mall 1", guidedTourObjects),
                     // Pollard decay
                     FindGameObjectInArrayByName("Blue Mall peek", guidedTourObjects),
+                    // back to wedding for a better approach angle
+                    FindGameObjectInArrayByName("Blue Mall wedding 1", guidedTourObjects),
 
                     // BLUE MALL OUTER HALLS
                     // Footlocker
@@ -668,7 +670,9 @@ public static class ManageSceneObjects
                     // Blue Mall Ward's exterior entrance
                     FindGameObjectInArrayByName("Blue Mall Exterior 1", guidedTourObjects),
                     // Blue Mall mezzanine
-                    FindGameObjectInArrayByName("Blue Mall mezzanine 1", guidedTourObjects)
+                    FindGameObjectInArrayByName("Blue Mall mezzanine 1", guidedTourObjects),
+                    // Blue Mall from stair landing
+                    FindGameObjectInArrayByName("Blue Mall 2", guidedTourObjects)
                 };
             }
 
