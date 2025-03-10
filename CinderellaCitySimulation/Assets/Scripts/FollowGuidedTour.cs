@@ -32,6 +32,8 @@ public class FollowGuidedTour : MonoBehaviour
     readonly bool matchCameraForward = false;
     // distance from end of path where before camera begins looking at destination camera
     readonly float lookToCameraAtRemainingDistance = 10.0f;
+    // distance from the end of the path where the photo turns on
+    readonly float hidePeopleAtRemainingDistance = 3.0f;
     // distance (m) away from camera look vector so when looking at a camera, it's visible
     readonly float adjustPosAwayFromCamera = 1.15f; 
     readonly public float guidedTourRotationSpeed = 0.4f;
@@ -523,7 +525,7 @@ public class FollowGuidedTour : MonoBehaviour
         // this is possibly expensive, so only do it one frame when requested
         if (ModeState.isGuidedTourActive && thisAgent.enabled && thisAgent.isOnNavMesh)
         {
-            if (calculatedRemainingDistance < lookToCameraAtRemainingDistance / 4)
+            if (calculatedRemainingDistance < hidePeopleAtRemainingDistance)
             {
                 ModeState.arePeopleRequestedVisible = false;
             }
