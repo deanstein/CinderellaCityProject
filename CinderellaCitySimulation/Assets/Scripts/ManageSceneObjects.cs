@@ -480,6 +480,8 @@ public static class ManageSceneObjects
             {
                 finalCuratedGuidedTourObjects = new GameObject[] {
                     // BLUE MALL CENTRAL
+                    // Blue Mall Denver exterior entrance
+                    FindGameObjectInArrayByName("Blue Mall Denver entrance", guidedTourObjects),
                     // fountain - straight on
                     FindGameObjectInArrayByName("Blue Mall 1", guidedTourObjects),
                     // fountain - closer
@@ -490,12 +492,10 @@ public static class ManageSceneObjects
                     // BLUE MALL OUTER HALLS
                     // Robin Hood
                     FindGameObjectInArrayByName("Blue Mall Robin Hood interior", guidedTourObjects),
+                    // Americana
+                    FindGameObjectInArrayByName("Blue Mall - Americana", guidedTourObjects),
                     // Rich Burger
                     FindGameObjectInArrayByName("Blue Mall Rich Burger", guidedTourObjects),
-
-                    // CLEANSER
-                    // back to fountain
-                    FindGameObjectInArrayByName("Blue Mall 1", guidedTourObjects),
 
                     // BLUE MALL OUTER HALLS
                     // Blue hall toward Rose
@@ -588,14 +588,12 @@ public static class ManageSceneObjects
                     FindGameObjectInArrayByName("Blue Mall deep", guidedTourObjects),
                     // carousel
                     FindGameObjectInArrayByName("Blue Mall carousel 1", guidedTourObjects),
-                    // wedding
-                    FindGameObjectInArrayByName("Blue Mall wedding 1", guidedTourObjects),
                     // b&w decay
                     FindGameObjectInArrayByName("Blue Mall 1", guidedTourObjects),
+                    // wedding
+                    FindGameObjectInArrayByName("Blue Mall wedding 1", guidedTourObjects),
                     // Pollard decay
                     FindGameObjectInArrayByName("Blue Mall peek", guidedTourObjects),
-                    // back to wedding for a better approach angle
-                    FindGameObjectInArrayByName("Blue Mall wedding 1", guidedTourObjects),
 
                     // BLUE MALL OUTER HALLS
                     // Footlocker
