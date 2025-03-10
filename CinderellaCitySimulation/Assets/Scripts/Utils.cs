@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
@@ -50,18 +51,29 @@ public static class ArrayUtils
         return subset;
     }
 
-    public static T[] ShuffleArray<T>(this T[] texts)
+    // shuffles with a seed
+    public static T[] ShuffleArray<T>(this T[] array, int seed)
     {
+        System.Random rng = new System.Random(seed);
+
         // Knuth shuffle algorithm :: courtesy of Wikipedia
-        for (int t = 0; t < texts.Length; t++)
+        for (int t = 0; t < array.Length; t++)
         {
-            T tmp = texts[t];
-            int r = UnityEngine.Random.Range(t, texts.Length);
-            texts[t] = texts[r];
-            texts[r] = tmp;
+            T tmp = array[t];
+            int r = rng.Next(t, array.Length);
+            array[t] = array[r];
+            array[r] = tmp;
         }
 
-        return texts;
+        return array;
+    }
+
+    // shuffles without a seed
+    public static T[] ShuffleArray<T>(this T[] array)
+    {
+        // generate a random seed based on the current time
+        int seed = DateTime.Now.Millisecond;
+        return array.ShuffleArray(seed);
     }
 }
 
@@ -711,14 +723,55 @@ public class MaterialUtils
 public class DebugUtils
 {
     // print debug messages in the Editor console?
-    static bool printDebugMessages = true;
-
+    static readonly bool printDebugMessages = true;
     public static void DebugLog(string message)
     {
         // only print messages if the flag is set, and if we're in the Editor - otherwise, don't
         if (printDebugMessages && Application.isEditor)
         {
             Debug.Log(message);
+        }
+    }
+
+    public static void ClearConsole()
+    {
+        // This simply does "LogEntries.Clear()" the long way:
+        var assembly = System.Reflection.Assembly.GetAssembly(typeof(SceneView));
+        var logEntries = assembly.GetType("UnityEditor.LogEntries");
+        var clearMethod = logEntries.GetMethod("Clear", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+        clearMethod.Invoke(null, null);
+    }
+
+
+    // store all debug lines for clearing
+    private static List<(Vector3 start, Vector3 end, Color color)> lines = new List<(Vector3, Vector3, Color)>();
+
+    public static void DrawLine(Vector3 start, Vector3 end, Color color)
+    {
+        lines.Add((start, end, color));
+    }
+
+    public static void ClearLines()
+    {
+        lines.Clear();
+    }
+
+    // each scene requires the DrawGizmos script which has a hook to draw giznmos
+    public static void OnDrawGizmos()
+    {
+        foreach (var line in lines)
+        {
+            Gizmos.color = line.color;
+            Gizmos.DrawLine(line.start, line.end);
+        }
+    }
+
+    // uses Gizmos to draw the given NavMeshPath in the Editor window
+    public static void DrawDebugPathGizmo(NavMeshPath path, Color pathColor)
+    {
+        for (int j = 0; j < path.corners.Length - 1; j++)
+        {
+            DebugUtils.DrawLine(path.corners[j], path.corners[j + 1], pathColor);
         }
     }
 }

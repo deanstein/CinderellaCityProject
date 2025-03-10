@@ -428,9 +428,78 @@ public class CCPMenuActions : MonoBehaviour
     [MenuItem("Cinderella City Project/Guided Tour/Find All Curated Tour Objects")]
     public static void FindCuratedTourIndices()
     {
-        GameObject[] historicPhotoObjects = ManageSceneObjects.ProxyObjects.GetAllHistoricPhotoCamerasInScene(SceneManager.GetActiveScene().name);
+        DebugUtils.DebugLog("Finding curated Guided Tour objects in current scene...");
 
-        ManageSceneObjects.ProxyObjects.FindAllCuratedGuidedTourObjects(historicPhotoObjects);
+        GameObject[] allHistoricPhotoObjects = ManageSceneObjects.ProxyObjects.GetAllHistoricPhotoCamerasInScene(SceneManager.GetActiveScene().name);
+
+        GameObject[] curatedHistoricPhotoObjects = ManageSceneObjects.ProxyObjects.FindAllCuratedGuidedTourObjects(allHistoricPhotoObjects);
+
+        if (curatedHistoricPhotoObjects.Length > 0)
+        {
+
+            foreach (GameObject gameObject in curatedHistoricPhotoObjects)
+            {
+                DebugUtils.DebugLog("Found curated Guided Tour object: " + gameObject.name);
+            }
+        } else
+        {
+            DebugUtils.DebugLog("No curated Guided Tour objects found!");
+        }
+    }
+
+    // gets all guided tour objects
+    [MenuItem("Cinderella City Project/Guided Tour/Draw Shuffled Destinations and Paths")]
+    public static void DrawAllGuidedTourPathS()
+    {
+        //int shuffleSeed = Random.Range(0, 10000);
+        // seeds that have shown issues, for testing
+        int shuffleSeed = 4246; // in 80s90s, this would show incomplete paths
+        //int shuffleSeed = 199;
+
+        // clear any debug gizmos if there are any
+        DebugUtils.ClearLines();
+        DebugUtils.ClearConsole();
+
+        // get the FPSController in this scene
+        GameObject FPSControllerObject = ManageFPSControllers.GetFirstPersonControllerInScene().gameObject;
+        if (FPSControllerObject != null)
+        {
+            // get the FollowGuidedTour script instance on the FPSController
+            FollowGuidedTour followGuidedTourScriptInstance = FPSControllerObject.GetComponentInChildren<FollowGuidedTour>();
+
+            // set the flag to test all paths
+            followGuidedTourScriptInstance.doTestAllPaths = true;
+            // enable debug lines
+            followGuidedTourScriptInstance.showDebugLines = true;
+            followGuidedTourScriptInstance.shuffleSeed = shuffleSeed;
+            DebugUtils.DebugLog("Testing Guided Tour locations using shuffle seed " + shuffleSeed);
+
+            // call the Start() method which will initialize the guided tour objects
+            if (followGuidedTourScriptInstance != null)
+            {
+                // use Reflection to get the Start() method in the FollowGuidedTour script
+                var method = followGuidedTourScriptInstance.GetType().GetMethod("Start", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                if (method != null)
+                {
+                    method.Invoke(followGuidedTourScriptInstance, null);
+                }
+                else
+                {
+                    Debug.LogError("Start method not found.");
+                }
+            }
+            else
+            {
+                Debug.LogError("Script instance not found.");
+            }
+        }
+    }
+
+    // clears all debug GuidedTour path lines
+    [MenuItem("Cinderella City Project/Guided Tour/Clear Guided Tour Debug Lines")]
+    public static void ClearGuidedTourDebugLInes()
+    {
+        DebugUtils.ClearLines();
     }
 
     [MenuItem("Cinderella City Project/Nav Meshes/Show Guided Tour Camera Position Debug Lines")]
