@@ -1,18 +1,20 @@
 {
   "VersionHistory": {
-    "0.8.2.202502": {
-      "Overview": "v0.8.2 fixes fountain lights shining through historic photos in some cases and eliminates the legacy Textures folder creation on asset import to reduce friction for project integrators.",
+    "0.8.2.202503": {
+      "Overview": "v0.8.2 fixes fountain lights shining through historic photos in some cases, adds new debug utilities, updates StartupConfig flags, and eliminates the legacy Textures folder creation on asset import to reduce friction for project integrators.",
       "Environment Updates": [
         "Historic photos are now set to Opaque mode by default to prevent fountain lights from shining through in 60s70s"
       ],
       "UI Updates": [],
       "Code Updates": [
+        "Added debug utilities to draw and clear NavMeshPaths",
         "Added the ability to set material transparency mode in AssetImportPipeline",
-        "Removed the custom /Textures folder override, leaving asset-name.fbm as the default folder for textures to be extracted to in AssetImportPipeline"
+        "StartupConfig: Split recordingMode flag into two separate config flags: autoTimeTravel and shuffleDestinations",
+        "Removed the custom '/Textures' folder override, restoring the default '/asset-name.fbm' as the folder for textures to be extracted to in AssetImportPipeline"
       ]
     },
     "0.8.1.202502": {
-      "Overview": "v0.8.1 fixes issues with Guided Tour, fixes a regression with mouse camera smoothing, improves the startupConfig system, adds new historic photos, and adds a recordingMode startupConfig flag for Guided Tour to navigate to photos in a specific order for recording videos",
+      "Overview": "v0.8.1 fixes issues with Guided Tour, fixes a regression with mouse camera smoothing, improves the StartupConfig system, adds new historic photos, and adds a recordingMode StartupConfig flag for Guided Tour to navigate to photos in a specific order for recording videos",
       "Environment Updates": [
         "Added historic photos in 1968-1978 Gold Mall, and 1987-1997 Gold Mall and Rose Mall",
         "Removed two mall music audio tracks and added one to the 1987-1997 era"
@@ -23,7 +25,7 @@
         "Set people to hidden when historic photos became visible during Guided Tour",
         "Removed random NPC avoidance priority code as it looked even more unnatural",
         "Adjusted minimum repath speed for colliding NPCs",
-        "Added recordingMode support in in ccp-startup-config.json to use defined manual tour stops for recording walkthrough videos",
+        "StartupConfig: Added recordingMode flag for curated manual tour stops for recording walkthrough videos",
         "Added the ability to print historic camera data in CCP Menu",
         "Fixed a known regression in v0.8.0 where mouse camera swiveling was no longer smooth",
         "Improved startup config initialization lifecycle"
@@ -53,7 +55,7 @@
         "Added automatic project version updater that uses today's date in editor",
         "Added ability to find closest horizontal nav mesh point",
         "Added states for Guided Tour, anti-gravity mode",
-        "Added support for ccp-startup-config.json with options for starting the game with certain flags",
+        "Added StartupConfig (ccp-startup-config.json) with options for starting the game with certain flags",
         "Refactored and combined code from Guided Tour attempts in v0.7.x",
         "Fixed an issue where NPCs had equal priority, causing extended collisions",
         "Fixed issues with finding top-level gameobjects by name in some cases"
