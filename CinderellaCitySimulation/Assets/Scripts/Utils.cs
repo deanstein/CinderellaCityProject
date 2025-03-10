@@ -720,6 +720,12 @@ public class MaterialUtils
     }
 }
 
+// values or data useful for debugging and testing
+public class DebugGlobals
+{
+    public static readonly int guidedTourShuffleDebugSeed1 = 4246; // in 80s90s, this will show incomplete paths
+}
+
 public class DebugUtils
 {
     // print debug messages in the Editor console?

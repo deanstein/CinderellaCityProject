@@ -451,10 +451,8 @@ public class CCPMenuActions : MonoBehaviour
     [MenuItem("Cinderella City Project/Guided Tour/Draw Shuffled Destinations and Paths")]
     public static void DrawAllGuidedTourPathS()
     {
-        //int shuffleSeed = Random.Range(0, 10000);
-        // seeds that have shown issues, for testing
-        int shuffleSeed = 4246; // in 80s90s, this would show incomplete paths
-        //int shuffleSeed = 199;
+        int shuffleSeed = Random.Range(0, 10000);
+        //int shuffleSeed = DebugGlobals.guidedTourShuffleDebugSeed1;
 
         // clear any debug gizmos if there are any
         DebugUtils.ClearLines();
