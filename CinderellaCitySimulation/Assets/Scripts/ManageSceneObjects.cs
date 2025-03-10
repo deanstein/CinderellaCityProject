@@ -677,6 +677,7 @@ public static class ManageSceneObjects
             }
 
             // clean the array in case any items weren't found (eliminate nulls)
+            // return the cleaned array
             return ArrayUtils.CleanArray(finalCuratedGuidedTourObjects);
         }
 

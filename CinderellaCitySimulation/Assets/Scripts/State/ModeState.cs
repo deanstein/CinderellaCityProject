@@ -32,7 +32,7 @@ public static class ModeState
 
     // shuffle guided tour destinations
     /** this may be overwritten by startup config **/
-    public static bool shuffleDestinations = false;
+    public static bool shuffleDestinations = true;
 
     /** keep track of guided tour coroutines **/
     /** to ensure only one is active, and allow canceling them if necessary **/

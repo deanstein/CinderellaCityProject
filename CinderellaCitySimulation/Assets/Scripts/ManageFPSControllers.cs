@@ -100,6 +100,20 @@ public class ManageFPSControllers : MonoBehaviour {
         }
     }
 
+    // find the first FPSController in the current scene (there should only be one)
+    public static FirstPersonController GetFirstPersonControllerInScene()
+    {
+        FirstPersonController fpc = FindObjectOfType<FirstPersonController>();
+        if (fpc)
+        {
+            return fpc;
+        } else
+        {
+            DebugUtils.DebugLog("No FirstPersonController found in scene.");
+            return null;
+        }
+    }
+
     // add this FPSController to the list of available FPSControllers, if it doesn't exist already
     public void AddToAvailableControllers()
     {

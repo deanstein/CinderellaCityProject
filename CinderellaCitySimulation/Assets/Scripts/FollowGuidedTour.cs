@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -59,14 +60,17 @@ public class FollowGuidedTour : MonoBehaviour
     //
 
     // show paths and camera positions as debug lines
-    readonly private bool showDebugLines = false;
+    public bool showDebugLines = false;
+    readonly int debugLineDuration = 10; // seconds
     // shuffle the destinations if requested
     readonly bool shuffleGuidedTourDestinations = true && ModeState.shuffleDestinations && !useDebuggingDestinations;
+    // used for debugging shuffled path results
+    public int? shuffleSeed = null;
     // start the guided tour at this index
     private int currentGuidedTourDestinationIndex = 0;
     // use a special destination list for debugging
     static readonly bool useDebuggingDestinations = false; // if true, use a special list for tour objects
-    readonly bool doTestAllPaths = false; // if true, attempt to find paths between all destinations
+    public bool doTestAllPaths = false; // if true, attempt to find paths between all destinations
 
     private void Awake()
     {
@@ -90,6 +94,13 @@ public class FollowGuidedTour : MonoBehaviour
 
     private void Start()
     {
+        // this code may be called from CCPMenuActions for debugging purposes
+        // in which case we need to define the agent if not defined already
+        if (!thisAgent)
+        {
+            thisAgent = GetComponent<NavMeshAgent>();
+        }
+
         // get and post-process the destinations
         guidedTourObjects = ManageSceneObjects.ProxyObjects.GetAllHistoricPhotoCamerasInScene(this.gameObject.scene.name);
 
@@ -106,7 +117,19 @@ public class FollowGuidedTour : MonoBehaviour
         // shuffle the list if requested
         if (shuffleGuidedTourDestinations && !useDebuggingDestinations)
         {
-            guidedTourObjects = ArrayUtils.ShuffleArray(guidedTourObjects);
+            // use the seed if it's provided
+            if (shuffleSeed != null)
+            {
+                // for some reason, this is required
+                // to avoid a C# error about shuffleSeed maybe not being defined
+                int seed = shuffleSeed ?? DateTime.Now.Millisecond;
+                guidedTourObjects = ArrayUtils.ShuffleArray(guidedTourObjects, seed);
+            } else
+            {
+                // otherwise shuffle without a seed
+                guidedTourObjects = ArrayUtils.ShuffleArray(guidedTourObjects);
+            }
+            
         }
 
         // use the debugging overrides if requested
@@ -154,8 +177,8 @@ public class FollowGuidedTour : MonoBehaviour
             // draw debug lines if requested
             if (showDebugLines)
             {
-                Debug.DrawLine(objectCameraPos, objectCameraPosAdjusted, Color.red, 1000);
-                Debug.DrawLine(objectCameraPosAdjusted, objectCameraPosAdjustedOnNavMesh, Color.blue, 1000);
+                DebugUtils.DrawLine(objectCameraPos, objectCameraPosAdjusted, Color.red);
+                DebugUtils.DrawLine(objectCameraPosAdjusted, objectCameraPosAdjustedOnNavMesh, Color.blue);
             }
         }
 
@@ -172,13 +195,36 @@ public class FollowGuidedTour : MonoBehaviour
             {
                 GameObject currentObject = guidedTourObjects[i];
                 Vector3 currentObjectClosestNavPos = guidedTourFinalNavMeshDestinations[i];
-                GameObject nextObject = guidedTourObjects[i + 1];
-                Vector3 nextObjectClosestNavPos = guidedTourFinalNavMeshDestinations[i + 1];
+                GameObject nextObject = guidedTourObjects[(i + 1) % guidedTourObjects.Length];
+                Vector3 nextObjectClosestNavPos = guidedTourFinalNavMeshDestinations[(i + 1) % guidedTourObjects.Length];
 
                 NavMeshPath path = new NavMeshPath();
-                bool pathSuccess = NavMesh.CalculatePath(currentObjectClosestNavPos, nextObjectClosestNavPos, NavMesh.AllAreas, path);
+                bool isValidPath = NavMesh.CalculatePath(currentObjectClosestNavPos, nextObjectClosestNavPos, NavMesh.AllAreas, path);
+                NavMeshPathStatus pathStatus = path.status;
 
-                Debug.Log("PATH DEBUGGING: Path success is <b>" + pathSuccess + "</b> between destination " + currentObject.name + " and " + nextObject.name);
+                if (isValidPath)
+                {
+                    // optional: visualize the path with a line in the editor
+                    if (showDebugLines)
+                    {
+                        // draw complete paths in green
+                        if (pathStatus == NavMeshPathStatus.PathComplete)
+                        {
+                            DebugUtils.DrawDebugPathGizmo(path, Color.green);
+                            Debug.Log("PATH DEBUGGING: Path success is <b>" + isValidPath + "</b>" + " with path status:" + pathStatus + " between destination " + currentObject.name + " and " + nextObject.name);
+                        }
+                        // draw partial or invalid paths in yellow (assuming there are any segments)
+                        else
+                        {
+                            DebugUtils.DrawDebugPathGizmo(path, Color.yellow);
+                            Debug.LogWarning("PATH DEBUGGING: Path success is <b>" + isValidPath + "</b>" + " with path status:" + pathStatus + " between destination " + currentObject.name + " and " + nextObject.name);
+                        }
+                    }
+                }
+                else
+                {
+                    Debug.LogError("PATH DEBUGGING: Path success is <b>" + isValidPath + "</b>" + " with path status:" + pathStatus + " between destination " + currentObject.name + " and " + nextObject.name);
+                }
             }
         }
     }
