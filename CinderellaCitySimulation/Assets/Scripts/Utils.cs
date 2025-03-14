@@ -741,13 +741,14 @@ public class DebugUtils
 
     public static void ClearConsole()
     {
+        #if UNITY_EDITOR
         // This simply does "LogEntries.Clear()" the long way:
         var assembly = System.Reflection.Assembly.GetAssembly(typeof(SceneView));
         var logEntries = assembly.GetType("UnityEditor.LogEntries");
         var clearMethod = logEntries.GetMethod("Clear", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
         clearMethod.Invoke(null, null);
+        #endif
     }
-
 
     // store all debug lines for clearing
     private static List<(Vector3 start, Vector3 end, Color color)> lines = new List<(Vector3, Vector3, Color)>();

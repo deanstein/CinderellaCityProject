@@ -2,9 +2,11 @@
 
 public class DrawGizmos : MonoBehaviour
 {
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        // debug lines use Gizmos, so provide a lifecycle hook for them to draw
+        // Only execute this code in the Unity Editor
         DebugUtils.OnDrawGizmos();
     }
+#endif
 }
