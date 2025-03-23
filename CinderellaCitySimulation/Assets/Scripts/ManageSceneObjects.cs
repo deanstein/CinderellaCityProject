@@ -557,6 +557,8 @@ public static class ManageSceneObjects
                     // CA sign at Gold Mall
                     FindGameObjectInArrayByName("Gold Mall 2", guidedTourObjects),
                     FindGameObjectInArrayByName("Gold Mall 1", guidedTourObjects),
+                    // Stuart's
+                    FindGameObjectInArrayByName("Gold Mall Stuart's", guidedTourObjects),
 
                     // BLUE MALL OUTER HALLS
                     // Karmelkorn
