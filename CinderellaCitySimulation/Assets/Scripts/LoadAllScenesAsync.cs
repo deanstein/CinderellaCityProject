@@ -17,7 +17,7 @@ public class StartupConfig
     public bool autoStart; // skips the main menu and goes to a specific scene
     public bool autoGuidedTour; // starts the guided tour immediately
     public bool autoTimeTravelPeriodic; // time travels automatically after 10 minutes
-    public bool autoTimeTravelAlternating; // time travels after player arrives at each photo
+    public bool autoTimeTravelPeek; // time travels after player arrives at each photo
     public bool shuffleDestinations; // uses a specific order of scenes for recording a video
 }
 /*** EXAMPLE START CONFIG ***
@@ -27,7 +27,7 @@ public class StartupConfig
     "autoStart": true,
     "autoGuidedTour": true,
     "autoTimeTravelPeriodic": false,
-    "autoTimeTravelAlternating": true,
+    "autoTimeTravelPeek": true,
     "shuffleDestinations": true
 }
 

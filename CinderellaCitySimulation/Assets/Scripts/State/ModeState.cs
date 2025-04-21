@@ -23,7 +23,7 @@ public static class ModeState
     /** this may be overwritten by startup config **/
     public static bool autoTimeTravelPeriodic = false;
     // if true, guided tour will time-travel automatically for a few seconds after each photo is seen
-    public static bool autoTimeTravelAlternating = true;
+    public static bool autoTimeTravelPeek = true;
     public static bool isTimeTravelPeekActive = false;
 
     // guided tour causes player to walk and face certain paths, led by its agent

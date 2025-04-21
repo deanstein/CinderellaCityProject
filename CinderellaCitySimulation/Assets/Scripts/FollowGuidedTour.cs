@@ -250,7 +250,7 @@ public class FollowGuidedTour : MonoBehaviour
         // if alternating time travel, and if we've already arrived,
         // proceed to the next photo
         float calculatedRemainingDistance = Vector3.Distance(thisAgent.nextPosition, guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex]);
-        if (ModeState.autoTimeTravelAlternating && calculatedRemainingDistance < thisAgent.height / 2)
+        if (ModeState.autoTimeTravelPeek && calculatedRemainingDistance < thisAgent.height / 2)
         {
             ModeState.isTimeTravelPeekActive = false;
             string nextTimePeriodSceneName = ManageScenes.GetUpcomingPeriodSceneName("next");
@@ -449,7 +449,7 @@ public class FollowGuidedTour : MonoBehaviour
         if (stationaryTimeActive >= pauseAtCameraDuration)
         {
             // handle the alternating time-travel mode
-            if (ModeState.autoTimeTravelAlternating)
+            if (ModeState.autoTimeTravelPeek)
             {
                 // if requested, initiate time traveling briefly
                 if (!ModeState.isTimeTravelPeekActive)
@@ -488,7 +488,7 @@ public class FollowGuidedTour : MonoBehaviour
         if (stationaryTimePaused >= guidedTourRestartAfterSeconds)
         {
             // handle alternating time travel and peek being active
-            if (ModeState.autoTimeTravelAlternating)
+            if (ModeState.autoTimeTravelPeek)
             {
                 // if we're peeking for time-travel, time travel back
                 if (ModeState.isTimeTravelPeekActive)
