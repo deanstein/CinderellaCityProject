@@ -1,7 +1,7 @@
 {
   "VersionHistory": {
     "0.8.2.202503": {
-      "Overview": "v0.8.2 fixes fountain lights shining through historic photos in some cases, adjusts Guided Tour UI, adds new debug utilities, updates StartupConfig flags, and eliminates the legacy Textures folder creation on asset import to reduce friction for project integrators.",
+      "Overview": "v0.8.2 adds time travel peeking at each Guided Tour photo, fixes fountain lights shining through historic photos in some cases, adjusts Guided Tour UI, adds new debug utilities, updates StartupConfig flags, and eliminates the legacy Textures folder creation on asset import to reduce friction for project integrators.",
       "Environment Updates": [
         "Historic photos are now set to Opaque mode by default to prevent fountain lights from shining through in 60s70s"
       ],
