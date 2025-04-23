@@ -444,10 +444,8 @@ public static class ManageSceneObjects
             {
                 if (filteredHistoricCameraObject.scene.name == sceneName)
                 {
-                    // the "Lauter" photo isn't generally interesting enough for the tour
-                    // and the "Village Inn" photo is behind glass and best for custom tours
-                    if (!filteredHistoricCameraObject.name.Contains("Rose Mall - Lauter") &&
-                        !filteredHistoricCameraObject.name.Contains("Gold Mall - Village Inn"))
+                    // the "Village Inn" photo is behind glass and best for custom tours
+                    if (!filteredHistoricCameraObject.name.Contains("Gold Mall - Village Inn"))
                         filteredHistoricCameraObjects.Add(filteredHistoricCameraObject);
                 }
             }
@@ -548,8 +546,6 @@ public static class ManageSceneObjects
                     FindGameObjectInArrayByName("Cinder Alley far", guidedTourObjects),
 
                     // GOLD MALL
-                    // Joslins exterior entrance
-                    FindGameObjectInArrayByName("Gold Mall Joslins entrance", guidedTourObjects),
                     // Gold Mall colorized
                     FindGameObjectInArrayByName("Gold Mall Colorized", guidedTourObjects),
                     // Spencer's
@@ -566,11 +562,9 @@ public static class ManageSceneObjects
                     // Hummell's
                     FindGameObjectInArrayByName("Blue Mall Hummel's", guidedTourObjects),
 
-                    // CLEANSER
-                    // back to Joslins exterior entrance
+                    // EXTERIOR
+                    // Joslins exterior entrance
                     FindGameObjectInArrayByName("Gold Mall Joslins entrance", guidedTourObjects),
-
-                    // BLUE MALL ENTRANCES
                     // Blue Mall Denver exterior entrance
                     FindGameObjectInArrayByName("Blue Mall Denver entrance", guidedTourObjects),
 
@@ -604,6 +598,7 @@ public static class ManageSceneObjects
                     FindGameObjectInArrayByName("Blue Mall west doors", guidedTourObjects),
 
                     // Rose Mall
+                    FindGameObjectInArrayByName("Rose Mall - Lauter", guidedTourObjects),
                     FindGameObjectInArrayByName("Rose Mall 1", guidedTourObjects),
                     // Thom McAn
                     FindGameObjectInArrayByName("Rose Mall Thom McAn", guidedTourObjects),
