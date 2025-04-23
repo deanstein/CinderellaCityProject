@@ -16,7 +16,8 @@ public class StartupConfig
 {
     public bool autoStart; // skips the main menu and goes to a specific scene
     public bool autoGuidedTour; // starts the guided tour immediately
-    public bool autoTimeTravel; // time travels automatically after 10 minutes
+    public bool autoTimeTravelPeriodic; // time travels automatically after 10 minutes
+    public bool autoTimeTravelPeek; // time travels after player arrives at each photo
     public bool shuffleDestinations; // uses a specific order of scenes for recording a video
 }
 /*** EXAMPLE START CONFIG ***
@@ -25,7 +26,8 @@ public class StartupConfig
 {
     "autoStart": true,
     "autoGuidedTour": true,
-    "autoTimeTravel": true,
+    "autoTimeTravelPeriodic": false,
+    "autoTimeTravelPeek": true,
     "shuffleDestinations": true
 }
 
@@ -79,9 +81,9 @@ public class LoadAllScenesAsync : MonoBehaviour {
                 Debug.Log("Startup Config: <b>autoGuidedTour is TRUE</b>");
                 ModeState.isGuidedTourActive = true;
             }
-            if (StartupGlobals.startupConfig.autoTimeTravel)
+            if (StartupGlobals.startupConfig.autoTimeTravelPeriodic)
             {
-                Debug.Log("Startup Config: <b>autoTimeTravel is TRUE</b>");
+                Debug.Log("Startup Config: <b>autoTimeTravelPeriodic is TRUE</b>");
             }
             if (foundConfig.shuffleDestinations)
             {
@@ -158,7 +160,7 @@ public class LoadAllScenesAsync : MonoBehaviour {
 
             // automatically switch to the next era after some time
             // if startupConfig specifies so
-            if (StartupGlobals.startupConfig.autoGuidedTour && ModeState.autoTimeTravel)
+            if (StartupGlobals.startupConfig.autoGuidedTour && ModeState.autoTimeTravelPeriodic)
             {
                 ModeState.toggleToNextEraCoroutine = StartCoroutine(ToggleSceneAndUI.ToggleToNextEraAfterDelay());
             }

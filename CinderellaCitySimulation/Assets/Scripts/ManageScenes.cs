@@ -160,7 +160,7 @@ public static class ManageScenes
     }
 
     // gets the next or previous time period scene name to switch to while in-game
-    public static string GetNextTimePeriodSceneName(string previousOrNext)
+    public static string GetUpcomingPeriodSceneName(string previousOrNext)
     {
         // allow defaulting to the other end of index once at index bounds
         bool allowLooping = true;
