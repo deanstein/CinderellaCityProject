@@ -248,14 +248,12 @@ public class FollowGuidedTour : MonoBehaviour
 
 
         // if we're at the destination on enable, proceed to the next
+        // (this likely happened because we're resuming after time-travel peeking)
         float calculatedRemainingDistance = Vector3.Distance(thisAgent.nextPosition, guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex]);
         if (calculatedRemainingDistance < thisAgent.height / 2)
         {
-            Debug.Log("We should start moving again");
-            // turn historic photos off
-            GameObject historicCamerasContainer = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords, true)[0];
-            ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(historicCamerasContainer, ModeState.areHistoricPhotosRequestedVisible, false);
-            IncrementGuidedTourIndexAndSetAgentOnPath();
+            // set the stationary time to the max to force next destination
+            stationaryTimePaused = guidedTourRestartAfterSeconds;
         }
     }
 
