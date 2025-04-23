@@ -250,7 +250,7 @@ public class FollowGuidedTour : MonoBehaviour
         // if we're at the destination on enable, proceed to the next
         // (this likely happened because we're resuming after time-travel peeking)
         float calculatedRemainingDistance = Vector3.Distance(thisAgent.nextPosition, guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex]);
-        if (calculatedRemainingDistance < thisAgent.height / 2)
+        if (calculatedRemainingDistance < 0.01f)
         {
             // set the stationary time to the max to force next destination
             stationaryTimePaused = guidedTourRestartAfterSeconds;
@@ -432,7 +432,7 @@ public class FollowGuidedTour : MonoBehaviour
         // but the pause duration will differ between unpaused and paused states
 
         // not paused
-        if ((calculatedRemainingDistance < 0.1 || thisAgent.velocity.magnitude < 0.01f) && !ModeState.isGuidedTourPaused && ModeState.isGuidedTourActive)
+        if ((calculatedRemainingDistance < 0.01f || thisAgent.velocity.magnitude < 0.01f) && !ModeState.isGuidedTourPaused && ModeState.isGuidedTourActive)
         {
             stationaryTimeActive += Time.deltaTime;
         }
