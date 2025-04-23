@@ -244,16 +244,15 @@ public class FollowGuidedTour : MonoBehaviour
                 StopCoroutine(ModeState.toggleToNextEraCoroutine);
                 ModeState.toggleToNextEraCoroutine = StartCoroutine(ToggleSceneAndUI.ToggleToNextEraAfterDelay());
             }
-        }
 
-
-        // if we're at the destination on enable, proceed to the next
-        // (this likely happened because we're resuming after time-travel peeking)
-        float calculatedRemainingDistance = Vector3.Distance(thisAgent.nextPosition, guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex]);
-        if (calculatedRemainingDistance < 0.01f)
-        {
-            // set the stationary time to the max to force next destination
-            stationaryTimePaused = guidedTourRestartAfterSeconds;
+            // if we're at the destination when enabled, proceed to the next photo
+            // (this likely happened because we're resuming after time-travel peeking)
+            float calculatedRemainingDistance = Vector3.Distance(thisAgent.nextPosition, guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex]);
+            if (ModeState.autoTimeTravelPeek && calculatedRemainingDistance < 0.01f)
+            {
+                // set the stationary time to the max to force next destination
+                stationaryTimePaused = guidedTourRestartAfterSeconds;
+            }
         }
     }
 
