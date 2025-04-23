@@ -63,7 +63,6 @@ public class FollowGuidedTour : MonoBehaviour
 
     // show paths and camera positions as debug lines
     public bool showDebugLines = false;
-    readonly int debugLineDuration = 10; // seconds
     // shuffle the destinations if requested
     readonly bool shuffleGuidedTourDestinations = true && ModeState.shuffleDestinations && !useDebuggingDestinations;
     // used for debugging shuffled path results
@@ -240,10 +239,19 @@ public class FollowGuidedTour : MonoBehaviour
             ModeState.isGuidedTourPaused = true;
 
             // only spend a certain amount of time in each era
-            if (ModeState.autoTimeTravel)
+            if (ModeState.autoTimeTravelPeriodic)
             {
                 StopCoroutine(ModeState.toggleToNextEraCoroutine);
                 ModeState.toggleToNextEraCoroutine = StartCoroutine(ToggleSceneAndUI.ToggleToNextEraAfterDelay());
+            }
+
+            // if we're at the destination when enabled, proceed to the next photo
+            // (this likely happened because we're resuming after time-travel peeking)
+            float calculatedRemainingDistance = Vector3.Distance(thisAgent.nextPosition, guidedTourFinalNavMeshDestinations[currentGuidedTourDestinationIndex]);
+            if (ModeState.autoTimeTravelPeek && calculatedRemainingDistance < 0.01f)
+            {
+                // set the stationary time to the max to force next destination
+                stationaryTimePaused = guidedTourRestartAfterSeconds;
             }
         }
     }
@@ -403,27 +411,27 @@ public class FollowGuidedTour : MonoBehaviour
                 // reset the FPSController mouse to avoid incorrect rotation due to interference
                 ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.GetComponent<FirstPersonController>().MouseReset();
             }
+        }
 
-            // auto-time travel during guided tour
-            if (isGuidedTourTimeTravelRequested)
-            {
-                // immediately set the flag back to false
-                isGuidedTourTimeTravelRequested = false;
+        // invoke time-travel just once if requested - can happen even on pause
+        if (isGuidedTourTimeTravelRequested)
+        {
+            // immediately set the flag back to false
+            isGuidedTourTimeTravelRequested = false;
 
-                string nextTimePeriodSceneName = ManageScenes.GetNextTimePeriodSceneName("next");
+            string nextTimePeriodSceneName = ManageScenes.GetUpcomingPeriodSceneName("next");
 
-                StartCoroutine(ToggleSceneAndUI.ToggleFromSceneToSceneWithTransition(SceneManager.GetActiveScene().name, nextTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform, ManageCameraActions.CameraActionGlobals.activeCameraHost, "FlashBlack", 0.2f));
+            StartCoroutine(ToggleSceneAndUI.ToggleFromSceneToSceneWithTransition(SceneManager.GetActiveScene().name, nextTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform, ManageCameraActions.CameraActionGlobals.activeCameraHost, "FlashBlack", 0.2f));
 
-                // indicate to the next scene that it needs to recalc its cameras and paths
-                SceneGlobals.isGuidedTourTimeTraveling = true;
-            }
+            // indicate to the next scene that it needs to recalc its cameras and paths
+            SceneGlobals.isGuidedTourTimeTraveling = true;
         }
 
         // guided tour can only stop for a certain amount of time before we proceed
         // but the pause duration will differ between unpaused and paused states
 
         // not paused
-        if ((thisAgent.remainingDistance < 0.01f || thisAgent.velocity.magnitude < 0.01f) && !ModeState.isGuidedTourPaused && ModeState.isGuidedTourActive)
+        if ((calculatedRemainingDistance < 0.01f || thisAgent.velocity.magnitude < 0.01f) && !ModeState.isGuidedTourPaused && ModeState.isGuidedTourActive)
         {
             stationaryTimeActive += Time.deltaTime;
         }
@@ -431,11 +439,36 @@ public class FollowGuidedTour : MonoBehaviour
         {
             stationaryTimeActive = 0f;
         }
+
+        // player has been stationary beyond the duration to pause at camera
+        // so decide how to proceed next
         if (stationaryTimeActive >= pauseAtCameraDuration)
         {
-            Debug.Log("FPSAgent has been stationary with guided tour ACTIVE for " + (pauseAtCameraDuration) + " seconds or more. Going to next destination.");
-            IncrementGuidedTourIndexAndSetAgentOnPath();
-            stationaryTimeActive = 0f;
+            // handle the alternating time-travel mode
+            if (ModeState.autoTimeTravelPeek)
+            {
+                // if requested, initiate time traveling briefly
+                if (!ModeState.isTimeTravelPeekActive)
+                {
+                    Debug.Log("FPSAgent has been stationary with guided tour ACTIVE for " + (pauseAtCameraDuration) + " seconds or more AND alternating time travel is requested, so time-traveling briefly.");
+                    stationaryTimeActive = 0f;
+                    // request time travel and mark peek active
+                    isGuidedTourTimeTravelRequested = true;
+                    ModeState.isTimeTravelPeekActive = true;
+                } else
+                {
+                    Debug.Log("FPSAgent has been stationary with guided tour ACTIVE for " + (pauseAtCameraDuration) + " seconds or more. Going to next destination.");
+                    IncrementGuidedTourIndexAndSetAgentOnPath();
+                    stationaryTimeActive = 0f;
+                }
+            }
+            // default behavior is to move on to the next destination
+            else
+            {
+                Debug.Log("FPSAgent has been stationary with guided tour ACTIVE for " + (pauseAtCameraDuration) + " seconds or more. Going to next destination.");
+                IncrementGuidedTourIndexAndSetAgentOnPath();
+                stationaryTimeActive = 0f;
+            }
         }
 
         // paused
@@ -450,10 +483,33 @@ public class FollowGuidedTour : MonoBehaviour
 
         if (stationaryTimePaused >= guidedTourRestartAfterSeconds)
         {
-            Debug.Log("FPSAgent has been stationary with guided tour PAUSED for " + (guidedTourRestartAfterSeconds) + " seconds or more. Resuming guided tour.");
-            ModeState.isGuidedTourPaused = false;
-            ModeState.isGuidedTourActive = true;
-            stationaryTimePaused = 0f;
+            // handle alternating time travel and peek being active
+            if (ModeState.autoTimeTravelPeek)
+            {
+                // if we're peeking for time-travel, time travel back
+                if (ModeState.isTimeTravelPeekActive)
+                {
+                    Debug.Log("FPSAgent has been stationary with guided tour ACTIVE for " + (pauseAtCameraDuration) + " seconds or more AND alternating time travel is active AND time travel peek is active, so time-traveling back.");
+                    stationaryTimePaused = 0f;
+                    ModeState.isTimeTravelPeekActive = false;
+                    isGuidedTourTimeTravelRequested = true;
+                } else
+                {
+                    Debug.Log("FPSAgent has been stationary with guided tour PAUSED for " + (guidedTourRestartAfterSeconds) + " seconds or more. Resuming guided tour.");
+                    ModeState.isGuidedTourPaused = false;
+                    ModeState.isGuidedTourActive = true;
+                    stationaryTimePaused = 0f;
+                    IncrementGuidedTourIndexAndSetAgentOnPath();
+                }
+            } 
+            // default behavior is to resume guided tour
+            else
+            {
+                Debug.Log("FPSAgent has been stationary with guided tour PAUSED for " + (guidedTourRestartAfterSeconds) + " seconds or more. Resuming guided tour.");
+                ModeState.isGuidedTourPaused = false;
+                ModeState.isGuidedTourActive = true;
+                stationaryTimePaused = 0f;
+            }
         }
 
         // start or stop the restart routines if override is requested
@@ -461,7 +517,7 @@ public class FollowGuidedTour : MonoBehaviour
         {
             if (GetIsGuidedTourOverrideRequested())
             {
-                if (ModeState.autoTimeTravel)
+                if (ModeState.autoTimeTravelPeriodic)
                 {
                     // record that the override has been requested
                     isResumeRequiredAfterOverride = true;
@@ -476,7 +532,7 @@ public class FollowGuidedTour : MonoBehaviour
 
             // if override is no longer requested, but override was previously requested
             // then ensure the restart coroutines happen now, just one time
-            if (!GetIsGuidedTourOverrideRequested() && isResumeRequiredAfterOverride && ModeState.autoTimeTravel)
+            if (!GetIsGuidedTourOverrideRequested() && isResumeRequiredAfterOverride && ModeState.autoTimeTravelPeriodic)
             {
                 // start the coroutine again
                 ModeState.toggleToNextEraCoroutine = StartCoroutine(ToggleSceneAndUI.ToggleToNextEraAfterDelay());
@@ -567,7 +623,7 @@ public class FollowGuidedTour : MonoBehaviour
         ModeState.isGuidedTourActive = true;
 
         // automatically switch to the next era after some time
-        if (ModeState.autoTimeTravel)
+        if (ModeState.autoTimeTravelPeriodic)
         {
             ModeState.toggleToNextEraCoroutine = Instances[SceneManager.GetActiveScene().name].StartCoroutine(ToggleSceneAndUI.ToggleToNextEraAfterDelay());
         }
@@ -581,7 +637,7 @@ public class FollowGuidedTour : MonoBehaviour
         ModeState.isGuidedTourActive = false;
         ModeState.isGuidedTourPaused = false;
 
-        if (ModeState.toggleToNextEraCoroutine != null && ModeState.autoTimeTravel)
+        if (ModeState.toggleToNextEraCoroutine != null && ModeState.autoTimeTravelPeriodic)
         {
             Instances[SceneManager.GetActiveScene().name].StopCoroutine(ModeState.toggleToNextEraCoroutine);
         }

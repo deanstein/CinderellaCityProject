@@ -70,7 +70,7 @@ public class InputActions : MonoBehaviour
     public void TimeTravelBackward()
     {
         // get the previous time period scene name
-        string previousTimePeriodSceneName = ManageScenes.GetNextTimePeriodSceneName("previous");
+        string previousTimePeriodSceneName = ManageScenes.GetUpcomingPeriodSceneName("previous");
 
         // toggle to the previous scene with a camera effect transition
         StartCoroutine(ToggleSceneAndUI.ToggleFromSceneToSceneWithTransition(SceneManager.GetActiveScene().name, previousTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform,
@@ -80,7 +80,7 @@ public class InputActions : MonoBehaviour
     public void TimeTravelForward()
     {
         // get the next time period scene name
-        string nextTimePeriodSceneName = ManageScenes.GetNextTimePeriodSceneName("next");
+        string nextTimePeriodSceneName = ManageScenes.GetUpcomingPeriodSceneName("next");
 
         // then toggle to the next scene with a camera effect transition
         StartCoroutine(ToggleSceneAndUI.ToggleFromSceneToSceneWithTransition(SceneManager.GetActiveScene().name, nextTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerCamera.gameObject, "FlashBlack", 0.2f));
