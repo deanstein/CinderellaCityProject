@@ -168,7 +168,10 @@ public class NavMeshUtils
                 }
             }
 
-            agent.SetPath(path);
+            if (agent.isActiveAndEnabled)
+            {
+                agent.SetPath(path);
+            }
             return path;
         }
         else
