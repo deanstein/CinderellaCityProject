@@ -84,6 +84,7 @@ public class LoadAllScenesAsync : MonoBehaviour {
             if (StartupGlobals.startupConfig.autoTimeTravelPeriodic)
             {
                 Debug.Log("Startup Config: <b>autoTimeTravelPeriodic is TRUE</b>");
+                ModeState.autoTimeTravelPeriodic = true;
             }
             if (foundConfig.shuffleDestinations)
             {
