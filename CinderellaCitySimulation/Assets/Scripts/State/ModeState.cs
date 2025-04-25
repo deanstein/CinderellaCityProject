@@ -39,8 +39,6 @@ public static class ModeState
 
     /** keep track of guided tour coroutines **/
     /** to ensure only one is active, and allow canceling them if necessary **/
-    // time-travels after a certain amount of time during guided tour
-    public static Coroutine toggleToNextEraCoroutine = null;
     // used for attempting re-path after a few seconds when current path is invalid
     public static Coroutine setAgentOnPathAfterDelayCoroutine = null;
 
