@@ -158,13 +158,6 @@ public class LoadAllScenesAsync : MonoBehaviour {
         if (startingScene.name == SceneGlobals.mallEra60s70sSceneName || startingScene.name == SceneGlobals.mallEra80s90sSceneName || startingScene.name == SceneGlobals.experimentalSceneName)
         {
             ToggleSceneAndUI.ToggleFromSceneToSceneRelocatePlayerToCamera(SceneManager.GetActiveScene().name, startingScene.name, "Camera-Thumbnail-Blue Mall-Highlight");
-
-            // automatically switch to the next era after some time
-            // if startupConfig specifies so
-            if (StartupGlobals.startupConfig.autoGuidedTour && ModeState.autoTimeTravelPeriodic)
-            {
-                ModeState.toggleToNextEraCoroutine = StartCoroutine(ToggleSceneAndUI.ToggleToNextEraAfterDelay());
-            }
         }
         // otherwise, we assume we're switching to a menu scene, like Main Menu
         else
