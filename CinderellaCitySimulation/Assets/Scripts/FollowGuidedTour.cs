@@ -18,8 +18,8 @@ public class FollowGuidedTour : MonoBehaviour
 
     // get the partial path index of the current partial path camera in the list of cameras
     private int partialPathCameraIndex = -1;
-    // number of photos to view before time-traveling
-    private readonly int periodicTimeTravelAfterPhotoCount = 3;
+    // number of photos to view before periodic time-traveling
+    private readonly int periodicTimeTravelAfterPhotoCount = 4;
 
     // number of seconds to pause and look at a camera
     readonly float pauseAtCameraDuration = 10f;
@@ -50,13 +50,12 @@ public class FollowGuidedTour : MonoBehaviour
     public Camera currentGuidedTourDestinationCamera;
     public Vector3 currentGuidedTourVector;
 
-    // object visibility during guided tour
-    // these are initially set in ModeState.cs
-    private bool? areHistoricPhotosVisible = null;
-    private bool? arePeopleVisible = null;
-
     // set to true briefly to allow IEnumerator time-travel transition
-    public static bool isGuidedTourTimeTravelRequested = false; 
+    public static bool isGuidedTourTimeTravelRequested = false;
+    // set to true when time-traveling periodically
+    private bool isPeriodicTimeTraveling = false;
+    // set to true to force an update of historic photo and people visibility
+    private bool isProxyObjectVisibilityUpdateRequired = false;
 
     //
     // DEBUGGING
@@ -76,8 +75,8 @@ public class FollowGuidedTour : MonoBehaviour
 
     private void Awake()
     {
-        // fill out the Instances dictionary, so each scene has its own instance
         string thisSceneName = gameObject.scene.name;
+        // fill out the Instances dictionary, so each scene has its own instance
         // check if an instance already exists for this scene
         if (Instances.ContainsKey(thisSceneName))
         {
@@ -170,11 +169,6 @@ public class FollowGuidedTour : MonoBehaviour
 
             Debug.Log(objectCamera.name + " is at index " + (cameraPositionsAdjustedOnNavMeshList.Count - 1).ToString() + " at adjusted position: " + objectCameraPosAdjustedOnNavMesh);
 
-            // start with historic photos on
-            ModeState.areHistoricPhotosRequestedVisible = true;
-            // start with people visible
-            ModeState.arePeopleRequestedVisible = true;
-
             // DEBUGGING
             // draw debug lines if requested
             if (showDebugLines)
@@ -235,17 +229,61 @@ public class FollowGuidedTour : MonoBehaviour
     {
         if (ModeState.isGuidedTourActive || ModeState.isGuidedTourPaused)
         {
+            // calculate the remaining distance to the next photo
+            // and determine whether we're already at the next photo
+            float calculatedRemainingDistance = Vector3.Distance(thisAgent.nextPosition, guidedTourFinalNavMeshDestinations[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex]);
+            bool isAtDestination = calculatedRemainingDistance < thisAgent.height / 2;
+
             // restart the guided tour to ensure new pathfinding happens 
             ModeState.isGuidedTourActive = false;
             ModeState.isGuidedTourPaused = true;
 
+            // set the initial visibility of historic photos and people
+            // when peeking, nothing should be visible
+            if (ModeState.isTimeTravelPeekActive)
+            {
+                ModeState.areHistoricPhotosRequestedVisible = false;
+                ModeState.arePeopleRequestedVisible = false;
+            }
+            // if we were just previously periodic time-traveling, hide people
+            else if (isPeriodicTimeTraveling)
+            {
+                ModeState.arePeopleRequestedVisible = false;
+            }
+            // the default is to have people visible only
+            else
+            {
+                ModeState.areHistoricPhotosRequestedVisible = false;
+                ModeState.arePeopleRequestedVisible = true;
+            }
+
+            // force the proxy objects to be updated
+            isProxyObjectVisibilityUpdateRequired = true;
+
             // if we're at the destination when enabled, and peek is not active, proceed to the next photo
             // (this likely happened because we're resuming after time-travel peeking)
-            float calculatedRemainingDistance = Vector3.Distance(thisAgent.nextPosition, guidedTourFinalNavMeshDestinations[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex]);
-            if (!ModeState.isTimeTravelPeekActive && calculatedRemainingDistance < thisAgent.height / 2)
+            if (!ModeState.isTimeTravelPeekActive && isAtDestination)
             {
                 stationaryTimePaused = pauseBeforeResumeDuration;
                 IncrementGuidedTourIndexAndSetAgentOnPath(thisAgent.gameObject.scene.name);
+            }
+
+            // we may have just finished time-traveling, so hide the label
+            ModeState.doShowTimeTravelingLabel = false;
+            isPeriodicTimeTraveling = false;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (ModeState.isGuidedTourActive || ModeState.isGuidedTourPaused)
+        {
+            if (ModeState.autoTimeTravelPeek)
+            {
+                ModeState.areHistoricPhotosRequestedVisible = false;
+                ModeState.arePeopleRequestedVisible = false;
+                isProxyObjectVisibilityUpdateRequired = true;
+                UpdateProxyObjectVisibility();
             }
         }
     }
@@ -414,7 +452,10 @@ public class FollowGuidedTour : MonoBehaviour
             // immediately set the flag back to false
             isGuidedTourTimeTravelRequested = false;
 
-            string nextTimePeriodSceneName = ManageScenes.GetUpcomingPeriodSceneName("next");
+            // show the time-traveling label
+            ModeState.doShowTimeTravelingLabel = true;
+
+            string nextTimePeriodSceneName = ManageScenes.GetUpcomingPeriodSceneName(gameObject.scene.name, "next");
 
             StartCoroutine(ToggleSceneAndUI.ToggleFromSceneToSceneWithTransition(thisAgent.gameObject.scene.name, nextTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform, ManageCameraActions.CameraActionGlobals.activeCameraHost, "FlashBlack", 0.2f));
 
@@ -447,6 +488,7 @@ public class FollowGuidedTour : MonoBehaviour
                 stationaryTimeActive = 0f;
                 // increment the index so the next time we're in this era, we go to the next photo
                 IncrementGuidedTourIndex(thisAgent.gameObject.scene.name);
+                isPeriodicTimeTraveling = true;
                 Debug.Log("Periodic time-traveling!");
             }
             // handle the alternating time-travel mode
@@ -455,11 +497,14 @@ public class FollowGuidedTour : MonoBehaviour
                 // if requested, initiate time traveling briefly
                 if (!ModeState.isTimeTravelPeekActive)
                 {
-                    Debug.Log("FPSAgent has been stationary with guided tour ACTIVE for " + (pauseAtCameraDuration) + " seconds or more AND alternating time travel is requested, so time-traveling briefly.");
+                    Debug.Log("FPSAgent has been stationary with guided tour ACTIVE for " + (pauseAtCameraDuration) + " seconds or more AND time travel peek is requested, so time-traveling briefly to peek at the next era.");
                     stationaryTimeActive = 0f;
                     // request time travel and mark peek active
                     isGuidedTourTimeTravelRequested = true;
                     ModeState.isTimeTravelPeekActive = true;
+                    // handle photo and people visibility in preparation for returning
+                    ModeState.areHistoricPhotosRequestedVisible = false;
+                    ModeState.arePeopleRequestedVisible = false;
                 }
                 else
                 {
@@ -546,7 +591,7 @@ public class FollowGuidedTour : MonoBehaviour
         // during guided tour, historic photos should
         // only be visible when within some distance to the next destination
         // this is possibly expensive, so only do it one frame only when requested
-        if (ModeState.isGuidedTourActive && thisAgent.enabled && thisAgent.isOnNavMesh)
+        if (ModeState.isGuidedTourActive && !ModeState.isTimeTravelPeekActive && thisAgent.enabled && thisAgent.isOnNavMesh)
         {
             if (calculatedRemainingDistance < lookToCameraAtRemainingDistance)
             {
@@ -560,7 +605,7 @@ public class FollowGuidedTour : MonoBehaviour
 
         // similarly, people should be hidden when within some distance to next destination
         // this is possibly expensive, so only do it one frame when requested
-        if (ModeState.isGuidedTourActive && thisAgent.enabled && thisAgent.isOnNavMesh)
+        if (ModeState.isGuidedTourActive && !ModeState.isTimeTravelPeekActive && !isPeriodicTimeTraveling && thisAgent.enabled && thisAgent.isOnNavMesh)
         {
             if (calculatedRemainingDistance < hidePeopleAtRemainingDistance)
             {
@@ -572,28 +617,12 @@ public class FollowGuidedTour : MonoBehaviour
             }
         }
 
-        // only force visibility if guided tour mode is on, 
-        // and the local flag doesn't match the global flag
-        // or if the local flag hasn't been set yet
-        if (ModeState.isGuidedTourActive && areHistoricPhotosVisible == null || areHistoricPhotosVisible != ModeState.areHistoricPhotosRequestedVisible)
-        {
-            // enable or disable the historic photos
-            GameObject historicCamerasContainer = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords, true)[0];
-            ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(historicCamerasContainer, ModeState.areHistoricPhotosRequestedVisible, false);
-            ObjectVisibility.SetHistoricPhotosOpaque(ModeState.areHistoricPhotosRequestedVisible);
+        // update the people and historic photo visibility
+        // this only runs when it needs to
+        UpdateProxyObjectVisibility();
 
-            // set the local flag to match so this only runs once
-            areHistoricPhotosVisible = ModeState.areHistoricPhotosRequestedVisible;
-        }
-
-        // similar for people - only adjust their visibility once if requested
-        if (ModeState.isGuidedTourActive && arePeopleVisible == null || arePeopleVisible != ModeState.arePeopleRequestedVisible)
-        {
-            ObjectVisibility.SetPeopleVisibility(ModeState.arePeopleRequestedVisible);
-
-            // set the local flag to match so this only runs once
-            arePeopleVisible = ModeState.arePeopleRequestedVisible;
-        }
+        // reset the forced update flag
+        isProxyObjectVisibilityUpdateRequired = false;
     }
 
     public static void StartGuidedTourMode()
@@ -683,5 +712,31 @@ public class FollowGuidedTour : MonoBehaviour
             return false;
         }
 
+    }
+
+    private void UpdateProxyObjectVisibility()
+    {
+        // only force visibility if guided tour mode is on, 
+        // and the official flag doesn't match the requested flag
+        // or if a forced update is required
+        if ((ModeState.isGuidedTourActive || ModeState.isGuidedTourPaused) && (ModeState.areHistoricPhotosVisible != ModeState.areHistoricPhotosRequestedVisible || isProxyObjectVisibilityUpdateRequired))
+        {
+            // enable or disable the historic photos
+            GameObject historicCamerasContainer = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords, true)[0];
+            ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(historicCamerasContainer, ModeState.areHistoricPhotosRequestedVisible, false);
+            ObjectVisibility.SetHistoricPhotosOpaque(ModeState.areHistoricPhotosRequestedVisible);
+
+            // set the official flag to match so this only runs once
+            ModeState.areHistoricPhotosVisible = ModeState.areHistoricPhotosRequestedVisible;
+        }
+
+        // similar for people - only adjust their visibility once if requested
+        if ((ModeState.isGuidedTourActive || ModeState.isGuidedTourPaused) && (ModeState.arePeopleVisible != ModeState.arePeopleRequestedVisible || isProxyObjectVisibilityUpdateRequired))
+        {
+            ObjectVisibility.SetPeopleVisibility(ModeState.arePeopleRequestedVisible);
+
+            // set the official flag to match so this only runs once
+            ModeState.arePeopleVisible = ModeState.arePeopleRequestedVisible;
+        }
     }
 }
