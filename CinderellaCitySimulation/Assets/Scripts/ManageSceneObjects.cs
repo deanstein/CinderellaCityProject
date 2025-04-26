@@ -404,16 +404,24 @@ public static class ManageSceneObjects
         // (will also toggle the proxy replacements to the opposite state)
         public static void ToggleProxyHostMeshesToState(GameObject proxyHost, bool desiredState, bool toggleReplacementsToOppositeState)
         {
-            ProxyHostList proxyHostList = GetProxyHostList(proxyHost);
+            // get the proxy type of this host
+            // so we can keep track of its visibility state in certain cases
+            string proxyType = GetProxyTypeByName(proxyHost.name);
+            if (proxyType == "CamerasPhotos")
+            {
+                // set the mode state so the rest of the app knows historic photos are visible
+                ModeState.areHistoricPhotosVisible = desiredState;
+            }
 
+            ProxyHostList proxyHostList = GetProxyHostList(proxyHost);
             GameObject[] proxyMeshObjects = proxyHostList.proxyMeshList.ToArray();
             GameObject[] replacementObjects = proxyHostList.replacementObjectList.ToArray();
 
-            ManageSceneObjects.ObjectState.ToggleSceneObjectsToState(proxyMeshObjects, desiredState);
+            ObjectState.ToggleSceneObjectsToState(proxyMeshObjects, desiredState);
             // only toggle the proxies to the opposite if the flag is set
             if (toggleReplacementsToOppositeState)
             {
-                ManageSceneObjects.ObjectState.ToggleSceneObjectsToState(replacementObjects, !desiredState);
+                ObjectState.ToggleSceneObjectsToState(replacementObjects, !desiredState);
             }
         }
 
@@ -852,6 +860,8 @@ public class ObjectVisibility
     {
         GameObject peopleContainer = GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.peopleObjectKeywords, true)[0];
         peopleContainer.SetActive(visible);
+        // set the mode state so the rest of the app knows whether people are visible
+        ModeState.arePeopleVisible = visible;
     }
 
     public static void SetHistoricPhotosOpaque(bool toggleState)
