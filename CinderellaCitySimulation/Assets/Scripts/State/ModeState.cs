@@ -45,8 +45,12 @@ public static class ModeState
     // when guided tour is active, historic photos and people
     // are toggled on or off when agent is close to destination photo
     // FollowGuidedTour.cs looks for these and adjusts object visibility accordingly
+    public static bool areHistoricPhotosVisible = false;
     public static bool areHistoricPhotosRequestedVisible = false;
-    public static bool arePeopleRequestedVisible = true;
+    public static bool arePeopleVisible = false;
+    public static bool arePeopleRequestedVisible = false;
+
+    public static bool doShowTimeTravelingLabel = false;
 
     //
     // INPUT
