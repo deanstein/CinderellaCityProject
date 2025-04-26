@@ -44,6 +44,13 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         {
             UIVisibilityGlobals.activeHUD = ManageHUDVisibility.GetActiveHUDCanvas(this.gameObject);
         }
+
+        // create an updated time traveling label
+        string nextTimePeriodLabelText = SceneGlobals.TimePeriods.GetTimePeriodLabelBySceneName(ManageScenes.GetUpcomingPeriodSceneName(gameObject.scene.name, "next"));
+        // create the time traveling label and set it off initially
+        DestroyImmediate(UIGlobals.timeTravelingLabelContainer);
+        UIGlobals.timeTravelingLabelContainer = CreateScreenSpaceUIElements.CreateHUDTimeTravelingLabel(UIVisibilityGlobals.activeHUD, "TIME TRAVELING TO " + nextTimePeriodLabelText);
+        UIGlobals.timeTravelingLabelContainer.SetActive(false);
     }
 
     void Update()
@@ -63,6 +70,16 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
 
         // increment the frame count
         currentFrameCount++;
+
+        // show the time-traveling label if appropriate
+        if (ModeState.doShowTimeTravelingLabel)
+        {
+            UIGlobals.timeTravelingLabelContainer.SetActive(true);
+        }
+        else
+        {
+            UIGlobals.timeTravelingLabelContainer.SetActive(false);
+        }
     }
 
     // delete all the UI objects below the UI launcher host

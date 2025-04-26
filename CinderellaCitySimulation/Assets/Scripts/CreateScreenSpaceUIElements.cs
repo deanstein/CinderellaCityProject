@@ -53,6 +53,7 @@ public class UIGlobals
     public static GameObject timePeriodNotificationContainer80s90s;
     public static GameObject timePeriodNotificationContainerAltFuture;
     public static GameObject timePeriodNotificationContainerExperimental;
+    public static GameObject timeTravelingLabelContainer;
 
     /// colors ///
 
@@ -1111,15 +1112,15 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         TransformScreenSpaceObject.PositionObjectAtCenterofScreen(timePeriodNotificationContainer);
 
         // add the title text
-        GameObject underConstructionLabel = new GameObject("TimePeriodNotificationLabel");
-        Text underConstructionLabelText = underConstructionLabel.AddComponent<Text>();
-        underConstructionLabelText.font = (Font)Resources.Load(UIGlobals.labelFont);
-        underConstructionLabelText.text = notificationText;
-        underConstructionLabelText.fontSize = ConvertFontHeightRatioToPixelValue(UIGlobals.menuTitleLabelSize);
-        underConstructionLabelText.alignment = TextAnchor.UpperLeft;
+        GameObject currentTimePeriodLabel = new GameObject("TimePeriodNotificationLabel");
+        Text currentTimePeriodLabelText = currentTimePeriodLabel.AddComponent<Text>();
+        currentTimePeriodLabelText.font = (Font)Resources.Load(UIGlobals.labelFont);
+        currentTimePeriodLabelText.text = notificationText;
+        currentTimePeriodLabelText.fontSize = ConvertFontHeightRatioToPixelValue(UIGlobals.menuTitleLabelSize);
+        currentTimePeriodLabelText.alignment = TextAnchor.UpperLeft;
 
         // resize the text's bounding box to fit the text
-        Vector2 textSize = TransformScreenSpaceObject.ResizeTextExtentsToFitContents(underConstructionLabelText);
+        Vector2 textSize = TransformScreenSpaceObject.ResizeTextExtentsToFitContents(currentTimePeriodLabelText);
 
         RectTransform rt = timePeriodContainerColor.GetComponent<RectTransform>();
         rt.sizeDelta = new Vector2(textSize.x, textSize.y);
@@ -1127,16 +1128,49 @@ public class CreateScreenSpaceUIElements : MonoBehaviour
         Vector2 newSize = TransformScreenSpaceObject.ResizeObjectFromCenterByMargin(timePeriodNotificationContainer, 0.01f, 0.01f);
 
         // position the title text
-        TransformScreenSpaceObject.PositionObjectAtCenterofScreen(underConstructionLabel);
+        TransformScreenSpaceObject.PositionObjectAtCenterofScreen(currentTimePeriodLabel);
 
         // set parent/child hierarchy
         timePeriodNotificationContainer.transform.SetParent(parent.transform);
-        underConstructionLabel.transform.SetParent(timePeriodNotificationContainer.transform);
+        currentTimePeriodLabel.transform.SetParent(timePeriodNotificationContainer.transform);
 
         // disable initially
         timePeriodNotificationContainer.SetActive(false);
 
         return timePeriodNotificationContainer;
+    }
+
+    public static GameObject CreateHUDTimeTravelingLabel(GameObject parent, string message)
+    {
+        // create the label container
+        UIGlobals.timeTravelingLabelContainer = new GameObject("TimeTravelingLabelContainer");
+        UIGlobals.timeTravelingLabelContainer.AddComponent<CanvasRenderer>();
+        // image is needed to create a rect transform
+        Image timeTravelingContainerColor = UIGlobals.timeTravelingLabelContainer.AddComponent<Image>();
+        timeTravelingContainerColor.color = UIGlobals.clearColor;
+
+        // position the title container
+        TransformScreenSpaceObject.PositionObjectAtCenterofScreen(UIGlobals.timeTravelingLabelContainer);
+
+        // add the title text
+        GameObject timeTravelingLabel = new GameObject("TimeTravelingLabel");
+        Text timeTravelingLabelText = timeTravelingLabel.AddComponent<Text>();
+        timeTravelingLabelText.font = (Font)Resources.Load(UIGlobals.labelFont);
+        timeTravelingLabelText.text = message;
+        timeTravelingLabelText.fontSize = ConvertFontHeightRatioToPixelValue(UIGlobals.menuTitleLabelSize);
+        timeTravelingLabelText.alignment = TextAnchor.UpperLeft;
+
+        // resize the text's bounding box to fit the text
+        TransformScreenSpaceObject.ResizeTextExtentsToFitContents(timeTravelingLabelText);
+
+        // position the title text
+        TransformScreenSpaceObject.PositionObjectAtCenterofScreen(timeTravelingLabel);
+
+        // set parent/child hierarchy
+        UIGlobals.timeTravelingLabelContainer.transform.SetParent(parent.transform);
+        timeTravelingLabel.transform.SetParent(UIGlobals.timeTravelingLabelContainer.transform);
+
+        return UIGlobals.timeTravelingLabelContainer;
     }
 
     public static GameObject CreateHUDUnderConstructionLabel(GameObject parent, string message)

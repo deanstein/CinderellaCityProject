@@ -89,7 +89,6 @@ public class SceneGlobals
         }
 
     }
-    TimePeriods timePeriods = new TimePeriods();
 
     // all scene names to load for the full simulation experience
     public static string[] allGameplaySceneNames = new string[] { mainMenuSceneName, pauseMenuName, howToPlaySceneName, creditsSceneName }.Concat(TimePeriods.GetAllTimePeriodSceneNames()).ToArray();
@@ -160,13 +159,15 @@ public static class ManageScenes
     }
 
     // gets the next or previous time period scene name to switch to while in-game
-    public static string GetUpcomingPeriodSceneName(string previousOrNext)
+    public static string GetUpcomingPeriodSceneName(string currentSceneName, string previousOrNext)
     {
         // allow defaulting to the other end of index once at index bounds
         bool allowLooping = true;
 
         // first, figure out which time period index the current scene is
-        int currentTimePeriodSceneIndex = SceneGlobals.availableTimePeriodSceneNamesList.IndexOf(SceneManager.GetActiveScene().name);
+        // note that we don't call SceneManager.GetActiveScene() because 
+        // that could result in the wrong answer when called in OnEnable()
+        int currentTimePeriodSceneIndex = SceneGlobals.availableTimePeriodSceneNamesList.IndexOf(currentSceneName);
 
         // if the current scene doesn't match any in the list, return with an error
         if (currentTimePeriodSceneIndex == -1)
