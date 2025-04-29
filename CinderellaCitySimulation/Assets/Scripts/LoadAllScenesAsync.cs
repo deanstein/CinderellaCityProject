@@ -68,7 +68,7 @@ public class LoadAllScenesAsync : MonoBehaviour {
             StartupGlobals.startupConfig = foundConfig;
 
             //
-            // handle individual config settings as needed
+            // handle individual config settings
             //
 
             if (foundConfig.autoStart)
@@ -76,20 +76,49 @@ public class LoadAllScenesAsync : MonoBehaviour {
                 Debug.Log("Startup Config: <b>autoStart is TRUE</b>");
                 ModeState.autoStart = true;
             }
-            if (StartupGlobals.startupConfig.autoGuidedTour)
+            else
+            {
+                Debug.Log("Startup Config: <b>autoStart is FALSE</b>");
+            }
+
+            if (foundConfig.autoGuidedTour)
             {
                 Debug.Log("Startup Config: <b>autoGuidedTour is TRUE</b>");
                 ModeState.isGuidedTourActive = true;
             }
-            if (StartupGlobals.startupConfig.autoTimeTravelPeriodic)
+            else
+            {
+                Debug.Log("Startup Config: <b>autoGuidedTour is FALSE</b>");
+            }
+
+            if (foundConfig.autoTimeTravelPeriodic)
             {
                 Debug.Log("Startup Config: <b>autoTimeTravelPeriodic is TRUE</b>");
                 ModeState.autoTimeTravelPeriodic = true;
             }
+            else
+            {
+                Debug.Log("Startup Config: <b>autoTimeTravelPeriodic is FALSE</b>");
+            }
+
+            if (foundConfig.autoTimeTravelPeek)
+            {
+                Debug.Log("Startup Config: <b>autoTimeTravelPeek is TRUE</b>");
+                ModeState.autoTimeTravelPeek = true;
+            }
+            else
+            {
+                Debug.Log("Startup Config: <b>autoTimeTravelPeek is FALSE</b>");
+            }
+
             if (foundConfig.shuffleDestinations)
             {
                 DebugUtils.DebugLog("Startup Config: <b>shuffleDestinations is TRUE</b>");
                 ModeState.shuffleDestinations = true;
+            }
+            else
+            {
+                Debug.Log("Startup Config: <b>shuffleDestinations is FALSE</b>");
             }
         }
         else
