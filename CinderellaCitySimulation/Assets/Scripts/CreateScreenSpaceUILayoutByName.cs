@@ -46,11 +46,18 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         }
 
         // create an updated time traveling label
-        string nextTimePeriodLabelText = SceneGlobals.TimePeriods.GetTimePeriodLabelBySceneName(ManageScenes.GetUpcomingPeriodSceneName(gameObject.scene.name, "next"));
-        // create the time traveling label and set it off initially
-        DestroyImmediate(UIGlobals.timeTravelingLabelContainer);
-        UIGlobals.timeTravelingLabelContainer = CreateScreenSpaceUIElements.CreateHUDTimeTravelingLabel(UIVisibilityGlobals.activeHUD, "TIME TRAVELING TO " + nextTimePeriodLabelText);
-        UIGlobals.timeTravelingLabelContainer.SetActive(false);
+        string upcomingSceneName = ManageScenes.GetUpcomingPeriodSceneName(gameObject.scene.name, "next");
+        if (upcomingSceneName != "null")
+        {
+            string nextTimePeriodLabelText = SceneGlobals.TimePeriods.GetTimePeriodLabelBySceneName(upcomingSceneName);
+            // create the time traveling label and set it off initially
+            if (UIGlobals.timeTravelingLabelContainer)
+            {
+                DestroyImmediate(UIGlobals.timeTravelingLabelContainer);
+            }
+            UIGlobals.timeTravelingLabelContainer = CreateScreenSpaceUIElements.CreateHUDTimeTravelingLabel(UIVisibilityGlobals.activeHUD, "TIME TRAVELING TO " + nextTimePeriodLabelText);
+            UIGlobals.timeTravelingLabelContainer.SetActive(false);
+        }
     }
 
     void Update()
@@ -72,13 +79,16 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         currentFrameCount++;
 
         // show the time-traveling label if appropriate
-        if (ModeState.doShowTimeTravelingLabel)
+        if (UIGlobals.timeTravelingLabelContainer)
         {
-            UIGlobals.timeTravelingLabelContainer.SetActive(true);
-        }
-        else
-        {
-            UIGlobals.timeTravelingLabelContainer.SetActive(false);
+            if (ModeState.doShowTimeTravelingLabel)
+            {
+                UIGlobals.timeTravelingLabelContainer.SetActive(true);
+            }
+            else
+            {
+                UIGlobals.timeTravelingLabelContainer.SetActive(false);
+            }
         }
     }
 
