@@ -67,23 +67,29 @@ public class InputActions : MonoBehaviour
         FollowGuidedTour.IncrementGuidedTourIndexAndSetAgentOnPath();
     }
 
-    public void TimeTravelBackward()
+    public void TimeTravelBackward(float transitionDuration = SceneGlobals.timeTravelTransitionDuration)
     {
+        // show the time-traveling label
+        ModeState.doShowTimeTravelingLabel = true;
+
         // get the previous time period scene name
         string previousTimePeriodSceneName = ManageScenes.GetUpcomingPeriodSceneName(gameObject.scene.name, "previous");
 
         // toggle to the previous scene with a camera effect transition
         StartCoroutine(ToggleSceneAndUI.ToggleFromSceneToSceneWithTransition(SceneManager.GetActiveScene().name, previousTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform,
-            ManageFPSControllers.FPSControllerGlobals.activeFPSControllerCamera.gameObject, "FlashBlack", 0.2f));
+            ManageFPSControllers.FPSControllerGlobals.activeFPSControllerCamera.gameObject, "FlashBlack", transitionDuration));
     }
 
-    public void TimeTravelForward()
+    public void TimeTravelForward(float transitionDuration = SceneGlobals.timeTravelTransitionDuration)
     {
+        // show the time-traveling label
+        ModeState.doShowTimeTravelingLabel = true;
+
         // get the next time period scene name
         string nextTimePeriodSceneName = ManageScenes.GetUpcomingPeriodSceneName(gameObject.scene.name, "next");
 
         // then toggle to the next scene with a camera effect transition
-        StartCoroutine(ToggleSceneAndUI.ToggleFromSceneToSceneWithTransition(SceneManager.GetActiveScene().name, nextTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerCamera.gameObject, "FlashBlack", 0.2f));
+        StartCoroutine(ToggleSceneAndUI.ToggleFromSceneToSceneWithTransition(SceneManager.GetActiveScene().name, nextTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerCamera.gameObject, "FlashBlack", transitionDuration));
     }
 
     public void ToggleHistoricPhotos()

@@ -28,6 +28,11 @@ public class SceneGlobals
     public static string mallEra60s70sSceneName = "60s70s";
     public static string mallEra80s90sSceneName = "80s90s";
 
+    // typical duration for time-traveling to darken the screen before switching scenes
+    public const float timeTravelTransitionDuration = 0.4f;
+    // time-travel transition time is longer on guided tour
+    public const float guidedTourTimeTravelTransitionDuration = 0.8f;
+
     // scene to jump to if autoStart is true in startupConfig
     public static string autoStartSceneName = mallEra60s70sSceneName;
     // scene to set active after all other scenes are loaded
