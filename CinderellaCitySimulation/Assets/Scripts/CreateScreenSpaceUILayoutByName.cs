@@ -56,7 +56,9 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
                 DestroyImmediate(UIGlobals.timeTravelingLabelContainer);
             }
             UIGlobals.timeTravelingLabelContainer = CreateScreenSpaceUIElements.CreateHUDTimeTravelingLabel(UIVisibilityGlobals.activeHUD, "TIME TRAVELING TO " + nextTimePeriodLabelText);
+            // always hide the time-traveling label when enabled, since time-traveling is now done
             UIGlobals.timeTravelingLabelContainer.SetActive(false);
+            ModeState.doShowTimeTravelingLabel = false;
         }
     }
 
