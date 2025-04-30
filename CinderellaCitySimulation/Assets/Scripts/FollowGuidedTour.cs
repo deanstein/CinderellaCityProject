@@ -269,10 +269,6 @@ public class FollowGuidedTour : MonoBehaviour
                 stationaryTimePaused = pauseBeforeResumeDuration;
                 IncrementGuidedTourIndexAndSetAgentOnPath(thisAgent.gameObject.scene.name);
             }
-
-            // we may have just finished time-traveling, so hide the label
-            ModeState.doShowTimeTravelingLabel = false;
-            isPeriodicTimeTraveling = false;
         }
     }
 
