@@ -54,8 +54,6 @@ public class FollowGuidedTour : MonoBehaviour
 
     // set to true briefly to allow IEnumerator time-travel transition
     public static bool isGuidedTourTimeTravelRequested = false;
-    // set to true when time-traveling periodically
-    private bool isPeriodicTimeTraveling = false;
     // set to true to force an update of historic photo and people visibility
     private bool isProxyObjectVisibilityUpdateRequired = false;
 
@@ -234,7 +232,7 @@ public class FollowGuidedTour : MonoBehaviour
             // calculate the remaining distance to the next photo
             // and determine whether we're already at the next photo
             float calculatedRemainingDistance = Vector3.Distance(thisAgent.nextPosition, guidedTourFinalNavMeshDestinations[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex]);
-            bool isAtDestination = calculatedRemainingDistance < thisAgent.height / 2;
+            bool isAtDestination = calculatedRemainingDistance < thisAgent.height;
 
             // restart the guided tour to ensure new pathfinding happens 
             ModeState.isGuidedTourActive = false;
@@ -242,13 +240,13 @@ public class FollowGuidedTour : MonoBehaviour
 
             // set the initial visibility of historic photos and people
             // when peeking, nothing should be visible
-            if (ModeState.isTimeTravelPeekActive)
+            if (ModeState.isTimeTravelPeeking)
             {
                 ModeState.areHistoricPhotosRequestedVisible = false;
                 ModeState.arePeopleRequestedVisible = false;
             }
             // if we were just previously periodic time-traveling, hide people
-            else if (isPeriodicTimeTraveling)
+            else if (ModeState.isPeriodicTimeTraveling)
             {
                 ModeState.arePeopleRequestedVisible = false;
             }
@@ -264,9 +262,9 @@ public class FollowGuidedTour : MonoBehaviour
 
             // if we're at the destination when enabled, and peek is not active, proceed to the next photo
             // (this likely happened because we're resuming after time-travel peeking)
-            if (!ModeState.isTimeTravelPeekActive && isAtDestination)
+            if (!ModeState.isTimeTravelPeeking && isAtDestination)
             {
-                stationaryTimePaused = pauseBeforeResumeDuration;
+                stationaryTimePaused = pauseAtEnableOrResumeDuration;
                 IncrementGuidedTourIndexAndSetAgentOnPath(thisAgent.gameObject.scene.name);
             }
         }
@@ -312,7 +310,7 @@ public class FollowGuidedTour : MonoBehaviour
 
                 NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, guidedTourFinalNavMeshDestinations[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex], showDebugLines);
             }
-            // otherwise, ensure the agent has a path on the nav mesh if it doesn't already have apath
+            // otherwise, ensure the agent has a path on the nav mesh if it doesn't already have a path
             // and if its path isn't partial or invalid (those are handled below)
             else if (!thisAgent.hasPath && thisAgent.pathStatus != NavMeshPathStatus.PathPartial && thisAgent.pathStatus != NavMeshPathStatus.PathPartial)
             {
@@ -361,8 +359,11 @@ public class FollowGuidedTour : MonoBehaviour
                 }
             }
 
-            // only update the guiided tour vector if the mode is not paused, and we're moving
-            if (!ModeState.isGuidedTourPaused && thisAgent.velocity.sqrMagnitude > 0f)
+            // only update the guided tour vector if the mode is not paused, and we're moving
+            if (!ModeState.isGuidedTourPaused && 
+            thisAgent.velocity.sqrMagnitude > 0f && 
+            !ModeState.isPeriodicTimeTraveling &&
+            !ModeState.isTimeTravelPeeking)
             {
                 // store the current camera destination
                 currentGuidedTourDestinationCamera = guidedTourObjects[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex].GetComponent<Camera>();
@@ -376,7 +377,8 @@ public class FollowGuidedTour : MonoBehaviour
                     {
                         currentGuidedTourVector = currentGuidedTourDestinationCamera.transform.forward;
                     }
-                    else // or simply look at the image, but no y-component
+                    // or simply look at the image, but no y-component
+                    else
                     {
                         // distance along camera plane to look to
                         // this should match the FormIt camera distance in the Match Photo plugin
@@ -453,9 +455,9 @@ public class FollowGuidedTour : MonoBehaviour
             // show the time-traveling label
             ModeState.doShowTimeTravelingLabel = true;
 
+            // invoke time-traveling
             string nextTimePeriodSceneName = ManageScenes.GetUpcomingPeriodSceneName(gameObject.scene.name, "next");
-
-            StartCoroutine(ToggleSceneAndUI.ToggleFromSceneToSceneWithTransition(thisAgent.gameObject.scene.name, nextTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform, ManageCameraActions.CameraActionGlobals.activeCameraHost, "FlashBlack", 0.2f));
+            StartCoroutine(ToggleSceneAndUI.ToggleFromSceneToSceneWithTransition(thisAgent.gameObject.scene.name, nextTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform, ManageCameraActions.CameraActionGlobals.activeCameraHost, "FlashBlack", SceneGlobals.guidedTourTimeTravelTransitionDuration));
 
             // indicate to the next scene that it needs to recalc its cameras and paths
             SceneGlobals.isGuidedTourTimeTraveling = true;
@@ -465,7 +467,7 @@ public class FollowGuidedTour : MonoBehaviour
         // but the pause duration will differ between unpaused and paused states
 
         // not paused
-        if ((calculatedRemainingDistance < thisAgent.height / 2 || thisAgent.velocity.magnitude < 0.01f) && !ModeState.isGuidedTourPaused && ModeState.isGuidedTourActive)
+        if ((calculatedRemainingDistance < thisAgent.height || thisAgent.velocity.sqrMagnitude == 0f) && !ModeState.isGuidedTourPaused && ModeState.isGuidedTourActive)
         {
             stationaryTimeActive += Time.deltaTime;
         }
@@ -486,20 +488,20 @@ public class FollowGuidedTour : MonoBehaviour
                 stationaryTimeActive = 0f;
                 // increment the index so the next time we're in this era, we go to the next photo
                 IncrementGuidedTourIndex(thisAgent.gameObject.scene.name);
-                isPeriodicTimeTraveling = true;
+                ModeState.isPeriodicTimeTraveling = true;
                 Debug.Log("Periodic time-traveling!");
             }
             // handle the alternating time-travel mode
             else if (ModeState.autoTimeTravelPeek)
             {
                 // if requested, initiate time traveling briefly
-                if (!ModeState.isTimeTravelPeekActive)
+                if (!ModeState.isTimeTravelPeeking)
                 {
                     Debug.Log("FPSAgent has been stationary with guided tour ACTIVE for " + (pauseAtCameraDuration) + " seconds or more AND time travel peek is requested, so time-traveling briefly to peek at the next era.");
                     stationaryTimeActive = 0f;
                     // request time travel and mark peek active
                     isGuidedTourTimeTravelRequested = true;
-                    ModeState.isTimeTravelPeekActive = true;
+                    ModeState.isTimeTravelPeeking = true;
                     // handle photo and people visibility in preparation for returning
                     ModeState.areHistoricPhotosRequestedVisible = false;
                     ModeState.arePeopleRequestedVisible = false;
@@ -509,6 +511,8 @@ public class FollowGuidedTour : MonoBehaviour
                     Debug.Log("FPSAgent has been stationary with guided tour ACTIVE for " + (pauseAtCameraDuration) + " seconds or more. Going to next destination.");
                     IncrementGuidedTourIndexAndSetAgentOnPath();
                     stationaryTimeActive = 0f;
+                    // in case we were previously periodic time-traveling, reset the flag
+                    ModeState.isPeriodicTimeTraveling = false;
                 }
             }
             // default behavior is to move on to the next destination
@@ -517,11 +521,13 @@ public class FollowGuidedTour : MonoBehaviour
                 Debug.Log("FPSAgent has been stationary with guided tour ACTIVE for " + (pauseAtCameraDuration) + " seconds or more. Going to next destination.");
                 IncrementGuidedTourIndexAndSetAgentOnPath();
                 stationaryTimeActive = 0f;
+                // in case we were previously periodic time-traveling, reset the flag
+                ModeState.isPeriodicTimeTraveling = false;
             }
         }
 
         // paused
-        if (ModeState.isGuidedTourPaused && !GetIsGuidedTourOverrideRequested() && (thisAgent.velocity.magnitude < 0.01f || thisAgent.remainingDistance == Mathf.Infinity))
+        if (ModeState.isGuidedTourPaused && !GetIsGuidedTourOverrideRequested() && (thisAgent.velocity.sqrMagnitude == 0f || thisAgent.remainingDistance == Mathf.Infinity))
         {
             stationaryTimePaused += Time.deltaTime;
         }
@@ -530,35 +536,39 @@ public class FollowGuidedTour : MonoBehaviour
             stationaryTimePaused = 0f;
         }
 
-        if (stationaryTimePaused >= pauseBeforeResumeDuration)
+        if (stationaryTimePaused >= (ModeState.autoTimeTravelPeek && ModeState.isTimeTravelPeeking ? pauseAtTimeTravelPeekDuration : pauseAtEnableOrResumeDuration))
         {
             // handle alternating time travel and peek being active
             if (ModeState.autoTimeTravelPeek)
             {
                 // if we're peeking for time-travel, time travel back
-                if (ModeState.isTimeTravelPeekActive)
+                if (ModeState.isTimeTravelPeeking)
                 {
-                    Debug.Log("FPSAgent has been stationary with guided tour PAUSED for " + (pauseAtCameraDuration) + " seconds or more AND alternating time travel is active AND time travel peek is active, so time-traveling back.");
+                    Debug.Log("FPSAgent has been stationary with guided tour PAUSED for " + pauseAtTimeTravelPeekDuration + " seconds or more AND alternating time travel is active AND time travel peek is active, so time-traveling back.");
                     stationaryTimePaused = 0f;
-                    ModeState.isTimeTravelPeekActive = false;
+                    ModeState.isTimeTravelPeeking = false;
                     isGuidedTourTimeTravelRequested = true;
                 }
                 // otherwise, resume guided tour
                 else
                 {
-                    Debug.Log("FPSAgent has been stationary with guided tour PAUSED for " + (pauseBeforeResumeDuration) + " seconds or more. Resuming guided tour.");
+                    Debug.Log("FPSAgent has been stationary with guided tour PAUSED for " + (pauseAtEnableOrResumeDuration) + " seconds or more. Resuming guided tour.");
                     ModeState.isGuidedTourPaused = false;
                     ModeState.isGuidedTourActive = true;
                     stationaryTimePaused = 0f;
+                    // in case we were previously periodic time-traveling, reset the flag
+                    ModeState.isPeriodicTimeTraveling = false;
                 }
             } 
             // default behavior is to resume guided tour
             else
             {
-                Debug.Log("FPSAgent has been stationary with guided tour PAUSED for " + (pauseBeforeResumeDuration) + " seconds or more. Resuming guided tour.");
+                Debug.Log("FPSAgent has been stationary with guided tour PAUSED for " + (pauseAtEnableOrResumeDuration) + " seconds or more. Resuming guided tour.");
                 ModeState.isGuidedTourPaused = false;
                 ModeState.isGuidedTourActive = true;
                 stationaryTimePaused = 0f;
+                // in case we were previously periodic time-traveling, reset the flag
+                ModeState.isPeriodicTimeTraveling = false;
             }
         }
 
@@ -589,7 +599,7 @@ public class FollowGuidedTour : MonoBehaviour
         // during guided tour, historic photos should
         // only be visible when within some distance to the next destination
         // this is possibly expensive, so only do it one frame only when requested
-        if (ModeState.isGuidedTourActive && !ModeState.isTimeTravelPeekActive && thisAgent.enabled && thisAgent.isOnNavMesh)
+        if (ModeState.isGuidedTourActive && !ModeState.isTimeTravelPeeking && thisAgent.enabled && thisAgent.isOnNavMesh)
         {
             if (calculatedRemainingDistance < lookToCameraAtRemainingDistance)
             {
@@ -603,7 +613,7 @@ public class FollowGuidedTour : MonoBehaviour
 
         // similarly, people should be hidden when within some distance to next destination
         // this is possibly expensive, so only do it one frame when requested
-        if (ModeState.isGuidedTourActive && !ModeState.isTimeTravelPeekActive && !isPeriodicTimeTraveling && thisAgent.enabled && thisAgent.isOnNavMesh)
+        if (ModeState.isGuidedTourActive && !ModeState.isTimeTravelPeeking && !ModeState.isPeriodicTimeTraveling && thisAgent.enabled && thisAgent.isOnNavMesh)
         {
             if (calculatedRemainingDistance < hidePeopleAtRemainingDistance)
             {
