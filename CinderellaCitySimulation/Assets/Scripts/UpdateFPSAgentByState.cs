@@ -30,9 +30,16 @@ public class UpdateFPSAgentByState : MonoBehaviour
             if (ModeState.isAntiGravityModeActive)
             {
                 gameObject.GetComponent<NavMeshAgent>().enabled = false;
-            } else
+            }
+            else
             {
                 gameObject.GetComponent<NavMeshAgent>().enabled = true;
+            }
+
+            // agent should be disabled if we're time-travel peeking or periodic time-traveling
+            if (ModeState.isTimeTravelPeeking || ModeState.isPeriodicTimeTraveling)
+            {
+                gameObject.GetComponent<NavMeshAgent>().enabled = false;
             }
         }
     }
