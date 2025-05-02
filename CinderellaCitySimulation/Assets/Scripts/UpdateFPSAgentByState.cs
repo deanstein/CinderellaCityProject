@@ -10,37 +10,41 @@ public class UpdateFPSAgentByState : MonoBehaviour
 {
     private void Update()
     {
+        bool enableFPSAgent = false;
+
         // agent should be enabled when guided tour is active
         if (ModeState.isGuidedTourActive && !ModeState.isGuidedTourPaused)
         {
-            gameObject.GetComponent<NavMeshAgent>().enabled = true;
+            enableFPSAgent = true;
 
             // but not if anti-gravity mode is enabled
             if (ModeState.isAntiGravityModeActive)
             {
-                gameObject.GetComponent<NavMeshAgent>().enabled = false;
+                enableFPSAgent = false;
             }
         }
         else if (ModeState.isGuidedTourPaused)
         {
             // agent should be disabled when guided tour is paused
-            gameObject.GetComponent<NavMeshAgent>().enabled = false;
+            enableFPSAgent = false;
 
             // agent should be disabled when anti-gravity mode is on
             if (ModeState.isAntiGravityModeActive)
             {
-                gameObject.GetComponent<NavMeshAgent>().enabled = false;
+                enableFPSAgent = false;
             }
             else
             {
-                gameObject.GetComponent<NavMeshAgent>().enabled = true;
+                enableFPSAgent = true;
             }
 
             // agent should be disabled if we're time-travel peeking or periodic time-traveling
             if (ModeState.isTimeTravelPeeking || ModeState.isPeriodicTimeTraveling)
             {
-                gameObject.GetComponent<NavMeshAgent>().enabled = false;
+                enableFPSAgent = false;
             }
         }
+
+        gameObject.GetComponent<NavMeshAgent>().enabled = enableFPSAgent;
     }
 }
