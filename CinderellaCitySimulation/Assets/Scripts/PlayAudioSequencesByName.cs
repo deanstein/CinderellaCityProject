@@ -10,61 +10,13 @@ using UnityEngine;
 /// </summary>
 
 // this script needs to be attached to an object that plays a series of AudioClips
-// NOTE: this script assumes AudioClips have the proper import settings applied (Load in Background, Compressed in Memory, etc) which should be handled by AssetImportPipeline
+// NOTE: this script assumes AudioClips have the proper import settings applied (Load in Background, 
+// Compressed in Memory, etc) which should be handled by AssetImportPipeline
 // if not, the game may stutter or hang at startup when invoking "Resources.Load()" on an AudioClip
 
 // the object this script is attached to should have these components
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(CanDisableComponents))]
-
-// define the type of data/parameters that a set of speakers can get and set
-[System.Serializable]
-public class SpeakerParams
-{
-    public string keyName = "";
-    public AudioSource masterAudioSource;
-    public List<AudioSource> activeSlaveAudioSources = new List<AudioSource>();
-    public AudioClip[] clipSequence;
-    public int lastKnownClipIndex = 0;
-    public AudioClip lastKnownClip;
-    public float lastKnownClipTime = 0f;
-    public float speakerVolume = 0; // initialize at 0 to prevent a frame of extra-loud music
-    public float maxDistance = 0f;
-    public bool isResuming = false;
-}
-
-public class AudioSourceGlobals
-{
-    //
-    // initialize speaker parameter sets
-    //
-    public static string mallAmbientChatter60s70sKeyName = "mall-ambient-chatter-60s70s";
-    public static string mallMusic60s70sKeyName = "mall-music-60s70s";
-
-    public static string mallAmbientChatter80s90sKeyName = "mall-ambient-chatter-80s90s";
-    public static string mallMusic80s90sKeyName = "mall-music-80s90s";
-
-    // default volume levels and max distances
-    public static float defaultSpeakerVolumeChatter = 0.3f;
-    public static float defaultSpeakerVolumeExteriorAmbient = 0.9f;
-    public static float defaultSpeakerMaxDistanceMallChatter = 500f; // also used for exterior ambient
-
-    public static float defaultSpeakerVolumeMallCommon = 0.2f;
-    public static float defaultSpeakerMaxDistanceMallCommon = 20f;
-
-    public static float defaultSpeakerVolumeMallFountain = 0.3f;
-    public static float defaultSpeakerDistanceMallFountain = 90f;
-
-    public static float defaultSpeakerVolumeStore = 0.3f;
-    public static float defaultSpeakerMaxDistanceStore = 15f;
-
-    // only one set of params can exist for each type, so keep track of them here
-    public static List<SpeakerParams> allKnownSpeakerParams = new List<SpeakerParams>();
-
-    // some audio clip sequences will change depending on 
-    // whether the player is considered outside the mall or inside
-    public static bool isPlayerOutside;
-}
 
 public class PlayAudioSequencesByName : MonoBehaviour
 {
@@ -72,6 +24,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
     AudioSource thisAudioSourceComponent;
     CanDisableComponents thisCanToggleComponentsScript;
     SpeakerParams thisSpeakerParams;
+    bool isMaster = false;
 
     // return speaker parameters by object name
     // most audio source distances and volumes are assigned to defaults, but can be overridden here
@@ -86,9 +39,9 @@ public class PlayAudioSequencesByName : MonoBehaviour
             // mall - 60s70s
 
             // ambient chatter
-            case string partialName when partialName.Contains(AudioSourceGlobals.mallAmbientChatter60s70sKeyName):
+            case string partialName when partialName.Contains("mall-ambient-chatter-60s70s"):
 
-                thisKeyName = AudioSourceGlobals.mallAmbientChatter60s70sKeyName;
+                thisKeyName = "mall-ambient-chatter-60s70s";
                 matchingParams = GetSpeakerParamsIfKnown(thisKeyName);
                 // if these params do not exist, create them and add them to the list
                 if (matchingParams == null)
@@ -157,9 +110,9 @@ public class PlayAudioSequencesByName : MonoBehaviour
                 return matchingParams;
 
             // common area music
-            case string partialName when partialName.Contains(AudioSourceGlobals.mallMusic60s70sKeyName):
+            case string partialName when partialName.Contains("mall-music-60s70s"):
 
-                thisKeyName = AudioSourceGlobals.mallMusic60s70sKeyName;
+                thisKeyName = "mall-music-60s70s";
                 matchingParams = GetSpeakerParamsIfKnown(thisKeyName);
 
                 // if these params do not exist, create them and add them to the list
@@ -232,9 +185,9 @@ public class PlayAudioSequencesByName : MonoBehaviour
                 return matchingParams;
 
             // common area music
-            case string partialName when partialName.Contains(AudioSourceGlobals.mallMusic80s90sKeyName):
+            case string partialName when partialName.Contains("mall-music-80s90s"):
 
-                thisKeyName = AudioSourceGlobals.mallMusic80s90sKeyName;
+                thisKeyName = "mall-music-80s90s";
                 matchingParams = GetSpeakerParamsIfKnown(thisKeyName);
                 // if these params do not exist, create them and add them to the list
                 if (matchingParams == null)
@@ -465,12 +418,12 @@ public class PlayAudioSequencesByName : MonoBehaviour
             case string partialName when partialName.Contains("60s70s") ||
             partialName.Contains(SceneGlobals.experimentalSceneName):
 
-                matchingParams = AssociateSpeakerParamsByName(AudioSourceGlobals.mallAmbientChatter60s70sKeyName);
+                matchingParams = AssociateSpeakerParamsByName("mall-ambient-chatter-60s70s");
                 return matchingParams;
 
             case string partialName when partialName.Contains("80s90s"):
 
-                matchingParams = AssociateSpeakerParamsByName(AudioSourceGlobals.mallAmbientChatter80s90sKeyName);
+                matchingParams = AssociateSpeakerParamsByName("mall-ambient-chatter-80s90s");
                 return matchingParams;
 
             default:
@@ -487,12 +440,12 @@ public class PlayAudioSequencesByName : MonoBehaviour
             case string partialName when partialName.Contains("60s70s") ||
             partialName.Contains(SceneGlobals.experimentalSceneName):
 
-                matchingParams = AssociateSpeakerParamsByName(AudioSourceGlobals.mallMusic60s70sKeyName);
+                matchingParams = AssociateSpeakerParamsByName("mall-music-60s70s");
                 return matchingParams;
 
             case string partialName when partialName.Contains("80s90s"):
 
-                matchingParams = AssociateSpeakerParamsByName(AudioSourceGlobals.mallMusic80s90sKeyName);
+                matchingParams = AssociateSpeakerParamsByName("mall-music-80s90s");
                 return matchingParams;
 
             default:
