@@ -143,7 +143,7 @@ public class ToggleChildrenComponentsByProximityToPlayer : MonoBehaviour {
             childrenPositions[originalIndex] = distributedChildrenPositions[i]; // update the original array
 
             // if this is a speaker object, its max distance may be different
-            maxDistance = distributedChildrenObjects[i].name.Contains("speaker-") ? PlayAudioSequencesByName.AssociateSpeakerParamsByName(distributedChildrenObjects[i].name).maxDistance : maxDistance;
+            maxDistance = distributedChildrenObjects[i].name.Contains("speaker-") ? ManageAudioSources.AssociateSpeakerParamsByName(distributedChildrenObjects[i].name).maxDistance : maxDistance;
 
             // skip if there's no player camera available
             if (!ManageFPSControllers.FPSControllerGlobals.activeFPSControllerCamera)
