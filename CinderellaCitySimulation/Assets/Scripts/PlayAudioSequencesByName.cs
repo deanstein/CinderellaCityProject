@@ -24,7 +24,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
     AudioSource thisAudioSourceComponent;
     CanDisableComponents thisCanToggleComponentsScript;
     SpeakerParams thisSpeakerParams;
-    bool isMaster = false;
+    private bool isMasterAudioSource = false;
 
     private void Awake()
     {
@@ -38,18 +38,20 @@ public class PlayAudioSequencesByName : MonoBehaviour
 
     void OnEnable()
     {
-        if (!ManageFPSControllers.FPSControllerGlobals.activeFPSController)
-        {
-            return;
-        }
+        // check if this is the master audio source
+        isMasterAudioSource = thisSpeakerParams.masterAudioSource == thisAudioSourceComponent;
 
-        StartAudioSource();
+        // only start the audio source if there's an active FPSController
+        if (ManageFPSControllers.FPSControllerGlobals.activeFPSController)
+        {
+            StartAudioSource();
+        }
     }
 
     void OnDisable()
     {
         // if this is a master audiosource, record the last-known clip and time for the next master to resume
-        if (thisAudioSourceComponent == thisSpeakerParams.masterAudioSource)
+        if (isMasterAudioSource)
         {
             thisSpeakerParams.lastKnownClip = thisAudioSourceComponent.clip;
             //thisSpeakerParams.lastKnownClipTime = thisAudioSourceComponent.time;
@@ -76,12 +78,12 @@ public class PlayAudioSequencesByName : MonoBehaviour
     {
         // if this is a master, check if it has active slaves
         // if so, we cannot disable it when it gets out of range, so except it from the proximity script
-        if (thisSpeakerParams.masterAudioSource == thisAudioSourceComponent && thisSpeakerParams.activeSlaveAudioSources.Count > 0)
+        if (isMasterAudioSource && thisSpeakerParams.activeSlaveAudioSources.Count > 0)
         {
             thisCanToggleComponentsScript.canDisableComponents = false;
         }
         // if no active slaves, allow it to be disabled when it gets out of range
-        else if (thisSpeakerParams.masterAudioSource == thisAudioSourceComponent && thisSpeakerParams.activeSlaveAudioSources.Count == 0)
+        else if (isMasterAudioSource && thisSpeakerParams.activeSlaveAudioSources.Count == 0)
         {
             thisCanToggleComponentsScript.canDisableComponents = true;
         }
@@ -256,7 +258,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
             // set isResuming as false so when the next song plays, it starts at time 0 without errors
             thisSpeakerParams.isResuming = false;
         }
-        // otherwise, this must be a subordinate audiosource
+        // otherwise, this must be a slave audiosource
         else
         {
             // keep track of the active slaves
