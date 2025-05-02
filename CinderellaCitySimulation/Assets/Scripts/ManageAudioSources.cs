@@ -23,10 +23,6 @@ public class SpeakerParams
 
 public class AudioSourceGlobals
 {
-    // keep track of the master audio source in each scene
-    public static AudioSource masterAudioSource60s70s;
-    public static AudioSource masterAudioSource80s90s;
-
     // some audio clip sequences will change depending on 
     // whether the player is considered outside the mall or inside
     public static bool isPlayerOutside;
@@ -52,7 +48,7 @@ public class AudioSourceGlobals
 public class ManageAudioSources
 {
     // retrieve the known speaker params if it exists in the list
-    public static SpeakerParams GetSpeakerParamsIfKnown(string keyName)
+    public static SpeakerParams GetSpeakerParamsByKeyName(string keyName)
     {
         SpeakerParams matchingParams = null;
 
@@ -83,7 +79,7 @@ public class ManageAudioSources
             case string partialName when partialName.Contains("mall-ambient-chatter-60s70s"):
 
                 thisKeyName = "mall-ambient-chatter-60s70s";
-                matchingParams = GetSpeakerParamsIfKnown(thisKeyName);
+                matchingParams = GetSpeakerParamsByKeyName(thisKeyName);
                 // if these params do not exist, create them and add them to the list
                 if (matchingParams == null)
                 {
@@ -108,7 +104,7 @@ public class ManageAudioSources
             case string partialName when partialName.Contains("mall-fountain-60s70s-1"):
 
                 thisKeyName = "mall-fountain-60s70s-1";
-                matchingParams = GetSpeakerParamsIfKnown(thisKeyName);
+                matchingParams = GetSpeakerParamsByKeyName(thisKeyName);
                 // if these params do not exist, create them and add them to the list
                 if (matchingParams == null)
                 {
@@ -131,7 +127,7 @@ public class ManageAudioSources
             case string partialName when partialName.Contains("mall-fountain-60s70s-2"):
 
                 thisKeyName = "mall-fountain-60s70s-2";
-                matchingParams = GetSpeakerParamsIfKnown(thisKeyName);
+                matchingParams = GetSpeakerParamsByKeyName(thisKeyName);
                 // if these params do not exist, create them and add them to the list
                 if (matchingParams == null)
                 {
@@ -154,7 +150,7 @@ public class ManageAudioSources
             case string partialName when partialName.Contains("mall-music-60s70s"):
 
                 thisKeyName = "mall-music-60s70s";
-                matchingParams = GetSpeakerParamsIfKnown(thisKeyName);
+                matchingParams = GetSpeakerParamsByKeyName(thisKeyName);
 
                 // if these params do not exist, create them and add them to the list
                 if (matchingParams == null)
@@ -180,7 +176,7 @@ public class ManageAudioSources
             case string partialName when partialName.Contains("store-music-musicland-60s70s"):
 
                 thisKeyName = "store-music-musicland-60s70s";
-                matchingParams = GetSpeakerParamsIfKnown(thisKeyName);
+                matchingParams = GetSpeakerParamsByKeyName(thisKeyName);
                 // if these params do not exist, create them and add them to the list
                 if (matchingParams == null)
                 {
@@ -205,7 +201,7 @@ public class ManageAudioSources
             case string partialName when partialName.Contains("mall-ambient-chatter-80s90s"):
 
                 thisKeyName = "mall-ambient-chatter-80s90s";
-                matchingParams = GetSpeakerParamsIfKnown(thisKeyName);
+                matchingParams = GetSpeakerParamsByKeyName(thisKeyName);
                 // if these params do not exist, create them and add them to the list
                 if (matchingParams == null)
                 {
@@ -229,7 +225,7 @@ public class ManageAudioSources
             case string partialName when partialName.Contains("mall-music-80s90s"):
 
                 thisKeyName = "mall-music-80s90s";
-                matchingParams = GetSpeakerParamsIfKnown(thisKeyName);
+                matchingParams = GetSpeakerParamsByKeyName(thisKeyName);
                 // if these params do not exist, create them and add them to the list
                 if (matchingParams == null)
                 {
@@ -252,7 +248,7 @@ public class ManageAudioSources
             case string partialName when partialName.Contains("store-music-consumer-beauty-80s90s"):
 
                 thisKeyName = "store-music-consumer-beauty-80s90s";
-                matchingParams = GetSpeakerParamsIfKnown(thisKeyName);
+                matchingParams = GetSpeakerParamsByKeyName(thisKeyName);
                 // if these params do not exist, create them and add them to the list
                 if (matchingParams == null)
                 {
@@ -275,7 +271,7 @@ public class ManageAudioSources
             case string partialName when partialName.Contains("store-music-dolcis-80s90s"):
 
                 thisKeyName = "store-music-dolcis-80s90s";
-                matchingParams = GetSpeakerParamsIfKnown(thisKeyName);
+                matchingParams = GetSpeakerParamsByKeyName(thisKeyName);
                 // if these params do not exist, create them and add them to the list
                 if (matchingParams == null)
                 {
@@ -298,7 +294,7 @@ public class ManageAudioSources
             case string partialName when partialName.Contains("store-music-generic-80s90s"):
 
                 thisKeyName = "store-music-generic-80s90s";
-                matchingParams = GetSpeakerParamsIfKnown(thisKeyName);
+                matchingParams = GetSpeakerParamsByKeyName(thisKeyName);
                 // if these params do not exist, create them and add them to the list
                 if (matchingParams == null)
                 {
@@ -321,7 +317,7 @@ public class ManageAudioSources
             case string partialName when partialName.Contains("store-music-musicland-80s90s"):
 
                 thisKeyName = "store-music-musicland-80s90s";
-                matchingParams = GetSpeakerParamsIfKnown(thisKeyName);
+                matchingParams = GetSpeakerParamsByKeyName(thisKeyName);
                 // if these params do not exist, create them and add them to the list
                 if (matchingParams == null)
                 {
