@@ -455,6 +455,11 @@ public static class ManageSceneObjects
                     // the "Village Inn" photo is behind glass and best for custom tours
                     if (!filteredHistoricCameraObject.name.Contains("Gold Mall - Village Inn"))
                         filteredHistoricCameraObjects.Add(filteredHistoricCameraObject);
+                    // the Funtastics photos are too far inside the space
+                    if (!filteredHistoricCameraObject.name.Contains("Funtastic composite"))
+                    {
+                        filteredHistoricCameraObjects.Add(filteredHistoricCameraObject);
+                    }
                 }
             }
 
@@ -500,6 +505,8 @@ public static class ManageSceneObjects
                     FindGameObjectInArrayByName("Blue Mall Robin Hood interior", guidedTourObjects),
                     // Americana
                     FindGameObjectInArrayByName("Blue Mall - Americana", guidedTourObjects),
+                    // Von Frellick on the stairs
+                    FindGameObjectInArrayByName("Von Frellick stair", guidedTourObjects),
                     // Rich Burger
                     FindGameObjectInArrayByName("Blue Mall Rich Burger", guidedTourObjects),
 
@@ -516,6 +523,8 @@ public static class ManageSceneObjects
                     // ROSE MALL
                     // K-G
                     FindGameObjectInArrayByName("Rose Mall 2", guidedTourObjects),
+                    // City Campus
+                    FindGameObjectInArrayByName("Rose Mall City Campus", guidedTourObjects),
                     // Richman Bros
                     FindGameObjectInArrayByName("Rose Mall Richman", guidedTourObjects),
                     // Cricket
@@ -526,6 +535,8 @@ public static class ManageSceneObjects
                     FindGameObjectInArrayByName("Rose Mall Regiment", guidedTourObjects),
                     // Cinema-Neusteters
                     FindGameObjectInArrayByName("Rose Mall Exterior 1", guidedTourObjects),
+                    // Gano-Downs
+                    FindGameObjectInArrayByName("Rose Mall Gano-Downs exterior", guidedTourObjects),
 
                     // BLUE MALL ENTRANCES
                     // Leader entrance
@@ -552,6 +563,8 @@ public static class ManageSceneObjects
                     FindGameObjectInArrayByName("Cinder Alley gate", guidedTourObjects),
                     // Cinder Alley looking toward Penney's
                     FindGameObjectInArrayByName("Cinder Alley far", guidedTourObjects),
+                    // Cinder Alley marketing shot
+                    FindGameObjectInArrayByName("Cinder Alley marketing", guidedTourObjects),
 
                     // GOLD MALL
                     // Gold Mall colorized
@@ -614,6 +627,9 @@ public static class ManageSceneObjects
                     FindGameObjectInArrayByName("Rose Mall Woolworth's", guidedTourObjects),
                     // Stride Right
                     FindGameObjectInArrayByName("Rose Mall Stride Right", guidedTourObjects),
+
+                    // PARKING GARAGE
+                    FindGameObjectInArrayByName("parking garage at bank", guidedTourObjects),
 
                     // SHAMROCK MALL
                     // Shamrock escalator toward Broadway
