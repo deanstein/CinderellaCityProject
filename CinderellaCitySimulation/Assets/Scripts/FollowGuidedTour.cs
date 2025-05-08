@@ -294,7 +294,9 @@ public class FollowGuidedTour : MonoBehaviour
         // guided tour active, not paused
         if (ModeState.isGuidedTourActive && 
             !ModeState.isGuidedTourPaused && 
-            thisAgent.enabled)
+            thisAgent.enabled &&
+            !ModeState.isPeriodicTimeTraveling &&
+            !ModeState.isTimeTravelPeeking)
         {
             // if the player is not on the navmesh, move it to the nearest point
             if (!thisAgent.isOnNavMesh)
@@ -361,9 +363,7 @@ public class FollowGuidedTour : MonoBehaviour
 
             // only update the guided tour vector if the mode is not paused, and we're moving
             if (!ModeState.isGuidedTourPaused && 
-            thisAgent.velocity.sqrMagnitude > 0f && 
-            !ModeState.isPeriodicTimeTraveling &&
-            !ModeState.isTimeTravelPeeking)
+            thisAgent.velocity.sqrMagnitude > 0f)
             {
                 // store the current camera destination
                 currentGuidedTourDestinationCamera = guidedTourObjects[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex].GetComponent<Camera>();
@@ -552,7 +552,7 @@ public class FollowGuidedTour : MonoBehaviour
                 // otherwise, resume guided tour
                 else
                 {
-                    Debug.Log("FPSAgent has been stationary with guided tour PAUSED for " + (pauseAtEnableOrResumeDuration) + " seconds or more. Resuming guided tour.");
+                    Debug.Log("FPSAgent has been stationary with guided tour PAUSED for " + (pauseAtEnableOrResumeDuration) + " seconds or more. Resuming guided tour. Next photo: " + Instances[thisAgent.gameObject.scene.name].guidedTourObjects[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex].name);
                     ModeState.isGuidedTourPaused = false;
                     ModeState.isGuidedTourActive = true;
                     stationaryTimePaused = 0f;
@@ -563,7 +563,7 @@ public class FollowGuidedTour : MonoBehaviour
             // default behavior is to resume guided tour
             else
             {
-                Debug.Log("FPSAgent has been stationary with guided tour PAUSED for " + (pauseAtEnableOrResumeDuration) + " seconds or more. Resuming guided tour.");
+                Debug.Log("FPSAgent has been stationary with guided tour PAUSED for " + (pauseAtEnableOrResumeDuration) + " seconds or more. Resuming guided tour. Next photo: " + Instances[thisAgent.gameObject.scene.name].guidedTourObjects[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex].name);
                 ModeState.isGuidedTourPaused = false;
                 ModeState.isGuidedTourActive = true;
                 stationaryTimePaused = 0f;
