@@ -1,14 +1,16 @@
 {
   "VersionHistory": {
-    "0.8.2.202503": {
-      "Overview": "v0.8.2 adds time travel peeking at each Guided Tour photo, fixes fountain lights shining through historic photos in some cases, adjusts Guided Tour UI, adds new debug utilities, updates StartupConfig flags, and eliminates the legacy Textures folder creation on asset import to reduce friction for project integrators.",
+    "0.8.2.202505": {
+      "Overview": "v0.8.2 adds time travel peeking at each Guided Tour photo, adds new historic photos, fixes fountain lights shining through historic photos in some cases, adjusts Guided Tour UI, adds new debug utilities, updates StartupConfig flags, and eliminates the legacy Textures folder creation on asset import to reduce friction for project integrators.",
       "Environment Updates": [
+        "Added new historic photos in 1968-1978 Blue Mall, Rose Mall, and Cinder Alley; also in 1987-1997 parking garage and Funtastics",
         "Historic photos are now set to Opaque mode by default to prevent fountain lights from shining through in 60s70s"
       ],
       "UI Updates": [
         "Reduced the saturation of the GUIDED TOUR ACTIVE and GUIDED TOUR PAUSED labels"
       ],
       "Code Updates": [
+        "Added the ability to time travel peek (briefly looking at the other era when paused at a historic photo)",
         "Added debug utilities to draw and clear NavMeshPaths",
         "Added the ability to set material transparency mode in AssetImportPipeline",
         "StartupConfig: Split recordingMode flag into two separate config flags: autoTimeTravel and shuffleDestinations",
