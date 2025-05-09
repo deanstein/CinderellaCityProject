@@ -230,8 +230,18 @@ public class FollowGuidedTour : MonoBehaviour
         if (ModeState.isGuidedTourActive || ModeState.isGuidedTourPaused)
         {
             // calculate the remaining distance to the next photo
-            // and determine whether we're already at the next photo
-            float calculatedRemainingDistance = Vector3.Distance(thisAgent.nextPosition, guidedTourFinalNavMeshDestinations[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex]);
+            // use the agent's remainingDistance if it seems valid (path length on navmesh),
+            // or calculate it as the distance between the two points (as the crow flies)
+            float remainingDistanceFromAgent = thisAgent.remainingDistance;
+            float calculatedDistanceBetweenPoints = Vector3.Distance(thisAgent.nextPosition, guidedTourFinalNavMeshDestinations[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex]);
+
+            // determine if we should trust the agent's remainingDistance
+            // which sometimes reports 0 or infinity when it's not actually that value
+            // if not, use the calculated distance between the two points
+            bool useRemainingDistanceFromAgent = thisAgent.remainingDistance != Mathf.Infinity && thisAgent.remainingDistance != 0;
+            float calculatedRemainingDistance = useRemainingDistanceFromAgent ? remainingDistanceFromAgent : calculatedDistanceBetweenPoints;
+
+            // determine if we're at the current photo, within some tolerance
             bool isAtDestination = calculatedRemainingDistance < thisAgent.height;
 
             // restart the guided tour to ensure new pathfinding happens 
@@ -370,7 +380,7 @@ public class FollowGuidedTour : MonoBehaviour
                 Vector3 currentGuidedTourCameraPosition = guidedTourCameraPositions[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex];
 
                 // if we're on the last several feet of path, current tour vector is that camera forward dir
-                if (thisAgent.remainingDistance < lookToCameraAtRemainingDistance && thisAgent.remainingDistance > thisAgent.stoppingDistance)
+                if (calculatedRemainingDistance < lookToCameraAtRemainingDistance && calculatedRemainingDistance > thisAgent.stoppingDistance)
                 {
                     // match the camera forward angle 
                     if (matchCameraForward)
@@ -397,7 +407,7 @@ public class FollowGuidedTour : MonoBehaviour
                     }
                 }
                 // if the remaining distance is less than the stopping distance, look directly at the camera
-                else if (thisAgent.remainingDistance <= thisAgent.stoppingDistance)
+                else if (calculatedRemainingDistance <= thisAgent.stoppingDistance)
                 {
                     // distance along camera plane to look to
                     // this should match the FormIt camera distance in the Match Photo plugin
