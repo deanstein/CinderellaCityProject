@@ -10,7 +10,13 @@ public class UpdateFPSAgentByState : MonoBehaviour
 {
     private void Update()
     {
-        bool enableFPSAgent = false;
+        bool? enableFPSAgent = null;
+
+        // for regular gameplay, agent should be on so player won't clip NPCs
+        if (!ModeState.isGuidedTourActive && !ModeState.isGuidedTourPaused)
+        {
+            enableFPSAgent = true;
+        }
 
         // agent should be enabled when guided tour is active
         if (ModeState.isGuidedTourActive && !ModeState.isGuidedTourPaused)
@@ -45,6 +51,10 @@ public class UpdateFPSAgentByState : MonoBehaviour
             }
         }
 
-        gameObject.GetComponent<NavMeshAgent>().enabled = enableFPSAgent;
+        // set the agent if the result was defined
+        if (enableFPSAgent.HasValue)
+        {
+            gameObject.GetComponent<NavMeshAgent>().enabled = enableFPSAgent.Value;
+        }
     }
 }
