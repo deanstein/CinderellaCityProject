@@ -51,7 +51,7 @@ public class FollowGuidedTour : MonoBehaviour
     private Vector3[] guidedTourFinalNavMeshDestinations; // destinations on NavMesh
     public Camera currentGuidedTourDestinationCamera;
     public Vector3 currentGuidedTourVector;
-    private float calculatedRemainingDistance;
+    private float calculatedRemainingDistance; // uses remaining path segments
 
     // set to true briefly to allow IEnumerator time-travel transition
     public static bool isGuidedTourTimeTravelRequested = false;
@@ -73,26 +73,6 @@ public class FollowGuidedTour : MonoBehaviour
     // use a special destination list for debugging
     static readonly bool useDebuggingDestinations = false; // if true, use a special list for tour objects
     public bool doTestAllPaths = false; // if true, attempt to find paths between all destinations
-
-    // the agent sometimes reports an incorrect or invalid remainingDistance
-    // in which case, we calculate distance between points
-    // less accurate, but better than 0 or infinity
-    private float GetCalculatedRemainingDistance()
-    {
-        // use the agent's remainingDistance if it seems valid (path length on navmesh),
-        // or calculate it as the distance between the two points (as the crow flies)
-        float remainingDistanceFromAgent = NavMeshUtils.GetAgentRemainingDistanceAlongPath(thisAgent);
-        float calculatedDistanceBetweenPoints = Vector3.Distance(thisAgent.nextPosition, guidedTourFinalNavMeshDestinations[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex]);
-
-        // determine if we should trust the agent's remainingDistance
-        // which sometimes reports 0 or infinity when it's not actually that value
-        // if not, use the calculated distance between the two points
-        bool useRemainingDistanceFromAgent = remainingDistanceFromAgent != Mathf.Infinity && remainingDistanceFromAgent != 0;
-        // the final distance
-        float calculatedRemainingDistance = useRemainingDistanceFromAgent ? remainingDistanceFromAgent : calculatedDistanceBetweenPoints;
-
-        return calculatedRemainingDistance;
-    }
 
     private void Awake()
     {
@@ -250,7 +230,7 @@ public class FollowGuidedTour : MonoBehaviour
     {
         if (ModeState.isGuidedTourActive || ModeState.isGuidedTourPaused)
         {
-            calculatedRemainingDistance = GetCalculatedRemainingDistance();
+            calculatedRemainingDistance = NavMeshUtils.GetAgentRemainingDistanceAlongPath(thisAgent);
 
             // determine if we're at the current photo, within some tolerance
             bool isAtDestination = calculatedRemainingDistance < thisAgent.height;
@@ -316,7 +296,7 @@ public class FollowGuidedTour : MonoBehaviour
         {
             // need to calculate whether we've arrived manually
             // since Unity's NavMeshAgent.remainingDistance may return 0 unexpectedly
-            calculatedRemainingDistance = GetCalculatedRemainingDistance();
+            calculatedRemainingDistance = NavMeshUtils.GetAgentRemainingDistanceAlongPath(thisAgent); ;
 
             // if the player is not on the navmesh, move it to the nearest point
             if (!thisAgent.isOnNavMesh)
