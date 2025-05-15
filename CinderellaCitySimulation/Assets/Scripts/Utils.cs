@@ -140,6 +140,30 @@ public class FileDirUtils
 
 public class NavMeshUtils
 {
+    // the agent's own remainingDistance cannot be trusted,
+    // so calculate it using the path
+    public static float GetAgentRemainingDistanceAlongPath(NavMeshAgent agent)
+    {
+        if (!agent.hasPath || agent.path.corners.Length < 2)
+        {
+            return 0f; // no valid path
+        }
+
+        float remainingDistanceAlongPath = 0f;
+        Vector3[] corners = agent.path.corners;
+
+        // start with the distance from the agent to the first corner
+        remainingDistanceAlongPath += Vector3.Distance(agent.transform.position, corners[0]);
+
+        // add the other segments
+        for (int i = 0; i < corners.Length - 1; i++)
+        {
+            remainingDistanceAlongPath += Vector3.Distance(corners[i], corners[i + 1]);
+        }
+
+        return remainingDistanceAlongPath;
+    }
+
     // set a given agent's path to a given destination point
     public static NavMeshPath SetAgentOnPath(NavMeshAgent agent, Vector3 startPoint, Vector3 destination, bool drawDebugLines = false)
     {
