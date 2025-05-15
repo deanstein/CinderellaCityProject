@@ -632,10 +632,10 @@ public static class ManageSceneObjects
                     FindGameObjectInArrayByName("parking garage at bank", guidedTourObjects),
 
                     // SHAMROCK MALL
+                    // Shamrock with debris by escalator
+                    FindGameObjectInArrayByName("Shamrock Mall 1", guidedTourObjects),
                     // Shamrock escalator toward Broadway
                     FindGameObjectInArrayByName("Shamrock escalator", guidedTourObjects),
-                    // Shamrock by escalator
-                    FindGameObjectInArrayByName("Shamrock Mall 1", guidedTourObjects),
                     // Pollard Shamrock
                     FindGameObjectInArrayByName("Shamrock Woolworths", guidedTourObjects),
                     // waterbeds
