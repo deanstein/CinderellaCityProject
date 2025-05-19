@@ -453,10 +453,9 @@ public static class ManageSceneObjects
                 if (filteredHistoricCameraObject.scene.name == sceneName)
                 {
                     // the "Village Inn" photo is behind glass and best for custom tours
-                    if (!filteredHistoricCameraObject.name.Contains("Gold Mall - Village Inn"))
-                        filteredHistoricCameraObjects.Add(filteredHistoricCameraObject);
-                    // the Funtastics photos are too far inside the space
-                    if (!filteredHistoricCameraObject.name.Contains("Funtastic composite"))
+                    if (!filteredHistoricCameraObject.name.Contains("Funtastic composite")
+                        // the Funtastics photos are too far inside the space
+                        && !filteredHistoricCameraObject.name.Contains("Gold Mall - Village Inn"))
                     {
                         filteredHistoricCameraObjects.Add(filteredHistoricCameraObject);
                     }
