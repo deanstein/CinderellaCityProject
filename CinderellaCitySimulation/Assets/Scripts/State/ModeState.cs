@@ -59,6 +59,6 @@ public static class ModeState
     //
 
     // whether to invert the right stick on the controller
-    public static bool invertYAxis = true;
+    public static bool invertYAxis = false;
 }
 
