@@ -10,7 +10,7 @@ public class FollowPlayerOrAgent : MonoBehaviour
     private void Update()
     {
         // guided tour is ON, so FPSController follows agent
-        if (ModeState.isGuidedTourActive)
+        if (ModeState.isGuidedTourActive && !ModeState.isTimeTravelPeeking && !ModeState.isPeriodicTimeTraveling)
         {
             if (ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform != null)
             {
@@ -26,14 +26,16 @@ public class FollowPlayerOrAgent : MonoBehaviour
                 ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position = nextPosition;
             }
         }
-        // otherwise, guided tour is OFF or PAUSED so agent follows FPSController
-        else if (!ModeState.isGuidedTourActive || ModeState.isGuidedTourPaused)
+        // default during guided tour (paused or not)
+        // the agent follows the FPSController
+        else if (ModeState.isGuidedTourActive || ModeState.isGuidedTourPaused)
         {
             if (ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform != null)
             {
-                // it's possible for the agent to still get separated from the player
-                // for example, if the player jumped over a rail
-                // if agent gets too far from player, disable the agent to unlock it from the navmesh
+                // if agent gets too far from player, 
+                // disable the agent to unlock it from the navmesh
+                // (it's possible for the agent to still get separated from the player
+                // for example, if the player jumped over a rail)
                 bool isOnNavMesh = Utils.GeometryUtils.GetIsOnNavMeshWithinTolerance(new Vector3(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position.x, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position.y - ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.baseOffset / 2, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position.z), 1.0f);
 
                 if (!ManageFPSControllers.FPSControllerGlobals.activeFPSController.GetComponentInChildren<CharacterController>().isGrounded || !isOnNavMesh || Vector3.Distance(GetComponent<NavMeshAgent>().transform.position, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position) > 1.0f)
@@ -48,9 +50,14 @@ public class FollowPlayerOrAgent : MonoBehaviour
 
                 this.GetComponent<NavMeshAgent>().updatePosition = true;
 
-                // update this object's position to match the player's last known position
+                // update the NavmeshAgent's position 
+                // to match the player's last known position
                 GetComponent<NavMeshAgent>().transform.position = ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position;
             }
+        }
+        if (!ModeState.isTimeTravelPeeking && !ModeState.isPeriodicTimeTraveling && !ModeState.doShowTimeTravelingLabel)
+        {
+
         }
     }
 }
