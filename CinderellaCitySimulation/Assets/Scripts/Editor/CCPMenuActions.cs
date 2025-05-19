@@ -3,6 +3,7 @@ using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
 [ExecuteInEditMode]
@@ -444,6 +445,30 @@ public class CCPMenuActions : MonoBehaviour
         } else
         {
             DebugUtils.DebugLog("No curated Guided Tour objects found!");
+        }
+    }
+
+    // ensures agent and FPSController are aligned
+    // to avoid unexpected position updates during GuidedTour
+    [MenuItem("Cinderella City Project/Guided Tour/Align Agent and FPSController")]
+    public static void AlignAgentAndController()
+    {
+        GameObject firstPersonControllerParent = ManageFPSControllers.GetFirstPersonControllerInScene().gameObject;
+        if (firstPersonControllerParent != null)
+        {
+            NavMeshAgent agent = firstPersonControllerParent.GetComponent<NavMeshAgent>();
+            if (agent != null)
+            {
+                agent.transform.position = firstPersonControllerParent.transform.position;
+            }
+            else
+            {
+                Debug.LogWarning("NavMeshAgent component not found on the first-person controller.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("First-person controller not found in the scene.");
         }
     }
 
