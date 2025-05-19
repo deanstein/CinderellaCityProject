@@ -28,6 +28,12 @@ public class UpdateFPSAgentByState : MonoBehaviour
             {
                 enableFPSAgent = false;
             }
+
+            // agent should be disabled if we're time-travel peeking or periodic time-traveling
+            if (ModeState.isTimeTravelPeeking || ModeState.isPeriodicTimeTraveling)
+            {
+                enableFPSAgent = false;
+            }
         }
         else if (ModeState.isGuidedTourPaused)
         {
@@ -49,6 +55,12 @@ public class UpdateFPSAgentByState : MonoBehaviour
             {
                 enableFPSAgent = false;
             }
+        }
+
+        // agent should always be off if time-traveling
+        if (ModeState.doShowTimeTravelingLabel)
+        {
+            enableFPSAgent = false;
         }
 
         // set the agent if the result was defined
