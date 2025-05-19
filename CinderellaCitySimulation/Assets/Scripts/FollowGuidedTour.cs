@@ -74,6 +74,27 @@ public class FollowGuidedTour : MonoBehaviour
     static readonly bool useDebuggingDestinations = false; // if true, use a special list for tour objects
     public bool doTestAllPaths = false; // if true, attempt to find paths between all destinations
 
+    // the agent sometimes reports an incorrect or invalid remainingDistance
+    // in which case, we calculate distance between points
+    // less accurate, but better than 0 or infinity
+    private float GetCalculatedRemainingDistance()
+    {
+        // use the agent's remainingDistance if it seems valid (path length on navmesh),
+        // or calculate it as the distance between the two points (as the crow flies)
+        float remainingDistanceFromAgent = NavMeshUtils.GetAgentRemainingDistanceAlongPath(thisAgent);
+        float calculatedDistanceBetweenPoints = Vector3.Distance(thisAgent.nextPosition, guidedTourFinalNavMeshDestinations[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex]);
+
+        // determine if we should trust the agent's remainingDistance
+        // which sometimes reports 0 or infinity when it's not actually that value
+        // if not, use the calculated distance between the two points
+        bool useRemainingDistanceFromAgent = remainingDistanceFromAgent != Mathf.Infinity && remainingDistanceFromAgent != 0;
+        // the final distance
+        float calculatedRemainingDistance = useRemainingDistanceFromAgent ? remainingDistanceFromAgent : calculatedDistanceBetweenPoints;
+
+        return calculatedRemainingDistance;
+    }
+
+
     private void Awake()
     {
         string thisSceneName = gameObject.scene.name;
@@ -230,11 +251,6 @@ public class FollowGuidedTour : MonoBehaviour
     {
         if (ModeState.isGuidedTourActive || ModeState.isGuidedTourPaused)
         {
-            calculatedRemainingDistance = NavMeshUtils.GetAgentRemainingDistanceAlongPath(thisAgent);
-
-            // determine if we're at the current photo, within some tolerance
-            bool isAtDestination = calculatedRemainingDistance < thisAgent.height;
-
             // restart the guided tour to ensure new pathfinding happens 
             ModeState.isGuidedTourActive = false;
             ModeState.isGuidedTourPaused = true;
@@ -250,6 +266,7 @@ public class FollowGuidedTour : MonoBehaviour
             else if (ModeState.isPeriodicTimeTraveling)
             {
                 ModeState.arePeopleRequestedVisible = false;
+                // reset the agent to prevent weirdness when we start moving again
             }
             // the default is to have people visible only
             else
@@ -261,11 +278,15 @@ public class FollowGuidedTour : MonoBehaviour
             // force the proxy objects to be updated
             isProxyObjectVisibilityUpdateRequired = true;
 
+
+            // determine if we're at the current photo, within some tolerance
+            bool isAtDestination = calculatedRemainingDistance < thisAgent.height && calculatedRemainingDistance != 0;
             // if we're at the destination when enabled, and peek is not active, proceed to the next photo
             // (this likely happened because we're resuming after time-travel peeking)
             if (!ModeState.isTimeTravelPeeking && isAtDestination)
             {
-                stationaryTimePaused = pauseAtEnableOrResumeDuration;
+                // use a slightly shortened pause after peeking
+                stationaryTimePaused = pauseAtEnableOrResumeDuration / 2;
                 IncrementGuidedTourIndexAndSetAgentOnPath(thisAgent.gameObject.scene.name);
             }
         }
@@ -282,11 +303,24 @@ public class FollowGuidedTour : MonoBehaviour
                 isProxyObjectVisibilityUpdateRequired = true;
                 UpdateProxyObjectVisibility();
             }
+
+            // temporarily increment the index to calculate remaining distance
+            IncrementGuidedTourIndex(null, false);
+            // update the calculated remaining distance
+            calculatedRemainingDistance = GetCalculatedRemainingDistance();
+            // back to the original index
+            DecrementGuidedTourIndex(null, false);
         }
     }
 
     private void Update()
     {
+        if (ModeState.isGuidedTourActive || ModeState.isGuidedTourPaused)
+        {
+            // need to calculate whether we've arrived manually
+            // since Unity's NavMeshAgent.remainingDistance may return 0 unexpectedly
+            calculatedRemainingDistance = GetCalculatedRemainingDistance();
+        }
         // guided tour active, not paused
         if (ModeState.isGuidedTourActive && 
             !ModeState.isGuidedTourPaused && 
@@ -294,10 +328,6 @@ public class FollowGuidedTour : MonoBehaviour
             !ModeState.isPeriodicTimeTraveling &&
             !ModeState.isTimeTravelPeeking)
         {
-            // need to calculate whether we've arrived manually
-            // since Unity's NavMeshAgent.remainingDistance may return 0 unexpectedly
-            calculatedRemainingDistance = NavMeshUtils.GetAgentRemainingDistanceAlongPath(thisAgent); ;
-
             // if the player is not on the navmesh, move it to the nearest point
             if (!thisAgent.isOnNavMesh)
             {
@@ -651,7 +681,7 @@ public class FollowGuidedTour : MonoBehaviour
     }
 
     // increment or start over depending on the current index
-    public static void IncrementGuidedTourIndex(string sceneName = null)
+    public static void IncrementGuidedTourIndex(string sceneName = null, bool logDebugMessages = true)
     {
         // sceneName may be provided explicitly for certain cases like
         // when called in OnEnable and a stale scene name may be returned by SceneManager
@@ -660,9 +690,14 @@ public class FollowGuidedTour : MonoBehaviour
         {
             sceneName = SceneManager.GetActiveScene().name;
         }
-
-        Instances[sceneName].currentGuidedTourDestinationIndex = (Instances[sceneName].currentGuidedTourDestinationIndex + 1) % Instances[sceneName].guidedTourObjects.Length;
-        DebugUtils.DebugLog("Incrementing destination index. New destination: " + Instances[sceneName].guidedTourObjects[Instances[sceneName].currentGuidedTourDestinationIndex].name);
+        if (Instances[sceneName])
+        {
+            Instances[sceneName].currentGuidedTourDestinationIndex = (Instances[sceneName].currentGuidedTourDestinationIndex + 1) % Instances[sceneName].guidedTourObjects.Length;
+        }
+        if (logDebugMessages)
+        {
+            DebugUtils.DebugLog("Incrementing destination index. New destination: " + Instances[sceneName].guidedTourObjects[Instances[sceneName].currentGuidedTourDestinationIndex].name);
+        }
     }
 
     public static void IncrementGuidedTourIndexAndSetAgentOnPath(string sceneName = null)
@@ -680,7 +715,7 @@ public class FollowGuidedTour : MonoBehaviour
     }
 
     // decrement or go to the end depending on the current index
-    public static void DecrementGuidedTourIndex(string sceneName = null)
+    public static void DecrementGuidedTourIndex(string sceneName = null, bool logDebugMessages = true)
     {
         // sceneName may be provided explicitly for certain cases like
         // when called in OnEnable and a stale scene name may be returned by SceneManager
@@ -689,9 +724,14 @@ public class FollowGuidedTour : MonoBehaviour
         {
             sceneName = SceneManager.GetActiveScene().name;
         }
-
-        Instances[sceneName].currentGuidedTourDestinationIndex = (Instances[sceneName].currentGuidedTourDestinationIndex + Instances[sceneName].guidedTourObjects.Length - 1) % Instances[sceneName].guidedTourObjects.Length;
-        DebugUtils.DebugLog("Decrementing destination index. New destination: " + Instances[sceneName].guidedTourObjects[Instances[sceneName].currentGuidedTourDestinationIndex].name);
+        if (Instances[sceneName])
+        {
+            Instances[sceneName].currentGuidedTourDestinationIndex = (Instances[sceneName].currentGuidedTourDestinationIndex + Instances[sceneName].guidedTourObjects.Length - 1) % Instances[sceneName].guidedTourObjects.Length;
+        }
+        if (logDebugMessages)
+        {
+            DebugUtils.DebugLog("Decrementing destination index. New destination: " + Instances[sceneName].guidedTourObjects[Instances[sceneName].currentGuidedTourDestinationIndex].name);
+        }
     }
 
     public static void DecrementGuidedTourIndexAndSetAgentOnPath(string sceneName = null)
