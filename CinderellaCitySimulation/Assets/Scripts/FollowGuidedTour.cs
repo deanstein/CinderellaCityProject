@@ -255,6 +255,11 @@ public class FollowGuidedTour : MonoBehaviour
             ModeState.isGuidedTourActive = false;
             ModeState.isGuidedTourPaused = true;
 
+            // set the current vector and velocity to 0 
+            // to prevent weirdness when we start moving again
+            currentGuidedTourVector = new Vector3(0, 0, 0);
+            thisAgent.velocity = new Vector3(0, 0, 0);
+
             // set the initial visibility of historic photos and people
             // when peeking, nothing should be visible
             if (ModeState.isTimeTravelPeeking)
@@ -266,7 +271,6 @@ public class FollowGuidedTour : MonoBehaviour
             else if (ModeState.isPeriodicTimeTraveling)
             {
                 ModeState.arePeopleRequestedVisible = false;
-                // reset the agent to prevent weirdness when we start moving again
             }
             // the default is to have people visible only
             else
@@ -391,16 +395,18 @@ public class FollowGuidedTour : MonoBehaviour
                 }
             }
 
+            // store the current camera destination
+            currentGuidedTourDestinationCamera = guidedTourObjects[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex].GetComponent<Camera>();
+            Vector3 currentGuidedTourCameraPosition = guidedTourCameraPositions[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex];
+
             // only update the guided tour vector if the mode is not paused, and we're moving
             if (!ModeState.isGuidedTourPaused && 
-            thisAgent.velocity.sqrMagnitude > 0f)
+            thisAgent.velocity.sqrMagnitude > 0f && thisAgent.hasPath)
             {
-                // store the current camera destination
-                currentGuidedTourDestinationCamera = guidedTourObjects[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex].GetComponent<Camera>();
-                Vector3 currentGuidedTourCameraPosition = guidedTourCameraPositions[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex];
-
+                // the current guided tour vector is 
+                // either the path vector or the camera direction if on last leg of path
                 // if we're on the last several feet of path, current tour vector is that camera forward dir
-                if (calculatedRemainingDistance < lookToCameraAtRemainingDistance && calculatedRemainingDistance > thisAgent.stoppingDistance)
+                if (calculatedRemainingDistance < lookToCameraAtRemainingDistance && calculatedRemainingDistance > 0f)
                 {
                     // match the camera forward angle 
                     if (matchCameraForward)
@@ -426,21 +432,21 @@ public class FollowGuidedTour : MonoBehaviour
                         currentGuidedTourVector = tempVectorNoY;
                     }
                 }
-                // if the remaining distance is less than the stopping distance, look directly at the camera
-                else if (calculatedRemainingDistance <= thisAgent.stoppingDistance)
-                {
-                    // distance along camera plane to look to
-                    // this should match the FormIt camera distance in the Match Photo plugin
-                    float distanceToPlane = 5f;
+                //// if the remaining distance is less than the stopping distance, look directly at the camera
+                //else if (calculatedRemainingDistance <= thisAgent.stoppingDistance)
+                //{
+                //    // distance along camera plane to look to
+                //    // this should match the FormIt camera distance in the Match Photo plugin
+                //    float distanceToPlane = 5f;
 
-                    // Define the viewport center point (0.5, 0.5 is the center in viewport coordinates)
-                    Vector3 cameraViewportCenter = new Vector3(0.5f, 0.5f, distanceToPlane);
+                //    // Define the viewport center point (0.5, 0.5 is the center in viewport coordinates)
+                //    Vector3 cameraViewportCenter = new Vector3(0.5f, 0.5f, distanceToPlane);
 
-                    // Convert the center point from viewport space to world space
-                    Vector3 cameraViewportCenterWorld = currentGuidedTourDestinationCamera.ViewportToWorldPoint(cameraViewportCenter);
+                //    // Convert the center point from viewport space to world space
+                //    Vector3 cameraViewportCenterWorld = currentGuidedTourDestinationCamera.ViewportToWorldPoint(cameraViewportCenter);
 
-                    currentGuidedTourVector = cameraViewportCenterWorld - thisAgent.transform.position;
-                }
+                //    currentGuidedTourVector = cameraViewportCenterWorld - thisAgent.transform.position;
+                //}
                 // otherwise, current path vector is the agent's velocity,
                 // but with no vertical component
                 else
@@ -449,9 +455,6 @@ public class FollowGuidedTour : MonoBehaviour
                 }
             }
 
-            // the current guided tour vector is 
-            // either the path vector or the camera direction if on last leg of path
-            // so set the current FPSController direction and camera to that vector
             if (currentGuidedTourVector != Vector3.zero)
             {
                 // controller gets the camera forward but with no y-value to avoid tilt
