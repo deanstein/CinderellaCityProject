@@ -614,6 +614,10 @@ public class FollowGuidedTour : MonoBehaviour
             {
                 ModeState.isGuidedTourActive = false;
                 ModeState.isGuidedTourPaused = true;
+                // set the current vector and velocity to 0 
+                // to prevent weirdness when we start moving again
+                currentGuidedTourVector = new Vector3(0, 0, 0);
+                thisAgent.velocity = new Vector3(0, 0, 0);
             }
         }
 
