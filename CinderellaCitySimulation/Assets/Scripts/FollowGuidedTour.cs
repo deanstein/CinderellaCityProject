@@ -258,7 +258,7 @@ public class FollowGuidedTour : MonoBehaviour
             // set the current vector and velocity to 0 
             // to prevent weirdness when we start moving again
             currentGuidedTourVector = new Vector3(0, 0, 0);
-            thisAgent.velocity = new Vector3(0, 0, 0);
+            thisAgent.isStopped = true;
 
             // set the initial visibility of historic photos and people
             // when peeking, nothing should be visible
@@ -589,6 +589,10 @@ public class FollowGuidedTour : MonoBehaviour
                     ModeState.isGuidedTourPaused = false;
                     ModeState.isGuidedTourActive = true;
                     stationaryTimePaused = 0f;
+                    if (thisAgent.isOnNavMesh)
+                    {
+                        thisAgent.isStopped = false;
+                    }
                     // in case we were previously periodic time-traveling, reset the flag
                     ModeState.isPeriodicTimeTraveling = false;
                 }
@@ -600,6 +604,10 @@ public class FollowGuidedTour : MonoBehaviour
                 ModeState.isGuidedTourPaused = false;
                 ModeState.isGuidedTourActive = true;
                 stationaryTimePaused = 0f;
+                if (thisAgent.isOnNavMesh)
+                {
+                    thisAgent.isStopped = false;
+                }
                 // in case we were previously periodic time-traveling, reset the flag
                 ModeState.isPeriodicTimeTraveling = false;
             }
@@ -617,7 +625,10 @@ public class FollowGuidedTour : MonoBehaviour
                 // set the current vector and velocity to 0 
                 // to prevent weirdness when we start moving again
                 currentGuidedTourVector = new Vector3(0, 0, 0);
-                thisAgent.velocity = new Vector3(0, 0, 0);
+                if (thisAgent.isOnNavMesh)
+                {
+                    thisAgent.isStopped = true;
+                }
             }
         }
 
@@ -676,6 +687,8 @@ public class FollowGuidedTour : MonoBehaviour
 
         // set the mode state
         ModeState.isGuidedTourActive = true;
+        ModeState.isGuidedTourPaused = false;
+        ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.isStopped = false;
     }
 
     public static void EndGuidedTourMode()
@@ -685,6 +698,7 @@ public class FollowGuidedTour : MonoBehaviour
         // set the mode state
         ModeState.isGuidedTourActive = false;
         ModeState.isGuidedTourPaused = false;
+        ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.isStopped = true;
     }
 
     // increment or start over depending on the current index
