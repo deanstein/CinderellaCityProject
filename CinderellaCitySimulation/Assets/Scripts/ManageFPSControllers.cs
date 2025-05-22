@@ -466,6 +466,8 @@ public class ManageFPSControllers : MonoBehaviour {
         this.GetComponentInChildren<NavMeshAgent>().radius = 0.15f;
         this.GetComponentInChildren<NavMeshAgent>().baseOffset = FPSControllerGlobals.defaultFPSControllerHeight / 2;
         this.GetComponentInChildren<NavMeshAgent>().stoppingDistance = 0.5f;
+        // the FPSController doesn't need high-fidelity collision detection
+       this.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
     }
 
     private void OnEnable()
