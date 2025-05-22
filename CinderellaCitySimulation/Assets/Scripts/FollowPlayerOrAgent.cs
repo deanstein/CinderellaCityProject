@@ -26,9 +26,8 @@ public class FollowPlayerOrAgent : MonoBehaviour
                 ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position = nextPosition;
             }
         }
-        // default during guided tour (paused or not)
-        // the agent follows the FPSController
-        else if (ModeState.isGuidedTourActive || ModeState.isGuidedTourPaused)
+        // default behavior: agent follows FPSController
+        else
         {
             if (ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform != null)
             {
