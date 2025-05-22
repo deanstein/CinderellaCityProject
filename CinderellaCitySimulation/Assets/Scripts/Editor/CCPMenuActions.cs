@@ -456,7 +456,7 @@ public class CCPMenuActions : MonoBehaviour
         GameObject firstPersonControllerParent = ManageFPSControllers.GetFirstPersonControllerInScene().gameObject;
         if (firstPersonControllerParent != null)
         {
-            NavMeshAgent agent = firstPersonControllerParent.GetComponent<NavMeshAgent>();
+            NavMeshAgent agent = firstPersonControllerParent.GetComponentInChildren<NavMeshAgent>();
             if (agent != null)
             {
                 agent.transform.position = firstPersonControllerParent.transform.position;
