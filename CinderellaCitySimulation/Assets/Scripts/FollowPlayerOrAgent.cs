@@ -54,9 +54,13 @@ public class FollowPlayerOrAgent : MonoBehaviour
                 GetComponent<NavMeshAgent>().transform.position = ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position;
             }
         }
-        if (!ModeState.isTimeTravelPeeking && !ModeState.isPeriodicTimeTraveling && !ModeState.doShowTimeTravelingLabel)
-        {
 
+        // if guided mode is active or paused, always ensure the player and agent have the same elevation
+        if (ModeState.isGuidedTourActive || ModeState.isGuidedTourPaused)
+        {
+            // ensure the player's vertical position matches the agent's
+            float difference = ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position.y - GetComponent<NavMeshAgent>().transform.position.y;
+            ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position = new Vector3(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position.x, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position.y + difference, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position.z);
         }
     }
 }
