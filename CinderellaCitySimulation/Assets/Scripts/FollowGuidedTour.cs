@@ -778,7 +778,7 @@ public class FollowGuidedTour : MonoBehaviour
     }
 
     // when guided tour is active, this checks if the user is trying to override control
-    public bool GetIsGuidedTourOverrideRequested()
+    public static bool GetIsGuidedTourOverrideRequested()
     {
         if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0 || Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0 || InputActions.rightStickLook.x != 0 || InputActions.rightStickLook.y != 0)
         {
