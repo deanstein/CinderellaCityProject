@@ -487,6 +487,12 @@ public class FollowGuidedTour : MonoBehaviour
             // immediately set the flag back to false
             isGuidedTourTimeTravelRequested = false;
 
+            // update proxy object visibility
+            ModeState.areHistoricPhotosRequestedVisible = false;
+            ModeState.arePeopleRequestedVisible = false;
+            isProxyObjectVisibilityUpdateRequired = true;
+            UpdateProxyObjectVisibility();
+
             // show the time-traveling label
             ModeState.doShowTimeTravelingLabel = true;
 
