@@ -55,6 +55,13 @@ public class UpdateFPSAgentByState : MonoBehaviour
             {
                 enableFPSAgent = false;
             }
+
+            // if the player is taking control during guided tour,
+            // enable the agent to ensure no NPC clipping
+            if (FollowGuidedTour.GetIsGuidedTourOverrideRequested())
+            {
+                enableFPSAgent = true;
+            }
         }
 
         // agent should always be off if time-traveling
