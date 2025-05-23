@@ -420,9 +420,9 @@ public class PlayAudioSequencesByName : MonoBehaviour
         // determine whether the player is inside the mall or outside
         // based on the name of the game object below the player
         // this is only calculable when the player is on a floor surface ("grounded")
-        if (ManageFPSControllers.FPSControllerGlobals.activeFPSController?.GetComponent<CharacterController>().isGrounded ?? false && ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform?.position != null)
+        if (ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform?.position != null)
         {
-        AudioSourceGlobals.isPlayerOutside = Utils.StringUtils.TestIfAnyListItemContainedInString(ObjectVisibilityGlobals.exteriorObjectKeywordsList, Utils.GeometryUtils.GetTopLevelSceneContainerChildNameAtNearestNavMeshPoint(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position, 1.0f));
+        AudioSourceGlobals.isPlayerOutside = Utils.StringUtils.TestIfAnyListItemContainedInString(ObjectVisibilityGlobals.exteriorObjectKeywordsList, Utils.GeometryUtils.GetTopLevelSceneContainerChildNameAtNearestNavMeshPoint(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position, ManageFPSControllers.FPSControllerGlobals.defaultFPSControllerHeight));
         }
 
         // update the audio source with new speaker params if necessary
@@ -434,7 +434,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
             ResumeAudioSource();
         }
 
-        //if (thisAudioSourceComponent.name.Contains("ambient-chatter"))
+        //if (thisAudioSourceComponent.name.Contains("ambient-chatter") || thisAudioSourceComponent.name.Contains("mall-fountain"))
         //{
         //    DebugUtils.DebugLog("This speaker: " + thisAudioSourceComponent?.name + " is playing: " + thisAudioSourceComponent.clip.name + " at this index: " + thisSpeakerParams?.lastKnownClipIndex + " and at this time: " + thisSpeakerParams?.lastKnownClipTime);
         //}
@@ -554,29 +554,39 @@ public class PlayAudioSequencesByName : MonoBehaviour
             AudioSource masterAudioSource = thisAudioSourceComponent;
 
             // make sure the last known clip index is within the array bounds
-            thisSpeakerParams.lastKnownClipIndex = thisSpeakerParams.lastKnownClipIndex < thisSpeakerParams.clipSequence.Length - 1 && thisSpeakerParams.lastKnownClipIndex != -1 && thisSpeakerParams != null  ? thisSpeakerParams.lastKnownClipIndex : 0;
+            thisSpeakerParams.lastKnownClipIndex = thisSpeakerParams.lastKnownClipIndex < thisSpeakerParams.clipSequence.Length - 1 && thisSpeakerParams.lastKnownClipIndex != -1 && thisSpeakerParams != null ? thisSpeakerParams.lastKnownClipIndex : 0;
 
             // only set clip, time, and play if the index is available in the clipSequence array
             if (thisSpeakerParams.lastKnownClipIndex < thisSpeakerParams.clipSequence.Length && thisSpeakerParams.clipSequence.Length > 0)
             {
                 // set and play the clip based on the list of clip names
                 masterAudioSource.clip = thisSpeakerParams.clipSequence[thisSpeakerParams.lastKnownClipIndex];
+
                 // if resuming, use the last-known time; otherwise, start at the beginning (new song)
                 masterAudioSource.time = thisSpeakerParams.isResuming ? thisSpeakerParams.lastKnownClipTime : 0f;
                 masterAudioSource.Play();
 
                 DebugUtils.DebugLog("Playing master music " + masterAudioSource.clip.name + " on " + masterAudioSource);
 
-                // sync all suborinates
+                // sync all subordinates
                 SynchronizeAllSlavesWithMaster(masterAudioSource);
 
-                // if we're at the end of the list, reset the index to return to the beginning
-                thisSpeakerParams.lastKnownClipIndex = (thisSpeakerParams.lastKnownClipIndex + 1) % audioClips.Length;
+                // if only one clip exists, enable looping to prevent stopping
+                if (audioClips.Length == 1)
+                {
+                    masterAudioSource.loop = true;
+                    yield break; // exit the coroutine, as looping is handled by the AudioSource itself
+                }
+                else
+                {
+                    // if we're at the end of the list, reset the index to return to the beginning
+                    thisSpeakerParams.lastKnownClipIndex = (thisSpeakerParams.lastKnownClipIndex + 1) % audioClips.Length;
+                }
             }
 
             // wait until the clip is over to proceed to the next
             float remainingClipTime = masterAudioSource?.clip != null ? masterAudioSource.clip.length - masterAudioSource.time : 0;
-            yield return new WaitForSeconds(remainingClipTime);  
+            yield return new WaitForSeconds(remainingClipTime);
         }
     }
 
