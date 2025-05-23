@@ -307,9 +307,9 @@ public class Utils
         }
 
         // determine if an object is close enough to a valid nav mesh point to be considered on the nav mesh
-        public static bool GetIsOnNavMeshWithinTolerance(Vector3 pointToTest, float tolerance)
+        public static bool GetIsOnNavMeshWithinTolerance(Vector3 pointToTest, float tolerance, bool forceSameLevel = true)
         {
-            if (Vector3.Distance(pointToTest, GetNearestPointOnNavMesh(pointToTest, tolerance)) < tolerance)
+            if (Vector3.Distance(pointToTest, GetNearestPointOnNavMesh(pointToTest, tolerance, forceSameLevel)) < tolerance)
             {
                 return true;
             }
