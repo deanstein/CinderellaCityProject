@@ -551,6 +551,12 @@ public static class ManageSceneObjects
                     // Kiddie Shop
                     FindGameObjectInArrayByName("Shamrock Kiddie Shop", guidedTourObjects),
 
+                    // RETURN TO BLUE MALL
+                    // fountain - straight on
+                    FindGameObjectInArrayByName("Blue Mall 1", guidedTourObjects),
+                    // fountain - closer
+                    FindGameObjectInArrayByName("Blue Mall 2", guidedTourObjects),
+
                     // CINDER ALLEY
                     // Cinder Alley from Penney's
                     FindGameObjectInArrayByName("Cinder Alley 1", guidedTourObjects),
@@ -661,10 +667,18 @@ public static class ManageSceneObjects
                     FindGameObjectInArrayByName("Food Court 5", guidedTourObjects),
                     // Chick-Fil-A
                     FindGameObjectInArrayByName("Food Court 4", guidedTourObjects),
-                    // jazzercise
-                    FindGameObjectInArrayByName("Food Court 3", guidedTourObjects),
+
+                    // RETURN TO BLUE MALL
+                    // atrium marketing
+                    FindGameObjectInArrayByName("Blue Mall deep", guidedTourObjects),
+                    // carousel
+                    FindGameObjectInArrayByName("Blue Mall carousel 1", guidedTourObjects),
+                    // wedding
+                    FindGameObjectInArrayByName("Blue Mall wedding 1", guidedTourObjects),
 
                     // CINDER ALLEY
+                    // jazzercise
+                    FindGameObjectInArrayByName("Food Court 3", guidedTourObjects),
                     // Zeezo's
                     FindGameObjectInArrayByName("Cinder Alley Zeezo's", guidedTourObjects),
                     // Funtastic's
