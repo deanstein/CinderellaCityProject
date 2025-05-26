@@ -31,7 +31,8 @@ public class FollowPlayerOrAgent : MonoBehaviour
             }
             // otherwise, need to prevent the player from getting too far from the nav mesh,
             // so turn gravity on if farther than the tolerance
-            else
+            // but only if override is being requested
+            else if (FollowGuidedTour.GetIsGuidedTourOverrideRequested())
             {
                 ManageFPSControllers.SetPlayerGravity(true);
             }
