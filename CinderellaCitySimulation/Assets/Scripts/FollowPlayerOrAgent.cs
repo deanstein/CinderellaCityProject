@@ -8,41 +8,8 @@ using UnityStandardAssets.Characters.FirstPerson;
 
 public class FollowPlayerOrAgent : MonoBehaviour
 {
-    bool isOnNavMeshWithinTolerance;
-
     private void Update()
     {
-        if (ModeState.isGuidedTourActive || ModeState.isGuidedTourPaused)
-        {
-            // determine if the player is on the nav mesh within some tolerance
-            // tolerance is roughly the height of a single stair
-            float tolerance = ManageFPSControllers.FPSControllerGlobals.defaultAgentStepOffset;
-            isOnNavMeshWithinTolerance = Utils.GeometryUtils.GetIsOnNavMeshWithinTolerance(
-                new Vector3(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position.x, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position.y - ManageFPSControllers.FPSControllerGlobals.defaultFPSControllerHeight / 2, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position.z),
-                tolerance, 
-                false);
-
-            // if player is on the nav mesh, we can turn gravity off
-            // this prevents the player and the agent from being slightly misaligned
-            // when toggling between active and paused guided tour
-            if (isOnNavMeshWithinTolerance)
-            {
-                ManageFPSControllers.SetPlayerGravity(false);
-            }
-            // otherwise, need to prevent the player from getting too far from the nav mesh,
-            // so turn gravity on if farther than the tolerance
-            // but only if override is being requested
-            else if (FollowGuidedTour.GetIsGuidedTourOverrideRequested())
-            {
-                ManageFPSControllers.SetPlayerGravity(true);
-            }
-        }
-        // gravity is always on if guided tour is not active or paused
-        else
-        {
-            ManageFPSControllers.SetPlayerGravity(true);
-        }
-
         // guided tour is ON, so FPSController follows agent
         if (ModeState.isGuidedTourActive && !ModeState.isTimeTravelPeeking && !ModeState.isPeriodicTimeTraveling)
         {
@@ -69,7 +36,7 @@ public class FollowPlayerOrAgent : MonoBehaviour
                 // disable the agent to unlock it from the navmesh
                 // (it's possible for the agent to still get separated from the player
                 // for example, if the player jumped over a rail)
-                if (!isOnNavMeshWithinTolerance || Vector3.Distance(GetComponent<NavMeshAgent>().transform.position, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position) > 1.0f)
+                if (Vector3.Distance(GetComponent<NavMeshAgent>().transform.position, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position) > 1.0f)
                 {
                     GetComponent<NavMeshAgent>().enabled = false;
                 }
@@ -85,6 +52,27 @@ public class FollowPlayerOrAgent : MonoBehaviour
                 // to match the player's last known position
                 GetComponent<NavMeshAgent>().transform.position = ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position;
             }
+        }
+
+        // update gravity on player
+        // gravity is always off when guided tour is active or paused
+        // to ensure that the agent and player don't have a mismatched height
+        if (ModeState.isGuidedTourActive || ModeState.isGuidedTourPaused)
+        {
+            if (FollowGuidedTour.GetIsGuidedTourOverrideRequested())
+            {
+                ManageFPSControllers.SetPlayerGravity(true);
+            }
+            else
+            {
+                ManageFPSControllers.SetPlayerGravity(false);
+            }
+        }
+        // otherwise, gravity is on when override (mouse or controller) is requested
+        // and when anti-gravity mode isn't active
+        else if (FollowGuidedTour.GetIsGuidedTourOverrideRequested() && !ModeState.isAntiGravityModeActive)
+        {
+            ManageFPSControllers.SetPlayerGravity(true);
         }
     }
 }
