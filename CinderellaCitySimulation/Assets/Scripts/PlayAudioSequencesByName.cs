@@ -60,10 +60,6 @@ public class AudioSourceGlobals
 
     // only one set of params can exist for each type, so keep track of them here
     public static List<SpeakerParams> allKnownSpeakerParams = new List<SpeakerParams>();
-
-    // some audio clip sequences will change depending on 
-    // whether the player is considered outside the mall or inside
-    public static bool isPlayerOutside;
 }
 
 public class PlayAudioSequencesByName : MonoBehaviour
@@ -104,8 +100,8 @@ public class PlayAudioSequencesByName : MonoBehaviour
                 }
                 else // but if the params exist, make sure they're updated
                 {
-                    matchingParams.clipSequence = AudioSourceGlobals.isPlayerOutside ? ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-exterior-ambient")) : ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-ambient-chatter"));
-                    matchingParams.speakerVolume = AudioSourceGlobals.isPlayerOutside ? AudioSourceGlobals.defaultSpeakerVolumeExteriorAmbient : AudioSourceGlobals.defaultSpeakerVolumeChatter;
+                    matchingParams.clipSequence = ManageFPSControllers.FPSControllerGlobals.isPlayerOutside ? ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-exterior-ambient")) : ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-ambient-chatter"));
+                    matchingParams.speakerVolume = ManageFPSControllers.FPSControllerGlobals.isPlayerOutside ? AudioSourceGlobals.defaultSpeakerVolumeExteriorAmbient : AudioSourceGlobals.defaultSpeakerVolumeChatter;
                 }
 
                 return matchingParams;
@@ -129,7 +125,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
                 }
                 else // but if the params exist, make sure they're updated
                 {
-                    matchingParams.speakerVolume = AudioSourceGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeMallFountain;
+                    matchingParams.speakerVolume = ManageFPSControllers.FPSControllerGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeMallFountain;
                 }
                 return matchingParams;
             
@@ -145,14 +141,14 @@ public class PlayAudioSequencesByName : MonoBehaviour
                     {
                         keyName = thisKeyName,
                         maxDistance = AudioSourceGlobals.defaultSpeakerDistanceMallFountain,
-                        speakerVolume = AudioSourceGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeMallFountain,
+                        speakerVolume = ManageFPSControllers.FPSControllerGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeMallFountain,
                         clipSequence = ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-fountain-2"))
                     };
                     AudioSourceGlobals.allKnownSpeakerParams.Add(matchingParams);
                 }
                 else // but if the params exist, make sure they're updated
                 {
-                    matchingParams.speakerVolume = AudioSourceGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeMallFountain;
+                    matchingParams.speakerVolume = ManageFPSControllers.FPSControllerGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeMallFountain;
                 }
                 return matchingParams;
 
@@ -176,7 +172,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
                 }
                 else // but if the params exist, make sure they're updated
                 {
-                    matchingParams.speakerVolume = AudioSourceGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeMallCommon;
+                    matchingParams.speakerVolume = ManageFPSControllers.FPSControllerGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeMallCommon;
                 }
                 return matchingParams;
 
@@ -201,7 +197,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
                 }
                 else // but if the params exist, make sure they're updated
                 {
-                    matchingParams.speakerVolume = AudioSourceGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeStore;
+                    matchingParams.speakerVolume = ManageFPSControllers.FPSControllerGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeStore;
                 }
                 return matchingParams;
 
@@ -226,8 +222,8 @@ public class PlayAudioSequencesByName : MonoBehaviour
                 }
                 else // but if the params exist, make sure they're updated
                 {
-                    matchingParams.clipSequence = AudioSourceGlobals.isPlayerOutside ? ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-exterior-ambient")) : ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-ambient-chatter"));
-                    matchingParams.speakerVolume = AudioSourceGlobals.isPlayerOutside ? AudioSourceGlobals.defaultSpeakerVolumeExteriorAmbient : AudioSourceGlobals.defaultSpeakerVolumeChatter;
+                    matchingParams.clipSequence = ManageFPSControllers.FPSControllerGlobals.isPlayerOutside ? ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-exterior-ambient")) : ArrayUtils.ShuffleArray(Resources.LoadAll<AudioClip>("Audio/sfx-mall-ambient-chatter"));
+                    matchingParams.speakerVolume = ManageFPSControllers.FPSControllerGlobals.isPlayerOutside ? AudioSourceGlobals.defaultSpeakerVolumeExteriorAmbient : AudioSourceGlobals.defaultSpeakerVolumeChatter;
                 }
                 return matchingParams;
 
@@ -250,7 +246,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
                 }
                 else // but if the params exist, make sure they're updated
                 {
-                    matchingParams.speakerVolume = AudioSourceGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeMallCommon;
+                    matchingParams.speakerVolume = ManageFPSControllers.FPSControllerGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeMallCommon;
                 }
                 return matchingParams;
 
@@ -273,7 +269,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
                 }
                 else // but if the params exist, make sure they're updated
                 {
-                    matchingParams.speakerVolume = AudioSourceGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeStore;
+                    matchingParams.speakerVolume = ManageFPSControllers.FPSControllerGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeStore;
                 }
                 return matchingParams;
 
@@ -296,7 +292,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
                 }
                 else // but if the params exist, make sure they're updated
                 {
-                    matchingParams.speakerVolume = AudioSourceGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeStore;
+                    matchingParams.speakerVolume = ManageFPSControllers.FPSControllerGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeStore;
                 }
                 return matchingParams;
             
@@ -319,7 +315,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
                 }
                 else // but if the params exist, make sure they're updated
                 {
-                    matchingParams.speakerVolume = AudioSourceGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeStore;
+                    matchingParams.speakerVolume = ManageFPSControllers.FPSControllerGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeStore;
                 }
                 return matchingParams;
 
@@ -342,7 +338,7 @@ public class PlayAudioSequencesByName : MonoBehaviour
                 }
                 else // but if the params exist, make sure they're updated
                 {
-                    matchingParams.speakerVolume = AudioSourceGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeStore;
+                    matchingParams.speakerVolume = ManageFPSControllers.FPSControllerGlobals.isPlayerOutside ? 0 : AudioSourceGlobals.defaultSpeakerVolumeStore;
                 }
                 return matchingParams;
 
@@ -416,14 +412,6 @@ public class PlayAudioSequencesByName : MonoBehaviour
         // and the next master needs to resume
         // for some reason, this cannot be done in OnDisable() (always results in .time of 0)
         thisSpeakerParams.lastKnownClipTime = thisAudioSourceComponent.time;
-
-        // determine whether the player is inside the mall or outside
-        // based on the name of the game object below the player
-        // this is only calculable when the player is on a floor surface ("grounded")
-        if (ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform?.position != null)
-        {
-        AudioSourceGlobals.isPlayerOutside = Utils.StringUtils.TestIfAnyListItemContainedInString(ObjectVisibilityGlobals.exteriorObjectKeywordsList, Utils.GeometryUtils.GetTopLevelSceneContainerChildNameAtNearestNavMeshPoint(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform.position, ManageFPSControllers.FPSControllerGlobals.defaultFPSControllerHeight));
-        }
 
         // update the audio source with new speaker params if necessary
         SpeakerParams newSpeakerParams = AssociateSpeakerParamsByName(this.name);
