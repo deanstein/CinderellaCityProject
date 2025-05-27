@@ -442,25 +442,8 @@ public class FollowGuidedTour : MonoBehaviour
                         currentGuidedTourVector = tempVectorNoY;
                     }
                 }
-                // if the remaining distance
-                // is less than 2x stopping distance, 
-                // look directly at the camera
-                else if (calculatedRemainingDistance <= thisAgent.stoppingDistance * 2)
-                {
-                    // distance along camera plane to look to
-                    // this should match the FormIt camera distance in the Match Photo plugin
-                    float distanceToPlane = 5f;
-
-                    // Define the viewport center point (0.5, 0.5 is the center in viewport coordinates)
-                    Vector3 cameraViewportCenter = new Vector3(0.5f, 0.5f, distanceToPlane);
-
-                    // Convert the center point from viewport space to world space
-                    Vector3 cameraViewportCenterWorld = currentGuidedTourDestinationCamera.ViewportToWorldPoint(cameraViewportCenter);
-
-                    currentGuidedTourVector = cameraViewportCenterWorld - thisAgent.transform.position;
-                }
-                //otherwise, current path vector is the agent's velocity,
-                //but with no vertical component
+                // otherwise, current path vector is the agent's velocity,
+                // but with no vertical component
                 else
                 {
                     currentGuidedTourVector = new Vector3(thisAgent.velocity.x, 0, thisAgent.velocity.z);
@@ -476,7 +459,6 @@ public class FollowGuidedTour : MonoBehaviour
                     currentGuidedTourVector, 
                     Time.deltaTime * (guidedTourRotationSpeed * 2 /* twice as fast as normal slerp */));
                 currentFramesOfPreSlerp++;
-                Debug.Log("PRESLERPING! " + currentFramesOfPreSlerp);
             }
             // store for next frame
             previousGuidedTourVector = currentGuidedTourVector;
