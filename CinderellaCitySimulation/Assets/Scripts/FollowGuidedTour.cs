@@ -50,7 +50,12 @@ public class FollowGuidedTour : MonoBehaviour
     private Vector3[] guidedTourCameraPositionsAdjusted; // adjusted backward
     private Vector3[] guidedTourFinalNavMeshDestinations; // destinations on NavMesh
     public Camera currentGuidedTourDestinationCamera;
+    // the guided tour vectors
+    public Vector3 previousGuidedTourVector;
     public Vector3 currentGuidedTourVector;
+    readonly float maxAngleBeforePreSlerp = 60f; // angle (degrees) between previous and current vector
+    int currentFramesOfPreSlerp = 0;
+    readonly int maxFramesOfPreSlerp = 5; // number of frames we can pre-slerp for softer transitions
     private float calculatedRemainingDistance; // uses remaining path segments
 
     // set to true briefly to allow IEnumerator time-travel transition
@@ -457,6 +462,21 @@ public class FollowGuidedTour : MonoBehaviour
                 }
             }
 
+            // when the previous vector is significantly different than the current vector,
+            // pre-slerp the vector to soften the transition
+            float angleBetweenVectors = Vector3.Angle(previousGuidedTourVector, currentGuidedTourVector);
+            if (angleBetweenVectors >= maxAngleBeforePreSlerp && currentFramesOfPreSlerp <= maxFramesOfPreSlerp)
+            {
+                currentGuidedTourVector = Vector3.Slerp(previousGuidedTourVector, 
+                    currentGuidedTourVector, 
+                    Time.deltaTime * (guidedTourRotationSpeed * 2 /* twice as fast as normal slerp */));
+                currentFramesOfPreSlerp++;
+                Debug.Log("PRESLERPING! " + currentFramesOfPreSlerp);
+            }
+            // store for next frame
+            previousGuidedTourVector = currentGuidedTourVector;
+
+            // apply guided tour vector
             if (currentGuidedTourVector != Vector3.zero)
             {
                 // controller gets the camera forward but with no y-value to avoid tilt
@@ -805,6 +825,7 @@ public class FollowGuidedTour : MonoBehaviour
 
             // set the official flag to match so this only runs once
             ModeState.areHistoricPhotosVisible = ModeState.areHistoricPhotosRequestedVisible;
+            currentFramesOfPreSlerp = 0; // allow pre-slerp next time
         }
 
         // similar for people - only adjust their visibility once if requested
