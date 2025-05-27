@@ -23,14 +23,19 @@ public class ManageFPSControllers : MonoBehaviour {
 
         // default agent settings
         public static float defaultAgentRadius = 0.15f;
-        public static float defaultAgentSpeed = 1.1f;
-        // roughly the height of a stair to enable stairclimbing
-        public static float defaultAgentStepOffset = 0.3f;
+        public static float defaultAgentSpeedInside = 1.1f;
+        public static float defaultAgentAccelerationInside = 1.0f;
+        public static float defaultAgentSpeedOutside = 3.0f;
+        public static float defaultAgentAccelerationOutside = 6.0f;
+        public static float defaultAgentStepOffset = 0.30f; // roughly the height of a stair
         public static float defaultAgentStoppingDistance = 0.5f;
 
         // default character controller values
         public static float defaultFPSControllerGravityMultiplier = 2f;
         public static float defaultFPSControllerStickToGroundForce = 10f;
+
+        // ambient audio track and guided tour speed will change when outside
+        public static bool isPlayerOutside = false;
 
         // marked true when the user is in-game, toggling between eras via shortcut input
         // helps ensure the player doesn't fall when time-traveling to an era 
@@ -526,6 +531,14 @@ public class ManageFPSControllers : MonoBehaviour {
         // record certain FPSController data globally for other scripts to access
         UpdateActiveFPSControllerPositionAndCamera();
         UpdateActiveFPSControllerNavMeshData();
+
+        // track whether the player is inside the mall or outside
+        // based on the name of the game object below the player
+        // this is only calculable when the player is on a floor surface ("grounded")
+        if (FPSControllerGlobals.activeFPSControllerTransform?.position != null)
+        {
+            ManageFPSControllers.FPSControllerGlobals.isPlayerOutside = Utils.StringUtils.TestIfAnyListItemContainedInString(ObjectVisibilityGlobals.exteriorObjectKeywordsList, Utils.GeometryUtils.GetTopLevelSceneContainerChildNameAtNearestNavMeshPoint(FPSControllerGlobals.activeFPSControllerTransform.position, FPSControllerGlobals.defaultFPSControllerHeight));
+        }
 
         // when the player is time traveling, temporarily pause their gravity in case there's no floor below
         // or restore their gravity if they've moved after time-traveling

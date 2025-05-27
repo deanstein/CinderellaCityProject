@@ -329,7 +329,12 @@ public class FollowGuidedTour : MonoBehaviour
             // need to calculate whether we've arrived manually
             // since Unity's NavMeshAgent.remainingDistance may return 0 unexpectedly
             calculatedRemainingDistance = GetCalculatedRemainingDistance();
+
+            // adjust the tour speed and acceleration based on whether the player is inside or outside
+            thisAgent.speed = ManageFPSControllers.FPSControllerGlobals.isPlayerOutside && calculatedRemainingDistance > lookToCameraAtRemainingDistance ? ManageFPSControllers.FPSControllerGlobals.defaultAgentSpeedOutside : ManageFPSControllers.FPSControllerGlobals.defaultAgentSpeedInside;
+            thisAgent.acceleration = ManageFPSControllers.FPSControllerGlobals.isPlayerOutside && calculatedRemainingDistance > lookToCameraAtRemainingDistance ? ManageFPSControllers.FPSControllerGlobals.defaultAgentAccelerationOutside : ManageFPSControllers.FPSControllerGlobals.defaultAgentAccelerationInside;
         }
+
         // guided tour active, not paused
         if (ModeState.isGuidedTourActive && 
             !ModeState.isGuidedTourPaused && 
