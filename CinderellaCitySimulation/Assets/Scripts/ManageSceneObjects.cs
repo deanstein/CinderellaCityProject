@@ -511,7 +511,7 @@ public static class ManageSceneObjects
                     new GuidedTourObjectMeta(
                         partialName: "Blue Mall trampoline",
                         doTimeTravelPeek: true,
-                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! /////
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 1
 
                     // BLUE MALL OUTER HALLS
                     // Robin Hood
@@ -538,12 +538,12 @@ public static class ManageSceneObjects
                     new GuidedTourObjectMeta(
                         partialName: "Blue Mall 3",
                         doTimeTravelPeek: false,
-                        doTimeTravelPeriodic: true),
+                        doTimeTravelPeriodic: false),
                     // reverse view
                     new GuidedTourObjectMeta(
                         partialName: "Blue Mall 4",
                         doTimeTravelPeek: true,
-                        doTimeTravelPeriodic: true),
+                        doTimeTravelPeriodic: false),
                     // 10th anniversary
                     new GuidedTourObjectMeta(
                         partialName: "Blue Mall Snack Bar",
@@ -553,7 +553,7 @@ public static class ManageSceneObjects
                     new GuidedTourObjectMeta(
                         partialName: "Blue Mall at Rose Mall",
                         doTimeTravelPeek: true,
-                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! /////
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 2
 
                     // ROSE MALL
                     // K-G
@@ -590,12 +590,12 @@ public static class ManageSceneObjects
                     new GuidedTourObjectMeta(
                         partialName: "Rose Mall Exterior 1",
                         doTimeTravelPeek: true,
-                        doTimeTravelPeriodic: true),
+                        doTimeTravelPeriodic: false),
                     // Gano-Downs
                     new GuidedTourObjectMeta(
                         partialName: "Rose Mall Gano-Downs exterior",
                         doTimeTravelPeek: true,
-                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! /////
+                        doTimeTravelPeriodic: false),
 
                     // BLUE MALL EXTERIOR
                     // Leader entrance
@@ -612,7 +612,7 @@ public static class ManageSceneObjects
                     new GuidedTourObjectMeta(
                         partialName: "Blue Mall Exterior 2",
                         doTimeTravelPeek: true,
-                        doTimeTravelPeriodic: false), ///// PERIODIC TIME TRAVEL! /////
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 3
 
                     // SHAMROCK MALL
                     // Tommy Wong's
@@ -624,19 +624,19 @@ public static class ManageSceneObjects
                     new GuidedTourObjectMeta(
                         partialName: "Shamrock Kiddie Shop",
                         doTimeTravelPeek: false,
-                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! /////
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 4
 
                     // CINDER ALLEY
                     // Cinder Alley from Penney's
                     new GuidedTourObjectMeta(
                         partialName: "Cinder Alley 1",
-                        doTimeTravelPeek: false,
+                        doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
                     // Candle Makers of Candles II
                     new GuidedTourObjectMeta(
                         partialName: "Cinder Alley Candles",
-                        doTimeTravelPeek: false,
-                        doTimeTravelPeriodic: true),
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // store with planter
                     new GuidedTourObjectMeta(
                         partialName: "Cinder Alley 2",
@@ -645,18 +645,18 @@ public static class ManageSceneObjects
                     // Cinder Alley looking through gate to alleys
                     new GuidedTourObjectMeta(
                         partialName: "Cinder Alley gate",
-                        doTimeTravelPeek: false,
+                        doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
                     // Cinder Alley looking toward Penney's
                     new GuidedTourObjectMeta(
                         partialName: "Cinder Alley far",
-                        doTimeTravelPeek: false,
+                        doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
                     // Cinder Alley marketing shot
                     new GuidedTourObjectMeta(
                         partialName: "Cinder Alley marketing",
-                        doTimeTravelPeek: false,
-                        doTimeTravelPeriodic: false),
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 5
 
                     // GOLD MALL
                     // Gold Mall colorized
@@ -667,12 +667,12 @@ public static class ManageSceneObjects
                     // Spencer's
                     new GuidedTourObjectMeta(
                         partialName: "Gold Mall Horseshoes",
-                        doTimeTravelPeek: false,
+                        doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
                     // CA sign at Gold Mall
                     new GuidedTourObjectMeta(
                         partialName: "Gold Mall 2",
-                        doTimeTravelPeek: false,
+                        doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
                     new GuidedTourObjectMeta(
                         partialName: "Gold Mall 1",
@@ -681,14 +681,14 @@ public static class ManageSceneObjects
                     // Stuart's
                     new GuidedTourObjectMeta(
                         partialName: "Gold Mall Stuart's",
-                        doTimeTravelPeek: false,
-                        doTimeTravelPeriodic: false),
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 6
 
                     // BLUE MALL OUTER HALLS
                     // Karmelkorn
                     new GuidedTourObjectMeta(
                         partialName: "Blue Mall Karmelkorn",
-                        doTimeTravelPeek: false,
+                        doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
                     // Hummell's
                     new GuidedTourObjectMeta(
@@ -700,15 +700,15 @@ public static class ManageSceneObjects
                     // Joslins exterior entrance
                     new GuidedTourObjectMeta(
                         partialName: "Gold Mall Joslins entrance",
-                        doTimeTravelPeek: false,
+                        doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
 
                     // RETURN TO BLUE MALL
                     // Blue Mall mezzanine
                     new GuidedTourObjectMeta(
                         partialName: "Blue Mall - mezzanine 1",
-                        doTimeTravelPeek: false,
-                        doTimeTravelPeriodic: true),
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 7
                 };
 
                 curatedObjectMeta = new GuidedTourObjectMeta[]
@@ -719,73 +719,65 @@ public static class ManageSceneObjects
                         partialName: "Blue Mall deep",
                         doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
-
-                    // Carousel
+                    // carousel
                     new GuidedTourObjectMeta(
                         partialName: "Blue Mall carousel 1",
-                        doTimeTravelPeek: false,
+                        doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
-
                     // B&W decay
                     new GuidedTourObjectMeta(
                         partialName: "Blue Mall 1",
                         doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
-
-                    // Wedding
+                    // wedding
                     new GuidedTourObjectMeta(
                         partialName: "Blue Mall wedding 1",
-                        doTimeTravelPeek: false,
-                        doTimeTravelPeriodic: true),
-
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // Pollard decay
                     new GuidedTourObjectMeta(
                         partialName: "Blue Mall peek",
                         doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
-
-                    // BLUE MALL OUTER HALLS
                     // Footlocker
                     new GuidedTourObjectMeta(
                         partialName: "Blue Mall Footlocker",
-                        doTimeTravelPeek: false,
-                        doTimeTravelPeriodic: false),
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 1
 
+                    // BLUE MALL OUTER HALLS
                     // Pollard west doors
                     new GuidedTourObjectMeta(
                         partialName: "Blue Mall west doors",
-                        doTimeTravelPeek: false,
+                        doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
 
                     // ROSE MALL
                     // Lauter
                     new GuidedTourObjectMeta(
                         partialName: "Rose Mall - Lauter",
-                        doTimeTravelPeek: false,
+                        doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
-
+                    // Rose sunny
                     new GuidedTourObjectMeta(
                         partialName: "Rose Mall 1",
                         doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
-
                     // Thom McAn
                     new GuidedTourObjectMeta(
                         partialName: "Rose Mall Thom McAn",
-                        doTimeTravelPeek: false,
+                        doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
-
                     // Woolworth's
                     new GuidedTourObjectMeta(
                         partialName: "Rose Mall Woolworth's",
-                        doTimeTravelPeek: false,
+                        doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
-
                     // Stride Right
                     new GuidedTourObjectMeta(
                         partialName: "Rose Mall Stride Right",
                         doTimeTravelPeek: false,
-                        doTimeTravelPeriodic: false),
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 2
 
                     // PARKING GARAGE
                     new GuidedTourObjectMeta(
@@ -797,38 +789,33 @@ public static class ManageSceneObjects
                     // Shamrock with debris by escalator
                     new GuidedTourObjectMeta(
                         partialName: "Shamrock Mall 1",
-                        doTimeTravelPeek: false,
+                        doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
-
                     // Shamrock escalator toward Broadway
                     new GuidedTourObjectMeta(
                         partialName: "Shamrock escalator",
                         doTimeTravelPeek: false,
                         doTimeTravelPeriodic: false),
-
                     // Pollard Shamrock
                     new GuidedTourObjectMeta(
                         partialName: "Shamrock Woolworths",
-                        doTimeTravelPeek: false,
+                        doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
-
-                    // Waterbeds
+                    // waterbeds
                     new GuidedTourObjectMeta(
                         partialName: "Shamrock Mall AWF",
                         doTimeTravelPeek: false,
                         doTimeTravelPeriodic: false),
-
                     // Book fair
                     new GuidedTourObjectMeta(
                         partialName: "Shamrock Mall book fair",
-                        doTimeTravelPeek: false,
+                        doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
-
                     // Sports Fan
                     new GuidedTourObjectMeta(
                         partialName: "Shamrock Mall 2",
-                        doTimeTravelPeek: false,
-                        doTimeTravelPeriodic: false),
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 3
 
                     // FOOD COURT
                     // Renzios
@@ -836,73 +823,63 @@ public static class ManageSceneObjects
                         partialName: "Food Court 9",
                         doTimeTravelPeek: false,
                         doTimeTravelPeriodic: false),
-
                     // Sbarro
                     new GuidedTourObjectMeta(
                         partialName: "Food Court 8",
                         doTimeTravelPeek: false,
                         doTimeTravelPeriodic: false),
-
                     // Wendy's
                     new GuidedTourObjectMeta(
                         partialName: "Food Court 7",
                         doTimeTravelPeek: false,
                         doTimeTravelPeriodic: false),
-
                     // Paul Wu's
                     new GuidedTourObjectMeta(
                         partialName: "Food Court 6",
                         doTimeTravelPeek: false,
                         doTimeTravelPeriodic: false),
-
                     // Smoking area
                     new GuidedTourObjectMeta(
                         partialName: "Food Court 2",
-                        doTimeTravelPeek: false,
+                        doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
-
                     // Orange Julius
                     new GuidedTourObjectMeta(
                         partialName: "Food Court 1",
-                        doTimeTravelPeek: false,
+                        doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
-
                     // Corn Dog
                     new GuidedTourObjectMeta(
                         partialName: "Food Court 5",
                         doTimeTravelPeek: false,
                         doTimeTravelPeriodic: false),
-
                     // Chick-Fil-A
                     new GuidedTourObjectMeta(
                         partialName: "Food Court 4",
                         doTimeTravelPeek: false,
-                        doTimeTravelPeriodic: false),
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 4
 
                     // CINDER ALLEY
                     // Jazzercise
                     new GuidedTourObjectMeta(
                         partialName: "Food Court 3",
-                        doTimeTravelPeek: false,
+                        doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
-
                     // Zeezo's
                     new GuidedTourObjectMeta(
                         partialName: "Cinder Alley Zeezo's",
-                        doTimeTravelPeek: false,
+                        doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
-
                     // Funtastic's
                     new GuidedTourObjectMeta(
                         partialName: "Cinder Alley Funtastic's",
-                        doTimeTravelPeek: false,
+                        doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
-
                     // Abandoned
                     new GuidedTourObjectMeta(
                         partialName: "Cinder Alley 1",
                         doTimeTravelPeek: false,
-                        doTimeTravelPeriodic: false),
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 5
 
                     // GOLD MALL
                     // Cinder Alley sign east
@@ -910,25 +887,21 @@ public static class ManageSceneObjects
                         partialName: "Gold Mall CA east stair",
                         doTimeTravelPeek: false,
                         doTimeTravelPeriodic: false),
-
                     // Gold Mall
                     new GuidedTourObjectMeta(
                         partialName: "Gold Mall far",
                         doTimeTravelPeek: false,
                         doTimeTravelPeriodic: false),
-
                     // Pollard Gold
                     new GuidedTourObjectMeta(
                         partialName: "Gold Mall Pollard to Joslins",
                         doTimeTravelPeek: false,
                         doTimeTravelPeriodic: false),
-
                     // Cinder Alley sign west
                     new GuidedTourObjectMeta(
                         partialName: "Gold Mall Penney's",
-                        doTimeTravelPeek: false,
-                        doTimeTravelPeriodic: false),
-
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 6
                     // Hummel's
                     new GuidedTourObjectMeta(
                         partialName: "Blue Mall Hummels 1",
@@ -939,21 +912,20 @@ public static class ManageSceneObjects
                     // Blue Mall Ward's exterior entrance
                     new GuidedTourObjectMeta(
                         partialName: "Blue Mall Exterior 1",
-                        doTimeTravelPeek: false,
+                        doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
-
                     // Blue Mall mezzanine
                     new GuidedTourObjectMeta(
                         partialName: "Blue Mall mezzanine 1",
-                        doTimeTravelPeek: false,
+                        doTimeTravelPeek: true,
                         doTimeTravelPeriodic: true),
-
                     // Blue Mall from stair landing
                     new GuidedTourObjectMeta(
                         partialName: "Blue Mall 2",
-                        doTimeTravelPeek: false,
-                        doTimeTravelPeriodic: false),
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 6
                 };
+
                 finalCuratedGuidedTourObjects = new GameObject[] {
                     // BLUE MALL CENTRAL
                     // Blue Mall Denver exterior entrance
