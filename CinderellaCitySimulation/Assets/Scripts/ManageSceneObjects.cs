@@ -476,19 +476,23 @@ public static class ManageSceneObjects
 
         // gets a curated list of historic photos for Guided Tour in RecordingMode
         // by searching a list of uncurated guidedTourObjects for specific names
-        public static GameObject[] FindAllCuratedGuidedTourObjects(GameObject[] guidedTourObjects)
+        public static GameObject[] FindAllCuratedGuidedTourObjects(GameObject[] allguidedTourObjects)
         {
             // get the scene from the object
             // GetActiveScene() can't be trusted here for some reason
-            string sceneName = guidedTourObjects[0].scene.name;
+            string sceneName = allguidedTourObjects[0].scene.name;
 
             // the final array of curated objects
             GameObject[] finalCuratedGuidedTourObjects = new GameObject[0];
+            // the curated meta objects that define the final tour objects
             GuidedTourObjectMeta[] curatedObjectMeta = new GuidedTourObjectMeta[0];
 
+            // determine the guided tour object metadata per scene
             // 60s70s or Experimental scene
             if (sceneName == SceneGlobals.mallEra60s70sSceneName || sceneName == SceneGlobals.experimentalSceneName)
             {
+                // define all guided tour object metadata
+                // (order of photos and all options)
                 curatedObjectMeta = new GuidedTourObjectMeta[]
                 {
                     // BLUE MALL CENTRAL
@@ -710,7 +714,12 @@ public static class ManageSceneObjects
                         doTimeTravelPeek: true,
                         doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 7
                 };
-
+            }
+            // 80s90s scene
+            else if (sceneName == SceneGlobals.mallEra80s90sSceneName)
+            {
+                // define all guided tour object metadata
+                // (order of photos and all options)
                 curatedObjectMeta = new GuidedTourObjectMeta[]
                 {
                     // BLUE MALL CENTRAL
@@ -875,7 +884,7 @@ public static class ManageSceneObjects
                         partialName: "Cinder Alley Funtastic's",
                         doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
-                    // Abandoned
+                    // abandoned
                     new GuidedTourObjectMeta(
                         partialName: "Cinder Alley 1",
                         doTimeTravelPeek: false,
@@ -883,10 +892,6 @@ public static class ManageSceneObjects
 
                     // GOLD MALL
                     // Cinder Alley sign east
-                    new GuidedTourObjectMeta(
-                        partialName: "Gold Mall CA east stair",
-                        doTimeTravelPeek: false,
-                        doTimeTravelPeriodic: false),
                     // Gold Mall
                     new GuidedTourObjectMeta(
                         partialName: "Gold Mall far",
@@ -918,237 +923,30 @@ public static class ManageSceneObjects
                     new GuidedTourObjectMeta(
                         partialName: "Blue Mall mezzanine 1",
                         doTimeTravelPeek: true,
-                        doTimeTravelPeriodic: true),
+                        doTimeTravelPeriodic: false),
                     // Blue Mall from stair landing
                     new GuidedTourObjectMeta(
                         partialName: "Blue Mall 2",
                         doTimeTravelPeek: true,
-                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 6
-                };
-
-                finalCuratedGuidedTourObjects = new GameObject[] {
-                    // BLUE MALL CENTRAL
-                    // Blue Mall Denver exterior entrance
-                    FindGameObjectInArrayByName("Blue Mall Denver entrance", guidedTourObjects),
-                    // fountain - straight on
-                    FindGameObjectInArrayByName("Blue Mall 1", guidedTourObjects),
-                    // fountain - closer
-                    FindGameObjectInArrayByName("Blue Mall 2", guidedTourObjects),
-                    // Blue Mall event
-                    FindGameObjectInArrayByName("Blue Mall trampoline", guidedTourObjects),
-
-                    // BLUE MALL OUTER HALLS
-                    // Robin Hood
-                    FindGameObjectInArrayByName("Blue Mall Robin Hood interior", guidedTourObjects),
-                    // Americana
-                    FindGameObjectInArrayByName("Blue Mall - Americana", guidedTourObjects),
-                    // Von Frellick on the stairs
-                    FindGameObjectInArrayByName("Von Frellick stair", guidedTourObjects),
-                    // Rich Burger
-                    FindGameObjectInArrayByName("Blue Mall Rich Burger", guidedTourObjects),
-
-                    // BLUE MALL OUTER HALLS
-                    // Blue hall toward Rose
-                    FindGameObjectInArrayByName("Blue Mall 3", guidedTourObjects),
-                    // reverse view
-                    FindGameObjectInArrayByName("Blue Mall 4", guidedTourObjects),
-                    // 10th anniversary
-                    FindGameObjectInArrayByName("Blue Mall Snack Bar", guidedTourObjects),
-                    // earcetera
-                    FindGameObjectInArrayByName("Blue Mall at Rose Mall", guidedTourObjects),
-
-                    // ROSE MALL
-                    // K-G
-                    FindGameObjectInArrayByName("Rose Mall 2", guidedTourObjects),
-                    // City Campus
-                    FindGameObjectInArrayByName("Rose Mall City Campus", guidedTourObjects),
-                    // Richman Bros
-                    FindGameObjectInArrayByName("Rose Mall Richman", guidedTourObjects),
-                    // Cricket
-                    FindGameObjectInArrayByName("Rose Mall 1", guidedTourObjects),
-                    // Hatch's
-                    FindGameObjectInArrayByName("Rose Mall Hatch's", guidedTourObjects),
-                    // The Regiment
-                    FindGameObjectInArrayByName("Rose Mall Regiment", guidedTourObjects),
-                    // Cinema-Neusteters
-                    FindGameObjectInArrayByName("Rose Mall Exterior 1", guidedTourObjects),
-                    // Gano-Downs
-                    FindGameObjectInArrayByName("Rose Mall Gano-Downs exterior", guidedTourObjects),
-
-                    // BLUE MALL ENTRANCES
-                    // Leader entrance
-                    FindGameObjectInArrayByName("Rose Mall Leader Entrance", guidedTourObjects),
-                    // Farrell's
-                    FindGameObjectInArrayByName("Blue Mall - Farrell's 1", guidedTourObjects),
-                    // Blue Mall exterior corner
-                    FindGameObjectInArrayByName("Blue Mall Exterior 2", guidedTourObjects),
-
-                    // SHAMROCK MALL
-                    // Tommy Wong's
-                    FindGameObjectInArrayByName("Shamrock Mall Tommy Wong's", guidedTourObjects),
-                    // Kiddie Shop
-                    FindGameObjectInArrayByName("Shamrock Kiddie Shop", guidedTourObjects),
-
-                    // RETURN TO BLUE MALL
-                    // fountain - straight on
-                    FindGameObjectInArrayByName("Blue Mall 1", guidedTourObjects),
-                    // fountain - closer
-                    FindGameObjectInArrayByName("Blue Mall 2", guidedTourObjects),
-
-                    // CINDER ALLEY
-                    // Cinder Alley from Penney's
-                    FindGameObjectInArrayByName("Cinder Alley 1", guidedTourObjects),
-                    // Candle Makers of Candles II
-                    FindGameObjectInArrayByName("Cinder Alley Candles", guidedTourObjects),
-                    // store with planter
-                    FindGameObjectInArrayByName("Cinder Alley 2", guidedTourObjects),
-                    // Cinder Alley looking through gate to alleys
-                    FindGameObjectInArrayByName("Cinder Alley gate", guidedTourObjects),
-                    // Cinder Alley looking toward Penney's
-                    FindGameObjectInArrayByName("Cinder Alley far", guidedTourObjects),
-                    // Cinder Alley marketing shot
-                    FindGameObjectInArrayByName("Cinder Alley marketing", guidedTourObjects),
-
-                    // GOLD MALL
-                    // Gold Mall colorized
-                    FindGameObjectInArrayByName("Gold Mall Colorized", guidedTourObjects),
-                    // Spencer's
-                    FindGameObjectInArrayByName("Gold Mall Horseshoes", guidedTourObjects),
-                    // CA sign at Gold Mall
-                    FindGameObjectInArrayByName("Gold Mall 2", guidedTourObjects),
-                    FindGameObjectInArrayByName("Gold Mall 1", guidedTourObjects),
-                    // Stuart's
-                    FindGameObjectInArrayByName("Gold Mall Stuart's", guidedTourObjects),
-
-                    // BLUE MALL OUTER HALLS
-                    // Karmelkorn
-                    FindGameObjectInArrayByName("Blue Mall Karmelkorn", guidedTourObjects),
-                    // Hummell's
-                    FindGameObjectInArrayByName("Blue Mall Hummel's", guidedTourObjects),
-
-                    // EXTERIOR
-                    // Joslins exterior entrance
-                    FindGameObjectInArrayByName("Gold Mall Joslins entrance", guidedTourObjects),
-                    // Blue Mall Denver exterior entrance
-                    FindGameObjectInArrayByName("Blue Mall Denver entrance", guidedTourObjects),
-
-                    // BLUE MALL CENTRAL
-                    // back to fountain - straight on
-                    FindGameObjectInArrayByName("Blue Mall 1", guidedTourObjects),
-                    // Blue Mall mezzanine
-                    FindGameObjectInArrayByName("Blue Mall - mezzanine 1", guidedTourObjects)
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 7
                 };
             }
-            // 80s90s scene
-            else if (sceneName == SceneGlobals.mallEra80s90sSceneName)
+
+            // use the metadata to get the final curated objects from the array of all objects
+            // first, create a temporary list to add to
+            List<GameObject> finalCuratedGuidedTourObjectsList = new List<GameObject>();
+            foreach (GuidedTourObjectMeta meta in curatedObjectMeta)
             {
-                finalCuratedGuidedTourObjects = new GameObject[] {
-                    // BLUE MALL CENTRAL
-                    // atrium marketing
-                    FindGameObjectInArrayByName("Blue Mall deep", guidedTourObjects),
-                    // carousel
-                    FindGameObjectInArrayByName("Blue Mall carousel 1", guidedTourObjects),
-                    // b&w decay
-                    FindGameObjectInArrayByName("Blue Mall 1", guidedTourObjects),
-                    // wedding
-                    FindGameObjectInArrayByName("Blue Mall wedding 1", guidedTourObjects),
-                    // Pollard decay
-                    FindGameObjectInArrayByName("Blue Mall peek", guidedTourObjects),
-
-                    // BLUE MALL OUTER HALLS
-                    // Footlocker
-                    FindGameObjectInArrayByName("Blue Mall Footlocker", guidedTourObjects),
-                    // Pollard west doors
-                    FindGameObjectInArrayByName("Blue Mall west doors", guidedTourObjects),
-
-                    // Rose Mall
-                    FindGameObjectInArrayByName("Rose Mall - Lauter", guidedTourObjects),
-                    FindGameObjectInArrayByName("Rose Mall 1", guidedTourObjects),
-                    // Thom McAn
-                    FindGameObjectInArrayByName("Rose Mall Thom McAn", guidedTourObjects),
-                    // Woolworth's
-                    FindGameObjectInArrayByName("Rose Mall Woolworth's", guidedTourObjects),
-                    // Stride Right
-                    FindGameObjectInArrayByName("Rose Mall Stride Right", guidedTourObjects),
-
-                    // PARKING GARAGE
-                    FindGameObjectInArrayByName("parking garage at bank", guidedTourObjects),
-
-                    // SHAMROCK MALL
-                    // Shamrock with debris by escalator
-                    FindGameObjectInArrayByName("Shamrock Mall 1", guidedTourObjects),
-                    // Shamrock escalator toward Broadway
-                    FindGameObjectInArrayByName("Shamrock escalator", guidedTourObjects),
-                    // Pollard Shamrock
-                    FindGameObjectInArrayByName("Shamrock Woolworths", guidedTourObjects),
-                    // waterbeds
-                    FindGameObjectInArrayByName("Shamrock Mall AWF", guidedTourObjects),
-                    // book fair
-                    FindGameObjectInArrayByName("Shamrock Mall book fair", guidedTourObjects),
-                    // Sports Fan
-                    FindGameObjectInArrayByName("Shamrock Mall 2", guidedTourObjects),
-
-                    // FOOD COURT
-                    // Renzios
-                    FindGameObjectInArrayByName("Food Court 9", guidedTourObjects),
-                    // Sbarro
-                    FindGameObjectInArrayByName("Food Court 8", guidedTourObjects),
-                    // Wendy's
-                    FindGameObjectInArrayByName("Food Court 7", guidedTourObjects),
-                    // Paul Wu's
-                    FindGameObjectInArrayByName("Food Court 6", guidedTourObjects),
-                    // smoking area
-                    FindGameObjectInArrayByName("Food Court 2", guidedTourObjects),
-                    // Orange Julius
-                    FindGameObjectInArrayByName("Food Court 1", guidedTourObjects),
-                    // Corn Dog
-                    FindGameObjectInArrayByName("Food Court 5", guidedTourObjects),
-                    // Chick-Fil-A
-                    FindGameObjectInArrayByName("Food Court 4", guidedTourObjects),
-
-                    // RETURN TO BLUE MALL
-                    // atrium marketing
-                    FindGameObjectInArrayByName("Blue Mall deep", guidedTourObjects),
-                    // carousel
-                    FindGameObjectInArrayByName("Blue Mall carousel 1", guidedTourObjects),
-                    // wedding
-                    FindGameObjectInArrayByName("Blue Mall wedding 1", guidedTourObjects),
-
-                    // CINDER ALLEY
-                    // jazzercise
-                    FindGameObjectInArrayByName("Food Court 3", guidedTourObjects),
-                    // Zeezo's
-                    FindGameObjectInArrayByName("Cinder Alley Zeezo's", guidedTourObjects),
-                    // Funtastic's
-                    FindGameObjectInArrayByName("Cinder Alley Funtastic's", guidedTourObjects),
-                    // abandoned
-                    FindGameObjectInArrayByName("Cinder Alley 1", guidedTourObjects),
-
-                    // GOLD MALL
-                    // Cinder Alley sign east
-                    FindGameObjectInArrayByName("Gold Mall CA east stair", guidedTourObjects),
-                    // Gold Mall
-                    FindGameObjectInArrayByName("Gold Mall far", guidedTourObjects),
-                    // Pollard Gold
-                    FindGameObjectInArrayByName("Gold Mall Pollard to Joslins", guidedTourObjects),
-                    // Cinder Alley sign west
-                    FindGameObjectInArrayByName("Gold Mall Penney's", guidedTourObjects),
-                    // Hummel's
-                    FindGameObjectInArrayByName("Blue Mall Hummels 1", guidedTourObjects),
-
-                    // BLUE MALL
-                    // Blue Mall Ward's exterior entrance
-                    FindGameObjectInArrayByName("Blue Mall Exterior 1", guidedTourObjects),
-                    // Blue Mall mezzanine
-                    FindGameObjectInArrayByName("Blue Mall mezzanine 1", guidedTourObjects),
-                    // Blue Mall from stair landing
-                    FindGameObjectInArrayByName("Blue Mall 2", guidedTourObjects)
-                };
+                GameObject foundObject = FindGameObjectInArrayByName(meta.partialName, allguidedTourObjects);
+                if (foundObject != null)
+                {
+                    finalCuratedGuidedTourObjectsList.Add(foundObject);
+                }
             }
+            // then convert to a cleaned array
+            finalCuratedGuidedTourObjects = ArrayUtils.CleanArray(finalCuratedGuidedTourObjectsList.ToArray());
 
-            // clean the array in case any items weren't found (eliminate nulls)
-            // return the cleaned array
-            return ArrayUtils.CleanArray(finalCuratedGuidedTourObjects);
+            return finalCuratedGuidedTourObjects;
         }
 
         // define and get the index of the "partial path" camera depending on the scene
