@@ -433,7 +433,7 @@ public class CCPMenuActions : MonoBehaviour
 
         GameObject[] allHistoricPhotoObjects = ManageSceneObjects.ProxyObjects.GetAllHistoricPhotoCamerasInScene(SceneManager.GetActiveScene().name);
 
-        GameObject[] curatedHistoricPhotoObjects = ManageSceneObjects.ProxyObjects.FindAllCuratedGuidedTourObjects(allHistoricPhotoObjects);
+        GameObject[] curatedHistoricPhotoObjects = ManageSceneObjects.ProxyObjects.GetCuratedGuidedTourCameras(allHistoricPhotoObjects);
 
         if (curatedHistoricPhotoObjects.Length > 0)
         {

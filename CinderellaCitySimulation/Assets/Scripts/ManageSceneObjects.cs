@@ -474,243 +474,499 @@ public static class ManageSceneObjects
             return allCameras.ToArray();
         }
 
-        // gets a curated list of historic photos for Guided Tour in RecordingMode
-        // by searching a list of uncurated guidedTourObjects for specific names
-        public static GameObject[] FindAllCuratedGuidedTourObjects(GameObject[] guidedTourObjects)
+        // get the curated guided tour object metadata per scene
+        // this metadata includes the order of photos and time-traveling options
+        public static GuidedTourCameraMeta[] GetCuratedGuidedTourCameraMetaByScene(string sceneName)
         {
-            // get the scene from the object
-            // GetActiveScene() can't be trusted here for some reason
-            string sceneName = guidedTourObjects[0].scene.name;
-
-            // the final array of curated objects
-            GameObject[] finalCuratedGuidedTourObjects = new GameObject[0];
+            GuidedTourCameraMeta[] curatedObjectMeta = new GuidedTourCameraMeta[0];
 
             // 60s70s or Experimental scene
             if (sceneName == SceneGlobals.mallEra60s70sSceneName || sceneName == SceneGlobals.experimentalSceneName)
             {
-                finalCuratedGuidedTourObjects = new GameObject[] {
+                curatedObjectMeta = new GuidedTourCameraMeta[]
+                {
                     // BLUE MALL CENTRAL
                     // Blue Mall Denver exterior entrance
-                    FindGameObjectInArrayByName("Blue Mall Denver entrance", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall Denver entrance",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // fountain - straight on
-                    FindGameObjectInArrayByName("Blue Mall 1", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall 1",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // fountain - closer
-                    FindGameObjectInArrayByName("Blue Mall 2", guidedTourObjects),
-                    // Blue Mall event
-                    FindGameObjectInArrayByName("Blue Mall trampoline", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall 2",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
+                    // Blue Mall trampoline event
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall trampoline",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 1
 
                     // BLUE MALL OUTER HALLS
                     // Robin Hood
-                    FindGameObjectInArrayByName("Blue Mall Robin Hood interior", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall Robin Hood interior",
+                        doTimeTravelPeek: false,
+                        doTimeTravelPeriodic: false),
                     // Americana
-                    FindGameObjectInArrayByName("Blue Mall - Americana", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall - Americana",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // Von Frellick on the stairs
-                    FindGameObjectInArrayByName("Von Frellick stair", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Von Frellick stair",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // Rich Burger
-                    FindGameObjectInArrayByName("Blue Mall Rich Burger", guidedTourObjects),
-
-                    // BLUE MALL OUTER HALLS
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall Rich Burger",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // Blue hall toward Rose
-                    FindGameObjectInArrayByName("Blue Mall 3", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall 3",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // reverse view
-                    FindGameObjectInArrayByName("Blue Mall 4", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall 4",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // 10th anniversary
-                    FindGameObjectInArrayByName("Blue Mall Snack Bar", guidedTourObjects),
-                    // earcetera
-                    FindGameObjectInArrayByName("Blue Mall at Rose Mall", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall Snack Bar",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
+                    // Earcetera
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall at Rose Mall",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 2
 
                     // ROSE MALL
                     // K-G
-                    FindGameObjectInArrayByName("Rose Mall 2", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Rose Mall 2",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // City Campus
-                    FindGameObjectInArrayByName("Rose Mall City Campus", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Rose Mall City Campus",
+                        doTimeTravelPeek: false,
+                        doTimeTravelPeriodic: false),
                     // Richman Bros
-                    FindGameObjectInArrayByName("Rose Mall Richman", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Rose Mall Richman",
+                        doTimeTravelPeek: false,
+                        doTimeTravelPeriodic: false),
                     // Cricket
-                    FindGameObjectInArrayByName("Rose Mall 1", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Rose Mall 1",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // Hatch's
-                    FindGameObjectInArrayByName("Rose Mall Hatch's", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Rose Mall Hatch's",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // The Regiment
-                    FindGameObjectInArrayByName("Rose Mall Regiment", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Rose Mall Regiment",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // Cinema-Neusteters
-                    FindGameObjectInArrayByName("Rose Mall Exterior 1", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Rose Mall Exterior 1",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // Gano-Downs
-                    FindGameObjectInArrayByName("Rose Mall Gano-Downs exterior", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Rose Mall Gano-Downs exterior",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
 
-                    // BLUE MALL ENTRANCES
+                    // BLUE MALL EXTERIOR
                     // Leader entrance
-                    FindGameObjectInArrayByName("Rose Mall Leader Entrance", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Rose Mall Leader Entrance",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // Farrell's
-                    FindGameObjectInArrayByName("Blue Mall - Farrell's 1", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall - Farrell's 1",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // Blue Mall exterior corner
-                    FindGameObjectInArrayByName("Blue Mall Exterior 2", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall Exterior 2",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 3
 
                     // SHAMROCK MALL
                     // Tommy Wong's
-                    FindGameObjectInArrayByName("Shamrock Mall Tommy Wong's", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Shamrock Mall Tommy Wong's",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // Kiddie Shop
-                    FindGameObjectInArrayByName("Shamrock Kiddie Shop", guidedTourObjects),
-
-                    // RETURN TO BLUE MALL
-                    // fountain - straight on
-                    FindGameObjectInArrayByName("Blue Mall 1", guidedTourObjects),
-                    // fountain - closer
-                    FindGameObjectInArrayByName("Blue Mall 2", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Shamrock Kiddie Shop",
+                        doTimeTravelPeek: false,
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 4
 
                     // CINDER ALLEY
                     // Cinder Alley from Penney's
-                    FindGameObjectInArrayByName("Cinder Alley 1", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Cinder Alley 1",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // Candle Makers of Candles II
-                    FindGameObjectInArrayByName("Cinder Alley Candles", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Cinder Alley Candles",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // store with planter
-                    FindGameObjectInArrayByName("Cinder Alley 2", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Cinder Alley 2",
+                        doTimeTravelPeek: false,
+                        doTimeTravelPeriodic: false),
                     // Cinder Alley looking through gate to alleys
-                    FindGameObjectInArrayByName("Cinder Alley gate", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Cinder Alley gate",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // Cinder Alley looking toward Penney's
-                    FindGameObjectInArrayByName("Cinder Alley far", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Cinder Alley far",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // Cinder Alley marketing shot
-                    FindGameObjectInArrayByName("Cinder Alley marketing", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Cinder Alley marketing",
+                        doTimeTravelPeek: false,
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 5
 
                     // GOLD MALL
                     // Gold Mall colorized
-                    FindGameObjectInArrayByName("Gold Mall Colorized", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Gold Mall Colorized",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // Spencer's
-                    FindGameObjectInArrayByName("Gold Mall Horseshoes", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Gold Mall Horseshoes",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // CA sign at Gold Mall
-                    FindGameObjectInArrayByName("Gold Mall 2", guidedTourObjects),
-                    FindGameObjectInArrayByName("Gold Mall 1", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Gold Mall 2",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
+                    new GuidedTourCameraMeta(
+                        partialName: "Gold Mall 1",
+                        doTimeTravelPeek: false,
+                        doTimeTravelPeriodic: false),
                     // Stuart's
-                    FindGameObjectInArrayByName("Gold Mall Stuart's", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Gold Mall Stuart's",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 6
 
                     // BLUE MALL OUTER HALLS
                     // Karmelkorn
-                    FindGameObjectInArrayByName("Blue Mall Karmelkorn", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall Karmelkorn",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // Hummell's
-                    FindGameObjectInArrayByName("Blue Mall Hummel's", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall Hummel's",
+                        doTimeTravelPeek: false,
+                        doTimeTravelPeriodic: false),
 
                     // EXTERIOR
                     // Joslins exterior entrance
-                    FindGameObjectInArrayByName("Gold Mall Joslins entrance", guidedTourObjects),
-                    // Blue Mall Denver exterior entrance
-                    FindGameObjectInArrayByName("Blue Mall Denver entrance", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Gold Mall Joslins entrance",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
 
-                    // BLUE MALL CENTRAL
-                    // back to fountain - straight on
-                    FindGameObjectInArrayByName("Blue Mall 1", guidedTourObjects),
+                    // RETURN TO BLUE MALL
                     // Blue Mall mezzanine
-                    FindGameObjectInArrayByName("Blue Mall - mezzanine 1", guidedTourObjects)
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall - mezzanine 1",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 7
                 };
             }
             // 80s90s scene
             else if (sceneName == SceneGlobals.mallEra80s90sSceneName)
             {
-                finalCuratedGuidedTourObjects = new GameObject[] {
+                // define all guided tour object metadata
+                // (order of photos and all options)
+                curatedObjectMeta = new GuidedTourCameraMeta[]
+                {
                     // BLUE MALL CENTRAL
-                    // atrium marketing
-                    FindGameObjectInArrayByName("Blue Mall deep", guidedTourObjects),
+                    // Atrium marketing
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall deep",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // carousel
-                    FindGameObjectInArrayByName("Blue Mall carousel 1", guidedTourObjects),
-                    // b&w decay
-                    FindGameObjectInArrayByName("Blue Mall 1", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall carousel 1",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
+                    // B&W decay
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall 1",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // wedding
-                    FindGameObjectInArrayByName("Blue Mall wedding 1", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall wedding 1",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // Pollard decay
-                    FindGameObjectInArrayByName("Blue Mall peek", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall peek",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
+                    // Footlocker
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall Footlocker",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 1
 
                     // BLUE MALL OUTER HALLS
-                    // Footlocker
-                    FindGameObjectInArrayByName("Blue Mall Footlocker", guidedTourObjects),
                     // Pollard west doors
-                    FindGameObjectInArrayByName("Blue Mall west doors", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall west doors",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
 
-                    // Rose Mall
-                    FindGameObjectInArrayByName("Rose Mall - Lauter", guidedTourObjects),
-                    FindGameObjectInArrayByName("Rose Mall 1", guidedTourObjects),
+                    // ROSE MALL
+                    // Lauter
+                    new GuidedTourCameraMeta(
+                        partialName: "Rose Mall - Lauter",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
+                    // Rose sunny
+                    new GuidedTourCameraMeta(
+                        partialName: "Rose Mall 1",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // Thom McAn
-                    FindGameObjectInArrayByName("Rose Mall Thom McAn", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Rose Mall Thom McAn",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // Woolworth's
-                    FindGameObjectInArrayByName("Rose Mall Woolworth's", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Rose Mall Woolworth's",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // Stride Right
-                    FindGameObjectInArrayByName("Rose Mall Stride Right", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Rose Mall Stride Right",
+                        doTimeTravelPeek: false,
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 2
 
                     // PARKING GARAGE
-                    FindGameObjectInArrayByName("parking garage at bank", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Parking garage at bank",
+                        doTimeTravelPeek: false,
+                        doTimeTravelPeriodic: false),
 
                     // SHAMROCK MALL
                     // Shamrock with debris by escalator
-                    FindGameObjectInArrayByName("Shamrock Mall 1", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Shamrock Mall 1",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // Shamrock escalator toward Broadway
-                    FindGameObjectInArrayByName("Shamrock escalator", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Shamrock escalator",
+                        doTimeTravelPeek: false,
+                        doTimeTravelPeriodic: false),
                     // Pollard Shamrock
-                    FindGameObjectInArrayByName("Shamrock Woolworths", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Shamrock Woolworths",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // waterbeds
-                    FindGameObjectInArrayByName("Shamrock Mall AWF", guidedTourObjects),
-                    // book fair
-                    FindGameObjectInArrayByName("Shamrock Mall book fair", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Shamrock Mall AWF",
+                        doTimeTravelPeek: false,
+                        doTimeTravelPeriodic: false),
+                    // Book fair
+                    new GuidedTourCameraMeta(
+                        partialName: "Shamrock Mall book fair",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // Sports Fan
-                    FindGameObjectInArrayByName("Shamrock Mall 2", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Shamrock Mall 2",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 3
 
                     // FOOD COURT
                     // Renzios
-                    FindGameObjectInArrayByName("Food Court 9", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Food Court 9",
+                        doTimeTravelPeek: false,
+                        doTimeTravelPeriodic: false),
                     // Sbarro
-                    FindGameObjectInArrayByName("Food Court 8", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Food Court 8",
+                        doTimeTravelPeek: false,
+                        doTimeTravelPeriodic: false),
                     // Wendy's
-                    FindGameObjectInArrayByName("Food Court 7", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Food Court 7",
+                        doTimeTravelPeek: false,
+                        doTimeTravelPeriodic: false),
                     // Paul Wu's
-                    FindGameObjectInArrayByName("Food Court 6", guidedTourObjects),
-                    // smoking area
-                    FindGameObjectInArrayByName("Food Court 2", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Food Court 6",
+                        doTimeTravelPeek: false,
+                        doTimeTravelPeriodic: false),
+                    // Smoking area
+                    new GuidedTourCameraMeta(
+                        partialName: "Food Court 2",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // Orange Julius
-                    FindGameObjectInArrayByName("Food Court 1", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Food Court 1",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // Corn Dog
-                    FindGameObjectInArrayByName("Food Court 5", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Food Court 5",
+                        doTimeTravelPeek: false,
+                        doTimeTravelPeriodic: false),
                     // Chick-Fil-A
-                    FindGameObjectInArrayByName("Food Court 4", guidedTourObjects),
-
-                    // RETURN TO BLUE MALL
-                    // atrium marketing
-                    FindGameObjectInArrayByName("Blue Mall deep", guidedTourObjects),
-                    // carousel
-                    FindGameObjectInArrayByName("Blue Mall carousel 1", guidedTourObjects),
-                    // wedding
-                    FindGameObjectInArrayByName("Blue Mall wedding 1", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Food Court 4",
+                        doTimeTravelPeek: false,
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 4
 
                     // CINDER ALLEY
-                    // jazzercise
-                    FindGameObjectInArrayByName("Food Court 3", guidedTourObjects),
+                    // Jazzercise
+                    new GuidedTourCameraMeta(
+                        partialName: "Food Court 3",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // Zeezo's
-                    FindGameObjectInArrayByName("Cinder Alley Zeezo's", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Cinder Alley Zeezo's",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // Funtastic's
-                    FindGameObjectInArrayByName("Cinder Alley Funtastic's", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Cinder Alley Funtastic's",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // abandoned
-                    FindGameObjectInArrayByName("Cinder Alley 1", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Cinder Alley 1",
+                        doTimeTravelPeek: false,
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 5
 
                     // GOLD MALL
                     // Cinder Alley sign east
-                    FindGameObjectInArrayByName("Gold Mall CA east stair", guidedTourObjects),
                     // Gold Mall
-                    FindGameObjectInArrayByName("Gold Mall far", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Gold Mall far",
+                        doTimeTravelPeek: false,
+                        doTimeTravelPeriodic: false),
                     // Pollard Gold
-                    FindGameObjectInArrayByName("Gold Mall Pollard to Joslins", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Gold Mall Pollard to Joslins",
+                        doTimeTravelPeek: false,
+                        doTimeTravelPeriodic: false),
                     // Cinder Alley sign west
-                    FindGameObjectInArrayByName("Gold Mall Penney's", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Gold Mall Penney's",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 6
                     // Hummel's
-                    FindGameObjectInArrayByName("Blue Mall Hummels 1", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall Hummels 1",
+                        doTimeTravelPeek: false,
+                        doTimeTravelPeriodic: false),
 
                     // BLUE MALL
                     // Blue Mall Ward's exterior entrance
-                    FindGameObjectInArrayByName("Blue Mall Exterior 1", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall Exterior 1",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // Blue Mall mezzanine
-                    FindGameObjectInArrayByName("Blue Mall mezzanine 1", guidedTourObjects),
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall mezzanine 1",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // Blue Mall from stair landing
-                    FindGameObjectInArrayByName("Blue Mall 2", guidedTourObjects)
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall 2",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 7
                 };
             }
+            return curatedObjectMeta;
+        }
 
-            // clean the array in case any items weren't found (eliminate nulls)
-            // return the cleaned array
-            return ArrayUtils.CleanArray(finalCuratedGuidedTourObjects);
+        // gets the guided tour object metadata given a camera name
+        public static GuidedTourCameraMeta? GetGuidedTourCameraMetadata(string cameraName, string sceneName)
+        {
+            GuidedTourCameraMeta[] allMetadata = GetCuratedGuidedTourCameraMetaByScene(sceneName);
+            foreach (GuidedTourCameraMeta meta in allMetadata)
+            {
+                if (cameraName.Contains(meta.partialName))
+                {
+                    return meta; // return the matching metadata
+                }
+            }
+
+            return null; // return null if no matching metadata found
+        }
+
+        // gets a curated list of historic photos for Guided Tour in RecordingMode
+        // by searching a list of uncurated guidedTourObjects for specific names
+        public static GameObject[] GetCuratedGuidedTourCameras(GameObject[] allguidedTourCameras)
+        {
+            // get the scene from the object
+            // GetActiveScene() can't be trusted here for some reason
+            string sceneName = allguidedTourCameras[0].scene.name;
+
+            // the final array of curated objects
+            GameObject[] finalCuratedGuidedTourCameras = new GameObject[0];
+            // the curated meta objects that define the final tour objects
+            GuidedTourCameraMeta[] curatedObjectMeta = GetCuratedGuidedTourCameraMetaByScene(sceneName);
+
+            // use the metadata to get the final curated objects from the array of all objects
+            // first, create a temporary list to add to
+            List<GameObject> finalCuratedGuidedTourCamerasList = new List<GameObject>();
+            foreach (GuidedTourCameraMeta meta in curatedObjectMeta)
+            {
+                GameObject foundCamera = FindGameObjectInArrayByName(meta.partialName, allguidedTourCameras);
+                if (foundCamera != null)
+                {
+                    finalCuratedGuidedTourCamerasList.Add(foundCamera);
+                }
+            }
+            // then convert to a cleaned array
+            finalCuratedGuidedTourCameras = ArrayUtils.CleanArray(finalCuratedGuidedTourCamerasList.ToArray());
+
+            return finalCuratedGuidedTourCameras;
         }
 
         // define and get the index of the "partial path" camera depending on the scene
