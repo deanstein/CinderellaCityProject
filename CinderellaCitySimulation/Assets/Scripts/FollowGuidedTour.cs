@@ -170,7 +170,7 @@ public class FollowGuidedTour : MonoBehaviour
         if (!ModeState.shuffleDestinations)
         {
             // get the list of curated guided tour objects for RecordingMode
-            guidedTourObjects = ManageSceneObjects.ProxyObjects.FindAllCuratedGuidedTourObjects(guidedTourObjects);
+            guidedTourObjects = ManageSceneObjects.ProxyObjects.GetCuratedGuidedTourCameras(guidedTourObjects);
         }
 
         // by now, the final guidedTourObjects are in the right order

@@ -1,10 +1,10 @@
-﻿public struct GuidedTourObjectMeta
+﻿public struct GuidedTourCameraMeta
 {
     public string partialName;
     public bool doTimeTravelPeek;
     public bool doTimeTravelPeriodic;
 
-    public GuidedTourObjectMeta(
+    public GuidedTourCameraMeta(
         string partialName, 
         bool doTimeTravelPeek, 
         bool doTimeTravelPeriodic)
