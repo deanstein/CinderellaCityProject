@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -25,7 +26,7 @@ public static class ManageSceneObjects
             }
             else
             {
-                if (gameObject.name.Contains(name))
+                if (gameObject.name.IndexOf(name, StringComparison.OrdinalIgnoreCase) >= 0)
                 {
                     return i;
                 }
@@ -930,7 +931,8 @@ public static class ManageSceneObjects
             GuidedTourCameraMeta[] allMetadata = GetCuratedGuidedTourCameraMetaByScene(sceneName);
             foreach (GuidedTourCameraMeta meta in allMetadata)
             {
-                if (cameraName.Contains(meta.partialName))
+                // non-case sensitive search for partial name inside of cameraName
+                if (cameraName.IndexOf(meta.partialName, StringComparison.OrdinalIgnoreCase) >= 0)
                 {
                     return meta; // return the matching metadata
                 }
