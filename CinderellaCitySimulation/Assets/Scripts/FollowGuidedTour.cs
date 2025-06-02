@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -18,8 +19,6 @@ public class FollowGuidedTour : MonoBehaviour
 
     // get the partial path index of the current partial path camera in the list of cameras
     private int partialPathCameraIndex = -1;
-    // number of photos to view before periodic time-traveling
-    private readonly int periodicTimeTravelAfterPhotoCount = 4;
 
     // number of seconds to pause and look at a camera
     readonly float pauseAtCameraDuration = 10f;
@@ -27,6 +26,8 @@ public class FollowGuidedTour : MonoBehaviour
     readonly float pauseAtEnableOrResumeDuration = 4f;
     // number of seconds to pause for time-travel peeking
     readonly float pauseAtTimeTravelPeekDuration = 6f;
+    // number of seconds to pause after hiding photos and before time-travel, before peek
+    readonly float pauseBeforeTimeTravelPeek = 2f;
     // guided tour can be stationary only for the durations specified above
     // keep track of the stationary time so we can force an advance if max stationary times are exceeded
     float stationaryTimeActive = 0f;
@@ -35,9 +36,9 @@ public class FollowGuidedTour : MonoBehaviour
     // should the player camera match the destination camera or simply look toward it?
     readonly bool matchCameraForward = false;
     // distance from end of path where before camera begins looking at destination camera
-    readonly float lookToCameraAtRemainingDistance = 8.0f;
+    readonly float lookToCameraAtRemainingDistance = 5.5f;
     // distance from the end of the path where the photo turns on
-    readonly float hidePeopleAtRemainingDistance = 8.0f;
+    readonly float hidePeopleAtRemainingDistance = 5.5f;
     // distance (m) away from camera look vector so when looking at a camera, it's visible
     readonly float adjustPosAwayFromCamera = 1.15f; 
     readonly public float guidedTourRotationSpeed = 0.4f;
@@ -78,6 +79,23 @@ public class FollowGuidedTour : MonoBehaviour
     // use a special destination list for debugging
     static readonly bool useDebuggingDestinations = false; // if true, use a special list for tour objects
     public bool doTestAllPaths = false; // if true, attempt to find paths between all destinations
+
+    private void TimeTravelForward()
+    {
+        // show the time-traveling label
+        ModeState.doShowTimeTravelingLabel = true;
+        // invoke time-traveling
+        string nextTimePeriodSceneName = ManageScenes.GetUpcomingPeriodSceneName(gameObject.scene.name, "next");
+        StartCoroutine(ToggleSceneAndUI.ToggleFromSceneToSceneWithTransition(thisAgent.gameObject.scene.name, nextTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform, ManageCameraActions.CameraActionGlobals.activeCameraHost, "FlashBlack", SceneGlobals.guidedTourTimeTravelTransitionDuration));
+        // indicate to the next scene that it needs to recalc its cameras and paths
+        SceneGlobals.isGuidedTourTimeTraveling = true;
+    }
+
+    IEnumerator TimeTravelForwardAfterDelay(float delay /* seconds */)
+    {
+        yield return new WaitForSeconds(delay);
+        TimeTravelForward();
+    }
 
     // the agent sometimes reports an incorrect or invalid remainingDistance
     // in which case, we calculate distance between points
@@ -500,15 +518,16 @@ public class FollowGuidedTour : MonoBehaviour
             isProxyObjectVisibilityUpdateRequired = true;
             UpdateProxyObjectVisibility();
 
-            // show the time-traveling label
-            ModeState.doShowTimeTravelingLabel = true;
-
-            // invoke time-traveling
-            string nextTimePeriodSceneName = ManageScenes.GetUpcomingPeriodSceneName(gameObject.scene.name, "next");
-            StartCoroutine(ToggleSceneAndUI.ToggleFromSceneToSceneWithTransition(thisAgent.gameObject.scene.name, nextTimePeriodSceneName, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform, ManageCameraActions.CameraActionGlobals.activeCameraHost, "FlashBlack", SceneGlobals.guidedTourTimeTravelTransitionDuration));
-
-            // indicate to the next scene that it needs to recalc its cameras and paths
-            SceneGlobals.isGuidedTourTimeTraveling = true;
+            // time-travel after a delay if we're peeking
+            if (ModeState.isTimeTravelPeeking)
+            {
+                StartCoroutine(TimeTravelForwardAfterDelay(pauseBeforeTimeTravelPeek));
+            }
+            // otherwise, time-travel immediately
+            else
+            {
+                TimeTravelForward();
+            }
         }
 
         // guided tour can only stop for a certain amount of time before we proceed
@@ -528,9 +547,18 @@ public class FollowGuidedTour : MonoBehaviour
         // so decide how to proceed next
         if (stationaryTimeActive >= pauseAtCameraDuration)
         {
+            // get the current guided tour object's name
+            string currentObjectName = Instances[thisAgent.gameObject.scene.name]
+                    .guidedTourObjects[currentGuidedTourDestinationIndex].name;
+
+            // get metadata for this object
+            GuidedTourCameraMeta? currentCameraMeta = ManageSceneObjects.ProxyObjects.GetGuidedTourCameraMetadata(currentObjectName, thisAgent.gameObject.scene.name);
+
+            // determine if periodic time-travel is enabled for this object
+            bool shouldPeriodicTimeTravel = currentCameraMeta.HasValue && currentCameraMeta.Value.doTimeTravelPeriodic;
+  
             // periodic time travel if it's time
-            bool isAtPeriodicInterval = (Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex + 1) % periodicTimeTravelAfterPhotoCount == 0;
-            if (ModeState.autoTimeTravelPeriodic && isAtPeriodicInterval)
+            if (ModeState.autoTimeTravelPeriodic && shouldPeriodicTimeTravel)
             {
                 isGuidedTourTimeTravelRequested = true;
                 stationaryTimeActive = 0f;
@@ -539,8 +567,8 @@ public class FollowGuidedTour : MonoBehaviour
                 ModeState.isPeriodicTimeTraveling = true;
                 Debug.Log("Periodic time-traveling!");
             }
-            // handle the alternating time-travel mode
-            else if (ModeState.autoTimeTravelPeek)
+            // handle time-travel peek
+            else if (ModeState.autoTimeTravelPeek && currentCameraMeta.HasValue && currentCameraMeta.Value.doTimeTravelPeek)
             {
                 // if requested, initiate time traveling briefly
                 if (!ModeState.isTimeTravelPeeking)
