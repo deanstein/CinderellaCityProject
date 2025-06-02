@@ -135,7 +135,7 @@ public class LoadAllScenesAsync : MonoBehaviour {
 
     void Start()
     {
-        // limit frame rate to prevent very fast computers from moving objects too quickly
+        // limit framerate to prevent very fast computers from moving objects too quickly
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
 
