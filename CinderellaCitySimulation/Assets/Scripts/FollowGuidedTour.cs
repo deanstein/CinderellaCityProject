@@ -61,8 +61,9 @@ public class FollowGuidedTour : MonoBehaviour
 
     // set to true briefly to allow IEnumerator time-travel transition
     public static bool isGuidedTourTimeTravelRequested = false;
-    // set to true to force an update of historic photo and people visibility
-    private bool isProxyObjectVisibilityUpdateRequired = false;
+    // if true, will force an update of historic photo and people visibility
+    // set to true initially to force a one-time update at startup
+    private bool isProxyObjectVisibilityUpdateRequired = true;
 
     //
     // DEBUGGING
@@ -719,9 +720,6 @@ public class FollowGuidedTour : MonoBehaviour
         // update the people and historic photo visibility
         // this only runs when it needs to
         UpdateProxyObjectVisibility();
-
-        // reset the forced update flag
-        isProxyObjectVisibilityUpdateRequired = false;
     }
 
     public static void StartGuidedTourMode()
@@ -831,7 +829,7 @@ public class FollowGuidedTour : MonoBehaviour
         // only force visibility if guided tour mode is on, 
         // and the official flag doesn't match the requested flag
         // or if a forced update is required
-        if ((ModeState.isGuidedTourActive || ModeState.isGuidedTourPaused) && (ModeState.areHistoricPhotosVisible != ModeState.areHistoricPhotosRequestedVisible || isProxyObjectVisibilityUpdateRequired))
+        if (((ModeState.isGuidedTourActive || ModeState.isGuidedTourPaused) && (ModeState.areHistoricPhotosVisible != ModeState.areHistoricPhotosRequestedVisible)) || isProxyObjectVisibilityUpdateRequired)
         {
             // enable or disable the historic photos
             GameObject historicCamerasContainer = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords, true)[0];
@@ -844,12 +842,15 @@ public class FollowGuidedTour : MonoBehaviour
         }
 
         // similar for people - only adjust their visibility once if requested
-        if ((ModeState.isGuidedTourActive || ModeState.isGuidedTourPaused) && (ModeState.arePeopleVisible != ModeState.arePeopleRequestedVisible || isProxyObjectVisibilityUpdateRequired))
+        if (((ModeState.isGuidedTourActive || ModeState.isGuidedTourPaused) && (ModeState.arePeopleVisible != ModeState.arePeopleRequestedVisible) || isProxyObjectVisibilityUpdateRequired))
         {
             ObjectVisibility.SetPeopleVisibility(ModeState.arePeopleRequestedVisible);
 
             // set the official flag to match so this only runs once
             ModeState.arePeopleVisible = ModeState.arePeopleRequestedVisible;
         }
+
+        // set the request flag to false since this just ran
+        isProxyObjectVisibilityUpdateRequired = false;
     }
 }
