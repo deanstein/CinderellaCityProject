@@ -48,10 +48,11 @@ public static class ModeState
     // are toggled on or off when agent is close to destination photo
     // FollowGuidedTour.cs looks for these and adjusts object visibility accordingly
     public static bool areHistoricPhotosVisible = false;
-    public static bool areHistoricPhotosRequestedVisible = false;
+    public static bool areHistoricPhotosRequestedVisible = true; // visible by default
     public static bool arePeopleVisible = false;
-    public static bool arePeopleRequestedVisible = false;
+    public static bool arePeopleRequestedVisible = true; // visible by default
 
+    // time-traveling label is shown right before and during a time-travel transition
     public static bool doShowTimeTravelingLabel = false;
 
     //
