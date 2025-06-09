@@ -520,7 +520,7 @@ public class FollowGuidedTour : MonoBehaviour
             UpdateProxyObjectVisibility();
 
             // time-travel after a delay if we're peeking
-            if (ModeState.isTimeTravelPeeking)
+            if (ModeState.isTimeTravelPeeking || ModeState.isPeriodicTimeTraveling)
             {
                 StartCoroutine(TimeTravelForwardAfterDelay(pauseBeforeTimeTravelPeek));
             }
