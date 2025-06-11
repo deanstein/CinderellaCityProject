@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -31,6 +32,7 @@ public class FollowRandomPath : MonoBehaviour
     readonly float screenMaxX = 0.55f;
 
     // proximity between NPC and FPC
+    float distanceFromNPCToPlayer;
     readonly float maxTimeProximate = 0.5f; // seconds
     float timeProximate = 0;
     // any closer than this, and repath
@@ -40,13 +42,23 @@ public class FollowRandomPath : MonoBehaviour
 
     // repath if slowing down (likely due to colliding with others)
     readonly bool doRepathIfSlow = true;
-    readonly float maxTimeSlow = 0.25f;
+    readonly float maxTimeSlow = 0.5f;
     float timeSlow = 0;
 
     // these "extend" the camera extents (usualy between 0 and 1), to more quickly enable components
     // when the camera is sweeping around, so the player won't notice the components being enabled
     public float minScreenSpacePoint = -2;
     public float maxScreenSpacePoint = 3;
+
+    // fading when too close to the player
+    readonly bool doFadeOnProximity = true;
+    readonly float fadeAtProximity = 1.5f;
+    readonly float fadeDuration = 0.5f;
+    bool isFaded = false;
+    private SkinnedMeshRenderer skinnedMeshRenderer;
+    private Material[] npcMaterials;
+    private bool isFadingOut = false;
+
 
     // DEBUGGING
     readonly bool doShowDebugMessages = false;
@@ -131,7 +143,7 @@ public class FollowRandomPath : MonoBehaviour
         bool isInBlockingZone = screenSpacePoint.x > screenMinX && screenSpacePoint.x < screenMaxX;
 
         // Get distance between NPC and player
-        float distanceFromNPCToPlayer = Vector3.Distance(transform.position, ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.position);
+        distanceFromNPCToPlayer = Vector3.Distance(transform.position, ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.position);
 
         // Get NPC’s forward direction
         Vector3 NPCForwardVector = transform.forward.normalized;
@@ -156,7 +168,7 @@ public class FollowRandomPath : MonoBehaviour
             timeProximate += Time.deltaTime;
             if (timeProximate >= maxTimeProximate)
             {
-                Debug.Log("BLOCKING VIA PROXIMITY! " + name);
+                //Debug.Log("BLOCKING VIA PROXIMITY! " + name);
                 isBlocking = true;
                 timeProximate = 0; // reset after blocking
             }
@@ -168,7 +180,7 @@ public class FollowRandomPath : MonoBehaviour
             timeAligned += Time.deltaTime;
             if (timeAligned >= maxTimeAligned)
             {
-                Debug.Log("BLOCKING VIA SCREEN SPACE! " + name);
+                //Debug.Log("BLOCKING VIA SCREEN SPACE! " + name);
                 isBlocking = true;
                 timeAligned = 0; // reset after blocking
             }
@@ -177,7 +189,77 @@ public class FollowRandomPath : MonoBehaviour
         return isBlocking;
     }
 
-    private void Awake()
+    public void StartFade(bool fadeOut)
+    {
+        isFadingOut = fadeOut;
+
+        if (fadeOut)
+        {
+            ChangeRenderMode(npcMaterials, BlendMode.Transparent); // Switch to transparent
+        }
+
+        StartCoroutine(FadeEffect());
+    }
+
+    private IEnumerator FadeEffect()
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime < fadeDuration)
+        {
+            float alpha = Mathf.Lerp(isFadingOut ? 1f : 0f, isFadingOut ? 0f : 1f, elapsedTime / fadeDuration);
+            foreach (Material mat in npcMaterials)
+            {
+                Color color = mat.color;
+                color.a = alpha;
+                mat.color = color;
+            }
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        if (isFadingOut)
+        {
+            skinnedMeshRenderer.enabled = false; // Hide NPC completely
+        }
+        else
+        {
+            skinnedMeshRenderer.enabled = true; // Show NPC again
+            ChangeRenderMode(npcMaterials, BlendMode.Opaque); // Restore opaque mode
+        }
+    }
+
+    private void ChangeRenderMode(Material[] materials, BlendMode blendMode)
+    {
+        foreach (Material mat in materials)
+        {
+            if (blendMode == BlendMode.Transparent)
+            {
+                mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                mat.SetInt("_ZWrite", 0);
+                mat.DisableKeyword("_ALPHATEST_ON");
+                mat.EnableKeyword("_ALPHABLEND_ON");
+                mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+                mat.renderQueue = 3000; // Transparent queue
+            }
+            else
+            {
+                mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+                mat.SetInt("_ZWrite", 1);
+                mat.DisableKeyword("_ALPHATEST_ON");
+                mat.DisableKeyword("_ALPHABLEND_ON");
+                mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+                mat.renderQueue = -1; // Default queue
+            }
+        }
+    }
+
+    private enum BlendMode { Opaque, Transparent }
+
+/*** LIFECYCLE ***/
+
+private void Awake()
     {
         thisAgent = GetComponent<NavMeshAgent>();
 
@@ -209,9 +291,17 @@ public class FollowRandomPath : MonoBehaviour
             NPCControllerGlobals.activeNPCControllersArray = NPCControllerGlobals.activeNPCControllersList.ToArray();
         }
 
-        // initialize previous and next destinations as random destinations
+        // initialize next destination as random destination
         nextDestination = GetRandomDestination();
         path = NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, nextDestination);
+
+        // get the skinned mesh render materials
+        skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+        if (skinnedMeshRenderer != null)
+        {
+            npcMaterials = skinnedMeshRenderer.materials;
+        }
+
     }
 
     private void OnEnable()
@@ -247,6 +337,29 @@ public class FollowRandomPath : MonoBehaviour
                         path = NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, nextDestination);
                     }
                 }
+
+                // if this agent is too close to the player, fade it
+                if (doFadeOnProximity)
+                {
+                    if (distanceFromNPCToPlayer < fadeAtProximity)
+                    {
+                        if (!isFaded)
+                        {
+                            StartFade(true);
+                            isFaded = true;
+                        }
+                    }
+                    // otherwise, NPC shouldn't be faded
+                    else
+                    {
+                        if (isFaded)
+                        {
+                            StartFade(false);
+                            isFaded = false;
+                        }
+                    }
+                }
+               
 
                 // if this agent's speed gets too low, it's likely colliding badly with others
                 // to prevent a traffic jam, find a different random point from the pool to switch directions
