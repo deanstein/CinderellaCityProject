@@ -51,7 +51,8 @@ public class FollowRandomPath : MonoBehaviour
 
     // hide NPC when too close to the player
     readonly bool doHideOnProximity = true;
-    readonly float hideAtProximity = 1.3f;
+    // this should be slightly larger than the player and NPC radius (0.15 and 0.4)
+    readonly float hideAtProximity = 0.8f;
     bool isHidden = false;
     private SkinnedMeshRenderer skinnedMeshRenderer;
 
@@ -138,9 +139,6 @@ public class FollowRandomPath : MonoBehaviour
         // Check if NPC is within blocking zone
         bool isInBlockingZone = screenSpacePoint.x > screenMinX && screenSpacePoint.x < screenMaxX;
 
-        // Get distance between NPC and player
-        distanceFromNPCToPlayer = Vector3.Distance(transform.position, ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.position);
-
         // Get NPC’s forward direction
         Vector3 NPCForwardVector = transform.forward.normalized;
         Vector3 NPCToPlayerVector = (ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.position - transform.position).normalized;
@@ -185,9 +183,9 @@ public class FollowRandomPath : MonoBehaviour
         return isBlocking;
     }
 
-/*** LIFECYCLE ***/
+    /*** LIFECYCLE ***/
 
-private void Awake()
+    private void Awake()
     {
         thisAgent = GetComponent<NavMeshAgent>();
 
@@ -209,6 +207,12 @@ private void Awake()
 
     private void Start()
     {
+        // since NPCs use agents, no need to have a collider
+        MeshCollider meshCollider = GetComponentInChildren<MeshCollider>();
+        meshCollider.enabled = false;
+        // store the mesh renderer for hiding later
+        skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+
         // if the NPC arrays haven't been converted yet, convert them
         if (NPCControllerGlobals.initialNPCPositionsArray == null)
         {
@@ -238,7 +242,37 @@ private void Awake()
 
     private void Update()
     {
-        // before we do anything, this NPC must be in view
+        // get distance between NPC and player
+        Vector3 playerPosition = transform.position;
+        Vector3 NPCPosition = ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.position;
+        // zero-out the Y component
+        NPCPosition.y = playerPosition.y;
+        distanceFromNPCToPlayer = Vector3.Distance(playerPosition, NPCPosition);
+
+        // hide when NPC is close to player if requested
+        if (doHideOnProximity)
+        {
+            // if this agent is too close to the player, hide it
+            if (distanceFromNPCToPlayer < hideAtProximity)
+            {
+                if (!isHidden)
+                {
+                    skinnedMeshRenderer.enabled = false;
+                    isHidden = true;
+                }
+            }
+            // otherwise, show the NPC
+            else
+            {
+                if (isHidden)
+                {
+                    skinnedMeshRenderer.enabled = true;
+                    isHidden = false;
+                }
+            }
+        }
+
+        // for alignment and proximity checks, NPC must be in view of player
         if (IsNPCInView(this.gameObject, ManageFPSControllers.FPSControllerGlobals.activeFPSController))
         {
             if (!thisAgent.pathPending && this.transform.position != null && NPCControllerGlobals.initialNPCPositionsArray != null)
@@ -255,29 +289,6 @@ private void Awake()
                         // if possible, get a destination behind the NPC
                         nextDestination = GetRandomDestinationBehindNPC();
                         path = NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, nextDestination);
-                    }
-                }
-
-                // hide when NPC is close to player if requested
-                if (doHideOnProximity)
-                {
-                    // if this agent is too close to the player, hide it
-                    if (distanceFromNPCToPlayer < hideAtProximity)
-                    {
-                        if (!isHidden)
-                        {
-                            skinnedMeshRenderer.enabled = false;
-                            isHidden = true;
-                        }
-                    }
-                    // otherwise, show the NPC
-                    else
-                    {
-                        if (isHidden)
-                        {
-                            skinnedMeshRenderer.enabled = true;
-                            isHidden = false;
-                        }
                     }
                 }
                
