@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -185,35 +184,6 @@ public class FollowRandomPath : MonoBehaviour
 
         return isBlocking;
     }
-
-    private void ChangeRenderMode(Material[] materials, BlendMode blendMode)
-    {
-        foreach (Material mat in materials)
-        {
-            if (blendMode == BlendMode.Transparent)
-            {
-                mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-                mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                mat.SetInt("_ZWrite", 0);
-                mat.DisableKeyword("_ALPHATEST_ON");
-                mat.EnableKeyword("_ALPHABLEND_ON");
-                mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-                mat.renderQueue = 3000; // Transparent queue
-            }
-            else
-            {
-                mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-                mat.SetInt("_ZWrite", 1);
-                mat.DisableKeyword("_ALPHATEST_ON");
-                mat.DisableKeyword("_ALPHABLEND_ON");
-                mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-                mat.renderQueue = -1; // Default queue
-            }
-        }
-    }
-
-    private enum BlendMode { Opaque, Transparent }
 
 /*** LIFECYCLE ***/
 
