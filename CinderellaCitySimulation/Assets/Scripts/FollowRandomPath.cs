@@ -31,6 +31,7 @@ public class FollowRandomPath : MonoBehaviour
     readonly float screenMaxX = 0.55f;
 
     // proximity between NPC and FPC
+    float distanceFromNPCToPlayer;
     readonly float maxTimeProximate = 0.5f; // seconds
     float timeProximate = 0;
     // any closer than this, and repath
@@ -40,13 +41,21 @@ public class FollowRandomPath : MonoBehaviour
 
     // repath if slowing down (likely due to colliding with others)
     readonly bool doRepathIfSlow = true;
-    readonly float maxTimeSlow = 0.25f;
+    readonly float maxTimeSlow = 0.5f;
     float timeSlow = 0;
 
     // these "extend" the camera extents (usualy between 0 and 1), to more quickly enable components
     // when the camera is sweeping around, so the player won't notice the components being enabled
     public float minScreenSpacePoint = -2;
     public float maxScreenSpacePoint = 3;
+
+    // hide NPC when too close to the player
+    readonly bool doHideOnProximity = true;
+    // this should be slightly larger than the player and NPC radius (0.15 and 0.4)
+    readonly float hideAtProximity = 0.8f;
+    bool isHidden = false;
+    private SkinnedMeshRenderer skinnedMeshRenderer;
+
 
     // DEBUGGING
     readonly bool doShowDebugMessages = false;
@@ -130,9 +139,6 @@ public class FollowRandomPath : MonoBehaviour
         // Check if NPC is within blocking zone
         bool isInBlockingZone = screenSpacePoint.x > screenMinX && screenSpacePoint.x < screenMaxX;
 
-        // Get distance between NPC and player
-        float distanceFromNPCToPlayer = Vector3.Distance(transform.position, ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.position);
-
         // Get NPC’s forward direction
         Vector3 NPCForwardVector = transform.forward.normalized;
         Vector3 NPCToPlayerVector = (ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.position - transform.position).normalized;
@@ -156,7 +162,7 @@ public class FollowRandomPath : MonoBehaviour
             timeProximate += Time.deltaTime;
             if (timeProximate >= maxTimeProximate)
             {
-                Debug.Log("BLOCKING VIA PROXIMITY! " + name);
+                //Debug.Log("BLOCKING VIA PROXIMITY! " + name);
                 isBlocking = true;
                 timeProximate = 0; // reset after blocking
             }
@@ -168,7 +174,7 @@ public class FollowRandomPath : MonoBehaviour
             timeAligned += Time.deltaTime;
             if (timeAligned >= maxTimeAligned)
             {
-                Debug.Log("BLOCKING VIA SCREEN SPACE! " + name);
+                //Debug.Log("BLOCKING VIA SCREEN SPACE! " + name);
                 isBlocking = true;
                 timeAligned = 0; // reset after blocking
             }
@@ -176,6 +182,8 @@ public class FollowRandomPath : MonoBehaviour
 
         return isBlocking;
     }
+
+    /*** LIFECYCLE ***/
 
     private void Awake()
     {
@@ -199,6 +207,12 @@ public class FollowRandomPath : MonoBehaviour
 
     private void Start()
     {
+        // since NPCs use agents, no need to have a collider
+        MeshCollider meshCollider = GetComponentInChildren<MeshCollider>();
+        meshCollider.enabled = false;
+        // store the mesh renderer for hiding later
+        skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+
         // if the NPC arrays haven't been converted yet, convert them
         if (NPCControllerGlobals.initialNPCPositionsArray == null)
         {
@@ -209,7 +223,7 @@ public class FollowRandomPath : MonoBehaviour
             NPCControllerGlobals.activeNPCControllersArray = NPCControllerGlobals.activeNPCControllersList.ToArray();
         }
 
-        // initialize previous and next destinations as random destinations
+        // initialize next destination as random destination
         nextDestination = GetRandomDestination();
         path = NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, nextDestination);
     }
@@ -228,7 +242,37 @@ public class FollowRandomPath : MonoBehaviour
 
     private void Update()
     {
-        // before we do anything, this NPC must be in view
+        // get distance between NPC and player
+        Vector3 playerPosition = transform.position;
+        Vector3 NPCPosition = ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.position;
+        // zero-out the Y component
+        NPCPosition.y = playerPosition.y;
+        distanceFromNPCToPlayer = Vector3.Distance(playerPosition, NPCPosition);
+
+        // hide when NPC is close to player if requested
+        if (doHideOnProximity)
+        {
+            // if this agent is too close to the player, hide it
+            if (distanceFromNPCToPlayer < hideAtProximity)
+            {
+                if (!isHidden)
+                {
+                    skinnedMeshRenderer.enabled = false;
+                    isHidden = true;
+                }
+            }
+            // otherwise, show the NPC
+            else
+            {
+                if (isHidden)
+                {
+                    skinnedMeshRenderer.enabled = true;
+                    isHidden = false;
+                }
+            }
+        }
+
+        // for alignment and proximity checks, NPC must be in view of player
         if (IsNPCInView(this.gameObject, ManageFPSControllers.FPSControllerGlobals.activeFPSController))
         {
             if (!thisAgent.pathPending && this.transform.position != null && NPCControllerGlobals.initialNPCPositionsArray != null)
@@ -247,6 +291,7 @@ public class FollowRandomPath : MonoBehaviour
                         path = NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, nextDestination);
                     }
                 }
+               
 
                 // if this agent's speed gets too low, it's likely colliding badly with others
                 // to prevent a traffic jam, find a different random point from the pool to switch directions
