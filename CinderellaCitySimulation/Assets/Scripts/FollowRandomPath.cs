@@ -50,14 +50,11 @@ public class FollowRandomPath : MonoBehaviour
     public float minScreenSpacePoint = -2;
     public float maxScreenSpacePoint = 3;
 
-    // fading when too close to the player
-    readonly bool doFadeOnProximity = true;
-    readonly float fadeAtProximity = 1.3f;
-    readonly float fadeDuration = 0.5f;
-    bool isFaded = false;
+    // hide NPC when too close to the player
+    readonly bool doHideOnProximity = true;
+    readonly float hideAtProximity = 1.3f;
+    bool isHidden = false;
     private SkinnedMeshRenderer skinnedMeshRenderer;
-    private Material[] npcMaterials;
-    private bool isFadingOut = false;
 
 
     // DEBUGGING
@@ -189,45 +186,6 @@ public class FollowRandomPath : MonoBehaviour
         return isBlocking;
     }
 
-    public void StartFade(bool fadeOut)
-    {
-        isFadingOut = fadeOut;
-
-        if (fadeOut)
-        {
-            ChangeRenderMode(npcMaterials, BlendMode.Transparent); // Switch to transparent
-        }
-
-        StartCoroutine(FadeEffect());
-    }
-
-    private IEnumerator FadeEffect()
-    {
-        float elapsedTime = 0f;
-        while (elapsedTime < fadeDuration)
-        {
-            float alpha = Mathf.Lerp(isFadingOut ? 1f : 0f, isFadingOut ? 0f : 1f, elapsedTime / fadeDuration);
-            foreach (Material mat in npcMaterials)
-            {
-                Color color = mat.color;
-                color.a = alpha;
-                mat.color = color;
-            }
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        if (isFadingOut)
-        {
-            skinnedMeshRenderer.enabled = false; // Hide NPC completely
-        }
-        else
-        {
-            skinnedMeshRenderer.enabled = true; // Show NPC again
-            ChangeRenderMode(npcMaterials, BlendMode.Opaque); // Restore opaque mode
-        }
-    }
-
     private void ChangeRenderMode(Material[] materials, BlendMode blendMode)
     {
         foreach (Material mat in materials)
@@ -294,14 +252,6 @@ private void Awake()
         // initialize next destination as random destination
         nextDestination = GetRandomDestination();
         path = NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, nextDestination);
-
-        // get the skinned mesh render materials
-        skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
-        if (skinnedMeshRenderer != null)
-        {
-            npcMaterials = skinnedMeshRenderer.materials;
-        }
-
     }
 
     private void OnEnable()
@@ -338,26 +288,25 @@ private void Awake()
                     }
                 }
 
-                // if this agent is too close to the player, fade it
-                if (doFadeOnProximity)
+                // hide when NPC is close to player if requested
+                if (doHideOnProximity)
                 {
-                    if (distanceFromNPCToPlayer < fadeAtProximity)
+                    // if this agent is too close to the player, hide it
+                    if (distanceFromNPCToPlayer < hideAtProximity)
                     {
-                        if (!isFaded)
+                        if (!isHidden)
                         {
-                            //StartFade(true);
                             skinnedMeshRenderer.enabled = false;
-                            isFaded = true;
+                            isHidden = true;
                         }
                     }
-                    // otherwise, NPC shouldn't be faded
+                    // otherwise, show the NPC
                     else
                     {
-                        if (isFaded)
+                        if (isHidden)
                         {
-                            //StartFade(false);
                             skinnedMeshRenderer.enabled = true;
-                            isFaded = false;
+                            isHidden = false;
                         }
                     }
                 }
