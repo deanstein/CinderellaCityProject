@@ -52,7 +52,7 @@ public class FollowRandomPath : MonoBehaviour
 
     // fading when too close to the player
     readonly bool doFadeOnProximity = true;
-    readonly float fadeAtProximity = 1.5f;
+    readonly float fadeAtProximity = 1.3f;
     readonly float fadeDuration = 0.5f;
     bool isFaded = false;
     private SkinnedMeshRenderer skinnedMeshRenderer;
@@ -345,7 +345,8 @@ private void Awake()
                     {
                         if (!isFaded)
                         {
-                            StartFade(true);
+                            //StartFade(true);
+                            skinnedMeshRenderer.enabled = false;
                             isFaded = true;
                         }
                     }
@@ -354,7 +355,8 @@ private void Awake()
                     {
                         if (isFaded)
                         {
-                            StartFade(false);
+                            //StartFade(false);
+                            skinnedMeshRenderer.enabled = true;
                             isFaded = false;
                         }
                     }
