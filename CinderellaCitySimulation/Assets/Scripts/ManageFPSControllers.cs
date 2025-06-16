@@ -25,8 +25,8 @@ public class ManageFPSControllers : MonoBehaviour {
         public static float defaultAgentRadius = 0.15f;
         public static float defaultAgentSpeedInside = 1.1f;
         public static float defaultAgentAccelerationInside = 1.0f;
-        public static float defaultAgentSpeedOutside = 3.0f;
-        public static float defaultAgentAccelerationOutside = 6.0f;
+        public static float defaultAgentSpeedOutside = 2.5f;
+        public static float defaultAgentAccelerationOutside = 2.0f;
         public static float defaultAgentStepOffset = 0.30f; // roughly the height of a stair
         public static float defaultAgentStoppingDistance = 0.5f;
 
