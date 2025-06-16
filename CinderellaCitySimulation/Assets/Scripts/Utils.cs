@@ -219,6 +219,42 @@ public class NavMeshUtils
         SetAgentOnPath(agent, startPosition, destination, drawDebugLines);
         agent.isStopped = false;
     }
+
+    // within some tolerance, is the agent on a horizontal surface?
+    // useful for knowing if traversing stairs
+    public static bool IsAgentOnFlatSurface(NavMeshAgent agent, float tolerance)
+    {
+        if (!agent.hasPath || agent.path.corners.Length < 2)
+        {
+            return true; // Assume flat if no valid path
+        }
+
+        // Find the closest segment the agent is currently on
+        Vector3 position = agent.transform.position;
+        Vector3 closestSegmentVector = Vector3.zero;
+        float closestDistance = float.MaxValue;
+
+        for (int i = 0; i < agent.path.corners.Length - 1; i++)
+        {
+            Vector3 start = agent.path.corners[i];
+            Vector3 end = agent.path.corners[i + 1];
+
+            // Project the agent's position onto the segment
+            Vector3 segmentVector = end - start;
+            Vector3 projected = start + Vector3.Project(position - start, segmentVector);
+
+            float distance = Vector3.Distance(position, projected);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestSegmentVector = segmentVector;
+            }
+        }
+
+        // Check the angle of the closest segment
+        float angle = Vector3.Angle(closestSegmentVector, Vector3.up);
+        return angle >= (90f - tolerance);
+    }
 }
 
 // TODO: move these out of Utils to top-level classes

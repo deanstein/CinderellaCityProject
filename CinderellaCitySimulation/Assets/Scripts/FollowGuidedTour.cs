@@ -349,9 +349,22 @@ public class FollowGuidedTour : MonoBehaviour
             // since Unity's NavMeshAgent.remainingDistance may return 0 unexpectedly
             calculatedRemainingDistance = GetCalculatedRemainingDistance();
 
-            // adjust the tour speed and acceleration based on whether the player is inside or outside
-            thisAgent.speed = ManageFPSControllers.FPSControllerGlobals.isPlayerOutside && calculatedRemainingDistance > lookToCameraAtRemainingDistance ? ManageFPSControllers.FPSControllerGlobals.defaultAgentSpeedOutside : ManageFPSControllers.FPSControllerGlobals.defaultAgentSpeedInside;
-            thisAgent.acceleration = ManageFPSControllers.FPSControllerGlobals.isPlayerOutside && calculatedRemainingDistance > lookToCameraAtRemainingDistance ? ManageFPSControllers.FPSControllerGlobals.defaultAgentAccelerationOutside : ManageFPSControllers.FPSControllerGlobals.defaultAgentAccelerationInside;
+            // adjust the tour speed and acceleration 
+            // depending on whether the player is inside or outside
+            if (ManageFPSControllers.FPSControllerGlobals.isPlayerOutside)
+            {
+                // once outdoors, can use fast speed if not too close to camera
+                // and if on a flat part of the navmesh (not stairs)
+                bool useFastOutdoorSpeed = distanceToNextPhoto > lookToCameraDistance
+                    && NavMeshUtils.IsAgentOnFlatSurface(thisAgent, maxHorizontalAngle);
+                thisAgent.speed = useFastOutdoorSpeed ?
+                    ManageFPSControllers.FPSControllerGlobals.defaultAgentSpeedOutside : ManageFPSControllers.FPSControllerGlobals.defaultAgentSpeedInside;
+                thisAgent.acceleration = useFastOutdoorSpeed ? ManageFPSControllers.FPSControllerGlobals.defaultAgentAccelerationOutside : ManageFPSControllers.FPSControllerGlobals.defaultAgentAccelerationInside;
+            } else
+            {
+                thisAgent.speed = ManageFPSControllers.FPSControllerGlobals.defaultAgentSpeedInside;
+                thisAgent.acceleration = ManageFPSControllers.FPSControllerGlobals.defaultAgentAccelerationInside;
+            }
         }
 
         // guided tour active, not paused
