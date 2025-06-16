@@ -753,14 +753,14 @@ public static class ManageSceneObjects
                         doTimeTravelPeriodic: false),
 
                     // ROSE MALL
-                    // Lauter
-                    new GuidedTourCameraMeta(
-                        partialName: "Rose Mall - Lauter",
-                        doTimeTravelPeek: true,
-                        doTimeTravelPeriodic: false),
                     // Rose sunny
                     new GuidedTourCameraMeta(
                         partialName: "Rose Mall 1",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
+                    // Lauter
+                    new GuidedTourCameraMeta(
+                        partialName: "Rose Mall - Lauter",
                         doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
                     // Thom McAn
