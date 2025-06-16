@@ -37,10 +37,13 @@ public class FollowGuidedTour : MonoBehaviour
     /*** DISTANCES ***/
     // should the player camera match the destination camera or simply look toward it?
     readonly bool matchCameraForward = false;
-    // distance from end of path where
-    // photos display, people hide, and player looks at historic photo
-    readonly float lookToCameraDistanceShort = 3.0f;
-    readonly float lookToCameraDistanceLong = 8.0f;
+    // the distance away from the next destination that the
+    // camera will begin looking at the next historic photo
+    readonly float lookToCameraDistance = 8.0f;
+    // the distance away from the next destination that the
+    // people will hide and photos will show
+    readonly float toggleObjectsDistanceClose = 3.0f;
+    readonly float toggleObjectsDistanceFar = 8.0f;
     // distance (m) away from camera look vector so when looking at a camera, it's visible
     readonly float adjustPosAwayFromCamera = 1.15f; 
     readonly public float guidedTourRotationSpeed = 0.4f;
@@ -68,9 +71,9 @@ public class FollowGuidedTour : MonoBehaviour
     // start the guided tour at this index
     int currentDestinationIndex = 0;
     // the distance away from the next destination that the
-    // people will hide, photos will show, and the player will start looking at the photo
+    // people will hide and photos will display
     // this changes depending on how far player is from previous photo
-    float lookToCameraDistance = 0;
+    float toggleObjectsDistance = 0;
     // the direction the camera faces along the tour
     public Vector3 previousGuidedTourVector;
     public Vector3 currentGuidedTourVector;
@@ -373,10 +376,9 @@ public class FollowGuidedTour : MonoBehaviour
             // this is used for determining the distance to begin looking at photo   
             distanceToPreviousPhoto = Vector3.Distance(ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.position, previousDestination);
 
-            // the look-to-camera distance changes depending on 
+            // the toggle object distance changes depending on 
             // how far away the player is from the previous camera
-            lookToCameraDistance = distanceToPreviousPhoto > lookToCameraDistanceLong ? lookToCameraDistanceLong : lookToCameraDistanceShort;
-            Debug.Log("Look to camera distance: " + lookToCameraDistance);
+            toggleObjectsDistance = distanceToPreviousPhoto > toggleObjectsDistanceFar ? toggleObjectsDistanceFar : toggleObjectsDistanceClose;
 
             // adjust the tour speed and acceleration 
             // depending on whether the player is inside or outside
@@ -735,7 +737,7 @@ public class FollowGuidedTour : MonoBehaviour
         // this is possibly expensive, so only do it one frame only when requested
         if (ModeState.isGuidedTourActive && !ModeState.isTimeTravelPeeking && thisAgent.enabled && thisAgent.isOnNavMesh)
         {
-            if (distanceToNextPhoto < lookToCameraDistance)
+            if (distanceToNextPhoto < toggleObjectsDistance)
             {
                 ModeState.areHistoricPhotosRequestedVisible = true;
             }
@@ -749,7 +751,7 @@ public class FollowGuidedTour : MonoBehaviour
         // this is possibly expensive, so only do it one frame when requested
         if (ModeState.isGuidedTourActive && !ModeState.isTimeTravelPeeking && !ModeState.isPeriodicTimeTraveling && thisAgent.enabled && thisAgent.isOnNavMesh)
         {
-            if (distanceToNextPhoto < lookToCameraDistance)
+            if (distanceToNextPhoto < toggleObjectsDistance)
             {
                 ModeState.arePeopleRequestedVisible = false;
             }
