@@ -20,6 +20,7 @@ public class FollowGuidedTour : MonoBehaviour
     // get the partial path index of the current partial path camera in the list of cameras
     private int partialPathCameraIndex = -1;
 
+    /*** DURATIONS ***/
     // number of seconds to pause and look at a camera
     readonly float pauseAtCameraDuration = 10f;
     // number of seconds to pause before resuming
@@ -33,50 +34,60 @@ public class FollowGuidedTour : MonoBehaviour
     float stationaryTimeActive = 0f;
     float stationaryTimePaused = 0f;
 
+    /*** DISTANCES ***/
     // should the player camera match the destination camera or simply look toward it?
     readonly bool matchCameraForward = false;
-    // distance from end of path where before camera begins looking at destination camera
-    readonly float lookToCameraAtRemainingDistance = 5.5f;
-    // distance from the end of the path where the photo turns on
-    readonly float hidePeopleAtRemainingDistance = 5.5f;
+    // distance from end of path where
+    // photos display, people hide, and player looks at historic photo
+    readonly float lookToCameraDistance = 5.5f;
     // distance (m) away from camera look vector so when looking at a camera, it's visible
     readonly float adjustPosAwayFromCamera = 1.15f; 
     readonly public float guidedTourRotationSpeed = 0.4f;
     // get this close to the partial path camera before giving up
     readonly public float partialPathCameraClosestDistance = 20;
+    // max angle of deviation for nav mesh to be considered horizontal
+    readonly float maxHorizontalAngle = 5.0f;
 
+    /*** TRANSITIONS ***/
+    // angle (degrees) between previous and current vector
+    readonly float maxAngleBeforePreSlerp = 60f;
+    int currentFramesOfPreSlerp = 0;
+    readonly int maxFramesOfPreSlerp = 30;
+
+    /*** DYNAMIC VALUES ***/
     private NavMeshAgent thisAgent;
     private GameObject[] guidedTourObjects;
-    private Vector3[] guidedTourCameraPositions; // raw camera positions
-    private Vector3[] guidedTourCameraPositionsAdjusted; // adjusted backward
-    private Vector3[] guidedTourFinalNavMeshDestinations; // destinations on NavMesh
+    // raw camera positions
+    private Vector3[] guidedTourCameraPositions;
+    // adjusted backward
+    private Vector3[] guidedTourCameraPositionsAdjusted;
+    // destinations on NavMesh
+    private Vector3[] guidedTourFinalNavMeshDestinations;
     public Camera currentGuidedTourDestinationCamera;
-    // the guided tour vectors
+    // start the guided tour at this index
+    int nextDestinationIndex = 0;
+    Vector3 nextDestination;
+    int previousDestinationIndex = 0;
+    Vector3 previousDestination;
+    // the direction the camera faces along the tour
     public Vector3 previousGuidedTourVector;
     public Vector3 currentGuidedTourVector;
-    readonly float maxAngleBeforePreSlerp = 60f; // angle (degrees) between previous and current vector
-    int currentFramesOfPreSlerp = 0;
-    readonly int maxFramesOfPreSlerp = 5; // number of frames we can pre-slerp for softer transitions
-    private float calculatedRemainingDistance; // uses remaining path segments
-
+    // uses remaining path segments
+    float distanceToNextPhoto;
+    float distanceToPreviousPhoto;
     // set to true briefly to allow IEnumerator time-travel transition
     public static bool isGuidedTourTimeTravelRequested = false;
     // if true, will force an update of historic photo and people visibility
     // set to true initially to force a one-time update at startup
     private bool isProxyObjectVisibilityUpdateRequired = true;
 
-    //
-    // DEBUGGING
-    //
-
+    /*** DEBUGGING ***/
     // show paths and camera positions as debug lines
     public bool showDebugLines = false;
     // shuffle the destinations if requested
     readonly bool shuffleGuidedTourDestinations = true && ModeState.shuffleDestinations && !useDebuggingDestinations;
     // used for debugging shuffled path results
     public int? shuffleSeed = null;
-    // start the guided tour at this index
-    private int currentGuidedTourDestinationIndex = 0;
     // use a special destination list for debugging
     static readonly bool useDebuggingDestinations = false; // if true, use a special list for tour objects
     public bool doTestAllPaths = false; // if true, attempt to find paths between all destinations
@@ -106,7 +117,7 @@ public class FollowGuidedTour : MonoBehaviour
         // use the agent's remainingDistance if it seems valid (path length on navmesh),
         // or calculate it as the distance between the two points (as the crow flies)
         float remainingDistanceFromAgent = NavMeshUtils.GetAgentRemainingDistanceAlongPath(thisAgent);
-        float calculatedDistanceBetweenPoints = Vector3.Distance(thisAgent.nextPosition, guidedTourFinalNavMeshDestinations[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex]);
+        float calculatedDistanceBetweenPoints = Vector3.Distance(thisAgent.nextPosition, guidedTourFinalNavMeshDestinations[Instances[thisAgent.gameObject.scene.name].nextDestinationIndex]);
 
         // determine if we should trust the agent's remainingDistance
         // which sometimes reports 0 or infinity when it's not actually that value
@@ -118,6 +129,7 @@ public class FollowGuidedTour : MonoBehaviour
         return calculatedRemainingDistance;
     }
 
+    /*** LIFECYCLE ***/
 
     private void Awake()
     {
@@ -308,7 +320,7 @@ public class FollowGuidedTour : MonoBehaviour
 
 
             // determine if we're at the current photo, within some tolerance
-            bool isAtDestination = calculatedRemainingDistance < thisAgent.height && calculatedRemainingDistance != 0;
+            bool isAtDestination = distanceToNextPhoto < thisAgent.height && distanceToNextPhoto != 0;
             // if we're at the destination when enabled, and peek is not active, proceed to the next photo
             // (this likely happened because we're resuming after time-travel peeking)
             if (!ModeState.isTimeTravelPeeking && isAtDestination)
@@ -324,7 +336,7 @@ public class FollowGuidedTour : MonoBehaviour
     {
         if (ModeState.isGuidedTourActive || ModeState.isGuidedTourPaused)
         {
-            if (ModeState.autoTimeTravelPeek)
+            if (ModeState.isTimeTravelPeeking || ModeState.isPeriodicTimeTraveling)
             {
                 ModeState.areHistoricPhotosRequestedVisible = false;
                 ModeState.arePeopleRequestedVisible = false;
@@ -335,7 +347,7 @@ public class FollowGuidedTour : MonoBehaviour
             // temporarily increment the index to calculate remaining distance
             IncrementGuidedTourIndex(null, false);
             // update the calculated remaining distance
-            calculatedRemainingDistance = GetCalculatedRemainingDistance();
+            distanceToNextPhoto = GetCalculatedRemainingDistance();
             // back to the original index
             DecrementGuidedTourIndex(null, false);
         }
@@ -345,9 +357,19 @@ public class FollowGuidedTour : MonoBehaviour
     {
         if (ModeState.isGuidedTourActive || ModeState.isGuidedTourPaused)
         {
-            // need to calculate whether we've arrived manually
-            // since Unity's NavMeshAgent.remainingDistance may return 0 unexpectedly
-            calculatedRemainingDistance = GetCalculatedRemainingDistance();
+            // update the previous and next destination vectors
+            nextDestinationIndex = Instances[thisAgent.gameObject.scene.name].nextDestinationIndex;
+            nextDestination = guidedTourFinalNavMeshDestinations[nextDestinationIndex];
+            previousDestinationIndex = (nextDestinationIndex - 1 + guidedTourFinalNavMeshDestinations.Length) % guidedTourFinalNavMeshDestinations.Length;
+            previousDestination = guidedTourFinalNavMeshDestinations[previousDestinationIndex];
+
+            // calculate the distance to next photo
+            // this is done using path segments 
+            // since NavMeshAgent.RemainingDistance can be unreliable
+            distanceToNextPhoto = GetCalculatedRemainingDistance();
+            // calculate the distance to the previous photo
+            // this is used for determining the distance to begin looking at photo   
+            distanceToPreviousPhoto = Vector3.Distance(ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.position, previousDestination);
 
             // adjust the tour speed and acceleration 
             // depending on whether the player is inside or outside
@@ -386,13 +408,13 @@ public class FollowGuidedTour : MonoBehaviour
                 // use warp for the agent
                 thisAgent.Warp(nearestHorizontalNavMeshPointAtControllerHeight);
 
-                NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, guidedTourFinalNavMeshDestinations[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex], showDebugLines);
+                NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, guidedTourFinalNavMeshDestinations[Instances[thisAgent.gameObject.scene.name].nextDestinationIndex], showDebugLines);
             }
             // otherwise, ensure the agent has a path on the nav mesh if it doesn't already have a path
             // and if its path isn't partial or invalid (those are handled below)
             else if (!thisAgent.hasPath && thisAgent.pathStatus != NavMeshPathStatus.PathPartial && thisAgent.pathStatus != NavMeshPathStatus.PathPartial)
             {
-                NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, guidedTourFinalNavMeshDestinations[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex], showDebugLines);
+                NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, guidedTourFinalNavMeshDestinations[Instances[thisAgent.gameObject.scene.name].nextDestinationIndex], showDebugLines);
             }  
 
             // if the path is partial, try setting it again in a few moments
@@ -418,28 +440,28 @@ public class FollowGuidedTour : MonoBehaviour
                     if (Vector3.Distance(thisAgent.transform.position, guidedTourFinalNavMeshDestinations[partialPathCameraIndex]) > partialPathCameraClosestDistance && 
                         temporaryPathValid && temporaryPath.status == NavMeshPathStatus.PathComplete)
                     {
-                        Debug.LogWarning("FollowGuidedTour: Path is " + thisAgent.pathStatus + ", will try to repath in a few moments. Current destination: " + guidedTourObjects[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex].name + " at index: " + Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex);
+                        Debug.LogWarning("FollowGuidedTour: Path is " + thisAgent.pathStatus + ", will try to repath in a few moments. Current destination: " + guidedTourObjects[Instances[thisAgent.gameObject.scene.name].nextDestinationIndex].name + " at index: " + Instances[thisAgent.gameObject.scene.name].nextDestinationIndex);
 
                         // set the immediate destination to the alternate camera in case of partial path
                         NavMeshUtils.SetAgentOnPath(thisAgent, thisAgent.transform.position, guidedTourFinalNavMeshDestinations[partialPathCameraIndex]);
 
                         // try setting the agent to the original index in a few moments
-                        ModeState.setAgentOnPathAfterDelayCoroutine = StartCoroutine(NavMeshUtils.SetAgentOnPathAfterDelay(thisAgent, thisAgent.transform.position, guidedTourFinalNavMeshDestinations[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex], 10, false, showDebugLines));
+                        ModeState.setAgentOnPathAfterDelayCoroutine = StartCoroutine(NavMeshUtils.SetAgentOnPathAfterDelay(thisAgent, thisAgent.transform.position, guidedTourFinalNavMeshDestinations[Instances[thisAgent.gameObject.scene.name].nextDestinationIndex], 10, false, showDebugLines));
                     } else
                     // otherwise, this path simply cannot be used as it continues to be partial
                     // so go to the next index
                     {
                         Debug.LogWarning("FollowGuidedTour: Either the path to the partialPath camera itself is invalid or partial, or the path continues to be " + thisAgent.pathStatus + " and we're now within  " + partialPathCameraClosestDistance + " units, so giving up and incrementing index.");
                         IncrementGuidedTourIndex();
-                        Debug.Log("FollowGuidedTour: New destination: " + guidedTourObjects[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex].name + " at index: " + currentGuidedTourDestinationIndex);
-                        NavMeshUtils.SetAgentOnPath(thisAgent, Utils.GeometryUtils.GetNearestPointOnNavMesh(thisAgent.transform.position, thisAgent.height / 2), guidedTourFinalNavMeshDestinations[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex]);
+                        Debug.Log("FollowGuidedTour: New destination: " + guidedTourObjects[Instances[thisAgent.gameObject.scene.name].nextDestinationIndex].name + " at index: " + nextDestinationIndex);
+                        NavMeshUtils.SetAgentOnPath(thisAgent, Utils.GeometryUtils.GetNearestPointOnNavMesh(thisAgent.transform.position, thisAgent.height / 2), guidedTourFinalNavMeshDestinations[Instances[thisAgent.gameObject.scene.name].nextDestinationIndex]);
                     }
                 }
             }
 
             // store the current camera destination
-            currentGuidedTourDestinationCamera = guidedTourObjects[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex].GetComponent<Camera>();
-            Vector3 currentGuidedTourCameraPosition = guidedTourCameraPositions[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex];
+            currentGuidedTourDestinationCamera = guidedTourObjects[Instances[thisAgent.gameObject.scene.name].nextDestinationIndex].GetComponent<Camera>();
+            Vector3 currentGuidedTourCameraPosition = guidedTourCameraPositions[Instances[thisAgent.gameObject.scene.name].nextDestinationIndex];
 
             // only update the guided tour vector if the mode is not paused, and we're moving
             if (!ModeState.isGuidedTourPaused && 
@@ -448,7 +470,7 @@ public class FollowGuidedTour : MonoBehaviour
                 // the current guided tour vector is 
                 // either the path vector or the camera direction if on last leg of path
                 // if we're on the last several feet of path, current tour vector is that camera forward dir
-                if (calculatedRemainingDistance < lookToCameraAtRemainingDistance && calculatedRemainingDistance > 0f)
+                if (distanceToNextPhoto < lookToCameraDistance && distanceToNextPhoto > 0f)
                 {
                     // match the camera forward angle 
                     if (matchCameraForward)
@@ -548,7 +570,7 @@ public class FollowGuidedTour : MonoBehaviour
         // but the pause duration will differ between unpaused and paused states
 
         // not paused
-        if ((calculatedRemainingDistance < thisAgent.height || thisAgent.velocity.sqrMagnitude == 0f) && !ModeState.isGuidedTourPaused && ModeState.isGuidedTourActive)
+        if ((distanceToNextPhoto < thisAgent.height || thisAgent.velocity.sqrMagnitude == 0f) && !ModeState.isGuidedTourPaused && ModeState.isGuidedTourActive)
         {
             stationaryTimeActive += Time.deltaTime;
         }
@@ -563,7 +585,7 @@ public class FollowGuidedTour : MonoBehaviour
         {
             // get the current guided tour object's name
             string currentObjectName = Instances[thisAgent.gameObject.scene.name]
-                    .guidedTourObjects[currentGuidedTourDestinationIndex].name;
+                    .guidedTourObjects[nextDestinationIndex].name;
 
             // get metadata for this object
             GuidedTourCameraMeta? currentCameraMeta = ManageSceneObjects.ProxyObjects.GetGuidedTourCameraMetadata(currentObjectName, thisAgent.gameObject.scene.name);
@@ -642,7 +664,7 @@ public class FollowGuidedTour : MonoBehaviour
                 // otherwise, resume guided tour
                 else
                 {
-                    Debug.Log("FPSAgent has been stationary with guided tour PAUSED for " + (pauseAtEnableOrResumeDuration) + " seconds or more. Resuming guided tour. Next photo: " + Instances[thisAgent.gameObject.scene.name].guidedTourObjects[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex].name);
+                    Debug.Log("FPSAgent has been stationary with guided tour PAUSED for " + (pauseAtEnableOrResumeDuration) + " seconds or more. Resuming guided tour. Next photo: " + Instances[thisAgent.gameObject.scene.name].guidedTourObjects[Instances[thisAgent.gameObject.scene.name].nextDestinationIndex].name);
                     ModeState.isGuidedTourPaused = false;
                     ModeState.isGuidedTourActive = true;
                     stationaryTimePaused = 0f;
@@ -657,7 +679,7 @@ public class FollowGuidedTour : MonoBehaviour
             // default behavior is to resume guided tour
             else
             {
-                Debug.Log("FPSAgent has been stationary with guided tour PAUSED for " + (pauseAtEnableOrResumeDuration) + " seconds or more. Resuming guided tour. Next photo: " + Instances[thisAgent.gameObject.scene.name].guidedTourObjects[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex].name);
+                Debug.Log("FPSAgent has been stationary with guided tour PAUSED for " + (pauseAtEnableOrResumeDuration) + " seconds or more. Resuming guided tour. Next photo: " + Instances[thisAgent.gameObject.scene.name].guidedTourObjects[Instances[thisAgent.gameObject.scene.name].nextDestinationIndex].name);
                 ModeState.isGuidedTourPaused = false;
                 ModeState.isGuidedTourActive = true;
                 stationaryTimePaused = 0f;
@@ -693,12 +715,12 @@ public class FollowGuidedTour : MonoBehaviour
         if (Input.GetKeyDown("."))
         {
             IncrementGuidedTourIndex();
-            NavMeshUtils.SetAgentOnPath(thisAgent, Utils.GeometryUtils.GetNearestPointOnNavMesh(thisAgent.transform.position, thisAgent.height / 2), guidedTourFinalNavMeshDestinations[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex]);
+            NavMeshUtils.SetAgentOnPath(thisAgent, Utils.GeometryUtils.GetNearestPointOnNavMesh(thisAgent.transform.position, thisAgent.height / 2), guidedTourFinalNavMeshDestinations[Instances[thisAgent.gameObject.scene.name].nextDestinationIndex]);
         }
         if (Input.GetKeyDown(","))
         {
             DecrementGuidedTourIndex();
-            NavMeshUtils.SetAgentOnPath(thisAgent, Utils.GeometryUtils.GetNearestPointOnNavMesh(thisAgent.transform.position, thisAgent.height / 2), guidedTourFinalNavMeshDestinations[Instances[thisAgent.gameObject.scene.name].currentGuidedTourDestinationIndex]);
+            NavMeshUtils.SetAgentOnPath(thisAgent, Utils.GeometryUtils.GetNearestPointOnNavMesh(thisAgent.transform.position, thisAgent.height / 2), guidedTourFinalNavMeshDestinations[Instances[thisAgent.gameObject.scene.name].nextDestinationIndex]);
         }
 
         // during guided tour, historic photos should
@@ -706,7 +728,7 @@ public class FollowGuidedTour : MonoBehaviour
         // this is possibly expensive, so only do it one frame only when requested
         if (ModeState.isGuidedTourActive && !ModeState.isTimeTravelPeeking && thisAgent.enabled && thisAgent.isOnNavMesh)
         {
-            if (calculatedRemainingDistance < lookToCameraAtRemainingDistance)
+            if (distanceToNextPhoto < lookToCameraDistance)
             {
                 ModeState.areHistoricPhotosRequestedVisible = true;
             }
@@ -720,7 +742,7 @@ public class FollowGuidedTour : MonoBehaviour
         // this is possibly expensive, so only do it one frame when requested
         if (ModeState.isGuidedTourActive && !ModeState.isTimeTravelPeeking && !ModeState.isPeriodicTimeTraveling && thisAgent.enabled && thisAgent.isOnNavMesh)
         {
-            if (calculatedRemainingDistance < hidePeopleAtRemainingDistance)
+            if (distanceToNextPhoto < lookToCameraDistance)
             {
                 ModeState.arePeopleRequestedVisible = false;
             }
@@ -767,11 +789,11 @@ public class FollowGuidedTour : MonoBehaviour
         }
         if (Instances[sceneName])
         {
-            Instances[sceneName].currentGuidedTourDestinationIndex = (Instances[sceneName].currentGuidedTourDestinationIndex + 1) % Instances[sceneName].guidedTourObjects.Length;
+            Instances[sceneName].nextDestinationIndex = (Instances[sceneName].nextDestinationIndex + 1) % Instances[sceneName].guidedTourObjects.Length;
         }
         if (logDebugMessages)
         {
-            DebugUtils.DebugLog("Incrementing destination index. New destination: " + Instances[sceneName].guidedTourObjects[Instances[sceneName].currentGuidedTourDestinationIndex].name);
+            DebugUtils.DebugLog("Incrementing destination index. New destination: " + Instances[sceneName].guidedTourObjects[Instances[sceneName].nextDestinationIndex].name);
         }
     }
 
@@ -786,7 +808,7 @@ public class FollowGuidedTour : MonoBehaviour
         }
 
         IncrementGuidedTourIndex(sceneName);
-        NavMeshUtils.SetAgentOnPath(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent, Utils.GeometryUtils.GetNearestPointOnNavMesh(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.transform.position, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.height / 2), Instances[sceneName].guidedTourFinalNavMeshDestinations[Instances[sceneName].currentGuidedTourDestinationIndex]);
+        NavMeshUtils.SetAgentOnPath(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent, Utils.GeometryUtils.GetNearestPointOnNavMesh(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.transform.position, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.height / 2), Instances[sceneName].guidedTourFinalNavMeshDestinations[Instances[sceneName].nextDestinationIndex]);
     }
 
     // decrement or go to the end depending on the current index
@@ -801,11 +823,11 @@ public class FollowGuidedTour : MonoBehaviour
         }
         if (Instances[sceneName])
         {
-            Instances[sceneName].currentGuidedTourDestinationIndex = (Instances[sceneName].currentGuidedTourDestinationIndex + Instances[sceneName].guidedTourObjects.Length - 1) % Instances[sceneName].guidedTourObjects.Length;
+            Instances[sceneName].nextDestinationIndex = (Instances[sceneName].nextDestinationIndex + Instances[sceneName].guidedTourObjects.Length - 1) % Instances[sceneName].guidedTourObjects.Length;
         }
         if (logDebugMessages)
         {
-            DebugUtils.DebugLog("Decrementing destination index. New destination: " + Instances[sceneName].guidedTourObjects[Instances[sceneName].currentGuidedTourDestinationIndex].name);
+            DebugUtils.DebugLog("Decrementing destination index. New destination: " + Instances[sceneName].guidedTourObjects[Instances[sceneName].nextDestinationIndex].name);
         }
     }
 
@@ -820,7 +842,7 @@ public class FollowGuidedTour : MonoBehaviour
         }
 
         DecrementGuidedTourIndex(sceneName);
-        NavMeshUtils.SetAgentOnPath(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent, Utils.GeometryUtils.GetNearestPointOnNavMesh(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.transform.position, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.height / 2), Instances[sceneName].guidedTourFinalNavMeshDestinations[Instances[sceneName].currentGuidedTourDestinationIndex]);
+        NavMeshUtils.SetAgentOnPath(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent, Utils.GeometryUtils.GetNearestPointOnNavMesh(ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.transform.position, ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent.height / 2), Instances[sceneName].guidedTourFinalNavMeshDestinations[Instances[sceneName].nextDestinationIndex]);
     }
 
     // when guided tour is active, this checks if the user is trying to override control
