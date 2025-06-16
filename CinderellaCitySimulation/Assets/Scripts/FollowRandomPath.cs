@@ -259,6 +259,7 @@ public class FollowRandomPath : MonoBehaviour
                 {
                     skinnedMeshRenderer.enabled = false;
                     isHidden = true;
+                    thisAgent.isStopped = true;
                 }
             }
             // otherwise, show the NPC
@@ -268,6 +269,7 @@ public class FollowRandomPath : MonoBehaviour
                 {
                     skinnedMeshRenderer.enabled = true;
                     isHidden = false;
+                    thisAgent.isStopped = false;
                 }
             }
         }
