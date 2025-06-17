@@ -245,7 +245,7 @@ public class FollowRandomPath : MonoBehaviour
         // get distance between NPC and player
         Vector3 playerPosition = transform.position;
         Vector3 NPCPosition = ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.position;
-        // zero-out the Y component
+        // equalize the Y component
         NPCPosition.y = playerPosition.y;
         distanceFromNPCToPlayer = Vector3.Distance(playerPosition, NPCPosition);
 
@@ -253,7 +253,7 @@ public class FollowRandomPath : MonoBehaviour
         if (doHideOnProximity)
         {
             // if this agent is too close to the player, hide it
-            if (distanceFromNPCToPlayer < hideAtProximity)
+            if (distanceFromNPCToPlayer < hideAtProximityDistance)
             {
                 if (!isHidden)
                 {
