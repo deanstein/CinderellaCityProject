@@ -52,7 +52,7 @@ public class FollowRandomPath : MonoBehaviour
     // hide NPC when too close to the player
     readonly bool doHideOnProximity = true;
     // this should be slightly larger than the player and NPC radius (0.15 and 0.4)
-    readonly float hideAtProximity = 0.8f;
+    readonly float hideAtProximityDistance = 0.7f;
     bool isHidden = false;
     private SkinnedMeshRenderer skinnedMeshRenderer;
 
@@ -139,7 +139,7 @@ public class FollowRandomPath : MonoBehaviour
         // Check if NPC is within blocking zone
         bool isInBlockingZone = screenSpacePoint.x > screenMinX && screenSpacePoint.x < screenMaxX;
 
-        // Get NPC’s forward direction
+        // Get NPCï¿½s forward direction
         Vector3 NPCForwardVector = transform.forward.normalized;
         Vector3 NPCToPlayerVector = (ManageFPSControllers.FPSControllerGlobals.activeFPSController.transform.position - transform.position).normalized;
 
