@@ -474,7 +474,7 @@ public class CCPMenuActions : MonoBehaviour
 
     // gets all guided tour objects
     [MenuItem("Cinderella City Project/Guided Tour/Draw Shuffled Destinations and Paths")]
-    public static void DrawAllGuidedTourPathS()
+    public static void DrawAllGuidedTourPaths()
     {
         int shuffleSeed = Random.Range(0, 10000);
         //int shuffleSeed = DebugGlobals.guidedTourShuffleDebugSeed1;
