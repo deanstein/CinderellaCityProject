@@ -42,7 +42,7 @@ public class FollowGuidedTour : MonoBehaviour
     readonly float lookToCameraDistance = 8.0f;
     // the distance away from the next destination that the
     // people will hide and photos will show
-    readonly float toggleObjectsDistanceClose = 3.0f;
+    readonly float toggleObjectsDistanceClose = 4.0f;
     readonly float toggleObjectsDistanceFar = 8.0f;
     // distance (m) away from camera look vector so when looking at a camera, it's visible
     readonly float adjustPosAwayFromCamera = 1.15f; 
