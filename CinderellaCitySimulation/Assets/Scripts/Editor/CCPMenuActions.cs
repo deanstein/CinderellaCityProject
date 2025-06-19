@@ -16,8 +16,9 @@ using UnityEngine.SceneManagement;
 
 public class CCPMenuActions : MonoBehaviour
 {
-    /* ---------- Play ---------- */
+    /* ---------- PLAY SECTION ---------- */
 
+    ///// PLAY SIM /////
     [MenuItem("Cinderella City Project/Play Full Simulation in Editor", false, 0)]
     public static void PlayFullSimulationInEditor()
     {
@@ -28,88 +29,76 @@ public class CCPMenuActions : MonoBehaviour
         EditorApplication.EnterPlaymode();
     }
 
-    [MenuItem("Cinderella City Project/Restart Unity")]
-    public static void ReopenProject()
-    {
-        EditorApplication.OpenProject(Directory.GetCurrentDirectory());
-    }
+    /* ---------- SCENE SECTION ---------- */
 
-    /* ---------- Mark Scene Dirty ---------- */
 
-    [MenuItem("Cinderella City Project/Mark Current Scene Dirty")]
-    public static void MarkCurrentSceneDirty()
-    {
-        EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
-    }
-
-    /* ---------- Open Scene ---------- */
-
-    [MenuItem("Cinderella City Project/Open Scene/Open All Scenes Additively")]
+    ///// OPEN ALL SCENES /////
+    [MenuItem("Cinderella City Project/Open Scene/Open All Scenes Additively", false, 100)]
     public static void OpenAllScenesAdditively()
     {
         ManageEditorScenes.LoadEditorScenesAdditively(SceneGlobals.loadingSceneName, SceneGlobals.allGameplaySceneNames);
     }
 
-    [MenuItem("Cinderella City Project/Open Scene/Loading")]
+    ///// OPEN SCENE /////
+    [MenuItem("Cinderella City Project/Open Scene/Loading", false, 101)]
     public static void OpenLoadingScene()
     {
         string loadingScenePath = SceneGlobals.GetScenePathByName(SceneGlobals.loadingSceneName);
         EditorSceneManager.OpenScene(loadingScenePath);
     }
 
-    [MenuItem("Cinderella City Project/Open Scene/Main Menu")]
+    [MenuItem("Cinderella City Project/Open Scene/Main Menu", false, 102)]
     public static void OpenMainMenuScene()
     {
         string mainMenuScenePath = SceneGlobals.GetScenePathByName(SceneGlobals.mainMenuSceneName);
         EditorSceneManager.OpenScene(mainMenuScenePath);
     }
 
-    [MenuItem("Cinderella City Project/Open Scene/Visibility Menu")]
+    [MenuItem("Cinderella City Project/Open Scene/Visibility Menu", false, 103)]
     public static void OpenVisibilityMenuScene()
     {
         string visibilityMenuScenePath = SceneGlobals.GetScenePathByName(SceneGlobals.visibilityMenuSceneName);
         EditorSceneManager.OpenScene(visibilityMenuScenePath);
     }
 
-
-    [MenuItem("Cinderella City Project/Open Scene/How to Play")]
+    [MenuItem("Cinderella City Project/Open Scene/How to Play", false, 104)]
     public static void OpenHowToPlayScene()
     {
         string howToPlayScenePath = SceneGlobals.GetScenePathByName(SceneGlobals.howToPlaySceneName);
         EditorSceneManager.OpenScene(howToPlayScenePath);
     }
 
-    [MenuItem("Cinderella City Project/Open Scene/Credits")]
+    [MenuItem("Cinderella City Project/Open Scene/Credits", false, 105)]
     public static void OpenCreditsScene()
     {
         string creditsScenePath = SceneGlobals.GetScenePathByName(SceneGlobals.creditsSceneName);
         EditorSceneManager.OpenScene(creditsScenePath);
     }
 
-    [MenuItem("Cinderella City Project/Open Scene/60s70s")]
+    [MenuItem("Cinderella City Project/Open Scene/60s70s", false, 106)]
     public static void Open60s70sScene()
     {
         string loadingScenePath = SceneGlobals.GetScenePathByName("60s70s");
         EditorSceneManager.OpenScene(loadingScenePath);
     }
 
-    [MenuItem("Cinderella City Project/Open Scene/80s90s")]
+    [MenuItem("Cinderella City Project/Open Scene/80s90s", false, 107)]
     public static void Open90s90sScene()
     {
         string loadingScenePath = SceneGlobals.GetScenePathByName("80s90s");
         EditorSceneManager.OpenScene(loadingScenePath);
     }
 
-    [MenuItem("Cinderella City Project/Open Scene/Experimental")]
+    [MenuItem("Cinderella City Project/Open Scene/Experimental", false, 108)]
     public static void OpenExperimentalScene()
     {
         string loadingScenePath = SceneGlobals.GetScenePathByName("Experimental");
         EditorSceneManager.OpenScene(loadingScenePath);
     }
 
-    /* ---------- Scene Hoisting ---------- */
 
-    [MenuItem("Cinderella City Project/Hoist Scenes/Hoist Open Scene Containers Up")]
+    ///// SCENE HOISTING /////
+    [MenuItem("Cinderella City Project/Hoist Scenes/Hoist Open Scene Containers Up", false, 110)]
     public static void HoistCurrentEditorSceneContainersUp()
     {
         // of the open scene containers, get only the ones requiring hoisting
@@ -118,7 +107,7 @@ public class CCPMenuActions : MonoBehaviour
         HoistSceneObjectsEditor.HoistSceneContainersUp(openScenContainersRequiringHoist);
     }
 
-    [MenuItem("Cinderella City Project/Hoist Scenes/Hoist Open Scene Containers Down")]
+    [MenuItem("Cinderella City Project/Hoist Scenes/Hoist Open Scene Containers Down", false, 111)]
     public static void HoistCurrentEditorSceneContainersDown()
     {
         // of the open scene containers, get only the ones requiring hoisting
@@ -127,13 +116,13 @@ public class CCPMenuActions : MonoBehaviour
         HoistSceneObjectsEditor.HoistSceneContainersDown(openScenContainersRequiringHoist);
     }
 
-    [MenuItem("Cinderella City Project/Hoist Scenes/Hoist All Required Scene Containers Up")]
+    [MenuItem("Cinderella City Project/Hoist Scenes/Hoist All Required Scene Containers Up", false, 112)]
     public static void HoistAllRequiredSceneContainersUp()
     {
         HoistSceneObjectsEditor.HoistAllRequiredSceneContainersUp();
     }
 
-    [MenuItem("Cinderella City Project/Hoist Scenes/Hoist All Required Scene Containers Down")]
+    [MenuItem("Cinderella City Project/Hoist Scenes/Hoist All Required Scene Containers Down", false, 113)]
     public static void HoistAllRequiredSceneContainersDown()
     {
         // of the open scenes, get the time period scene containers
@@ -142,9 +131,17 @@ public class CCPMenuActions : MonoBehaviour
         HoistSceneObjectsEditor.HoistSceneContainersDown(timePeriodSceneContainers);
     }
 
-    /* ---------- Object Visibility Menu ---------- */
+    ///// MARK SCENE DIRTY /////
+    [MenuItem("Cinderella City Project/Mark Current Scene Dirty", false, 120)]
+    public static void MarkCurrentSceneDirty()
+    {
+        EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+    }
 
-    [MenuItem("Cinderella City Project/Object State/Toggle People Replacements ON")]
+    /* ---------- OBJECT SECTION ---------- */
+
+    ///// OBJECT VISIBILITY /////
+    [MenuItem("Cinderella City Project/Object State/Toggle People Replacements ON", false, 200)]
     public static void TogglePeopleReplacementsOn()
     {
         GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.peopleObjectKeywords[0], true)[0];
@@ -152,7 +149,7 @@ public class CCPMenuActions : MonoBehaviour
         ManageSceneObjects.ProxyObjects.ToggleProxyHostReplacementsToState(parentObject, true, true);
     }
 
-    [MenuItem("Cinderella City Project/Object State/Toggle People Replacements OFF")]
+    [MenuItem("Cinderella City Project/Object State/Toggle People Replacements OFF", false, 201)]
     public static void TogglePeopleReplacementsOff()
     {
         GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.peopleObjectKeywords[0], true)[0];
@@ -160,7 +157,7 @@ public class CCPMenuActions : MonoBehaviour
         ManageSceneObjects.ProxyObjects.ToggleProxyHostReplacementsToState(parentObject, false, true);
     }
 
-    [MenuItem("Cinderella City Project/Object State/Toggle Proxy Blocker NPC Meshes ON")]
+    [MenuItem("Cinderella City Project/Object State/Toggle Proxy Blocker NPC Meshes ON", false, 202)]
     public static void ToggleProxyBlockerNPCMeshesOn()
     {
         GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.blockerObjectKeywords[0], true)[0];
@@ -168,7 +165,7 @@ public class CCPMenuActions : MonoBehaviour
         ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(parentObject, true, false);
     }
 
-    [MenuItem("Cinderella City Project/Object State/Toggle Proxy Blocker NPC Meshes OFF")]
+    [MenuItem("Cinderella City Project/Object State/Toggle Proxy Blocker NPC Meshes OFF", false, 203)]
     public static void ToggleProxyBlockerNPCMeshesOff()
     {
         GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.blockerObjectKeywords[0], true)[0];
@@ -176,7 +173,7 @@ public class CCPMenuActions : MonoBehaviour
         ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(parentObject, false, false);
     }
 
-    [MenuItem("Cinderella City Project/Object State/Toggle Vegetation Replacements ON")]
+    [MenuItem("Cinderella City Project/Object State/Toggle Vegetation Replacements ON", false, 204)]
     public static void ToggleVegetationReplacementsOn()
     {
         GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.vegetationObjectKeywords[0], true)[0];
@@ -184,7 +181,7 @@ public class CCPMenuActions : MonoBehaviour
         ManageSceneObjects.ProxyObjects.ToggleProxyHostReplacementsToState(parentObject, true, true);
     }
 
-    [MenuItem("Cinderella City Project/Object State/Toggle Vegetation Replacements OFF")]
+    [MenuItem("Cinderella City Project/Object State/Toggle Vegetation Replacements OFF", false, 205)]
     public static void ToggleVegetationReplacementsOff()
     {
         GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.vegetationObjectKeywords[0], true)[0];
@@ -192,7 +189,7 @@ public class CCPMenuActions : MonoBehaviour
         ManageSceneObjects.ProxyObjects.ToggleProxyHostReplacementsToState(parentObject, false, true);
     }
 
-    [MenuItem("Cinderella City Project/Object State/Toggle Thumbnail Camera Meshes ON")]
+    [MenuItem("Cinderella City Project/Object State/Toggle Thumbnail Camera Meshes ON", false, 206)]
     public static void ToggleThumbnailCameraMeshesOn()
     {
         GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.thumbnailCameraObjectKeywords[0], true)[0];
@@ -200,7 +197,7 @@ public class CCPMenuActions : MonoBehaviour
         ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(parentObject, true, false);
     }
 
-    [MenuItem("Cinderella City Project/Object State/Toggle Thumbnail Camera Meshes OFF")]
+    [MenuItem("Cinderella City Project/Object State/Toggle Thumbnail Camera Meshes OFF", false, 207)]
     public static void ToggleThumbnailCameraMeshesOff()
     {
         GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.thumbnailCameraObjectKeywords[0], true)[0];
@@ -208,7 +205,7 @@ public class CCPMenuActions : MonoBehaviour
         ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(parentObject, false, false);
     }
 
-    [MenuItem("Cinderella City Project/Object State/Toggle Historic Photo Meshes ON")]
+    [MenuItem("Cinderella City Project/Object State/Toggle Historic Photo Meshes ON", false, 208)]
     public static void ToggleHistoricPhotoMeshesOn()
     {
         GameObject historicPhotoParentObject = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords)[0];
@@ -216,7 +213,7 @@ public class CCPMenuActions : MonoBehaviour
         ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(historicPhotoParentObject, true, false);
     }
 
-    [MenuItem("Cinderella City Project/Object State/Toggle Historic Photo Meshes OFF")]
+    [MenuItem("Cinderella City Project/Object State/Toggle Historic Photo Meshes OFF", false, 209)]
     public static void ToggleHistoricPhotoMeshesOff()
     {
         GameObject historicPhotoParentObject = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords, true)[0];
@@ -224,7 +221,7 @@ public class CCPMenuActions : MonoBehaviour
         ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(historicPhotoParentObject, false, false);
     }
 
-    [MenuItem("Cinderella City Project/Object State/Toggle Historic Photo Cameras ON")]
+    [MenuItem("Cinderella City Project/Object State/Toggle Historic Photo Cameras ON", false, 210)]
     public static void ToggleHistoricPhotoCamerasOn()
     {
         GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.historicPhotographObjectKeywords[0], true)[0];
@@ -232,7 +229,7 @@ public class CCPMenuActions : MonoBehaviour
         ManageSceneObjects.ProxyObjects.ToggleProxyHostReplacementsToState(parentObject, true, false);
     }
 
-    [MenuItem("Cinderella City Project/Object State/Toggle Historic Photo Cameras OFF")]
+    [MenuItem("Cinderella City Project/Object State/Toggle Historic Photo Cameras OFF", false, 211)]
     public static void ToggleHistoricPhotoCamerasOff()
     {
         GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.historicPhotographObjectKeywords[0], true)[0];
@@ -240,8 +237,91 @@ public class CCPMenuActions : MonoBehaviour
         ManageSceneObjects.ProxyObjects.ToggleProxyHostReplacementsToState(parentObject, false, false);
     }
 
-    /* ---------- Update Mode Menu ---------- */
+    ///// STATIC FLAGS /////
+    [MenuItem("Cinderella City Project/Static Flags/Update for Current Scene", false, 202)]
+    public static void SetAllStaticFlagsInCurrentScene()
+    {
+        // get all the scene objects
+        GameObject[] sceneObjects = UpdateModeSelectorMenu.GetSceneObjectsByUpdateMode().ToArray();
 
+        if (sceneObjects.Length > 0)
+        {
+            // set the static flags for each scene object
+            foreach (GameObject sceneObject in sceneObjects)
+            {
+                AssetImportUpdate.SetStaticFlagsByName(sceneObject);
+            }
+        }
+    }
+
+    ///// LIGHTMAP RESOLUTIONS /////
+    [MenuItem("Cinderella City Project/Lightmap Resolutions/Update for Current Scene", false, 203)]
+    public static void SetAllLightmapResolutionsInCurrentScene()
+    {
+        // get all the scene objects
+        GameObject[] sceneObjects = UpdateModeSelectorMenu.GetSceneObjectsByUpdateMode().ToArray();
+
+        if (sceneObjects.Length > 0)
+        {
+            // set the static flags for each scene object
+            foreach (GameObject sceneObject in sceneObjects)
+            {
+                AssetImportUpdate.SetCustomLightmapSettingsByName(sceneObject);
+            }
+        }
+    }
+
+    ///// MATERIAL ADJUSTMENTS /////
+    [MenuItem("Cinderella City Project/Material Adjustments/Specular/Update for Current Scene", false, 204)]
+    public static void SetAllMaterialSpecularInCurrentScene()
+    {
+        // get all the scene objects
+        GameObject[] sceneObjects = UpdateModeSelectorMenu.GetSceneObjectsByUpdateMode().ToArray();
+
+        if (sceneObjects.Length > 0)
+        {
+            // set the static flags for each scene object
+            foreach (GameObject sceneObject in sceneObjects)
+            {
+                AssetImportUpdate.SetAllDependentMaterialsSpecularByName(sceneObject);
+            }
+        }
+    }
+
+    [MenuItem("Cinderella City Project/Material Adjustments/Smoothness and Metallic/Update for Current Scene", false, 205)]
+    public static void SetAllMaterialSmoothnessMetallicInCurrentScene()
+    {
+        // get all the scene objects
+        GameObject[] sceneObjects = UpdateModeSelectorMenu.GetSceneObjectsByUpdateMode().ToArray();
+
+        if (sceneObjects.Length > 0)
+        {
+            // set the static flags for each scene object
+            foreach (GameObject sceneObject in sceneObjects)
+            {
+                AssetImportUpdate.SetAllDependentMaterialsSmoothnessMetallicByName(sceneObject);
+            }
+        }
+    }
+
+
+    [MenuItem("Cinderella City Project/Material Adjustments/Emission/Update for Current Scene", false, 206)]
+    public static void SetAllMaterialEmissionInCurrentScene()
+    {
+        // get all the scene objects
+        GameObject[] sceneObjects = UpdateModeSelectorMenu.GetSceneObjectsByUpdateMode().ToArray();
+
+        if (sceneObjects.Length > 0)
+        {
+            // set the static flags for each scene object
+            foreach (GameObject sceneObject in sceneObjects)
+            {
+                AssetImportUpdate.SetAllDependentMaterialsEmissionByName(sceneObject);
+            }
+        }
+    }
+
+    ///// UPDATE MODES /////
     public static class UpdateModeSelectorMenu
     {
         static List<string> GetUpdateModeSearchKeysByUIState()
@@ -342,13 +422,14 @@ public class CCPMenuActions : MonoBehaviour
         private const string isUpdateModeAllKey = "CCP.IsUpdateModeAll";
         public static bool isUpdateModeAll;
 
-        [MenuItem(isUpdateModeAllMenuItem)]
+        [MenuItem(isUpdateModeAllMenuItem, false, 207)]
         private static void SetIsUpdateModeAll()
-        {            isUpdateModeMall = EditorPrefs.GetBool(isUpdateModeMallKey, true);
+        {
+            isUpdateModeMall = EditorPrefs.GetBool(isUpdateModeMallKey, true);
             isUpdateModeAll = !isUpdateModeAll;
             EditorPrefs.SetBool(isUpdateModeAllKey, isUpdateModeAll);
         }
-        [MenuItem(isUpdateModeAllMenuItem, true)]
+        [MenuItem(isUpdateModeAllMenuItem, true, 208)]
         private static bool SetIsUpdateModeAllValidate()
         {
             Menu.SetChecked(isUpdateModeAllMenuItem, isUpdateModeAll);
@@ -360,13 +441,13 @@ public class CCPMenuActions : MonoBehaviour
         private const string isUpdateModeAnchorsKey = "CCP.IsUpdateModeAnchor";
         public static bool isUpdateModeAnchors;
 
-        [MenuItem(isUpdateModeAnchorsMenuItem)]
+        [MenuItem(isUpdateModeAnchorsMenuItem, false, 209)]
         private static void SetIsUpdateModeAnchor()
         {
             isUpdateModeAnchors = !isUpdateModeAnchors;
             EditorPrefs.SetBool(isUpdateModeAnchorsKey, isUpdateModeAnchors);
         }
-        [MenuItem(isUpdateModeAnchorsMenuItem, true)]
+        [MenuItem(isUpdateModeAnchorsMenuItem, true, 210)]
         private static bool SetIsUpdateModeAnchorsValidate()
         {
             Menu.SetChecked(isUpdateModeAnchorsMenuItem, isUpdateModeAnchors);
@@ -378,13 +459,13 @@ public class CCPMenuActions : MonoBehaviour
         private const string isUpdateModeMallKey = "CCP.IsUpdateModeMall";
         public static bool isUpdateModeMall;
 
-        [MenuItem(isUpdateModeMallMenuItem)]
+        [MenuItem(isUpdateModeMallMenuItem, false, 210)]
         private static void SetIsUpdateModeMall()
         {
             isUpdateModeMall = !isUpdateModeMall;
             EditorPrefs.SetBool(isUpdateModeMallKey, isUpdateModeMall);
         }
-        [MenuItem(isUpdateModeMallMenuItem, true)]
+        [MenuItem(isUpdateModeMallMenuItem, true, 211)]
         private static bool SetIsUpdateModeMallValidate()
         {
             Menu.SetChecked(isUpdateModeMallMenuItem, isUpdateModeMall);
@@ -395,13 +476,13 @@ public class CCPMenuActions : MonoBehaviour
         private const string isUpdateModeSiteKey = "CCP.IsUpdateModeSite";
         public static bool isUpdateModeSite;
 
-        [MenuItem(isUpdateModeSiteMenuItem)]
+        [MenuItem(isUpdateModeSiteMenuItem, false, 212)]
         private static void SetIsUpdateModeSite()
         {
             isUpdateModeSite = !isUpdateModeSite;
             EditorPrefs.SetBool(isUpdateModeSiteKey, isUpdateModeSite);
         }
-        [MenuItem(isUpdateModeSiteMenuItem, true)]
+        [MenuItem(isUpdateModeSiteMenuItem, true, 213)]
         private static bool SetIsUpdateModeSiteValidate()
         {
             Menu.SetChecked(isUpdateModeSiteMenuItem, isUpdateModeSite);
@@ -409,10 +490,111 @@ public class CCPMenuActions : MonoBehaviour
         }
     }
 
-    /* ---------- Guided Tour ---------- */
+    /* ---------- NAVIGATION SECTION ---------- */
 
+    // add all non-walkable mesh renderers to the selection
+    // editor operator must manually set these to non-walkable in the Navigation tab
+    [MenuItem("Cinderella City Project/Nav Meshes/Select All Non-Walkable Meshes", false, 300)]
+    public static void SelectAllNonWalkableMeshRenderers()
+    {
+        // make sure proxy blockers are visible
+        ToggleProxyBlockerNPCMeshesOn();
+
+        // get all top-level non-walkable objects
+        GameObject[] topLevelNonWalkableObjects = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.floorNonWalkableKeywords);
+
+        // prepare a list for all the found objects
+        List<GameObject> meshRendererGameObjectList = new List<GameObject>();
+        
+        // for each top-level object, get all mesh renderers
+        foreach (GameObject nonWalkableGameObject in topLevelNonWalkableObjects)
+        {
+            MeshRenderer[] meshRenderers = nonWalkableGameObject.GetComponentsInChildren<MeshRenderer>();
+
+            foreach (MeshRenderer meshRenderer in meshRenderers)
+            {
+                meshRendererGameObjectList.Add(meshRenderer.gameObject);
+            }
+        }
+
+        // convert the list to an array
+        GameObject[] finalSelection = meshRendererGameObjectList.ToArray();
+        // set the selection to the array
+        Selection.objects = finalSelection;
+    }
+
+    [MenuItem("Cinderella City Project/Nav Meshes/Select Non-Walkable Meshes in Selection", false, 301)]
+    public static void SelectMeshesInSelection()
+    {
+        // prepare a list for all the found objects
+        List<GameObject> meshRendererGameObjectList = new List<GameObject>();
+
+        // for each selected object, get the mesh renderers
+        foreach (GameObject selectedGameObjects in Selection.objects)
+        {
+            MeshRenderer[] meshRenderers = selectedGameObjects.GetComponentsInChildren<MeshRenderer>();
+
+            foreach (MeshRenderer meshRenderer in meshRenderers)
+            {
+                meshRendererGameObjectList.Add(meshRenderer.gameObject);
+            }
+        }
+
+        // convert the list to an array
+        GameObject[] finalSelection = meshRendererGameObjectList.ToArray();
+        // set the selection to the array
+        Selection.objects = finalSelection;
+    }
+
+    [MenuItem("Cinderella City Project/Nav Meshes/Update for Current Scene", false, 302)]
+    public static void RebuildCurrentSceneNavMesh()
+    {
+        // get this scene's container
+        GameObject sceneContainer = ManageSceneObjects.GetSceneContainerObject(EditorSceneManager.GetActiveScene());
+        List<GameObject> sceneContainers = new List<GameObject>();
+        sceneContainers.Add(sceneContainer);
+
+        // get the blocker object proxy host
+        GameObject proxyHost = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.blockerObjectKeywords[0], true)[0];
+
+        // first, move this scene container as appropriate
+        HoistSceneObjectsEditor.HoistSceneContainersUp(sceneContainers);
+
+        // ensure that "blocker" objects are enabled before building the nav mesh
+        ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(proxyHost, true, false);
+
+        // build the nav mesh
+        UnityEditor.AI.NavMeshBuilder.BuildNavMesh();
+
+        DebugUtils.DebugLog("Updated the nav mesh in scene: " + EditorSceneManager.GetActiveScene().name);
+
+        // re-hide the proxy blocker
+        ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(proxyHost, false, false);
+
+        EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene());
+    }
+
+    [MenuItem("Cinderella City Project/Nav Meshes/Update for All Scenes", false, 303)]
+    public static void RebuildAllNavMeshes()
+    {
+        foreach (string sceneName in SceneGlobals.availableTimePeriodSceneNames)
+        {
+            // open the scene if it's not open already
+            if (sceneName != EditorSceneManager.GetActiveScene().name)
+            {
+                EditorSceneManager.OpenScene(SceneGlobals.GetScenePathByName(sceneName));
+
+            }
+
+            // otherwise, we're already in the requested scene, so build the nav mesh
+
+            RebuildCurrentSceneNavMesh();
+        }
+    }
+
+    ///// GUIDED TOUR /////
     // prints the names and indices of all historic cameras in the scene
-    [MenuItem("Cinderella City Project/Guided Tour/Log Guided Tour Camera Data")]
+    [MenuItem("Cinderella City Project/Guided Tour/Log Guided Tour Camera Data", false, 304)]
     public static void PrintHistoricPhotoData()
     {
         GameObject[] historicPhotoObjects = ManageSceneObjects.ProxyObjects.GetAllHistoricPhotoCamerasInScene(SceneManager.GetActiveScene().name);
@@ -426,7 +608,7 @@ public class CCPMenuActions : MonoBehaviour
 
     // attempts to find all indices of the "curated" guided tour
     // check the console for any issues
-    [MenuItem("Cinderella City Project/Guided Tour/Find All Curated Tour Objects")]
+    [MenuItem("Cinderella City Project/Guided Tour/Find All Curated Tour Objects", false, 305)]
     public static void FindCuratedTourIndices()
     {
         DebugUtils.DebugLog("Finding curated Guided Tour objects in current scene...");
@@ -442,7 +624,8 @@ public class CCPMenuActions : MonoBehaviour
             {
                 DebugUtils.DebugLog("Found curated Guided Tour object: " + gameObject.name);
             }
-        } else
+        }
+        else
         {
             DebugUtils.DebugLog("No curated Guided Tour objects found!");
         }
@@ -450,7 +633,7 @@ public class CCPMenuActions : MonoBehaviour
 
     // ensures agent and FPSController are aligned
     // to avoid unexpected position updates during GuidedTour
-    [MenuItem("Cinderella City Project/Guided Tour/Align Agent and FPSController")]
+    [MenuItem("Cinderella City Project/Guided Tour/Align Agent and FPSController", false, 307)]
     public static void AlignAgentAndController()
     {
         GameObject firstPersonControllerParent = ManageFPSControllers.GetFirstPersonControllerInScene().gameObject;
@@ -473,7 +656,7 @@ public class CCPMenuActions : MonoBehaviour
     }
 
     // gets all guided tour objects
-    [MenuItem("Cinderella City Project/Guided Tour/Draw Shuffled Destinations and Paths")]
+    [MenuItem("Cinderella City Project/Guided Tour/Draw Shuffled Destinations and Paths", false, 308)]
     public static void DrawAllGuidedTourPaths()
     {
         int shuffleSeed = Random.Range(0, 10000);
@@ -519,13 +702,13 @@ public class CCPMenuActions : MonoBehaviour
     }
 
     // clears all debug GuidedTour path lines
-    [MenuItem("Cinderella City Project/Guided Tour/Clear Guided Tour Debug Lines")]
+    [MenuItem("Cinderella City Project/Guided Tour/Clear Guided Tour Debug Lines", false, 309)]
     public static void ClearGuidedTourDebugLInes()
     {
         DebugUtils.ClearLines();
     }
 
-    [MenuItem("Cinderella City Project/Nav Meshes/Show Guided Tour Camera Position Debug Lines")]
+    [MenuItem("Cinderella City Project/Nav Meshes/Show Guided Tour Camera Position Debug Lines", false, 310)]
     public static void ShowGuidedTourCameraPosDebugLines()
     {
         // move back from camera this distance 
@@ -550,192 +733,10 @@ public class CCPMenuActions : MonoBehaviour
         }
     }
 
-    /* ---------- Update Data ---------- */
+    /* ---------- MISC SECTION ---------- */
 
-    [MenuItem("Cinderella City Project/Static Flags/Update for Current Scene")]
-    public static void SetAllStaticFlagsInCurrentScene()
-    {
-        // get all the scene objects
-        GameObject[] sceneObjects = UpdateModeSelectorMenu.GetSceneObjectsByUpdateMode().ToArray();
-
-        if (sceneObjects.Length > 0)
-        {
-            // set the static flags for each scene object
-            foreach (GameObject sceneObject in sceneObjects)
-            {
-                AssetImportUpdate.SetStaticFlagsByName(sceneObject);
-            }
-        }
-    }
-
-    [MenuItem("Cinderella City Project/Lightmap Resolutions/Update for Current Scene")]
-    public static void SetAllLightmapResolutionsInCurrentScene()
-    {
-        // get all the scene objects
-        GameObject[] sceneObjects = UpdateModeSelectorMenu.GetSceneObjectsByUpdateMode().ToArray();
-
-        if (sceneObjects.Length > 0)
-        {
-            // set the static flags for each scene object
-            foreach (GameObject sceneObject in sceneObjects)
-            {
-                AssetImportUpdate.SetCustomLightmapSettingsByName(sceneObject);
-            }
-        }
-    }
-
-    [MenuItem("Cinderella City Project/Material Adjustments/Specular/Update for Current Scene")]
-    public static void SetAllMaterialSpecularInCurrentScene()
-    {
-        // get all the scene objects
-        GameObject[] sceneObjects = UpdateModeSelectorMenu.GetSceneObjectsByUpdateMode().ToArray();
-
-        if (sceneObjects.Length > 0)
-        {
-            // set the static flags for each scene object
-            foreach (GameObject sceneObject in sceneObjects)
-            {
-                AssetImportUpdate.SetAllDependentMaterialsSpecularByName(sceneObject);
-            }
-        }
-    }
-
-    [MenuItem("Cinderella City Project/Material Adjustments/Smoothness and Metallic/Update for Current Scene")]
-    public static void SetAllMaterialSmoothnessMetallicInCurrentScene()
-    {
-        // get all the scene objects
-        GameObject[] sceneObjects = UpdateModeSelectorMenu.GetSceneObjectsByUpdateMode().ToArray();
-
-        if (sceneObjects.Length > 0)
-        {
-            // set the static flags for each scene object
-            foreach (GameObject sceneObject in sceneObjects)
-            {
-                AssetImportUpdate.SetAllDependentMaterialsSmoothnessMetallicByName(sceneObject);
-            }
-        }
-    }
-
-
-    [MenuItem("Cinderella City Project/Material Adjustments/Emission/Update for Current Scene")]
-    public static void SetAllMaterialEmissionInCurrentScene()
-    {
-        // get all the scene objects
-        GameObject[] sceneObjects = UpdateModeSelectorMenu.GetSceneObjectsByUpdateMode().ToArray();
-
-        if (sceneObjects.Length > 0)
-        {
-            // set the static flags for each scene object
-            foreach (GameObject sceneObject in sceneObjects)
-            {
-                AssetImportUpdate.SetAllDependentMaterialsEmissionByName(sceneObject);
-            }
-        }
-    }
-
-    /* ---------- Nav Meshes ---------- */
-
-    // add all non-walkable mesh renderers to the selection
-    // editor operator must manually set these to non-walkable in the Navigation tab
-    [MenuItem("Cinderella City Project/Nav Meshes/Select All Non-Walkable Meshes")]
-    public static void SelectAllNonWalkableMeshRenderers()
-    {
-        // make sure proxy blockers are visible
-        ToggleProxyBlockerNPCMeshesOn();
-
-        // get all top-level non-walkable objects
-        GameObject[] topLevelNonWalkableObjects = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.floorNonWalkableKeywords);
-
-        // prepare a list for all the found objects
-        List<GameObject> meshRendererGameObjectList = new List<GameObject>();
-        
-        // for each top-level object, get all mesh renderers
-        foreach (GameObject nonWalkableGameObject in topLevelNonWalkableObjects)
-        {
-            MeshRenderer[] meshRenderers = nonWalkableGameObject.GetComponentsInChildren<MeshRenderer>();
-
-            foreach (MeshRenderer meshRenderer in meshRenderers)
-            {
-                meshRendererGameObjectList.Add(meshRenderer.gameObject);
-            }
-        }
-
-        // convert the list to an array
-        GameObject[] finalSelection = meshRendererGameObjectList.ToArray();
-        // set the selection to the array
-        Selection.objects = finalSelection;
-    }
-
-    [MenuItem("Cinderella City Project/Nav Meshes/Select Meshes in Selection")]
-    public static void SelectMeshesInSelection()
-    {
-        // prepare a list for all the found objects
-        List<GameObject> meshRendererGameObjectList = new List<GameObject>();
-
-        // for each selected object, get the mesh renderers
-        foreach (GameObject selectedGameObjects in Selection.objects)
-        {
-            MeshRenderer[] meshRenderers = selectedGameObjects.GetComponentsInChildren<MeshRenderer>();
-
-            foreach (MeshRenderer meshRenderer in meshRenderers)
-            {
-                meshRendererGameObjectList.Add(meshRenderer.gameObject);
-            }
-        }
-
-        // convert the list to an array
-        GameObject[] finalSelection = meshRendererGameObjectList.ToArray();
-        // set the selection to the array
-        Selection.objects = finalSelection;
-    }
-
-    [MenuItem("Cinderella City Project/Nav Meshes/Update for Current Scene")]
-    public static void RebuildCurrentSceneNavMesh()
-    {
-        // get this scene's container
-        GameObject sceneContainer = ManageSceneObjects.GetSceneContainerObject(EditorSceneManager.GetActiveScene());
-        List<GameObject> sceneContainers = new List<GameObject>();
-        sceneContainers.Add(sceneContainer);
-
-        // get the blocker object proxy host
-        GameObject proxyHost = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.blockerObjectKeywords[0], true)[0];
-
-        // first, move this scene container as appropriate
-        HoistSceneObjectsEditor.HoistSceneContainersUp(sceneContainers);
-
-        // ensure that "blocker" objects are enabled before building the nav mesh
-        ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(proxyHost, true, false);
-
-        // build the nav mesh
-        UnityEditor.AI.NavMeshBuilder.BuildNavMesh();
-
-        DebugUtils.DebugLog("Updated the nav mesh in scene: " + EditorSceneManager.GetActiveScene().name);
-
-        // re-hide the proxy blocker
-        ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(proxyHost, false, false);
-
-        EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene());
-    }
-
-    [MenuItem("Cinderella City Project/Nav Meshes/Update for All Scenes")]
-    public static void RebuildAllNavMeshes()
-    {
-        foreach (string sceneName in SceneGlobals.availableTimePeriodSceneNames)
-        {
-            // open the scene if it's not open already
-            if (sceneName != EditorSceneManager.GetActiveScene().name)
-            {
-                EditorSceneManager.OpenScene(SceneGlobals.GetScenePathByName(sceneName));
-
-            }
-
-            // otherwise, we're already in the requested scene, so build the nav mesh
-
-            RebuildCurrentSceneNavMesh();
-        }
-    }
-
-    [MenuItem("Cinderella City Project/Occlusion Culling/Update for All Scenes")]
+    ///// OCCLUSION CULLING /////
+    [MenuItem("Cinderella City Project/Occlusion Culling/Update for All Scenes", false, 400)]
     public static void UpdateOcclusionCulling()
     {
         // load all scenes additively
@@ -747,7 +748,8 @@ public class CCPMenuActions : MonoBehaviour
         StaticOcclusionCulling.Compute();
     }
 
-    [MenuItem("Cinderella City Project/Thumbnail Screenshots/Update for Current Scene")]
+    ///// THUMBNAIL SCREENSHOTS /////
+    [MenuItem("Cinderella City Project/Thumbnail Screenshots/Update for Current Scene", false, 401)]
     public static void CaptureThisSceneThumbnailScreenshots()
     {
         // ensure the required directory is available
@@ -765,9 +767,8 @@ public class CCPMenuActions : MonoBehaviour
         EditorApplication.EnterPlaymode();
     }
 
-    /* ---------- Batch Operations ---------- */
-
-    [MenuItem("Cinderella City Project/Batch Operations/Post Process Scene Update")]
+    ///// BATCH OPERATIONS /////
+    [MenuItem("Cinderella City Project/Batch Operations/Post Process Scene Update", false, 402)]
     public static void PostProcessSceneUpdate()
     {
         // first, ensure the current scene is hoisted as required so downstream operations work correctly
@@ -799,6 +800,13 @@ public class CCPMenuActions : MonoBehaviour
     public static void DeleteLegacyFolders()
     {
         AssetImportUpdate.DeleteAllLegacyTextureFolders();
+    }
+
+    /* ---------- UNITY SECTION ---------- */
+    [MenuItem("Cinderella City Project/Reopen Project", false, 1000)]
+    public static void ReopenProject()
+    {
+        EditorApplication.OpenProject(Directory.GetCurrentDirectory());
     }
 
     /* --------- Editor Debug ---------- */
