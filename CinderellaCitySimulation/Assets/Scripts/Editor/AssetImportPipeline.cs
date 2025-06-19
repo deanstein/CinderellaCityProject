@@ -661,7 +661,7 @@ public class AssetImportUpdate : AssetPostprocessor {
             // add the script to disable components of this object's children by proximity to the player
             AddCustomScriptComponentToGameObject(gameObjectByAssetName, "ToggleChildrenComponentsByProximityToPlayer");
             ToggleChildrenComponentsByProximityToPlayer toggleComponentByProximityScript = gameObjectByAssetName.GetComponent<ToggleChildrenComponentsByProximityToPlayer>();
-            toggleComponentByProximityScript.checkIfInFrame = true;
+            toggleComponentByProximityScript.checkIfInFrame = false;
             toggleComponentByProximityScript.toggleComponentTypes = new string[] { "NavMeshAgent", "FollowRandomPath" };
 
             /* add components to children gameObjects */
