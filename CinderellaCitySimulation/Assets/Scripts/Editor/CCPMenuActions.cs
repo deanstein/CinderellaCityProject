@@ -31,7 +31,6 @@ public class CCPMenuActions : MonoBehaviour
 
     /* ---------- SCENE SECTION ---------- */
 
-
     ///// OPEN ALL SCENES /////
     [MenuItem("Cinderella City Project/Open Scene/Open All Scenes Additively", false, 100)]
     public static void OpenAllScenesAdditively()
@@ -235,6 +234,16 @@ public class CCPMenuActions : MonoBehaviour
         GameObject parentObject = ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName(ObjectVisibilityGlobals.historicPhotographObjectKeywords[0], true)[0];
 
         ManageSceneObjects.ProxyObjects.ToggleProxyHostReplacementsToState(parentObject, false, false);
+    }
+
+    ///// NPCs /////
+    // sets all NPCs to not check if in frame when disabling scripts
+    [MenuItem("Cinderella City Project/NPCs/Log Number of NPCs", false, 202)]
+    public static void LogNumNPCs()
+    {
+        // get all NPC objects
+        GameObject[] peopleObjects = ManageSceneObjects.GetAllTopLevelChildrenInObject(ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName("proxy-people")[0]);
+        Debug.Log("Number of NPCs: " + peopleObjects.Length);
     }
 
     ///// STATIC FLAGS /////
