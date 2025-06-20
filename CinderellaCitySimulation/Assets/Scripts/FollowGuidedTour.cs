@@ -314,7 +314,7 @@ public class FollowGuidedTour : MonoBehaviour
                 ModeState.arePeopleRequestedVisible = false;
             }
             // the default is to have people visible only
-            else
+            else if (thisAgent.velocity.sqrMagnitude > 0)
             {
                 ModeState.areHistoricPhotosRequestedVisible = false;
                 ModeState.arePeopleRequestedVisible = true;
@@ -322,6 +322,7 @@ public class FollowGuidedTour : MonoBehaviour
 
             // force the proxy objects to be updated
             isProxyObjectVisibilityUpdateRequired = true;
+            UpdateProxyObjectVisibility();
 
 
             // determine if we're at the current photo, within some tolerance
@@ -345,9 +346,10 @@ public class FollowGuidedTour : MonoBehaviour
             {
                 ModeState.areHistoricPhotosRequestedVisible = false;
                 ModeState.arePeopleRequestedVisible = false;
-                isProxyObjectVisibilityUpdateRequired = true;
-                UpdateProxyObjectVisibility();
             }
+
+            isProxyObjectVisibilityUpdateRequired = true;
+            UpdateProxyObjectVisibility();
 
             // temporarily increment the index to calculate remaining distance
             IncrementGuidedTourIndex(null, false);
@@ -732,10 +734,11 @@ public class FollowGuidedTour : MonoBehaviour
             NavMeshUtils.SetAgentOnPath(thisAgent, Utils.GeometryUtils.GetNearestPointOnNavMesh(thisAgent.transform.position, thisAgent.height / 2), guidedTourFinalNavMeshDestinations[Instances[thisAgent.gameObject.scene.name].currentDestinationIndex]);
         }
 
-        // during guided tour, historic photos should
+        // when moving during guided tour, historic photos should
         // only be visible when within some distance to the next destination
         // this is possibly expensive, so only do it one frame only when requested
-        if (ModeState.isGuidedTourActive && !ModeState.isTimeTravelPeeking && thisAgent.enabled && thisAgent.isOnNavMesh)
+        if (ModeState.isGuidedTourActive && !ModeState.isTimeTravelPeeking && thisAgent.enabled && thisAgent.isOnNavMesh && 
+            thisAgent.velocity.sqrMagnitude > 0)
         {
             if (distanceToNextPhoto < toggleObjectsDistance)
             {
@@ -749,7 +752,9 @@ public class FollowGuidedTour : MonoBehaviour
 
         // similarly, people should be hidden when within some distance to next destination
         // this is possibly expensive, so only do it one frame when requested
-        if (ModeState.isGuidedTourActive && !ModeState.isTimeTravelPeeking && !ModeState.isPeriodicTimeTraveling && thisAgent.enabled && thisAgent.isOnNavMesh)
+        if (ModeState.isGuidedTourActive && !ModeState.isTimeTravelPeeking && 
+            !ModeState.isPeriodicTimeTraveling && thisAgent.enabled && thisAgent.isOnNavMesh &&
+            thisAgent.velocity.sqrMagnitude > 0)
         {
             if (distanceToNextPhoto < toggleObjectsDistance)
             {
