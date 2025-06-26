@@ -331,8 +331,9 @@ public class FollowGuidedTour : MonoBehaviour
             // (this likely happened because we're resuming after time-travel peeking)
             if (!ModeState.isTimeTravelPeeking && isAtDestination)
             {
-                // use a slightly shortened pause after peeking
-                stationaryTimePaused = pauseAtEnableOrResumeDuration / 2;
+                // set the stationary time paused to non-zero value
+                // to reduce the amount of time before we resume
+                stationaryTimePaused = pauseAtEnableOrResumeDuration / 3;
                 IncrementGuidedTourIndexAndSetAgentOnPath(thisAgent.gameObject.scene.name);
             }
         }
