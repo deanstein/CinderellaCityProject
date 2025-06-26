@@ -683,7 +683,7 @@ public static class ManageSceneObjects
                     // Karmelkorn
                     new GuidedTourCameraMeta(
                         partialName: "Blue Mall Karmelkorn",
-                        doTimeTravelPeek: true,
+                        doTimeTravelPeek: false,
                         doTimeTravelPeriodic: false),
                     // Hummell's
                     new GuidedTourCameraMeta(
@@ -697,8 +697,17 @@ public static class ManageSceneObjects
                         partialName: "Gold Mall Joslins entrance",
                         doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
-
+                    // return to Blue Mall Denver exterior entrance
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall Denver entrance",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // RETURN TO BLUE MALL
+                    // fountain - straight on
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall 1",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: false),
                     // Blue Mall mezzanine
                     new GuidedTourCameraMeta(
                         partialName: "Blue Mall - mezzanine 1",
@@ -794,7 +803,7 @@ public static class ManageSceneObjects
                     // Shamrock escalator toward Broadway
                     new GuidedTourCameraMeta(
                         partialName: "Shamrock escalator",
-                        doTimeTravelPeek: false,
+                        doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
                     // Pollard Shamrock
                     new GuidedTourCameraMeta(
@@ -804,7 +813,7 @@ public static class ManageSceneObjects
                     // waterbeds
                     new GuidedTourCameraMeta(
                         partialName: "Shamrock Mall AWF",
-                        doTimeTravelPeek: false,
+                        doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
                     // Book fair
                     new GuidedTourCameraMeta(
@@ -846,7 +855,7 @@ public static class ManageSceneObjects
                     // Orange Julius
                     new GuidedTourCameraMeta(
                         partialName: "Food Court 1",
-                        doTimeTravelPeek: true,
+                        doTimeTravelPeek: false,
                         doTimeTravelPeriodic: false),
                     // Corn Dog
                     new GuidedTourCameraMeta(
@@ -857,14 +866,14 @@ public static class ManageSceneObjects
                     new GuidedTourCameraMeta(
                         partialName: "Food Court 4",
                         doTimeTravelPeek: false,
-                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 4
-
-                    // CINDER ALLEY
+                        doTimeTravelPeriodic: false),
                     // Jazzercise
                     new GuidedTourCameraMeta(
                         partialName: "Food Court 3",
                         doTimeTravelPeek: true,
-                        doTimeTravelPeriodic: false),
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 4
+
+                    // CINDER ALLEY
                     // Zeezo's
                     new GuidedTourCameraMeta(
                         partialName: "Cinder Alley Zeezo's",
@@ -883,9 +892,18 @@ public static class ManageSceneObjects
 
                     // GOLD MALL
                     // Cinder Alley sign east
-                    // Gold Mall
+                    new GuidedTourCameraMeta(
+                        partialName: "Gold Mall CA east stair",
+                        doTimeTravelPeek: false,
+                        doTimeTravelPeriodic: false),
+                    // Gold Mall looking toward Penney's
                     new GuidedTourCameraMeta(
                         partialName: "Gold Mall far",
+                        doTimeTravelPeek: false,
+                        doTimeTravelPeriodic: false),
+                    // happier times looking back to Joslins
+                    new GuidedTourCameraMeta(
+                        partialName: "Gold Mall 1",
                         doTimeTravelPeek: false,
                         doTimeTravelPeriodic: false),
                     // Pollard Gold
@@ -898,13 +916,13 @@ public static class ManageSceneObjects
                         partialName: "Gold Mall Penney's",
                         doTimeTravelPeek: true,
                         doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 6
+
+                    // BLUE MALL
                     // Hummel's
                     new GuidedTourCameraMeta(
                         partialName: "Blue Mall Hummels 1",
                         doTimeTravelPeek: false,
                         doTimeTravelPeriodic: false),
-
-                    // BLUE MALL
                     // Blue Mall Ward's exterior entrance
                     new GuidedTourCameraMeta(
                         partialName: "Blue Mall Exterior 1",
