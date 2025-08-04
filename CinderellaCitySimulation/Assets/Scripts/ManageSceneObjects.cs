@@ -1169,64 +1169,75 @@ public class ObjectVisibility
         ModeState.arePeopleVisible = visible;
     }
 
-    public static void SetHistoricPhotosOpaque(bool toggleState)
+    public static void SetHistoricPhotosOpaque(bool opaque)
     {
-        ObjectVisibilityGlobals.areHistoricPhotosForcedOpaque = toggleState;
+        // the value to use for setting transparent
+        float transparency = 0.75f;
+
+        ObjectVisibilityGlobals.areHistoricPhotosForcedOpaque = opaque;
 
         // were the photos disabled to begin with?
         bool setToDisabledWhenComplete = false;
 
         // get the top-level historic photo gameobject
-        GameObject historicPhotoParentObject = GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords, true)[0];
-
-        Renderer[] historicPhotoRenderers = historicPhotoParentObject.GetComponentsInChildren<Renderer>();
-
-        // if no renderers found, the photos are disabled, 
-        // so enable them temporarily to change their properties
-        if (historicPhotoRenderers.Length == 0)
+        GameObject[] gameObjectsByKeyword = GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords, true);
+        // only proceed if any gameobjects were found
+        if (gameObjectsByKeyword.Length > 0)
         {
-            setToDisabledWhenComplete = true;
+            GameObject historicPhotoParentObject = gameObjectsByKeyword[0];
 
-            ManageSceneObjects.ObjectState.ToggleTopLevelChildrenSceneObjects(historicPhotoParentObject);
+            // get all renderers in the parent object
+            Renderer[] historicPhotoRenderers = historicPhotoParentObject.GetComponentsInChildren<Renderer>();
 
-            // find the renderers again
-            historicPhotoRenderers = historicPhotoParentObject.GetComponentsInChildren<Renderer>();
-        }
-
-        for (var i = 0; i < historicPhotoRenderers.Length; i++)
-        {
-            // if toggle is on, record existing alpha then set to 1
-            if (toggleState == true)
+            // if no renderers found, the photos are disabled, 
+            // so enable them temporarily to change their properties
+            if (historicPhotoRenderers.Length == 0)
             {
-                Color color = historicPhotoRenderers[i].material.color;
+                setToDisabledWhenComplete = true;
+
+                ManageSceneObjects.ObjectState.ToggleTopLevelChildrenSceneObjects(historicPhotoParentObject);
+
+                // try to find the renderers again
+                historicPhotoRenderers = historicPhotoParentObject.GetComponentsInChildren<Renderer>();
+            }
+
+            for (var i = 0; i < historicPhotoRenderers.Length; i++)
+            {
+                // get the material differently if this is being used in the eidtor
+#if UNITY_EDITOR
+                Material mat = historicPhotoRenderers[i].sharedMaterial;
+#else
+                Material mat = historicPhotoRenderers[i].material;
+
+#endif
+                if (mat == null) continue;
+
+                Color color = mat.color;
 
                 // record the existing transparency value so we can reset later if requested
                 ObjectVisibilityGlobals.historicPhotoTransparencyValues.Add(color.a);
 
-                color.a = 1.0f;
-                historicPhotoRenderers[i].material.color = color;
-                MaterialUtils.SetMaterialRenderingMode(historicPhotoRenderers[i].material, MaterialUtils.RenderingMode.Opaque);
+                // set opaque
+                if (opaque == true)
+                {
+                    color.a = 1.0f;
+                    mat.color = color;
+                    MaterialUtils.SetMaterialRenderingMode(mat, MaterialUtils.RenderingMode.Opaque);
+                }
+                // set transparent
+                else
+                {
+                    color.a = transparency;
+                    mat.color = color;
+                    MaterialUtils.SetMaterialRenderingMode(mat, MaterialUtils.RenderingMode.Transparent);
+                }
             }
-            // if toggle is off, set new alpha from the recorded alpha
-            else
+
+            // if the historic photos object was disabled, disable it again
+            if (setToDisabledWhenComplete)
             {
-                Color color = historicPhotoRenderers[i].material.color;
-                color.a = ObjectVisibilityGlobals.historicPhotoTransparencyValues[i];
-                MaterialUtils.SetMaterialRenderingMode(historicPhotoRenderers[i].material, MaterialUtils.RenderingMode.Transparent);
-
-                historicPhotoRenderers[i].material.color = color;
+                ManageSceneObjects.ObjectState.ToggleTopLevelChildrenSceneObjects(historicPhotoParentObject);
             }
-        }
-
-        if (!toggleState)
-        {
-            ObjectVisibilityGlobals.historicPhotoTransparencyValues.Clear();
-        }
-
-        // if the historic photos object was disabled, disable it again
-        if (setToDisabledWhenComplete)
-        {
-            ManageSceneObjects.ObjectState.ToggleTopLevelChildrenSceneObjects(historicPhotoParentObject);
         }
     }
 }
