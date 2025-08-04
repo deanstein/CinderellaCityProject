@@ -330,6 +330,20 @@ public class CCPMenuActions : MonoBehaviour
         }
     }
 
+    // set all guided tour photos to opaque
+    [MenuItem("Cinderella City Project/Material Adjustments/Set Historic Photos Opaque", false, 208)]
+    public static void SetAllPhotosOpaque()
+    {
+        ObjectVisibility.SetHistoricPhotosOpaque(true);
+    }
+
+    // set all guided tour photos to translucent
+    [MenuItem("Cinderella City Project/Material Adjustments/Set Historic Photos Transparent", false, 209)]
+    public static void SetAllPhotosTranslucent()
+    {
+        ObjectVisibility.SetHistoricPhotosOpaque(false);
+    }
+
     ///// UPDATE MODES /////
     public static class UpdateModeSelectorMenu
     {
