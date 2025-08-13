@@ -26,9 +26,9 @@ public class FollowGuidedTour : MonoBehaviour
     // number of seconds to pause before resuming
     readonly float pauseAtEnableOrResumeDuration = 4f;
     // number of seconds to pause for time-travel peeking
-    readonly float pauseAtTimeTravelPeekDuration = 6f;
+    readonly float pauseAtTimeTravelPeekDuration = 4f;
     // number of seconds to pause after hiding photos and before time-travel, before peek
-    readonly float pauseBeforeTimeTravelPeek = 2f;
+    readonly float pauseBeforeTimeTravelPeek = 1.5f;
     // guided tour can be stationary only for the durations specified above
     // keep track of the stationary time so we can force an advance if max stationary times are exceeded
     float stationaryTimeActive = 0f;
@@ -333,7 +333,7 @@ public class FollowGuidedTour : MonoBehaviour
             {
                 // set the stationary time paused to non-zero value
                 // to reduce the amount of time before we resume
-                stationaryTimePaused = pauseAtEnableOrResumeDuration / 3;
+                stationaryTimePaused = pauseAtEnableOrResumeDuration - pauseBeforeTimeTravelPeek;
                 IncrementGuidedTourIndexAndSetAgentOnPath(thisAgent.gameObject.scene.name);
             }
         }
@@ -886,12 +886,12 @@ public class FollowGuidedTour : MonoBehaviour
             // only enable or disable if the object was found by keyword
             if (objectsByKeyword.Length > 0)
             {
-            GameObject historicCamerasContainer = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords, true)[0];
-            ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(historicCamerasContainer, ModeState.areHistoricPhotosRequestedVisible, false);
+                GameObject historicCamerasContainer = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords, true)[0];
+                ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(historicCamerasContainer, ModeState.areHistoricPhotosRequestedVisible, false);
 
-            // set the official flag to match so this only runs once
-            ModeState.areHistoricPhotosVisible = ModeState.areHistoricPhotosRequestedVisible;
-            currentFramesOfPreSlerp = 0; // allow pre-slerp next time
+                // set the official flag to match so this only runs once
+                ModeState.areHistoricPhotosVisible = ModeState.areHistoricPhotosRequestedVisible;
+                currentFramesOfPreSlerp = 0; // allow pre-slerp next time
             }
         }
 
