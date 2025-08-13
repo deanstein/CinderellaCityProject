@@ -609,6 +609,13 @@ public static class ManageSceneObjects
                         doTimeTravelPeek: true,
                         doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 3
 
+                    // BACK TO BLUE MALL
+                    // fountain - straight on
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall 1",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 4
+
                     // SHAMROCK MALL
                     // Tommy Wong's
                     new GuidedTourCameraMeta(
@@ -619,7 +626,7 @@ public static class ManageSceneObjects
                     new GuidedTourCameraMeta(
                         partialName: "Shamrock Kiddie Shop",
                         doTimeTravelPeek: false,
-                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 4
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 5
 
                     // CINDER ALLEY
                     // Cinder Alley from Penney's
@@ -651,7 +658,7 @@ public static class ManageSceneObjects
                     new GuidedTourCameraMeta(
                         partialName: "Cinder Alley marketing",
                         doTimeTravelPeek: false,
-                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 5
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 6
 
                     // GOLD MALL
                     // Gold Mall colorized
@@ -677,7 +684,7 @@ public static class ManageSceneObjects
                     new GuidedTourCameraMeta(
                         partialName: "Gold Mall Stuart's",
                         doTimeTravelPeek: true,
-                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 6
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 7
 
                     // BLUE MALL OUTER HALLS
                     // Karmelkorn
@@ -712,7 +719,7 @@ public static class ManageSceneObjects
                     new GuidedTourCameraMeta(
                         partialName: "Blue Mall - mezzanine 1",
                         doTimeTravelPeek: true,
-                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 7
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 8
                 };
             }
             // 80s90s scene
@@ -826,6 +833,13 @@ public static class ManageSceneObjects
                         doTimeTravelPeek: true,
                         doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 3
 
+                    // BACK TO BLUE MALL
+                    // Atrium marketing
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall deep",
+                        doTimeTravelPeek: true,
+                        doTimeTravelPeriodic: true),  ///// PERIODIC TIME TRAVEL! ///// 4
+
                     // FOOD COURT
                     // Renzios
                     new GuidedTourCameraMeta(
@@ -871,7 +885,7 @@ public static class ManageSceneObjects
                     new GuidedTourCameraMeta(
                         partialName: "Food Court 3",
                         doTimeTravelPeek: true,
-                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 4
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 5
 
                     // CINDER ALLEY
                     // Zeezo's
@@ -888,34 +902,30 @@ public static class ManageSceneObjects
                     new GuidedTourCameraMeta(
                         partialName: "Cinder Alley 1",
                         doTimeTravelPeek: false,
-                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 5
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 6
 
                     // GOLD MALL
-                    // Cinder Alley sign east
-                    new GuidedTourCameraMeta(
-                        partialName: "Gold Mall CA east stair",
-                        doTimeTravelPeek: false,
-                        doTimeTravelPeriodic: false),
                     // Gold Mall looking toward Penney's
                     new GuidedTourCameraMeta(
                         partialName: "Gold Mall far",
-                        doTimeTravelPeek: false,
+                        doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
                     // happier times looking back to Joslins
-                    new GuidedTourCameraMeta(
-                        partialName: "Gold Mall 1",
-                        doTimeTravelPeek: false,
-                        doTimeTravelPeriodic: false),
+                    // disabled temporarily until more stores are built
+                    //new GuidedTourCameraMeta(
+                    //    partialName: "Gold Mall 1",
+                    //    doTimeTravelPeek: false,
+                    //    doTimeTravelPeriodic: false),
                     // Pollard Gold
                     new GuidedTourCameraMeta(
                         partialName: "Gold Mall Pollard to Joslins",
-                        doTimeTravelPeek: false,
+                        doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
                     // Cinder Alley sign west
                     new GuidedTourCameraMeta(
                         partialName: "Gold Mall Penney's",
                         doTimeTravelPeek: true,
-                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 6
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 7
 
                     // BLUE MALL
                     // Hummel's
@@ -937,7 +947,7 @@ public static class ManageSceneObjects
                     new GuidedTourCameraMeta(
                         partialName: "Blue Mall 2",
                         doTimeTravelPeek: true,
-                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 7
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 8
                 };
             }
             return curatedObjectMeta;
@@ -1163,10 +1173,14 @@ public class ObjectVisibility
 
     public static void SetPeopleVisibility(bool visible)
     {
-        GameObject peopleContainer = GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.peopleObjectKeywords, true)[0];
-        peopleContainer.SetActive(visible);
-        // set the mode state so the rest of the app knows whether people are visible
-        ModeState.arePeopleVisible = visible;
+        GameObject[] peopleContainerResults = GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.peopleObjectKeywords, true);
+        if (peopleContainerResults.Length > 0)
+        {
+            GameObject peopleContainer = peopleContainerResults[0];
+            peopleContainer.SetActive(visible);
+            // set the mode state so the rest of the app knows whether people are visible
+            ModeState.arePeopleVisible = visible;
+        }
     }
 
     public static void SetHistoricPhotosOpaque(bool opaque)
