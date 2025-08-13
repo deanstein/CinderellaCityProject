@@ -882,9 +882,9 @@ public class FollowGuidedTour : MonoBehaviour
         if (((ModeState.isGuidedTourActive || ModeState.isGuidedTourPaused) && (ModeState.areHistoricPhotosVisible != ModeState.areHistoricPhotosRequestedVisible)) || isProxyObjectVisibilityUpdateRequired)
         {
             // enable or disable the historic photos
-            GameObject[] objectsByKeyword = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords, true);
+            GameObject[] historicPhotosContainerResults = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords, true);
             // only enable or disable if the object was found by keyword
-            if (objectsByKeyword.Length > 0)
+            if (historicPhotosContainerResults.Length > 0)
             {
                 GameObject historicCamerasContainer = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords, true)[0];
                 ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(historicCamerasContainer, ModeState.areHistoricPhotosRequestedVisible, false);
