@@ -606,14 +606,14 @@ public static class ManageSceneObjects
                     // Blue Mall exterior corner
                     new GuidedTourCameraMeta(
                         partialName: "Blue Mall Exterior 2",
-                        doTimeTravelPeek: true,
+                        doTimeTravelPeek: false,
                         doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 3
 
                     // BACK TO BLUE MALL
                     // fountain - straight on
                     new GuidedTourCameraMeta(
                         partialName: "Blue Mall 1",
-                        doTimeTravelPeek: true,
+                        doTimeTravelPeek: false,
                         doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 4
 
                     // SHAMROCK MALL
@@ -678,7 +678,7 @@ public static class ManageSceneObjects
                         doTimeTravelPeriodic: false),
                     new GuidedTourCameraMeta(
                         partialName: "Gold Mall 1",
-                        doTimeTravelPeek: false,
+                        doTimeTravelPeek: true,
                         doTimeTravelPeriodic: false),
                     // Stuart's
                     new GuidedTourCameraMeta(
@@ -830,14 +830,14 @@ public static class ManageSceneObjects
                     // Sports Fan
                     new GuidedTourCameraMeta(
                         partialName: "Shamrock Mall 2",
-                        doTimeTravelPeek: true,
+                        doTimeTravelPeek: false,
                         doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 3
 
                     // BACK TO BLUE MALL
                     // Atrium marketing
                     new GuidedTourCameraMeta(
                         partialName: "Blue Mall deep",
-                        doTimeTravelPeek: true,
+                        doTimeTravelPeek: false,
                         doTimeTravelPeriodic: true),  ///// PERIODIC TIME TRAVEL! ///// 4
 
                     // FOOD COURT
