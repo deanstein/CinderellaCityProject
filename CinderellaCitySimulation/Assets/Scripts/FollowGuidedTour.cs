@@ -26,7 +26,7 @@ public class FollowGuidedTour : MonoBehaviour
     // number of seconds to pause before resuming
     readonly float pauseAtEnableOrResumeDuration = 4f;
     // number of seconds to pause for time-travel peeking
-    readonly float pauseAtTimeTravelPeekDuration = 4f;
+    readonly float pauseAtTimeTravelPeekDuration = 4.5f;
     // number of seconds to pause after hiding photos and before time-travel, before peek
     readonly float pauseBeforeTimeTravelPeek = 1.5f;
     // guided tour can be stationary only for the durations specified above
