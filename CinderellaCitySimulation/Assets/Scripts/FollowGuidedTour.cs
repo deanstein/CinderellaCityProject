@@ -600,7 +600,8 @@ public class FollowGuidedTour : MonoBehaviour
                     .guidedTourObjects[currentDestinationIndex].name;
 
             // get metadata for this object
-            GuidedTourCameraMeta? currentCameraMeta = ManageSceneObjects.ProxyObjects.GetGuidedTourCameraMetadata(currentObjectName, thisAgent.gameObject.scene.name);
+            GuidedTourCameraMeta[] allMetadata = ManageSceneObjects.ProxyObjects.GetCuratedGuidedTourCameraMetaByScene(thisAgent.gameObject.scene.name);
+            GuidedTourCameraMeta? currentCameraMeta = allMetadata[currentDestinationIndex];
 
             // determine if periodic time-travel is enabled for this object
             bool shouldPeriodicTimeTravel = currentCameraMeta.HasValue && currentCameraMeta.Value.doTimeTravelPeriodic;
