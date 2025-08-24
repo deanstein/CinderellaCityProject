@@ -35,6 +35,8 @@ public static class ModeState
     // suspension will end automatically after some idle time
     public static bool isGuidedTourPaused = false;
 
+    public static bool isTraversingNavMeshLink = false;
+
     // shuffle guided tour destinations
     /** this may be overwritten by startup config **/
     public static bool shuffleDestinations = false;

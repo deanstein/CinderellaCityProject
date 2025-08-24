@@ -432,7 +432,8 @@ public class FollowGuidedTour : MonoBehaviour
             // if the path is partial, try setting it again in a few moments
             // this could due to the path being very long
             if ((thisAgent.pathStatus == NavMeshPathStatus.PathPartial || 
-                thisAgent.pathStatus == NavMeshPathStatus.PathInvalid))
+                thisAgent.pathStatus == NavMeshPathStatus.PathInvalid) &&
+                !ModeState.isTraversingNavMeshLink)
             {
                 // log an error if the camera index isn't valid
                 if (partialPathCameraIndex == -1)
