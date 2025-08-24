@@ -237,13 +237,69 @@ public class CCPMenuActions : MonoBehaviour
     }
 
     ///// NPCs /////
-    // sets all NPCs to not check if in frame when disabling scripts
+    // logs the number of NPCs in the scene
     [MenuItem("Cinderella City Project/NPCs/Log Number of NPCs", false, 202)]
     public static void LogNumNPCs()
     {
         // get all NPC objects
-        GameObject[] peopleObjects = ManageSceneObjects.GetAllTopLevelChildrenInObject(ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName("proxy-people")[0]);
-        Debug.Log("Number of NPCs: " + peopleObjects.Length);
+        GameObject[] NPCObjects = ManageSceneObjects.GetAllTopLevelChildrenInObject(ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName("proxy-people")[0]);
+        Debug.Log("Number of NPCs: " + NPCObjects.Length);
+    }
+
+    // sets the Traverse Off Mesh Link option to TRUE
+    [MenuItem("Cinderella City Project/NPCs/Set NPCs Traverse Off Mesh Link TRUE", false, 203)]
+    public static void SetNPCsToTraverseOffMeshLink()
+    {
+        // note if we made any changes
+        bool isSceneModified = false;
+        // get all NPC objects
+        GameObject[] NPCObjects = ManageSceneObjects.GetAllTopLevelChildrenInObject(ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName("proxy-people")[0]);
+
+        // for each, enable traversing off mesh links
+        // but only if there's an agent (skip the ones standing)
+        foreach (GameObject NPCObject in NPCObjects)
+        {
+            NavMeshAgent agent = NPCObject.GetComponentInChildren<NavMeshAgent>();
+            if (agent)
+            {
+                agent.autoTraverseOffMeshLink = true;
+                isSceneModified = true;
+            }
+        }
+
+        // if scene is modified, mark it as dirty
+        if (isSceneModified)
+        {
+            MarkCurrentSceneDirty();
+        }
+    }
+
+    // sets the Traverse Off Mesh Link option to FALSE
+    [MenuItem("Cinderella City Project/NPCs/Set NPCs Traverse Off Mesh Link FALSE", false, 203)]
+    public static void SetNPCsNoTraverseOffMeshLink()
+    {
+        // note if we made any changes
+        bool isSceneModified = false;
+
+        // get all NPC objects
+        GameObject[] NPCObjects = ManageSceneObjects.GetAllTopLevelChildrenInObject(ManageSceneObjects.GetTopLevelSceneContainerGameObjectsByName("proxy-people")[0]);
+
+        // for each, disable traversing off mesh links
+        // but only if there's an agent (skip the ones standing)
+        foreach (GameObject NPCObject in NPCObjects)
+        {
+            NavMeshAgent agent = NPCObject.GetComponentInChildren<NavMeshAgent>();
+            if (agent)
+            {
+                agent.autoTraverseOffMeshLink = false;
+            }
+        }
+
+        // if scene is modified, mark it as dirty
+        if (isSceneModified)
+        {
+            MarkCurrentSceneDirty();
+        }
     }
 
     ///// STATIC FLAGS /////
