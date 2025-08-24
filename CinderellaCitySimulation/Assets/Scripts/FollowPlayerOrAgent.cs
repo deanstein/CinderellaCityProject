@@ -11,12 +11,18 @@ public class FollowPlayerOrAgent : MonoBehaviour
     private void Update()
     {
         // guided tour is ON, so FPSController follows agent
-        if (ModeState.isGuidedTourActive && !ModeState.isTimeTravelPeeking && !ModeState.isPeriodicTimeTraveling)
+        if (ModeState.isGuidedTourActive && 
+            !ModeState.isTimeTravelPeeking && 
+            !ModeState.isPeriodicTimeTraveling ||
+            ModeState.isTraversingNavMeshLink)
         {
             if (ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform != null)
             {
                 // always make sure the agent is on
-                this.GetComponent<NavMeshAgent>().enabled = true;
+                if (!ModeState.isTraversingNavMeshLink)
+                {
+                    this.GetComponent<NavMeshAgent>().enabled = true;
+                }
 
                 // this is required to be false for NavMeshAgent to not interfere
                 this.GetComponent<NavMeshAgent>().updatePosition = false;
