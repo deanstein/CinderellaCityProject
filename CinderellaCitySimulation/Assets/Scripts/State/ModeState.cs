@@ -35,7 +35,9 @@ public static class ModeState
     // suspension will end automatically after some idle time
     public static bool isGuidedTourPaused = false;
 
-    public static bool isTraversingNavMeshLink = false;
+    // marked true if the FPS agent is currently traversing an off-mesh link
+    // this is important to know so other scripts can adjust their behavior during this time
+    public static bool isFPSAgentTraversingMeshLink = false;
 
     // shuffle guided tour destinations
     /** this may be overwritten by startup config **/
