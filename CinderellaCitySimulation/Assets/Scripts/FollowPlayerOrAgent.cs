@@ -14,12 +14,12 @@ public class FollowPlayerOrAgent : MonoBehaviour
         if (ModeState.isGuidedTourActive && 
             !ModeState.isTimeTravelPeeking && 
             !ModeState.isPeriodicTimeTraveling ||
-            ModeState.isTraversingNavMeshLink)
+            ModeState.isFPSAgentTraversingMeshLink)
         {
             if (ManageFPSControllers.FPSControllerGlobals.activeFPSControllerTransform != null)
             {
                 // always make sure the agent is on
-                if (!ModeState.isTraversingNavMeshLink)
+                if (!ModeState.isFPSAgentTraversingMeshLink)
                 {
                     this.GetComponent<NavMeshAgent>().enabled = true;
                 }

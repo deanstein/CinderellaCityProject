@@ -65,7 +65,7 @@ public class UpdateFPSAgentByState : MonoBehaviour
         }
 
         // agent should always be off if time-traveling
-        if (ModeState.doShowTimeTravelingLabel || ModeState.isTraversingNavMeshLink)
+        if (ModeState.doShowTimeTravelingLabel || ModeState.isFPSAgentTraversingMeshLink)
         {
             enableFPSAgent = false;
         }
