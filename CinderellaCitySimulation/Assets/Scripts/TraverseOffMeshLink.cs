@@ -2,48 +2,61 @@
 using UnityEngine;
 using UnityEngine.AI;
 
+/// <summary>
+/// Attach this script to a GameObject with an agent
+/// that needs to traverse NavMeshLinks using a custom speed
+/// (the default speed is way too fast)
+/// </summary>
+
 public class TraverseOffMeshLink : MonoBehaviour
 {
     public float traversalSpeed = ManageFPSControllers.FPSControllerGlobals.defaultAgentSpeedInside;
-    public bool rotateTowardsTarget = false;
+    public bool rotateTowardsTarget = true;
 
     private NavMeshAgent agent;
+    // this this agent the player?
+    private bool isFPSAgent = false;
+    // is this agent traversing an off-mesh link?
+    private bool isTraversingLink = false;
 
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         agent.autoTraverseOffMeshLink = false;
+        isFPSAgent = agent == ManageFPSControllers.FPSControllerGlobals.activeFPSControllerNavMeshAgent;
     }
 
     void Update()
     {
-        if (!ModeState.isTraversingNavMeshLink && agent.isOnOffMeshLink)
+        if (!isTraversingLink && agent.isOnOffMeshLink)
         {
-            Debug.Log("Agent is on OffMeshLink. Starting traversal...");
             StartCoroutine(TraverseLink(agent.currentOffMeshLinkData));
         }
     }
 
     private IEnumerator TraverseLink(OffMeshLinkData linkData)
     {
-        ModeState.isTraversingNavMeshLink = true;
+        isTraversingLink = true;
+        if (isFPSAgent)
+        {
+            ModeState.isFPSAgentTraversingMeshLink = true;
+        }
 
         Vector3 startPos = agent.transform.position;
         Vector3 endPos = linkData.endPos;
         endPos.y = agent.transform.position.y; // Flatten vertical offset
 
-        Debug.Log($"TraverseLink started. Start: {startPos}, End: {endPos}, Speed: {traversalSpeed}");
         Vector3 direction = (endPos - startPos);
 
         if (rotateTowardsTarget)
         {
+            // Rotation loop
             Quaternion targetRotation = Quaternion.LookRotation(direction);
             float rotationSpeed = 360f; // degrees per second
 
             while (Quaternion.Angle(agent.transform.rotation, targetRotation) > 1f)
             {
                 float angle = Quaternion.Angle(agent.transform.rotation, targetRotation);
-                Debug.Log($"Rotating... Angle: {angle}");
                 agent.transform.rotation = Quaternion.RotateTowards(agent.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
                 yield return null;
             }
@@ -59,15 +72,16 @@ public class TraverseOffMeshLink : MonoBehaviour
             currentPos += direction * traversalSpeed * Time.deltaTime;
             agent.transform.position = currentPos;
 
-            Debug.Log($"Moving... Position: {currentPos}, Target: {endPos}, Distance: {Vector3.Distance(currentPos, endPos)}");
             yield return null;
         }
-
-        Debug.Log("Traversal complete. Re-enabling agent control.");
 
         agent.enabled = true;
         agent.CompleteOffMeshLink();
 
-        ModeState.isTraversingNavMeshLink = false;
+        isTraversingLink = false;
+        if (isFPSAgent)
+        {
+            ModeState.isFPSAgentTraversingMeshLink = false;
+        }
     }
 }
