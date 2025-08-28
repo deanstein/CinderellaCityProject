@@ -1,6 +1,6 @@
 {
   "VersionHistory": {
-    "0.8.2.202506": {
+    "0.8.2.202508": {
       "Overview": "v0.8.2 adds time travel peeking at each Guided Tour photo, improves Guided Tour fluidity and stability, adds new historic photos, adds new debug utilities, updates StartupConfig flags, and eliminates the legacy Textures folder creation on asset import to reduce friction for project integrators.",
       "Environment Updates": [
         "Added new historic photos in 1968-1978 Blue Mall, Rose Mall, and Cinder Alley; also in 1987-1997 parking garage and Funtastics",
@@ -20,6 +20,7 @@
         "Fixed an issue where when time-traveling and player is now outside and slightly above the ground surface, the interior audio would play unexpectedly until player walked a few feet and dropped",
         "Fixed issue where when resuming Guided Tour, FPSController could have brief unexpected movement due to a stale tour vector",
         "Set invert Y axis to false by default",
+        "Set historic photo opacity in AssetImportPipeline instead of at runtime, added opacity commands in CCP Menu",
         "StartupConfig: Split recordingMode flag into two separate config flags: autoTimeTravel and shuffleDestinations",
         "Removed the custom '/Textures' folder override, restoring the default '/asset-name.fbm' as the folder for textures to be extracted to in AssetImportPipeline"
       ]
