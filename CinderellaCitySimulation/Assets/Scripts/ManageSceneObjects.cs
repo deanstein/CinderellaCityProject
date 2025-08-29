@@ -609,13 +609,6 @@ public static class ManageSceneObjects
                         doTimeTravelPeek: false,
                         doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 3
 
-                    // BACK TO BLUE MALL
-                    // fountain - straight on
-                    new GuidedTourCameraMeta(
-                        partialName: "Blue Mall 1",
-                        doTimeTravelPeek: false,
-                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 4
-
                     // SHAMROCK MALL
                     // Tommy Wong's
                     new GuidedTourCameraMeta(
@@ -625,6 +618,13 @@ public static class ManageSceneObjects
                     // Kiddie Shop
                     new GuidedTourCameraMeta(
                         partialName: "Shamrock Kiddie Shop",
+                        doTimeTravelPeek: false,
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 4
+
+                    // BACK TO BLUE MALL
+                    // fountain - straight on
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall 1",
                         doTimeTravelPeek: false,
                         doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 5
 
@@ -821,7 +821,9 @@ public static class ManageSceneObjects
                     new GuidedTourCameraMeta(
                         partialName: "Shamrock Mall AWF",
                         doTimeTravelPeek: true,
-                        doTimeTravelPeriodic: false),
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 3
+
+                    // FOOD COURT
                     // Book fair
                     new GuidedTourCameraMeta(
                         partialName: "Shamrock Mall book fair",
@@ -831,16 +833,7 @@ public static class ManageSceneObjects
                     new GuidedTourCameraMeta(
                         partialName: "Shamrock Mall 2",
                         doTimeTravelPeek: false,
-                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 3
-
-                    // BACK TO BLUE MALL
-                    // Atrium marketing
-                    new GuidedTourCameraMeta(
-                        partialName: "Blue Mall deep",
-                        doTimeTravelPeek: false,
-                        doTimeTravelPeriodic: true),  ///// PERIODIC TIME TRAVEL! ///// 4
-
-                    // FOOD COURT
+                        doTimeTravelPeriodic: false),
                     // Renzios
                     new GuidedTourCameraMeta(
                         partialName: "Food Court 9",
@@ -885,7 +878,14 @@ public static class ManageSceneObjects
                     new GuidedTourCameraMeta(
                         partialName: "Food Court 3",
                         doTimeTravelPeek: true,
-                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 5
+                        doTimeTravelPeriodic: true), ///// PERIODIC TIME TRAVEL! ///// 4
+   
+                    // BACK TO BLUE MALL
+                    // Atrium marketing
+                    new GuidedTourCameraMeta(
+                        partialName: "Blue Mall deep",
+                        doTimeTravelPeek: false,
+                        doTimeTravelPeriodic: true),  ///// PERIODIC TIME TRAVEL! ///// 5
 
                     // CINDER ALLEY
                     // Zeezo's
