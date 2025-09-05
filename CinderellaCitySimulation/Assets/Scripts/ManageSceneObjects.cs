@@ -1126,7 +1126,7 @@ public static class ObjectVisibilityGlobals
     public static string[] historicPhotographObjectKeywords = { "proxy-cameras-photos" };
 
     // used for updating the checkbox when historic photos are forced to opaque
-    public static bool areHistoricPhotosForcedOpaque = false;
+    public static bool areHistoricPhotosForcedOpaque = true;
     // a list of known historic photo transparency values
     public static List<float> historicPhotoTransparencyValues = new List<float>();
 }
@@ -1190,6 +1190,17 @@ public class ObjectVisibility
             peopleContainer.SetActive(visible);
             // set the mode state so the rest of the app knows whether people are visible
             ModeState.arePeopleVisible = visible;
+        }
+    }
+
+    public static void SetHistoricPhotosVisible(bool visible)
+    {
+        GameObject[] historicPhotosContainerResults = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords, true);
+        // only enable or disable if the object was found by keyword
+        if (historicPhotosContainerResults.Length > 0)
+        {
+            GameObject historicCamerasContainer = ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords, true)[0];
+            ManageSceneObjects.ProxyObjects.ToggleProxyHostMeshesToState(historicCamerasContainer, visible, false);
         }
     }
 

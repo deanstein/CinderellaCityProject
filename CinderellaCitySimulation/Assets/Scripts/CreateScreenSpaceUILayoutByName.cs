@@ -529,19 +529,28 @@ public class CreateScreenSpaceUILayoutByName : MonoBehaviour
         List<GameObject> pointsOfInterestToggles = new List<GameObject>();
 
         // historic photograph toggle
-        GameObject historicPhotographsToggle = CreateScreenSpaceUIElements.CreateVisibilityToggleModule(pointOfInterestVisibilityToggleGroup, pointOfInterestVisibilityToggleGroup.transform.GetChild(0).gameObject, "Historic Photographs", ObjectVisibility.GetTopLevelGameObjectsByKeyword(ObjectVisibilityGlobals.historicPhotographObjectKeywords, true));
-        pointsOfInterestToggles.Add(historicPhotographsToggle);
+        GameObject historicPhotographsVisibilityToggle = CreateScreenSpaceUIElements.CreateToggleModule(pointOfInterestVisibilityToggleGroup, pointOfInterestVisibilityToggleGroup.transform.GetChild(0).gameObject, "Historic Photographs");
+        // get the actual toggle
+        Toggle visibilityToggle = historicPhotographsVisibilityToggle.GetComponentInChildren<Toggle>();
+        visibilityToggle.isOn = ModeState.areHistoricPhotosRequestedVisible;
+        // set the toggle to invoke changing the visibility of the object
+        visibilityToggle.onValueChanged.AddListener(delegate {
+            // toggle all historic photo transparencies based on the toggle state
+            ObjectVisibility.SetHistoricPhotosVisible(visibilityToggle.isOn);
+
+        });
+        pointsOfInterestToggles.Add(historicPhotographsVisibilityToggle);
 
         // force all historic photos to opaque
-        GameObject historicPhotographsOpacityToggle = CreateScreenSpaceUIElements.CreateToggleModule(pointOfInterestVisibilityToggleGroup, historicPhotographsToggle, "Force 100% Photo Opacity");
+        GameObject historicPhotographsOpacityToggle = CreateScreenSpaceUIElements.CreateToggleModule(pointOfInterestVisibilityToggleGroup, historicPhotographsVisibilityToggle, "Force 100% Photo Opacity");
         // get the actual toggle
-        Toggle toggle = historicPhotographsOpacityToggle.GetComponentInChildren<Toggle>();
-        toggle.isOn = ObjectVisibilityGlobals.areHistoricPhotosForcedOpaque;
+        Toggle opacityToggle = historicPhotographsOpacityToggle.GetComponentInChildren<Toggle>();
+        // opacity is 100% initially
+        opacityToggle.isOn = ObjectVisibilityGlobals.areHistoricPhotosForcedOpaque;
         // set the toggle to invoke changing the visibility of the object
-        toggle.onValueChanged.AddListener(delegate {
-
+        opacityToggle.onValueChanged.AddListener(delegate {
             // toggle all historic photo transparencies based on the toggle state
-            ObjectVisibility.SetHistoricPhotosOpaque(toggle.isOn);
+            ObjectVisibility.SetHistoricPhotosOpaque(opacityToggle.isOn);
 
         });
         pointsOfInterestToggles.Add(historicPhotographsOpacityToggle);
