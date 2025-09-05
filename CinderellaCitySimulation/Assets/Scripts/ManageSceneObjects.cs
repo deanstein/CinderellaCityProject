@@ -288,26 +288,36 @@ public static class ManageSceneObjects
     // specific functions for proxy objects
     public class ProxyObjects
     {
+        public enum ProxyType
+        {
+            TreesVeg,
+            Cameras,
+            CamerasPhotos,
+            People,
+            Water,
+            Unknown
+        }
+
         // get the replacement proxy type based on an asset name
-        public static string GetProxyTypeByName(string gameObjectOrAssetName)
+        public static ProxyType GetProxyTypeByName(string gameObjectOrAssetName)
         {
             switch (gameObjectOrAssetName)
             {
                 case string name when name.Contains("proxy-trees-veg"):
-                    return "TreesVeg";
+                    return ProxyType.TreesVeg;
                 // for now, legacy cameras are known as just cameras
                 // so be sure to not include historic photo cameras
                 case string name when name.Contains(ManageCameraActions.CameraActionGlobals.proxyCamerasObjectName) &&
                 !name.Contains(ManageCameraActions.CameraActionGlobals.proxyCamerasPhotosObjectName):
-                    return "Cameras";
+                    return ProxyType.Cameras;
                 case string name when name.Contains(ManageCameraActions.CameraActionGlobals.proxyCamerasPhotosObjectName):
-                    return "CamerasPhotos";
+                    return ProxyType.CamerasPhotos;
                 case string name when name.Contains("proxy-people"):
-                    return "People";
+                    return ProxyType.People;
                 case string name when name.Contains("water"):
-                    return "Water";
+                    return ProxyType.Water;
                 default:
-                    return null;
+                    return ProxyType.Unknown;
             }
         }
 
@@ -407,8 +417,8 @@ public static class ManageSceneObjects
         {
             // get the proxy type of this host
             // so we can keep track of its visibility state in certain cases
-            string proxyType = GetProxyTypeByName(proxyHost.name);
-            if (proxyType == "CamerasPhotos")
+            ProxyType proxyType = GetProxyTypeByName(proxyHost.name);
+            if (proxyType == ProxyType.CamerasPhotos)
             {
                 // set the mode state so the rest of the app knows historic photos are visible
                 ModeState.areHistoricPhotosVisible = desiredState;
