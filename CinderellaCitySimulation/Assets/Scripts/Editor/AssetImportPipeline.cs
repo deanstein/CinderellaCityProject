@@ -991,7 +991,7 @@ public class AssetImportUpdate : AssetPostprocessor {
         culledPrefabs = 0;
 
         // update the global proxy type variable based on the asset name
-        string proxyType = ManageSceneObjects.ProxyObjects.GetProxyTypeByName(assetName);
+        ManageSceneObjects.ProxyObjects.ProxyType proxyType = ManageSceneObjects.ProxyObjects.GetProxyTypeByName(assetName);
 
         // define the delete tag to look for, based on the proxyType, then delete existing proxy replacements
         string proxyReplacementDeleteTag = ManageTags.GetOrCreateTagByProxyType(proxyType);

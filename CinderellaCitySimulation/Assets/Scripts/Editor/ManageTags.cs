@@ -43,7 +43,7 @@ public class ManageTags
     }
 
     // gets or creates tags for proxy objects, by type
-    public static string GetOrCreateTagByProxyType(string proxyType)
+    public static string GetOrCreateTagByProxyType(ManageSceneObjects.ProxyObjects.ProxyType proxyType)
     {
         // define the tag that will be used to hide the proxies
         string deleteReplacementTag = TaggedObjects.TaggedObjectGlobals.deleteProxyReplacementTagPrefix + proxyType;

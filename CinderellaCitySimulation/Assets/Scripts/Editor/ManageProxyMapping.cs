@@ -400,7 +400,7 @@ public class ManageProxyMapping
     }
 
     // replace a proxy with a prefab
-    public static GameObject ReplaceProxyObjectWithPrefab(GameObject proxyObject, string proxyType)
+    public static GameObject ReplaceProxyObjectWithPrefab(GameObject proxyObject, ManageSceneObjects.ProxyObjects.ProxyType proxyType)
     {
         // instantiate the instanced prefab
         GameObject instancedPrefab;
@@ -439,7 +439,7 @@ public class ManageProxyMapping
 
             // further scale the new object to match the proxy's height
             // except for water (particle systems)
-            if (!proxyType.Contains("Water"))
+            if (proxyType != ManageSceneObjects.ProxyObjects.ProxyType.Water)
             {
                 Utils.GeometryUtils.ScaleGameObjectToMatchOther(instancedPrefab, gameObjectToBeReplaced);
             }
@@ -458,7 +458,7 @@ public class ManageProxyMapping
 
             // ensure the instanced prefab rotates about the vertical axis
             // to match the orientation of the proxy object
-            if (proxyType.Contains("Water"))
+            if (proxyType == ManageSceneObjects.ProxyObjects.ProxyType.Water)
             {
                 // water (particle systems) get reset to 0
                 instancedPrefab.transform.eulerAngles = new Vector3(0, 0, 0);
