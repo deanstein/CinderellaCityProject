@@ -1354,15 +1354,15 @@ public class AssetImportUpdate : AssetPostprocessor {
                     CopyComponent<PostProcessLayer>(existingLayer, cameraObject);
                 }
 
-                // ensure historic photographs are set to opaque
-                if (child.name.Contains(ManageCameraActions.CameraActionGlobals.thumbnailCameraKeyword))
-                {
-                    ObjectVisibility.SetHistoricPhotosOpaque(true);
-                }
-
                 // disable the camera to prevent performance issues
                 camera.enabled = false;
             }
+        }
+
+        // ensure historic photographs are set to opaque
+        if (proxyType == ManageSceneObjects.ProxyObjects.ProxyType.CamerasPhotos)
+        {
+            ObjectVisibility.SetHistoricPhotosOpaque(true);
         }
 
         // log how many prefabs were successfully instanced
