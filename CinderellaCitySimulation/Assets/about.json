@@ -1,7 +1,7 @@
 {
   "VersionHistory": {
-    "0.8.2.202508": {
-      "Overview": "v0.8.2 adds time travel peeking at each Guided Tour photo, improves Guided Tour fluidity and stability, adds new historic photos, adds new debug utilities, updates StartupConfig flags, and eliminates the legacy Textures folder creation on asset import to reduce friction for project integrators.",
+    "0.8.2.202509": {
+      "Overview": "v0.8.2 adds time travel peeking at select Guided Tour photos, improves Guided Tour fluidity and stability, adds new historic photos, adds new debug utilities, updates StartupConfig flags, and eliminates the legacy Textures folder creation on asset import to reduce friction for project integrators.",
       "Environment Updates": [
         "Added new historic photos in 1968-1978 Blue Mall, Rose Mall, and Cinder Alley; also in 1987-1997 parking garage and Funtastics",
         "Historic photos are now set to Opaque mode by default to prevent certain lights from shining through photos"
@@ -18,7 +18,9 @@
         "Restored NPC repathing when blocking player camera or too close",
         "Eliminated time-based time-traveling during Guided Tour in favor of curated time-travel points via Guided Tour camera metadata",
         "Fixed an issue where when time-traveling and player is now outside and slightly above the ground surface, the interior audio would play unexpectedly until player walked a few feet and dropped",
-        "Fixed issue where when resuming Guided Tour, FPSController could have brief unexpected movement due to a stale tour vector",
+        "Fixed issue where when resuming Guided Tour, the player camera could have brief unexpected panning due to a stale tour vector",
+        "Fixed an issue where toggling historic photos from the Visibility Menu was failing due to visibility technique mismatch",
+        "Improved ProxyType by making it an enum",
         "Set invert Y axis to false by default",
         "Set historic photo opacity in AssetImportPipeline instead of at runtime, added opacity commands in CCP Menu",
         "StartupConfig: Split recordingMode flag into two separate config flags: autoTimeTravel and shuffleDestinations",
