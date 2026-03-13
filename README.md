@@ -1,4 +1,4 @@
-![Main Preview](README_intro.png)
+![Main Preview](README_intro.jpg)
 
 # The Cinderella City Project
 [The Cinderella City Project](https://www.cinderellacityproject.com/) is the digital reconstruction of a mid-century shopping mall for an interactive history exhibit. 
