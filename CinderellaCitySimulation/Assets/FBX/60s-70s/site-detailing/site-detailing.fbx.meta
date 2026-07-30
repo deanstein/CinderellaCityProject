@@ -32,6 +32,16 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - brick color
+    second: {fileID: 2100000, guid: b1dfc8f261607974ebb69b656749de44, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mall - brick vertical
+    second: {fileID: 2100000, guid: abf8c7a967807094c97173099a29970c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: mall - floor trim
     second: {fileID: 2100000, guid: bd796d9e024e94e49923fdf7d75cb460, type: 2}
   - first:
@@ -42,8 +52,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: mall - upper asphalt
+    second: {fileID: 2100000, guid: 31c90c2a04461b443bc2e97be70609aa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: railing paint color
     second: {fileID: 2100000, guid: 4a09714dd4135ff429bb226da71e37e6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: soil - exerior
+    second: {fileID: 2100000, guid: 50e562bb3e1781146b0169d4e44c9088, type: 2}
   materials:
     importMaterials: 1
     materialName: 1
@@ -99,13 +119,13 @@ ModelImporter:
     secondaryUVPackMargin: 64
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
+    normalSmoothAngle: 15
     normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
-    normalSmoothingSource: 0
+    normalSmoothingSource: 2
   referencedClips: []
   importAnimation: 1
   copyAvatar: 0
